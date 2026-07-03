@@ -8,21 +8,13 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         .font-times { font-family: 'Times New Roman', serif; }
-        /* Cấu trúc Bảng co giãn và xen kẽ */
-        .zebra-table tbody tr:nth-child(even) { background-color: #f8fafc; }
-        .zebra-table tbody tr:hover { background-color: #eef2ff; transition: 0.2s; }
+        /* Bước 1: Co giãn thông minh, Zebra, Focus */
+        .stable-table { table-layout: fixed; width: 100%; border-collapse: collapse; }
+        .zebra-row:nth-child(even) { background-color: #f8fafc; }
+        .zebra-row:hover { background-color: #eef2ff; }
+        #pasteArea:focus { border: 2px solid #2563eb; background: #f8fafc; }
         
-        /* Hiệu ứng Focus chuyên nghiệp */
-        #pasteArea {
-            transition: all 0.3s ease;
-            outline: none;
-            border: 2px dashed #cbd5e1;
-        }
-        #pasteArea:focus {
-            border-color: #2563eb;
-            background-color: #f8fafc;
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-        }
+        /* Bước 3: Biểu đồ và layout */
         .progress-container { width: 120px; background-color: #e2e8f0; height: 10px; border-radius: 99px; overflow: hidden; }
         .progress-fill { height: 100%; background-color: #10b981; }
     </style>
@@ -30,51 +22,50 @@
 <body class="bg-slate-50 p-6 font-times text-slate-900">
     <div class="max-w-6xl mx-auto space-y-6">
         <div class="flex justify-between items-center bg-white p-4 rounded border shadow-sm">
-            <h1 class="text-xl font-bold uppercase">Hệ Thống Quản Lý Nghỉ Phép 2026</h1>
-            <div id="connStatus" class="px-3 py-1 rounded-full text-xs font-bold border">Đang kết nối...</div>
+            <h1 class="text-xl font-bold uppercase">HỆ THỐNG QUẢN LÝ NGHỈ PHÉP 2026</h1>
+            <div id="connStatus" class="px-3 py-1 rounded-full text-xs font-bold border">Kết nối...</div>
         </div>
 
         <div class="bg-white p-6 rounded border shadow">
-            <h2 class="font-bold mb-4 flex items-center"><span class="bg-blue-600 w-1.5 h-6 rounded mr-3"></span>📋 Bước 1: Danh sách nhân sự</h2>
-            <div id="pasteArea" contenteditable="true" class="w-full p-8 rounded-lg text-center text-slate-500 cursor-pointer text-lg">Nhấn vào đây và nhấn Ctrl + V dán dữ liệu Excel</div>
+            <h2 class="font-bold mb-4">📋 Bước 1: Danh sách nhân sự</h2>
+            <div id="pasteArea" contenteditable="true" class="w-full p-8 border-2 border-dashed rounded text-center text-slate-400 cursor-pointer">Nhấn vào đây và dán dữ liệu Excel</div>
             <div id="tableContainer" class="mt-4 hidden overflow-x-auto">
-                <table class="zebra-table w-full border text-sm" id="staffTable">
-                    <thead class="bg-slate-800 text-white uppercase text-xs" id="staffHead"></thead>
+                <table class="stable-table text-sm" id="staffTable">
                     <tbody id="staffBody"></tbody>
                 </table>
             </div>
         </div>
 
         <div class="bg-white p-6 rounded border shadow">
-            <h2 class="font-bold mb-4 flex items-center"><span class="bg-blue-600 w-1.5 h-6 rounded mr-3"></span>📝 Bước 2: Đăng ký nghỉ phép</h2>
+            <h2 class="font-bold mb-4">📝 Bước 2: Đăng ký nghỉ phép</h2>
             <div class="grid grid-cols-2 gap-4">
-                <select id="staffSelect" class="p-2 border rounded outline-none focus:ring-2"></select>
+                <select id="staffSelect" class="p-2 border rounded"></select>
                 <div class="grid grid-cols-2 gap-2">
                     <input type="date" id="d1" onchange="calc()" class="p-2 border rounded">
                     <input type="date" id="d2" onchange="calc()" class="p-2 border rounded">
                 </div>
-                <input type="text" id="totalDays" readonly class="p-2 bg-slate-100 border rounded" placeholder="Số ngày nghỉ (tự động tính)">
+                <input type="text" id="totalDays" readonly class="p-2 bg-slate-100 border rounded font-bold" placeholder="Số ngày nghỉ">
                 <input type="text" id="phone" class="p-2 border rounded" placeholder="SĐT khẩn cấp">
-                <textarea id="reason" class="col-span-2 p-2 border rounded" placeholder="Lý do nghỉ phép"></textarea>
+                <textarea id="reason" class="col-span-2 p-2 border rounded" placeholder="Lý do nghỉ"></textarea>
                 <button onclick="submitData()" class="col-span-2 bg-blue-900 text-white p-2 rounded font-bold">Gửi đơn & Lưu Cloud</button>
             </div>
         </div>
 
         <div class="bg-white p-6 rounded border shadow">
-            <h2 class="font-bold mb-4 flex items-center"><span class="bg-blue-600 w-1.5 h-6 rounded mr-3"></span>🔵 Bước 3: Thống kê & Quản lý</h2>
-            <table class="w-full border-collapse zebra-table text-sm">
-                <thead><tr class="bg-slate-50 text-slate-500 uppercase text-xs text-left"><th class="p-4">Họ tên</th><th class="p-4">Quỹ</th><th class="p-4">Đã Nghỉ</th><th class="p-4">Tiến Độ (%)</th><th class="p-4">Đợt gần nhất & SĐT</th><th class="p-4">Thao tác</th></tr></thead>
-                <tbody id="reportBody" class="text-left"></tbody>
+            <h2 class="font-bold mb-4">🔵 Bước 3: Thống kê & Quản lý</h2>
+            <table class="stable-table text-sm">
+                <thead><tr class="bg-slate-50 uppercase text-xs text-left"><th>Họ tên</th><th>Quỹ</th><th>Đã Nghỉ</th><th>Tiến Độ (%)</th><th>Đợt gần nhất & SĐT</th><th>Thao tác</th></tr></thead>
+                <tbody id="reportBody"></tbody>
             </table>
         </div>
     </div>
 
-    <div id="printDoc" class="hidden p-16 font-times text-lg">
-        <div class="text-center font-bold uppercase">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM<br>Độc lập - Tự do - Hạnh phúc</div>
-        <h2 class="text-center text-2xl font-bold mt-10 uppercase">ĐƠN XIN NGHỈ PHÉP</h2>
-        <div class="mt-8">Kính gửi: Ban Lãnh đạo. Tên tôi là: <span id="pName" class="font-bold"></span>.</div>
-        <div class="mt-4">Đề nghị được nghỉ phép: <span id="pDate"></span>. Lý do: <span id="pReason"></span>.</div>
-        <div class="mt-20 flex justify-between"><div class="italic">Ngày... tháng... năm 2026</div><div class="text-center font-bold">Người làm đơn<br><br><br><br>(Ký, ghi rõ họ tên)</div></div>
+    <div id="printDoc" class="hidden p-16 font-times text-lg leading-loose">
+        <div class="text-center font-bold">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM<br>Độc lập - Tự do - Hạnh phúc</div>
+        <h1 class="text-center text-2xl font-bold mt-10 uppercase">ĐƠN XIN NGHỈ PHÉP</h1>
+        <p class="mt-8">Kính gửi: Ban Lãnh đạo. Tôi tên là: <span id="pName" class="font-bold"></span>.</p>
+        <p class="mt-4">Đề nghị được nghỉ phép: <span id="pDate"></span>. Lý do: <span id="pReason"></span>.</p>
+        <div class="mt-20 flex justify-between"><div></div><div class="text-center font-bold">Người làm đơn<br>(Ký, ghi rõ họ tên)</div></div>
     </div>
 
     <script>
@@ -87,21 +78,15 @@
         }
 
         async function fetchData() {
-            const { data, error } = await sb.from('lich_nghi').select('*');
-            const ind = document.getElementById('connStatus');
-            ind.innerText = error ? "LỖI KẾT NỐI" : "ĐÃ KẾT NỐI ONLINE";
-            ind.className = error ? "bg-red-100 text-red-600 border-red-200" : "bg-green-100 text-green-700 border-green-200";
-            
+            const { data } = await sb.from('lich_nghi').select('*');
             if(!data) return;
             const body = document.getElementById('reportBody');
             body.innerHTML = "";
             const names = [...new Set(data.map(i => i.ho_ten))];
-            
             names.forEach(name => {
                 const logs = data.filter(i => i.ho_ten === name);
                 const daNghi = logs.reduce((s, i) => s + Math.max(0, (new Date(i.den_ngay) - new Date(i.tu_ngay))/86400000 + 1), 0);
-                const phanTram = Math.max(0, ((12 - daNghi) / 12) * 100);
-                body.innerHTML += `<tr><td class="p-4">${name}</td><td class="p-4">12 ngày</td><td class="p-4 text-red-600 font-bold">${daNghi} ngày</td><td class="p-4"><div class="progress-container"><div class="progress-fill" style="width:${phanTram}%"></div></div></td><td class="p-4 text-xs">${logs[logs.length-1].tu_ngay}<br>${logs[logs.length-1].phone}</td><td class="p-4"><button onclick="exportDoc('${name}')" class="text-blue-600 underline">Xuất</button> | <button onclick="del('${logs[0].id}')" class="text-red-500">Xóa</button></td></tr>`;
+                body.innerHTML += `<tr class="zebra-row"><td>${name}</td><td>12</td><td class="text-red-600 font-bold">${daNghi}</td><td><div class="progress-container"><div class="progress-fill" style="width:${(daNghi/12)*100}%"></div></div></td><td>${logs[0].tu_ngay}<br>${logs[0].phone}</td><td><button onclick="exportDoc('${name}')" class="text-blue-600 underline">Xuất</button> | <button onclick="del('${logs[0].id}')" class="text-red-500">Xóa</button></td></tr>`;
             });
         }
 
@@ -111,18 +96,17 @@
         }
 
         function del(id) {
-            if(prompt("Nhập mật mã 2026:") === "2026") { sb.from('lich_nghi').delete().eq('id', id).then(fetchData); }
+            if(prompt("Nhập mật mã:") === "2026") { sb.from('lich_nghi').delete().eq('id', id).then(fetchData); }
         }
 
         async function submitData() {
             await sb.from('lich_nghi').insert([{ ho_ten: document.getElementById('staffSelect').value, tu_ngay: document.getElementById('d1').value, den_ngay: document.getElementById('d2').value, phone: document.getElementById('phone').value, ly_do: document.getElementById('reason').value }]);
-            alert("Đã lưu thành công!"); fetchData();
+            alert("Lưu thành công!"); fetchData();
         }
 
         document.getElementById('pasteArea').onpaste = (e) => {
-            const div = document.createElement('div'); div.innerHTML = e.clipboardData.getData('text/html') || e.clipboardData.getData('text/plain');
-            const rows = div.querySelectorAll('tr');
-            document.getElementById('staffSelect').innerHTML = Array.from(rows).map(r => r.innerText.split('\t')[1] ? `<option>${r.innerText.split('\t')[1]}</option>` : '').join('');
+            const lines = e.clipboardData.getData('text/plain').split('\n');
+            document.getElementById('staffSelect').innerHTML = lines.map(l => l.split('\t')[1] ? `<option>${l.split('\t')[1]}</option>` : '').join('');
             document.getElementById('tableContainer').classList.remove('hidden');
         };
         window.onload = fetchData;

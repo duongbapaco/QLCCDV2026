@@ -2,86 +2,107 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Smart Leave Manager Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Leave Manager Pro | Enterprise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
-        .form-group { margin-bottom: 15px; }
-        input, select { width: 100%; padding: 8px; margin-top: 5px; }
-        button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
-    </style>
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-900">
 
-    <h2>Đăng ký nghỉ phép</h2>
-    <div class="form-group">
-        <label>Họ và tên:</label>
-        <input type="text" id="userName" placeholder="Nhập tên của bạn">
-    </div>
-    <div class="form-group">
-        <label>Từ ngày:</label>
-        <input type="date" id="startDate">
-    </div>
-    <div class="form-group">
-        <label>Đến ngày:</label>
-        <input type="date" id="endDate">
-    </div>
-    <div class="form-group">
-        <label>Lý do:</label>
-        <select id="reason">
-            <option value="Nghỉ phép năm">Nghỉ phép năm</option>
-            <option value="Nghỉ ốm">Nghỉ ốm</option>
-            <option value="Việc riêng">Việc riêng</option>
-        </select>
-    </div>
-    <button onclick="handleSubmit()">Gửi đơn</button>
+<div class="max-w-6xl mx-auto p-6">
+    <!-- Header -->
+    <header class="flex justify-between items-center mb-8 border-b pb-4">
+        <h1 class="text-2xl font-bold text-blue-800">Smart Leave Manager Pro</h1>
+        <div id="status" class="text-sm font-medium text-green-600">● Đã kết nối Supabase</div>
+    </header>
 
-    <script>
-        // Khởi tạo Supabase
-        const supabase = supabase.createClient(
-            'https://qztflyvraluxtpzbmtgp.supabase.co', 
-            'sb_publishable_MHTau0ZEnlDWdyfwfQZE-A_LAdOTm-B'
-        );
+    <!-- Dashboard Thống kê -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-xl shadow-sm border">
+            <h3 class="text-gray-500 text-sm">Số ngày phép năm nay</h3>
+            <p id="totalLeave" class="text-3xl font-bold">12</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-sm border">
+            <h3 class="text-gray-500 text-sm">Đã sử dụng</h3>
+            <p id="usedLeave" class="text-3xl font-bold text-orange-500">0</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-sm border">
+            <h3 class="text-gray-500 text-sm">Còn lại</h3>
+            <p id="remainingLeave" class="text-3xl font-bold text-blue-600">12</p>
+        </div>
+    </div>
 
-        // Logic tính ngày làm việc
-        function calculateWorkingDays(start, end) {
-            let count = 0;
-            let curDate = new Date(start);
-            const endDate = new Date(end);
-            while (curDate <= endDate) {
-                let day = curDate.getDay();
-                if (day !== 0 && day !== 6) count++;
-                curDate.setDate(curDate.getDate() + 1);
-            }
-            return count;
+    <!-- Form & Danh sách -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Panel Đăng ký -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border">
+            <h2 class="text-lg font-bold mb-4">Đăng ký nghỉ phép</h2>
+            <div class="space-y-4">
+                <select id="staffSelect" class="w-full p-2 border rounded-lg"></select>
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="date" id="startDate" class="p-2 border rounded-lg">
+                    <input type="date" id="endDate" class="p-2 border rounded-lg">
+                </div>
+                <input type="text" id="phone" placeholder="Số điện thoại liên lạc" class="w-full p-2 border rounded-lg">
+                <select id="reason" class="w-full p-2 border rounded-lg">
+                    <option value="Nghỉ phép năm">Nghỉ phép năm</option>
+                    <option value="Nghỉ ốm">Nghỉ ốm (Độc hại/Nặng nhọc)</option>
+                    <option value="Việc riêng">Việc riêng</option>
+                </select>
+                <button onclick="submitLeave()" class="w-full bg-blue-600 text-white p-3 rounded-lg font-bold hover:bg-blue-700">Gửi Đơn Xin Nghỉ</button>
+            </div>
+        </div>
+
+        <!-- Panel Quản lý Cán bộ -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border">
+            <h2 class="text-lg font-bold mb-4">Nhập liệu Cán bộ</h2>
+            <textarea id="bulkInput" placeholder="Dán danh sách từ Excel tại đây (Tên, Năm vào làm, Loại hình)..." class="w-full h-32 p-2 border rounded-lg text-sm"></textarea>
+            <button onclick="importStaff()" class="mt-2 w-full bg-gray-800 text-white p-2 rounded-lg">Cập nhật danh sách</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const supabase = supabase.createClient(
+        'https://qztflyvraluxtpzbmtgp.supabase.co', 
+        'sb_publishable_MHTau0ZEnlDWdyfwfQZE-A_LAdOTm-B'
+    );
+
+    // Tính phép theo Luật: 12 ngày + thâm niên (cứ 5 năm/ngày) + 2 ngày (nếu độc hại)
+    function calculateEntitlement(startYear, isHazardous) {
+        const years = new Date().getFullYear() - startYear;
+        let base = 12 + Math.floor(years / 5);
+        if (isHazardous) base += 2;
+        return base;
+    }
+
+    async function submitLeave() {
+        const start = new Date(document.getElementById('startDate').value);
+        const end = new Date(document.getElementById('endDate').value);
+        
+        // Tính ngày làm việc (trừ T7, CN)
+        let count = 0;
+        let d = new Date(start);
+        while(d <= end) {
+            if(d.getDay() !== 0 && d.getDay() !== 6) count++;
+            d.setDate(d.getDate() + 1);
         }
 
-        // Hàm xử lý gửi dữ liệu
-        async function handleSubmit() {
-            const userName = document.getElementById('userName').value;
-            const startDate = document.getElementById('startDate').value;
-            const endDate = document.getElementById('endDate').value;
-            const reason = document.getElementById('reason').value;
+        const { error } = await supabase.from('leave_requests').insert([{
+            staff_name: document.getElementById('staffSelect').value,
+            start_date: start,
+            end_date: end,
+            total_days: count,
+            phone: document.getElementById('phone').value,
+            reason: document.getElementById('reason').value
+        }]);
 
-            if (!userName || !startDate || !endDate) {
-                alert("Vui lòng điền đầy đủ thông tin!");
-                return;
-            }
+        if(!error) alert("Đăng ký thành công: " + count + " ngày");
+    }
 
-            const totalDays = calculateWorkingDays(startDate, endDate);
-
-            const { data, error } = await supabase
-                .from('leave_requests')
-                .insert([
-                    { user_name: userName, start_date: startDate, end_date: endDate, total_days: totalDays, reason: reason, status: 'pending' }
-                ]);
-
-            if (error) {
-                alert("Lỗi: " + error.message);
-            } else {
-                alert("Đã gửi đơn thành công! Tổng số ngày: " + totalDays);
-            }
-        }
-    </script>
+    // Khởi tạo giao diện
+    lucide.createIcons();
+</script>
 </body>
 </html>

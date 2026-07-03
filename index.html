@@ -2,112 +2,96 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Hệ Thống Quản Lý Nghỉ Phép</title>
+    <title>Hệ Thống Quản Lý Nhân Sự & Nghỉ Phép</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Times New Roman', serif; background-color: #f1f5f9; }
+        .table-zebra tbody tr:nth-child(even) { background-color: #f8fafc; }
+        .table-hover tbody tr:hover { background-color: #e2e8f0; transition: 0.2s; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #cbd5e1; padding: 12px; text-align: left; }
+    </style>
 </head>
-<body class="bg-slate-50 p-6">
+<body class="p-6">
     <div class="max-w-7xl mx-auto space-y-8">
-        
-        <div class="bg-white p-6 rounded-lg shadow border">
+        <div class="flex justify-between items-center bg-white p-4 rounded-lg shadow-sm border">
+            <h1 class="font-bold text-xl text-slate-800">HỆ THỐNG QUẢN LÝ NGHỈ PHÉP 2026</h1>
+            <div id="connStatus" class="px-3 py-1 rounded-full bg-red-100 text-red-600 text-xs font-bold">KẾT NỐI ONLINE</div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-sm border">
             <h2 class="font-bold text-slate-800 mb-4">📋 Bước 1: Danh sách nhân sự</h2>
-            <div id="pasteArea" contenteditable="true" class="w-full p-6 border-2 border-dashed border-slate-300 rounded-lg text-center text-slate-400">
-                Dán dữ liệu từ Excel (Ctrl + V) vào đây
-            </div>
-            <div class="overflow-x-auto mt-4">
-                <table class="w-full text-xs text-left" id="staffTable">
-                    <thead class="bg-slate-50 border-y" id="staffHead"></thead>
-                    <tbody class="divide-y" id="staffBody"></tbody>
-                </table>
-            </div>
+            <div id="pasteArea" contenteditable="true" class="w-full p-6 border-2 border-dashed border-slate-300 rounded-lg text-center text-slate-400 mb-4">Dán dữ liệu Excel (Ctrl+V) tại đây</div>
+            <div class="overflow-x-auto"><table class="table-zebra table-hover text-sm" id="staffTable"><thead class="bg-slate-100 font-bold uppercase text-xs" id="staffHead"></thead><tbody id="staffBody"></tbody></table></div>
         </div>
 
-        <div class="bg-white p-6 rounded-lg shadow border">
-            <h2 class="font-bold text-slate-800 mb-6">📝 Bước 2: Đăng Ký Nghỉ Phép</h2>
+        <div class="bg-white p-6 rounded-lg shadow-sm border">
+            <h2 class="font-bold text-slate-800 mb-6">📝 Bước 2: Form Đăng Ký</h2>
             <div class="grid grid-cols-5 gap-4 mb-4">
-                <div><label class="block text-xs font-bold text-slate-600 mb-1">CÁN BỘ (*)</label>
-                    <select id="staffSelect" class="w-full p-2 border rounded text-sm"><option>-- Chọn nhân sự --</option></select></div>
-                <div><label class="block text-xs font-bold text-slate-600 mb-1">TỪ NGÀY (*)</label>
-                    <input type="date" id="d1" onchange="calc()" class="w-full p-2 border rounded text-sm"></div>
-                <div><label class="block text-xs font-bold text-slate-600 mb-1">ĐẾN NGÀY (*)</label>
-                    <input type="date" id="d2" onchange="calc()" class="w-full p-2 border rounded text-sm"></div>
-                <div><label class="block text-xs font-bold text-slate-600 mb-1">SỐ NGÀY NGHỈ</label>
-                    <input type="text" id="total" disabled class="w-full p-2 border rounded bg-yellow-50 text-sm"></div>
-                <div><label class="block text-xs font-bold text-slate-600 mb-1">SĐT LIÊN LẠC (*)</label>
-                    <input type="text" class="w-full p-2 border rounded text-sm"></div>
+                <div><label class="block text-xs font-bold">CÁN BỘ</label><select id="staffSelect" class="w-full p-2 border rounded text-sm"></select></div>
+                <div><label class="block text-xs font-bold">TỪ NGÀY</label><input type="date" id="d1" onchange="calculateDays()" class="w-full p-2 border rounded text-sm"></div>
+                <div><label class="block text-xs font-bold">ĐẾN NGÀY</label><input type="date" id="d2" onchange="calculateDays()" class="w-full p-2 border rounded text-sm"></div>
+                <div><label class="block text-xs font-bold">SỐ NGÀY</label><input type="text" id="total" disabled class="w-full p-2 border rounded bg-yellow-50 text-sm"></div>
+                <div><label class="block text-xs font-bold">SĐT</label><input type="text" id="phone" class="w-full p-2 border rounded text-sm"></div>
             </div>
-            <div class="flex gap-4">
-                <input type="text" placeholder="Lý do nghỉ phép..." class="flex-1 p-2 border rounded text-sm">
-                <button class="bg-blue-900 text-white px-6 py-2 rounded text-sm font-bold">🚀 Duyệt & Lưu Lịch Trình</button>
-            </div>
+            <button onclick="submitData()" class="bg-blue-900 text-white px-6 py-2 rounded text-sm font-bold">🚀 Gửi Đơn & Lưu Cloud</button>
         </div>
 
-        <div class="bg-white p-6 rounded-lg shadow border">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="font-bold text-slate-800">🔵 Bước 3: Thống Kê & Quản Lý</h2>
-                <div class="flex gap-2">
-                    <button onclick="exportToExcel()" class="bg-green-700 text-white px-4 py-1 rounded text-xs font-bold">XUẤT EXCEL</button>
-                    <button onclick="exportToPDF()" class="bg-red-700 text-white px-4 py-1 rounded text-xs font-bold">XUẤT PDF CHUẨN</button>
-                </div>
+        <div class="bg-white p-6 rounded-lg shadow-sm border">
+            <div class="flex justify-between mb-4"><h2 class="font-bold">🔵 Bước 3: Thống Kê & Báo Cáo</h2>
+                <div class="flex gap-2"><button onclick="exportToExcel()" class="bg-green-700 text-white px-4 py-1 rounded text-xs">XUẤT EXCEL</button><button onclick="exportToPDF()" class="bg-red-700 text-white px-4 py-1 rounded text-xs">XUẤT PDF</button></div>
             </div>
-            <table class="w-full text-sm text-left border" id="reportTable">
-                <thead class="bg-slate-50 border-b">
-                    <tr><th class="p-3">Họ và Tên</th><th class="p-3">Quỹ Phép</th><th class="p-3">Đã nghỉ</th><th class="p-3">Biểu Đồ Tiến Độ</th><th class="p-3">Đợt nghỉ gần nhất</th></tr>
-                </thead>
-                <tbody class="divide-y">
-                    <tr><td class="p-3 font-bold">Nguyễn Minh Ngọc</td><td class="p-3">12 ngày</td><td class="p-3 text-red-600">0 ngày</td>
-                        <td class="p-3 w-64"><div class="text-[10px]">Còn lại: 12 ngày</div><div class="w-full bg-slate-200 h-3 rounded-full"><div class="bg-green-700 h-3 rounded-full" style="width: 100%"></div></div></td>
-                        <td class="p-3 text-slate-500 italic">Chưa phát sinh lịch nghỉ</td></tr>
-                </tbody>
-            </table>
+            <table class="table-zebra" id="reportTable"><thead><tr><th>Họ và Tên</th><th>Quỹ Phép</th><th>Đã Nghỉ</th><th>Tiến Độ</th></tr></thead><tbody id="reportBody"></tbody></table>
         </div>
     </div>
 
     <script>
-        // Xử lý dán dữ liệu
-        document.getElementById('pasteArea').addEventListener('paste', (e) => {
-            e.preventDefault();
-            const data = e.clipboardData.getData('text/html') || e.clipboardData.getData('text/plain');
-            const div = document.createElement('div'); div.innerHTML = data;
-            const rows = Array.from((div.querySelector('table') || div).querySelectorAll('tr'));
-            document.getElementById('staffHead').innerHTML = ''; document.getElementById('staffBody').innerHTML = '';
-            const select = document.getElementById('staffSelect');
+        // Khởi tạo Supabase
+        window.supabaseInstance = supabase.createClient('https://qztflyvraluxtpzbmtgp.supabase.co', 'sb_publishable_MHTau0ZEnlDWdyfwfQZE-A_LAdOTm-B');
 
-            rows.forEach((row, i) => {
-                const cells = Array.from(row.querySelectorAll('td, th'));
-                if (cells.length === 0) return;
-                const tr = document.createElement('tr');
-                cells.forEach(cell => tr.innerHTML += `<td class="p-2 border-b">${cell.innerText}</td>`);
-                if (i === 0) document.getElementById('staffHead').appendChild(tr);
-                else {
-                    document.getElementById('staffBody').appendChild(tr);
-                    if(cells[1]) select.innerHTML += `<option>${cells[1].innerText}</option>`;
-                }
+        document.addEventListener('DOMContentLoaded', () => {
+            // Kiểm tra kết nối
+            window.supabaseInstance.from('lich_nghi').select('id', {limit:1}).then(({error}) => {
+                const ind = document.getElementById('connStatus');
+                if(!error) { ind.innerText = "ĐÃ KẾT NỐI ONLINE"; ind.className = "px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold"; }
             });
         });
 
-        // Tính ngày
-        function calc() {
+        // Xử lý dữ liệu
+        document.getElementById('pasteArea').addEventListener('paste', (e) => {
+            const data = e.clipboardData.getData('text/html') || e.clipboardData.getData('text/plain');
+            const div = document.createElement('div'); div.innerHTML = data;
+            const rows = Array.from((div.querySelector('table') || div).querySelectorAll('tr'));
+            const head = document.getElementById('staffHead'); const body = document.getElementById('staffBody');
+            const select = document.getElementById('staffSelect');
+            rows.forEach((row, i) => {
+                const cells = Array.from(row.querySelectorAll('td, th'));
+                if (cells.length < 2) return;
+                const tr = document.createElement('tr');
+                cells.forEach(c => tr.innerHTML += `<td>${c.innerText}</td>`);
+                if (i === 0) head.appendChild(tr); else { body.appendChild(tr); select.innerHTML += `<option>${cells[1].innerText}</option>`; }
+            });
+            document.getElementById('pasteArea').style.display = 'none';
+        });
+
+        function calculateDays() {
             const d1 = new Date(document.getElementById('d1').value);
             const d2 = new Date(document.getElementById('d2').value);
-            if(d2 >= d1) document.getElementById('total').value = ((d2 - d1) / (86400000) + 1) + " ngày";
+            if(d2 >= d1) document.getElementById('total').value = ((d2 - d1) / 86400000 + 1) + " ngày";
         }
 
-        // Xuất Excel
-        function exportToExcel() {
-            const wb = XLSX.utils.table_to_book(document.getElementById('reportTable'));
-            XLSX.writeFile(wb, "Bao_Cao_Nghi_Phep.xlsx");
+        async function submitData() {
+            const { error } = await window.supabaseInstance.from('lich_nghi').insert([{ ho_ten: document.getElementById('staffSelect').value }]);
+            if(!error) alert("Dữ liệu đã được lưu lên Cloud!");
         }
 
-        // Xuất PDF chuẩn văn bản
+        function exportToExcel() { XLSX.writeFile(XLSX.utils.table_to_book(document.getElementById('reportTable')), "BaoCao.xlsx"); }
         function exportToPDF() {
-            const element = document.createElement('div');
-            element.innerHTML = `<div style="font-family:'Times New Roman'; padding:40px;">
-                <div style="text-align:center;"><b>TỔNG CÔNG TY GIẤY VIỆT NAM</b><br><u>VĂN PHÒNG</u><br><br><h2>BẢNG TỔNG HỢP THEO DÕI NGHỈ PHÉP</h2></div>
-                ${document.getElementById('reportTable').outerHTML}
-            </div>`;
-            html2pdf().from(element).save('Bao_Cao_Nghi_Phep.pdf');
+            const el = document.createElement('div'); el.innerHTML = `<div style="font-family:'Times New Roman'; padding:40px;"><h2>BÁO CÁO NGHỈ PHÉP</h2>${document.getElementById('reportTable').outerHTML}</div>`;
+            html2pdf().from(el).save('BaoCao.pdf');
         }
     </script>
 </body>

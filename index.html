@@ -2,99 +2,77 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Leave Manager Pro | Admin</title>
+    <title>HR System - Import Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
-<body class="bg-gray-50 p-4 md:p-8">
-    <div class="max-w-4xl mx-auto space-y-8">
-        
-        <!-- MODULE: QUẢN LÝ CÁN BỘ -->
-        <section class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-            <h2 class="text-xl font-bold mb-6 text-gray-800">Quản lý Cán bộ</h2>
-            
-            <!-- Tab Nhập liệu -->
-            <div class="grid md:grid-cols-2 gap-8">
-                <!-- Form Thủ công -->
-                <div class="space-y-4">
-                    <h3 class="font-semibold text-gray-600">Nhập thủ công</h3>
-                    <input type="text" id="m_name" placeholder="Họ và tên" class="w-full p-2 border rounded">
-                    <input type="date" id="m_join" class="w-full p-2 border rounded">
-                    <label class="flex items-center"><input type="checkbox" id="m_hazard" class="mr-2"> Công việc độc hại</label>
-                    <button onclick="addSingleStaff()" class="bg-blue-600 text-white px-6 py-2 rounded">Thêm cán bộ</button>
-                </div>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-6xl mx-auto space-y-8">
+        <h1 class="text-3xl font-bold text-gray-800">Hệ thống nạp liệu Cán bộ</h1>
 
-                <!-- Import Excel -->
-                <div class="space-y-4">
-                    <h3 class="font-semibold text-gray-600">Nhập từ Excel</h3>
-                    <input type="file" id="excelFile" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-green-50 file:text-green-700">
-                    <p class="text-xs text-gray-400">File cần cột: full_name, join_date, is_hazardous (true/false)</p>
-                    <button onclick="importExcel()" class="bg-green-600 text-white px-6 py-2 rounded">Upload Excel</button>
-                </div>
-            </div>
-        </section>
+        <div class="bg-white p-6 rounded-xl shadow border-l-4 border-green-600">
+            <h2 class="text-lg font-bold mb-4">1. Nạp từ file Excel (.xlsx)</h2>
+            <input type="file" id="excelFile" class="block w-full text-sm text-gray-500 mb-4">
+            <button onclick="importExcel()" class="bg-green-600 text-white px-6 py-2 rounded-lg font-bold">NẠP HÀNG LOẠT TỪ FILE</button>
+        </div>
 
-        <!-- MODULE: ĐĂNG KÝ NGHỈ PHÉP -->
-        <section class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-            <h2 class="text-xl font-bold mb-6 text-gray-800">Đăng ký nghỉ phép</h2>
-            <div class="grid md:grid-cols-3 gap-4">
-                <select id="staffSelect" class="p-2 border rounded"></select>
-                <input type="date" id="start" class="p-2 border rounded">
-                <input type="date" id="end" class="p-2 border rounded">
-                <button onclick="submitLeave()" class="bg-indigo-600 text-white col-span-full py-3 rounded-lg font-bold">GỬI ĐƠN</button>
-            </div>
-        </section>
+        <div class="bg-white p-6 rounded-xl shadow overflow-x-auto">
+            <h2 class="text-lg font-bold mb-4">Danh sách hiện tại</h2>
+            <table class="w-full text-left text-sm" id="staffTable">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="p-3">Họ và tên</th>
+                        <th class="p-3">Số CCCD</th>
+                        <th class="p-3">Chức danh</th>
+                    </tr>
+                </thead>
+                <tbody id="staffBody"></tbody>
+            </table>
+        </div>
     </div>
 
     <script>
         const supabase = supabase.createClient('https://qztflyvraluxtpzbmtgp.supabase.co', 'sb_publishable_MHTau0ZEnlDWdyfwfQZE-A_LAdOTm-B');
 
-        // Thêm 1 cán bộ thủ công
-        async function addSingleStaff() {
-            const data = {
-                full_name: document.getElementById('m_name').value,
-                join_date: document.getElementById('m_join').value,
-                is_hazardous: document.getElementById('m_hazard').checked
-            };
-            await supabase.from('staff_list').insert([data]);
-            alert("Đã thêm thành công!");
-            location.reload();
-        }
-
-        // Import Excel
+        // Hàm xử lý file Excel
         function importExcel() {
             const file = document.getElementById('excelFile').files[0];
+            if (!file) return alert("Vui lòng chọn file!");
+
             const reader = new FileReader();
             reader.onload = async (e) => {
-                const workbook = XLSX.read(e.target.result, {type: 'binary'});
-                const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
-                await supabase.from('staff_list').insert(jsonData);
-                alert("Đã import " + jsonData.length + " cán bộ!");
-                location.reload();
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, {type: 'array'});
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+                // Map dữ liệu từ Excel vào các trường của DB
+                const mappedData = jsonData.map(row => ({
+                    full_name: row['Họ và tên'],
+                    so_cccd: row['Số CCCD'],
+                    chuc_danh: row['Chức danh công việc']
+                }));
+
+                const { error } = await supabase.from('staff_list').insert(mappedData);
+                if(error) alert("Lỗi: " + error.message);
+                else { alert("Nạp thành công " + mappedData.length + " bản ghi!"); loadData(); }
             };
-            reader.readAsBinaryString(file);
+            reader.readAsArrayBuffer(file);
         }
 
-        // Load dropdown
-        async function loadStaff() {
-            const { data } = await supabase.from('staff_list').select('id, full_name');
-            const select = document.getElementById('staffSelect');
-            data.forEach(s => {
-                const opt = document.createElement('option');
-                opt.value = s.id; opt.textContent = s.full_name;
-                select.appendChild(opt);
-            });
+        async function loadData() {
+            const { data } = await supabase.from('staff_list').select('full_name, so_cccd, chuc_danh');
+            document.getElementById('staffBody').innerHTML = data.map(s => `
+                <tr class="border-b">
+                    <td class="p-3">${s.full_name || ''}</td>
+                    <td class="p-3">${s.so_cccd || ''}</td>
+                    <td class="p-3">${s.chuc_danh || ''}</td>
+                </tr>
+            `).join('');
         }
 
-        // Xử lý logic tính ngày khi gửi đơn
-        async function submitLeave() {
-            // ... (Logic tính toán ngày làm việc đã làm trước đó)
-            alert("Đã gửi đơn thành công!");
-        }
-
-        loadStaff();
+        loadData();
     </script>
 </body>
 </html>

@@ -4,96 +4,110 @@
     <meta charset="UTF-8">
     <title>Hệ Thống Quản Lý Nghỉ Phép 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         .font-times { font-family: 'Times New Roman', serif; }
-        .progress-fill { transition: width 0.5s ease-in-out; }
         .zebra tr:nth-child(even) { background-color: #f8fafc; }
+        @media print { .no-print { display: none; } }
     </style>
 </head>
-<body class="bg-slate-100 p-6 font-times text-slate-800">
+<body class="bg-slate-50 p-6 font-times text-slate-900">
     <div class="max-w-6xl mx-auto space-y-6">
-        <h1 class="text-2xl font-bold uppercase border-b-2 border-slate-800 pb-2">Hệ thống quản lý nghỉ phép 2026</h1>
+        <h1 class="text-2xl font-bold uppercase text-center border-b-2 border-slate-800 pb-4">Hệ thống quản lý nghỉ phép 2026</h1>
 
         <div class="bg-white p-6 rounded shadow border">
             <h2 class="font-bold mb-4">📋 Bước 1: Danh sách nhân sự</h2>
-            <div id="pasteArea" contenteditable="true" class="w-full p-4 border-2 border-dashed rounded text-slate-400">Dán dữ liệu Excel tại đây...</div>
+            <div id="pasteArea" contenteditable="true" class="w-full p-4 border-2 border-dashed rounded text-slate-400">Dán danh sách Excel (Cột 2 là Họ tên) tại đây...</div>
         </div>
 
         <div class="bg-white p-6 rounded shadow border">
-            <h2 class="font-bold mb-4">📝 Bước 2: Đăng ký nghỉ</h2>
+            <h2 class="font-bold mb-4">📝 Bước 2: Đăng ký nghỉ phép</h2>
             <div class="grid grid-cols-2 gap-4">
                 <select id="staffSelect" class="p-2 border rounded"></select>
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="date" id="d1" class="p-2 border rounded">
-                    <input type="date" id="d2" class="p-2 border rounded">
+                <div class="flex gap-2">
+                    <input type="date" id="d1" onchange="calc()" class="p-2 border rounded">
+                    <input type="date" id="d2" onchange="calc()" class="p-2 border rounded">
                 </div>
-                <input type="text" id="phone" class="p-2 border rounded" placeholder="Số điện thoại">
-                <input type="text" id="reason" class="p-2 border rounded" placeholder="Lý do xin nghỉ">
+                <input type="text" id="totalDays" disabled class="p-2 bg-slate-100 border rounded" placeholder="Số ngày nghỉ tự tính">
+                <input type="text" id="phone" class="p-2 border rounded" placeholder="SĐT khẩn cấp">
+                <textarea id="reason" class="col-span-2 p-2 border rounded" placeholder="Lý do nghỉ phép"></textarea>
                 <button onclick="submitData()" class="col-span-2 bg-blue-900 text-white p-2 rounded font-bold">Gửi đơn & Lưu Cloud</button>
             </div>
         </div>
 
         <div class="bg-white p-6 rounded shadow border">
-            <h2 class="font-bold mb-4">🔵 Bước 3: Thống kê & Tiến độ</h2>
+            <h2 class="font-bold mb-4">🔵 Bước 3: Thống kê & Quản lý đợt nghỉ</h2>
             <table class="w-full border-collapse border zebra">
-                <thead><tr class="bg-slate-100"><th>Họ tên</th><th>Quỹ</th><th>Đã nghỉ</th><th>Tiến độ</th><th>SĐT</th><th>Lý do</th></tr></thead>
-                <tbody id="reportBody"></tbody>
+                <thead><tr class="bg-slate-100 uppercase text-xs"><th>Họ tên</th><th>Quỹ</th><th>Đã nghỉ</th><th>Tiến độ</th><th>Đợt gần nhất</th><th>Thao tác</th></tr></thead>
+                <tbody id="reportBody" class="text-center"></tbody>
             </table>
         </div>
     </div>
 
+    <div id="exportTemplate" class="hidden font-times p-12 leading-loose text-lg">
+        <div class="text-center font-bold">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM<br>Độc lập - Tự do - Hạnh phúc</div>
+        <h2 class="text-center text-2xl font-bold mt-10 uppercase">ĐƠN XIN NGHỈ PHÉP</h2>
+        <div class="mt-8">Kính gửi: Ban Lãnh đạo Công ty. Tên tôi là: <span id="pName" class="font-bold"></span>.</div>
+        <div class="mt-4">Đề nghị được nghỉ phép: <span id="pDate"></span>. Lý do: <span id="pReason"></span>.</div>
+        <div class="mt-12 flex justify-between"><div></div><div class="text-center">Người làm đơn<br>(Ký, ghi rõ họ tên)</div></div>
+    </div>
+
     <script>
         const sb = supabase.createClient('https://qztflyvraluxtpzbmtgp.supabase.co', 'sb_publishable_MHTau0ZEnlDWdyfwfQZE-A_LAdOTm-B');
-        const QUY_LUAT = 12;
+        
+        function calc() {
+            const d1 = new Date(document.getElementById('d1').value);
+            const d2 = new Date(document.getElementById('d2').value);
+            if(d2 >= d1) document.getElementById('totalDays').value = ((d2 - d1) / 86400000 + 1) + " ngày";
+        }
 
         async function fetchData() {
             const { data } = await sb.from('lich_nghi').select('*');
             const body = document.getElementById('reportBody');
             body.innerHTML = "";
+            const names = [...new Set(data.map(i => i.ho_ten))];
             
-            // Lấy danh sách tên từ select box để thống kê
-            const options = Array.from(document.getElementById('staffSelect').options);
-            options.forEach(opt => {
-                const name = opt.value;
-                const logs = data ? data.filter(i => i.ho_ten === name) : [];
-                const daNghi = logs.reduce((sum, i) => sum + Math.max(0, (new Date(i.den_ngay) - new Date(i.tu_ngay)) / 86400000 + 1), 0);
-                const phanTram = Math.max(0, ((QUY_LUAT - daNghi) / QUY_LUAT) * 100);
-
+            names.forEach(name => {
+                const logs = data.filter(i => i.ho_ten === name);
+                const daNghi = logs.reduce((sum, i) => sum + ((new Date(i.den_ngay) - new Date(i.tu_ngay))/86400000 + 1), 0);
+                const phanTram = Math.max(0, ((12 - daNghi) / 12) * 100);
+                
                 body.innerHTML += `
-                    <tr class="text-center">
+                    <tr>
                         <td class="p-2 border">${name}</td>
-                        <td class="p-2 border">${QUY_LUAT}</td>
+                        <td class="p-2 border">12</td>
                         <td class="p-2 border text-red-600">${daNghi}</td>
+                        <td class="p-2 border"><div class="w-24 bg-slate-200 h-2"><div class="bg-green-600 h-full" style="width:${phanTram}%"></div></div></td>
+                        <td class="p-2 border">${logs[logs.length-1].tu_ngay}</td>
                         <td class="p-2 border">
-                            <div class="w-full bg-slate-200 h-4"><div class="bg-green-500 h-full" style="width: ${phanTram}%"></div></div>
+                            <button onclick="exportDoc('${name}')" class="text-blue-600">Xuất Đơn</button> | 
+                            <button onclick="del('${logs[logs.length-1].id}')" class="text-red-500">Xóa</button>
                         </td>
-                        <td class="p-2 border">${logs.length > 0 ? logs[logs.length-1].phone || '' : ''}</td>
-                        <td class="p-2 border">${logs.length > 0 ? logs[logs.length-1].ly_do || '' : ''}</td>
                     </tr>`;
             });
         }
 
-        document.getElementById('pasteArea').addEventListener('paste', (e) => {
-            const text = e.clipboardData.getData('text/plain');
-            const lines = text.split('\n').filter(l => l.trim());
-            const select = document.getElementById('staffSelect');
-            select.innerHTML = lines.map(l => `<option>${l.split('\t')[1] || l}</option>`).join('');
-            fetchData();
-        });
-
         async function submitData() {
-            const entry = {
-                ho_ten: document.getElementById('staffSelect').value,
-                tu_ngay: document.getElementById('d1').value,
-                den_ngay: document.getElementById('d2').value,
-                phone: document.getElementById('phone').value,
-                ly_do: document.getElementById('reason').value
-            };
-            await sb.from('lich_nghi').insert([entry]);
-            alert("Đã lưu!"); fetchData();
+            await sb.from('lich_nghi').insert([{ ho_ten: document.getElementById('staffSelect').value, tu_ngay: document.getElementById('d1').value, den_ngay: document.getElementById('d2').value, phone: document.getElementById('phone').value, ly_do: document.getElementById('reason').value }]);
+            alert("Lưu thành công!"); fetchData();
         }
 
+        async function del(id) {
+            if(prompt("Nhập mật mã xóa (2026):") === "2026") {
+                await sb.from('lich_nghi').delete().eq('id', id); fetchData();
+            }
+        }
+
+        function exportDoc(name) {
+            document.getElementById('pName').innerText = name;
+            html2pdf().from(document.getElementById('exportTemplate')).save('Don_Nghi_Phep.pdf');
+        }
+
+        document.getElementById('pasteArea').onpaste = (e) => {
+            const lines = e.clipboardData.getData('text/plain').split('\n');
+            document.getElementById('staffSelect').innerHTML = lines.map(l => `<option>${l.split('\t')[1] || l}</option>`).join('');
+        };
         window.onload = fetchData;
     </script>
 </body>

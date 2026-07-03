@@ -2,67 +2,68 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>HR Professional Processor</title>
+    <title>Hệ thống HR Công ty Giấy Việt Nam</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-gray-50 p-6">
-    <div class="max-w-7xl mx-auto space-y-4">
-        <div class="bg-white p-6 rounded-xl shadow border">
-            <h1 class="text-xl font-bold mb-4">Xử lý file dữ liệu nhân sự</h1>
-            <input type="file" id="upload" class="mb-4 block">
-            <button onclick="processData()" class="bg-blue-600 text-white px-6 py-2 rounded font-bold hover:bg-blue-700">HIỂN THỊ DỮ LIỆU</button>
+    <div class="max-w-6xl mx-auto space-y-8">
+        <div class="bg-white p-6 rounded-xl shadow">
+            <h2 class="text-xl font-bold mb-4">1. Nạp danh sách nhân sự (CSV/Excel)</h2>
+            <input type="file" id="upload" class="mb-4">
+            <button onclick="importData()" class="bg-blue-600 text-white px-6 py-2 rounded font-bold">XỬ LÝ DỮ LIỆU</button>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow border-l-4 border-indigo-500">
+            <h2 class="text-xl font-bold mb-4">2. Đăng ký nghỉ phép</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input list="staffList" id="reg_name" placeholder="Gõ tên nhân viên..." class="p-3 border rounded">
+                <datalist id="staffList"></datalist>
+                <input type="date" id="start_date" class="p-3 border rounded">
+                <input type="date" id="end_date" class="p-3 border rounded">
+                <button onclick="saveLeave()" class="bg-indigo-600 text-white p-3 rounded font-bold">GỬI ĐƠN NGHỈ</button>
+            </div>
         </div>
 
         <div class="bg-white p-6 rounded-xl shadow overflow-x-auto">
             <table class="w-full text-xs text-left" id="dataTable">
-                <thead class="bg-gray-800 text-white uppercase">
-                    <tr>
-                        <th class="p-3">Stt</th>
-                        <th class="p-3">Họ và tên</th>
-                        <th class="p-3">Số sổ BHXH</th>
-                        <th class="p-3">Số CCCD</th>
-                        <th class="p-3">Năm sinh</th>
-                        <th class="p-3">Chức danh</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody" class="divide-y"></tbody>
+                <thead class="bg-gray-200"><tr><th class="p-2">STT</th><th class="p-2">Họ & Tên</th><th class="p-2">CCCD</th><th class="p-2">Chức danh</th></tr></thead>
+                <tbody id="tableBody"></tbody>
             </table>
         </div>
     </div>
 
     <script>
-        function processData() {
-            const file = document.getElementById('upload').files[0];
-            if (!file) return alert("Vui lòng chọn file!");
+        const supabase = supabase.createClient('https://qztflyvraluxtpzbmtgp.supabase.co', 'sb_publishable_MHTau0ZEnlDWdyfwfQZE-A_LAdOTm-B');
 
+        function importData() {
+            const file = document.getElementById('upload').files[0];
             const reader = new FileReader();
             reader.onload = (e) => {
-                const data = new Uint8Array(e.target.result);
-                const wb = XLSX.read(data, {type: 'array'});
-                const ws = wb.Sheets[wb.SheetNames[0]];
+                const wb = XLSX.read(e.target.result, {type: 'array'});
+                const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {header: 1}).slice(1);
                 
-                // Đọc theo mảng thuần để tránh lỗi tiêu đề
-                const jsonData = XLSX.utils.sheet_to_json(ws, {header: 1});
-                
-                // Lấy từ dòng thứ 2 trở đi (bỏ qua dòng tiêu đề)
-                const rows = jsonData.slice(1);
-                
-                const tbody = document.getElementById('tableBody');
-                tbody.innerHTML = rows.filter(r => r.length > 0).map(row => `
-                    <tr>
-                        <td class="p-3">${row[0] || ''}</td>
-                        <td class="p-3 font-bold">${row[1] || ''}</td>
-                        <td class="p-3">${row[3] || ''}</td>
-                        <td class="p-3">${row[4] || ''}</td>
-                        <td class="p-3">${row[11] || ''}</td>
-                        <td class="p-3 text-gray-600">${row[13] || ''}</td>
-                    </tr>
+                // Hiển thị bảng
+                document.getElementById('tableBody').innerHTML = rows.map(r => `
+                    <tr class="border-b"><td>${r[0]||''}</td><td class="font-bold">${r[1]||''}</td><td>${r[4]||''}</td><td>${r[13]||''}</td></tr>
                 `).join('');
-                
-                alert("Đã hiển thị " + rows.length + " bản ghi thành công!");
+
+                // Gợi ý tên nhân viên
+                const list = document.getElementById('staffList');
+                list.innerHTML = rows.map(r => `<option value="${r[1]}">`).join('');
+                alert("Nạp thành công!");
             };
             reader.readAsArrayBuffer(file);
+        }
+
+        async function saveLeave() {
+            const { error } = await supabase.from('leave_requests').insert([{
+                full_name: document.getElementById('reg_name').value,
+                start_date: document.getElementById('start_date').value,
+                end_date: document.getElementById('end_date').value
+            }]);
+            alert(error ? "Lỗi: " + error.message : "Đã gửi đơn!");
         }
     </script>
 </body>

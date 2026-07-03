@@ -2,51 +2,45 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>HR Fast Processor</title>
+    <title>Dán Danh sách Nhân sự</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
-<body class="bg-gray-50 p-4">
-    <div class="max-w-6xl mx-auto">
-        <div class="bg-white p-6 rounded-xl shadow mb-4">
-            <input type="file" id="upload" class="mb-2">
-            <button onclick="processData()" class="bg-red-600 text-white px-6 py-2 rounded font-bold">XỬ LÝ DỮ LIỆU (NHANH)</button>
-        </div>
-        <div class="bg-white p-6 rounded-xl shadow h-[500px] overflow-auto">
-            <table class="w-full text-xs text-left" id="dataTable">
-                <tbody id="tableBody"></tbody>
+<body class="bg-gray-50 p-6">
+    <div class="max-w-xl mx-auto space-y-4">
+        <h2 class="font-bold text-gray-700">1. Dán danh sách tên (mỗi tên 1 dòng)</h2>
+        <textarea id="nameList" rows="5" class="w-full p-3 border rounded shadow-sm" placeholder="Ví dụ:&#10;Nguyễn Văn A&#10;Trần Thị B..."></textarea>
+        
+        <button onclick="generateTable()" class="w-full bg-blue-600 text-white py-2 rounded font-bold hover:bg-blue-700">HIỂN THỊ DANH SÁCH</button>
+
+        <div class="bg-white rounded-lg shadow mt-6">
+            <table class="w-full text-left">
+                <thead class="bg-gray-100">
+                    <tr><th class="p-3">Họ và tên</th><th class="p-3">Chức vụ</th></tr>
+                </thead>
+                <tbody id="resultBody" class="divide-y"></tbody>
             </table>
         </div>
     </div>
 
     <script>
-        function processData() {
-            const file = document.getElementById('upload').files[0];
-            if (!file) return alert("Chọn file đi bạn!");
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const data = new Uint8Array(e.target.result);
-                const wb = XLSX.read(data, {type: 'array'});
-                // Lấy sheet đầu tiên dưới dạng mảng thuần (header: 1)
-                // Cách này bỏ qua mọi rắc rối về tiêu đề cột
-                const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {header: 1});
-                
-                const tbody = document.getElementById('tableBody');
-                // Slice(1) bỏ dòng tiêu đề, render trực tiếp
-                // Chỉ lấy 500 dòng đầu để tránh treo trình duyệt
-                tbody.innerHTML = rows.slice(1, 501).map(row => `
-                    <tr class="border-b hover:bg-gray-100">
-                        <td class="p-2">${row[0] || ''}</td>
-                        <td class="p-2 font-bold">${row[1] || ''}</td>
-                        <td class="p-2">${row[4] || ''}</td>
-                        <td class="p-2">${row[13] || ''}</td>
-                    </tr>
-                `).join('');
-                
-                alert("Đã bung " + Math.min(rows.length, 501) + " dòng!");
-            };
-            reader.readAsArrayBuffer(file);
+        function generateTable() {
+            const rawText = document.getElementById('nameList').value;
+            // Tách theo dòng, bỏ dòng trống
+            const names = rawText.split('\n').filter(n => n.trim() !== "");
+            
+            const tbody = document.getElementById('resultBody');
+            tbody.innerHTML = names.map(name => `
+                <tr>
+                    <td class="p-3 font-medium">${name.trim()}</td>
+                    <td class="p-3">
+                        <select class="p-1 border rounded text-sm w-32 bg-gray-50">
+                            <option>Nhân viên</option>
+                            <option>Tổ trưởng</option>
+                            <option>Lãnh đạo</option>
+                        </select>
+                    </td>
+                </tr>
+            `).join('');
         }
     </script>
 </body>

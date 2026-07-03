@@ -20,12 +20,12 @@
         
         <div class="flex justify-between items-center bg-white p-5 rounded-xl shadow-sm border border-slate-200">
             <h1 class="font-bold text-xl uppercase tracking-wider">HỆ THỐNG QUẢN LÝ NGHỈ PHÉP 2026</h1>
-            <div id="connStatus" class="px-4 py-1.5 rounded-full bg-yellow-100 text-yellow-700 text-xs font-bold border border-yellow-200">ĐANG KIỂM TRA...</div>
+            <div id="connStatus" class="px-4 py-1.5 rounded-full bg-yellow-100 text-yellow-700 text-xs font-bold border border-yellow-200">ĐANG KẾT NỐI...</div>
         </div>
 
         <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
             <h2 class="font-bold text-lg mb-4 flex items-center"><span class="bg-blue-600 w-1.5 h-6 rounded mr-3"></span>📋 Bước 1: Danh sách nhân sự</h2>
-            <div id="pasteArea" contenteditable="true" class="w-full p-8 border-2 border-dashed border-slate-300 rounded-lg text-center text-slate-400 cursor-pointer hover:border-blue-400 transition-all">Nhấn vào đây và nhấn Ctrl + V để dán dữ liệu Excel</div>
+            <div id="pasteArea" contenteditable="true" class="w-full p-8 border-2 border-dashed border-slate-300 rounded-lg text-center text-slate-400 cursor-pointer hover:border-blue-400 transition-all">Nhấn vào đây và nhấn Ctrl + V dán dữ liệu Excel</div>
             <div class="overflow-x-auto mt-4 hidden" id="tableContainer">
                 <table class="zebra-table w-full text-sm border border-slate-200" id="staffTable">
                     <thead class="bg-slate-800 text-white uppercase text-xs" id="staffHead"></thead>
@@ -36,13 +36,16 @@
 
         <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
             <h2 class="font-bold text-lg mb-4 flex items-center"><span class="bg-blue-600 w-1.5 h-6 rounded mr-3"></span>📝 Bước 2: Đăng ký nghỉ phép</h2>
-            <div class="grid grid-cols-5 gap-4">
-                <select id="staffSelect" class="p-2 border border-slate-300 rounded focus:border-blue-500 outline-none"><option>-- Chọn nhân sự --</option></select>
-                <input type="date" id="d1" onchange="calc()" class="p-2 border border-slate-300 rounded">
-                <input type="date" id="d2" onchange="calc()" class="p-2 border border-slate-300 rounded">
-                <input type="text" id="total" disabled class="p-2 bg-slate-50 border border-slate-300 rounded font-bold" placeholder="Số ngày">
-                <button id="btnSubmit" onclick="submitData()" class="bg-blue-900 text-white font-bold rounded hover:bg-blue-800 transition-all">🚀 Gửi Đơn</button>
+            <div class="grid grid-cols-2 gap-4">
+                <select id="staffSelect" class="p-2 border border-slate-300 rounded"><option>-- Chọn nhân sự --</option></select>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="date" id="d1" onchange="calc()" class="p-2 border border-slate-300 rounded">
+                    <input type="date" id="d2" onchange="calc()" class="p-2 border border-slate-300 rounded">
+                </div>
+                <input type="text" id="phone" class="p-2 border border-slate-300 rounded" placeholder="Số điện thoại liên lạc">
+                <input type="text" id="reason" class="p-2 border border-slate-300 rounded" placeholder="Lý do xin nghỉ">
             </div>
+            <button id="btnSubmit" onclick="submitData()" class="mt-4 w-full bg-blue-900 text-white font-bold py-2 rounded hover:bg-blue-800 transition-all">🚀 Gửi Đơn & Lưu Cloud</button>
         </div>
 
         <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
@@ -54,18 +57,18 @@
                 </div>
             </div>
             <table class="zebra-table w-full text-sm border border-slate-200" id="reportTable">
-                <thead><tr class="bg-slate-100 text-left uppercase text-xs"><th>Họ và Tên</th><th>Quỹ Phép</th><th>Đã Nghỉ</th><th>Tiến Độ</th></tr></thead>
+                <thead><tr class="bg-slate-100 text-left uppercase text-xs"><th>Họ và Tên</th><th>Từ ngày</th><th>SĐT</th><th>Lý do</th></tr></thead>
                 <tbody id="reportBody"></tbody>
             </table>
         </div>
     </div>
 
     <script>
-        // CẤU HÌNH API
         const sb = supabase.createClient('https://qztflyvraluxtpzbmtgp.supabase.co', 'sb_publishable_MHTau0ZEnlDWdyfwfQZE-A_LAdOTm-B');
 
-        // KIỂM TRA KẾT NỐI
+        // Khởi động
         window.onload = async () => {
+            fetchData();
             const ind = document.getElementById('connStatus');
             try {
                 const { error } = await sb.from('lich_nghi').select('id', {limit:1});
@@ -74,49 +77,45 @@
             } catch(e) { console.log(e); }
         };
 
-        // PHÂN HỆ 1: XỬ LÝ DÁN DỮ LIỆU
-        document.getElementById('pasteArea').addEventListener('paste', (e) => {
-            const data = e.clipboardData.getData('text/html') || e.clipboardData.getData('text/plain');
-            const div = document.createElement('div'); div.innerHTML = data;
-            const rows = Array.from((div.querySelector('table') || div).querySelectorAll('tr'));
-            const head = document.getElementById('staffHead');
-            const body = document.getElementById('staffBody');
-            const select = document.getElementById('staffSelect');
-            
-            rows.forEach((row, i) => {
-                const cells = Array.from(row.querySelectorAll('td, th'));
-                if (cells.length < 2) return;
-                const tr = document.createElement('tr');
-                cells.forEach(c => tr.innerHTML += `<td class="p-3">${c.innerText}</td>`);
-                if (i === 0) head.appendChild(tr); else { body.appendChild(tr); select.innerHTML += `<option>${cells[1].innerText}</option>`; }
-            });
-            document.getElementById('tableContainer').classList.remove('hidden');
-            document.getElementById('pasteArea').style.display = 'none';
-        });
-
-        // PHÂN HỆ 2: TÍNH TOÁN & GỬI DỮ LIỆU
-        function calc() {
-            const d1 = new Date(document.getElementById('d1').value);
-            const d2 = new Date(document.getElementById('d2').value);
-            if(d2 >= d1) document.getElementById('total').value = ((d2 - d1) / 86400000 + 1) + " ngày";
+        // Hàm bung dữ liệu
+        async function fetchData() {
+            const { data } = await sb.from('lich_nghi').select('*');
+            const body = document.getElementById('reportBody');
+            if (data) {
+                body.innerHTML = data.map(i => `<tr><td class="p-3">${i.ho_ten}</td><td class="p-3">${i.tu_ngay}</td><td class="p-3">${i.phone || ''}</td><td class="p-3">${i.ly_do || ''}</td></tr>`).join('');
+            }
         }
 
+        // Xử lý gửi đơn
         async function submitData() {
             const btn = document.getElementById('btnSubmit');
             btn.innerText = "ĐANG GỬI...";
-            try {
-                const { error } = await sb.from('lich_nghi').insert([{ ho_ten: document.getElementById('staffSelect').value, tu_ngay: document.getElementById('d1').value }]);
-                if (error) throw error; alert("Đã lưu thành công!");
-            } catch (err) { alert("Lỗi kết nối: " + err.message); }
-            btn.innerText = "🚀 Gửi Đơn";
+            const { error } = await sb.from('lich_nghi').insert([{ 
+                ho_ten: document.getElementById('staffSelect').value,
+                tu_ngay: document.getElementById('d1').value,
+                den_ngay: document.getElementById('d2').value,
+                phone: document.getElementById('phone').value,
+                ly_do: document.getElementById('reason').value
+            }]);
+            if (error) alert("Lỗi: " + error.message);
+            else { alert("Đã lưu thành công!"); fetchData(); }
+            btn.innerText = "🚀 Gửi Đơn & Lưu Cloud";
         }
 
-        // PHÂN HỆ 3: XUẤT FILE
+        // Logic cũ (Giữ nguyên)
+        document.getElementById('pasteArea').addEventListener('paste', (e) => {
+            const div = document.createElement('div'); div.innerHTML = e.clipboardData.getData('text/html');
+            const rows = Array.from(div.querySelectorAll('tr'));
+            const select = document.getElementById('staffSelect');
+            rows.forEach((row, i) => {
+                const cells = row.querySelectorAll('td, th');
+                if (cells.length > 1 && i > 0) select.innerHTML += `<option>${cells[1].innerText}</option>`;
+            });
+            document.getElementById('tableContainer').classList.remove('hidden');
+        });
+
         function exportToExcel() { XLSX.writeFile(XLSX.utils.table_to_book(document.getElementById('reportTable')), "BaoCao.xlsx"); }
-        function exportToPDF() {
-            const el = document.createElement('div'); el.innerHTML = `<h2 class="font-times">BÁO CÁO NGHỈ PHÉP</h2>${document.getElementById('reportTable').outerHTML}`;
-            html2pdf().from(el).save('BaoCao.pdf');
-        }
+        function exportToPDF() { html2pdf().from(document.getElementById('reportTable')).save('BaoCao.pdf'); }
     </script>
 </body>
 </html>

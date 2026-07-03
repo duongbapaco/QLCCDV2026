@@ -2,46 +2,64 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Dán Danh sách Nhân sự</title>
+    <title>HR Dashboard - Clean View</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 p-6">
-    <div class="max-w-xl mx-auto space-y-4">
-        <h2 class="font-bold text-gray-700">1. Dán danh sách tên (mỗi tên 1 dòng)</h2>
-        <textarea id="nameList" rows="5" class="w-full p-3 border rounded shadow-sm" placeholder="Ví dụ:&#10;Nguyễn Văn A&#10;Trần Thị B..."></textarea>
-        
-        <button onclick="generateTable()" class="w-full bg-blue-600 text-white py-2 rounded font-bold hover:bg-blue-700">HIỂN THỊ DANH SÁCH</button>
+<body class="bg-white p-6">
+    <div class="max-w-7xl mx-auto space-y-6">
+        <div id="pasteArea" contenteditable="true" 
+             class="w-full p-4 border-2 border-dashed border-slate-300 rounded-xl bg-slate-50 text-center cursor-pointer hover:border-blue-500 transition outline-none text-slate-500">
+             Click vào đây và nhấn Ctrl + V để dán toàn bộ dữ liệu Excel
+        </div>
 
-        <div class="bg-white rounded-lg shadow mt-6">
-            <table class="w-full text-left">
-                <thead class="bg-gray-100">
-                    <tr><th class="p-3">Họ và tên</th><th class="p-3">Chức vụ</th></tr>
-                </thead>
-                <tbody id="resultBody" class="divide-y"></tbody>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left border-collapse" id="resultTable">
+                <thead class="bg-slate-100 text-slate-700 uppercase text-xs tracking-wider" id="tableHead"></thead>
+                <tbody id="resultBody" class="divide-y divide-slate-200"></tbody>
             </table>
         </div>
     </div>
 
     <script>
-        function generateTable() {
-            const rawText = document.getElementById('nameList').value;
-            // Tách theo dòng, bỏ dòng trống
-            const names = rawText.split('\n').filter(n => n.trim() !== "");
+        const pasteArea = document.getElementById('pasteArea');
+        const tableHead = document.getElementById('tableHead');
+        const resultBody = document.getElementById('resultBody');
+
+        pasteArea.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const clipboardData = e.clipboardData.getData('text/html') || e.clipboardData.getData('text/plain');
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = clipboardData;
             
-            const tbody = document.getElementById('resultBody');
-            tbody.innerHTML = names.map(name => `
-                <tr>
-                    <td class="p-3 font-medium">${name.trim()}</td>
-                    <td class="p-3">
-                        <select class="p-1 border rounded text-sm w-32 bg-gray-50">
-                            <option>Nhân viên</option>
-                            <option>Tổ trưởng</option>
-                            <option>Lãnh đạo</option>
-                        </select>
-                    </td>
-                </tr>
-            `).join('');
-        }
+            const table = tempDiv.querySelector('table') || tempDiv;
+            const rows = Array.from(table.querySelectorAll('tr'));
+            
+            tableHead.innerHTML = '';
+            resultBody.innerHTML = '';
+
+            rows.forEach((row, index) => {
+                const cells = Array.from(row.querySelectorAll('td, th'));
+                if (cells.length === 0) return;
+
+                if (index === 0) {
+                    // Header: hiển thị tiêu đề rõ ràng
+                    const tr = document.createElement('tr');
+                    cells.forEach(cell => {
+                        tr.innerHTML += `<th class="p-4 border-b">${cell.innerText}</th>`;
+                    });
+                    tableHead.appendChild(tr);
+                } else {
+                    // Body: dữ liệu phẳng, hiển thị trực quan
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-50 transition";
+                    cells.forEach(cell => {
+                        tr.innerHTML += `<td class="p-4 border-b text-slate-700">${cell.innerText}</td>`;
+                    });
+                    resultBody.appendChild(tr);
+                }
+            });
+            pasteArea.style.display = 'none'; // Ẩn vùng dán sau khi có dữ liệu
+        });
     </script>
 </body>
 </html>

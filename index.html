@@ -2,95 +2,119 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Hệ Thống Quản Lý Nhân Sự & Nghỉ Phép</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Quản Lý Nghỉ Phép 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { font-family: 'Times New Roman', serif; background-color: #f1f5f9; }
-        .table-zebra tbody tr:nth-child(even) { background-color: #f8fafc; }
-        .table-hover tbody tr:hover { background-color: #e2e8f0; transition: 0.2s; }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid #cbd5e1; padding: 12px; text-align: left; }
+        .font-times { font-family: 'Times New Roman', Times, serif; }
+        .zebra-table tbody tr:nth-child(even) { background-color: #f8fafc; }
+        .zebra-table tbody tr:hover { background-color: #eff6ff; }
+        #pasteArea:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
     </style>
 </head>
-<body class="p-6">
-    <div class="max-w-7xl mx-auto space-y-8">
-        <div class="flex justify-between items-center bg-white p-4 rounded-lg shadow-sm border">
-            <h1 class="font-bold text-xl text-slate-800">HỆ THỐNG QUẢN LÝ NGHỈ PHÉP 2026</h1>
-            <div id="connStatus" class="px-3 py-1 rounded-full bg-red-100 text-red-600 text-xs font-bold">KẾT NỐI ONLINE</div>
+<body class="bg-slate-100 p-6 font-times text-slate-800">
+    <div class="max-w-6xl mx-auto space-y-8">
+        
+        <div class="flex justify-between items-center bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+            <h1 class="font-bold text-xl uppercase tracking-wider">HỆ THỐNG QUẢN LÝ NGHỈ PHÉP 2026</h1>
+            <div id="connStatus" class="px-4 py-1.5 rounded-full bg-yellow-100 text-yellow-700 text-xs font-bold border border-yellow-200">ĐANG KIỂM TRA...</div>
         </div>
 
-        <div class="bg-white p-6 rounded-lg shadow-sm border">
-            <h2 class="font-bold text-slate-800 mb-4">📋 Bước 1: Danh sách nhân sự</h2>
-            <div id="pasteArea" contenteditable="true" class="w-full p-6 border-2 border-dashed border-slate-300 rounded-lg text-center text-slate-400 mb-4">Dán dữ liệu Excel (Ctrl+V) tại đây</div>
-            <div class="overflow-x-auto"><table class="table-zebra table-hover text-sm" id="staffTable"><thead class="bg-slate-100 font-bold uppercase text-xs" id="staffHead"></thead><tbody id="staffBody"></tbody></table></div>
-        </div>
-
-        <div class="bg-white p-6 rounded-lg shadow-sm border">
-            <h2 class="font-bold text-slate-800 mb-6">📝 Bước 2: Form Đăng Ký</h2>
-            <div class="grid grid-cols-5 gap-4 mb-4">
-                <div><label class="block text-xs font-bold">CÁN BỘ</label><select id="staffSelect" class="w-full p-2 border rounded text-sm"></select></div>
-                <div><label class="block text-xs font-bold">TỪ NGÀY</label><input type="date" id="d1" onchange="calculateDays()" class="w-full p-2 border rounded text-sm"></div>
-                <div><label class="block text-xs font-bold">ĐẾN NGÀY</label><input type="date" id="d2" onchange="calculateDays()" class="w-full p-2 border rounded text-sm"></div>
-                <div><label class="block text-xs font-bold">SỐ NGÀY</label><input type="text" id="total" disabled class="w-full p-2 border rounded bg-yellow-50 text-sm"></div>
-                <div><label class="block text-xs font-bold">SĐT</label><input type="text" id="phone" class="w-full p-2 border rounded text-sm"></div>
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+            <h2 class="font-bold text-lg mb-4 flex items-center"><span class="bg-blue-600 w-1.5 h-6 rounded mr-3"></span>📋 Bước 1: Danh sách nhân sự</h2>
+            <div id="pasteArea" contenteditable="true" class="w-full p-8 border-2 border-dashed border-slate-300 rounded-lg text-center text-slate-400 cursor-pointer hover:border-blue-400 transition-all">Nhấn vào đây và nhấn Ctrl + V để dán dữ liệu Excel</div>
+            <div class="overflow-x-auto mt-4 hidden" id="tableContainer">
+                <table class="zebra-table w-full text-sm border border-slate-200" id="staffTable">
+                    <thead class="bg-slate-800 text-white uppercase text-xs" id="staffHead"></thead>
+                    <tbody id="staffBody" class="divide-y divide-slate-100"></tbody>
+                </table>
             </div>
-            <button onclick="submitData()" class="bg-blue-900 text-white px-6 py-2 rounded text-sm font-bold">🚀 Gửi Đơn & Lưu Cloud</button>
         </div>
 
-        <div class="bg-white p-6 rounded-lg shadow-sm border">
-            <div class="flex justify-between mb-4"><h2 class="font-bold">🔵 Bước 3: Thống Kê & Báo Cáo</h2>
-                <div class="flex gap-2"><button onclick="exportToExcel()" class="bg-green-700 text-white px-4 py-1 rounded text-xs">XUẤT EXCEL</button><button onclick="exportToPDF()" class="bg-red-700 text-white px-4 py-1 rounded text-xs">XUẤT PDF</button></div>
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+            <h2 class="font-bold text-lg mb-4 flex items-center"><span class="bg-blue-600 w-1.5 h-6 rounded mr-3"></span>📝 Bước 2: Đăng ký nghỉ phép</h2>
+            <div class="grid grid-cols-5 gap-4">
+                <select id="staffSelect" class="p-2 border border-slate-300 rounded focus:border-blue-500 outline-none"><option>-- Chọn nhân sự --</option></select>
+                <input type="date" id="d1" onchange="calc()" class="p-2 border border-slate-300 rounded">
+                <input type="date" id="d2" onchange="calc()" class="p-2 border border-slate-300 rounded">
+                <input type="text" id="total" disabled class="p-2 bg-slate-50 border border-slate-300 rounded font-bold" placeholder="Số ngày">
+                <button id="btnSubmit" onclick="submitData()" class="bg-blue-900 text-white font-bold rounded hover:bg-blue-800 transition-all">🚀 Gửi Đơn</button>
             </div>
-            <table class="table-zebra" id="reportTable"><thead><tr><th>Họ và Tên</th><th>Quỹ Phép</th><th>Đã Nghỉ</th><th>Tiến Độ</th></tr></thead><tbody id="reportBody"></tbody></table>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+            <div class="flex justify-between mb-4">
+                <h2 class="font-bold text-lg flex items-center"><span class="bg-blue-600 w-1.5 h-6 rounded mr-3"></span>🔵 Bước 3: Thống kê</h2>
+                <div class="space-x-2">
+                    <button onclick="exportToExcel()" class="bg-green-700 text-white px-4 py-1.5 rounded text-sm font-bold">XUẤT EXCEL</button>
+                    <button onclick="exportToPDF()" class="bg-red-700 text-white px-4 py-1.5 rounded text-sm font-bold">XUẤT PDF</button>
+                </div>
+            </div>
+            <table class="zebra-table w-full text-sm border border-slate-200" id="reportTable">
+                <thead><tr class="bg-slate-100 text-left uppercase text-xs"><th>Họ và Tên</th><th>Quỹ Phép</th><th>Đã Nghỉ</th><th>Tiến Độ</th></tr></thead>
+                <tbody id="reportBody"></tbody>
+            </table>
         </div>
     </div>
 
     <script>
-        // Khởi tạo Supabase
-        window.supabaseInstance = supabase.createClient('https://qztflyvraluxtpzbmtgp.supabase.co', 'sb_publishable_MHTau0ZEnlDWdyfwfQZE-A_LAdOTm-B');
+        // CẤU HÌNH API
+        const sb = supabase.createClient('https://qztflyvraluxtpzbmtgp.supabase.co', 'sb_publishable_MHTau0ZEnlDWdyfwfQZE-A_LAdOTm-B');
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Kiểm tra kết nối
-            window.supabaseInstance.from('lich_nghi').select('id', {limit:1}).then(({error}) => {
-                const ind = document.getElementById('connStatus');
-                if(!error) { ind.innerText = "ĐÃ KẾT NỐI ONLINE"; ind.className = "px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold"; }
-            });
-        });
+        // KIỂM TRA KẾT NỐI
+        window.onload = async () => {
+            const ind = document.getElementById('connStatus');
+            try {
+                const { error } = await sb.from('lich_nghi').select('id', {limit:1});
+                ind.innerText = error ? "LỖI KẾT NỐI" : "ĐÃ KẾT NỐI ONLINE";
+                ind.className = error ? "px-4 py-1.5 rounded-full bg-red-100 text-red-600 text-xs font-bold border border-red-200" : "px-4 py-1.5 rounded-full bg-green-100 text-green-700 text-xs font-bold border border-green-200";
+            } catch(e) { console.log(e); }
+        };
 
-        // Xử lý dữ liệu
+        // PHÂN HỆ 1: XỬ LÝ DÁN DỮ LIỆU
         document.getElementById('pasteArea').addEventListener('paste', (e) => {
             const data = e.clipboardData.getData('text/html') || e.clipboardData.getData('text/plain');
             const div = document.createElement('div'); div.innerHTML = data;
             const rows = Array.from((div.querySelector('table') || div).querySelectorAll('tr'));
-            const head = document.getElementById('staffHead'); const body = document.getElementById('staffBody');
+            const head = document.getElementById('staffHead');
+            const body = document.getElementById('staffBody');
             const select = document.getElementById('staffSelect');
+            
             rows.forEach((row, i) => {
                 const cells = Array.from(row.querySelectorAll('td, th'));
                 if (cells.length < 2) return;
                 const tr = document.createElement('tr');
-                cells.forEach(c => tr.innerHTML += `<td>${c.innerText}</td>`);
+                cells.forEach(c => tr.innerHTML += `<td class="p-3">${c.innerText}</td>`);
                 if (i === 0) head.appendChild(tr); else { body.appendChild(tr); select.innerHTML += `<option>${cells[1].innerText}</option>`; }
             });
+            document.getElementById('tableContainer').classList.remove('hidden');
             document.getElementById('pasteArea').style.display = 'none';
         });
 
-        function calculateDays() {
+        // PHÂN HỆ 2: TÍNH TOÁN & GỬI DỮ LIỆU
+        function calc() {
             const d1 = new Date(document.getElementById('d1').value);
             const d2 = new Date(document.getElementById('d2').value);
             if(d2 >= d1) document.getElementById('total').value = ((d2 - d1) / 86400000 + 1) + " ngày";
         }
 
         async function submitData() {
-            const { error } = await window.supabaseInstance.from('lich_nghi').insert([{ ho_ten: document.getElementById('staffSelect').value }]);
-            if(!error) alert("Dữ liệu đã được lưu lên Cloud!");
+            const btn = document.getElementById('btnSubmit');
+            btn.innerText = "ĐANG GỬI...";
+            try {
+                const { error } = await sb.from('lich_nghi').insert([{ ho_ten: document.getElementById('staffSelect').value, tu_ngay: document.getElementById('d1').value }]);
+                if (error) throw error; alert("Đã lưu thành công!");
+            } catch (err) { alert("Lỗi kết nối: " + err.message); }
+            btn.innerText = "🚀 Gửi Đơn";
         }
 
+        // PHÂN HỆ 3: XUẤT FILE
         function exportToExcel() { XLSX.writeFile(XLSX.utils.table_to_book(document.getElementById('reportTable')), "BaoCao.xlsx"); }
         function exportToPDF() {
-            const el = document.createElement('div'); el.innerHTML = `<div style="font-family:'Times New Roman'; padding:40px;"><h2>BÁO CÁO NGHỈ PHÉP</h2>${document.getElementById('reportTable').outerHTML}</div>`;
+            const el = document.createElement('div'); el.innerHTML = `<h2 class="font-times">BÁO CÁO NGHỈ PHÉP</h2>${document.getElementById('reportTable').outerHTML}`;
             html2pdf().from(el).save('BaoCao.pdf');
         }
     </script>

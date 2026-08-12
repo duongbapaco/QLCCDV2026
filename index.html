@@ -403,7 +403,7 @@
     <!-- TAB 3: THANH TOÁN VĂN PHÒNG -->
     <div id="officePaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG (Tự động đẩy vào Google Drive cá nhân theo Năm/Tháng)</div>
+            <div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG (Tự động tạo thư mục và đẩy file lên Google Drive)</div>
         </div>
         <div class="form-card" id="formOfficeContainer" style="grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));">
             <div class="form-group">
@@ -466,7 +466,7 @@
                 <input type="text" id="previewOfficeTotal" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;" value="0 đ">
             </div>
             <div class="form-group" style="grid-column: span 2;">
-                <label><i class="fa-brands fa-google-drive" style="color: #16a34a;"></i> Đính Kèm Chứng Từ (Tự động đẩy vào thư mục Drive)</label>
+                <label><i class="fa-brands fa-google-drive" style="color: #16a34a;"></i> Đính Kèm Chứng Từ (Tự động đẩy vào Drive cá nhân)</label>
                 <input type="file" id="inputOfficeFiles" multiple style="background: white; padding: 4px;" onchange="kiemTraVaChuanBiUpload()">
                 
                 <!-- Thanh theo dõi tiến độ đẩy file lên Google Drive -->
@@ -1445,11 +1445,11 @@
         let fileInput = document.getElementById('inputOfficeFiles');
         if (fileInput.files.length > 0) {
             document.getElementById('uploadProgressContainer').style.display = 'block';
-            document.getElementById('uploadStatusText').innerText = "Đã chọn file. Sẵn sàng đẩy lên Google Drive cá nhân...";
+            document.getElementById('uploadStatusText').innerText = "Đã chọn file. Sẵn sàng đẩy lên Google Drive...";
         }
     }
 
-    function themHoSoVPPPro() {
+    async function themHoSoVPPPro() {
         let id = document.getElementById('autoOfficeId').value;
         let content = document.getElementById('inputOfficeContent').value.trim();
         let beneficiary = document.getElementById('inputOfficeBeneficiary').value.trim();
@@ -1466,54 +1466,65 @@
             return;
         }
 
-        let driveFolderPath = document.getElementById('cfgDrivePath').value;
-        let fileInput = document.getElementById('inputOfficeFiles');
-        
-        if (fileInput.files.length > 0) {
-            let progressBar = document.getElementById('uploadProgressBar');
-            let statusText = document.getElementById('uploadStatusText');
-            let progressContainer = document.getElementById('uploadProgressContainer');
-            
-            progressContainer.style.display = 'block';
-            let progress = 0;
-            
-            let uploadInterval = setInterval(() => {
-                progress += 25;
-                progressBar.style.width = progress + '%';
-                progressBar.innerText = progress + '%';
-                
-                if (progress === 50) {
-                    statusText.innerText = `Đang đồng bộ cấu trúc thư mục Google Drive: [${driveFolderPath}]...`;
-                } else if (progress === 75) {
-                    statusText.innerText = "Đang đẩy tệp tin chứng từ vào mục tương ứng...";
-                }
-                
-                if (progress >= 100) {
-                    clearInterval(uploadInterval);
-                    statusText.innerHTML = `<span style="color: #16a34a; font-weight: bold;"><i class="fa-solid fa-circle-check"></i> Đẩy file lên Google Drive thành công!</span>`;
-                    
-                    setTimeout(() => {
-                        hoanTatThemHoSoVPP(id, content, beneficiary, stk, bank, date, qty, unit, price, total, fileInput, driveFolderPath);
-                    }, 500);
-                }
-            }, 200);
-        } else {
-            hoanTatThemHoSoVPP(id, content, beneficiary, stk, bank, date, qty, unit, price, total, fileInput, driveFolderPath);
-        }
-    }
+        let thangNamVal = document.getElementById('cfgThangNam').value; // VD: "2026 / Tháng 08"
+        let parts = thangNamVal.split('/');
+        let year = parts[0] ? parts[0].trim() : '2026';
+        let month = parts[1] ? parts[1].trim().replace(/\s+/g, '_') : 'Thang_08';
 
-    function hoanTatThemHoSoVPP(id, content, beneficiary, stk, bank, date, qty, unit, price, total, fileInput, driveFolderPath) {
+        let fileInput = document.getElementById('inputOfficeFiles');
+        let progressContainer = document.getElementById('uploadProgressContainer');
+        let progressBar = document.getElementById('uploadProgressBar');
+        let statusText = document.getElementById('uploadStatusText');
+
         let filesList = [];
-        for (let i = 0; i < fileInput.files.length; i++) {
-            let f = fileInput.files[i];
-            filesList.push({ 
-                name: f.name, 
-                url: `https://drive.google.com/drive/folders/${driveFolderPath}${f.name}` 
-            });
+        // URL Google Apps Script Web App đã được tích hợp sẵn
+        let scriptURL = "https://script.google.com/macros/s/AKfycbwMaUGfEWffLAgxpjGbDPClyGfNqjJqyObmWFJc-VqJXRZLZ9bThiUv95SFeJ1bWeHpPg/exec";
+
+        if (fileInput.files.length > 0) {
+            progressContainer.style.display = 'block';
+            progressBar.style.width = '30%';
+            progressBar.innerText = '30%';
+            statusText.innerText = "Đang kết nối Google Drive cá nhân để tạo thư mục tự động...";
+
+            for (let i = 0; i < fileInput.files.length; i++) {
+                let f = fileInput.files[i];
+                let base64Data = await toBase64(f);
+                
+                progressBar.style.width = '70%';
+                progressBar.innerText = '70%';
+                statusText.innerText = `Đang đẩy file [${f.name}] vào mục ${year}/${month}...`;
+
+                try {
+                    let response = await fetch(scriptURL, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            year: year,
+                            month: month,
+                            fileName: f.name,
+                            fileType: f.type,
+                            fileBase64: base64Data.split(',')[1]
+                        })
+                    });
+                    let result = await response.json();
+                    if (result.status === 'success') {
+                        filesList.push({ name: f.name, url: result.fileUrl });
+                    } else {
+                        alert("Lỗi khi đẩy file lên Drive: " + result.message);
+                    }
+                } catch(err) {
+                    alert("Lỗi kết nối mạng khi tải file lên Drive!");
+                }
+            }
+            
+            progressBar.style.width = '100%';
+            progressBar.innerText = '100%';
+            statusText.innerHTML = `<span style="color: #16a34a; font-weight: bold;"><i class="fa-solid fa-circle-check"></i> Đẩy file lên Google Drive thành công!</span>`;
+            await new Promise(r => setTimeout(r, 600));
         }
 
         dsThanhToanVanPhongPro.push({ id, content, beneficiary, stk, bank, date, qty, unit, price, total, files: filesList });
         
+        // Reset form
         document.getElementById('inputOfficeContent').value = '';
         document.getElementById('inputOfficeBeneficiary').value = '';
         document.getElementById('inputOfficeStk').value = '';
@@ -1521,11 +1532,20 @@
         document.getElementById('inputOfficePrice').value = '';
         document.getElementById('inputOfficeFiles').value = '';
         document.getElementById('previewOfficeTotal').value = '0 đ';
-        document.getElementById('uploadProgressContainer').style.display = 'none';
-        document.getElementById('uploadStatusText').innerText = '';
+        progressContainer.style.display = 'none';
+        statusText.innerText = '';
 
         capNhatAutoID();
         capNhat();
+    }
+
+    function toBase64(file) {
+        return new Promise((resolve, reject) => {
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
     }
 
     function suaHoSoVPP(idx) {

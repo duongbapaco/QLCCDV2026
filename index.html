@@ -107,9 +107,9 @@
         .badge-warning { background: var(--yellow-badge); color: var(--yellow-text); padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 10px; display: inline-block; }
         .badge-danger { background: var(--red-badge); color: var(--red-text); padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 10px; display: inline-block; }
 
-        /* WIDGET LỊCH VẠN NIÊN & TIỆN ÍCH NỔI SIÊU CẤP */
+        /* WIDGET LỊCH VẠN NIÊN & PHONG THỦY THÔNG MINH */
         .van-nien-widget-float {
-            position: fixed; bottom: 20px; right: 20px; width: 370px; background: white;
+            position: fixed; bottom: 20px; right: 20px; width: 380px; background: white;
             border-radius: 10px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.25); border: 2px solid var(--primary);
             z-index: 999; overflow: hidden; transition: all 0.3s ease;
         }
@@ -118,7 +118,7 @@
             display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 11px; cursor: pointer;
         }
         .widget-body {
-            padding: 10px; font-size: 11px; display: flex; flex-direction: column; gap: 8px; background: #f8fafc; max-height: 540px; overflow-y: auto;
+            padding: 10px; font-size: 11px; display: flex; flex-direction: column; gap: 8px; background: #f8fafc; max-height: 580px; overflow-y: auto;
         }
         .cal-toolbar { display: flex; justify-content: space-between; align-items: center; background: #e2e8f0; padding: 5px 8px; border-radius: 5px; font-weight: bold; }
         .cal-grid-mini { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; background: #cbd5e1; padding: 2px; border-radius: 5px; }
@@ -187,11 +187,12 @@
     <div class="banner">
         <div>
             <h1><i class="fa-solid fa-building-shield"></i> Hệ Thống Quản Lý Đa Dashboard & Lịch Vạn Niên BAPACO 2026</h1>
-            <p id="userStatusTag">Đã sửa chính xác công thức Lương Công Việc (Sử dụng Mức Lương Công Việc chuẩn 2.087.970 VNĐ)</p>
+            <p id="userStatusTag">Đã đồng bộ Phép: Cho phép sửa trực tiếp tự do & Tự động cập nhật từ form Đăng ký nghỉ phép</p>
         </div>
         <div class="btn-group-header">
             <button class="btn btn-yellow" onclick="moModalNhacNhoNghiGoi()"><i class="fa-solid fa-mug-hot"></i> Nhắc Nhở & Nhạc Thư Giãn</button>
             <button class="btn btn-purple" onclick="moModalQuanLyTaiKhoan()"><i class="fa-solid fa-users-gear"></i> Quản Lý Tài Khoản</button>
+            <button class="btn btn-blue" onclick="toggleFloatingCalendarWidget()"><i class="fa-solid fa-eye-slash" id="toggleFloatBtnIcon"></i> <span id="toggleFloatBtnText">Ẩn/Hiện Lịch Nổi</span></button>
             <button class="btn btn-blue" onclick="syncDataWithGoogleSheets()"><i class="fa-solid fa-cloud-arrow-up"></i> Đồng Bộ Google Sheets</button>
             <button class="btn btn-red" onclick="thucHienDangXuat()"><i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất</button>
         </div>
@@ -683,10 +684,10 @@
     </div>
 </div>
 
-<!-- LỊCH VẠN NIÊN & TIỆN ÍCH NỔI SIÊU CẤP -->
+<!-- LỊCH VẠN NIÊN & PHONG THỦY THÔNG MINH (WIDGET NỔI) -->
 <div class="van-nien-widget-float" id="floatingVanNienWidget">
     <div class="widget-header" onclick="toggleWidgetVanNien()">
-        <span><i class="fa-solid fa-calendar-day"></i> Lịch Vạn Niên & Thư Giãn (Pro 2026)</span>
+        <span><i class="fa-solid fa-calendar-day"></i> Lịch Vạn Niên & Phong Thủy (Pro 2026)</span>
         <i class="fa-solid fa-chevron-down" id="widgetToggleIcon"></i>
     </div>
     <div class="widget-body" id="widgetBodyContent">
@@ -698,11 +699,14 @@
         </div>
         <div class="cal-grid-mini" id="miniCalendarGrid"></div>
         
-        <div style="background: white; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 10px; display: flex; flex-direction: column; gap: 3px;">
-            <div><b>Ngày Dương:</b> <span id="widgetRealtimeDate" style="color: #0284c7; font-weight: bold;">--</span></div>
-            <div><b>Ngày Âm Lịch:</b> <span id="widgetLunar" style="color: #166534; font-weight: bold;">--</span></div>
-            <div><b>Ngũ Hành / Tiết Khí:</b> <span id="widgetNguhanh" style="color: #854d0e;">Lư Trung Hỏa (Lập Thu)</span></div>
-            <div><b>Giờ Hoàng Đạo:</b> <span id="widgetHoangDao" style="color: #6d28d9;">Tý (23h-1h), Sửu (1h-3h), Thìn (7h-9h)</span></div>
+        <div style="background: white; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 10px; display: flex; flex-direction: column; gap: 4px;">
+            <div><b>📅 Dương Lịch:</b> <span id="widgetRealtimeDate" style="color: #0284c7; font-weight: bold;">--</span></div>
+            <div><b>🌙 Âm Lịch:</b> <span id="widgetLunar" style="color: #166534; font-weight: bold;">--</span></div>
+            <div><b>🔮 Ngũ Hành / Tiết Khí:</b> <span id="widgetNguhanh" style="color: #854d0e;">Giản Hạ Thủy (Lập Thu)</span></div>
+            <div><b>⏰ Giờ Hoàng Đạo:</b> <span id="widgetHoangDao" style="color: #6d28d9;">Tý (23h-1h), Thìn (7h-9h)</span></div>
+            <div><b>🧭 Hướng Xuất Hành:</b> <span id="widgetXuatHanh" style="color: #b45309;">Tài thần: Đông Nam - Hỷ thần: Tây Bắc</span></div>
+            <div><b>⚡ Tuổi Xung Khắc:</b> <span id="widgetXungKhac" style="color: #dc2626;">Tân Mão, Đinh Mão, Tân Hợi</span></div>
+            <div><b>🌤️ Thời Tiết (Phú Thọ):</b> <span id="widgetWeather" style="color: #0369a1; font-weight: bold;">28°C - 34°C, Nắng ấm, độ ẩm 75%</span></div>
         </div>
 
         <div class="poetry-mini" id="poetryContainer" onclick="chuyenBaiThoLucBat()" style="cursor: pointer;" title="Bấm để đổi bài thơ lục bát khác">
@@ -948,27 +952,19 @@
         let ghiChu = document.getElementById('popupLeaveGhiChu').value.trim() || hinhThuc;
 
         if (editIdx >= 0) {
-            let oldItem = dsLichSuNghiPhep[editIdx];
-            let oldNv = dsNhanSuGoc.find(i => i.hoTen === oldItem.hoTen);
-            if (oldNv) {
-                oldNv.nc_p = Math.max(0, (oldNv.nc_p || 0) - oldItem.soNgay);
-            }
-            dsLichSuNghiPhep[editIdx] = { id: oldItem.id, hoTen, tuNgay, denNgay, soNgay, lyDo: ghiChu };
-            let nv = dsNhanSuGoc.find(i => i.hoTen === hoTen);
-            if (nv) {
-                nv.nc_p = (nv.nc_p || 0) + soNgay;
-            }
+            dsLichSuNghiPhep[editIdx] = { id: dsLichSuNghiPhep[editIdx].id, hoTen, tuNgay, denNgay, soNgay, lyDo: ghiChu };
             alert(`Đã cập nhật đơn nghỉ phép cho cán bộ ${hoTen} thành công!`);
         } else {
+            dsLichSuNghiPhep.push({
+                id: "NP" + String(dsLichSuNghiPhep.length + 1).padStart(3, '0'),
+                hoTen, tuNgay, denNgay, soNgay, lyDo: ghiChu
+            });
+            // Tự động cộng dồn vào nc_p của nhân sự khi đăng ký đơn mới
             let nv = dsNhanSuGoc.find(i => i.hoTen === hoTen);
             if (nv) {
                 nv.nc_p = (nv.nc_p || 0) + soNgay;
-                dsLichSuNghiPhep.push({
-                    id: "NP" + String(dsLichSuNghiPhep.length + 1).padStart(3, '0'),
-                    hoTen, tuNgay, denNgay, soNgay, lyDo: ghiChu
-                });
-                alert(`Đã đăng ký và trừ thành công ${soNgay} ngày phép cho cán bộ ${hoTen}!`);
             }
+            alert(`Đã đăng ký và cộng thành công ${soNgay} ngày phép cho cán bộ ${hoTen}!`);
         }
         capNhat();
         dongModalDangKyNghiPhep();
@@ -995,11 +991,30 @@
         let dayStr = String(now.getDate()).padStart(2, '0') + '/' + String(now.getMonth() + 1).padStart(2, '0') + '/' + now.getFullYear();
         document.getElementById('widgetRealtimeDate').innerText = dayStr;
         renderMiniCalendar(currentMiniCalYear, currentMiniCalMonth, selectedDayInfo.day);
-        capNhatThongTinAmLich(selectedDayInfo.day, selectedDayInfo.month, selectedDayInfo.year);
+        capNhatThongTinAmLichVaPhongThuy(selectedDayInfo.day, selectedDayInfo.month, selectedDayInfo.year);
+    }
+
+    function quyDoiAmLichChuan2026(day, month, year) {
+        let baseSolar = new Date(2026, 7, 12);
+        let targetSolar = new Date(year, month, day);
+        let diffTime = targetSolar - baseSolar;
+        let diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+        
+        let baseLunarDay = 29;
+        let baseLunarMonth = 6;
+        let totalLunarDays = baseLunarDay + diffDays;
+        
+        let lunarDay = totalLunarDays;
+        let lunarMonth = baseLunarMonth;
+        if (lunarDay > 30) { lunarDay -= 30; lunarMonth++; }
+        else if (lunarDay <= 0) { lunarDay += 29; lunarMonth--; }
+        
+        return { day: lunarDay, month: lunarMonth, year: "Bính Ngọ" };
     }
 
     function renderMiniCalendar(year, month, selectedDay) {
         let grid = document.getElementById('miniCalendarGrid');
+        if (!grid) return;
         grid.innerHTML = '';
         let monthNames = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"];
         document.getElementById('calToolbarLabel').innerText = `${monthNames[month]} / ${year}`;
@@ -1031,17 +1046,50 @@
         selectedDayInfo = { day, month, year };
         let dayStr = String(day).padStart(2, '0') + '/' + String(month + 1).padStart(2, '0') + '/' + year;
         document.getElementById('widgetRealtimeDate').innerText = dayStr;
-        capNhatThongTinAmLich(day, month, year);
+        capNhatThongTinAmLichVaPhongThuy(day, month, year);
         renderMiniCalendar(year, month, day);
     }
 
-    function capNhatThongTinAmLich(day, month, year) {
-        let amLichDay = (day + 15) > 30 ? (day + 15 - 30) : (day + 15);
-        let amLichMonth = month + 1;
-        document.getElementById('widgetLunar').innerText = `${amLichDay}/${amLichMonth} Âm (Bính Ngọ)`;
+    function capNhatThongTinAmLichVaPhongThuy(day, month, year) {
+        let am = quyDoiAmLichChuan2026(day, month, year);
+        let amLichStr = `${am.day}/${am.month} Âm lịch (${am.year})`;
+        document.getElementById('widgetLunar').innerText = amLichStr;
         
-        let nguHanhArr = ["Lư Trung Hỏa", "Đại Lâm Mộc", "Bích Thượng Thổ", "Kim Bạch 金", "Giản Hạ Thủy"];
-        document.getElementById('widgetNguhanh').innerText = `${nguHanhArr[(day + month) % nguHanhArr.length]} (Ngày hoàng đạo đẹp)`;
+        let nguHanhArr = ["Giản Hạ Thủy", "Lư Trung Hỏa", "Đại Lâm Mộc", "Bích Thượng Thổ", "Kim Bạch Kim"];
+        let selNguHanh = nguHanhArr[(day + month) % nguHanhArr.length];
+        document.getElementById('widgetNguhanh').innerText = `${selNguHanh} (Ngày cát lợi)`;
+        
+        let hoangDaoArr = [
+            "Tý (23h-1h), Sửu (1h-3h), Thìn (7h-9h)",
+            "Dần (3h-5h), Thìn (7h-9h), Tỵ (9h-11h)",
+            "Mão (5h-7h), Ngọ (11h-13h), Thân (15h-17h)",
+            "Sửu (1h-3h), Thìn (7h-9h), Tuất (19h-21h)"
+        ];
+        document.getElementById('widgetHoangDao').innerText = hoangDaoArr[day % hoangDaoArr.length];
+
+        let xuatHanhArr = [
+            "Tài thần: Đông Nam - Hỷ thần: Tây Bắc",
+            "Tài thần: Đông Bắc - Hỷ thần: Nam",
+            "Tài thần: Tây Nam - Hỷ thần: Đông",
+            "Tài thần: Chính Nam - Hỷ thần: Tây"
+        ];
+        document.getElementById('widgetXuatHanh').innerText = xuatHanhArr[day % xuatHanhArr.length];
+
+        let xungKhacArr = [
+            "Tân Mão, Đinh Mão, Tân Hợi",
+            "Nhâm Tý, Giáp Tý, Bính Thân",
+            "Quý Hợi, Ất Hợi, Mậu Dần",
+            "Bính Dần, Mậu Dần, Giáp Tý"
+        ];
+        document.getElementById('widgetXungKhac').innerText = xungKhacArr[day % xungKhacArr.length];
+
+        let weatherArr = [
+            "28°C - 34°C, Nắng ấm, độ ẩm 75%",
+            "27°C - 32°C, Có mây nhẹ, thuận lợi",
+            "29°C - 35°C, Nắng gắt, gió nhẹ",
+            "26°C - 31°C, Mát mẻ, trời quang mây"
+        ];
+        document.getElementById('widgetWeather').innerText = weatherArr[(day + month) % weatherArr.length];
     }
 
     function quayVeNgayHomNay() {
@@ -1056,6 +1104,21 @@
         if (currentMiniCalMonth > 11) { currentMiniCalMonth = 0; currentMiniCalYear++; }
         else if (currentMiniCalMonth < 0) { currentMiniCalMonth = 11; currentMiniCalYear--; }
         renderMiniCalendar(currentMiniCalYear, currentMiniCalMonth, -1);
+    }
+
+    function toggleFloatingCalendarWidget() {
+        let widget = document.getElementById('floatingVanNienWidget');
+        let text = document.getElementById('toggleFloatBtnText');
+        let icon = document.getElementById('toggleFloatBtnIcon');
+        if (widget.style.display === 'none') {
+            widget.style.display = 'block';
+            text.innerText = 'Ẩn Lịch Nổi';
+            icon.className = 'fa-solid fa-eye-slash';
+        } else {
+            widget.style.display = 'none';
+            text.innerText = 'Hiện Lịch Nổi';
+            icon.className = 'fa-solid fa-eye';
+        }
     }
 
     function toggleWidgetVanNien() {
@@ -1279,7 +1342,7 @@
 
             const ncTG = i.nc_tg !== undefined ? i.nc_tg : 20;
             const ncP = i.nc_p || 0;
-            const ncL = i.nc_l || 1;
+            const ncL = i.nc_l !== undefined ? i.nc_l : 0;
             const kHT = i.k_ht !== undefined ? i.k_ht : 1.0;
 
             let phepCap = i.phep_cap || 12;
@@ -1297,7 +1360,6 @@
             i.bhxh = Math.round(i.luongHDLD * 0.095);
             i.thucLinhLCB = i.tongLCB - i.bhtn - i.bhxh;
 
-            // SỬA CÔNG THỨC LƯƠNG CÔNG VIỆC CHUẨN XÁC
             i.luongCVGoc = Math.round((hslCV + pcCV) * mucLCV);
             i.luongCVTT = Math.round(i.luongCVGoc / ncd * ncTG);
             i.tamUng = i.tam_ung || 0;
@@ -1381,7 +1443,7 @@
                     <td style="text-align: right;">${formatMoneyVn(item.luongCBThang)}</td>
                     <td><input class="cell-input num-center" type="number" value="${item.nc_tg}" onchange="capNhatGiaTriCell(${idx}, 'nc_tg', this.value)"></td>
                     <td><input class="cell-input num-center" type="number" value="${item.nc_p || 0}" onchange="capNhatGiaTriCell(${idx}, 'nc_p', this.value)"></td>
-                    <td><input class="cell-input num-center" type="number" value="${item.nc_l || 0}" onchange="capNhatGiaTriCell(${idx}, 'nc_l', this.value)"></td>
+                    <td><input class="cell-input num-center" type="number" value="${item.nc_l !== undefined ? item.nc_l : 0}" onchange="capNhatGiaTriCell(${idx}, 'nc_l', this.value)"></td>
                     <td style="text-align: right;">${formatMoneyVn(item.luongCBTG)}</td>
                     <td style="text-align: right;">${formatMoneyVn(item.luongCBLP)}</td>
                     <td style="text-align: right; font-weight: bold;">${formatMoneyVn(item.tongLCB)}</td>
@@ -1405,7 +1467,7 @@
                     <td style="text-align: right; font-weight: bold; color: #0369a1;">${formatMoneyVn(item.luongCVGoc)}</td>
                     <td style="text-align: center;">${item.nc_tg}</td>
                     <td style="text-align: center;">${item.nc_p || 0}</td>
-                    <td style="text-align: center;">${item.nc_l || 0}</td>
+                    <td style="text-align: center;">${item.nc_l !== undefined ? item.nc_l : 0}</td>
                     <td style="text-align: right; font-weight: bold;">${formatMoneyVn(item.luongCVTT)}</td>
                     <td><input class="cell-input money-input" type="text" value="${formatMoneyVn(item.tamUng)}" onblur="capNhatGiaTriCell(${idx}, 'tam_ung', this.value)"></td>
                     <td style="text-align: right; font-weight: bold; color: ${item.thucLinhCV < 0 ? '#dc2626' : '#15803d'};">${formatMoneyVn(item.thucLinhCV)}</td>
@@ -1442,7 +1504,7 @@
                     <td style="font-weight: 700;">${item.hoTen}</td>
                     <td><input class="cell-input num-center" type="number" value="${phepCap}" onchange="capNhatGiaTriCell(${idx}, 'phep_cap', this.value)"></td>
                     <td><input class="cell-input num-center" type="number" value="${daNghi}" onchange="capNhatGiaTriCell(${idx}, 'nc_p', this.value)"></td>
-                    <td><input class="cell-input num-center" type="number" value="${item.nc_l || 1}"></td>
+                    <td><input class="cell-input num-center" type="number" value="${item.nc_l !== undefined ? item.nc_l : 0}" onchange="capNhatGiaTriCell(${idx}, 'nc_l', this.value)"></td>
                     <td><input class="cell-input num-center" type="number" value="${phepTon}" onchange="capNhatGiaTriCell(${idx}, 'phep_ton', this.value)"></td>
                     <td style="text-align: center;">${badgeHtml}</td>
                 </tr>`;

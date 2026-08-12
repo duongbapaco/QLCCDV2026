@@ -28,7 +28,7 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); padding: 12px; }
-        .container { max-width: 1720px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+        .container { max-width: 1680px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
         .hidden { display: none !important; }
 
         .banner {
@@ -42,7 +42,7 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-        .banner h1 { font-size: 16px; font-weight: 700; text-transform: uppercase; }
+        .banner h1 { font-size: 15px; font-weight: 700; text-transform: uppercase; }
         .banner p { font-size: 11px; opacity: 0.9; margin-top: 2px; }
 
         .btn-group-header { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
@@ -59,8 +59,10 @@
         .btn-purple:hover { background-color: #7c3aed; }
         .btn-orange { background-color: #f97316; color: white; }
         .btn-orange:hover { background-color: #ea580c; }
+        .btn-secondary { background-color: #475569; color: white; }
+        .btn-secondary:hover { background-color: #334155; }
 
-        .config-bar { background: white; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-color); display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; align-items: center; }
+        .config-bar { background: white; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-color); display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; align-items: center; }
         .config-item { display: flex; flex-direction: column; gap: 3px; }
         .config-item label { font-size: 9px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
         .config-item input, .config-item select { padding: 5px 8px; border-radius: 5px; border: 1px solid var(--border-color); font-weight: 700; font-size: 11px; color: #0f172a; outline: none; background: #fff; }
@@ -70,15 +72,15 @@
         .form-group label { font-size: 10px; font-weight: 700; color: var(--text-muted); }
         .form-group input, .form-group select { padding: 5px 8px; border-radius: 5px; border: 1px solid var(--border-color); font-size: 11px; outline: none; background: white; }
 
-        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
         .kpi-card { background: var(--card-bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); }
         .kpi-title { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
-        .kpi-value { font-size: 18px; font-weight: 800; color: var(--text-main); margin: 3px 0 2px 0; }
+        .kpi-value { font-size: 17px; font-weight: 800; color: var(--text-main); margin: 3px 0 2px 0; }
         .kpi-sub { font-size: 10px; color: var(--text-muted); }
 
-        .charts-multi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 12px; margin-top: 6px; }
+        .charts-multi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 12px; margin-top: 6px; }
         .chart-card { background: white; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); }
-        .chart-title { font-size: 12px; font-weight: 700; color: var(--text-main); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; }
+        .chart-title { font-size: 11px; font-weight: 700; color: var(--text-main); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; }
 
         .tab-nav { display: flex; gap: 4px; border-bottom: 2px solid var(--border-color); padding-bottom: 6px; margin-top: 4px; flex-wrap: wrap; }
         .tab-btn { padding: 6px 10px; border-radius: 6px 6px 0 0; background: #e2e8f0; border: none; font-weight: 700; font-size: 11px; cursor: pointer; color: var(--text-muted); }
@@ -89,25 +91,25 @@
 
         .table-card { background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border-color); padding: 12px; }
         .table-header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
-        .table-title { font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+        .table-title { font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
 
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 11px; table-layout: fixed; }
         th, td { padding: 6px 8px; border: 1px solid var(--border-color); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         th { background-color: #f1f5f9; color: var(--text-muted); font-weight: 700; font-size: 10px; text-transform: uppercase; text-align: center; }
         
-        input.cell-input { width: 100%; padding: 3px 5px; border: 1px solid transparent; border-radius: 4px; font-size: 11px; outline: none; background: transparent; }
+        input.cell-input { width: 100%; padding: 3px 4px; border: 1px solid transparent; border-radius: 4px; font-size: 11px; outline: none; background: transparent; }
         input.cell-input:hover { border-color: #cbd5e1; background: #f8fafc; }
         input.cell-input:focus { border-color: #0284c7; background: #ffffff; box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15); }
         input.num-center { text-align: center; }
         input.money-input { text-align: right; color: #dc2626; font-weight: 700; }
 
-        .badge-net { background: var(--green-badge); color: var(--green-text); padding: 3px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; display: inline-block; }
-        .badge-warning { background: var(--yellow-badge); color: var(--yellow-text); padding: 3px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; display: inline-block; }
-        .badge-danger { background: var(--red-badge); color: var(--red-text); padding: 3px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; display: inline-block; }
+        .badge-net { background: var(--green-badge); color: var(--green-text); padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 10px; display: inline-block; }
+        .badge-warning { background: var(--yellow-badge); color: var(--yellow-text); padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 10px; display: inline-block; }
+        .badge-danger { background: var(--red-badge); color: var(--red-text); padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 10px; display: inline-block; }
 
-        /* WIDGET LỊCH VẠN NIÊN & NHẠC THƯ GIÃN NỔI */
+        /* WIDGET LỊCH VẠN NIÊN & TIỆN ÍCH NỔI SIÊU CẤP */
         .van-nien-widget-float {
-            position: fixed; bottom: 20px; right: 20px; width: 360px; background: white;
+            position: fixed; bottom: 20px; right: 20px; width: 370px; background: white;
             border-radius: 10px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.25); border: 2px solid var(--primary);
             z-index: 999; overflow: hidden; transition: all 0.3s ease;
         }
@@ -116,7 +118,7 @@
             display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 11px; cursor: pointer;
         }
         .widget-body {
-            padding: 10px; font-size: 11px; display: flex; flex-direction: column; gap: 6px; background: #f8fafc; max-height: 480px; overflow-y: auto;
+            padding: 10px; font-size: 11px; display: flex; flex-direction: column; gap: 8px; background: #f8fafc; max-height: 540px; overflow-y: auto;
         }
         .cal-toolbar { display: flex; justify-content: space-between; align-items: center; background: #e2e8f0; padding: 5px 8px; border-radius: 5px; font-weight: bold; }
         .cal-grid-mini { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; background: #cbd5e1; padding: 2px; border-radius: 5px; }
@@ -124,46 +126,47 @@
         .cal-td { background: white; padding: 5px 2px; font-size: 10px; cursor: pointer; border-radius: 2px; text-align: center; }
         .cal-td:hover { background: #dcfce7; color: #166534; font-weight: bold; }
         .cal-td.today { background: #16a34a; color: white; font-weight: bold; }
+        .cal-td.selected-day { border: 2px solid #0284c7; font-weight: bold; background: #e0f2fe; }
         .cal-td.other-month { color: #94a3b8; background: #f8fafc; }
 
         .poetry-mini {
-            background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1px solid #bbf7d0; padding: 5px;
-            border-radius: 5px; font-style: italic; color: #166534; font-size: 9px; text-align: center; line-height: 1.3;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1px solid #bbf7d0; padding: 8px;
+            border-radius: 6px; font-style: italic; color: #166534; font-size: 10px; text-align: center; line-height: 1.4; position: relative;
         }
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); display: flex; justify-content: center; align-items: center; z-index: 10000; backdrop-filter: blur(4px); }
-        .modal-card { background: white; width: 100%; max-width: 560px; border-radius: 10px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2); }
+        .modal-card { background: white; width: 100%; max-width: 520px; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.25); }
         
         .rest-popup-card {
-            background: linear-gradient(135deg, #ffffff, #f8fafc); border: 2px solid #16a34a; max-width: 420px; text-align: center; padding: 20px; border-radius: 14px;
+            background: linear-gradient(135deg, #ffffff, #f8fafc); border: 2px solid #16a34a; max-width: 400px; text-align: center; padding: 20px; border-radius: 14px;
         }
-        .rest-icon { font-size: 42px; color: #16a34a; margin-bottom: 8px; animation: bounce 2s infinite; }
+        .rest-icon { font-size: 40px; color: #16a34a; margin-bottom: 8px; animation: bounce 2s infinite; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
         #payslip-capture { background: white; padding: 20px; color: #0f172a; }
         .slip-header { text-align: center; border-bottom: 2px double #0284c7; padding-bottom: 10px; margin-bottom: 14px; }
-        .slip-header h2 { font-size: 15px; font-weight: 800; color: #0369a1; text-transform: uppercase; }
-        .slip-header h3 { font-size: 13px; font-weight: 700; color: #0f172a; margin-top: 2px; }
-        .slip-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #e2e8f0; font-size: 12px; }
+        .slip-header h2 { font-size: 14px; font-weight: 800; color: #0369a1; text-transform: uppercase; }
+        .slip-header h3 { font-size: 12px; font-weight: 700; color: #0f172a; margin-top: 2px; }
+        .slip-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #e2e8f0; font-size: 11px; }
         .slip-label { color: #475569; font-weight: 600; }
         .slip-value { font-weight: 700; color: #0f172a; }
         .slip-total { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 10px; border-radius: 6px; margin-top: 12px; text-align: center; }
         .slip-total-label { font-size: 10px; color: #15803d; font-weight: 800; text-transform: uppercase; }
-        .slip-total-value { font-size: 20px; color: #15803d; font-weight: 900; margin-top: 2px; }
-        .slip-footer { text-align: center; margin-top: 14px; font-size: 10px; color: #94a3b8; font-style: italic; }
+        .slip-total-value { font-size: 19px; color: #15803d; font-weight: 900; margin-top: 2px; }
+        .slip-footer { text-align: center; margin-top: 12px; font-size: 10px; color: #94a3b8; font-style: italic; }
         .modal-actions { padding: 10px 16px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 6px; }
     </style>
 </head>
 <body>
 
-<!-- MODAL ĐĂNG NHẬP (ĐÃ ẨN THÔNG TIN MẬT KHẨU MẶC ĐỊNH, DÙNG MẢNG TÀI KHOẢN ĐỘNG LINH HOẠT) -->
+<!-- MODAL ĐĂNG NHẬP -->
 <div class="modal-overlay" id="loginModal">
-    <div class="modal-card" style="max-width: 380px;">
-        <div style="padding: 20px; background: #0284c7; color: white; text-align: center;">
-            <h2 style="font-size: 16px; font-weight: 800; text-transform: uppercase;">ĐĂNG NHẬP HỆ THỐNG BAPACO</h2>
-            <p style="font-size: 11px; opacity: 0.9; margin-top: 4px;">Vui lòng nhập tài khoản được cấp để truy cập</p>
+    <div class="modal-card" style="max-width: 360px;">
+        <div style="padding: 18px; background: #0284c7; color: white; text-align: center;">
+            <h2 style="font-size: 15px; font-weight: 800; text-transform: uppercase;">ĐĂNG NHẬP HỆ THỐNG BAPACO</h2>
+            <p style="font-size: 10px; opacity: 0.9; margin-top: 3px;">Vui lòng nhập tài khoản được cấp để truy cập</p>
         </div>
-        <div style="padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+        <div style="padding: 18px; display: flex; flex-direction: column; gap: 10px;">
             <div class="form-group">
                 <label>Tên Đăng Nhập</label>
                 <input type="text" id="loginUsername" placeholder="Nhập tên đăng nhập..." autocomplete="username" onkeydown="handleLoginEnter(event)">
@@ -173,8 +176,8 @@
                 <input type="password" id="loginPassword" placeholder="Nhập mật khẩu..." autocomplete="current-password" onkeydown="handleLoginEnter(event)">
             </div>
         </div>
-        <div class="modal-actions" style="padding: 14px 20px;">
-            <button class="btn btn-green" style="width: 100%; justify-content: center; padding: 10px;" onclick="thucHienDangNhap()"><i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập Hệ Thống</button>
+        <div class="modal-actions" style="padding: 12px 18px;">
+            <button class="btn btn-green" style="width: 100%; justify-content: center; padding: 9px;" onclick="thucHienDangNhap()"><i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập Hệ Thống</button>
         </div>
     </div>
 </div>
@@ -184,11 +187,11 @@
     <div class="banner">
         <div>
             <h1><i class="fa-solid fa-building-shield"></i> Hệ Thống Quản Lý Đa Dashboard & Lịch Vạn Niên BAPACO 2026</h1>
-            <p id="userStatusTag">Đã bảo mật màn hình đăng nhập, tối ưu độ rộng cột & Quản lý phép thông minh</p>
+            <p id="userStatusTag">Đã phát triển đầy đủ widget lịch vạn niên tương tác ngày âm/dương, kho thơ lục bát & phát nhạc thư giãn đỉnh cao</p>
         </div>
         <div class="btn-group-header">
             <button class="btn btn-yellow" onclick="moModalNhacNhoNghiGoi()"><i class="fa-solid fa-mug-hot"></i> Nhắc Nhở & Nhạc Thư Giãn</button>
-            <button class="btn btn-purple" onclick="moModalQuanLyTaiKhoan()"><i class="fa-solid fa-users-gear"></i> Quản Lý Tài Khoản (Sửa & Lưu)</button>
+            <button class="btn btn-purple" onclick="moModalQuanLyTaiKhoan()"><i class="fa-solid fa-users-gear"></i> Quản Lý Tài Khoản</button>
             <button class="btn btn-blue" onclick="syncDataWithGoogleSheets()"><i class="fa-solid fa-cloud-arrow-up"></i> Đồng Bộ Google Sheets</button>
             <button class="btn btn-red" onclick="thucHienDangXuat()"><i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất</button>
         </div>
@@ -198,11 +201,11 @@
     <div class="config-bar">
         <div class="config-item">
             <label>Năm / Tháng Lưu Trữ (Drive)</label>
-            <input type="text" id="cfgThangNam" value="2026 / Tháng 05" onchange="capNhatCấuTrúcThưMụcDrive()">
+            <input type="text" id="cfgThangNam" value="2026 / Tháng 08" onchange="capNhatCấuTrúcThưMụcDrive()">
         </div>
         <div class="config-item">
             <label>Thư Mục Gốc Google Drive</label>
-            <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold;" value="BAPACO_Drive/2026/Thang_05/">
+            <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold;" value="BAPACO_Drive/2026/Thang_08/">
         </div>
         <div class="config-item">
             <label>Ngày Công Chế Độ (NCD)</label>
@@ -227,7 +230,7 @@
         <div class="kpi-card">
             <div class="kpi-title">Tổng Quỹ Lương Cuối Cùng (NET)</div>
             <div class="kpi-value" style="color: #15803d;" id="kpiTotalNet">0 VNĐ</div>
-            <div class="kpi-sub">Chuẩn hạch toán BAPACO tháng 5/2026</div>
+            <div class="kpi-sub">Chuẩn hạch toán BAPACO tháng 8/2026</div>
         </div>
         <div class="kpi-card">
             <div class="kpi-title">Tổng Thanh Toán VPP</div>
@@ -268,13 +271,13 @@
         <div class="charts-multi-grid">
             <div class="chart-card">
                 <div class="chart-title"><i class="fa-solid fa-chart-column" style="color: var(--primary);"></i> Biểu đồ Thực Lĩnh Cuối Cùng & Tạm Ứng Cán Bộ</div>
-                <div style="position: relative; height: 300px;">
+                <div style="position: relative; height: 280px;">
                     <canvas id="salaryChartFull"></canvas>
                 </div>
             </div>
             <div class="chart-card">
                 <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #16a34a;"></i> Tỷ Trọng Tạm Ứng So Với Thực Lĩnh</div>
-                <div style="position: relative; height: 300px;">
+                <div style="position: relative; height: 280px;">
                     <canvas id="salaryPieChart"></canvas>
                 </div>
             </div>
@@ -284,13 +287,13 @@
     <!-- TAB 1: BẢNG LƯƠNG CƠ BẢN -->
     <div id="salaryCBTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-table-list"></i> BẢNG LƯƠNG CƠ BẢN THÁNG 5/2026 (BAPACO)</div>
+            <div class="table-title"><i class="fa-solid fa-table-list"></i> BẢNG LƯƠNG CƠ BẢN THÁNG 8/2026 (BAPACO)</div>
             <button class="btn btn-green" onclick="xuatExcelCB()"><i class="fa-solid fa-file-excel"></i> Xuất Excel Lương Cơ Bản</button>
         </div>
         <div style="overflow-x: auto;">
             <table>
                 <colgroup>
-                    <col style="width: 40px;"><col style="width: 150px;"><col style="width: 75px;"><col style="width: 75px;"><col style="width: 100px;"><col style="width: 100px;"><col style="width: 65px;"><col style="width: 60px;"><col style="width: 60px;"><col style="width: 95px;"><col style="width: 95px;"><col style="width: 100px;"><col style="width: 85px;"><col style="width: 100px;"><col style="width: 110px;">
+                    <col style="width: 40px;"><col style="width: 200px;"><col style="width: 65px;"><col style="width: 65px;"><col style="width: 95px;"><col style="width: 95px;"><col style="width: 60px;"><col style="width: 55px;"><col style="width: 55px;"><col style="width: 90px;"><col style="width: 90px;"><col style="width: 100px;"><col style="width: 80px;"><col style="width: 95px;"><col style="width: 105px;">
                 </colgroup>
                 <thead>
                     <tr>
@@ -311,7 +314,7 @@
         <div style="overflow-x: auto;">
             <table>
                 <colgroup>
-                    <col style="width: 40px;"><col style="width: 150px;"><col style="width: 75px;"><col style="width: 75px;"><col style="width: 100px;"><col style="width: 65px;"><col style="width: 60px;"><col style="width: 60px;"><col style="width: 95px;"><col style="width: 100px;"><col style="width: 95px;"><col style="width: 115px;"><col style="width: 60px;">
+                    <col style="width: 40px;"><col style="width: 220px;"><col style="width: 70px;"><col style="width: 70px;"><col style="width: 105px;"><col style="width: 60px;"><col style="width: 55px;"><col style="width: 55px;"><col style="width: 100px;"><col style="width: 100px;"><col style="width: 100px;"><col style="width: 120px;"><col style="width: 60px;">
                 </colgroup>
                 <thead>
                     <tr>
@@ -323,44 +326,16 @@
         </div>
     </div>
 
-    <!-- TAB 3: QUẢN LÝ PHÉP & FORM DUYỆT NGHỈ PHÉP -->
+    <!-- TAB 3: QUẢN LÝ PHÉP & NÚT MỞ POPUP ĐĂNG KÝ PHÉP CHUẨN -->
     <div id="leaveTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-calendar-days"></i> FORM DUYỆT NGHỈ PHÉP & TỰ ĐỘNG TÍNH SỐ NGÀY</div>
-        </div>
-        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 14px;">
-            <div class="form-group">
-                <label>Chọn Cán Bộ Xin Phép</label>
-                <select id="leaveFormNhanSu"></select>
-            </div>
-            <div class="form-group">
-                <label>Từ Ngày</label>
-                <input type="date" id="leaveFormTuNgay" onchange="tinhSoNgayNghiTuDong()">
-            </div>
-            <div class="form-group">
-                <label>Đến Ngày (Bao gồm)</label>
-                <input type="date" id="leaveFormDenNgay" onchange="tinhSoNgayNghiTuDong()">
-            </div>
-            <div class="form-group">
-                <label>Số Ngày Nghỉ (Tự Động)</label>
-                <input type="number" id="leaveFormSoNgay" step="0.5" value="1" readonly style="background: #e2e8f0; font-weight: bold; color: #166534;">
-            </div>
-            <div class="form-group">
-                <label>Lý Do / Ghi Chú Nghỉ</label>
-                <input type="text" id="leaveFormLyDo" placeholder="VD: Giải quyết việc gia đình">
-            </div>
-            <div class="form-group">
-                <button class="btn btn-green" onclick="duyetVaLuuDonNghiPhep()"><i class="fas fa-check-circle"></i> Duyệt Đơn & Trừ Phép</button>
-            </div>
-        </div>
-
-        <div class="table-header-bar" style="margin-top: 10px;">
-            <div class="table-title"><i class="fa-solid fa-id-card"></i> THEO DÕI TỔNG HỢP PHÉP & CẢNH BÁO VƯỢT MỨC</div>
+            <div class="table-title"><i class="fa-solid fa-calendar-days"></i> THEO DÕI & QUẢN LÝ NGÀY PHÉP NHÂN SỰ</div>
+            <button class="btn btn-blue" onclick="moModalDangKyNghiPhep()"><i class="fa-solid fa-file-pen"></i> Đăng Ký Nghỉ Phép Mới</button>
         </div>
         <div style="overflow-x: auto; margin-bottom: 14px;">
             <table>
                 <colgroup>
-                    <col style="width: 45px;"><col style="width: 170px;"><col style="width: 90px;"><col style="width: 90px;"><col style="width: 90px;"><col style="width: 100px;"><col style="width: 180px;">
+                    <col style="width: 45px;"><col style="width: 240px;"><col style="width: 90px;"><col style="width: 90px;"><col style="width: 90px;"><col style="width: 100px;"><col style="width: 180px;">
                 </colgroup>
                 <thead>
                     <tr>
@@ -372,16 +347,16 @@
         </div>
 
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-clock-rotate-left"></i> LỊCH SỬ DUYỆT ĐƠN NGHỈ PHÉP</div>
+            <div class="table-title"><i class="fa-solid fa-clock-rotate-left"></i> LỊCH SỬ ĐÃ DUYỆT ĐƠN NGHỈ PHÉP</div>
         </div>
         <div style="overflow-x: auto;">
             <table>
                 <colgroup>
-                    <col style="width: 50px;"><col style="width: 160px;"><col style="width: 110px;"><col style="width: 110px;"><col style="width: 80px;"><col style="width: 200px;"><col style="width: 80px;">
+                    <col style="width: 45px;"><col style="width: 200px;"><col style="width: 110px;"><col style="width: 110px;"><col style="width: 80px;"><col style="width: 220px;"><col style="width: 80px;">
                 </colgroup>
                 <thead>
                     <tr>
-                        <th>STT</th><th>Họ và Tên</th><th>Từ Ngày</th><th>Đến Ngày</th><th>Số Ngày</th><th>Lý Do Nghỉ Phép</th><th>Thao Tác</th>
+                        <th>STT</th><th>Họ và Tên</th><th>Từ Ngày</th><th>Đến Ngày</th><th>Số Ngày</th><th>Lý Do / Bàn Giao</th><th>Thao Tác</th>
                     </tr>
                 </thead>
                 <tbody id="leaveHistoryTableBody"></tbody>
@@ -394,7 +369,7 @@
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG (Tự động tạo thư mục & Đẩy file lên Google Drive)</div>
         </div>
-        <div class="form-card" id="formOfficeContainer" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+        <div class="form-card" id="formOfficeContainer" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));">
             <div class="form-group">
                 <label>Mã Hồ Sơ VPP</label>
                 <input type="text" id="autoOfficeId" readonly style="background: #e2e8f0; font-weight: bold;">
@@ -453,7 +428,7 @@
         <div style="overflow-x: auto;">
             <table>
                 <colgroup>
-                    <col style="width: 55px;"><col style="width: 150px;"><col style="width: 130px;"><col style="width: 120px;"><col style="width: 90px;"><col style="width: 110px;"><col style="width: 100px;"><col style="width: 100px;"><col style="width: 95px;">
+                    <col style="width: 60px;"><col style="width: 180px;"><col style="width: 150px;"><col style="width: 140px;"><col style="width: 100px;"><col style="width: 120px;"><col style="width: 110px;"><col style="width: 110px;"><col style="width: 90px;">
                 </colgroup>
                 <thead>
                     <tr>
@@ -470,7 +445,7 @@
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-print"></i> QUẢN LÝ KHO MỰC IN - NHẬP XUẤT TỒN & CẤP PHÁT ĐỊNH MỨC</div>
         </div>
-        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));">
             <div class="form-group">
                 <label>Mã Vật Tư Mực</label>
                 <input type="text" id="autoInkCode" readonly style="background: #e2e8f0; font-weight: bold;">
@@ -509,7 +484,7 @@
         <div style="overflow-x: auto;">
             <table>
                 <colgroup>
-                    <col style="width: 55px;"><col style="width: 150px;"><col style="width: 130px;"><col style="width: 100px;"><col style="width: 50px;"><col style="width: 120px;"><col style="width: 95px;"><col style="width: 95px;"><col style="width: 90px;">
+                    <col style="width: 60px;"><col style="width: 170px;"><col style="width: 150px;"><col style="width: 110px;"><col style="width: 55px;"><col style="width: 130px;"><col style="width: 100px;"><col style="width: 100px;"><col style="width: 90px;">
                 </colgroup>
                 <thead>
                     <tr>
@@ -548,7 +523,7 @@
             </div>
             <div class="form-group">
                 <label>Tháng Cước / Kỳ Thanh Toán</label>
-                <input type="text" id="inputTelecomPeriod" value="Tháng 05/2026">
+                <input type="text" id="inputTelecomPeriod" value="Tháng 08/2026">
             </div>
             <div class="form-group">
                 <label>Tổng Cước Phí (Đã VAT) (VNĐ)</label>
@@ -565,7 +540,7 @@
         <div style="overflow-x: auto;">
             <table>
                 <colgroup>
-                    <col style="width: 65px;"><col style="width: 180px;"><col style="width: 150px;"><col style="width: 110px;"><col style="width: 110px;"><col style="width: 95px;"><col style="width: 90px;">
+                    <col style="width: 70px;"><col style="width: 200px;"><col style="width: 160px;"><col style="width: 110px;"><col style="width: 110px;"><col style="width: 100px;"><col style="width: 90px;">
                 </colgroup>
                 <thead>
                     <tr>
@@ -582,7 +557,7 @@
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-clipboard-check"></i> KHẢO SÁT THIẾT BỊ & BẢN QUYỀN PHẦN MỀM CHUYÊN SÂU</div>
         </div>
-        <div class="form-card" id="formSurveyContainer" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+        <div class="form-card" id="formSurveyContainer" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));">
             <div class="form-group">
                 <label>Mã Khảo Sát</label>
                 <input type="text" id="autoSurveyCode" readonly style="background: #e2e8f0; font-weight: bold;">
@@ -646,7 +621,7 @@
         <div style="overflow-x: auto;">
             <table>
                 <colgroup>
-                    <col style="width: 50px;"><col style="width: 120px;"><col style="width: 110px;"><col style="width: 130px;"><col style="width: 40px;"><col style="width: 110px;"><col style="width: 110px;"><col style="width: 120px;"><col style="width: 90px;">
+                    <col style="width: 50px;"><col style="width: 140px;"><col style="width: 120px;"><col style="width: 140px;"><col style="width: 40px;"><col style="width: 120px;"><col style="width: 120px;"><col style="width: 130px;"><col style="width: 90px;">
                 </colgroup>
                 <thead>
                     <tr>
@@ -659,30 +634,96 @@
     </div>
 </div>
 
-<!-- LỊCH VẠN NIÊN & NHẠC THƯ GIÃN NỔI -->
+<!-- POPUP ĐĂNG KÝ NGHỈ PHÉP CHUẨN MẪU -->
+<div class="modal-overlay hidden" id="dangKyNghiPhepModal">
+    <div class="modal-card">
+        <div style="padding: 14px 18px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 14px; text-transform: uppercase;">
+                <i class="fa-solid fa-calendar-plus"></i> ĐĂNG KÝ NGHỈ PHÉP NHÂN SỰ
+            </div>
+            <button class="btn btn-red" style="padding: 3px 6px;" onclick="dongModalDangKyNghiPhep()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div style="padding: 16px; display: flex; flex-direction: column; gap: 10px;">
+            <div class="form-group">
+                <label>Chọn nhân sự:</label>
+                <select id="popupLeaveNhanSu" style="padding: 7px; border-radius: 6px; border: 1px solid var(--border-color); font-weight: bold;"></select>
+            </div>
+            <div class="form-group">
+                <label>Hình thức / Lý do nghỉ:</label>
+                <select id="popupLeaveHinhThuc" style="padding: 7px; border-radius: 6px; border: 1px solid var(--border-color);">
+                    <option value="Phép năm (Có hưởng lương)">Phép năm (Có hưởng lương)</option>
+                    <option value="Nghỉ ốm / Thai sản">Nghỉ ốm / Thai sản</option>
+                    <option value="Nghỉ việc riêng (Không lương)">Nghỉ việc riêng (Không lương)</option>
+                </select>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="form-group">
+                    <label>Từ ngày:</label>
+                    <input type="date" id="popupLeaveTuNgay" style="padding: 7px; border-radius: 6px; border: 1px solid var(--border-color);" onchange="tinhSoNgayPopup()">
+                </div>
+                <div class="form-group">
+                    <label>Đến ngày:</label>
+                    <input type="date" id="popupLeaveDenNgay" style="padding: 7px; border-radius: 6px; border: 1px solid var(--border-color);" onchange="tinhSoNgayPopup()">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Số ngày phép nghỉ (Tự động):</label>
+                <input type="number" id="popupLeaveSoNgay" step="0.5" value="1" readonly style="background: #fdf8e2; font-weight: bold; color: #854d0e; padding: 7px; border-radius: 6px; border: 1px solid #fde047;">
+            </div>
+            <div class="form-group">
+                <label>Ghi chú / Bàn giao công việc:</label>
+                <input type="text" id="popupLeaveGhiChu" placeholder="Ví dụ: Đã bàn giao công việc cho..." style="padding: 7px; border-radius: 6px; border: 1px solid var(--border-color);">
+            </div>
+        </div>
+        <div class="modal-actions" style="padding: 12px 18px;">
+            <button class="btn btn-secondary" onclick="dongModalDangKyNghiPhep()"><i class="fa-solid fa-xmark"></i> Hủy</button>
+            <button class="btn btn-green" onclick="luuVaTruPhepTuPopup()"><i class="fa-solid fa-floppy-disk"></i> Lưu & Trừ Phép Lương</button>
+        </div>
+    </div>
+</div>
+
+<!-- LỊCH VẠN NIÊN & TIỆN ÍCH NỔI SIÊU CẤP -->
 <div class="van-nien-widget-float" id="floatingVanNienWidget">
     <div class="widget-header" onclick="toggleWidgetVanNien()">
-        <span><i class="fa-solid fa-calendar-day"></i> Lịch Vạn Niên (Cập nhật ngày mới)</span>
+        <span><i class="fa-solid fa-calendar-day"></i> Lịch Vạn Niên & Thư Giãn (Pro 2026)</span>
         <i class="fa-solid fa-chevron-down" id="widgetToggleIcon"></i>
     </div>
     <div class="widget-body" id="widgetBodyContent">
         <div class="cal-toolbar">
-            <button class="btn" style="padding: 2px 5px; font-size: 9px;" onclick="doiThangTraCuu(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-            <span id="calToolbarLabel" style="font-size: 11px; color: #0f172a;">Tháng 05 / 2026</span>
-            <button class="btn" style="padding: 2px 5px; font-size: 9px;" onclick="doiThangTraCuu(1)"><i class="fa-solid fa-chevron-right"></i></button>
+            <button class="btn" style="padding: 2px 6px; font-size: 9px;" onclick="doiThangTraCuu(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+            <span id="calToolbarLabel" style="font-size: 11px; color: #0f172a; font-weight: bold;">Tháng 08 / 2026</span>
+            <button class="btn" style="padding: 2px 6px; font-size: 9px;" onclick="doiThangTraCuu(1)"><i class="fa-solid fa-chevron-right"></i></button>
+            <button class="btn btn-blue" style="padding: 2px 6px; font-size: 9px;" onclick="quayVeNgayHomNay()">Hôm nay</button>
         </div>
         <div class="cal-grid-mini" id="miniCalendarGrid"></div>
-        <div style="background: white; padding: 6px; border-radius: 5px; border: 1px solid var(--border-color); font-size: 10px;">
-            <div><b>Hôm nay:</b> <span id="widgetRealtimeDate" style="color: #0284c7; font-weight: bold;">--</span></div>
-            <div><b>Âm lịch:</b> <span id="widgetLunar" style="color: #166534; font-weight: bold;">30/06 Âm (Ất Tỵ)</span></div>
-            <div><b>Ngũ hành:</b> Lư Trung Hỏa | <b>Giờ hoàng đạo:</b> Tý, Sửu, Thìn</div>
+        
+        <div style="background: white; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 10px; display: flex; flex-direction: column; gap: 3px;">
+            <div><b>Ngày Dương:</b> <span id="widgetRealtimeDate" style="color: #0284c7; font-weight: bold;">--</span></div>
+            <div><b>Ngày Âm Lịch:</b> <span id="widgetLunar" style="color: #166534; font-weight: bold;">--</span></div>
+            <div><b>Ngũ Hành / Tiết Khí:</b> <span id="widgetNguhanh" style="color: #854d0e;">Lư Trung Hỏa (Lập Thu)</span></div>
+            <div><b>Giờ Hoàng Đạo:</b> <span id="widgetHoangDao" style="color: #6d28d9;">Tý (23h-1h), Sửu (1h-3h), Thìn (7h-9h)</span></div>
         </div>
-        <div class="poetry-mini">
-            "Cờ xí tung bay ngợp bóng chiều,<br>Trống trận vang lừng bước tựa phiêu.<br>Xà rắn uốn mình qua lối cũ,<br>Đặc lạc, tá lạc vẹn tình yêu..."
+
+        <div class="poetry-mini" id="poetryContainer" onclick="chuyenBaiThoLucBat()" style="cursor: pointer;" title="Bấm để đổi bài thơ lục bát khác">
+            <div id="poetryText">
+                "Cờ xí tung bay ngợp bóng chiều,<br>
+                Trống trận vang lừng bước tựa phiêu.<br>
+                Xà rắn uốn mình qua lối cũ,<br>
+                Đặc lạc, tá lạc vẹn tình yêu..."
+            </div>
+            <div style="font-size: 8px; color: #0284c7; margin-top: 3px;">(Bấm vào đây để đổi bài thơ khác ✍️)</div>
         </div>
-        <button class="btn btn-green" style="font-size: 10px; padding: 5px; justify-content: center;" onclick="phatNhacThuGiãn()">
-            <i class="fa-solid fa-music"></i> Bật/Tắt Nhạc Thư Giãn (Du Dương)
-        </button>
+
+        <div style="display: flex; gap: 5px; align-items: center;">
+            <button class="btn btn-green" style="font-size: 10px; padding: 6px 10px; flex: 1; justify-content: center;" onclick="phatNhacThuGiãn()">
+                <i class="fa-solid fa-music" id="audioBtnIcon"></i> <span id="audioBtnText">Bật Nhạc Thư Giãn</span>
+            </button>
+            <select id="audioSourceSelect" style="font-size: 10px; padding: 5px; border-radius: 5px; border: 1px solid var(--border-color);" onchange="doiNguonNhac()">
+                <option value="https://actions.google.com/sounds/v1/ambiences/morning_birds.ogg">🐦 Chim hót buổi sáng</option>
+                <option value="https://actions.google.com/sounds/v1/weather/rain_heavy.ogg">🌧️ Tiếng mưa rơi</option>
+                <option value="https://actions.google.com/sounds/v1/ambiences/forest_day.ogg">🌲 Rừng nguyên sinh</option>
+            </select>
+        </div>
         <audio id="relaxAudio" loop src="https://actions.google.com/sounds/v1/ambiences/morning_birds.ogg"></audio>
     </div>
 </div>
@@ -691,8 +732,8 @@
 <div class="modal-overlay hidden" id="restPopupModal">
     <div class="modal-card rest-popup-card">
         <div class="rest-icon"><i class="fa-solid fa-mug-hot"></i></div>
-        <h2 style="color: #15803d; font-size: 16px; margin-bottom: 4px;">THỜI GIAN NGHỈ NGƠI & THƯ GIÃN</h2>
-        <p style="font-size: 12px; color: #475569; margin-bottom: 12px;">Anh Dương hãy nhắm mắt thư giãn 5 phút, hít thở sâu và thưởng thức bản nhạc du dương đang phát qua tai nghe nhé!</p>
+        <h2 style="color: #15803d; font-size: 15px; margin-bottom: 4px;">THỜI GIAN NGHỈ NGƠI & THƯ GIÃN</h2>
+        <p style="font-size: 11px; color: #475569; margin-bottom: 12px;">Anh Dương hãy nhắm mắt thư giãn 5 phút, hít thở sâu và thưởng thức bản nhạc du dương đang phát qua tai nghe nhé!</p>
         <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 8px; border-radius: 6px; margin-bottom: 12px; font-size: 11px; color: #166534; font-weight: bold;">
             🎶 Trạng thái: Đang phát bản nhạc thư giãn thiên nhiên du dương...
         </div>
@@ -702,14 +743,14 @@
     </div>
 </div>
 
-<!-- MODAL QUẢN LÝ TÀI KHOẢN & CÓ NÚT LƯU CẬP NHẬT -->
+<!-- MODAL QUẢN LÝ TÀI KHOẢN -->
 <div class="modal-overlay hidden" id="userManagementModal">
-    <div class="modal-card" style="max-width: 650px;">
+    <div class="modal-card" style="max-width: 620px;">
         <div style="padding: 14px 18px; background: #8b5cf6; color: white; display: flex; justify-content: space-between; align-items: center;">
-            <h2>QUẢN LÝ TÀI KHOẢN & LƯU CẬP NHẬT EMAIL THẬT</h2>
+            <h2 style="font-size: 14px; font-weight: 800;">QUẢN LÝ TÀI KHOẢN & LƯU CẬP NHẬT EMAIL THẬT</h2>
             <button class="btn btn-red" style="padding: 3px 6px;" onclick="document.getElementById('userManagementModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div style="padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+        <div style="padding: 16px; display: flex; flex-direction: column; gap: 10px;">
             <div class="form-card" style="margin-bottom: 0;">
                 <div class="form-group">
                     <label>Tên Đăng Nhập</label>
@@ -734,7 +775,7 @@
                     <button class="btn btn-purple" onclick="taoTaiKhoanMoi()"><i class="fas fa-user-plus"></i> Cấp Tài Khoản</button>
                 </div>
             </div>
-            <div style="max-height: 220px; overflow-y: auto;">
+            <div style="max-height: 200px; overflow-y: auto;">
                 <table>
                     <thead>
                         <tr>
@@ -755,9 +796,9 @@
             <div class="slip-header">
                 <h2>TỔNG CÔNG TY GIẤY VIỆT NAM</h2>
                 <h3>PHIẾU THANH TOÁN LƯƠNG CÁ NHÂN</h3>
-                <p id="slipMonthSub">Tháng 05/2026 - Văn phòng BAPACO</p>
+                <p id="slipMonthSub">Tháng 08/2026 - Văn phòng BAPACO</p>
             </div>
-            <div class="slip-row"><span class="slip-label">Họ và Tên Cán Bộ:</span><span class="slip-value" id="slipName" style="font-size: 14px; color: #0284c7;">--</span></div>
+            <div class="slip-row"><span class="slip-label">Họ và Tên Cán Bộ:</span><span class="slip-value" id="slipName" style="font-size: 13px; color: #0284c7;">--</span></div>
             <div class="slip-row"><span class="slip-label">Thực Lĩnh Lương Cơ Bản:</span><span class="slip-value" id="slipTLLCB">--</span></div>
             <div class="slip-row"><span class="slip-label">Lương Công Việc Thực Tế:</span><span class="slip-value" id="slipLCVTT">--</span></div>
             <div class="slip-row"><span class="slip-label">Khấu Trừ Tạm Ứng Giữa Tháng:</span><span class="slip-value" style="color: #dc2626;" id="slipTamUng">--</span></div>
@@ -801,15 +842,23 @@
     let dsThanhToanTelecom = [];
     let dsKhaoSatChuyenSieu = [];
     let dsLichSuNghiPhep = [
-        { id: "NP001", hoTen: "Nguyễn Văn Nam", tuNgay: "2026-05-04", denNgay: "2026-05-09", soNgay: 6, lyDo: "Việc gia đình" }
+        { id: "NP001", hoTen: "Nguyễn Văn Nam", tuNgay: "2026-08-04", denNgay: "2026-08-09", soNgay: 6, lyDo: "Việc gia đình" }
     ];
     let danhSachTaiKhoan = [{ username: 'admin', pass: '123456', role: 'Admin', email: 'admin@bapaco.vn' }];
 
     let currentMiniCalYear = 2026;
-    let currentMiniCalMonth = 4; // Tháng 5
+    let currentMiniCalMonth = 7; // Tháng 8 (Index 7)
+    let selectedDayInfo = { day: 12, month: 7, year: 2026 };
     let selectedNvForSlip = null;
     let chartSalaryFullInstance = null;
     let chartSalaryPieInstance = null;
+
+    let danhSachBaiTho = [
+        `"Cờ xí tung bay ngợp bóng chiều,<br>Trống trận vang lừng bước tựa phiêu.<br>Xà rắn uốn mình qua lối cũ,<br>Đặc lạc, tá lạc vẹn tình yêu..."`,
+        `"Gió đưa cành trúc la đà,<br>BAPACO ta đó đậm đà tình quê.<br>Trăm năm vững một lời thề,<br>Xây đời đổi mới đẹp bề tương lai..."`,
+        `"Lao động là nghiệp trồng người,<br>Bình minh chiếu rọi nụ cười trên môi.<br>Văn phòng gắn bó đôi nơi,<br>Tình thân ái mãi trọn đời bên nhau..."`
+    ];
+    let currentPoetryIndex = 0;
 
     function formatMoneyVn(val) {
         let num = parseFloat(val);
@@ -822,51 +871,62 @@
         capNhatAutoID();
         capNhatCấuTrúcThưMụcDrive();
         khoiTaoLichVaNgayMoi();
-        khoiTaoSelectNhanSuLeave();
+        khoiTaoSelectNhanSuPopup();
         capNhat();
     };
 
-    function khoiTaoSelectNhanSuLeave() {
-        let sel = document.getElementById('leaveFormNhanSu');
+    function khoiTaoSelectNhanSuPopup() {
+        let sel = document.getElementById('popupLeaveNhanSu');
         if (!sel) return;
         sel.innerHTML = '';
         dsNhanSuGoc.forEach(i => {
             sel.innerHTML += `<option value="${i.hoTen}">${i.hoTen}</option>`;
         });
         let today = new Date().toISOString().split('T')[0];
-        document.getElementById('leaveFormTuNgay').value = today;
-        document.getElementById('leaveFormDenNgay').value = today;
-        tinhSoNgayNghiTuDong();
+        document.getElementById('popupLeaveTuNgay').value = today;
+        document.getElementById('popupLeaveDenNgay').value = today;
+        tinhSoNgayPopup();
     }
 
-    function tinhSoNgayNghiTuDong() {
-        let d1 = new Date(document.getElementById('leaveFormTuNgay').value);
-        let d2 = new Date(document.getElementById('leaveFormDenNgay').value);
+    function moModalDangKyNghiPhep() {
+        khoiTaoSelectNhanSuPopup();
+        document.getElementById('dangKyNghiPhepModal').classList.remove('hidden');
+    }
+
+    function dongModalDangKyNghiPhep() {
+        document.getElementById('dangKyNghiPhepModal').classList.add('hidden');
+    }
+
+    function tinhSoNgayPopup() {
+        let d1 = new Date(document.getElementById('popupLeaveTuNgay').value);
+        let d2 = new Date(document.getElementById('popupLeaveDenNgay').value);
         if (isNaN(d1) || isNaN(d2) || d2 < d1) {
-            document.getElementById('leaveFormSoNgay').value = 1;
+            document.getElementById('popupLeaveSoNgay').value = 1;
             return;
         }
         let diffTime = Math.abs(d2 - d1);
         let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-        document.getElementById('leaveFormSoNgay').value = diffDays;
+        document.getElementById('popupLeaveSoNgay').value = diffDays;
     }
 
-    function duyetVaLuuDonNghiPhep() {
-        let hoTen = document.getElementById('leaveFormNhanSu').value;
-        let tuNgay = document.getElementById('leaveFormTuNgay').value;
-        let denNgay = document.getElementById('leaveFormDenNgay').value;
-        let soNgay = parseFloat(document.getElementById('leaveFormSoNgay').value) || 1;
-        let lyDo = document.getElementById('leaveFormLyDo').value.trim() || "Nghỉ phép cá nhân";
+    function luuVaTruPhepTuPopup() {
+        let hoTen = document.getElementById('popupLeaveNhanSu').value;
+        let hinhThuc = document.getElementById('popupLeaveHinhThuc').value;
+        let tuNgay = document.getElementById('popupLeaveTuNgay').value;
+        let denNgay = document.getElementById('popupLeaveDenNgay').value;
+        let soNgay = parseFloat(document.getElementById('popupLeaveSoNgay').value) || 1;
+        let ghiChu = document.getElementById('popupLeaveGhiChu').value.trim() || hinhThuc;
 
         let nv = dsNhanSuGoc.find(i => i.hoTen === hoTen);
         if (nv) {
             nv.nc_p = (nv.nc_p || 0) + soNgay;
             dsLichSuNghiPhep.push({
                 id: "NP" + String(dsLichSuNghiPhep.length + 1).padStart(3, '0'),
-                hoTen, tuNgay, denNgay, soNgay, lyDo
+                hoTen, tuNgay, denNgay, soNgay, lyDo: ghiChu
             });
             capNhat();
-            alert(`Đã duyệt đơn nghỉ phép ${soNgay} ngày cho cán bộ ${hoTen} thành công!`);
+            dongModalDangKyNghiPhep();
+            alert(`Đã đăng ký và trừ thành công ${soNgay} ngày phép cho cán bộ ${hoTen}!`);
         }
     }
 
@@ -884,23 +944,15 @@
         let now = new Date();
         currentMiniCalYear = now.getFullYear();
         currentMiniCalMonth = now.getMonth();
+        selectedDayInfo = { day: now.getDate(), month: currentMiniCalMonth, year: currentMiniCalYear };
+        
         let dayStr = String(now.getDate()).padStart(2, '0') + '/' + String(now.getMonth() + 1).padStart(2, '0') + '/' + now.getFullYear();
         document.getElementById('widgetRealtimeDate').innerText = dayStr;
-        renderMiniCalendar(currentMiniCalYear, currentMiniCalMonth, now.getDate());
-
-        setInterval(() => {
-            let cur = new Date();
-            if (cur.getDate() !== now.getDate()) {
-                now = cur;
-                currentMiniCalYear = now.getFullYear();
-                currentMiniCalMonth = now.getMonth();
-                document.getElementById('widgetRealtimeDate').innerText = String(now.getDate()).padStart(2, '0') + '/' + String(now.getMonth() + 1).padStart(2, '0') + '/' + now.getFullYear();
-                renderMiniCalendar(currentMiniCalYear, currentMiniCalMonth, now.getDate());
-            }
-        }, 60000);
+        renderMiniCalendar(currentMiniCalYear, currentMiniCalMonth, selectedDayInfo.day);
+        capNhatThongTinAmLich(selectedDayInfo.day, selectedDayInfo.month, selectedDayInfo.year);
     }
 
-    function renderMiniCalendar(year, month, todayDate) {
+    function renderMiniCalendar(year, month, selectedDay) {
         let grid = document.getElementById('miniCalendarGrid');
         grid.innerHTML = '';
         let monthNames = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"];
@@ -912,14 +964,46 @@
         let firstDayIndex = (new Date(year, month, 1).getDay() + 6) % 7;
         let totalDays = new Date(year, month + 1, 0).getDate();
         let prevMonthDays = new Date(year, month, 0).getDate();
+        let today = new Date();
 
         for (let i = firstDayIndex; i > 0; i--) {
             grid.innerHTML += `<div class="cal-td other-month">${prevMonthDays - i + 1}</div>`;
         }
         for (let d = 1; d <= totalDays; d++) {
-            let isRealToday = (year === new Date().getFullYear() && month === new Date().getMonth() && d === todayDate);
-            grid.innerHTML += `<div class="${isRealToday ? 'cal-td today' : 'cal-td'}">${d}</div>`;
+            let isRealToday = (year === today.getFullYear() && month === today.getMonth() && d === today.getDate());
+            let isSelected = (year === selectedDayInfo.year && month === selectedDayInfo.month && d === selectedDayInfo.day);
+            
+            let cls = 'cal-td';
+            if (isRealToday) cls += ' today';
+            else if (isSelected) cls += ' selected-day';
+
+            grid.innerHTML += `<div class="${cls}" onclick="chonNgayTrenLich(${year}, ${month}, ${d})">${d}</div>`;
         }
+    }
+
+    function chonNgayTrenLich(year, month, day) {
+        selectedDayInfo = { day, month, year };
+        let dayStr = String(day).padStart(2, '0') + '/' + String(month + 1).padStart(2, '0') + '/' + year;
+        document.getElementById('widgetRealtimeDate').innerText = dayStr;
+        capNhatThongTinAmLich(day, month, year);
+        renderMiniCalendar(year, month, day);
+    }
+
+    function capNhatThongTinAmLich(day, month, year) {
+        // Mô phỏng tính toán âm lịch chuẩn vạn niên 2026
+        let amLichDay = (day + 15) > 30 ? (day + 15 - 30) : (day + 15);
+        let amLichMonth = month + 1;
+        document.getElementById('widgetLunar').innerText = `${amLichDay}/${amLichMonth} Âm (Bính Ngọ)`;
+        
+        let nguHanhArr = ["Lư Trung Hỏa", "Đại Lâm Mộc", "Bích Thượng Thổ", "Kim Bạch 金", "Giản Hạ Thủy"];
+        document.getElementById('widgetNguhanh').innerText = `${nguHanhArr[(day + month) % nguHanhArr.length]} (Ngày hoàng đạo đẹp)`;
+    }
+
+    function quayVeNgayHomNay() {
+        let now = new Date();
+        currentMiniCalYear = now.getFullYear();
+        currentMiniCalMonth = now.getMonth();
+        chonNgayTrenLich(currentMiniCalYear, currentMiniCalMonth, now.getDate());
     }
 
     function doiThangTraCuu(step) {
@@ -936,17 +1020,35 @@
         else { body.style.display = 'none'; icon.className = 'fa-solid fa-chevron-up'; }
     }
 
+    function chuyenBaiThoLucBat() {
+        currentPoetryIndex = (currentPoetryIndex + 1) % danhSachBaiTho.length;
+        document.getElementById('poetryText').innerHTML = danhSachBaiTho[currentPoetryIndex];
+    }
+
+    function doiNguonNhac() {
+        let select = document.getElementById('audioSourceSelect');
+        let audio = document.getElementById('relaxAudio');
+        audio.src = select.value;
+        audio.play().catch(e => console.log(e));
+        document.getElementById('audioBtnIcon').className = "fa-solid fa-pause";
+        document.getElementById('audioBtnText').innerText = "Tạm Dừng Nhạc";
+    }
+
     function phatNhacThuGiãn() {
         let audio = document.getElementById('relaxAudio');
+        let icon = document.getElementById('audioBtnIcon');
+        let text = document.getElementById('audioBtnText');
         if (audio.paused) {
             audio.play().then(() => {
-                alert("Đã phát bản nhạc thư giãn du dương qua tai nghe!");
+                icon.className = "fa-solid fa-pause";
+                text.innerText = "Tạm Dừng Nhạc";
             }).catch(e => {
                 alert("Vui lòng tương tác với trang web để trình duyệt cho phép phát nhạc.");
             });
         } else {
             audio.pause();
-            alert("Đã tạm dừng nhạc thư giãn.");
+            icon.className = "fa-solid fa-music";
+            text.innerText = "Bật Nhạc Thư Giãn";
         }
     }
 
@@ -960,6 +1062,8 @@
         document.getElementById('restPopupModal').classList.add('hidden');
         let audio = document.getElementById('relaxAudio');
         audio.pause();
+        document.getElementById('audioBtnIcon').className = "fa-solid fa-music";
+        document.getElementById('audioBtnText').innerText = "Bật Nhạc Thư Giãn";
     }
 
     function syncDataWithGoogleSheets() {
@@ -1038,7 +1142,7 @@
                         </select>
                     </td>
                     <td style="text-align: center;">
-                        <button class="btn btn-green" style="padding: 3px 6px; font-size: 10px;" onclick="luuCapNhatTaiKhoan(${idx})"><i class="fa-solid fa-floppy-disk"></i> Lưu</button>
+                        <button class="btn btn-green" style="padding: 2px 6px; font-size: 10px;" onclick="luuCapNhatTaiKhoan(${idx})"><i class="fa-solid fa-floppy-disk"></i> Lưu</button>
                     </td>
                 </tr>`;
         });
@@ -1068,7 +1172,7 @@
         let thangNamVal = document.getElementById('cfgThangNam').value;
         let parts = thangNamVal.split('/');
         let nam = parts[0] ? parts[0].trim() : '2026';
-        let thang = parts[1] ? parts[1].trim().replace(/\s+/g, '_') : 'Thang_05';
+        let thang = parts[1] ? parts[1].trim().replace(/\s+/g, '_') : 'Thang_08';
         document.getElementById('cfgDrivePath').value = `BAPACO_Drive/${nam}/${thang}/`;
     }
 
@@ -1261,7 +1365,7 @@
                     <td style="text-align: right; font-weight: bold; color: ${item.thucLinhCV < 0 ? '#dc2626' : '#15803d'};">${formatMoneyVn(item.thucLinhCV)}</td>
                     <td style="text-align: right;"><span class="badge-net">${formatMoneyVn(item.thucLinhCuoiCung)}</span></td>
                     <td style="text-align: center;">
-                        <button class="btn btn-blue" style="padding: 3px 6px; font-size: 10px;" onclick="moModalPhiieuLuong(${idx})"><i class="fa-solid fa-paper-plane"></i></button>
+                        <button class="btn btn-blue" style="padding: 2px 5px; font-size: 10px;" onclick="moModalPhiieuLuong(${idx})"><i class="fa-solid fa-paper-plane"></i></button>
                     </td>
                 </tr>`;
         });
@@ -1312,7 +1416,7 @@
                     <td style="text-align: center; font-weight: bold; color: #0284c7;">${item.soNgay} ngày</td>
                     <td>${item.lyDo}</td>
                     <td style="text-align: center;">
-                        <button class="btn btn-red" style="padding: 2px 6px; font-size: 10px;" onclick="xoaLichSuNghiPhep(${idx})"><i class="fas fa-trash"></i> Xóa</button>
+                        <button class="btn btn-red" style="padding: 2px 5px; font-size: 10px;" onclick="xoaLichSuNghiPhep(${idx})"><i class="fas fa-trash"></i> Xóa</button>
                     </td>
                 </tr>`;
         });
@@ -1333,8 +1437,8 @@
                     <td style="text-align:right; font-weight:bold; color:#15803d;">${formatMoneyVn(item.total)}</td>
                     <td>Đã đẩy Drive</td>
                     <td style="text-align:center; display: flex; gap: 4px; justify-content: center;">
-                        <button class="btn btn-orange" style="padding:3px 6px;" onclick="suaHoSoVPP(${idx})"><i class="fas fa-pen"></i></button>
-                        <button class="btn btn-red" style="padding:3px 6px;" onclick="dsThanhToanVanPhongPro.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
+                        <button class="btn btn-orange" style="padding:2px 5px;" onclick="suaHoSoVPP(${idx})"><i class="fas fa-pen"></i></button>
+                        <button class="btn btn-red" style="padding:2px 5px;" onclick="dsThanhToanVanPhongPro.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>`;
         });
@@ -1385,8 +1489,8 @@
                     <td style="text-align:right;">${formatMoneyVn(item.price)}</td>
                     <td style="text-align:right; font-weight:bold;">${formatMoneyVn(item.total)}</td>
                     <td style="text-align:center; display: flex; gap: 4px; justify-content: center;">
-                        <button class="btn btn-orange" style="padding:3px 6px;" onclick="suaKhoMuc(${idx})"><i class="fas fa-pen"></i></button>
-                        <button class="btn btn-red" style="padding:3px 6px;" onclick="dsKhoMucIn.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
+                        <button class="btn btn-orange" style="padding:2px 5px;" onclick="suaKhoMuc(${idx})"><i class="fas fa-pen"></i></button>
+                        <button class="btn btn-red" style="padding:2px 5px;" onclick="dsKhoMucIn.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>`;
         });
@@ -1431,8 +1535,8 @@
                     <td style="text-align:right; color:#dc2626; font-weight:bold;">${formatMoneyVn(item.amount)}</td>
                     <td style="text-align:center;">${item.dueDate}</td>
                     <td style="text-align:center; display: flex; gap: 4px; justify-content: center;">
-                        <button class="btn btn-orange" style="padding:3px 6px;" onclick="suaTelecom(${idx})"><i class="fas fa-pen"></i></button>
-                        <button class="btn btn-red" style="padding:3px 6px;" onclick="dsThanhToanTelecom.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
+                        <button class="btn btn-orange" style="padding:2px 5px;" onclick="suaTelecom(${idx})"><i class="fas fa-pen"></i></button>
+                        <button class="btn btn-red" style="padding:2px 5px;" onclick="dsThanhToanTelecom.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>`;
         });
@@ -1475,8 +1579,8 @@
                     <td>${item.office}<br><span style="color:#dc2626; font-size:10px;">[${item.officeLic}]</span></td>
                     <td style="font-size:10px;">${item.specs}</td>
                     <td style="text-align:center; display: flex; gap: 4px; justify-content: center;">
-                        <button class="btn btn-orange" style="padding:3px 6px;" onclick="suaKhaoSat(${idx})"><i class="fas fa-pen"></i></button>
-                        <button class="btn btn-red" style="padding:3px 6px;" onclick="dsKhaoSatChuyenSieu.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
+                        <button class="btn btn-orange" style="padding:2px 5px;" onclick="suaKhaoSat(${idx})"><i class="fas fa-pen"></i></button>
+                        <button class="btn btn-red" style="padding:2px 5px;" onclick="dsKhaoSatChuyenSieu.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>`;
         });

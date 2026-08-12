@@ -83,8 +83,8 @@
         .chart-title { font-size: 11px; font-weight: 700; color: var(--text-main); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; }
 
         .tab-nav { display: flex; gap: 4px; border-bottom: 2px solid var(--border-color); padding-bottom: 6px; margin-top: 4px; flex-wrap: wrap; }
-        .tab-btn { padding: 6px 10px; border-radius: 6px 6px 0 0; background: #e2e8f0; border: none; font-weight: 700; font-size: 11px; cursor: pointer; color: var(--text-muted); }
-        .tab-btn.active { background: var(--primary); color: white; }
+        .tab-btn-nav { padding: 6px 10px; border-radius: 6px 6px 0 0; background: #e2e8f0; border: none; font-weight: 700; font-size: 11px; cursor: pointer; color: var(--text-muted); }
+        .tab-btn-nav.active { background: var(--primary); color: white; }
 
         .tab-pane { display: none; }
         .tab-pane.active { display: block; }
@@ -283,7 +283,7 @@
     <div class="banner">
         <div>
             <h1><i class="fa-solid fa-building-shield"></i> Hệ Thống Quản Lý Đa Dashboard & Lịch Vạn Niên BAPACO 2026</h1>
-            <p id="userStatusTag">Đã nâng cấp: Thiết kế lại phiếu lương siêu đẹp, sang trọng & chuyên nghiệp gửi Zalo</p>
+            <p id="userStatusTag">Đã tích hợp thêm cột Hệ số hoàn thành Ki vào bảng lương cơ bản & lương công việc</p>
         </div>
         <div class="btn-group-header">
             <button class="btn btn-yellow" onclick="moModalNhacNhoNghiGoi()"><i class="fa-solid fa-mug-hot"></i> Nhắc Nhở & Nhạc Thư Giãn</button>
@@ -353,15 +353,15 @@
 
     <!-- Tabs Navigation -->
     <div class="tab-nav">
-        <button class="tab-btn active" onclick="switchTab('dashboardTab', this)"><i class="fa-solid fa-chart-pie"></i> DB Tổng Quan</button>
-        <button class="tab-btn" onclick="switchTab('salaryCBTab', this)"><i class="fa-solid fa-file-invoice-dollar"></i> 1. Bảng Lương Cơ Bản</button>
-        <button class="tab-btn" onclick="switchTab('salaryCVTab', this)"><i class="fa-solid fa-briefcase"></i> 2. Lương Công Việc & Net</button>
-        <button class="tab-btn" onclick="switchTab('leaveTab', this)"><i class="fa-solid fa-calendar-days"></i> Quản Lý Công Phép</button>
-        <button class="tab-btn" onclick="switchTab('officePaymentTab', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Thanh Toán VPP</button>
-        <button class="tab-btn" onclick="switchTab('inkInventoryTab', this)"><i class="fa-solid fa-warehouse"></i> Kho Mực In & XNT</button>
-        <button class="tab-btn" onclick="switchTab('deliverySlipTab', this)"><i class="fa-solid fa-file-contract"></i> In Phiếu Giao Nhận</button>
-        <button class="tab-btn" onclick="switchTab('telecomPaymentTab', this)"><i class="fa-solid fa-wifi"></i> Cước Viễn Thông</button>
-        <button class="tab-btn" onclick="switchTab('surveyTab', this)"><i class="fa-solid fa-clipboard-check"></i> Khảo Sát Phần Mềm</button>
+        <button class="tab-btn-nav active" onclick="switchTab('dashboardTab', this)"><i class="fa-solid fa-chart-pie"></i> DB Tổng Quan</button>
+        <button class="tab-btn-nav" onclick="switchTab('salaryCBTab', this)"><i class="fa-solid fa-file-invoice-dollar"></i> 1. Bảng Lương Cơ Bản</button>
+        <button class="tab-btn-nav" onclick="switchTab('salaryCVTab', this)"><i class="fa-solid fa-briefcase"></i> 2. Lương Công Việc & Net</button>
+        <button class="tab-btn-nav" onclick="switchTab('leaveTab', this)"><i class="fa-solid fa-calendar-days"></i> Quản Lý Công Phép</button>
+        <button class="tab-btn-nav" onclick="switchTab('officePaymentTab', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Thanh Toán VPP</button>
+        <button class="tab-btn-nav" onclick="switchTab('inkInventoryTab', this)"><i class="fa-solid fa-warehouse"></i> Kho Mực In & XNT</button>
+        <button class="tab-btn-nav" onclick="switchTab('deliverySlipTab', this)"><i class="fa-solid fa-file-contract"></i> In Phiếu Giao Nhận</button>
+        <button class="tab-btn-nav" onclick="switchTab('telecomPaymentTab', this)"><i class="fa-solid fa-wifi"></i> Cước Viễn Thông</button>
+        <button class="tab-btn-nav" onclick="switchTab('surveyTab', this)"><i class="fa-solid fa-clipboard-check"></i> Khảo Sát Phần Mềm</button>
     </div>
 
     <!-- TAB 0: DASHBOARD TỔNG QUAN -->
@@ -391,11 +391,11 @@
         <div style="overflow-x: auto;">
             <table>
                 <colgroup>
-                    <col style="width: 40px;"><col style="width: 200px;"><col style="width: 65px;"><col style="width: 65px;"><col style="width: 95px;"><col style="width: 95px;"><col style="width: 60px;"><col style="width: 55px;"><col style="width: 55px;"><col style="width: 90px;"><col style="width: 90px;"><col style="width: 100px;"><col style="width: 80px;"><col style="width: 95px;"><col style="width: 105px;">
+                    <col style="width: 35px;"><col style="width: 180px;"><col style="width: 55px;"><col style="width: 55px;"><col style="width: 85px;"><col style="width: 85px;"><col style="width: 50px;"><col style="width: 45px;"><col style="width: 45px;"><col style="width: 55px;"><col style="width: 85px;"><col style="width: 85px;"><col style="width: 90px;"><col style="width: 75px;"><col style="width: 85px;"><col style="width: 95px;">
                 </colgroup>
                 <thead>
                     <tr>
-                        <th>STT</th><th>Họ và Tên</th><th>HSL.CB</th><th>PC.CB</th><th>L.HĐLĐ</th><th>L.CB</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>L.Thời Gian</th><th>L.Lễ/Phép</th><th>Tổng Tiền</th><th>BHTN(1%)</th><th>BHXH+BHYT</th><th>Thực Lĩnh LCB</th>
+                        <th>STT</th><th>Họ và Tên</th><th>HSL.CB</th><th>PC.CB</th><th>L.HĐLĐ</th><th>L.CB</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>Ki</th><th>L.Thời Gian</th><th>L.Lễ/Phép</th><th>Tổng Tiền</th><th>BHTN(1%)</th><th>BHXH+BHYT</th><th>Thực Lĩnh LCB</th>
                     </tr>
                 </thead>
                 <tbody id="tableBodyCB"></tbody>
@@ -412,11 +412,11 @@
         <div style="overflow-x: auto;">
             <table>
                 <colgroup>
-                    <col style="width: 40px;"><col style="width: 220px;"><col style="width: 70px;"><col style="width: 70px;"><col style="width: 105px;"><col style="width: 60px;"><col style="width: 55px;"><col style="width: 55px;"><col style="width: 100px;"><col style="width: 100px;"><col style="width: 100px;"><col style="width: 120px;"><col style="width: 60px;">
+                    <col style="width: 35px;"><col style="width: 190px;"><col style="width: 60px;"><col style="width: 60px;"><col style="width: 90px;"><col style="width: 50px;"><col style="width: 45px;"><col style="width: 45px;"><col style="width: 55px;"><col style="width: 90px;"><col style="width: 90px;"><col style="width: 90px;"><col style="width: 110px;"><col style="width: 55px;">
                 </colgroup>
                 <thead>
                     <tr>
-                        <th>STT</th><th>Họ và Tên</th><th>HSL.CV</th><th>PC.CV</th><th>L.CV Gốc</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>L.CV TT</th><th>Tạm Ứng</th><th>Thực Lĩnh CV</th><th>THỰC LĨNH NET</th><th>Zalo</th>
+                        <th>STT</th><th>Họ và Tên</th><th>HSL.CV</th><th>PC.CV</th><th>L.CV Gốc</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>Ki</th><th>L.CV TT</th><th>Tạm Ứng</th><th>Thực Lĩnh CV</th><th>THỰC LĨNH NET</th><th>Zalo</th>
                     </tr>
                 </thead>
                 <tbody id="tableBodyCV"></tbody>
@@ -1605,7 +1605,7 @@
 
     function switchTab(tabId, btnEl) {
         document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-btn-nav').forEach(b => b.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         btnEl.classList.add('active');
         if (tabId === 'dashboardTab') {
@@ -1673,7 +1673,7 @@
             i.thucLinhLCB = i.tongLCB - i.bhtn - i.bhxh;
 
             i.luongCVGoc = Math.round((hslCV + pcCV) * mucLCV);
-            i.luongCVTT = Math.round(i.luongCVGoc / ncd * ncTG);
+            i.luongCVTT = Math.round(i.luongCVGoc / ncd * ncTG * kHT);
             i.tamUng = i.tam_ung || 0;
             i.thucLinhCV = i.luongCVTT - i.tamUng;
             i.thucLinhCuoiCung = i.thucLinhLCB + i.thucLinhCV;
@@ -1757,6 +1757,7 @@
                     <td><input class="cell-input num-center" type="number" value="${item.nc_tg}" onchange="capNhatGiaTriCell(${idx}, 'nc_tg', this.value)"></td>
                     <td><input class="cell-input num-center" type="number" value="${item.nc_p || 0}" onchange="capNhatGiaTriCell(${idx}, 'nc_p', this.value)"></td>
                     <td><input class="cell-input num-center" type="number" value="${item.nc_l !== undefined ? item.nc_l : 0}" onchange="capNhatGiaTriCell(${idx}, 'nc_l', this.value)"></td>
+                    <td><input class="cell-input num-center" type="number" step="0.05" value="${item.k_ht !== undefined ? item.k_ht : 1.0}" onchange="capNhatGiaTriCell(${idx}, 'k_ht', this.value)"></td>
                     <td style="text-align: right;">${formatMoneyVn(item.luongCBTG)}</td>
                     <td style="text-align: right;">${formatMoneyVn(item.luongCBLP)}</td>
                     <td style="text-align: right; font-weight: bold;">${formatMoneyVn(item.tongLCB)}</td>
@@ -1781,6 +1782,7 @@
                     <td style="text-align: center;">${item.nc_tg}</td>
                     <td style="text-align: center;">${item.nc_p || 0}</td>
                     <td style="text-align: center;">${item.nc_l !== undefined ? item.nc_l : 0}</td>
+                    <td><input class="cell-input num-center" type="number" step="0.05" value="${item.k_ht !== undefined ? item.k_ht : 1.0}" onchange="capNhatGiaTriCell(${idx}, 'k_ht', this.value)"></td>
                     <td style="text-align: right; font-weight: bold;">${formatMoneyVn(item.luongCVTT)}</td>
                     <td><input class="cell-input money-input" type="text" value="${formatMoneyVn(item.tamUng)}" onblur="capNhatGiaTriCell(${idx}, 'tam_ung', this.value)"></td>
                     <td style="text-align: right; font-weight: bold; color: ${item.thucLinhCV < 0 ? '#dc2626' : '#15803d'};">${formatMoneyVn(item.thucLinhCV)}</td>
@@ -2148,7 +2150,7 @@
 
     function xuatExcelCB() {
         const ws = XLSX.utils.json_to_sheet(dsNhanSuGoc.map((i, idx) => ({
-            "STT": idx+1, "Họ Tên": i.hoTen, "Thực Lĩnh LCB": i.thucLinhLCB
+            "STT": idx+1, "Họ Tên": i.hoTen, "Ki": i.k_ht, "Thực Lĩnh LCB": i.thucLinhLCB
         })));
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "LuongCoBan");
@@ -2157,7 +2159,7 @@
 
     function xuatExcelCV() {
         const ws = XLSX.utils.json_to_sheet(dsNhanSuGoc.map((i, idx) => ({
-            "STT": idx+1, "Họ Tên": i.hoTen, "Lương CV Thực Tế": i.luongCVTT, "Tạm Ứng": i.tamUng, "Thực Lĩnh Cuối (NET)": i.thucLinhCuoiCung
+            "STT": idx+1, "Họ Tên": i.hoTen, "Ki": i.k_ht, "Lương CV Thực Tế": i.luongCVTT, "Tạm Ứng": i.tamUng, "Thực Lĩnh Cuối (NET)": i.thucLinhCuoiCung
         })));
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "LuongCongViecVaNet");

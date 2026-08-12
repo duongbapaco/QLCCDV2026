@@ -25,6 +25,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); padding: 16px; }
         .container { max-width: 1780px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+        .hidden { display: none !important; }
 
         .banner {
             background: linear-gradient(135deg, #0284c7, #0369a1);
@@ -167,28 +168,10 @@
             line-height: 1.3;
         }
 
-        /* Thanh tiến độ đẩy file lên Google Drive */
-        .progress-container {
-            width: 100%;
-            background-color: #e2e8f0;
-            border-radius: 6px;
-            margin-top: 6px;
-            overflow: hidden;
-            display: none;
-        }
-        .progress-bar-fill {
-            width: 0%;
-            height: 14px;
-            background-color: #16a34a;
-            text-align: center;
-            color: white;
-            font-size: 9px;
-            font-weight: bold;
-            line-height: 14px;
-            transition: width 0.3s ease;
-        }
+        .progress-container { width: 100%; background-color: #e2e8f0; border-radius: 6px; margin-top: 6px; overflow: hidden; display: none; }
+        .progress-bar-fill { width: 0%; height: 14px; background-color: #16a34a; text-align: center; color: white; font-size: 9px; font-weight: bold; line-height: 14px; transition: width 0.3s ease; }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(4px); }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); display: flex; justify-content: center; align-items: center; z-index: 10000; backdrop-filter: blur(4px); }
         .modal-card { background: white; width: 100%; max-width: 580px; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2); }
         #payslip-capture { background: white; padding: 24px; color: #0f172a; }
         .slip-header { text-align: center; border-bottom: 2px double #0284c7; padding-bottom: 12px; margin-bottom: 16px; }
@@ -207,19 +190,66 @@
 </head>
 <body>
 
-<div class="container">
+<!-- MODAL ĐĂNG NHẬP (Mặc định hiển thị chặn toàn bộ web) -->
+<div class="modal-overlay" id="loginModal">
+    <div class="modal-card" style="max-width: 400px;">
+        <div style="padding: 20px; background: #0284c7; color: white; text-align: center;">
+            <h2>ĐĂNG NHẬP HỆ THỐNG BAPACO</h2>
+            <p style="font-size: 11px; opacity: 0.9; margin-top: 4px;">Mặc định: admin / 123456</p>
+        </div>
+        <div style="padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+            <div class="form-group">
+                <label>Tên Đăng Nhập</label>
+                <input type="text" id="loginUsername" placeholder="Nhập tài khoản (admin)..." value="admin">
+            </div>
+            <div class="form-group">
+                <label>Mật Khẩu</label>
+                <input type="password" id="loginPassword" placeholder="Nhập mật khẩu (123456)..." value="123456">
+            </div>
+            <div style="text-align: right; margin-top: -4px;">
+                <a href="#" onclick="moModalQuenMatKhau()" style="font-size: 11px; color: #0284c7; text-decoration: underline;">Quên mật khẩu?</a>
+            </div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-green" style="width: 100%; justify-content: center;" onclick="thucHienDangNhap()"><i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập Hệ Thống</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL QUÊN MẬT KHẨU -->
+<div class="modal-overlay hidden" id="forgotPassModal">
+    <div class="modal-card" style="max-width: 380px;">
+        <div style="padding: 16px 20px; background: #d97706; color: white;">
+            <h3>Khôi Phục Mật Khẩu Qua Email</h3>
+        </div>
+        <div style="padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+            <p style="font-size: 11px; color: #64748b;">Nhập tên tài khoản của anh, hệ thống sẽ tự động tạo và gửi mật khẩu mới qua Google Apps Script về Email đã đăng ký.</p>
+            <div class="form-group">
+                <label>Tên Đăng Nhập</label>
+                <input type="text" id="forgotUser" placeholder="VD: admin">
+            </div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-green" onclick="xuLyQuenMatKhau()"><i class="fa-solid fa-paper-plane"></i> Gửi Mật Khẩu Mới</button>
+            <button class="btn btn-red" onclick="dongModalQuenMatKhau()"><i class="fa-solid fa-xmark"></i> Hủy</button>
+        </div>
+    </div>
+</div>
+
+<!-- TOÀN BỘ NỘI DUNG HỆ THỐNG (Ẩn khi chưa đăng nhập) -->
+<div class="container hidden" id="appMainContainer">
     <!-- Banner -->
     <div class="banner">
         <div>
             <h1><i class="fa-solid fa-building-shield"></i> Hệ Thống Quản Lý Đa Dashboard & Kho Mực In - BAPACO 2026</h1>
-            <p>Quản Trị Phân Quyền, Lịch Vạn Niên Tra Cứu Tháng, Kho Mực In, Nhắc Nhở 60 Phút & Google Drive Tự Động</p>
+            <p id="userStatusTag">Quản Trị Phân Quyền, Lịch Vạn Niên Tra Cứu Tháng, Google Drive Tự Động</p>
         </div>
         <div class="btn-group-header">
             <span id="currentUserBadge" style="background: rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold;">
-                <i class="fa-solid fa-user-shield"></i> Quyền: Quản Trị Viên (Admin)
+                <i class="fa-solid fa-user-shield"></i> Quyền: Admin
             </span>
-            <button class="btn btn-purple" onclick="moModalQuanLyTaiKhoan()"><i class="fa-solid fa-users-gear"></i> Quản Lý & Cấp Tài Khoản</button>
-            <button class="btn btn-yellow" onclick="moModalDangNhap()"><i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập</button>
+            <button class="btn btn-purple" onclick="moModalQuanLyTaiKhoan()"><i class="fa-solid fa-users-gear"></i> Quản Lý Tài Khoản</button>
+            <button class="btn btn-red" onclick="thucHienDangXuat()"><i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất</button>
             <input type="file" id="excelFileInput" accept=".xlsx, .xls" style="display: none;" onchange="docFileExcel(event)">
             <button class="btn btn-green" onclick="document.getElementById('excelFileInput').click()">
                 <i class="fa-solid fa-file-excel"></i> Nạp Excel
@@ -403,7 +433,7 @@
     <!-- TAB 3: THANH TOÁN VĂN PHÒNG -->
     <div id="officePaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG (Tự động tạo thư mục và đẩy file lên Google Drive)</div>
+            <div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG (Tự động tạo thư mục & Đẩy file lên Google Drive)</div>
         </div>
         <div class="form-card" id="formOfficeContainer" style="grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));">
             <div class="form-group">
@@ -466,10 +496,8 @@
                 <input type="text" id="previewOfficeTotal" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;" value="0 đ">
             </div>
             <div class="form-group" style="grid-column: span 2;">
-                <label><i class="fa-brands fa-google-drive" style="color: #16a34a;"></i> Đính Kèm Chứng Từ (Tự động đẩy vào Drive cá nhân)</label>
+                <label><i class="fa-brands fa-google-drive" style="color: #16a34a;"></i> Đính Kèm Chứng Từ (Tự động đẩy vào Google Drive)</label>
                 <input type="file" id="inputOfficeFiles" multiple style="background: white; padding: 4px;" onchange="kiemTraVaChuanBiUpload()">
-                
-                <!-- Thanh theo dõi tiến độ đẩy file lên Google Drive -->
                 <div class="progress-container" id="uploadProgressContainer">
                     <div class="progress-bar-fill" id="uploadProgressBar">0%</div>
                 </div>
@@ -792,35 +820,12 @@
     </div>
 </div>
 
-<!-- Modal Đăng Nhập -->
-<div class="modal-overlay" id="loginModal">
-    <div class="modal-card" style="max-width: 400px;">
-        <div style="padding: 20px; background: #0284c7; color: white; text-align: center;">
-            <h2>ĐĂNG NHẬP HỆ THỐNG BAPACO</h2>
-        </div>
-        <div style="padding: 20px; display: flex; flex-direction: column; gap: 12px;">
-            <div class="form-group">
-                <label>Tên Đăng Nhập</label>
-                <input type="text" id="loginUsername" placeholder="Nhập tài khoản...">
-            </div>
-            <div class="form-group">
-                <label>Mật Khẩu</label>
-                <input type="password" id="loginPassword" placeholder="Nhập mật khẩu...">
-            </div>
-        </div>
-        <div class="modal-actions">
-            <button class="btn btn-green" onclick="thucHienDangNhap()"><i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập</button>
-            <button class="btn btn-red" onclick="document.getElementById('loginModal').style.display='none'"><i class="fa-solid fa-xmark"></i> Hủy</button>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Quản Lý & Cấp Tài Khoản Phân Quyền -->
-<div class="modal-overlay" id="userManagementModal">
+<!-- MODAL QUẢN LÝ & CẤP TÀI KHOẢN PHÂN QUYỀN -->
+<div class="modal-overlay hidden" id="userManagementModal">
     <div class="modal-card" style="max-width: 650px;">
         <div style="padding: 16px 20px; background: #8b5cf6; color: white; display: flex; justify-content: space-between; align-items: center;">
             <h2>QUẢN LÝ TÀI KHOẢN & PHÂN QUYỀN TRUY CẬP</h2>
-            <button class="btn btn-red" style="padding: 4px 8px;" onclick="document.getElementById('userManagementModal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
+            <button class="btn btn-red" style="padding: 4px 8px;" onclick="document.getElementById('userManagementModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div style="padding: 20px; display: flex; flex-direction: column; gap: 14px;">
             <div class="form-card" style="margin-bottom: 0;">
@@ -831,6 +836,10 @@
                 <div class="form-group">
                     <label>Mật Khẩu</label>
                     <input type="password" id="newAccPass" placeholder="Nhập password...">
+                </div>
+                <div class="form-group">
+                    <label>Email Liên Kết (Nhận Pass)</label>
+                    <input type="email" id="newAccEmail" placeholder="Nhập email...">
                 </div>
                 <div class="form-group">
                     <label>Phân Quyền Chức Năng</label>
@@ -849,6 +858,7 @@
                     <thead>
                         <tr>
                             <th>Tên Đăng Nhập</th>
+                            <th>Email</th>
                             <th>Quyền Hạn</th>
                             <th>Thao Tác</th>
                         </tr>
@@ -860,8 +870,8 @@
     </div>
 </div>
 
-<!-- Modal Phiếu Lương Zalo -->
-<div class="modal-overlay" id="previewModal">
+<!-- MODAL PHIẾU LƯƠNG ZALO -->
+<div class="modal-overlay hidden" id="previewModal">
     <div class="modal-card">
         <div id="payslip-capture">
             <div class="slip-header">
@@ -891,8 +901,8 @@
     </div>
 </div>
 
-<!-- Modal Popup Nhắc Nhở Thư Giãn (Cứ sau 60 phút) -->
-<div class="modal-overlay" id="relaxPopupModal" style="display: none;">
+<!-- MODAL POPUP NHẮC NHỞ THƯ GIÃN (60 PHÚT) -->
+<div class="modal-overlay hidden" id="relaxPopupModal">
     <div class="modal-card" style="border: 3px solid #16a34a;">
         <div style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); padding: 24px; text-align: center;">
             <i class="fa-solid fa-mug-hot" style="font-size: 40px; color: #16a34a; margin-bottom: 10px;"></i>
@@ -909,6 +919,8 @@
 </div>
 
 <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwMaUGfEWffLAgxpjGbDPClyGfNqjJqyObmWFJc-VqJXRZLZ9bThiUv95SFeJ1bWeHpPg/exec";
+
     const DU_LIEU_MAU_11 = [
         {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 5000000, "phep_cap": 12, "phep_ton": 2},
         {"stt": 2, "hoTen": "Nguyễn Văn Nam", "hsl_cb": 1.48, "pc_cb": 0, "hsl_cv": 2.24, "pc_cv": 0, "nc_tg": 14, "nc_p": 6, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 1},
@@ -946,15 +958,14 @@
     ];
 
     let danhSachTaiKhoan = [
-        { username: 'admin', pass: '123456', role: 'Admin' },
-        { username: 'vpp_user', pass: '123456', role: 'VPP' },
-        { username: 'khaosat_user', pass: '123456', role: 'KhaoSat' }
+        { username: 'admin', pass: '123456', role: 'Admin', email: 'admin@bapaco.vn' },
+        { username: 'vpp_user', pass: '123456', role: 'VPP', email: 'vpp@bapaco.vn' },
+        { username: 'khaosat_user', pass: '123456', role: 'KhaoSat', email: 'khaosat@bapaco.vn' }
     ];
 
-    let currentLoggedInUser = { username: 'Admin Hệ Thống', role: 'Admin' };
+    let currentLoggedInUser = null;
     let currentMiniCalYear = 2026;
     let currentMiniCalMonth = 7; // Tháng 8
-
     let dsNhanSuGoc = [];
     let selectedNvForSlip = null;
     let chartSalaryFullInstance = null;
@@ -996,12 +1007,126 @@
         renderMiniCalendar(currentMiniCalYear, currentMiniCalMonth);
         capNhat();
 
-        // Bộ đếm thời gian 60 phút hiển thị popup nhắc nhở nghỉ ngơi
+        // Nhắc nhở nghỉ ngơi sau mỗi 60 phút
         setInterval(() => {
-            document.getElementById('relaxPopupModal').style.display = 'flex';
+            if (currentLoggedInUser) {
+                document.getElementById('relaxPopupModal').classList.remove('hidden');
+            }
         }, 3600000);
     };
 
+    // ĐĂNG NHẬP & PHÂN QUYỀN
+    function thucHienDangNhap() {
+        let u = document.getElementById('loginUsername').value.trim();
+        let p = document.getElementById('loginPassword').value.trim();
+        let found = danhSachTaiKhoan.find(acc => acc.username === u && acc.pass === p);
+        if (found) {
+            currentLoggedInUser = found;
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('appMainContainer').classList.remove('hidden');
+            document.getElementById('currentUserBadge').innerHTML = `<i class="fa-solid fa-user-check"></i> Quyền: ${found.username} (${found.role})`;
+            alert(`Đăng nhập thành công với tài khoản: ${found.username} (${found.role})`);
+            setTimeout(() => { khoiTaoHoacCapNhatChartsFull(); }, 200);
+        } else {
+            alert("Sai tên đăng nhập hoặc mật khẩu!");
+        }
+    }
+
+    function thucHienDangXuat() {
+        if (confirm("Anh có chắc chắn muốn đăng xuất khỏi hệ thống?")) {
+            currentLoggedInUser = null;
+            document.getElementById('appMainContainer').classList.add('hidden');
+            document.getElementById('loginModal').classList.remove('hidden');
+        }
+    }
+
+    function moModalQuenMatKhau() {
+        document.getElementById('loginModal').classList.add('hidden');
+        document.getElementById('forgotPassModal').classList.remove('hidden');
+    }
+
+    function dongModalQuenMatKhau() {
+        document.getElementById('forgotPassModal').classList.add('hidden');
+        document.getElementById('loginModal').classList.remove('hidden');
+    }
+
+    function xuLyQuenMatKhau() {
+        let u = document.getElementById('forgotUser').value.trim();
+        let acc = danhSachTaiKhoan.find(a => a.username === u);
+        if (!acc) {
+            alert("Không tìm thấy tên tài khoản này trong hệ thống!");
+            return;
+        }
+        let newPass = Math.random().toString(36).slice(-6);
+        acc.pass = newPass;
+        localStorage.setItem('BAPACO_ACCOUNTS_LIST', JSON.stringify(danhSachTaiKhoan));
+
+        fetch(scriptURL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'reset', email: acc.email, username: u, pass: newPass })
+        }).then(() => {
+            alert(`Mật khẩu mới đã được gửi tự động qua email tới: ${acc.email}`);
+            dongModalQuenMatKhau();
+        }).catch(() => {
+            alert("Đã cập nhật mật khẩu mới ngẫu nhiên: " + newPass);
+            dongModalQuenMatKhau();
+        });
+    }
+
+    function moModalQuanLyTaiKhoan() {
+        if (currentLoggedInUser.role !== 'Admin') {
+            alert("Chỉ tài khoản Quản Trị Viên (Admin) mới có quyền quản lý tài khoản!");
+            return;
+        }
+        renderUserTable();
+        document.getElementById('userManagementModal').classList.remove('hidden');
+    }
+
+    function renderUserTable() {
+        let tbody = document.getElementById('userListTableBody');
+        tbody.innerHTML = '';
+        danhSachTaiKhoan.forEach((acc, idx) => {
+            tbody.innerHTML += `
+                <tr>
+                    <td><b>${acc.username}</b></td>
+                    <td>${acc.email || 'N/A'}</td>
+                    <td><span class="badge-net">${acc.role}</span></td>
+                    <td style="text-align:center;">
+                        <button class="btn btn-red" style="padding:2px 6px; font-size:10px;" onclick="xoaTaiKhoan(${idx})"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>`;
+        });
+    }
+
+    function taoTaiKhoanMoi() {
+        let u = document.getElementById('newAccUser').value.trim();
+        let p = document.getElementById('newAccPass').value.trim();
+        let email = document.getElementById('newAccEmail').value.trim();
+        let r = document.getElementById('newAccRole').value;
+        if (!u || !p || !email) {
+            alert("Vui lòng điền đầy đủ tên đăng nhập, mật khẩu và email!");
+            return;
+        }
+        danhSachTaiKhoan.push({ username: u, pass: p, role: r, email: email });
+        localStorage.setItem('BAPACO_ACCOUNTS_LIST', JSON.stringify(danhSachTaiKhoan));
+        document.getElementById('newAccUser').value = '';
+        document.getElementById('newAccPass').value = '';
+        document.getElementById('newAccEmail').value = '';
+        renderUserTable();
+        alert("Đã cấp tài khoản thành công!");
+    }
+
+    function xoaTaiKhoan(idx) {
+        if (danhSachTaiKhoan.length <= 1) {
+            alert("Cần duy trì ít nhất một tài khoản hệ thống!");
+            return;
+        }
+        danhSachTaiKhoan.splice(idx, 1);
+        localStorage.setItem('BAPACO_ACCOUNTS_LIST', JSON.stringify(danhSachTaiKhoan));
+        renderUserTable();
+    }
+
+    // LỊCH VẠN NIÊN & PHONG THỦY
     function renderMiniCalendar(year, month) {
         let grid = document.getElementById('miniCalendarGrid');
         grid.innerHTML = '';
@@ -1025,9 +1150,8 @@
         for (let d = 1; d <= totalDays; d++) {
             let isToday = (year === 2026 && month === 7 && d === 12);
             let todayClass = isToday ? 'cal-td today' : 'cal-td';
-            
             let lunarDay = (d + 18 > 30) ? (d + 18 - 30) : (d + 18);
-            if (month === 7 && d === 12) lunarDay = 30;
+            if (month === 7 && d === 12) lunarDay = 30; // Chuẩn xác Âm lịch 30/06
 
             grid.innerHTML += `<div class="${todayClass}" title="Âm lịch: ${lunarDay} Âm" onclick="chonNgayMiniCal(${d}, ${month+1}, ${year}, ${lunarDay})">${d}</div>`;
         }
@@ -1057,90 +1181,6 @@
         }
     }
 
-    function moModalDangNhap() {
-        document.getElementById('loginModal').style.display = 'flex';
-    }
-
-    function thucHienDangNhap() {
-        let u = document.getElementById('loginUsername').value.trim();
-        let p = document.getElementById('loginPassword').value.trim();
-        let found = danhSachTaiKhoan.find(acc => acc.username === u && acc.pass === p);
-        if (found) {
-            currentLoggedInUser = found;
-            document.getElementById('currentUserBadge').innerHTML = `<i class="fa-solid fa-user-check"></i> Quyền: ${found.username} (${found.role})`;
-            document.getElementById('loginModal').style.display = 'none';
-            alert(`Đăng nhập thành công với tài khoản: ${found.username} (${found.role})`);
-        } else {
-            alert("Sai tên đăng nhập hoặc mật khẩu!");
-        }
-    }
-
-    function moModalQuanLyTaiKhoan() {
-        if (currentLoggedInUser.role !== 'Admin') {
-            alert("Chỉ tài khoản Quản Trị Viên (Admin) mới có quyền cấp tài khoản và phân quyền!");
-            return;
-        }
-        renderUserTable();
-        document.getElementById('userManagementModal').style.display = 'flex';
-    }
-
-    function renderUserTable() {
-        let tbody = document.getElementById('userListTableBody');
-        tbody.innerHTML = '';
-        danhSachTaiKhoan.forEach((acc, idx) => {
-            tbody.innerHTML += `
-                <tr>
-                    <td><b>${acc.username}</b></td>
-                    <td><span class="badge-net">${acc.role}</span></td>
-                    <td style="text-align:center;">
-                        <button class="btn btn-red" style="padding:2px 6px; font-size:10px;" onclick="xoaTaiKhoan(${idx})"><i class="fas fa-trash"></i></button>
-                    </td>
-                </tr>`;
-        });
-    }
-
-    function taoTaiKhoanMoi() {
-        let u = document.getElementById('newAccUser').value.trim();
-        let p = document.getElementById('newAccPass').value.trim();
-        let r = document.getElementById('newAccRole').value;
-        if (!u || !p) {
-            alert("Vui lòng điền đầy đủ tên đăng nhập và mật khẩu!");
-            return;
-        }
-        danhSachTaiKhoan.push({ username: u, pass: p, role: r });
-        localStorage.setItem('BAPACO_ACCOUNTS_LIST', JSON.stringify(danhSachTaiKhoan));
-        document.getElementById('newAccUser').value = '';
-        document.getElementById('newAccPass').value = '';
-        renderUserTable();
-        alert("Đã cấp tài khoản thành công!");
-    }
-
-    function xoaTaiKhoan(idx) {
-        if (danhSachTaiKhoan.length <= 1) {
-            alert("Cần duy trì ít nhất một tài khoản quản trị hệ thống!");
-            return;
-        }
-        danhSachTaiKhoan.splice(idx, 1);
-        localStorage.setItem('BAPACO_ACCOUNTS_LIST', JSON.stringify(danhSachTaiKhoan));
-        renderUserTable();
-    }
-
-    function dongModalThuGiãnVaPhatNhac() {
-        document.getElementById('relaxPopupModal').style.display = 'none';
-        let audio = document.getElementById('relaxAudio');
-        audio.play().catch(e => console.log("Auto-play restricted:", e));
-        alert("Đã kích hoạt nhạc thư giãn Lo-Fi. Chúc anh tiếp tục làm việc tràn đầy năng lượng!");
-    }
-
-    function capNhatCấuTrúcThưMụcDrive() {
-        let thangNamVal = document.getElementById('cfgThangNam').value;
-        let parts = thangNamVal.split('/');
-        let nam = parts[0] ? parts[0].trim() : '2026';
-        let thang = parts[1] ? parts[1].trim().replace(/\s+/g, '_') : 'Thang_08';
-        let drivePath = `BAPACO_Drive/${nam}/${thang}/`;
-        document.getElementById('cfgDrivePath').value = drivePath;
-    }
-
     function phatNhacThuGiãn() {
         let audio = document.getElementById('relaxAudio');
         if (audio.paused) {
@@ -1150,6 +1190,22 @@
             audio.pause();
             alert("Đã tạm dừng âm thanh thư giãn.");
         }
+    }
+
+    function dongModalThuGiãnVaPhatNhac() {
+        document.getElementById('relaxPopupModal').classList.add('hidden');
+        let audio = document.getElementById('relaxAudio');
+        audio.play().catch(e => {});
+        alert("Đã kích hoạt nhạc thư giãn. Chúc anh tiếp tục làm việc hiệu quả!");
+    }
+
+    function capNhatCấuTrúcThưMụcDrive() {
+        let thangNamVal = document.getElementById('cfgThangNam').value;
+        let parts = thangNamVal.split('/');
+        let nam = parts[0] ? parts[0].trim() : '2026';
+        let thang = parts[1] ? parts[1].trim().replace(/\s+/g, '_') : 'Thang_08';
+        let drivePath = `BAPACO_Drive/${nam}/${thang}/`;
+        document.getElementById('cfgDrivePath').value = drivePath;
     }
 
     function capNhatAutoID() {
@@ -1466,7 +1522,7 @@
             return;
         }
 
-        let thangNamVal = document.getElementById('cfgThangNam').value; // VD: "2026 / Tháng 08"
+        let thangNamVal = document.getElementById('cfgThangNam').value;
         let parts = thangNamVal.split('/');
         let year = parts[0] ? parts[0].trim() : '2026';
         let month = parts[1] ? parts[1].trim().replace(/\s+/g, '_') : 'Thang_08';
@@ -1477,14 +1533,11 @@
         let statusText = document.getElementById('uploadStatusText');
 
         let filesList = [];
-        // URL Google Apps Script Web App đã được tích hợp sẵn
-        let scriptURL = "https://script.google.com/macros/s/AKfycbwMaUGfEWffLAgxpjGbDPClyGfNqjJqyObmWFJc-VqJXRZLZ9bThiUv95SFeJ1bWeHpPg/exec";
-
         if (fileInput.files.length > 0) {
             progressContainer.style.display = 'block';
             progressBar.style.width = '30%';
             progressBar.innerText = '30%';
-            statusText.innerText = "Đang kết nối Google Drive cá nhân để tạo thư mục tự động...";
+            statusText.innerText = "Đang kết nối Google Drive để tạo thư mục tự động...";
 
             for (let i = 0; i < fileInput.files.length; i++) {
                 let f = fileInput.files[i];
@@ -1507,9 +1560,9 @@
                     });
                     let result = await response.json();
                     if (result.status === 'success') {
-                        filesList.push({ name: f.name, url: result.fileUrl });
+                        filesList.push({ name: f.name, url: result.url });
                     } else {
-                        alert("Lỗi khi đẩy file lên Drive: " + result.message);
+                        alert("Lỗi khi đẩy file lên Drive: " + (result.message || 'Unknown'));
                     }
                 } catch(err) {
                     alert("Lỗi kết nối mạng khi tải file lên Drive!");
@@ -1524,7 +1577,6 @@
 
         dsThanhToanVanPhongPro.push({ id, content, beneficiary, stk, bank, date, qty, unit, price, total, files: filesList });
         
-        // Reset form
         document.getElementById('inputOfficeContent').value = '';
         document.getElementById('inputOfficeBeneficiary').value = '';
         document.getElementById('inputOfficeStk').value = '';
@@ -1741,11 +1793,11 @@
         document.getElementById("slipTamUng").innerText = "-" + formatMoneyVn(nv.tamUng);
         document.getElementById("slipThucLinh").innerText = formatMoneyVn(nv.thucLinhCuoiCung);
 
-        document.getElementById("previewModal").style.display = "flex";
+        document.getElementById("previewModal").classList.remove('hidden');
     }
 
     function dongModal() {
-        document.getElementById("previewModal").style.display = "none";
+        document.getElementById("previewModal").classList.add('hidden');
     }
 
     function taiAnhPhieuLuongZalo() {
@@ -1758,7 +1810,7 @@
             link.download = `Phieu_Luong_${selectedNvForSlip.hoTen.replace(/\s+/g, '_')}_${drivePath.replace(/\//g, '_')}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
-            alert(`Đã lưu phiếu lương trực tuyến vào cấu trúc Google Drive: ${drivePath}`);
+            alert(`Đã tải xuống phiếu lương trực tuyến!`);
         });
     }
 

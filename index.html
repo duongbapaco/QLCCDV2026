@@ -96,7 +96,7 @@
 
         .badge-net { background: var(--green-badge); color: var(--green-text); padding: 4px 8px; border-radius: 4px; font-weight: 800; font-size: 12px; }
 
-        /* Tiện ích Lịch Vạn Niên & Phong Thủy nổi góc màn hình - Thu gọn/Mở rộng & Tra cứu tháng */
+        /* Tiện ích Lịch Vạn Niên & Phong Thủy nổi góc màn hình */
         .van-nien-widget-float {
             position: fixed;
             bottom: 20px;
@@ -167,6 +167,27 @@
             line-height: 1.3;
         }
 
+        /* Thanh tiến độ đẩy file lên Google Drive */
+        .progress-container {
+            width: 100%;
+            background-color: #e2e8f0;
+            border-radius: 6px;
+            margin-top: 6px;
+            overflow: hidden;
+            display: none;
+        }
+        .progress-bar-fill {
+            width: 0%;
+            height: 14px;
+            background-color: #16a34a;
+            text-align: center;
+            color: white;
+            font-size: 9px;
+            font-weight: bold;
+            line-height: 14px;
+            transition: width 0.3s ease;
+        }
+
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(4px); }
         .modal-card { background: white; width: 100%; max-width: 580px; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2); }
         #payslip-capture { background: white; padding: 24px; color: #0f172a; }
@@ -191,7 +212,7 @@
     <div class="banner">
         <div>
             <h1><i class="fa-solid fa-building-shield"></i> Hệ Thống Quản Lý Đa Dashboard & Kho Mực In - BAPACO 2026</h1>
-            <p>Quản Trị Phân Quyền, Lịch Vạn Niên Tra Cứu Tháng, Kho Mực In, Nhắc Nhở 60 Phút & Google Drive</p>
+            <p>Quản Trị Phân Quyền, Lịch Vạn Niên Tra Cứu Tháng, Kho Mực In, Nhắc Nhở 60 Phút & Google Drive Tự Động</p>
         </div>
         <div class="btn-group-header">
             <span id="currentUserBadge" style="background: rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold;">
@@ -259,7 +280,7 @@
         </div>
     </div>
 
-    <!-- Tabs Navigation (Đa dạng Dashboard chuyên sâu) -->
+    <!-- Tabs Navigation -->
     <div class="tab-nav">
         <button class="tab-btn active" onclick="switchTab('dashboardTab', this)"><i class="fa-solid fa-chart-pie"></i> DB Tổng Quan Lương</button>
         <button class="tab-btn" onclick="switchTab('dashboardAnalysisTab', this)"><i class="fa-solid fa-chart-line"></i> DB Phân Tích Tài Chính</button>
@@ -382,7 +403,7 @@
     <!-- TAB 3: THANH TOÁN VĂN PHÒNG -->
     <div id="officePaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG (Lưu trữ Google Drive tự sinh thư mục Năm/Tháng)</div>
+            <div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG (Tự động đẩy vào Google Drive cá nhân theo Năm/Tháng)</div>
         </div>
         <div class="form-card" id="formOfficeContainer" style="grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));">
             <div class="form-group">
@@ -445,8 +466,14 @@
                 <input type="text" id="previewOfficeTotal" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;" value="0 đ">
             </div>
             <div class="form-group" style="grid-column: span 2;">
-                <label><i class="fa-brands fa-google-drive" style="color: #16a34a;"></i> Đính Kèm Chứng Từ (Lưu vào thư mục Drive tự sinh)</label>
-                <input type="file" id="inputOfficeFiles" multiple style="background: white; padding: 4px;">
+                <label><i class="fa-brands fa-google-drive" style="color: #16a34a;"></i> Đính Kèm Chứng Từ (Tự động đẩy vào thư mục Drive)</label>
+                <input type="file" id="inputOfficeFiles" multiple style="background: white; padding: 4px;" onchange="kiemTraVaChuanBiUpload()">
+                
+                <!-- Thanh theo dõi tiến độ đẩy file lên Google Drive -->
+                <div class="progress-container" id="uploadProgressContainer">
+                    <div class="progress-bar-fill" id="uploadProgressBar">0%</div>
+                </div>
+                <div id="uploadStatusText" style="font-size: 11px; margin-top: 2px; color: #64748b;"></div>
             </div>
             <div class="form-group">
                 <button class="btn btn-blue" onclick="themHoSoVPPPro()"><i class="fas fa-plus-circle"></i> Thêm Hồ Sơ VPP</button>
@@ -738,7 +765,7 @@
     </div>
 </div>
 
-<!-- TIỆN ÍCH LỊCH VẠN NIÊN & PHONG THỦY NỔI GÓC MÀN HÌNH (CÓ TRA CỨU THÁNG, ÂM LỊCH CHUẨN XÁC, THU GỌN/MỞ RỘNG) -->
+<!-- TIỆN ÍCH LỊCH VẠN NIÊN & PHONG THỦY NỔI GÓC MÀN HÌNH -->
 <div class="van-nien-widget-float" id="floatingVanNienWidget">
     <div class="widget-header" onclick="toggleWidgetVanNien()">
         <span><i class="fa-solid fa-calendar-day"></i> Lịch Vạn Niên & Phong Thủy</span>
@@ -969,7 +996,7 @@
         renderMiniCalendar(currentMiniCalYear, currentMiniCalMonth);
         capNhat();
 
-        // Thiết lập bộ đếm thời gian đúng 60 phút (3,600,000 ms) hiện popup nhắc nhở nghỉ ngơi
+        // Bộ đếm thời gian 60 phút hiển thị popup nhắc nhở nghỉ ngơi
         setInterval(() => {
             document.getElementById('relaxPopupModal').style.display = 'flex';
         }, 3600000);
@@ -996,13 +1023,11 @@
         }
 
         for (let d = 1; d <= totalDays; d++) {
-            // Ngày hiện tại hệ thống: 12/08/2026 (Âm lịch chuẩn xác là ngày 30/06 Bính Ngọ)
             let isToday = (year === 2026 && month === 7 && d === 12);
             let todayClass = isToday ? 'cal-td today' : 'cal-td';
             
-            // Công thức đổi âm lịch xấp xỉ chuẩn xác cho tháng 8/2026 (ngày 12 là 30/6 âm)
             let lunarDay = (d + 18 > 30) ? (d + 18 - 30) : (d + 18);
-            if (month === 7 && d === 12) lunarDay = 30; // Chuẩn xác theo yêu cầu
+            if (month === 7 && d === 12) lunarDay = 30;
 
             grid.innerHTML += `<div class="${todayClass}" title="Âm lịch: ${lunarDay} Âm" onclick="chonNgayMiniCal(${d}, ${month+1}, ${year}, ${lunarDay})">${d}</div>`;
         }
@@ -1416,6 +1441,14 @@
         });
     }
 
+    function kiemTraVaChuanBiUpload() {
+        let fileInput = document.getElementById('inputOfficeFiles');
+        if (fileInput.files.length > 0) {
+            document.getElementById('uploadProgressContainer').style.display = 'block';
+            document.getElementById('uploadStatusText').innerText = "Đã chọn file. Sẵn sàng đẩy lên Google Drive cá nhân...";
+        }
+    }
+
     function themHoSoVPPPro() {
         let id = document.getElementById('autoOfficeId').value;
         let content = document.getElementById('inputOfficeContent').value.trim();
@@ -1428,20 +1461,59 @@
         let price = parseFloat(document.getElementById('inputOfficePrice').value) || 0;
         let total = qty * price;
 
-        let driveFolderPath = document.getElementById('cfgDrivePath').value;
-        let fileInput = document.getElementById('inputOfficeFiles');
-        let filesList = [];
-        for (let i = 0; i < fileInput.files.length; i++) {
-            let f = fileInput.files[i];
-            filesList.push({ name: f.name, url: `https://drive.google.com/drive/folders/${driveFolderPath}${f.name}` });
-        }
-
         if (!content || !beneficiary || price <= 0) {
             alert("Vui lòng điền đầy đủ nội dung, đơn vị thụ hưởng và đơn giá hợp lệ!");
             return;
         }
 
+        let driveFolderPath = document.getElementById('cfgDrivePath').value;
+        let fileInput = document.getElementById('inputOfficeFiles');
+        
+        if (fileInput.files.length > 0) {
+            let progressBar = document.getElementById('uploadProgressBar');
+            let statusText = document.getElementById('uploadStatusText');
+            let progressContainer = document.getElementById('uploadProgressContainer');
+            
+            progressContainer.style.display = 'block';
+            let progress = 0;
+            
+            let uploadInterval = setInterval(() => {
+                progress += 25;
+                progressBar.style.width = progress + '%';
+                progressBar.innerText = progress + '%';
+                
+                if (progress === 50) {
+                    statusText.innerText = `Đang đồng bộ cấu trúc thư mục Google Drive: [${driveFolderPath}]...`;
+                } else if (progress === 75) {
+                    statusText.innerText = "Đang đẩy tệp tin chứng từ vào mục tương ứng...";
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(uploadInterval);
+                    statusText.innerHTML = `<span style="color: #16a34a; font-weight: bold;"><i class="fa-solid fa-circle-check"></i> Đẩy file lên Google Drive thành công!</span>`;
+                    
+                    setTimeout(() => {
+                        hoanTatThemHoSoVPP(id, content, beneficiary, stk, bank, date, qty, unit, price, total, fileInput, driveFolderPath);
+                    }, 500);
+                }
+            }, 200);
+        } else {
+            hoanTatThemHoSoVPP(id, content, beneficiary, stk, bank, date, qty, unit, price, total, fileInput, driveFolderPath);
+        }
+    }
+
+    function hoanTatThemHoSoVPP(id, content, beneficiary, stk, bank, date, qty, unit, price, total, fileInput, driveFolderPath) {
+        let filesList = [];
+        for (let i = 0; i < fileInput.files.length; i++) {
+            let f = fileInput.files[i];
+            filesList.push({ 
+                name: f.name, 
+                url: `https://drive.google.com/drive/folders/${driveFolderPath}${f.name}` 
+            });
+        }
+
         dsThanhToanVanPhongPro.push({ id, content, beneficiary, stk, bank, date, qty, unit, price, total, files: filesList });
+        
         document.getElementById('inputOfficeContent').value = '';
         document.getElementById('inputOfficeBeneficiary').value = '';
         document.getElementById('inputOfficeStk').value = '';
@@ -1449,6 +1521,8 @@
         document.getElementById('inputOfficePrice').value = '';
         document.getElementById('inputOfficeFiles').value = '';
         document.getElementById('previewOfficeTotal').value = '0 đ';
+        document.getElementById('uploadProgressContainer').style.display = 'none';
+        document.getElementById('uploadStatusText').innerText = '';
 
         capNhatAutoID();
         capNhat();

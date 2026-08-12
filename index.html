@@ -107,6 +107,89 @@
         .badge-warning { background: var(--yellow-badge); color: var(--yellow-text); padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 10px; display: inline-block; }
         .badge-danger { background: var(--red-badge); color: var(--red-text); padding: 2px 6px; border-radius: 8px; font-weight: 800; font-size: 10px; display: inline-block; }
 
+        /* GIAO DIỆN ĐĂNG NHẬP MỚI TO, RÕ RÀNG & CHUYÊN NGHIỆP */
+        .login-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #0369a1 0%, #0284c7 50%, #0f172a 100%);
+            display: flex; justify-content: center; align-items: center; z-index: 99999;
+            padding: 20px;
+        }
+        .login-box {
+            background: #ffffff; width: 100%; max-width: 440px; border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); overflow: hidden;
+            animation: fadeInScale 0.4s ease-out forwards;
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .login-header-pro {
+            background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 28px 24px;
+            text-align: center; position: relative;
+        }
+        .login-logo-icon {
+            font-size: 42px; margin-bottom: 10px; background: rgba(255, 255, 255, 0.15);
+            width: 75px; height: 75px; display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .login-header-pro h2 { font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        .login-header-pro p { font-size: 12px; opacity: 0.9; margin-top: 6px; }
+
+        .login-body-pro { padding: 28px 24px; display: flex; flex-direction: column; gap: 16px; }
+        .login-field-group { display: flex; flex-direction: column; gap: 6px; }
+        .login-field-group label { font-size: 12px; font-weight: 700; color: #334155; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+        .login-field-group label i { color: var(--primary); }
+        .login-input-wrap { position: relative; display: flex; align-items: center; }
+        .login-input-wrap i.icon-left { position: absolute; left: 14px; color: #94a3b8; font-size: 15px; }
+        .login-input-pro {
+            width: 100%; padding: 12px 14px 12px 42px; border-radius: 8px; border: 1.5px solid var(--border-color);
+            font-size: 14px; font-weight: 600; color: #0f172a; outline: none; transition: all 0.2s; background: #f8fafc;
+        }
+        .login-input-pro:focus {
+            border-color: var(--primary); background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15);
+        }
+        .login-submit-btn {
+            background: linear-gradient(135deg, #16a34a, #15803d); color: white; border: none;
+            width: 100%; padding: 13px; border-radius: 8px; font-size: 14px; font-weight: 800;
+            text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3); margin-top: 6px;
+        }
+        .login-submit-btn:hover { background: linear-gradient(135deg, #15803d, #166534); transform: translateY(-1px); }
+        .login-footer-info {
+            text-align: center; font-size: 11px; color: #64748b; margin-top: 4px; padding-bottom: 24px;
+        }
+
+        /* GIAO DIỆN PHIẾU LƯƠNG CỰC KỲ SANG TRỌNG & CHUYÊN NGHIỆP */
+        .payslip-container-pro {
+            background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); overflow: hidden; max-width: 500px; margin: 0 auto;
+        }
+        .payslip-header-box {
+            background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 20px; text-align: center;
+        }
+        .payslip-header-box h2 { font-size: 14px; font-weight: 700; letter-spacing: 0.5px; opacity: 0.9; margin-bottom: 4px; }
+        .payslip-header-box h3 { font-size: 16px; font-weight: 800; text-transform: uppercase; }
+        .payslip-period-badge {
+            display: inline-block; background: rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 20px;
+            font-size: 11px; font-weight: 600; margin-top: 6px;
+        }
+        .payslip-body-box { padding: 20px; display: flex; flex-direction: column; gap: 12px; font-size: 12px; }
+        .payslip-row-item {
+            display: flex; justify-content: space-between; align-items: center; padding: 8px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        .payslip-row-label { color: #64748b; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        .payslip-row-val { color: #0f172a; font-weight: 700; font-size: 13px; }
+        .payslip-total-box {
+            background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 8px; padding: 12px 16px;
+            display: flex; justify-content: space-between; align-items: center; margin-top: 4px;
+        }
+        .payslip-total-label { font-weight: 800; color: #166534; font-size: 11px; text-transform: uppercase; }
+        .payslip-total-val { font-size: 16px; font-weight: 800; color: #15803d; }
+        .payslip-footer-note { text-align: center; font-size: 10px; font-style: italic; color: #64748b; margin-top: 6px; }
+
         /* WIDGET LỊCH VẠN NIÊN & PHONG THỦY THÔNG MINH */
         .van-nien-widget-float {
             position: fixed; bottom: 20px; right: 20px; width: 380px; background: white;
@@ -160,25 +243,37 @@
 </head>
 <body>
 
-<!-- MODAL ĐĂNG NHẬP -->
-<div class="modal-overlay" id="loginModal">
-    <div class="modal-card" style="max-width: 360px;">
-        <div style="padding: 18px; background: #0284c7; color: white; text-align: center;">
-            <h2 style="font-size: 15px; font-weight: 800; text-transform: uppercase;">ĐĂNG NHẬP HỆ THỐNG BAPACO</h2>
-            <p style="font-size: 10px; opacity: 0.9; margin-top: 3px;">Vui lòng nhập tài khoản được cấp để truy cập</p>
-        </div>
-        <div style="padding: 18px; display: flex; flex-direction: column; gap: 10px;">
-            <div class="form-group">
-                <label>Tên Đăng Nhập</label>
-                <input type="text" id="loginUsername" placeholder="Nhập tên đăng nhập..." autocomplete="username" onkeydown="handleLoginEnter(event)">
+<!-- GIAO DIỆN ĐĂNG NHẬP MỚI TO, RÕ RÀNG & CHUYÊN NGHIỆP -->
+<div class="login-overlay" id="loginModal">
+    <div class="login-box">
+        <div class="login-header-pro">
+            <div class="login-logo-icon">
+                <i class="fa-solid fa-building-shield"></i>
             </div>
-            <div class="form-group">
-                <label>Mật Khẩu</label>
-                <input type="password" id="loginPassword" placeholder="Nhập mật khẩu..." autocomplete="current-password" onkeydown="handleLoginEnter(event)">
-            </div>
+            <h2>HỆ THỐNG QUẢN LÝ BAPACO</h2>
+            <p>Tổng công ty Giấy Việt Nam - Quản trị Đa Dashboard & Vạn Niên</p>
         </div>
-        <div class="modal-actions" style="padding: 12px 18px;">
-            <button class="btn btn-green" style="width: 100%; justify-content: center; padding: 9px;" onclick="thucHienDangNhap()"><i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập Hệ Thống</button>
+        <div class="login-body-pro">
+            <div class="login-field-group">
+                <label><i class="fa-solid fa-user-shield"></i> Tên Đăng Nhập</label>
+                <div class="login-input-wrap">
+                    <i class="fa-solid fa-user icon-left"></i>
+                    <input type="text" id="loginUsername" class="login-input-pro" placeholder="Nhập tên tài khoản..." autocomplete="username" onkeydown="handleLoginEnter(event)">
+                </div>
+            </div>
+            <div class="login-field-group">
+                <label><i class="fa-solid fa-lock"></i> Mật Khẩu Truy Cập</label>
+                <div class="login-input-wrap">
+                    <i class="fa-solid fa-key icon-left"></i>
+                    <input type="password" id="loginPassword" class="login-input-pro" placeholder="Nhập mật khẩu..." autocomplete="current-password" onkeydown="handleLoginEnter(event)">
+                </div>
+            </div>
+            <button class="login-submit-btn" onclick="thucHienDangNhap()">
+                <i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập Hệ Thống
+            </button>
+        </div>
+        <div class="login-footer-info">
+            Bản quyền bảo mật © 2026 - BAPACO Pro
         </div>
     </div>
 </div>
@@ -188,7 +283,7 @@
     <div class="banner">
         <div>
             <h1><i class="fa-solid fa-building-shield"></i> Hệ Thống Quản Lý Đa Dashboard & Lịch Vạn Niên BAPACO 2026</h1>
-            <p id="userStatusTag">Đã bổ sung: In Phiếu Giao Nhận chuyên nghiệp, Tổng hợp Xuất - Nhập - Tồn & Khảo sát phần mềm lọc theo đơn vị</p>
+            <p id="userStatusTag">Đã nâng cấp: Thiết kế lại phiếu lương siêu đẹp, sang trọng & chuyên nghiệp gửi Zalo</p>
         </div>
         <div class="btn-group-header">
             <button class="btn btn-yellow" onclick="moModalNhacNhoNghiGoi()"><i class="fa-solid fa-mug-hot"></i> Nhắc Nhở & Nhạc Thư Giãn</button>
@@ -449,7 +544,6 @@
             <div class="table-title"><i class="fa-solid fa-warehouse"></i> QUẢN LÝ KHO MỰC IN & TỔNG HỢP XUẤT - NHẬP - TỒN</div>
         </div>
         
-        <!-- Bảng Tổng Hợp Xuất Nhập Tồn -->
         <div style="margin-bottom: 16px; background: #f8fafc; border: 1px solid var(--border-color); padding: 10px; border-radius: 6px;">
             <div style="font-weight: bold; font-size: 11px; margin-bottom: 6px; color: #0369a1;"><i class="fa-solid fa-chart-line"></i> BẢNG TỔNG HỢP XUẤT - NHẬP - TỒN VẬT TƯ MỰC IN</div>
             <div style="overflow-x: auto;">
@@ -626,7 +720,6 @@
             </div>
         </div>
 
-        <!-- Bảng Tổng Hợp Số Liệu Phần Mềm & Bản Quyền -->
         <div style="margin-bottom: 14px; background: #f8fafc; border: 1px solid var(--border-color); padding: 10px; border-radius: 6px;">
             <div style="font-weight: bold; font-size: 11px; margin-bottom: 6px; color: #0369a1;"><i class="fa-solid fa-chart-pie"></i> TỔNG HỢP THỐNG KÊ HỆ ĐIỀU HÀNH, OFFICE & BẢN QUYỀN</div>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; font-size: 11px;">
@@ -890,31 +983,38 @@
             <div style="font-size: 8px; color: #0284c7; margin-top: 3px;">(Bấm vào đây để đổi bài thơ khác ✍️)</div>
         </div>
 
-        <div style="display: flex; gap: 5px; align-items: center;">
-            <button class="btn btn-green" style="font-size: 10px; padding: 6px 10px; flex: 1; justify-content: center;" onclick="phatNhacThuGiãn()">
-                <i class="fa-solid fa-music" id="audioBtnIcon"></i> <span id="audioBtnText">Bật Nhạc Thư Giãn</span>
-            </button>
-            <select id="audioSourceSelect" style="font-size: 10px; padding: 5px; border-radius: 5px; border: 1px solid var(--border-color);" onchange="doiNguonNhac()">
-                <option value="https://actions.google.com/sounds/v1/ambiences/morning_birds.ogg">🐦 Chim hót buổi sáng</option>
-                <option value="https://actions.google.com/sounds/v1/weather/rain_heavy.ogg">🌧️ Tiếng mưa rơi</option>
-                <option value="https://actions.google.com/sounds/v1/ambiences/forest_day.ogg">🌲 Rừng nguyên sinh</option>
-            </select>
+        <!-- PHẦN CHÈN VÀ CHỌN NHẠC THƯ GIÃN -->
+        <div style="display: flex; flex-direction: column; gap: 5px; background: #e2e8f0; padding: 8px; border-radius: 6px;">
+            <div style="display: flex; gap: 5px; align-items: center;">
+                <button class="btn btn-green" style="font-size: 10px; padding: 6px 10px; flex: 1; justify-content: center;" onclick="phatNhacThuGiãn()">
+                    <i class="fa-solid fa-music" id="audioBtnIcon"></i> <span id="audioBtnText">Bật Nhạc Thư Giãn</span>
+                </button>
+                <select id="audioSourceSelect" style="font-size: 10px; padding: 5px; border-radius: 5px; border: 1px solid var(--border-color); flex: 1;" onchange="doiNguonNhac()">
+                    <option value="https://actions.google.com/sounds/v1/ambiences/morning_birds.ogg">🐦 Chim hót buổi sáng</option>
+                    <option value="https://actions.google.com/sounds/v1/weather/rain_heavy.ogg">🌧️ Tiếng mưa rơi</option>
+                    <option value="https://actions.google.com/sounds/v1/ambiences/forest_day.ogg">🌲 Rừng nguyên sinh</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 5px; align-items: center;">
+                <input type="text" id="customAudioUrlInput" placeholder="Dán link nhạc MP3/OGG tùy chỉnh vào đây..." style="font-size: 10px; padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border-color); flex: 1; background: white;">
+                <button class="btn btn-blue" style="font-size: 9px; padding: 5px 8px;" onclick="chenVaPhatNhacTuyChinh()"><i class="fa-solid fa-link"></i> Chèn Nhạc</button>
+            </div>
         </div>
         <audio id="relaxAudio" loop src="https://actions.google.com/sounds/v1/ambiences/morning_birds.ogg"></audio>
     </div>
 </div>
 
-<!-- POPUP NHẮC NHỞ NGHỈ NGƠI & PHÁT NHẠC -->
+<!-- POPUP NHẮC NHỞ NGHỈ NGƠI & PHÁT NHẠC (Lặp lại mỗi 60 phút) -->
 <div class="modal-overlay hidden" id="restPopupModal">
     <div class="modal-card rest-popup-card">
         <div class="rest-icon"><i class="fa-solid fa-mug-hot"></i></div>
         <h2 style="color: #15803d; font-size: 15px; margin-bottom: 4px;">THỜI GIAN NGHỈ NGƠI & THƯ GIÃN</h2>
-        <p style="font-size: 11px; color: #475569; margin-bottom: 12px;">Anh Dương hãy nhắm mắt thư giãn 5 phút, hít thở sâu và thưởng thức bản nhạc du dương đang phát qua tai nghe nhé!</p>
+        <p style="font-size: 11px; color: #475569; margin-bottom: 12px;">Đã làm việc liên tục 60 phút! Anh Dương hãy nhắm mắt thư giãn 5 phút, hít thở sâu và thưởng thức bản nhạc du dương nhé!</p>
         <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 8px; border-radius: 6px; margin-bottom: 12px; font-size: 11px; color: #166534; font-weight: bold;">
-            🎶 Trạng thái: Đang phát bản nhạc thư giãn thiên nhiên du dương...
+            🎶 Trạng thái: Đang phát bản nhạc thư giãn định kỳ 60 phút...
         </div>
         <div style="display: flex; gap: 8px; justify-content: center;">
-            <button class="btn btn-green" onclick="dongModalNhacNho()"><i class="fa-solid fa-check"></i> Đã Nghỉ Xong & Đóng</button>
+            <button class="btn btn-green" onclick="dongModalNhacNho()"><i class="fa-solid fa-check"></i> Đã Nghỉ Xong & Tiếp Tục Làm Việc</button>
         </div>
     </div>
 </div>
@@ -965,26 +1065,40 @@
     </div>
 </div>
 
-<!-- MODAL PHIẾU LƯƠNG ZALO -->
+<!-- MODAL PHIẾU LƯƠNG ZALO ĐƯỢC THIẾT KẾ LẠI SANG TRỌNG & ĐẸP MẮT -->
 <div class="modal-overlay hidden" id="previewModal">
-    <div class="modal-card" style="max-width: 520px;">
-        <div id="payslip-capture" style="padding: 20px; background: white;">
-            <div class="slip-header">
+    <div class="modal-card" style="max-width: 480px; padding: 0; border-radius: 14px; overflow: hidden;">
+        <div id="payslip-capture" class="payslip-container-pro">
+            <div class="payslip-header-box">
                 <h2>TỔNG CÔNG TY GIẤY VIỆT NAM</h2>
                 <h3>PHIẾU THANH TOÁN LƯƠNG CÁ NHÂN</h3>
-                <p id="slipMonthSub">Tháng 08/2026 - Văn phòng BAPACO</p>
+                <div class="payslip-period-badge" id="slipMonthSub">Tháng 08/2026 - Văn phòng BAPACO</div>
             </div>
-            <div class="slip-row"><span class="slip-label">Họ và Tên Cán Bộ:</span><span class="slip-value" id="slipName" style="font-size: 13px; color: #0284c7;">--</span></div>
-            <div class="slip-row"><span class="slip-label">Thực Lĩnh Lương Cơ Bản:</span><span class="slip-value" id="slipTLLCB">--</span></div>
-            <div class="slip-row"><span class="slip-label">Lương Công Việc Thực Tế:</span><span class="slip-value" id="slipLCVTT">--</span></div>
-            <div class="slip-row"><span class="slip-label">Khấu Trừ Tạm Ứng Giữa Tháng:</span><span class="slip-value" style="color: #dc2626;" id="slipTamUng">--</span></div>
-            <div class="slip-total">
-                <div class="slip-total-label">THỰC LĨNH NHẬN QUA TÀI KHOẢN NGÂN HÀNG (NET)</div>
-                <div class="slip-total-value" id="slipThucLinh">-- VNĐ</div>
+            <div class="payslip-body-box">
+                <div class="payslip-row-item">
+                    <span class="payslip-row-label"><i class="fa-solid fa-user-tie" style="color: var(--primary);"></i> Họ và Tên Cán Bộ:</span>
+                    <span class="payslip-row-val" id="slipName" style="color: var(--primary);">--</span>
+                </div>
+                <div class="payslip-row-item">
+                    <span class="payslip-row-label"><i class="fa-solid fa-file-invoice-dollar" style="color: var(--primary);"></i> Thực Lĩnh Lương Cơ Bản:</span>
+                    <span class="payslip-row-val" id="slipTLLCB">--</span>
+                </div>
+                <div class="payslip-row-item">
+                    <span class="payslip-row-label"><i class="fa-solid fa-briefcase" style="color: var(--primary);"></i> Lương Công Việc Thực Tế:</span>
+                    <span class="payslip-row-val" id="slipLCVTT">--</span>
+                </div>
+                <div class="payslip-row-item">
+                    <span class="payslip-row-label"><i class="fa-solid fa-hand-holding-dollar" style="color: #dc2626;"></i> Khấu Trừ Tạm Ứng Giữa Tháng:</span>
+                    <span class="payslip-row-val" style="color: #dc2626;" id="slipTamUng">--</span>
+                </div>
+                <div class="payslip-total-box">
+                    <div class="payslip-total-label">THỰC LĨNH NHẬN QUA TÀI KHOẢN NGÂN HÀNG (NET)</div>
+                    <div class="payslip-total-val" id="slipThucLinh">-- VNĐ</div>
+                </div>
+                <div class="payslip-footer-note">Cảm ơn Anh/Chị đã cống hiến cho Tổng công ty Giấy Việt Nam!</div>
             </div>
-            <div class="slip-footer">Cảm ơn Anh/Chị đã cống hiến cho Tổng công ty Giấy Việt Nam!</div>
         </div>
-        <div class="modal-actions">
+        <div class="modal-actions" style="padding: 12px 20px;">
             <button class="btn btn-green" onclick="taiAnhPhieuLuongZalo()"><i class="fa-solid fa-download"></i> Tải Ảnh Phiếu Lương (Gửi Zalo)</button>
             <button class="btn btn-red" onclick="document.getElementById('previewModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i> Đóng</button>
         </div>
@@ -1034,6 +1148,7 @@
     let selectedNvForSlip = null;
     let chartSalaryFullInstance = null;
     let chartSalaryPieInstance = null;
+    let restTimerInterval = null;
 
     let danhSachBaiTho = [
         `"Cờ xí tung bay ngợp bóng chiều,<br>Trống trận vang lừng bước tựa phiêu.<br>Xà rắn uốn mình qua lối cũ,<br>Đặc lạc, tá lạc vẹn tình yêu..."`,
@@ -1317,6 +1432,20 @@
         document.getElementById('audioBtnText').innerText = "Tạm Dừng Nhạc";
     }
 
+    function chenVaPhatNhacTuyChinh() {
+        let customUrl = document.getElementById('customAudioUrlInput').value.trim();
+        if (!customUrl) { alert("Vui lòng dán link nhạc hợp lệ vào ô!"); return; }
+        let audio = document.getElementById('relaxAudio');
+        audio.src = customUrl;
+        audio.play().then(() => {
+            document.getElementById('audioBtnIcon').className = "fa-solid fa-pause";
+            document.getElementById('audioBtnText').innerText = "Tạm Dừng Nhạc";
+            alert("Đã chèn và phát đoạn nhạc tùy chỉnh thành công!");
+        }).catch(e => {
+            alert("Không thể phát link nhạc này. Vui lòng kiểm tra lại đường dẫn trực tiếp (định dạng .mp3/.ogg).");
+        });
+    }
+
     function phatNhacThuGiãn() {
         let audio = document.getElementById('relaxAudio');
         let icon = document.getElementById('audioBtnIcon');
@@ -1335,6 +1464,13 @@
         }
     }
 
+    function khoiTaoBoDemNhacNho60Phut() {
+        if (restTimerInterval) clearInterval(restTimerInterval);
+        restTimerInterval = setInterval(() => {
+            moModalNhacNhoNghiGoi();
+        }, 60 * 60 * 1000);
+    }
+
     function moModalNhacNhoNghiGoi() {
         document.getElementById('restPopupModal').classList.remove('hidden');
         let audio = document.getElementById('relaxAudio');
@@ -1347,6 +1483,7 @@
         audio.pause();
         document.getElementById('audioBtnIcon').className = "fa-solid fa-music";
         document.getElementById('audioBtnText').innerText = "Bật Nhạc Thư Giãn";
+        khoiTaoBoDemNhacNho60Phut();
     }
 
     function syncDataWithGoogleSheets() {
@@ -1386,6 +1523,7 @@
             setTimeout(() => { 
                 khoiTaoHoacCapNhatChartsFull(); 
                 moModalNhacNhoNghiGoi();
+                khoiTaoBoDemNhacNho60Phut();
             }, 200);
         } else {
             alert("Tên đăng nhập hoặc mật khẩu không chính xác!");
@@ -1394,6 +1532,7 @@
 
     function thucHienDangXuat() {
         if (confirm("Bạn có chắc chắn muốn đăng xuất?")) {
+            if (restTimerInterval) clearInterval(restTimerInterval);
             let audio = document.getElementById('relaxAudio');
             audio.pause();
             document.getElementById('appMainContainer').classList.add('hidden');
@@ -1779,16 +1918,14 @@
         });
     }
 
-    // TỔNG HỢP XUẤT - NHẬP - TỒN KHO MỰC IN
     function renderXNTTable() {
         const tbody = document.getElementById("xntTableBody");
         tbody.innerHTML = "";
         
-        // Gom nhóm theo tên mực in
         let groupMap = {};
         dsKhoMucIn.forEach(item => {
             if (!groupMap[item.name]) {
-                groupMap[item.name] = { code: item.code, name: item.name, dauKy: 5, nhap: 0, xuat: 0 }; // Giả định tồn đầu kỳ mặc định 5
+                groupMap[item.name] = { code: item.code, name: item.name, dauKy: 5, nhap: 0, xuat: 0 };
             }
             if (item.action.includes('Nhập')) {
                 groupMap[item.name].nhap += item.qty;
@@ -1843,7 +1980,6 @@
         alert("Đã đưa dữ liệu lên form để sửa. Anh bấm Ghi Sổ Kho Mực In để hoàn tất!");
     }
 
-    // IN PHIẾU GIAO NHẬN CHUYÊN NGHIỆP
     function xemVaInPhieuGiaoNhan() {
         let slipNo = document.getElementById('inputSlipNo').value;
         let from = document.getElementById('inputSlipFrom').value;
@@ -1919,7 +2055,6 @@
         alert("Đã đưa dữ liệu lên form để sửa. Anh bấm Thêm Cước Viễn Thông để hoàn tất!");
     }
 
-    // KHẢO SÁT PHẦN MỀM & TỔNG HỢP THEO ĐƠN VỊ
     function renderSurveyTable() {
         const tbody = document.getElementById("surveyTableBody");
         const filterDept = document.getElementById('filterSurveyDept').value;
@@ -1957,7 +2092,6 @@
                 </tr>`;
         });
 
-        // Cập nhật thẻ tổng hợp
         document.getElementById('statOSSummary').innerText = Object.entries(osCount).map(([k, v]) => `${k}: ${v}`).join(' | ') || 'Chưa có';
         document.getElementById('statOfficeSummary').innerText = Object.entries(officeCount).map(([k, v]) => `${k}: ${v}`).join(' | ') || 'Chưa có';
         document.getElementById('statLicSummary').innerText = Object.entries(licCount).map(([k, v]) => `${k} (${v} máy)`).join('; ') || 'Đầy đủ';

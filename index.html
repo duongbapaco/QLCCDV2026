@@ -978,11 +978,40 @@
     ];
     let currentPoetryIndex = 0;
 
+    // HÀM XỬ LÝ SỐ TIỆN LỢI: CHẤP NHẬN CẢ DẤU CHẤM VÀ PHẨY KHI PASTE
     function cleanAndParseMoney(str) {
         if (!str) return 0;
         if (typeof str === 'number') return str;
-        let cleaned = String(str).replace(/[^0-9.-]+/g,"");
-        let num = parseFloat(cleaned);
+        let s = String(str).trim();
+        // Loại bỏ các ký tự chữ và ký tự đặc biệt trừ số, dấu chấm, dấu phẩy và dấu trừ
+        s = s.replace(/[^0-9.,-]/g, '');
+        if (!s) return 0;
+
+        // Nếu có cả dấu chấm và dấu phẩy, xác định định dạng (VN: 44.299.237,00 hoặc US: 44,299,237.00)
+        if (s.indexOf('.') !== -1 && s.indexOf(',') !== -1) {
+            if (s.lastIndexOf('.') > s.lastIndexOf(',')) {
+                // Dấu chấm ở cuối -> chuẩn US (44,299.237) -> bỏ dấu phẩy
+                s = s.replace(/,/g, '');
+            } else {
+                // Dấu phẩy ở cuối -> chuẩn VN (44.299.237) -> bỏ dấu chấm phân cách hàng nghìn, đổi dấu phẩy thập phân thành chấm
+                s = s.replace(/\./g, '').replace(',', '.');
+            }
+        } else if (s.indexOf('.') !== -1) {
+            // Chỉ có dấu chấm. Nếu có từ 2 dấu chấm trở lên hoặc sau dấu chấm cuối có đúng 3 chữ số -> coi là phân cách hàng nghìn
+            let parts = s.split('.');
+            if (parts.length > 2 || (parts.length === 2 && parts[1].length === 3 && parts[0].length <= 3)) {
+                s = s.replace(/\./g, '');
+            }
+        } else if (s.indexOf(',') !== -1) {
+            // Chỉ có dấu phẩy. Nếu có nhiều dấu phẩy hoặc sau dấu phẩy cuối có 3 chữ số -> phân cách hàng nghìn, ngược lại là thập phân
+            let parts = s.split(',');
+            if (parts.length > 2 || (parts.length === 2 && parts[1].length === 3 && parts[0].length <= 3)) {
+                s = s.replace(/,/g, '');
+            } else {
+                s = s.replace(',', '.');
+            }
+        }
+        let num = parseFloat(s);
         return isNaN(num) ? 0 : num;
     }
 

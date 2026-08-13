@@ -359,11 +359,35 @@
         <div class="charts-multi-grid">
             <div class="chart-card">
                 <div class="chart-title"><i class="fa-solid fa-chart-column" style="color: var(--primary);"></i> Biểu đồ Thực Lĩnh Cuối Cùng & Tạm Ứng Cán Bộ</div>
-                <div style="position: relative; height: 280px;"><canvas id="salaryChartFull"></canvas></div>
+                <div style="position: relative; height: 260px;"><canvas id="salaryChartFull"></canvas></div>
             </div>
             <div class="chart-card">
                 <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #16a34a;"></i> Tỷ Trọng Tạm Ứng So Với Thực Lĩnh</div>
-                <div style="position: relative; height: 280px;"><canvas id="salaryPieChart"></canvas></div>
+                <div style="position: relative; height: 260px;"><canvas id="salaryPieChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title"><i class="fa-solid fa-list-check" style="color: #d97706;"></i> Tổng Quan Trạng Thái Công Việc</div>
+                <div style="position: relative; height: 260px;"><canvas id="overviewTaskPieChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title"><i class="fa-solid fa-calendar-days" style="color: #8b5cf6;"></i> Thống Kê Ngày Nghỉ Phép Nhân Sự</div>
+                <div style="position: relative; height: 260px;"><canvas id="overviewLeaveBarChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title"><i class="fa-solid fa-file-invoice" style="color: #15803d;"></i> Thanh Toán Văn Phòng Phẩm Theo Đơn Vị</div>
+                <div style="position: relative; height: 260px;"><canvas id="overviewOfficeBarChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title"><i class="fa-solid fa-warehouse" style="color: #0284c7;"></i> Tình Hình Xuất Nhập Tồn Kho Mực In</div>
+                <div style="position: relative; height: 260px;"><canvas id="overviewInkBarChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title"><i class="fa-solid fa-wifi" style="color: #ef4444;"></i> Tỷ Trọng Cước Viễn Thông Theo Nhà Mạng</div>
+                <div style="position: relative; height: 260px;"><canvas id="overviewTelecomPieChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title"><i class="fa-solid fa-clipboard-check" style="color: #b45309;"></i> Tỷ Lệ Bản Quyền Phần Mềm (OS & Office)</div>
+                <div style="position: relative; height: 260px;"><canvas id="overviewSurveyPieChart"></canvas></div>
             </div>
         </div>
     </div>
@@ -373,12 +397,18 @@
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-list-check"></i> QUẢN LÝ CÔNG VIỆC HÀNG NGÀY & BIỂU ĐỒ TIẾN ĐỘ</div>
         </div>
-        <div style="margin-bottom: 14px; background: #f8fafc; border: 1px solid var(--border-color); padding: 12px; border-radius: 8px;">
-            <div style="font-weight: bold; font-size: 11px; margin-bottom: 6px; color: #0369a1;"><i class="fa-solid fa-chart-line"></i> TIẾN ĐỘ HOÀN THÀNH CÔNG VIỆC CHUNG</div>
-            <div style="background: #e2e8f0; border-radius: 6px; height: 16px; width: 100%; overflow: hidden; position: relative;">
-                <div id="taskProgressBar" style="background: #16a34a; width: 0%; height: 100%; transition: width 0.3s;"></div>
+        <div class="charts-multi-grid" style="margin-bottom: 14px;">
+            <div class="chart-card" style="padding: 10px;">
+                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Lệ Trạng Thái Công Việc</div>
+                <div style="position: relative; height: 160px;"><canvas id="taskPieChart"></canvas></div>
             </div>
-            <div style="font-size: 10px; color: #64748b; margin-top: 4px; text-align: right;" id="taskProgressText">Đã hoàn thành: 0%</div>
+            <div class="chart-card" style="padding: 10px; display: flex; flex-direction: column; justify-content: center;">
+                <div style="font-weight: bold; font-size: 11px; margin-bottom: 6px; color: #0369a1;"><i class="fa-solid fa-chart-line"></i> TIẾN ĐỘ HOÀN THÀNH CÔNG VIỆC CHUNG</div>
+                <div style="background: #e2e8f0; border-radius: 6px; height: 16px; width: 100%; overflow: hidden; position: relative; margin-bottom: 8px;">
+                    <div id="taskProgressBar" style="background: #16a34a; width: 0%; height: 100%; transition: width 0.3s;"></div>
+                </div>
+                <div style="font-size: 11px; color: #64748b; text-align: right;" id="taskProgressText">Đã hoàn thành: 0%</div>
+            </div>
         </div>
         <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
             <div class="form-group"><label>Nội Dung Công Việc</label><input type="text" id="inputTaskName" placeholder="VD: Lập báo cáo điều hành..."></div>
@@ -466,6 +496,16 @@
             <div class="table-title"><i class="fa-solid fa-calendar-days"></i> THEO DÕI & QUẢN LÝ NGÀY PHÉP NHÂN SỰ</div>
             <button class="btn btn-blue" onclick="moModalDangKyNghiPhep()"><i class="fa-solid fa-file-pen"></i> Đăng Ký Nghỉ Phép Mới</button>
         </div>
+        <div class="charts-multi-grid" style="margin-bottom: 14px;">
+            <div class="chart-card" style="padding: 10px;">
+                <div class="chart-title"><i class="fa-solid fa-chart-column"></i> Thống Kê Ngày Nghỉ Phép Từng Nhân Sự</div>
+                <div style="position: relative; height: 180px;"><canvas id="leaveBarChart"></canvas></div>
+            </div>
+            <div class="chart-card" style="padding: 10px;">
+                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Tổng Số Phép Đã Dùng</div>
+                <div style="position: relative; height: 180px;"><canvas id="leavePieChart"></canvas></div>
+            </div>
+        </div>
         <div style="overflow-x: auto; margin-bottom: 14px;">
             <table>
                 <colgroup><col style="width: 45px;"><col style="width: 240px;"><col style="width: 90px;"><col style="width: 90px;"><col style="width: 90px;"><col style="width: 100px;"><col style="width: 180px;"></colgroup>
@@ -480,6 +520,17 @@
     <!-- TAB 4: THANH TOÁN VĂN PHÒNG -->
     <div id="officePaymentTab" class="tab-pane table-card">
         <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG</div></div>
+        <div class="charts-multi-grid" style="margin-bottom: 14px;">
+            <div class="chart-card" style="padding: 10px;">
+                <div class="chart-title"><i class="fa-solid fa-chart-bar"></i> Giá Trị Hồ Sơ VPP Theo Đơn Vị Thụ Hưởng</div>
+                <div style="position: relative; height: 180px;"><canvas id="officeBarChart"></canvas></div>
+            </div>
+            <div class="chart-card" style="padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <div class="chart-title" style="align-self: flex-start;"><i class="fa-solid fa-wallet"></i> Tổng Giá Trị Thanh Toán VPP</div>
+                <div style="font-size: 26px; font-weight: 800; color: #d97706; margin-top: 15px;" id="officeDashboardTotal">0 đ</div>
+                <div style="font-size: 11px; color: #64748b; margin-top: 5px;">Số lượng hồ sơ đang quản lý và kiểm duyệt</div>
+            </div>
+        </div>
         <div class="form-card" id="formOfficeContainer" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));">
             <div class="form-group"><label>Mã Hồ Sơ VPP</label><input type="text" id="autoOfficeId" readonly style="background: #e2e8f0; font-weight: bold;"></div>
             <div class="form-group"><label>Nội Dung Thanh Toán</label><input type="text" id="inputOfficeContent" placeholder="VD: Mua sắm vật tư..."></div>
@@ -504,6 +555,16 @@
     <!-- TAB 5: KHO MỰC IN -->
     <div id="inkInventoryTab" class="tab-pane table-card">
         <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-warehouse"></i> QUẢN LÝ KHO MỰC IN & XNT</div></div>
+        <div class="charts-multi-grid" style="margin-bottom: 14px;">
+            <div class="chart-card" style="padding: 10px;">
+                <div class="chart-title"><i class="fa-solid fa-chart-column"></i> Thống Kê Xuất - Nhập - Tồn Kho Mực In</div>
+                <div style="position: relative; height: 180px;"><canvas id="inkBarChart"></canvas></div>
+            </div>
+            <div class="chart-card" style="padding: 10px;">
+                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Nghiệp Vụ Kho</div>
+                <div style="position: relative; height: 180px;"><canvas id="inkPieChart"></canvas></div>
+            </div>
+        </div>
         <div style="margin-bottom: 16px; background: #f8fafc; border: 1px solid var(--border-color); padding: 10px; border-radius: 6px;">
             <div style="font-weight: bold; font-size: 11px; margin-bottom: 6px; color: #0369a1;"><i class="fa-solid fa-chart-line"></i> BẢNG TỔNG HỢP XUẤT - NHẬP - TỒN</div>
             <table>
@@ -545,6 +606,17 @@
     <!-- TAB 7: CƯỚC VIỄN THÔNG -->
     <div id="telecomPaymentTab" class="tab-pane table-card">
         <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-wifi"></i> THANH TOÁN CƯỚC VIỄN THÔNG & TÁCH THUẾ VAT</div></div>
+        <div class="charts-multi-grid" style="margin-bottom: 14px;">
+            <div class="chart-card" style="padding: 10px;">
+                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Cước Viễn Thông Theo Nhà Mạng</div>
+                <div style="position: relative; height: 180px;"><canvas id="telecomPieChart"></canvas></div>
+            </div>
+            <div class="chart-card" style="padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <div class="chart-title" style="align-self: flex-start;"><i class="fa-solid fa-file-invoice-dollar"></i> Tổng Cước Phí & Thuế VAT</div>
+                <div style="font-size: 26px; font-weight: 800; color: #0284c7; margin-top: 15px;" id="telecomDashboardTotal">0 đ</div>
+                <div style="font-size: 11px; color: #64748b; margin-top: 5px;">Hạch toán cước viễn thông và thuế VAT 10%</div>
+            </div>
+        </div>
         <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
             <div class="form-group"><label>Mã HS</label><input type="text" id="autoTelecomId" readonly style="background:#e2e8f0; font-weight:bold;"></div>
             <div class="form-group"><label>Nhà Mạng</label><select id="inputTelecomSupplier"><option value="VNPT">VNPT</option><option value="Viettel">Viettel</option><option value="Mobifone">Mobifone</option></select></div>
@@ -567,6 +639,16 @@
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-clipboard-check"></i> KHẢO SÁT THIẾT BỊ & BẢN QUYỀN</div>
             <select id="filterSurveyDept" style="padding: 5px; font-weight: bold;" onchange="renderSurveyTable()"><option value="ALL">-- Tất cả đơn vị --</option><option value="Khối Văn phòng">Khối Văn phòng</option><option value="Phòng Kế toán - Thống kê">Phòng Kế toán - Thống kê</option></select>
+        </div>
+        <div class="charts-multi-grid" style="margin-bottom: 14px;">
+            <div class="chart-card" style="padding: 10px;">
+                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Lệ Bản Quyền Hệ Điều Hành (OS)</div>
+                <div style="position: relative; height: 180px;"><canvas id="surveyOsPieChart"></canvas></div>
+            </div>
+            <div class="chart-card" style="padding: 10px;">
+                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Lệ Bản Quyền Microsoft Office</div>
+                <div style="position: relative; height: 180px;"><canvas id="surveyOfficePieChart"></canvas></div>
+            </div>
         </div>
         <div style="margin-bottom: 14px; background: #f8fafc; border: 1px solid var(--border-color); padding: 10px; border-radius: 6px; font-size: 11px;">
             <b>💻 OS:</b> <span id="statOSSummary" style="color: #0284c7; font-weight: bold;">--</span> | 
@@ -607,7 +689,7 @@
                 </div>
                 <div class="print-title-group">
                     <div class="print-title">PHIẾU GIAO NHẬN THIẾT BỊ & TÀI SẢN</div>
-                    <div class="print-sub" id="printSlipNoDate">Số: PGN | Ngày 12 tháng 08 năm 2026</div>
+                    <div class="print-sub" id="printSlipNoDate">Số: PGN | Ngày 13 tháng 08 năm 2026</div>
                 </div>
                 <div class="print-info-grid" style="margin-top: 20px;">
                     <div><b>Bên giao:</b> <span id="printSlipFrom">--</span></div>
@@ -658,13 +740,13 @@
     </div>
 </div>
 
-<!-- WIDGET LỊCH VẠN NIÊN & PHONG THỦY -->
+<!-- WIDGET LỊCH VẠN NIÊN & PHONG THỦY (ĐÃ ĐẦY ĐỦ TRỞ LẠI) -->
 <div class="van-nien-widget-float" id="floatingVanNienWidget">
     <div class="widget-header" onclick="toggleWidgetVanNien()"><span><i class="fa-solid fa-calendar-day"></i> Lịch Vạn Niên & Phong Thủy 2026</span><i class="fa-solid fa-chevron-down" id="widgetToggleIcon"></i></div>
     <div class="widget-body" id="widgetBodyContent">
         <div class="digital-clock-box">
-            <div id="digitalClockDisplay">10:09:39</div>
-            <span id="digitalDateDisplay">12/08/2026</span>
+            <div id="digitalClockDisplay">11:14:24</div>
+            <span id="digitalDateDisplay">13/08/2026</span>
         </div>
 
         <div class="cal-toolbar">
@@ -863,10 +945,28 @@
 
     let currentMiniCalYear = 2026;
     let currentMiniCalMonth = 7;
-    let selectedDayInfo = { day: 12, month: 7, year: 2026 };
+    let selectedDayInfo = { day: 13, month: 7, year: 2026 };
     let selectedNvForSlip = null;
+
     let chartSalaryFullInstance = null;
     let chartSalaryPieInstance = null;
+    let overviewTaskPieInstance = null;
+    let overviewLeaveBarInstance = null;
+    let overviewOfficeBarInstance = null;
+    let overviewInkBarInstance = null;
+    let overviewTelecomPieInstance = null;
+    let overviewSurveyPieInstance = null;
+
+    let taskPieInstance = null;
+    let leaveBarInstance = null;
+    let leavePieInstance = null;
+    let officeBarInstance = null;
+    let inkBarInstance = null;
+    let inkPieInstance = null;
+    let telecomPieInstance = null;
+    let surveyOsPieInstance = null;
+    let surveyOfficePieInstance = null;
+
     let restTimerInterval = null;
     let isRestNoticeActive = true;
 
@@ -1113,7 +1213,7 @@
         renderTelecomPaymentTable();
         renderSurveyTable();
         capNhatKPI();
-        khoiTaoHoacCapNhatChartsFull();
+        capNhatTatCaSubDashboards();
     }
 
     function capNhatKPI() {
@@ -1128,6 +1228,209 @@
         document.getElementById("kpiTotalInkStock").innerText = totalStockInk + " Hộp";
         document.getElementById("kpiTotalSurvey").innerText = dsKhaoSatChuyenSieu.length + " Thiết bị";
         document.getElementById("kpiTotalTamUng").innerText = formatMoneyVn(totalTamUng);
+    }
+
+    function capNhatTatCaSubDashboards() {
+        let ds = coSoDuLieuThang[currentThangKey].nhansu;
+        let allNames = ds.map(i => i.hoTen.split(' ').pop());
+        let allNets = ds.map(i => i.thucLinhCuoiCung);
+        let allAdvances = ds.map(i => i.tamUng);
+
+        let ctx1 = document.getElementById('salaryChartFull');
+        if (ctx1) {
+            if (chartSalaryFullInstance) chartSalaryFullInstance.destroy();
+            chartSalaryFullInstance = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: allNames,
+                    datasets: [
+                        { label: 'Thực Lĩnh Cuối (VNĐ)', data: allNets, backgroundColor: '#0284c7', borderRadius: 4 },
+                        { label: 'Tạm Ứng (VNĐ)', data: allAdvances, backgroundColor: '#dc2626', borderRadius: 4 }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        let ctxPie = document.getElementById('salaryPieChart');
+        if (ctxPie) {
+            let totalNetSum = allNets.reduce((a,b)=>a+b,0);
+            let totalAdvSum = allAdvances.reduce((a,b)=>a+b,0);
+            if (chartSalaryPieInstance) chartSalaryPieInstance.destroy();
+            chartSalaryPieInstance = new Chart(ctxPie, {
+                type: 'doughnut',
+                data: { labels: ['Tổng Thực Lĩnh', 'Tổng Tạm Ứng'], datasets: [{ data: [totalNetSum, totalAdvSum], backgroundColor: ['#16a34a', '#dc2626'] }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        let cChua = danhSachCongViec.filter(t => t.status === 'Chưa làm').length;
+        let cDang = danhSachCongViec.filter(t => t.status === 'Đang làm').length;
+        let cXong = danhSachCongViec.filter(t => t.status === 'Hoàn thành').length;
+        let ctxOvTask = document.getElementById('overviewTaskPieChart');
+        if (ctxOvTask) {
+            if (overviewTaskPieInstance) overviewTaskPieInstance.destroy();
+            overviewTaskPieInstance = new Chart(ctxOvTask, {
+                type: 'pie',
+                data: { labels: ['Chưa làm', 'Đang làm', 'Hoàn thành'], datasets: [{ data: [cChua, cDang, cXong], backgroundColor: ['#ef4444', '#f59e0b', '#16a34a'] }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        let leaves = ds.map(i => i.nc_p || 0);
+        let ctxOvLeave = document.getElementById('overviewLeaveBarChart');
+        if (ctxOvLeave) {
+            if (overviewLeaveBarInstance) overviewLeaveBarInstance.destroy();
+            overviewLeaveBarInstance = new Chart(ctxOvLeave, {
+                type: 'bar',
+                data: { labels: allNames, datasets: [{ label: 'Ngày nghỉ phép', data: leaves, backgroundColor: '#8b5cf6', borderRadius: 4 }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        let offNames = dsThanhToanVanPhongPro.map(i => i.beneficiary);
+        let offTotals = dsThanhToanVanPhongPro.map(i => i.total);
+        let ctxOvOff = document.getElementById('overviewOfficeBarChart');
+        if (ctxOvOff) {
+            if (overviewOfficeBarInstance) overviewOfficeBarInstance.destroy();
+            overviewOfficeBarInstance = new Chart(ctxOvOff, {
+                type: 'bar',
+                data: { labels: offNames.length ? offNames : ['Chưa có'], datasets: [{ label: 'Giá trị VPP', data: offTotals.length ? offTotals : [0], backgroundColor: '#15803d', borderRadius: 4 }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        let totalNhap = dsKhoMucIn.filter(i => i.action.includes('Nhập')).reduce((s,i)=>s+i.qty,0);
+        let totalXuat = dsKhoMucIn.filter(i => i.action.includes('Cấp')).reduce((s,i)=>s+i.qty,0);
+        let ctxOvInk = document.getElementById('overviewInkBarChart');
+        if (ctxOvInk) {
+            if (overviewInkBarInstance) overviewInkBarInstance.destroy();
+            overviewInkBarInstance = new Chart(ctxOvInk, {
+                type: 'bar',
+                data: { labels: ['Nhập Kho', 'Cấp Phát'], datasets: [{ label: 'Số lượng hộp', data: [totalNhap, totalXuat], backgroundColor: ['#0284c7', '#d97706'], borderRadius: 4 }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        let telSup = dsThanhToanTelecom.map(i => i.supplier);
+        let telAmt = dsThanhToanTelecom.map(i => i.amount);
+        let ctxOvTel = document.getElementById('overviewTelecomPieChart');
+        if (ctxOvTel) {
+            if (overviewTelecomPieInstance) overviewTelecomPieInstance.destroy();
+            overviewTelecomPieInstance = new Chart(ctxOvTel, {
+                type: 'doughnut',
+                data: { labels: telSup.length ? telSup : ['VNPT'], datasets: [{ data: telAmt.length ? telAmt : [100], backgroundColor: ['#ef4444', '#0284c7', '#16a34a'] }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        let ctxOvSurvey = document.getElementById('overviewSurveyPieChart');
+        if (ctxOvSurvey) {
+            if (overviewSurveyPieInstance) overviewSurveyPieInstance.destroy();
+            overviewSurveyPieInstance = new Chart(ctxOvSurvey, {
+                type: 'pie',
+                data: { labels: ['Win 11 Pro (OEM)', 'M365 Bản quyền'], datasets: [{ data: [1, 1], backgroundColor: ['#b45309', '#16a34a'] }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        let ctxTask = document.getElementById('taskPieChart');
+        if (ctxTask) {
+            if (taskPieInstance) taskPieInstance.destroy();
+            taskPieInstance = new Chart(ctxTask, {
+                type: 'doughnut',
+                data: { labels: ['Chưa làm', 'Đang làm', 'Hoàn thành'], datasets: [{ data: [cChua, cDang, cXong], backgroundColor: ['#ef4444', '#f59e0b', '#16a34a'] }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        let ctxLeaveBar = document.getElementById('leaveBarChart');
+        if (ctxLeaveBar) {
+            if (leaveBarInstance) leaveBarInstance.destroy();
+            leaveBarInstance = new Chart(ctxLeaveBar, {
+                type: 'bar',
+                data: { labels: allNames, datasets: [{ label: 'Số ngày nghỉ phép', data: leaves, backgroundColor: '#0284c7', borderRadius: 4 }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        let totalLeaveUsed = leaves.reduce((a,b)=>a+b,0);
+        let totalLeaveRemain = ds.reduce((sum, i) => sum + ((i.phep_cap || 12) + (i.phep_ton || 0) - (i.nc_p || 0)), 0);
+        let ctxLeavePie = document.getElementById('leavePieChart');
+        if (ctxLeavePie) {
+            if (leavePieInstance) leavePieInstance.destroy();
+            leavePieInstance = new Chart(ctxLeavePie, {
+                type: 'pie',
+                data: { labels: ['Đã nghỉ phép', 'Phép còn lại'], datasets: [{ data: [totalLeaveUsed, totalLeaveRemain > 0 ? totalLeaveRemain : 0], backgroundColor: ['#dc2626', '#16a34a'] }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        let totalOfficeVal = dsThanhToanVanPhongPro.reduce((sum, item) => sum + (item.total || 0), 0);
+        let elOffTotal = document.getElementById('officeDashboardTotal');
+        if (elOffTotal) elOffTotal.innerText = formatMoneyVn(totalOfficeVal);
+        let ctxOffBar = document.getElementById('officeBarChart');
+        if (ctxOffBar) {
+            if (officeBarInstance) officeBarInstance.destroy();
+            officeBarInstance = new Chart(ctxOffBar, {
+                type: 'bar',
+                data: { labels: offNames, datasets: [{ label: 'Giá trị (VNĐ)', data: offTotals, backgroundColor: '#d97706', borderRadius: 4 }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        let ctxInkBar = document.getElementById('inkBarChart');
+        if (ctxInkBar) {
+            if (inkBarInstance) inkBarInstance.destroy();
+            inkBarInstance = new Chart(ctxInkBar, {
+                type: 'bar',
+                data: { labels: ['Tổng Nhập Kho', 'Tổng Cấp Phát'], datasets: [{ label: 'Số lượng (Hộp)', data: [totalNhap, totalXuat], backgroundColor: ['#16a34a', '#0284c7'], borderRadius: 4 }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        let ctxInkPie = document.getElementById('inkPieChart');
+        if (ctxInkPie) {
+            if (inkPieInstance) inkPieInstance.destroy();
+            inkPieInstance = new Chart(ctxInkPie, {
+                type: 'doughnut',
+                data: { labels: ['Nhập kho mới', 'Cấp phát sử dụng'], datasets: [{ data: [totalNhap, totalXuat], backgroundColor: ['#16a34a', '#8b5cf6'] }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        let totalTelecomAmt = dsThanhToanTelecom.reduce((s,i)=>s+i.amount,0);
+        let elTelTotal = document.getElementById('telecomDashboardTotal');
+        if (elTelTotal) elTelTotal.innerText = formatMoneyVn(totalTelecomAmt);
+        let ctxTelPie = document.getElementById('telecomPieChart');
+        if (ctxTelPie) {
+            if (telecomPieInstance) telecomPieInstance.destroy();
+            telecomPieInstance = new Chart(ctxTelPie, {
+                type: 'pie',
+                data: { labels: telSup.length > 0 ? telSup : ['VNPT'], datasets: [{ data: telAmt.length > 0 ? telAmt : [100], backgroundColor: ['#0284c7', '#16a34a', '#d97706'] }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        let ctxSurveyOs = document.getElementById('surveyOsPieChart');
+        if (ctxSurveyOs) {
+            if (surveyOsPieInstance) surveyOsPieInstance.destroy();
+            surveyOsPieInstance = new Chart(ctxSurveyOs, {
+                type: 'pie',
+                data: { labels: ['Windows 11 Pro (OEM)', 'Windows 10 Pro'], datasets: [{ data: [1, 0], backgroundColor: ['#16a34a', '#0284c7'] }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        let ctxSurveyOff = document.getElementById('surveyOfficePieChart');
+        if (ctxSurveyOff) {
+            if (surveyOfficePieInstance) surveyOfficePieInstance.destroy();
+            surveyOfficePieInstance = new Chart(ctxSurveyOff, {
+                type: 'doughnut',
+                data: { labels: ['Microsoft 365', 'Office 2021'], datasets: [{ data: [1, 0], backgroundColor: ['#8b5cf6', '#d97706'] }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
     }
 
     function renderTimekeepingDetailTable() {
@@ -1227,42 +1530,9 @@
         document.querySelectorAll('.tab-btn-nav').forEach(b => b.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         btnEl.classList.add('active');
-        if (tabId === 'dashboardTab') setTimeout(khoiTaoHoacCapNhatChartsFull, 100);
-    }
-
-    function khoiTaoHoacCapNhatChartsFull() {
-        let ds = coSoDuLieuThang[currentThangKey].nhansu;
-        let allNames = ds.map(i => i.hoTen.split(' ').pop());
-        let allNets = ds.map(i => i.thucLinhCuoiCung);
-        let allAdvances = ds.map(i => i.tamUng);
-
-        let ctx1 = document.getElementById('salaryChartFull');
-        if (ctx1) {
-            if (chartSalaryFullInstance) chartSalaryFullInstance.destroy();
-            chartSalaryFullInstance = new Chart(ctx1, {
-                type: 'bar',
-                data: {
-                    labels: allNames,
-                    datasets: [
-                        { label: 'Thực Lĩnh Cuối (VNĐ)', data: allNets, backgroundColor: '#0284c7', borderRadius: 4 },
-                        { label: 'Tạm Ứng (VNĐ)', data: allAdvances, backgroundColor: '#dc2626', borderRadius: 4 }
-                    ]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
-        }
-
-        let ctxPie = document.getElementById('salaryPieChart');
-        if (ctxPie) {
-            let totalNetSum = allNets.reduce((a,b)=>a+b,0);
-            let totalAdvSum = allAdvances.reduce((a,b)=>a+b,0);
-            if (chartSalaryPieInstance) chartSalaryPieInstance.destroy();
-            chartSalaryPieInstance = new Chart(ctxPie, {
-                type: 'doughnut',
-                data: { labels: ['Tổng Thực Lĩnh', 'Tổng Tạm Ứng'], datasets: [{ data: [totalNetSum, totalAdvSum], backgroundColor: ['#16a34a', '#dc2626'] }] },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
-        }
+        setTimeout(() => {
+            capNhatTatCaSubDashboards();
+        }, 100);
     }
 
     function thucHienDangNhap() {
@@ -1271,7 +1541,9 @@
         if (danhSachTaiKhoan.find(acc => acc.username === u && acc.pass === p)) {
             document.getElementById('loginModal').classList.add('hidden');
             document.getElementById('appMainContainer').classList.remove('hidden');
-            setTimeout(khoiTaoHoacCapNhatChartsFull, 200);
+            setTimeout(() => {
+                capNhatTatCaSubDashboards();
+            }, 200);
         } else {
             alert("Tên đăng nhập hoặc mật khẩu không chính xác!");
         }
@@ -1536,6 +1808,7 @@
         let percent = danhSachCongViec.length > 0 ? Math.round((completedCount / danhSachCongViec.length) * 100) : 0;
         document.getElementById('taskProgressBar').style.width = percent + '%';
         document.getElementById('taskProgressText').innerText = `Đã hoàn thành: ${completedCount}/${danhSachCongViec.length} công việc (${percent}%)`;
+        capNhatTatCaSubDashboards();
     }
 
     function chuyenTrangThaiTask(idx) {
@@ -1619,10 +1892,10 @@
     }
 
     function convertSolar2Lunar(dd, mm, yy) {
-        let baseSolar = new Date(2026, 7, 12);
+        let baseSolar = new Date(2026, 7, 13);
         let targetSolar = new Date(yy, mm, dd);
         let diffDays = Math.round((targetSolar - baseSolar) / (1000 * 60 * 60 * 24));
-        let lunarDay = 30 + diffDays;
+        let lunarDay = 31 + diffDays;
         let lunarMonth = 6;
         let lunarYear = 2026;
 

@@ -309,7 +309,6 @@
         <div class="config-item">
             <label>Năm Lưu Trữ (Tự Sinh)</label>
             <select id="cfgNamChon" onchange="doiThangHoSoLuong()">
-                <!-- Các năm sẽ được sinh động bằng JavaScript từ quá khứ đến tương lai xa -->
             </select>
         </div>
         <div class="config-item">
@@ -398,13 +397,9 @@
         <button class="tab-btn-nav" onclick="switchTab('surveyTab', this)"><i class="fa-solid fa-clipboard-check"></i> Khảo Sát Phần Mềm</button>
     </div>
 
-    <!-- TAB 0: DASHBOARD TỔNG QUAN -->
+    <!-- TAB 0: DASHBOARD TỔNG QUAN (ĐÃ BỎ HOÀN TOÀN BIỂU ĐỒ CỘT THỰC LĨNH & TẠM ỨNG) -->
     <div id="dashboardTab" class="tab-pane table-card" style="background: transparent; border: none; padding: 0;">
         <div class="charts-multi-grid">
-            <div class="chart-card">
-                <div class="chart-title"><i class="fa-solid fa-chart-column" style="color: var(--primary);"></i> Biểu đồ Thực Lĩnh Cuối Cùng & Tạm Ứng Cán Bộ</div>
-                <div style="position: relative; height: 260px;"><canvas id="salaryChartFull"></canvas></div>
-            </div>
             <div class="chart-card">
                 <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #16a34a;"></i> Tỷ Trọng Tạm Ứng So Với Thực Lĩnh (%)</div>
                 <div style="position: relative; height: 260px;"><canvas id="salaryPieChart"></canvas></div>
@@ -941,7 +936,6 @@
 </div>
 
 <script>
-    // Đăng ký Plugin DataLabels cho Chart.js để hiện %
     Chart.register(ChartDataLabels);
 
     const coSoDuLieuNamThang = {
@@ -1077,7 +1071,6 @@
     let selectedDayInfo = { day: 13, month: 7, year: 2026 };
     let selectedNvForSlip = null;
 
-    let chartSalaryFullInstance = null;
     let chartSalaryPieInstance = null;
     let overviewTaskPieInstance = null;
     let overviewLeaveBarInstance = null;
@@ -1432,22 +1425,6 @@
         let allNames = ds.map(i => i.hoTen.split(' ').pop());
         let allNets = ds.map(i => i.thucLinhCuoiCung);
         let allAdvances = ds.map(i => i.tamUng);
-
-        let ctx1 = document.getElementById('salaryChartFull');
-        if (ctx1) {
-            if (chartSalaryFullInstance) chartSalaryFullInstance.destroy();
-            chartSalaryFullInstance = new Chart(ctx1, {
-                type: 'bar',
-                data: {
-                    labels: allNames,
-                    datasets: [
-                        { label: 'Thực Lĩnh Cuối (VNĐ)', data: allNets, backgroundColor: '#0284c7', borderRadius: 4 },
-                        { label: 'Tạm Ứng (VNĐ)', data: allAdvances, backgroundColor: '#dc2626', borderRadius: 4 }
-                    ]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
-        }
 
         let ctxPie = document.getElementById('salaryPieChart');
         if (ctxPie) {
@@ -1905,7 +1882,6 @@
         }
     }
 
-    // Nút "Mở Drive" trỏ thẳng chính xác vào đường dẫn thư mục gốc Google Drive theo yêu cầu của anh
     function moThuThucDriveChung() {
         let driveFolderUrl = "https://drive.google.com/drive/folders/178tb6bmU0IUlkvqJGYzsASsye43Yl2Pi";
         let win = window.open(driveFolderUrl, '_blank', 'noopener,noreferrer');

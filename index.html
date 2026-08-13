@@ -157,7 +157,7 @@
             text-align: center; font-size: 11px; color: #64748b; margin-top: 4px; padding-bottom: 24px;
         }
 
-        /* WIDGET LỊCH VẠN NIÊN & PHONG THỦY ĐỈNH CAO (ĐỒNG HỒ SỐ + GIỜ HOÀNG ĐẠO + XUNG KHẮC + SAO TỐT XẤU) */
+        /* WIDGET LỊCH VẠN NIÊN & PHONG THỦY */
         .van-nien-widget-float {
             position: fixed; bottom: 20px; right: 20px; width: 440px; background: white;
             border-radius: 10px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.25); border: 2px solid var(--primary);
@@ -171,7 +171,6 @@
             padding: 10px; font-size: 11px; display: flex; flex-direction: column; gap: 8px; background: #f8fafc; max-height: 680px; overflow-y: auto;
         }
         
-        /* Đồng hồ số hiện đại */
         .digital-clock-box {
             background: #0f172a; color: #38bdf8; padding: 8px; border-radius: 6px; text-align: center;
             font-family: monospace; font-size: 18px; font-weight: 900; letter-spacing: 2px;
@@ -199,7 +198,6 @@
             border-radius: 6px; font-style: italic; color: #166534; font-size: 10px; text-align: center; line-height: 1.4; position: relative;
         }
 
-        /* MODAL NHẮC NHỞ NGHỈ NGƠI 60 PHÚT */
         .rest-popup-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.75); display: flex; justify-content: center; align-items: center;
@@ -345,6 +343,7 @@
     <div class="tab-nav">
         <button class="tab-btn-nav active" onclick="switchTab('dashboardTab', this)"><i class="fa-solid fa-chart-pie"></i> DB Tổng Quan</button>
         <button class="tab-btn-nav" onclick="switchTab('taskTab', this)"><i class="fa-solid fa-list-check"></i> Quản Lý Công Việc & Tiến Độ</button>
+        <button class="tab-btn-nav" onclick="switchTab('timekeepingDetailTab', this)"><i class="fa-solid fa-business-time"></i> Quản Lý Công Chi Tiết</button>
         <button class="tab-btn-nav" onclick="switchTab('salaryCBTab', this)"><i class="fa-solid fa-file-invoice-dollar"></i> 1. Bảng Lương Cơ Bản</button>
         <button class="tab-btn-nav" onclick="switchTab('salaryCVTab', this)"><i class="fa-solid fa-briefcase"></i> 2. Lương Công Việc & Net</button>
         <button class="tab-btn-nav" onclick="switchTab('leaveTab', this)"><i class="fa-solid fa-calendar-days"></i> Quản Lý Công Phép</button>
@@ -392,6 +391,31 @@
             <thead><tr><th>STT</th><th>Nội Dung Công Việc</th><th>Người Thực Hiện</th><th>Hạn Hoàn Thành</th><th>Trạng Thái</th><th>Thao Tác</th></tr></thead>
             <tbody id="taskTableBody"></tbody>
         </table>
+    </div>
+
+    <!-- TAB BỔ SUNG: QUẢN LÝ CÔNG CHI TIẾT -->
+    <div id="timekeepingDetailTab" class="tab-pane table-card">
+        <div class="table-header-bar">
+            <div class="table-title"><i class="fa-solid fa-business-time"></i> BẢNG THEO DÕI VÀ CHẤM CÔNG CHI TIẾT TỪNG NHÂN SỰ</div>
+            <button class="btn btn-green" onclick="xuatExcelCongChiTiet()"><i class="fa-solid fa-file-excel"></i> Xuất Excel Chấm Công</button>
+        </div>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Họ và Tên</th>
+                        <th>NCD Chuẩn</th>
+                        <th>Ngày Công Thực Tế</th>
+                        <th>Nghỉ Phép (P)</th>
+                        <th>Nghỉ Lễ (L)</th>
+                        <th>Hệ Số Thực Hiện (K)</th>
+                        <th>Ghi Chú Chấm Công</th>
+                    </tr>
+                </thead>
+                <tbody id="timekeepingDetailTableBody"></tbody>
+            </table>
+        </div>
     </div>
 
     <!-- TAB 1: BẢNG LƯƠNG CƠ BẢN -->
@@ -520,18 +544,20 @@
 
     <!-- TAB 7: CƯỚC VIỄN THÔNG -->
     <div id="telecomPaymentTab" class="tab-pane table-card">
-        <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-wifi"></i> THANH TOÁN CƯỚC VIỄN THÔNG</div></div>
-        <div class="form-card">
+        <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-wifi"></i> THANH TOÁN CƯỚC VIỄN THÔNG & TÁCH THUẾ VAT</div></div>
+        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
             <div class="form-group"><label>Mã HS</label><input type="text" id="autoTelecomId" readonly style="background:#e2e8f0; font-weight:bold;"></div>
             <div class="form-group"><label>Nhà Mạng</label><select id="inputTelecomSupplier"><option value="VNPT">VNPT</option><option value="Viettel">Viettel</option><option value="Mobifone">Mobifone</option></select></div>
-            <div class="form-group"><label>Loại Cước</label><select id="inputTelecomType"><option value="Internet">Internet cáp quang</option><option value="Điện thoại">Cố định</option></select></div>
+            <div class="form-group"><label>Loại Cước (Tự nhập)</label><input type="text" id="inputTelecomType" placeholder="VD: Internet cáp quang..."></div>
             <div class="form-group"><label>Kỳ Cước</label><input type="text" id="inputTelecomPeriod" value="Tháng 08/2026"></div>
-            <div class="form-group"><label>Tổng Cước</label><input type="number" id="inputTelecomAmount" placeholder="2500000"></div>
+            <div class="form-group"><label>Tổng Cước (Đã có VAT)</label><input type="number" id="inputTelecomAmount" placeholder="2500000" oninput="tinhTachVATTelecom()"></div>
+            <div class="form-group"><label>Tiền Trước Thuế (Chưa VAT)</label><input type="text" id="previewTelecomTruocThue" readonly style="background:#f1f5f9; font-weight:bold;"></div>
+            <div class="form-group"><label>Thuế VAT (10%)</label><input type="text" id="previewTelecomVAT" readonly style="background:#f1f5f9; color:#dc2626; font-weight:bold;"></div>
             <div class="form-group"><label>Hạn TT</label><input type="date" id="inputTelecomDueDate"></div>
             <div class="form-group"><button class="btn btn-green" onclick="themHoSoTelecom()"><i class="fas fa-plus-circle"></i> Thêm Cước</button></div>
         </div>
         <table>
-            <thead><tr><th>Mã HS</th><th>Nhà Mạng</th><th>Loại Cước</th><th>Kỳ Cước</th><th>Tổng Cước</th><th>Hạn TT</th><th>Thao Tác</th></tr></thead>
+            <thead><tr><th>Mã HS</th><th>Nhà Mạng</th><th>Loại Cước</th><th>Kỳ Cước</th><th>Trước Thuế</th><th>Thuế VAT (10%)</th><th>Tổng Cước TT</th><th>Hạn TT</th><th>Thao Tác</th></tr></thead>
             <tbody id="telecomPaymentTableBody"></tbody>
         </table>
     </div>
@@ -622,7 +648,7 @@
     </div>
 </div>
 
-<!-- POPUP NHẮC NHỞ NGHỈ NGƠI TỰ ĐỘNG (60 PHÚT - CHẠY NGẦM) -->
+<!-- POPUP NHẮC NHỞ NGHỈ NGƠI TỰ ĐỘNG (60 PHÚT) -->
 <div class="rest-popup-overlay hidden" id="restNoticeModal">
     <div class="rest-popup-card">
         <div class="rest-popup-icon"><i class="fa-solid fa-mug-hot"></i></div>
@@ -632,11 +658,10 @@
     </div>
 </div>
 
-<!-- WIDGET LỊCH VẠN NIÊN & PHONG THỦY THÔNG MINH ĐỈNH CAO -->
+<!-- WIDGET LỊCH VẠN NIÊN & PHONG THỦY -->
 <div class="van-nien-widget-float" id="floatingVanNienWidget">
     <div class="widget-header" onclick="toggleWidgetVanNien()"><span><i class="fa-solid fa-calendar-day"></i> Lịch Vạn Niên & Phong Thủy 2026</span><i class="fa-solid fa-chevron-down" id="widgetToggleIcon"></i></div>
     <div class="widget-body" id="widgetBodyContent">
-        <!-- Đồng hồ số hiện đại -->
         <div class="digital-clock-box">
             <div id="digitalClockDisplay">10:09:39</div>
             <span id="digitalDateDisplay">12/08/2026</span>
@@ -650,17 +675,15 @@
         </div>
         <div class="cal-grid-mini" id="miniCalendarGrid"></div>
 
-        <!-- Phong thủy chi tiết: Hoàng đạo, Xung khắc, Sao, Việc nên làm/kiêng kị, Thời tiết chọn vị trí -->
         <div class="fengshui-card">
             <div class="fengshui-row"><span>📅 <b>Dương Lịch:</b></span> <span id="widgetRealtimeDate" style="color: #0284c7; font-weight: bold;">--</span></div>
-            <div class="fengshui-row"><span>🌙 <b>Âm Lịch (Chuẩn 30):</b></span> <span id="widgetLunar" style="color: #166534; font-weight: bold;">--</span></div>
+            <div class="fengshui-row"><span>🌙 <b>Âm Lịch:</b></span> <span id="widgetLunar" style="color: #166534; font-weight: bold;">--</span></div>
             <div class="fengshui-row"><span>⭐ <b>Sao Tốt / Xấu:</b></span> <span id="widgetSaoTotXau" style="color: #d97706; font-weight: bold;">--</span></div>
             <div class="fengshui-row"><span>⏰ <b>Giờ Hoàng Đạo:</b></span> <span id="widgetHoangDao" style="color: #16a34a; font-weight: bold;">--</span></div>
             <div class="fengshui-row"><span>⚡ <b>Tuổi Xung Khắc:</b></span> <span id="widgetXungKhac" style="color: #dc2626; font-weight: bold;">--</span></div>
             <div class="fengshui-row"><span>✅ <b>Nên Làm:</b></span> <span id="widgetNenLam" style="color: #15803d; font-weight: bold;">--</span></div>
             <div class="fengshui-row"><span>❌ <b>Kiêng Kị:</b></span> <span id="widgetKiengKi" style="color: #991b1b; font-weight: bold;">--</span></div>
             
-            <!-- Chọn vị trí thời tiết linh hoạt -->
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2px; background: #f1f5f9; padding: 4px; border-radius: 4px;">
                 <span>🌤️ <b>Thời Tiết:</b></span>
                 <select id="selectLocationWeather" style="padding: 2px 4px; font-size: 10px; font-weight: bold; border-radius: 4px; border: 1px solid var(--border-color);" onchange="taiDuLieuThoiTietTheoViTri()">
@@ -732,8 +755,6 @@
 </div>
 
 <script>
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwMaUGfEWffLAgxpjGbDPClyGfNqjJqyObmWFJc-VqJXRZLZ9bThiUv95SFeJ1bWeHpPg/exec";
-
     const coSoDuLieuThang = {
         "Tháng 05": {
             config: { ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 1991139 },
@@ -827,7 +848,9 @@
         { code: "MUC001", name: "Hộp mực Canon 337", printer: "Canon LBP 151dw", action: "Nhập mới kho", qty: 10, receiver: "Kho Văn phòng", price: 450000, total: 4500000 },
         { code: "MUC002", name: "Hộp mực HP 85A", printer: "HP LaserJet Pro", action: "Cấp phát sử dụng", qty: 2, receiver: "Phòng Kế toán - Thống kê", price: 380000, total: 760000 }
     ];
-    let dsThanhToanTelecom = [];
+    let dsThanhToanTelecom = [
+        { id: "VT001", supplier: "VNPT", type: "Cáp quang văn phòng", period: "Tháng 08/2026", amount: 2750000, truocThue: 2500000, vat: 250000, dueDate: "2026-08-30" }
+    ];
     let dsKhaoSatChuyenSieu = [
         { code: "KS001", user: "Trần Bình Dương", dept: "Khối Văn phòng", device: "Laptop Dell", qty: 1, os: "Windows 11 Pro", osLic: "Đã có OEM", office: "Microsoft 365", officeLic: "Bản quyền M365", specs: "Core i7, RAM 16GB" }
     ];
@@ -839,7 +862,7 @@
     let danhSachTaiKhoan = [{ username: 'admin', pass: '123456', role: 'Admin', email: 'admin@bapaco.vn' }];
 
     let currentMiniCalYear = 2026;
-    let currentMiniCalMonth = 7; // Tháng 8
+    let currentMiniCalMonth = 7;
     let selectedDayInfo = { day: 12, month: 7, year: 2026 };
     let selectedNvForSlip = null;
     let chartSalaryFullInstance = null;
@@ -869,6 +892,7 @@
     window.onload = function() {
         doiThangHoSoLuong();
         tinhThanhTienVPP();
+        tinhTachVATTelecom();
         capNhatAutoID();
         khoiTaoLichVaNgayMoi();
         khoiTaoDongHoSo();
@@ -877,9 +901,9 @@
         renderTaskTable();
         document.getElementById('inputSlipDate').value = new Date().toISOString().split('T')[0];
         document.getElementById('inputTaskDueDate').value = new Date().toISOString().split('T')[0];
+        document.getElementById('inputTelecomDueDate').value = new Date().toISOString().split('T')[0];
     };
 
-    // Đồng hồ số hiện đại, thông minh cập nhật từng giây
     function khoiTaoDongHoSo() {
         setInterval(() => {
             let now = new Date();
@@ -894,10 +918,9 @@
         }, 1000);
     }
 
-    // Lấy thời tiết linh hoạt theo vị trí được chọn
     async function taiDuLieuThoiTietTheoViTri() {
         let loc = document.getElementById('selectLocationWeather').value;
-        let lat = 21.325, lon = 105.397; // Việt Trì
+        let lat = 21.325, lon = 105.397;
         if (loc === 'hanoi') { lat = 21.028; lon = 105.854; }
         else if (loc === 'danang') { lat = 16.054; lon = 108.202; }
         else if (loc === 'hcm') { lat = 10.823; lon = 106.629; }
@@ -922,7 +945,6 @@
         }
     }
 
-    // Bộ đếm nhắc nhở nghỉ ngơi chu kỳ 60 phút
     function khoiTaoBoDemNghiNgoi60Phut() {
         if (restTimerInterval) clearInterval(restTimerInterval);
         restTimerInterval = setInterval(() => {
@@ -1081,6 +1103,7 @@
             i.thucLinhCuoiCung = i.thucLinhLCB + i.thucLinhCV;
         });
 
+        renderTimekeepingDetailTable();
         renderTableCB();
         renderTableCV();
         renderLeaveTable();
@@ -1105,6 +1128,26 @@
         document.getElementById("kpiTotalInkStock").innerText = totalStockInk + " Hộp";
         document.getElementById("kpiTotalSurvey").innerText = dsKhaoSatChuyenSieu.length + " Thiết bị";
         document.getElementById("kpiTotalTamUng").innerText = formatMoneyVn(totalTamUng);
+    }
+
+    function renderTimekeepingDetailTable() {
+        let tbody = document.getElementById("timekeepingDetailTableBody");
+        tbody.innerHTML = "";
+        let cfg = coSoDuLieuThang[currentThangKey].config;
+        let ds = coSoDuLieuThang[currentThangKey].nhansu;
+        ds.forEach((item, idx) => {
+            tbody.innerHTML += `
+                <tr>
+                    <td style="text-align: center;">${idx + 1}</td>
+                    <td style="font-weight: 700;">${item.hoTen}</td>
+                    <td style="text-align: center; background:#f8fafc; font-weight:bold;">${cfg.ncd}</td>
+                    <td><input class="cell-input num-center" type="number" value="${item.nc_tg}" onchange="capNhatGiaTriCell(${idx}, 'nc_tg', this.value)"></td>
+                    <td><input class="cell-input num-center" type="number" value="${item.nc_p || 0}" onchange="capNhatGiaTriCell(${idx}, 'nc_p', this.value)"></td>
+                    <td><input class="cell-input num-center" type="number" value="${item.nc_l || 0}" onchange="capNhatGiaTriCell(${idx}, 'nc_l', this.value)"></td>
+                    <td><input class="cell-input num-center" type="number" step="0.05" value="${item.k_ht || 1.0}" onchange="capNhatGiaTriCell(${idx}, 'k_ht', this.value)"></td>
+                    <td style="color: #166534; font-style: italic;">Đã chốt công ${currentThangKey}</td>
+                </tr>`;
+        });
     }
 
     function renderTableCB() {
@@ -1247,6 +1290,14 @@
         document.getElementById('previewOfficeTotal').value = formatMoneyVn(q * p);
     }
 
+    function tinhTachVATTelecom() {
+        let totalAmount = parseFloat(document.getElementById('inputTelecomAmount').value) || 0;
+        let truocThue = Math.round(totalAmount / 1.1);
+        let vat = totalAmount - truocThue;
+        document.getElementById('previewTelecomTruocThue').value = formatMoneyVn(truocThue);
+        document.getElementById('previewTelecomVAT').value = formatMoneyVn(vat);
+    }
+
     function themHoSoVPPPro() {
         let content = document.getElementById('inputOfficeContent').value.trim();
         let beneficiary = document.getElementById('inputOfficeBeneficiary').value.trim();
@@ -1262,11 +1313,32 @@
         capNhat();
     }
 
+    function suaHoSoVPP(idx) {
+        let item = dsThanhToanVanPhongPro[idx];
+        let newContent = prompt("Sửa nội dung thanh toán VPP:", item.content);
+        if (newContent !== null) {
+            item.content = newContent;
+            capNhat();
+        }
+    }
+
     function renderOfficePaymentTable() {
         let tbody = document.getElementById('officePaymentTableBody');
         tbody.innerHTML = '';
         dsThanhToanVanPhongPro.forEach((item, idx) => {
-            tbody.innerHTML += `<tr><td>${item.id}</td><td><b>${item.content}</b></td><td>${item.beneficiary}</td><td>${item.stk}</td><td>${formatDateVn(item.date)}</td><td>${item.qty} x ${formatMoneyVn(item.price)}</td><td style="color:#15803d; font-weight:bold;">${formatMoneyVn(item.total)}</td><td><button class="btn btn-red" style="padding:2px 5px;" onclick="dsThanhToanVanPhongPro.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button></td></tr>`;
+            tbody.innerHTML += `<tr>
+                <td>${item.id}</td>
+                <td><b>${item.content}</b></td>
+                <td>${item.beneficiary}</td>
+                <td>${item.stk}</td>
+                <td>${formatDateVn(item.date)}</td>
+                <td>${item.qty} x ${formatMoneyVn(item.price)}</td>
+                <td style="color:#15803d; font-weight:bold;">${formatMoneyVn(item.total)}</td>
+                <td style="text-align:center;">
+                    <button class="btn btn-blue" style="padding:2px 5px;" onclick="suaHoSoVPP(${idx})" title="Sửa"><i class="fas fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:2px 5px;" onclick="dsThanhToanVanPhongPro.splice(${idx},1);capNhat();" title="Xóa"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>`;
         });
     }
 
@@ -1274,8 +1346,30 @@
         let tbody = document.getElementById('inkInventoryTableBody');
         tbody.innerHTML = '';
         dsKhoMucIn.forEach((item, idx) => {
-            tbody.innerHTML += `<tr><td>${item.code}</td><td><b>${item.name}</b></td><td>${item.printer}</td><td>${item.action}</td><td>${item.qty}</td><td>${item.receiver}</td><td>${formatMoneyVn(item.price)}</td><td style="font-weight:bold;">${formatMoneyVn(item.total)}</td><td><button class="btn btn-red" style="padding:2px 5px;" onclick="dsKhoMucIn.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button></td></tr>`;
+            tbody.innerHTML += `<tr>
+                <td>${item.code}</td>
+                <td><b>${item.name}</b></td>
+                <td>${item.printer}</td>
+                <td>${item.action}</td>
+                <td>${item.qty}</td>
+                <td>${item.receiver}</td>
+                <td>${formatMoneyVn(item.price)}</td>
+                <td style="font-weight:bold;">${formatMoneyVn(item.total)}</td>
+                <td style="text-align:center;">
+                    <button class="btn btn-blue" style="padding:2px 5px;" onclick="suaKhoMuc(${idx})" title="Sửa"><i class="fas fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:2px 5px;" onclick="dsKhoMucIn.splice(${idx},1);capNhat();" title="Xóa"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>`;
         });
+    }
+
+    function suaKhoMuc(idx) {
+        let item = dsKhoMucIn[idx];
+        let newName = prompt("Sửa tên mực in:", item.name);
+        if (newName !== null) {
+            item.name = newName;
+            capNhat();
+        }
     }
 
     function renderXNTTable() {
@@ -1298,22 +1392,51 @@
     }
 
     function themHoSoTelecom() {
+        let typeVal = document.getElementById('inputTelecomType').value.trim();
+        let amountVal = parseFloat(document.getElementById('inputTelecomAmount').value) || 0;
+        if (!typeVal || !amountVal) { alert("Vui lòng nhập loại cước và tổng cước phí!"); return; }
+        let truocThueVal = Math.round(amountVal / 1.1);
+        let vatVal = amountVal - truocThueVal;
         dsThanhToanTelecom.push({
             id: "VT" + String(dsThanhToanTelecom.length + 1).padStart(3, '0'),
             supplier: document.getElementById('inputTelecomSupplier').value,
-            type: document.getElementById('inputTelecomType').value,
+            type: typeVal,
             period: document.getElementById('inputTelecomPeriod').value,
-            amount: parseFloat(document.getElementById('inputTelecomAmount').value) || 0,
+            amount: amountVal,
+            truocThue: truocThueVal,
+            vat: vatVal,
             dueDate: document.getElementById('inputTelecomDueDate').value
         });
         capNhat();
+    }
+
+    function suaTelecom(idx) {
+        let item = dsThanhToanTelecom[idx];
+        let newType = prompt("Sửa loại cước viễn thông:", item.type);
+        if (newType !== null) {
+            item.type = newType;
+            capNhat();
+        }
     }
 
     function renderTelecomPaymentTable() {
         let tbody = document.getElementById('telecomPaymentTableBody');
         tbody.innerHTML = '';
         dsThanhToanTelecom.forEach((item, idx) => {
-            tbody.innerHTML += `<tr><td>${item.id}</td><td>${item.supplier}</td><td>${item.type}</td><td>${item.period}</td><td style="color:#dc2626; font-weight:bold;">${formatMoneyVn(item.amount)}</td><td>${formatDateVn(item.dueDate)}</td><td><button class="btn btn-red" style="padding:2px 5px;" onclick="dsThanhToanTelecom.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button></td></tr>`;
+            tbody.innerHTML += `<tr>
+                <td>${item.id}</td>
+                <td>${item.supplier}</td>
+                <td><b>${item.type}</b></td>
+                <td>${item.period}</td>
+                <td style="text-align:right;">${formatMoneyVn(item.truocThue)}</td>
+                <td style="text-align:right; color:#dc2626;">${formatMoneyVn(item.vat)}</td>
+                <td style="text-align:right; color:#15803d; font-weight:bold;">${formatMoneyVn(item.amount)}</td>
+                <td>${formatDateVn(item.dueDate)}</td>
+                <td style="text-align:center;">
+                    <button class="btn btn-blue" style="padding:2px 5px;" onclick="suaTelecom(${idx})" title="Sửa"><i class="fas fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:2px 5px;" onclick="dsThanhToanTelecom.splice(${idx},1);capNhat();" title="Xóa"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>`;
         });
     }
 
@@ -1334,11 +1457,33 @@
         capNhat();
     }
 
+    function suaKhaoSat(idx) {
+        let item = dsKhaoSatChuyenSieu[idx];
+        let newUser = prompt("Sửa tên người dùng khảo sát:", item.user);
+        if (newUser !== null) {
+            item.user = newUser;
+            capNhat();
+        }
+    }
+
     function renderSurveyTable() {
         let tbody = document.getElementById('surveyTableBody');
         tbody.innerHTML = '';
         dsKhaoSatChuyenSieu.forEach((item, idx) => {
-            tbody.innerHTML += `<tr><td>${item.code}</td><td><b>${item.user}</b></td><td>${item.dept}</td><td>${item.device}</td><td>${item.qty}</td><td>${item.os}</td><td>${item.office}</td><td>${item.specs}</td><td><button class="btn btn-red" style="padding:2px 5px;" onclick="dsKhaoSatChuyenSieu.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button></td></tr>`;
+            tbody.innerHTML += `<tr>
+                <td>${item.code}</td>
+                <td><b>${item.user}</b></td>
+                <td>${item.dept}</td>
+                <td>${item.device}</td>
+                <td>${item.qty}</td>
+                <td>${item.os}</td>
+                <td>${item.office}</td>
+                <td>${item.specs}</td>
+                <td style="text-align:center;">
+                    <button class="btn btn-blue" style="padding:2px 5px;" onclick="suaKhaoSat(${idx})" title="Sửa"><i class="fas fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:2px 5px;" onclick="dsKhaoSatChuyenSieu.splice(${idx},1);capNhat();" title="Xóa"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>`;
         });
         document.getElementById('statOSSummary').innerText = "Windows 11 Pro: 1 máy";
         document.getElementById('statOfficeSummary').innerText = "Microsoft 365: 1 máy";
@@ -1358,6 +1503,15 @@
         renderTaskTable();
     }
 
+    function suaCongViec(idx) {
+        let t = danhSachCongViec[idx];
+        let newName = prompt("Sửa nội dung công việc:", t.name);
+        if (newName !== null) {
+            t.name = newName;
+            renderTaskTable();
+        }
+    }
+
     function renderTaskTable() {
         let tbody = document.getElementById('taskTableBody');
         tbody.innerHTML = '';
@@ -1373,8 +1527,9 @@
                     <td>${formatDateVn(task.dueDate)}</td>
                     <td style="text-align: center;"><span class="${badgeColor}">${task.status}</span></td>
                     <td style="text-align: center;">
-                        <button class="btn btn-green" style="padding:2px 5px;" onclick="chuyenTrangThaiTask(${idx})"><i class="fas fa-sync"></i></button>
-                        <button class="btn btn-red" style="padding:2px 5px;" onclick="danhSachCongViec.splice(${idx},1);renderTaskTable();"><i class="fas fa-trash"></i></button>
+                        <button class="btn btn-green" style="padding:2px 5px;" onclick="chuyenTrangThaiTask(${idx})" title="Đổi trạng thái"><i class="fas fa-sync"></i></button>
+                        <button class="btn btn-blue" style="padding:2px 5px;" onclick="suaCongViec(${idx})" title="Sửa"><i class="fas fa-pen"></i></button>
+                        <button class="btn btn-red" style="padding:2px 5px;" onclick="danhSachCongViec.splice(${idx},1);renderTaskTable();" title="Xóa"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>`;
         });
@@ -1451,11 +1606,18 @@
         XLSX.writeFile(wb, `Bang_Luong_NET_${currentThangKey.replace(/\s+/g, '_')}.xlsx`);
     }
 
+    function xuatExcelCongChiTiet() {
+        let ds = coSoDuLieuThang[currentThangKey].nhansu;
+        const ws = XLSX.utils.json_to_sheet(ds.map((i, idx) => ({ "STT": idx+1, "Họ Tên": i.hoTen, "Ngày Công Thực Tế": i.nc_tg, "Nghỉ Phép": i.nc_p, "Nghỉ Lễ": i.nc_l, "Hệ số K": i.k_ht })));
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "ChamCong");
+        XLSX.writeFile(wb, `Bang_Cham_Cong_${currentThangKey.replace(/\s+/g, '_')}.xlsx`);
+    }
+
     function syncDataWithGoogleSheets() {
         alert("Đã gửi đồng bộ dữ liệu của " + currentThangKey + " lên Google Sheets thành công!");
     }
 
-    // Lịch Vạn Niên & Quy Đổi Âm Lịch chuẩn xác (Ngày 12/08/2026 là 30/06 Âm lịch) kèm Giờ Hoàng Đạo, Xung Khắc, Sao, Nên Làm / Kiêng Kị
     function convertSolar2Lunar(dd, mm, yy) {
         let baseSolar = new Date(2026, 7, 12);
         let targetSolar = new Date(yy, mm, dd);
@@ -1523,7 +1685,6 @@
         document.getElementById('widgetRealtimeDate').innerText = `${day} / ${thangDich} / ${year} (Bính Ngọ)`;
         document.getElementById('widgetLunar').innerText = `Ngày ${lunar.day} Âm lịch (Tháng ${lunar.month}/${lunar.year})`;
 
-        // Dữ liệu phong thủy tính theo quy luật ngày
         let hoangDaoArr = ["Tý (23h-1h)", "Sửu (1h-3h)", "Thìn (7h-9h)", "Tỵ (9h-11h)", "Mùi (13h-15h)", "Tuất (19h-21h)"];
         let xungKhacArr = ["Canh Tý, Giáp Tý, Nhâm Thìn", "Tân Sửu, Đinh Sửu", "Nhâm Dần, Bính Dần", "Quý Mão, Đinh Mão", "Giáp Thìn, Mậu Thìn", "Ất Tỵ, Kỷ Tỵ"];
         let saoTotArr = ["Thiên Ân, Nguyệt Âm, Kinh Tâm", "Thiên Phúc, Mẫu Thương", "Thanh Long, Minh Đường Hoàng Đạo", "Nguyệt Đức, Thiên Quý", "Kim Quỹ, Bảo Quang"];

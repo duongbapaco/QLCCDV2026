@@ -330,10 +330,10 @@
             </select>
         </div>
         <div class="config-item" style="grid-column: span 2;">
-            <label>Thư Mục Cốc Google Drive (Có nút mở trực tiếp)</label>
+            <label>Thư Mục Gốc Google Drive (Trỏ Thẳng)</label>
             <div style="display: flex; gap: 6px;">
-                <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold; flex: 1;">
-                <button class="btn btn-blue" style="padding: 4px 10px;" onclick="moThuThucDriveChung()" title="Mở thư mục Google Drive"><i class="fa-solid fa-folder-open"></i> Mở Drive</button>
+                <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold; flex: 1;" value="https://drive.google.com/drive/folders/178tb6bmU0IUlkvqJGYzsASsye43Yl2Pi">
+                <button class="btn btn-blue" style="padding: 4px 10px;" onclick="moThuThucDriveChung()" title="Mở đúng thư mục gốc Google Drive"><i class="fa-solid fa-folder-open"></i> Mở Drive</button>
             </div>
         </div>
         <div class="config-item">
@@ -1162,13 +1162,12 @@
         document.getElementById('inputTelecomDueDate').value = new Date().toISOString().split('T')[0];
     };
 
-    // Tự sinh danh sách năm động (từ 2024 đến năm hiện tại + 5 năm tương lai)
     function khoiTaoDanhSachNamTuSinh() {
         let selNam = document.getElementById('cfgNamChon');
         selNam.innerHTML = '';
         let currentYearReal = new Date().getFullYear();
         let startYear = 2024;
-        let endYear = currentYearReal + 5; // Tự sinh tương lai xa
+        let endYear = currentYearReal + 5;
 
         for (let y = startYear; y <= endYear; y++) {
             let opt = document.createElement('option');
@@ -1258,7 +1257,6 @@
         currentNamKey = document.getElementById('cfgNamChon').value;
         currentThangKey = document.getElementById('cfgThangChon').value;
         
-        // Tự sinh cấu trúc dữ liệu cho năm/tháng mới nếu chưa tồn tại
         if (!coSoDuLieuNamThang[currentNamKey]) {
             coSoDuLieuNamThang[currentNamKey] = {};
         }
@@ -1272,9 +1270,6 @@
             };
         }
 
-        let folderThang = currentThangKey.replace(/\s+/g, '_');
-        document.getElementById('cfgDrivePath').value = `BAPACO_Drive/${currentNamKey}/${folderThang}/`;
-        
         let cfg = coSoDuLieuNamThang[currentNamKey][currentThangKey].config;
         document.getElementById('cfgNCD').value = cfg.ncd;
         document.getElementById('cfgMucLCB').value = cfg.mucLCB;
@@ -1903,21 +1898,20 @@
                 let f = inputEl.files[i];
                 danhSachFileDaUploadTam[type].push({
                     name: f.name,
-                    url: "https://drive.google.com"
+                    url: "https://drive.google.com/drive/folders/178tb6bmU0IUlkvqJGYzsASsye43Yl2Pi"
                 });
             }
-            alert(`Đã tải lên thành công ${inputEl.files.length} tệp lên thư mục Google Drive: ${document.getElementById('cfgDrivePath').value}`);
+            alert(`Đã tải lên thành công ${inputEl.files.length} tệp vào thư mục Google Drive!`);
         }
     }
 
-    // KHẮC PHỤC LỖI ERR_BLOCKED_BY_RESPONSE: Sử dụng thẻ a ẩn hoặc window.open an toàn với target="_blank"
+    // Nút "Mở Drive" trỏ thẳng chính xác vào đường dẫn thư mục gốc Google Drive theo yêu cầu của anh
     function moThuThucDriveChung() {
-        let safeUrl = "https://drive.google.com";
-        let win = window.open(safeUrl, '_blank', 'noopener,noreferrer');
+        let driveFolderUrl = "https://drive.google.com/drive/folders/178tb6bmU0IUlkvqJGYzsASsye43Yl2Pi";
+        let win = window.open(driveFolderUrl, '_blank', 'noopener,noreferrer');
         if (!win) {
-            // Trường hợp trình duyệt chặn popup, tạo thẻ a click trực tiếp
             let a = document.createElement('a');
-            a.href = safeUrl;
+            a.href = driveFolderUrl;
             a.target = '_blank';
             a.rel = 'noopener noreferrer';
             document.body.appendChild(a);
@@ -1928,15 +1922,11 @@
 
     function moFileChungTuDrive(idx, type) {
         let item = (type === 'vpp') ? dsThanhToanVanPhongPro[idx] : dsThanhToanTelecom[idx];
-        if (!item.files || item.files.length === 0) {
-            alert("Không có tệp đính kèm nào trong hồ sơ này.");
-            return;
-        }
-        let safeUrl = "https://drive.google.com";
-        let win = window.open(safeUrl, '_blank', 'noopener,noreferrer');
+        let driveFolderUrl = "https://drive.google.com/drive/folders/178tb6bmU0IUlkvqJGYzsASsye43Yl2Pi";
+        let win = window.open(driveFolderUrl, '_blank', 'noopener,noreferrer');
         if (!win) {
             let a = document.createElement('a');
-            a.href = safeUrl;
+            a.href = driveFolderUrl;
             a.target = '_blank';
             a.rel = 'noopener noreferrer';
             document.body.appendChild(a);
@@ -1950,7 +1940,7 @@
         let beneficiary = document.getElementById('inputOfficeBeneficiary').value.trim();
         if (!content || !beneficiary) { alert("Nhập đủ thông tin VPP!"); return; }
         
-        let filesToSave = danhSachFileDaUploadTam.vpp.length > 0 ? [...danhSachFileDaUploadTam.vpp] : [{ name: "Chung_tu_VPP_mau.pdf", url: "https://drive.google.com" }];
+        let filesToSave = danhSachFileDaUploadTam.vpp.length > 0 ? [...danhSachFileDaUploadTam.vpp] : [{ name: "Chung_tu_VPP_mau.pdf", url: "https://drive.google.com/drive/folders/178tb6bmU0IUlkvqJGYzsASsye43Yl2Pi" }];
 
         dsThanhToanVanPhongPro.push({
             id: "VPP" + String(dsThanhToanVanPhongPro.length + 1).padStart(3, '0'),
@@ -1960,7 +1950,7 @@
             price: cleanAndParseMoney(document.getElementById('inputOfficePrice').value),
             total: (cleanAndParseMoney(document.getElementById('inputOfficeQty').value) || 1) * cleanAndParseMoney(document.getElementById('inputOfficePrice').value),
             files: filesToSave,
-            folder: document.getElementById('cfgDrivePath').value
+            folder: "https://drive.google.com/drive/folders/178tb6bmU0IUlkvqJGYzsASsye43Yl2Pi"
         });
         danhSachFileDaUploadTam.vpp = [];
         capNhat();
@@ -1984,9 +1974,7 @@
         let tbody = document.getElementById('officePaymentTableBody');
         tbody.innerHTML = '';
         dsThanhToanVanPhongPro.forEach((item, idx) => {
-            let fileDisplay = (!item.files || item.files.length === 0) ? 
-                `<span style="color:#94a3b8; font-style:italic;">Không có</span>` : 
-                `<button class="btn btn-purple" style="padding:3px 8px; font-size:11px;" onclick="moFileChungTuDrive(${idx}, 'vpp')"><i class="fa-solid fa-folder-open"></i> Xem Drive (${item.files.length})</button>`;
+            let fileDisplay = `<button class="btn btn-purple" style="padding:3px 8px; font-size:11px;" onclick="moFileChungTuDrive(${idx}, 'vpp')"><i class="fa-solid fa-folder-open"></i> Mở Thư Mục Drive</button>`;
 
             tbody.innerHTML += `<tr>
                 <td>${item.id}</td>
@@ -2059,7 +2047,7 @@
         let amountVal = cleanAndParseMoney(document.getElementById('inputTelecomAmount').value);
         if (!typeVal || !amountVal) { alert("Vui lòng nhập loại cước và tổng cước phí!"); return; }
         
-        let filesToSave = danhSachFileDaUploadTam.telecom.length > 0 ? [...danhSachFileDaUploadTam.telecom] : [{ name: "00134090.pdf", url: "https://drive.google.com" }];
+        let filesToSave = danhSachFileDaUploadTam.telecom.length > 0 ? [...danhSachFileDaUploadTam.telecom] : [{ name: "00134090.pdf", url: "https://drive.google.com/drive/folders/178tb6bmU0IUlkvqJGYzsASsye43Yl2Pi" }];
 
         let truocThueVal = Math.round(amountVal / 1.1);
         let vatVal = amountVal - truocThueVal;
@@ -2074,7 +2062,7 @@
             vat: vatVal,
             dueDate: document.getElementById('inputTelecomDueDate').value,
             files: filesToSave,
-            folder: document.getElementById('cfgDrivePath').value
+            folder: "https://drive.google.com/drive/folders/178tb6bmU0IUlkvqJGYzsASsye43Yl2Pi"
         });
         danhSachFileDaUploadTam.telecom = [];
         capNhat();
@@ -2096,9 +2084,7 @@
         let tbody = document.getElementById('telecomPaymentTableBody');
         tbody.innerHTML = '';
         dsThanhToanTelecom.forEach((item, idx) => {
-            let fileDisplay = (!item.files || item.files.length === 0) ? 
-                `<span style="color:#94a3b8; font-style:italic;">Không có</span>` : 
-                `<button class="btn btn-purple" style="padding:3px 8px; font-size:11px;" onclick="moFileChungTuDrive(${idx}, 'telecom')"><i class="fa-solid fa-folder-open"></i> Xem Drive (${item.files.length})</button>`;
+            let fileDisplay = `<button class="btn btn-purple" style="padding:3px 8px; font-size:11px;" onclick="moFileChungTuDrive(${idx}, 'telecom')"><i class="fa-solid fa-folder-open"></i> Mở Thư Mục Drive</button>`;
 
             tbody.innerHTML += `<tr>
                 <td>${item.id}</td>

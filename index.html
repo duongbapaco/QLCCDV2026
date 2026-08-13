@@ -24,29 +24,30 @@
             --yellow-text: #854d0e;
             --red-badge: #fee2e2;
             --red-text: #991b1b;
+            font-size: 15px; /* Phóng to cỡ chữ gốc toàn trang để dễ nhìn */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: var(--bg-body); color: var(--text-main); padding: 12px; }
-        .container { max-width: 1680px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+        body { background-color: var(--bg-body); color: var(--text-main); padding: 14px; }
+        .container { max-width: 1720px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
         .hidden { display: none !important; }
 
         .banner {
             background: linear-gradient(135deg, #0284c7, #0369a1);
             color: white;
-            padding: 14px 18px;
+            padding: 16px 20px;
             border-radius: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
         }
-        .banner h1 { font-size: 15px; font-weight: 700; text-transform: uppercase; }
-        .banner p { font-size: 11px; opacity: 0.9; margin-top: 2px; }
+        .banner h1 { font-size: 17px; font-weight: 700; text-transform: uppercase; }
+        .banner p { font-size: 13px; opacity: 0.9; margin-top: 3px; }
 
-        .btn-group-header { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-        .btn { padding: 6px 12px; border-radius: 6px; font-weight: 700; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; border: none; transition: all 0.2s; }
+        .btn-group-header { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .btn { padding: 8px 14px; border-radius: 6px; font-weight: 700; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; border: none; transition: all 0.2s; }
         .btn-green { background-color: #16a34a; color: white; }
         .btn-green:hover { background-color: #15803d; }
         .btn-blue { background-color: #0284c7; color: white; }
@@ -58,50 +59,50 @@
         .btn-purple { background-color: #8b5cf6; color: white; }
         .btn-purple:hover { background-color: #7c3aed; }
 
-        .config-bar { background: white; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-color); display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; align-items: center; }
-        .config-item { display: flex; flex-direction: column; gap: 3px; }
-        .config-item label { font-size: 9px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
-        .config-item input, .config-item select { padding: 5px 8px; border-radius: 5px; border: 1px solid var(--border-color); font-weight: 700; font-size: 11px; color: #0f172a; outline: none; background: #fff; }
+        .config-bar { background: white; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-color); display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; align-items: center; }
+        .config-item { display: flex; flex-direction: column; gap: 4px; }
+        .config-item label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+        .config-item input, .config-item select { padding: 7px 10px; border-radius: 6px; border: 1px solid var(--border-color); font-weight: 700; font-size: 13px; color: #0f172a; outline: none; background: #fff; }
 
-        .form-card { background: #f8fafc; border: 1px dashed var(--primary); padding: 12px; border-radius: 8px; margin-bottom: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; align-items: flex-end; }
-        .form-group { display: flex; flex-direction: column; gap: 3px; }
-        .form-group label { font-size: 10px; font-weight: 700; color: var(--text-muted); }
-        .form-group input, .form-group select { padding: 5px 8px; border-radius: 5px; border: 1px solid var(--border-color); font-size: 11px; outline: none; background: white; }
+        .form-card { background: #f8fafc; border: 1px dashed var(--primary); padding: 14px; border-radius: 8px; margin-bottom: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; align-items: flex-end; }
+        .form-group { display: flex; flex-direction: column; gap: 4px; }
+        .form-group label { font-size: 12px; font-weight: 700; color: var(--text-muted); }
+        .form-group input, .form-group select { padding: 7px 10px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; outline: none; background: white; }
 
-        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
-        .kpi-card { background: var(--card-bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); }
-        .kpi-title { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
-        .kpi-value { font-size: 17px; font-weight: 800; color: var(--text-main); margin: 3px 0 2px 0; }
-        .kpi-sub { font-size: 10px; color: var(--text-muted); }
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+        .kpi-card { background: var(--card-bg); padding: 14px; border-radius: 8px; border: 1px solid var(--border-color); }
+        .kpi-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+        .kpi-value { font-size: 19px; font-weight: 800; color: var(--text-main); margin: 4px 0 3px 0; }
+        .kpi-sub { font-size: 11px; color: var(--text-muted); }
 
-        .charts-multi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 12px; margin-top: 6px; }
-        .chart-card { background: white; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); }
-        .chart-title { font-size: 11px; font-weight: 700; color: var(--text-main); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; }
+        .charts-multi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(440px, 1fr)); gap: 14px; margin-top: 8px; }
+        .chart-card { background: white; padding: 14px; border-radius: 8px; border: 1px solid var(--border-color); }
+        .chart-title { font-size: 12px; font-weight: 700; color: var(--text-main); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; }
 
-        .tab-nav { display: flex; gap: 4px; border-bottom: 2px solid var(--border-color); padding-bottom: 6px; margin-top: 4px; flex-wrap: wrap; }
-        .tab-btn-nav { padding: 6px 10px; border-radius: 6px 6px 0 0; background: #e2e8f0; border: none; font-weight: 700; font-size: 11px; cursor: pointer; color: var(--text-muted); }
+        .tab-nav { display: flex; gap: 6px; border-bottom: 2px solid var(--border-color); padding-bottom: 8px; margin-top: 6px; flex-wrap: wrap; }
+        .tab-btn-nav { padding: 8px 12px; border-radius: 6px 6px 0 0; background: #e2e8f0; border: none; font-weight: 700; font-size: 12px; cursor: pointer; color: var(--text-muted); }
         .tab-btn-nav.active { background: var(--primary); color: white; }
 
         .tab-pane { display: none; }
         .tab-pane.active { display: block; }
 
-        .table-card { background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border-color); padding: 12px; }
-        .table-header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
-        .table-title { font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+        .table-card { background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border-color); padding: 14px; }
+        .table-header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+        .table-title { font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
 
-        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 11px; table-layout: fixed; }
-        th, td { padding: 6px 8px; border: 1px solid var(--border-color); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        th { background-color: #f1f5f9; color: var(--text-muted); font-weight: 700; font-size: 10px; text-transform: uppercase; text-align: center; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+        th, td { padding: 8px 10px; border: 1px solid var(--border-color); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        th { background-color: #f1f5f9; color: var(--text-muted); font-weight: 700; font-size: 11px; text-transform: uppercase; text-align: center; }
         
-        input.cell-input { width: 100%; padding: 3px 4px; border: 1px solid transparent; border-radius: 4px; font-size: 11px; outline: none; background: transparent; }
+        input.cell-input { width: 100%; padding: 5px 6px; border: 1px solid transparent; border-radius: 4px; font-size: 13px; outline: none; background: transparent; }
         input.cell-input:hover { border-color: #cbd5e1; background: #f8fafc; }
         input.cell-input:focus { border-color: #0284c7; background: #ffffff; box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15); }
         input.num-center { text-align: center; }
         input.money-input { text-align: right; color: #dc2626; font-weight: 700; }
 
-        .badge-net { background: var(--green-badge); color: var(--green-text); padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 10px; display: inline-block; }
-        .badge-danger { background: var(--red-badge); color: var(--red-text); padding: 2px 6px; border-radius: 8px; font-weight: 800; font-size: 10px; display: inline-block; }
-        .badge-warning { background: #fef9c3; color: #854d0e; padding: 2px 6px; border-radius: 8px; font-weight: 800; font-size: 10px; display: inline-block; }
+        .badge-net { background: var(--green-badge); color: var(--green-text); padding: 3px 8px; border-radius: 4px; font-weight: 800; font-size: 11px; display: inline-block; }
+        .badge-danger { background: var(--red-badge); color: var(--red-text); padding: 3px 8px; border-radius: 8px; font-weight: 800; font-size: 11px; display: inline-block; }
+        .badge-warning { background: #fef9c3; color: #854d0e; padding: 3px 8px; border-radius: 8px; font-weight: 800; font-size: 11px; display: inline-block; }
 
         /* GIAO DIỆN ĐĂNG NHẬP */
         .login-overlay {
@@ -111,7 +112,7 @@
             padding: 20px;
         }
         .login-box {
-            background: #ffffff; width: 100%; max-width: 440px; border-radius: 16px;
+            background: #ffffff; width: 100%; max-width: 460px; border-radius: 16px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); overflow: hidden;
             animation: fadeInScale 0.4s ease-out forwards;
         }
@@ -120,26 +121,26 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
         .login-header-pro {
-            background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 28px 24px;
+            background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 30px 24px;
             text-align: center; position: relative;
         }
         .login-logo-icon {
-            font-size: 42px; margin-bottom: 10px; background: rgba(255, 255, 255, 0.15);
-            width: 75px; height: 75px; display: inline-flex; align-items: center; justify-content: center;
+            font-size: 46px; margin-bottom: 10px; background: rgba(255, 255, 255, 0.15);
+            width: 80px; height: 80px; display: inline-flex; align-items: center; justify-content: center;
             border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.3);
         }
-        .login-header-pro h2 { font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-        .login-header-pro p { font-size: 12px; opacity: 0.9; margin-top: 6px; }
+        .login-header-pro h2 { font-size: 19px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        .login-header-pro p { font-size: 13px; opacity: 0.9; margin-top: 6px; }
 
-        .login-body-pro { padding: 28px 24px; display: flex; flex-direction: column; gap: 16px; }
+        .login-body-pro { padding: 30px 24px; display: flex; flex-direction: column; gap: 16px; }
         .login-field-group { display: flex; flex-direction: column; gap: 6px; }
-        .login-field-group label { font-size: 12px; font-weight: 700; color: #334155; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+        .login-field-group label { font-size: 13px; font-weight: 700; color: #334155; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
         .login-field-group label i { color: var(--primary); }
         .login-input-wrap { position: relative; display: flex; align-items: center; }
-        .login-input-wrap i.icon-left { position: absolute; left: 14px; color: #94a3b8; font-size: 15px; }
+        .login-input-wrap i.icon-left { position: absolute; left: 14px; color: #94a3b8; font-size: 16px; }
         .login-input-pro {
-            width: 100%; padding: 12px 14px 12px 42px; border-radius: 8px; border: 1.5px solid var(--border-color);
-            font-size: 14px; font-weight: 600; color: #0f172a; outline: none; transition: all 0.2s; background: #f8fafc;
+            width: 100%; padding: 12px 14px 12px 44px; border-radius: 8px; border: 1.5px solid var(--border-color);
+            font-size: 15px; font-weight: 600; color: #0f172a; outline: none; transition: all 0.2s; background: #f8fafc;
         }
         .login-input-pro:focus {
             border-color: var(--primary); background: #ffffff;
@@ -147,55 +148,55 @@
         }
         .login-submit-btn {
             background: linear-gradient(135deg, #16a34a, #15803d); color: white; border: none;
-            width: 100%; padding: 13px; border-radius: 8px; font-size: 14px; font-weight: 800;
+            width: 100%; padding: 14px; border-radius: 8px; font-size: 15px; font-weight: 800;
             text-transform: uppercase; cursor: pointer; transition: all 0.2s;
             display: flex; align-items: center; justify-content: center; gap: 8px;
             box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3); margin-top: 6px;
         }
         .login-submit-btn:hover { background: linear-gradient(135deg, #15803d, #166534); transform: translateY(-1px); }
         .login-footer-info {
-            text-align: center; font-size: 11px; color: #64748b; margin-top: 4px; padding-bottom: 24px;
+            text-align: center; font-size: 12px; color: #64748b; margin-top: 4px; padding-bottom: 24px;
         }
 
         /* WIDGET LỊCH VẠN NIÊN & PHONG THỦY */
         .van-nien-widget-float {
-            position: fixed; bottom: 20px; right: 20px; width: 440px; background: white;
+            position: fixed; bottom: 20px; right: 20px; width: 460px; background: white;
             border-radius: 10px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.25); border: 2px solid var(--primary);
             z-index: 999; overflow: hidden; transition: all 0.3s ease;
         }
         .widget-header {
-            background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 8px 12px;
-            display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 11px; cursor: pointer;
+            background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 10px 14px;
+            display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 12px; cursor: pointer;
         }
         .widget-body {
-            padding: 10px; font-size: 11px; display: flex; flex-direction: column; gap: 8px; background: #f8fafc; max-height: 680px; overflow-y: auto;
+            padding: 12px; font-size: 12px; display: flex; flex-direction: column; gap: 10px; background: #f8fafc; max-height: 700px; overflow-y: auto;
         }
         
         .digital-clock-box {
-            background: #0f172a; color: #38bdf8; padding: 8px; border-radius: 6px; text-align: center;
-            font-family: monospace; font-size: 18px; font-weight: 900; letter-spacing: 2px;
+            background: #0f172a; color: #38bdf8; padding: 10px; border-radius: 6px; text-align: center;
+            font-family: monospace; font-size: 20px; font-weight: 900; letter-spacing: 2px;
             border: 1px solid #334155; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
-            display: flex; justify-content: center; align-items: center; gap: 10px;
+            display: flex; justify-content: center; align-items: center; gap: 12px;
         }
-        .digital-clock-box span { font-size: 10px; color: #94a3b8; font-weight: normal; }
+        .digital-clock-box span { font-size: 11px; color: #94a3b8; font-weight: normal; }
 
-        .cal-toolbar { display: flex; justify-content: space-between; align-items: center; background: #e2e8f0; padding: 5px 8px; border-radius: 5px; font-weight: bold; }
-        .cal-grid-mini { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; text-align: center; background: #cbd5e1; padding: 3px; border-radius: 5px; }
-        .cal-th { background: #0284c7; color: white; font-size: 10px; padding: 4px 0; font-weight: bold; }
-        .cal-td { background: white; padding: 6px 2px; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 3px; text-align: center; transition: all 0.1s; }
+        .cal-toolbar { display: flex; justify-content: space-between; align-items: center; background: #e2e8f0; padding: 6px 10px; border-radius: 6px; font-weight: bold; }
+        .cal-grid-mini { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; background: #cbd5e1; padding: 4px; border-radius: 6px; }
+        .cal-th { background: #0284c7; color: white; font-size: 11px; padding: 5px 0; font-weight: bold; }
+        .cal-td { background: white; padding: 8px 3px; font-size: 13px; font-weight: 700; cursor: pointer; border-radius: 4px; text-align: center; transition: all 0.1s; }
         .cal-td:hover { background: #dcfce7; color: #166534; transform: scale(1.05); }
         .cal-td.today { background: #16a34a; color: white; font-weight: 900; box-shadow: 0 0 5px rgba(22,163,74,0.5); }
         .cal-td.selected-day { border: 2.5px solid #0284c7; font-weight: 900; background: #e0f2fe; color: #0369a1; }
         .cal-td.other-month { color: #94a3b8; background: #f8fafc; font-weight: normal; }
 
         .fengshui-card {
-            background: white; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 10px; display: flex; flex-direction: column; gap: 5px;
+            background: white; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 11px; display: flex; flex-direction: column; gap: 6px;
         }
-        .fengshui-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #e2e8f0; padding-bottom: 3px; }
+        .fengshui-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #e2e8f0; padding-bottom: 4px; }
 
         .poetry-mini {
-            background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1px solid #bbf7d0; padding: 8px;
-            border-radius: 6px; font-style: italic; color: #166534; font-size: 10px; text-align: center; line-height: 1.4; position: relative;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1px solid #bbf7d0; padding: 10px;
+            border-radius: 6px; font-style: italic; color: #166534; font-size: 11px; text-align: center; line-height: 1.4; position: relative;
         }
 
         .rest-popup-overlay {
@@ -204,52 +205,52 @@
             z-index: 999999; backdrop-filter: blur(5px); animation: fadeIn 0.3s ease-out;
         }
         .rest-popup-card {
-            background: #ffffff; width: 100%; max-width: 420px; border-radius: 16px; padding: 24px;
+            background: #ffffff; width: 100%; max-width: 440px; border-radius: 16px; padding: 26px;
             text-align: center; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3); border: 2px solid #16a34a;
         }
         .rest-popup-icon {
-            font-size: 48px; color: #16a34a; margin-bottom: 12px; background: #dcfce7;
-            width: 80px; height: 80px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;
+            font-size: 52px; color: #16a34a; margin-bottom: 12px; background: #dcfce7;
+            width: 85px; height: 85px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;
         }
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); display: flex; justify-content: center; align-items: center; z-index: 10000; backdrop-filter: blur(4px); }
-        .modal-card { background: white; width: 100%; max-width: 650px; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.25); max-height: 90vh; display: flex; flex-direction: column; }
+        .modal-card { background: white; width: 100%; max-width: 680px; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.25); max-height: 90vh; display: flex; flex-direction: column; }
         
-        #deliverySlipContent { background: white; padding: 30px; color: #0f172a; font-family: "Times New Roman", Times, serif; font-size: 13px; line-height: 1.5; }
+        #deliverySlipContent { background: white; padding: 30px; color: #0f172a; font-family: "Times New Roman", Times, serif; font-size: 14px; line-height: 1.5; }
         .print-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0f172a; padding-bottom: 12px; margin-bottom: 15px; }
-        .print-org { font-weight: bold; font-size: 12px; text-transform: uppercase; }
+        .print-org { font-weight: bold; font-size: 13px; text-transform: uppercase; }
         .print-title-group { text-align: center; flex: 1; }
-        .print-title { font-size: 16px; font-weight: bold; text-transform: uppercase; margin-bottom: 3px; }
-        .print-sub { font-size: 11px; font-style: italic; }
+        .print-title { font-size: 17px; font-weight: bold; text-transform: uppercase; margin-bottom: 3px; }
+        .print-sub { font-size: 12px; font-style: italic; }
         .print-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
         .print-sign-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center; margin-top: 30px; }
-        .print-sign-title { font-weight: bold; font-size: 12px; margin-bottom: 4px; }
+        .print-sign-title { font-weight: bold; font-size: 13px; margin-bottom: 4px; }
         
-        .modal-actions { padding: 10px 16px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 6px; }
+        .modal-actions { padding: 12px 18px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 8px; }
 
         /* PHIẾU LƯƠNG CHUYÊN NGHIỆP PRO */
         .payslip-container-pro {
-            background: #ffffff; width: 100%; max-width: 520px; border-radius: 16px;
+            background: #ffffff; width: 100%; max-width: 540px; border-radius: 16px;
             box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1); overflow: hidden; border: 1px solid #cbd5e1;
-            margin: 0 auto;
+            margin: 0 auto; font-size: 13px;
         }
         .payslip-header-box {
-            background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 22px 24px; text-align: center;
+            background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 24px; text-align: center;
         }
-        .payslip-body-box { padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; font-size: 12px; }
+        .payslip-body-box { padding: 22px 26px; display: flex; flex-direction: column; gap: 16px; }
         .payslip-info-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #f8fafc;
-            padding: 10px 14px; border-radius: 8px; border: 1px solid #e2e8f0;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #f8fafc;
+            padding: 12px 16px; border-radius: 8px; border: 1px solid #e2e8f0;
         }
-        .payslip-info-item { display: flex; flex-direction: column; gap: 2px; }
-        .payslip-info-label { font-size: 10px; text-transform: uppercase; color: #64748b; font-weight: 700; }
-        .payslip-info-val { font-size: 12px; font-weight: 700; color: #0f172a; }
-        .payslip-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 2px; }
-        .payslip-table th { background: #f1f5f9; color: #64748b; font-size: 10px; text-transform: uppercase; padding: 6px 8px; border: 1px solid #cbd5e1; text-align: left; }
-        .payslip-table td { padding: 7px 8px; border: 1px solid #cbd5e1; color: #0f172a; }
+        .payslip-info-item { display: flex; flex-direction: column; gap: 3px; }
+        .payslip-info-label { font-size: 11px; text-transform: uppercase; color: #64748b; font-weight: 700; }
+        .payslip-info-val { font-size: 13px; font-weight: 700; color: #0f172a; }
+        .payslip-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 2px; }
+        .payslip-table th { background: #f1f5f9; color: #64748b; font-size: 11px; text-transform: uppercase; padding: 8px 10px; border: 1px solid #cbd5e1; text-align: left; }
+        .payslip-table td { padding: 9px 10px; border: 1px solid #cbd5e1; color: #0f172a; }
         .payslip-total-box {
             background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1.5px solid #bbf7d0;
-            border-radius: 10px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;
+            border-radius: 10px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center;
         }
     </style>
 </head>
@@ -428,11 +429,11 @@
                 <div style="position: relative; height: 160px;"><canvas id="taskPieChart"></canvas></div>
             </div>
             <div class="chart-card" style="padding: 10px; display: flex; flex-direction: column; justify-content: center;">
-                <div style="font-weight: bold; font-size: 11px; margin-bottom: 6px; color: #0369a1;"><i class="fa-solid fa-chart-line"></i> TIẾN ĐỘ HOÀN THÀNH CÔNG VIỆC CHUNG</div>
+                <div style="font-weight: bold; font-size: 12px; margin-bottom: 6px; color: #0369a1;"><i class="fa-solid fa-chart-line"></i> TIẾN ĐỘ HOÀN THÀNH CÔNG VIỆC CHUNG</div>
                 <div style="background: #e2e8f0; border-radius: 6px; height: 16px; width: 100%; overflow: hidden; position: relative; margin-bottom: 8px;">
                     <div id="taskProgressBar" style="background: #16a34a; width: 0%; height: 100%; transition: width 0.3s;"></div>
                 </div>
-                <div style="font-size: 11px; color: #64748b; text-align: right;" id="taskProgressText">Đã hoàn thành: 0%</div>
+                <div style="font-size: 12px; color: #64748b; text-align: right;" id="taskProgressText">Đã hoàn thành: 0%</div>
             </div>
         </div>
         <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
@@ -482,7 +483,7 @@
         <div style="overflow-x: auto;">
             <table>
                 <colgroup>
-                    <col style="width: 35px;"><col style="width: 180px;"><col style="width: 55px;"><col style="width: 55px;"><col style="width: 85px;"><col style="width: 85px;"><col style="width: 50px;"><col style="width: 45px;"><col style="width: 45px;"><col style="width: 55px;"><col style="width: 85px;"><col style="width: 85px;"><col style="width: 90px;"><col style="width: 75px;"><col style="width: 85px;"><col style="width: 95px;">
+                    <col style="width: 40px;"><col style="width: 200px;"><col style="width: 60px;"><col style="width: 60px;"><col style="width: 95px;"><col style="width: 95px;"><col style="width: 55px;"><col style="width: 50px;"><col style="width: 50px;"><col style="width: 60px;"><col style="width: 95px;"><col style="width: 95px;"><col style="width: 100px;"><col style="width: 85px;"><col style="width: 95px;"><col style="width: 105px;">
                 </colgroup>
                 <thead>
                     <tr>
@@ -503,7 +504,7 @@
         <div style="overflow-x: auto;">
             <table>
                 <colgroup>
-                    <col style="width: 35px;"><col style="width: 190px;"><col style="width: 60px;"><col style="width: 60px;"><col style="width: 90px;"><col style="width: 50px;"><col style="width: 45px;"><col style="width: 45px;"><col style="width: 55px;"><col style="width: 90px;"><col style="width: 90px;"><col style="width: 90px;"><col style="width: 110px;"><col style="width: 55px;">
+                    <col style="width: 40px;"><col style="width: 210px;"><col style="width: 65px;"><col style="width: 65px;"><col style="width: 100px;"><col style="width: 55px;"><col style="width: 50px;"><col style="width: 50px;"><col style="width: 60px;"><col style="width: 100px;"><col style="width: 100px;"><col style="width: 100px;"><col style="width: 120px;"><col style="width: 60px;">
                 </colgroup>
                 <thead>
                     <tr>
@@ -533,7 +534,7 @@
         </div>
         <div style="overflow-x: auto; margin-bottom: 14px;">
             <table>
-                <colgroup><col style="width: 45px;"><col style="width: 240px;"><col style="width: 90px;"><col style="width: 90px;"><col style="width: 90px;"><col style="width: 100px;"><col style="width: 180px;"></colgroup>
+                <colgroup><col style="width: 50px;"><col style="width: 250px;"><col style="width: 100px;"><col style="width: 100px;"><col style="width: 100px;"><col style="width: 110px;"><col style="width: 200px;"></colgroup>
                 <thead>
                     <tr><th>STT</th><th>Họ và Tên</th><th>Phép Cấp</th><th>Đã Nghỉ</th><th>Nghỉ Lễ</th><th>Phép Tồn</th><th>Trạng Thái & Cảnh Báo</th></tr>
                 </thead>
@@ -552,11 +553,11 @@
             </div>
             <div class="chart-card" style="padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
                 <div class="chart-title" style="align-self: flex-start;"><i class="fa-solid fa-wallet"></i> Tổng Giá Trị Thanh Toán VPP</div>
-                <div style="font-size: 26px; font-weight: 800; color: #d97706; margin-top: 15px;" id="officeDashboardTotal">0 đ</div>
-                <div style="font-size: 11px; color: #64748b; margin-top: 5px;">Số lượng hồ sơ đang quản lý và kiểm duyệt</div>
+                <div style="font-size: 28px; font-weight: 800; color: #d97706; margin-top: 15px;" id="officeDashboardTotal">0 đ</div>
+                <div style="font-size: 12px; color: #64748b; margin-top: 5px;">Số lượng hồ sơ đang quản lý và kiểm duyệt</div>
             </div>
         </div>
-        <div class="form-card" id="formOfficeContainer" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));">
+        <div class="form-card" id="formOfficeContainer" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
             <div class="form-group"><label>Mã Hồ Sơ VPP</label><input type="text" id="autoOfficeId" readonly style="background: #e2e8f0; font-weight: bold;"></div>
             <div class="form-group"><label>Nội Dung Thanh Toán</label><input type="text" id="inputOfficeContent" placeholder="VD: Mua sắm vật tư..."></div>
             <div class="form-group"><label>Đơn Vị Thụ Hưởng</label><input type="text" id="inputOfficeBeneficiary" placeholder="VD: CTCP VPP Hồng Hà"></div>
@@ -567,7 +568,7 @@
             <div class="form-group"><label>Đơn Vị Tính</label><select id="inputOfficeUnit"><option value="Cái">Cái</option><option value="Ram">Ram</option><option value="Hộp">Hộp</option><option value="Bộ">Bộ</option></select></div>
             <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputOfficePrice" placeholder="0" oninput="tinhThanhTienVPP()"></div>
             <div class="form-group"><label>Thành Tiền</label><input type="text" id="previewOfficeTotal" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;" value="0 đ"></div>
-            <div class="form-group"><label>Đính Kèm Hóa Đơn (Chọn nhiều)</label><input type="file" id="inputOfficeFiles" multiple style="font-size:10px;"></div>
+            <div class="form-group"><label>Đính Kèm Hóa Đơn (Chọn nhiều)</label><input type="file" id="inputOfficeFiles" multiple style="font-size:11px;"></div>
             <div class="form-group"><button class="btn btn-blue" onclick="themHoSoVPPPro()"><i class="fas fa-plus-circle"></i> Thêm Hồ Sơ VPP</button></div>
         </div>
         <div style="overflow-x: auto;">
@@ -591,14 +592,14 @@
                 <div style="position: relative; height: 180px;"><canvas id="inkPieChart"></canvas></div>
             </div>
         </div>
-        <div style="margin-bottom: 16px; background: #f8fafc; border: 1px solid var(--border-color); padding: 10px; border-radius: 6px;">
-            <div style="font-weight: bold; font-size: 11px; margin-bottom: 6px; color: #0369a1;"><i class="fa-solid fa-chart-line"></i> BẢNG TỔNG HỢP XUẤT - NHẬP - TỒN</div>
+        <div style="margin-bottom: 16px; background: #f8fafc; border: 1px solid var(--border-color); padding: 12px; border-radius: 6px;">
+            <div style="font-weight: bold; font-size: 12px; margin-bottom: 6px; color: #0369a1;"><i class="fa-solid fa-chart-line"></i> BẢNG TỔNG HỢP XUẤT - NHẬP - TỒN</div>
             <table>
                 <thead><tr><th>STT</th><th>Mã VT</th><th>Tên Vật Tư Mực In</th><th>Tồn Đầu Kỳ</th><th>Tổng Nhập</th><th>Tổng Xuất</th><th>Tồn Cuối Kỳ</th><th>Trạng Thái</th></tr></thead>
                 <tbody id="xntTableBody"></tbody>
             </table>
         </div>
-        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));">
+        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
             <div class="form-group"><label>Mã VT</label><input type="text" id="autoInkCode" readonly style="background: #e2e8f0; font-weight: bold;"></div>
             <div class="form-group"><label>Tên Mực In</label><input type="text" id="inputInkName" placeholder="VD: Canon 337"></div>
             <div class="form-group"><label>Máy In</label><input type="text" id="inputInkPrinter" placeholder="VD: Canon 151dw"></div>
@@ -639,11 +640,11 @@
             </div>
             <div class="chart-card" style="padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
                 <div class="chart-title" style="align-self: flex-start;"><i class="fa-solid fa-file-invoice-dollar"></i> Tổng Cước Phí & Thuế VAT</div>
-                <div style="font-size: 26px; font-weight: 800; color: #0284c7; margin-top: 15px;" id="telecomDashboardTotal">0 đ</div>
-                <div style="font-size: 11px; color: #64748b; margin-top: 5px;">Hạch toán cước viễn thông và thuế VAT 10%</div>
+                <div style="font-size: 28px; font-weight: 800; color: #0284c7; margin-top: 15px;" id="telecomDashboardTotal">0 đ</div>
+                <div style="font-size: 12px; color: #64748b; margin-top: 5px;">Hạch toán cước viễn thông và thuế VAT 10%</div>
             </div>
         </div>
-        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
+        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));">
             <div class="form-group"><label>Mã HS</label><input type="text" id="autoTelecomId" readonly style="background:#e2e8f0; font-weight:bold;"></div>
             <div class="form-group"><label>Nhà Mạng</label><select id="inputTelecomSupplier"><option value="VNPT">VNPT</option><option value="Viettel">Viettel</option><option value="Mobifone">Mobifone</option></select></div>
             <div class="form-group"><label>Loại Cước</label><input type="text" id="inputTelecomType" placeholder="VD: Internet cáp quang..."></div>
@@ -652,7 +653,7 @@
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="previewTelecomTruocThue" readonly style="background:#f1f5f9; font-weight:bold;"></div>
             <div class="form-group"><label>Thuế VAT (10%)</label><input type="text" id="previewTelecomVAT" readonly style="background:#f1f5f9; color:#dc2626; font-weight:bold;"></div>
             <div class="form-group"><label>Hạn TT</label><input type="date" id="inputTelecomDueDate"></div>
-            <div class="form-group"><label>Đính Kèm Hóa Đơn (Chọn nhiều)</label><input type="file" id="inputTelecomFiles" multiple style="font-size:10px;"></div>
+            <div class="form-group"><label>Đính Kèm Hóa Đơn (Chọn nhiều)</label><input type="file" id="inputTelecomFiles" multiple style="font-size:11px;"></div>
             <div class="form-group"><button class="btn btn-green" onclick="themHoSoTelecom()"><i class="fas fa-plus-circle"></i> Thêm Cước</button></div>
         </div>
         <table>
@@ -665,7 +666,7 @@
     <div id="surveyTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-clipboard-check"></i> KHẢO SÁT THIẾT BỊ & BẢN QUYỀN</div>
-            <select id="filterSurveyDept" style="padding: 5px; font-weight: bold;" onchange="renderSurveyTable()"><option value="ALL">-- Tất cả đơn vị --</option><option value="Khối Văn phòng">Khối Văn phòng</option><option value="Phòng Kế toán - Thống kê">Phòng Kế toán - Thống kê</option></select>
+            <select id="filterSurveyDept" style="padding: 6px; font-weight: bold;" onchange="renderSurveyTable()"><option value="ALL">-- Tất cả đơn vị --</option><option value="Khối Văn phòng">Khối Văn phòng</option><option value="Phòng Kế toán - Thống kê">Phòng Kế toán - Thống kê</option></select>
         </div>
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
             <div class="chart-card" style="padding: 10px;">
@@ -677,11 +678,11 @@
                 <div style="position: relative; height: 180px;"><canvas id="surveyOfficePieChart"></canvas></div>
             </div>
         </div>
-        <div style="margin-bottom: 14px; background: #f8fafc; border: 1px solid var(--border-color); padding: 10px; border-radius: 6px; font-size: 11px;">
+        <div style="margin-bottom: 14px; background: #f8fafc; border: 1px solid var(--border-color); padding: 12px; border-radius: 6px; font-size: 12px;">
             <b>💻 OS:</b> <span id="statOSSummary" style="color: #0284c7; font-weight: bold;">--</span> | 
             <b>📊 Office:</b> <span id="statOfficeSummary" style="color: #16a34a; font-weight: bold;">--</span>
         </div>
-        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));">
+        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
             <div class="form-group"><label>Mã KS</label><input type="text" id="autoSurveyCode" readonly style="background:#e2e8f0; font-weight:bold;"></div>
             <div class="form-group"><label>Người Dùng</label><input type="text" id="inputSurveyUser" placeholder="Tên cán bộ..."></div>
             <div class="form-group"><label>Bộ Phận</label><select id="inputSurveyDept"><option value="Khối Văn phòng">Khối Văn phòng</option><option value="Phòng Kế toán - Thống kê">Phòng Kế toán - Thống kê</option></select></div>
@@ -703,16 +704,16 @@
 
 <!-- POPUP IN PHIẾU GIAO NHẬN -->
 <div class="modal-overlay hidden" id="deliverySlipModal">
-    <div class="modal-card" style="max-width: 750px;">
-        <div style="padding: 12px 18px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center;">
-            <div style="font-weight: 800; font-size: 13px; text-transform: uppercase;"><i class="fa-solid fa-print"></i> XEM TRƯỚC PHIẾU GIAO NHẬN</div>
-            <button class="btn btn-red" style="padding: 3px 6px;" onclick="document.getElementById('deliverySlipModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-card" style="max-width: 780px;">
+        <div style="padding: 14px 20px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-weight: 800; font-size: 14px; text-transform: uppercase;"><i class="fa-solid fa-print"></i> XEM TRƯỚC PHIẾU GIAO NHẬN</div>
+            <button class="btn btn-red" style="padding: 4px 8px;" onclick="document.getElementById('deliverySlipModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div style="padding: 10px; max-height: 70vh; overflow-y: auto; background: #e2e8f0;">
+        <div style="padding: 12px; max-height: 70vh; overflow-y: auto; background: #e2e8f0;">
             <div id="deliverySlipContent">
                 <div class="print-header">
-                    <div><div class="print-org">TỔNG CÔNG TY GIẤY VIỆT NAM</div><div class="print-org" style="font-size: 11px;">VĂN PHÒNG BAPACO</div></div>
-                    <div style="text-align: right;"><div style="font-weight: bold; font-size: 11px;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div><div style="font-size: 11px; font-style: italic;">Độc lập - Tự do - Hạnh phúc</div></div>
+                    <div><div class="print-org">TỔNG CÔNG TY GIẤY VIỆT NAM</div><div class="print-org" style="font-size: 12px;">VĂN PHÒNG BAPACO</div></div>
+                    <div style="text-align: right;"><div style="font-weight: bold; font-size: 12px;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div><div style="font-size: 12px; font-style: italic;">Độc lập - Tự do - Hạnh phúc</div></div>
                 </div>
                 <div class="print-title-group">
                     <div class="print-title">PHIẾU GIAO NHẬN THIẾT BỊ & TÀI SẢN</div>
@@ -725,15 +726,15 @@
                     <div><b>Thời gian:</b> <span id="printSlipDate">--</span></div>
                 </div>
                 <div style="margin: 15px 0;">
-                    <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-                        <thead><tr style="background: #f1f5f9;"><th style="border: 1px solid #0f172a; padding: 6px;">STT</th><th style="border: 1px solid #0f172a; padding: 6px;">Tên Thiết Bị</th><th style="border: 1px solid #0f172a; padding: 6px;">SL</th><th style="border: 1px solid #0f172a; padding: 6px;">Tình Trạng</th></tr></thead>
-                        <tbody><tr><td style="border: 1px solid #0f172a; padding: 6px; text-align: center;">1</td><td style="border: 1px solid #0f172a; padding: 6px;" id="printSlipItemName">--</td><td style="border: 1px solid #0f172a; padding: 6px; text-align: center;">01 Bộ</td><td style="border: 1px solid #0f172a; padding: 6px;" id="printSlipItemStatus">--</td></tr></tbody>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                        <thead><tr style="background: #f1f5f9;"><th style="border: 1px solid #0f172a; padding: 8px;">STT</th><th style="border: 1px solid #0f172a; padding: 8px;">Tên Thiết Bị</th><th style="border: 1px solid #0f172a; padding: 8px;">SL</th><th style="border: 1px solid #0f172a; padding: 8px;">Tình Trạng</th></tr></thead>
+                        <tbody><tr><td style="border: 1px solid #0f172a; padding: 8px; text-align: center;">1</td><td style="border: 1px solid #0f172a; padding: 8px;" id="printSlipItemName">--</td><td style="border: 1px solid #0f172a; padding: 8px; text-align: center;">01 Bộ</td><td style="border: 1px solid #0f172a; padding: 8px;" id="printSlipItemStatus">--</td></tr></tbody>
                     </table>
                 </div>
                 <div class="print-sign-grid">
-                    <div><div class="print-sign-title">BÊN GIAO</div><div style="height: 50px;"></div><div style="font-weight: bold;" id="printSignFromName">--</div></div>
-                    <div><div class="print-sign-title">LÃNH ĐẠO</div><div style="height: 50px;"></div><div style="font-weight: bold;">Đã duyệt</div></div>
-                    <div><div class="print-sign-title">BÊN NHẬN</div><div style="height: 50px;"></div><div style="font-weight: bold;" id="printSignToName">--</div></div>
+                    <div><div class="print-sign-title">BÊN GIAO</div><div style="height: 60px;"></div><div style="font-weight: bold;" id="printSignFromName">--</div></div>
+                    <div><div class="print-sign-title">LÃNH ĐẠO</div><div style="height: 60px;"></div><div style="font-weight: bold;">Đã duyệt</div></div>
+                    <div><div class="print-sign-title">BÊN NHẬN</div><div style="height: 60px;"></div><div style="font-weight: bold;" id="printSignToName">--</div></div>
                 </div>
             </div>
         </div>
@@ -743,15 +744,15 @@
 
 <!-- POPUP NGHỈ PHÉP -->
 <div class="modal-overlay hidden" id="dangKyNghiPhepModal">
-    <div class="modal-card" style="max-width: 450px;">
-        <div style="padding: 12px 16px; background: #0284c7; color: white; display: flex; justify-content: space-between;"><b id="popupTitleText">ĐĂNG KÝ PHÉP</b><button class="btn btn-red" style="padding: 2px 5px;" onclick="dongModalDangKyNghiPhep()"><i class="fa-solid fa-xmark"></i></button></div>
-        <div style="padding: 16px; display: flex; flex-direction: column; gap: 10px;">
+    <div class="modal-card" style="max-width: 480px;">
+        <div style="padding: 14px 18px; background: #0284c7; color: white; display: flex; justify-content: space-between;"><b id="popupTitleText">ĐĂNG KÝ PHÉP</b><button class="btn btn-red" style="padding: 3px 6px;" onclick="dongModalDangKyNghiPhep()"><i class="fa-solid fa-xmark"></i></button></div>
+        <div style="padding: 18px; display: flex; flex-direction: column; gap: 12px;">
             <input type="hidden" id="editingLeaveIndex" value="-1">
-            <div class="form-group"><label>Nhân sự:</label><select id="popupLeaveNhanSu" style="padding: 6px; font-weight: bold;"></select></div>
-            <div class="form-group"><label>Từ ngày:</label><input type="date" id="popupLeaveTuNgay" style="padding: 6px;" onchange="tinhSoNgayPopup()"></div>
-            <div class="form-group"><label>Đến ngày:</label><input type="date" id="popupLeaveDenNgay" style="padding: 6px;" onchange="tinhSoNgayPopup()"></div>
-            <div class="form-group"><label>Số ngày nghỉ:</label><input type="number" id="popupLeaveSoNgay" step="0.5" readonly style="background: #fdf8e2; font-weight: bold; padding: 6px;"></div>
-            <div class="form-group"><label>Lý do:</label><input type="text" id="popupLeaveGhiChu" placeholder="Việc gia đình..." style="padding: 6px;"></div>
+            <div class="form-group"><label>Nhân sự:</label><select id="popupLeaveNhanSu" style="padding: 8px; font-weight: bold;"></select></div>
+            <div class="form-group"><label>Từ ngày:</label><input type="date" id="popupLeaveTuNgay" style="padding: 8px;" onchange="tinhSoNgayPopup()"></div>
+            <div class="form-group"><label>Đến ngày:</label><input type="date" id="popupLeaveDenNgay" style="padding: 8px;" onchange="tinhSoNgayPopup()"></div>
+            <div class="form-group"><label>Số ngày nghỉ:</label><input type="number" id="popupLeaveSoNgay" step="0.5" readonly style="background: #fdf8e2; font-weight: bold; padding: 8px;"></div>
+            <div class="form-group"><label>Lý do:</label><input type="text" id="popupLeaveGhiChu" placeholder="Việc gia đình..." style="padding: 8px;"></div>
         </div>
         <div class="modal-actions"><button class="btn btn-green" onclick="luuVaTruPhepTuPopup()"><i class="fa-solid fa-floppy-disk"></i> Lưu</button></div>
     </div>
@@ -761,9 +762,9 @@
 <div class="rest-popup-overlay hidden" id="restNoticeModal">
     <div class="rest-popup-card">
         <div class="rest-popup-icon"><i class="fa-solid fa-mug-hot"></i></div>
-        <h3 style="font-size: 18px; font-weight: 800; color: #166534; margin-bottom: 8px;">ĐÃ ĐẾN CHU KỲ 60 PHÚT NGHỈ NGƠI!</h3>
-        <p style="font-size: 12px; color: #475569; margin-bottom: 16px;">Anh Dương ơi, hãy đứng dậy thả lỏng cơ thể, chớp mắt thư giãn và uống một ngụm nước ấm để tái tạo năng lượng làm việc hiệu quả nhé!</p>
-        <button class="btn btn-green" style="padding: 10px 20px; font-size: 13px;" onclick="dongPopupNhacNho()"><i class="fa-solid fa-check"></i> Đã Hiểu & Tiếp Tục Làm Việc</button>
+        <h3 style="font-size: 20px; font-weight: 800; color: #166534; margin-bottom: 10px;">ĐÃ ĐẾN CHU KỲ 60 PHÚT NGHỈ NGƠI!</h3>
+        <p style="font-size: 13px; color: #475569; margin-bottom: 18px;">Anh Dương ơi, hãy đứng dậy thả lỏng cơ thể, chớp mắt thư giãn và uống một ngụm nước ấm để tái tạo năng lượng làm việc hiệu quả nhé!</p>
+        <button class="btn btn-green" style="padding: 12px 22px; font-size: 14px;" onclick="dongPopupNhacNho()"><i class="fa-solid fa-check"></i> Đã Hiểu & Tiếp Tục Làm Việc</button>
     </div>
 </div>
 
@@ -777,10 +778,10 @@
         </div>
 
         <div class="cal-toolbar">
-            <button class="btn" style="padding: 2px 6px; font-size: 9px;" onclick="doiThangTraCuu(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-            <span id="calToolbarLabel" style="font-size: 11px; font-weight: bold;">Tháng 08 / 2026</span>
-            <button class="btn" style="padding: 2px 6px; font-size: 9px;" onclick="doiThangTraCuu(1)"><i class="fa-solid fa-chevron-right"></i></button>
-            <button class="btn btn-blue" style="padding: 2px 6px; font-size: 9px;" onclick="quayVeNgayHomNay()">Hôm nay</button>
+            <button class="btn" style="padding: 3px 8px; font-size: 10px;" onclick="doiThangTraCuu(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+            <span id="calToolbarLabel" style="font-size: 12px; font-weight: bold;">Tháng 08 / 2026</span>
+            <button class="btn" style="padding: 3px 8px; font-size: 10px;" onclick="doiThangTraCuu(1)"><i class="fa-solid fa-chevron-right"></i></button>
+            <button class="btn btn-blue" style="padding: 3px 8px; font-size: 10px;" onclick="quayVeNgayHomNay()">Hôm nay</button>
         </div>
         <div class="cal-grid-mini" id="miniCalendarGrid"></div>
 
@@ -793,9 +794,9 @@
             <div class="fengshui-row"><span>✅ <b>Nên Làm:</b></span> <span id="widgetNenLam" style="color: #15803d; font-weight: bold;">--</span></div>
             <div class="fengshui-row"><span>❌ <b>Kiêng Kị:</b></span> <span id="widgetKiengKi" style="color: #991b1b; font-weight: bold;">--</span></div>
             
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2px; background: #f1f5f9; padding: 4px; border-radius: 4px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; background: #f1f5f9; padding: 6px; border-radius: 4px;">
                 <span>🌤️ <b>Thời Tiết:</b></span>
-                <select id="selectLocationWeather" style="padding: 2px 4px; font-size: 10px; font-weight: bold; border-radius: 4px; border: 1px solid var(--border-color);" onchange="taiDuLieuThoiTietTheoViTri()">
+                <select id="selectLocationWeather" style="padding: 3px 6px; font-size: 11px; font-weight: bold; border-radius: 4px; border: 1px solid var(--border-color);" onchange="taiDuLieuThoiTietTheoViTri()">
                     <option value="viettri">Việt Trì, Phú Thọ</option>
                     <option value="hanoi">Hà Nội</option>
                     <option value="danang">Đà Nẵng</option>
@@ -804,19 +805,19 @@
             </div>
             <div style="text-align: right; color: #0369a1; font-weight: bold;" id="widgetWeather">Đang cập nhật thời tiết...</div>
 
-            <div style="border-top: 1px dashed var(--border-color); padding-top: 4px; margin-top: 2px;">
+            <div style="border-top: 1px dashed var(--border-color); padding-top: 6px; margin-top: 4px;">
                 <label style="font-weight: bold; color: var(--primary);">📝 Ghi Chú Sự Kiện Ngày:</label>
-                <div style="display: flex; gap: 4px; margin-top: 2px;">
-                    <input type="text" id="inputEventNote" placeholder="Nhập lịch hẹn, cuộc họp..." style="flex:1; padding:3px 5px; font-size:10px; border:1px solid var(--border-color); border-radius:4px;">
-                    <button class="btn btn-green" style="padding:3px 6px; font-size:9px;" onclick="luuGhiChuSuKien()">Lưu</button>
+                <div style="display: flex; gap: 6px; margin-top: 4px;">
+                    <input type="text" id="inputEventNote" placeholder="Nhập lịch hẹn, cuộc họp..." style="flex:1; padding:5px 8px; font-size:11px; border:1px solid var(--border-color); border-radius:4px;">
+                    <button class="btn btn-green" style="padding:4px 8px; font-size:10px;" onclick="luuGhiChuSuKien()">Lưu</button>
                 </div>
-                <div id="displayEventNote" style="font-style: italic; color: #dc2626; margin-top: 2px;">Chưa có sự kiện.</div>
+                <div id="displayEventNote" style="font-style: italic; color: #dc2626; margin-top: 3px;">Chưa có sự kiện.</div>
             </div>
         </div>
 
         <div class="poetry-mini" onclick="chuyenBaiThoLucBat()" style="cursor: pointer;" title="Bấm đổi bài thơ">
             <div id="poetryText">"Cờ xí tung bay ngợp bóng chiều,<br>Trống trận vang lừng bước tựa phiêu..."</div>
-            <div style="font-size: 8px; color: #0284c7; margin-top: 3px;">(Bấm để đổi bài thơ ✍️)</div>
+            <div style="font-size: 9px; color: #0284c7; margin-top: 4px;">(Bấm để đổi bài thơ ✍️)</div>
         </div>
         <audio id="relaxAudio" loop src="https://actions.google.com/sounds/v1/ambiences/morning_birds.ogg"></audio>
     </div>
@@ -824,10 +825,10 @@
 
 <!-- MODAL QUẢN LÝ TÀI KHOẢN -->
 <div class="modal-overlay hidden" id="userManagementModal">
-    <div class="modal-card" style="max-width: 500px;">
-        <div style="padding: 12px 16px; background: #8b5cf6; color: white; display: flex; justify-content: space-between;"><b>QUẢN LÝ TÀI KHOẢN</b><button class="btn btn-red" style="padding: 2px 5px;" onclick="document.getElementById('userManagementModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button></div>
-        <div style="padding: 16px;">
-            <div class="form-card" style="margin-bottom: 10px;">
+    <div class="modal-card" style="max-width: 520px;">
+        <div style="padding: 14px 18px; background: #8b5cf6; color: white; display: flex; justify-content: space-between;"><b style="font-size: 14px;">QUẢN LÝ TÀI KHOẢN</b><button class="btn btn-red" style="padding: 3px 6px;" onclick="document.getElementById('userManagementModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button></div>
+        <div style="padding: 18px;">
+            <div class="form-card" style="margin-bottom: 12px;">
                 <div class="form-group"><label>Username</label><input type="text" id="newAccUser"></div>
                 <div class="form-group"><label>Password</label><input type="password" id="newAccPass"></div>
                 <div class="form-group"><label>Email</label><input type="email" id="newAccEmail" placeholder="duongtb@bapaco.vn"></div>
@@ -840,12 +841,12 @@
 
 <!-- MODAL PHIẾU LƯƠNG ZALO CHUYÊN NGHIỆP FULL THÔNG TIN -->
 <div class="modal-overlay hidden" id="previewModal">
-    <div class="modal-card" style="max-width: 500px; padding: 0; border-radius: 16px; overflow: hidden;">
+    <div class="modal-card" style="max-width: 520px; padding: 0; border-radius: 16px; overflow: hidden;">
         <div id="payslip-capture" class="payslip-container-pro">
             <div class="payslip-header-box">
-                <div style="font-size: 11px; text-transform: uppercase; font-weight: 700; opacity: 0.85;">Tổng Công Ty Giấy Việt Nam</div>
-                <h2 style="font-size: 16px; font-weight: 800; text-transform: uppercase; margin: 4px 0;">Phiếu Thanh Toán Lương</h2>
-                <div id="slipMonthSub" style="display:inline-block; background:rgba(255,255,255,0.2); padding:3px 12px; border-radius:20px; font-size:11px; font-weight: 600;">Tháng 08/2026 - Văn phòng BAPACO</div>
+                <div style="font-size: 12px; text-transform: uppercase; font-weight: 700; opacity: 0.85;">Tổng Công Ty Giấy Việt Nam</div>
+                <h2 style="font-size: 18px; font-weight: 800; text-transform: uppercase; margin: 6px 0;">Phiếu Thanh Toán Lương</h2>
+                <div id="slipMonthSub" style="display:inline-block; background:rgba(255,255,255,0.2); padding:4px 14px; border-radius:20px; font-size:12px; font-weight: 600;">Tháng 08/2026 - Văn phòng BAPACO</div>
             </div>
             <div class="payslip-body-box">
                 <div class="payslip-info-grid">
@@ -867,7 +868,7 @@
                     </div>
                 </div>
 
-                <div style="font-size: 11px; font-weight: 800; color: #0284c7; text-transform: uppercase; border-bottom: 2px solid #e2e8f0; padding-bottom: 4px;">Chi Tiết Thu Nhập & Khấu Trừ</div>
+                <div style="font-size: 12px; font-weight: 800; color: #0284c7; text-transform: uppercase; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px;">Chi Tiết Thu Nhập & Khấu Trừ</div>
 
                 <table class="payslip-table">
                     <thead>
@@ -903,13 +904,13 @@
 
                 <div class="payslip-total-box">
                     <div>
-                        <div style="font-weight: 800; color: #166534; font-size: 11px; text-transform: uppercase;">Thực Lĩnh Cuối Cùng (NET)</div>
-                        <div style="font-size: 10px; color: #64748b; margin-top: 1px;">Đã hạch toán chi trả qua tài khoản ngân hàng</div>
+                        <div style="font-weight: 800; color: #166534; font-size: 12px; text-transform: uppercase;">Thực Lĩnh Cuối Cùng (NET)</div>
+                        <div style="font-size: 11px; color: #64748b; margin-top: 2px;">Đã hạch toán chi trả qua tài khoản ngân hàng</div>
                     </div>
-                    <div id="slipThucLinh" style="font-size: 16px; font-weight: 900; color: #15803d;">-- VNĐ</div>
+                    <div id="slipThucLinh" style="font-size: 18px; font-weight: 900; color: #15803d;">-- VNĐ</div>
                 </div>
 
-                <div style="text-align: center; font-size: 10px; font-style: italic; color: #64748b;">
+                <div style="text-align: center; font-size: 11px; font-style: italic; color: #64748b;">
                     Cảm ơn Anh/Chị đã tận tụy cống hiến vì sự phát triển của BAPACO!
                 </div>
             </div>
@@ -1612,7 +1613,7 @@
                     <td><input class="cell-input money-input" type="text" value="${formatMoneyVn(item.tamUng)}" onblur="capNhatGiaTriCell(${idx}, 'tam_ung', this.value)"></td>
                     <td style="text-align: right; font-weight: bold; color: ${item.thucLinhCV < 0 ? '#dc2626' : '#15803d'};">${formatMoneyVn(item.thucLinhCV)}</td>
                     <td style="text-align: right;"><span class="badge-net">${formatMoneyVn(item.thucLinhCuoiCung)}</span></td>
-                    <td style="text-align: center;"><button class="btn btn-blue" style="padding: 2px 5px; font-size: 10px;" onclick="moModalPhiieuLuong(${idx})"><i class="fa-solid fa-paper-plane"></i></button></td>
+                    <td style="text-align: center;"><button class="btn btn-blue" style="padding: 3px 8px; font-size: 11px;" onclick="moModalPhiieuLuong(${idx})"><i class="fa-solid fa-paper-plane"></i></button></td>
                 </tr>`;
         });
     }
@@ -1738,7 +1739,7 @@
         dsThanhToanVanPhongPro.forEach((item, idx) => {
             let fileDisplay = (!item.files || item.files.length === 0) ? 
                 `<span style="color:#94a3b8; font-style:italic;">Không có</span>` : 
-                `<button class="btn btn-purple" style="padding:2px 6px; font-size:10px;" onclick="moFileChungTu(${idx}, 'vpp')"><i class="fa-solid fa-folder-open"></i> Xem (${item.files.length})</button>`;
+                `<button class="btn btn-purple" style="padding:3px 8px; font-size:11px;" onclick="moFileChungTu(${idx}, 'vpp')"><i class="fa-solid fa-folder-open"></i> Xem (${item.files.length})</button>`;
 
             tbody.innerHTML += `<tr>
                 <td>${item.id}</td>
@@ -1750,8 +1751,8 @@
                 <td style="color:#15803d; font-weight:bold;">${formatMoneyVn(item.total)}</td>
                 <td style="text-align:center;">${fileDisplay}</td>
                 <td style="text-align:center;">
-                    <button class="btn btn-blue" style="padding:2px 5px;" onclick="suaHoSoVPP(${idx})" title="Sửa"><i class="fas fa-pen"></i></button>
-                    <button class="btn btn-red" style="padding:2px 5px;" onclick="dsThanhToanVanPhongPro.splice(${idx},1);capNhat();" title="Xóa"><i class="fas fa-trash"></i></button>
+                    <button class="btn btn-blue" style="padding:3px 6px;" onclick="suaHoSoVPP(${idx})" title="Sửa"><i class="fas fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px;" onclick="dsThanhToanVanPhongPro.splice(${idx},1);capNhat();" title="Xóa"><i class="fas fa-trash"></i></button>
                 </td>
             </tr>`;
         });
@@ -1771,8 +1772,8 @@
                 <td>${formatMoneyVn(item.price)}</td>
                 <td style="font-weight:bold;">${formatMoneyVn(item.total)}</td>
                 <td style="text-align:center;">
-                    <button class="btn btn-blue" style="padding:2px 5px;" onclick="suaKhoMuc(${idx})" title="Sửa"><i class="fas fa-pen"></i></button>
-                    <button class="btn btn-red" style="padding:2px 5px;" onclick="dsKhoMucIn.splice(${idx},1);capNhat();" title="Xóa"><i class="fas fa-trash"></i></button>
+                    <button class="btn btn-blue" style="padding:3px 6px;" onclick="suaKhoMuc(${idx})" title="Sửa"><i class="fas fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px;" onclick="dsKhoMucIn.splice(${idx},1);capNhat();" title="Xóa"><i class="fas fa-trash"></i></button>
                 </td>
             </tr>`;
         });
@@ -1855,7 +1856,7 @@
         dsThanhToanTelecom.forEach((item, idx) => {
             let fileDisplay = (!item.files || item.files.length === 0) ? 
                 `<span style="color:#94a3b8; font-style:italic;">Không có</span>` : 
-                `<button class="btn btn-purple" style="padding:2px 6px; font-size:10px;" onclick="moFileChungTu(${idx}, 'telecom')"><i class="fa-solid fa-folder-open"></i> Xem (${item.files.length})</button>`;
+                `<button class="btn btn-purple" style="padding:3px 8px; font-size:11px;" onclick="moFileChungTu(${idx}, 'telecom')"><i class="fa-solid fa-folder-open"></i> Xem (${item.files.length})</button>`;
 
             tbody.innerHTML += `<tr>
                 <td>${item.id}</td>
@@ -1867,8 +1868,8 @@
                 <td style="text-align:right; color:#15803d; font-weight:bold;">${formatMoneyVn(item.amount)}</td>
                 <td style="text-align:center;">${fileDisplay}</td>
                 <td style="text-align:center;">
-                    <button class="btn btn-blue" style="padding:2px 5px;" onclick="suaTelecom(${idx})" title="Sửa"><i class="fas fa-pen"></i></button>
-                    <button class="btn btn-red" style="padding:2px 5px;" onclick="dsThanhToanTelecom.splice(${idx},1);capNhat();" title="Xóa"><i class="fas fa-trash"></i></button>
+                    <button class="btn btn-blue" style="padding:3px 6px;" onclick="suaTelecom(${idx})" title="Sửa"><i class="fas fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px;" onclick="dsThanhToanTelecom.splice(${idx},1);capNhat();" title="Xóa"><i class="fas fa-trash"></i></button>
                 </td>
             </tr>`;
         });
@@ -1914,8 +1915,8 @@
                 <td>${item.office}</td>
                 <td>${item.specs}</td>
                 <td style="text-align:center;">
-                    <button class="btn btn-blue" style="padding:2px 5px;" onclick="suaKhaoSat(${idx})" title="Sửa"><i class="fas fa-pen"></i></button>
-                    <button class="btn btn-red" style="padding:2px 5px;" onclick="dsKhaoSatChuyenSieu.splice(${idx},1);capNhat();" title="Xóa"><i class="fas fa-trash"></i></button>
+                    <button class="btn btn-blue" style="padding:3px 6px;" onclick="suaKhaoSat(${idx})" title="Sửa"><i class="fas fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px;" onclick="dsKhaoSatChuyenSieu.splice(${idx},1);capNhat();" title="Xóa"><i class="fas fa-trash"></i></button>
                 </td>
             </tr>`;
         });
@@ -1961,9 +1962,9 @@
                     <td>${formatDateVn(task.dueDate)}</td>
                     <td style="text-align: center;"><span class="${badgeColor}">${task.status}</span></td>
                     <td style="text-align: center;">
-                        <button class="btn btn-green" style="padding:2px 5px;" onclick="chuyenTrangThaiTask(${idx})" title="Đổi trạng thái"><i class="fas fa-sync"></i></button>
-                        <button class="btn btn-blue" style="padding:2px 5px;" onclick="suaCongViec(${idx})" title="Sửa"><i class="fas fa-pen"></i></button>
-                        <button class="btn btn-red" style="padding:2px 5px;" onclick="danhSachCongViec.splice(${idx},1);renderTaskTable();" title="Xóa"><i class="fas fa-trash"></i></button>
+                        <button class="btn btn-green" style="padding:3px 6px;" onclick="chuyenTrangThaiTask(${idx})" title="Đổi trạng thái"><i class="fas fa-sync"></i></button>
+                        <button class="btn btn-blue" style="padding:3px 6px;" onclick="suaCongViec(${idx})" title="Sửa"><i class="fas fa-pen"></i></button>
+                        <button class="btn btn-red" style="padding:3px 6px;" onclick="danhSachCongViec.splice(${idx},1);renderTaskTable();" title="Xóa"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>`;
         });

@@ -24,7 +24,7 @@
             --yellow-text: #854d0e;
             --red-badge: #fee2e2;
             --red-text: #991b1b;
-            font-size: 15px; /* Phóng to cỡ chữ gốc toàn trang để dễ nhìn */
+            font-size: 15px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -534,9 +534,9 @@
         </div>
         <div style="overflow-x: auto; margin-bottom: 14px;">
             <table>
-                <colgroup><col style="width: 50px;"><col style="width: 250px;"><col style="width: 100px;"><col style="width: 100px;"><col style="width: 100px;"><col style="width: 110px;"><col style="width: 200px;"></colgroup>
+                <colgroup><col style="width: 45px;"><col style="width: 220px;"><col style="width: 80px;"><col style="width: 80px;"><col style="width: 90px;"><col style="width: 90px;"><col style="width: 90px;"><col style="width: 180px;"></colgroup>
                 <thead>
-                    <tr><th>STT</th><th>Họ và Tên</th><th>Phép Cấp</th><th>Đã Nghỉ</th><th>Nghỉ Lễ</th><th>Phép Tồn</th><th>Trạng Thái & Cảnh Báo</th></tr>
+                    <tr><th>STT</th><th>Họ và Tên</th><th>Phép Cấp</th><th>Đã Nghỉ (Tháng)</th><th>Tổng Phép Đã Nghỉ (Năm)</th><th>Nghỉ Lễ</th><th>Phép Tồn</th><th>Trạng Thái & Cảnh Báo</th></tr>
                 </thead>
                 <tbody id="leaveTableBody"></tbody>
             </table>
@@ -1343,6 +1343,17 @@
         document.getElementById("kpiTotalTamUng").innerText = formatMoneyVn(totalTamUng);
     }
 
+    function tinhTongPhepNăm(hoTen) {
+        let tong = 0;
+        for (let tKey in coSoDuLieuThang) {
+            let nv = coSoDuLieuThang[tKey].nhansu.find(i => i.hoTen === hoTen);
+            if (nv) {
+                tong += (nv.nc_p || 0);
+            }
+        }
+        return tong;
+    }
+
     function capNhatTatCaSubDashboards() {
         let ds = coSoDuLieuThang[currentThangKey].nhansu;
         let allNames = ds.map(i => i.hoTen.split(' ').pop());
@@ -1623,6 +1634,7 @@
         tbody.innerHTML = "";
         let ds = coSoDuLieuThang[currentThangKey].nhansu;
         ds.forEach((item, idx) => {
+            let tongPhepNăm = tinhTongPhepNăm(item.hoTen);
             let conLai = (item.phep_cap || 12) + (item.phep_ton || 0) - (item.nc_p || 0);
             let badgeHtml = conLai < 0 ? `<span class="badge-danger">⚠️ Vượt (${Math.abs(conLai)}d)</span>` : `<span class="badge-net">✅ Còn (${conLai}d)</span>`;
             tbody.innerHTML += `
@@ -1631,6 +1643,7 @@
                     <td style="font-weight: 700;">${item.hoTen}</td>
                     <td style="text-align: center;">${item.phep_cap || 12}</td>
                     <td><input class="cell-input num-center" type="number" value="${item.nc_p || 0}" onchange="capNhatGiaTriCell(${idx}, 'nc_p', this.value)"></td>
+                    <td style="text-align: center; font-weight: bold; color: #0284c7;">${tongPhepNăm} ngày</td>
                     <td style="text-align: center;">${item.nc_l || 0}</td>
                     <td style="text-align: center;">${item.phep_ton || 0}</td>
                     <td style="text-align: center;">${badgeHtml}</td>

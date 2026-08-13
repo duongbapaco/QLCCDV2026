@@ -226,6 +226,31 @@
         .print-sign-title { font-weight: bold; font-size: 12px; margin-bottom: 4px; }
         
         .modal-actions { padding: 10px 16px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 6px; }
+
+        /* PHIẾU LƯƠNG CHUYÊN NGHIỆP PRO */
+        .payslip-container-pro {
+            background: #ffffff; width: 100%; max-width: 520px; border-radius: 16px;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1); overflow: hidden; border: 1px solid #cbd5e1;
+            margin: 0 auto;
+        }
+        .payslip-header-box {
+            background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 22px 24px; text-align: center;
+        }
+        .payslip-body-box { padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; font-size: 12px; }
+        .payslip-info-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #f8fafc;
+            padding: 10px 14px; border-radius: 8px; border: 1px solid #e2e8f0;
+        }
+        .payslip-info-item { display: flex; flex-direction: column; gap: 2px; }
+        .payslip-info-label { font-size: 10px; text-transform: uppercase; color: #64748b; font-weight: 700; }
+        .payslip-info-val { font-size: 12px; font-weight: 700; color: #0f172a; }
+        .payslip-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 2px; }
+        .payslip-table th { background: #f1f5f9; color: #64748b; font-size: 10px; text-transform: uppercase; padding: 6px 8px; border: 1px solid #cbd5e1; text-align: left; }
+        .payslip-table td { padding: 7px 8px; border: 1px solid #cbd5e1; color: #0f172a; }
+        .payslip-total-box {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1.5px solid #bbf7d0;
+            border-radius: 10px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -813,28 +838,86 @@
     </div>
 </div>
 
-<!-- MODAL PHIẾU LƯƠNG ZALO -->
+<!-- MODAL PHIẾU LƯƠNG ZALO CHUYÊN NGHIỆP FULL THÔNG TIN -->
 <div class="modal-overlay hidden" id="previewModal">
-    <div class="modal-card" style="max-width: 480px; padding: 0; border-radius: 14px; overflow: hidden;">
+    <div class="modal-card" style="max-width: 500px; padding: 0; border-radius: 16px; overflow: hidden;">
         <div id="payslip-capture" class="payslip-container-pro">
-            <div class="payslip-header-box" style="background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 20px; text-align: center;">
-                <h2>TỔNG CÔNG TY GIẤY VIỆT NAM</h2>
-                <h3>PHIẾU THANH TOÁN LƯƠNG CÁ NHÂN</h3>
-                <div class="payslip-period-badge" id="slipMonthSub" style="display:inline-block; background:rgba(255,255,255,0.2); padding:3px 10px; border-radius:20px; font-size:11px; margin-top:6px;">Tháng 08/2026 - Văn phòng BAPACO</div>
+            <div class="payslip-header-box">
+                <div style="font-size: 11px; text-transform: uppercase; font-weight: 700; opacity: 0.85;">Tổng Công Ty Giấy Việt Nam</div>
+                <h2 style="font-size: 16px; font-weight: 800; text-transform: uppercase; margin: 4px 0;">Phiếu Thanh Toán Lương</h2>
+                <div id="slipMonthSub" style="display:inline-block; background:rgba(255,255,255,0.2); padding:3px 12px; border-radius:20px; font-size:11px; font-weight: 600;">Tháng 08/2026 - Văn phòng BAPACO</div>
             </div>
-            <div class="payslip-body-box" style="padding: 20px; display: flex; flex-direction: column; gap: 12px; font-size: 12px;">
-                <div class="payslip-row-item"><span class="payslip-row-label">Họ và Tên:</span><span class="payslip-row-val" id="slipName" style="color: var(--primary);">--</span></div>
-                <div class="payslip-row-item"><span class="payslip-row-label">Thực Lĩnh LCB:</span><span class="payslip-row-val" id="slipTLLCB">--</span></div>
-                <div class="payslip-row-item"><span class="payslip-row-label">Lương Công Việc TT:</span><span class="payslip-row-val" id="slipLCVTT">--</span></div>
-                <div class="payslip-row-item"><span class="payslip-row-label">Khấu Trừ Tạm Ứng:</span><span class="payslip-row-val" style="color: #dc2626;" id="slipTamUng">--</span></div>
-                <div class="payslip-total-box" style="background:#f0fdf4; border:1.5px solid #bbf7d0; border-radius:8px; padding:12px 16px; display:flex; justify-content:space-between; align-items:center;">
-                    <div class="payslip-total-label" style="font-weight:800; color:#166534; font-size:11px;">THỰC LĨNH NET</div>
-                    <div class="payslip-total-val" id="slipThucLinh" style="font-size:16px; font-weight:800; color:#15803d;">-- VNĐ</div>
+            <div class="payslip-body-box">
+                <div class="payslip-info-grid">
+                    <div class="payslip-info-item">
+                        <span class="payslip-info-label">Họ và Tên</span>
+                        <span class="payslip-info-val" id="slipName" style="color: var(--primary);">--</span>
+                    </div>
+                    <div class="payslip-info-item">
+                        <span class="payslip-info-label">Đơn vị công tác</span>
+                        <span class="payslip-info-val">Văn phòng BAPACO</span>
+                    </div>
+                    <div class="payslip-info-item">
+                        <span class="payslip-info-label">Ngày công thực tế</span>
+                        <span class="payslip-info-val" id="slipNgayCong">20 / 22 Công</span>
+                    </div>
+                    <div class="payslip-info-item">
+                        <span class="payslip-info-label">Hệ số K thực hiện</span>
+                        <span class="payslip-info-val" id="slipHeSoK">1.0</span>
+                    </div>
                 </div>
-                <div class="payslip-footer-note" style="text-align:center; font-size:10px; font-style:italic; color:#64748b;">Cảm ơn Anh/Chị đã cống hiến cho Tổng công ty Giấy Việt Nam!</div>
+
+                <div style="font-size: 11px; font-weight: 800; color: #0284c7; text-transform: uppercase; border-bottom: 2px solid #e2e8f0; padding-bottom: 4px;">Chi Tiết Thu Nhập & Khấu Trừ</div>
+
+                <table class="payslip-table">
+                    <thead>
+                        <tr>
+                            <th>Nội dung khoản mục</th>
+                            <th style="text-align: center;">Hệ số / SL</th>
+                            <th style="text-align: right;">Số tiền (VNĐ)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Lương Cơ Bản (L.CB)</td>
+                            <td style="text-align: center;" id="slipDetailHslCb">1.79</td>
+                            <td style="text-align: right; font-weight: bold;" id="slipTLLCB">--</td>
+                        </tr>
+                        <tr>
+                            <td>Lương Công Việc (L.CV TT)</td>
+                            <td style="text-align: center;" id="slipDetailHslCv">2.40</td>
+                            <td style="text-align: right; font-weight: bold;" id="slipLCVTT">--</td>
+                        </tr>
+                        <tr>
+                            <td>Khấu trừ Bảo hiểm (BHXH, BHYT, BHTN)</td>
+                            <td style="text-align: center;">10.5%</td>
+                            <td style="text-align: right; color: #dc2626; font-weight: bold;" id="slipBaoHiem">- 482.000 đ</td>
+                        </tr>
+                        <tr>
+                            <td>Khấu trừ Tạm ứng giữa tháng</td>
+                            <td style="text-align: center;">Đợt 1</td>
+                            <td style="text-align: right; color: #dc2626; font-weight: bold;" id="slipTamUng">--</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="payslip-total-box">
+                    <div>
+                        <div style="font-weight: 800; color: #166534; font-size: 11px; text-transform: uppercase;">Thực Lĩnh Cuối Cùng (NET)</div>
+                        <div style="font-size: 10px; color: #64748b; margin-top: 1px;">Đã hạch toán chi trả qua tài khoản ngân hàng</div>
+                    </div>
+                    <div id="slipThucLinh" style="font-size: 16px; font-weight: 900; color: #15803d;">-- VNĐ</div>
+                </div>
+
+                <div style="text-align: center; font-size: 10px; font-style: italic; color: #64748b;">
+                    Cảm ơn Anh/Chị đã tận tụy cống hiến vì sự phát triển của BAPACO!
+                </div>
             </div>
         </div>
-        <div class="modal-actions"><button class="btn btn-green" onclick="taiAnhPhieuLuongZalo()"><i class="fa-solid fa-download"></i> Tải Ảnh Gửi Zalo</button><button class="btn btn-red" onclick="document.getElementById('previewModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i> Đóng</button></div>
+        <div class="modal-actions">
+            <button class="btn btn-green" onclick="taiAnhPhieuLuongZalo()"><i class="fa-solid fa-download"></i> Tải Ảnh Zalo</button>
+            <button class="btn btn-red" onclick="document.getElementById('previewModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i> Đóng</button>
+        </div>
     </div>
 </div>
 
@@ -978,32 +1061,24 @@
     ];
     let currentPoetryIndex = 0;
 
-    // HÀM XỬ LÝ SỐ TIỆN LỢI: CHẤP NHẬN CẢ DẤU CHẤM VÀ PHẨY KHI PASTE
     function cleanAndParseMoney(str) {
         if (!str) return 0;
         if (typeof str === 'number') return str;
         let s = String(str).trim();
-        // Loại bỏ các ký tự chữ và ký tự đặc biệt trừ số, dấu chấm, dấu phẩy và dấu trừ
         s = s.replace(/[^0-9.,-]/g, '');
         if (!s) return 0;
-
-        // Nếu có cả dấu chấm và dấu phẩy, xác định định dạng (VN: 44.299.237,00 hoặc US: 44,299,237.00)
         if (s.indexOf('.') !== -1 && s.indexOf(',') !== -1) {
             if (s.lastIndexOf('.') > s.lastIndexOf(',')) {
-                // Dấu chấm ở cuối -> chuẩn US (44,299.237) -> bỏ dấu phẩy
                 s = s.replace(/,/g, '');
             } else {
-                // Dấu phẩy ở cuối -> chuẩn VN (44.299.237) -> bỏ dấu chấm phân cách hàng nghìn, đổi dấu phẩy thập phân thành chấm
                 s = s.replace(/\./g, '').replace(',', '.');
             }
         } else if (s.indexOf('.') !== -1) {
-            // Chỉ có dấu chấm. Nếu có từ 2 dấu chấm trở lên hoặc sau dấu chấm cuối có đúng 3 chữ số -> coi là phân cách hàng nghìn
             let parts = s.split('.');
             if (parts.length > 2 || (parts.length === 2 && parts[1].length === 3 && parts[0].length <= 3)) {
                 s = s.replace(/\./g, '');
             }
         } else if (s.indexOf(',') !== -1) {
-            // Chỉ có dấu phẩy. Nếu có nhiều dấu phẩy hoặc sau dấu phẩy cuối có 3 chữ số -> phân cách hàng nghìn, ngược lại là thập phân
             let parts = s.split(',');
             if (parts.length > 2 || (parts.length === 2 && parts[1].length === 3 && parts[0].length <= 3)) {
                 s = s.replace(/,/g, '');
@@ -1932,11 +2007,22 @@
 
     function moModalPhiieuLuong(idx) {
         selectedNvForSlip = coSoDuLieuThang[currentThangKey].nhansu[idx];
+        let cfg = coSoDuLieuThang[currentThangKey].config;
+        
         document.getElementById("slipName").innerText = selectedNvForSlip.hoTen;
+        document.getElementById("slipNgayCong").innerText = `${selectedNvForSlip.nc_tg} / ${cfg.ncd} Công`;
+        document.getElementById("slipHeSoK").innerText = selectedNvForSlip.k_ht || 1.0;
+        document.getElementById("slipDetailHslCb").innerText = selectedNvForSlip.hsl_cb + (selectedNvForSlip.pc_cb ? ` (+${selectedNvForSlip.pc_cb} PC)` : '');
+        document.getElementById("slipDetailHslCv").innerText = selectedNvForSlip.hsl_cv + (selectedNvForSlip.pc_cv ? ` (+${selectedNvForSlip.pc_cv} PC)` : '');
+        
         document.getElementById("slipTLLCB").innerText = formatMoneyVn(selectedNvForSlip.thucLinhLCB);
         document.getElementById("slipLCVTT").innerText = formatMoneyVn(selectedNvForSlip.luongCVTT);
-        document.getElementById("slipTamUng").innerText = "-" + formatMoneyVn(selectedNvForSlip.tamUng);
+        
+        let tongBaoHiem = (selectedNvForSlip.bhtn || 0) + (selectedNvForSlip.bhxh || 0);
+        document.getElementById("slipBaoHiem").innerText = "- " + formatMoneyVn(tongBaoHiem);
+        document.getElementById("slipTamUng").innerText = "- " + formatMoneyVn(selectedNvForSlip.tamUng);
         document.getElementById("slipThucLinh").innerText = formatMoneyVn(selectedNvForSlip.thucLinhCuoiCung);
+        
         document.getElementById("previewModal").classList.remove('hidden');
     }
 
@@ -1944,7 +2030,7 @@
         if (!selectedNvForSlip) return;
         html2canvas(document.getElementById("payslip-capture"), { scale: 2 }).then(canvas => {
             const link = document.createElement('a');
-            link.download = `Phieu_Luong_${selectedNvForSlip.hoTen.replace(/\s+/g, '_')}.png`;
+            link.download = `Phieu_Luong_${selectedNvForSlip.hoTen.replace(/\s+/g, '_')}_${currentThangKey.replace(/\s+/g, '_')}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
         });

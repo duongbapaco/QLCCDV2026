@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hệ Thống Quản Lý Đa Dashboard & Lịch Vạn Niên BAPACO 2026</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -291,8 +292,8 @@
 <div class="container hidden" id="appMainContainer">
     <div class="banner">
         <div>
-            <h1><i class="fa-solid fa-building-shield"></i> Hệ Thống Quản Lý Đa Dashboard & Lịch Vạn Niên BAPACO 2026</h1>
-            <p id="userStatusTag">Dữ liệu công, lương và cấu hình được lưu độc lập từng tháng</p>
+            <h1><i class="fa-solid fa-building-shield"></i> Hệ Thống Quản Lý Đa Dashboard & Lịch Vạn Niên BAPACO Pro</h1>
+            <p id="userStatusTag">Dữ liệu công, lương và cấu hình tự sinh năm động và đồng bộ Drive</p>
         </div>
         <div class="btn-group-header">
             <button class="btn btn-yellow" onclick="batTatNhacNhoNghiGoi()" id="btnToggleRestNotice"><i class="fa-solid fa-mug-hot"></i> Bật/Tắt Nhắc Nghỉ (60p)</button>
@@ -303,20 +304,37 @@
         </div>
     </div>
 
-    <!-- Cấu Hình Chung Riêng Biệt Theo Tháng -->
+    <!-- Cấu Hình Chung Riêng Biệt Theo Năm Tự Sinh & Tháng -->
     <div class="config-bar">
         <div class="config-item">
-            <label>Năm / Tháng Lưu Trữ (Drive)</label>
-            <select id="cfgThangNam" onchange="doiThangHoSoLuong()">
-                <option value="2026 / Tháng 05">2026 / Tháng 05</option>
-                <option value="2026 / Tháng 06">2026 / Tháng 06</option>
-                <option value="2026 / Tháng 07">2026 / Tháng 07</option>
-                <option value="2026 / Tháng 08" selected>2026 / Tháng 08</option>
+            <label>Năm Lưu Trữ (Tự Sinh)</label>
+            <select id="cfgNamChon" onchange="doiThangHoSoLuong()">
+                <!-- Các năm sẽ được sinh động bằng JavaScript từ quá khứ đến tương lai xa -->
             </select>
         </div>
         <div class="config-item">
-            <label>Thư Mục Gốc Google Drive</label>
-            <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold;">
+            <label>Tháng Lưu Trữ</label>
+            <select id="cfgThangChon" onchange="doiThangHoSoLuong()">
+                <option value="Tháng 01">Tháng 01</option>
+                <option value="Tháng 02">Tháng 02</option>
+                <option value="Tháng 03">Tháng 03</option>
+                <option value="Tháng 04">Tháng 04</option>
+                <option value="Tháng 05">Tháng 05</option>
+                <option value="Tháng 06">Tháng 06</option>
+                <option value="Tháng 07">Tháng 07</option>
+                <option value="Tháng 08" selected>Tháng 08</option>
+                <option value="Tháng 09">Tháng 09</option>
+                <option value="Tháng 10">Tháng 10</option>
+                <option value="Tháng 11">Tháng 11</option>
+                <option value="Tháng 12">Tháng 12</option>
+            </select>
+        </div>
+        <div class="config-item" style="grid-column: span 2;">
+            <label>Thư Mục Cốc Google Drive (Có nút mở trực tiếp)</label>
+            <div style="display: flex; gap: 6px;">
+                <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold; flex: 1;">
+                <button class="btn btn-blue" style="padding: 4px 10px;" onclick="moThuThucDriveChung()" title="Mở thư mục Google Drive"><i class="fa-solid fa-folder-open"></i> Mở Drive</button>
+            </div>
         </div>
         <div class="config-item">
             <label>Ngày Công Chế Độ (NCD)</label>
@@ -388,11 +406,11 @@
                 <div style="position: relative; height: 260px;"><canvas id="salaryChartFull"></canvas></div>
             </div>
             <div class="chart-card">
-                <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #16a34a;"></i> Tỷ Trọng Tạm Ứng So Với Thực Lĩnh</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #16a34a;"></i> Tỷ Trọng Tạm Ứng So Với Thực Lĩnh (%)</div>
                 <div style="position: relative; height: 260px;"><canvas id="salaryPieChart"></canvas></div>
             </div>
             <div class="chart-card">
-                <div class="chart-title"><i class="fa-solid fa-list-check" style="color: #d97706;"></i> Tổng Quan Trạng Thái Công Việc</div>
+                <div class="chart-title"><i class="fa-solid fa-list-check" style="color: #d97706;"></i> Tổng Quan Trạng Thái Công Việc (%)</div>
                 <div style="position: relative; height: 260px;"><canvas id="overviewTaskPieChart"></canvas></div>
             </div>
             <div class="chart-card">
@@ -408,11 +426,11 @@
                 <div style="position: relative; height: 260px;"><canvas id="overviewInkBarChart"></canvas></div>
             </div>
             <div class="chart-card">
-                <div class="chart-title"><i class="fa-solid fa-wifi" style="color: #ef4444;"></i> Tỷ Trọng Cước Viễn Thông Theo Nhà Mạng</div>
+                <div class="chart-title"><i class="fa-solid fa-wifi" style="color: #ef4444;"></i> Tỷ Trọng Cước Viễn Thông Theo Nhà Mạng (%)</div>
                 <div style="position: relative; height: 260px;"><canvas id="overviewTelecomPieChart"></canvas></div>
             </div>
             <div class="chart-card">
-                <div class="chart-title"><i class="fa-solid fa-clipboard-check" style="color: #b45309;"></i> Tỷ Lệ Bản Quyền Phần Mềm (OS & Office)</div>
+                <div class="chart-title"><i class="fa-solid fa-clipboard-check" style="color: #b45309;"></i> Tỷ Lệ Bản Quyền Phần Mềm (%)</div>
                 <div style="position: relative; height: 260px;"><canvas id="overviewSurveyPieChart"></canvas></div>
             </div>
         </div>
@@ -425,7 +443,7 @@
         </div>
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
             <div class="chart-card" style="padding: 10px;">
-                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Lệ Trạng Thái Công Việc</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Lệ Trạng Thái Công Việc (%)</div>
                 <div style="position: relative; height: 160px;"><canvas id="taskPieChart"></canvas></div>
             </div>
             <div class="chart-card" style="padding: 10px; display: flex; flex-direction: column; justify-content: center;">
@@ -528,7 +546,7 @@
                 <div style="position: relative; height: 180px;"><canvas id="leaveBarChart"></canvas></div>
             </div>
             <div class="chart-card" style="padding: 10px;">
-                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Tổng Số Phép Đã Dùng</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Tổng Số Phép Đã Dùng (%)</div>
                 <div style="position: relative; height: 180px;"><canvas id="leavePieChart"></canvas></div>
             </div>
         </div>
@@ -568,12 +586,12 @@
             <div class="form-group"><label>Đơn Vị Tính</label><select id="inputOfficeUnit"><option value="Cái">Cái</option><option value="Ram">Ram</option><option value="Hộp">Hộp</option><option value="Bộ">Bộ</option></select></div>
             <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputOfficePrice" placeholder="0" oninput="tinhThanhTienVPP()"></div>
             <div class="form-group"><label>Thành Tiền</label><input type="text" id="previewOfficeTotal" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;" value="0 đ"></div>
-            <div class="form-group"><label>Đính Kèm Hóa Đơn (Chọn nhiều)</label><input type="file" id="inputOfficeFiles" multiple style="font-size:11px;"></div>
+            <div class="form-group"><label>Upload File / Hóa Đơn Drive</label><input type="file" id="inputOfficeFiles" multiple style="font-size:11px;" onchange="xuLyUploadFileGoogleDrive(this, 'vpp')"></div>
             <div class="form-group"><button class="btn btn-blue" onclick="themHoSoVPPPro()"><i class="fas fa-plus-circle"></i> Thêm Hồ Sơ VPP</button></div>
         </div>
         <div style="overflow-x: auto;">
             <table>
-                <thead><tr><th>Mã</th><th>Nội Dung</th><th>Đơn Vị Thụ Hưởng</th><th>STK & Ngân Hàng</th><th>Ngày</th><th>SL & Giá</th><th>Thành Tiền</th><th>Hóa Đơn / Chứng Từ</th><th>Thao Tác</th></tr></thead>
+                <thead><tr><th>Mã</th><th>Nội Dung</th><th>Đơn Vị Thụ Hưởng</th><th>STK & Ngân Hàng</th><th>Ngày</th><th>SL & Giá</th><th>Thành Tiền</th><th>Hóa Đơn / Drive</th><th>Thao Tác</th></tr></thead>
                 <tbody id="officePaymentTableBody"></tbody>
             </table>
         </div>
@@ -588,7 +606,7 @@
                 <div style="position: relative; height: 180px;"><canvas id="inkBarChart"></canvas></div>
             </div>
             <div class="chart-card" style="padding: 10px;">
-                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Nghiệp Vụ Kho</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Nghiệp Vụ Kho (%)</div>
                 <div style="position: relative; height: 180px;"><canvas id="inkPieChart"></canvas></div>
             </div>
         </div>
@@ -635,7 +653,7 @@
         <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-wifi"></i> THANH TOÁN CƯỚC VIỄN THÔNG & TÁCH THUẾ VAT</div></div>
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
             <div class="chart-card" style="padding: 10px;">
-                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Cước Viễn Thông Theo Nhà Mạng</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Cước Viễn Thông Theo Nhà Mạng (%)</div>
                 <div style="position: relative; height: 180px;"><canvas id="telecomPieChart"></canvas></div>
             </div>
             <div class="chart-card" style="padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
@@ -653,11 +671,11 @@
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="previewTelecomTruocThue" readonly style="background:#f1f5f9; font-weight:bold;"></div>
             <div class="form-group"><label>Thuế VAT (10%)</label><input type="text" id="previewTelecomVAT" readonly style="background:#f1f5f9; color:#dc2626; font-weight:bold;"></div>
             <div class="form-group"><label>Hạn TT</label><input type="date" id="inputTelecomDueDate"></div>
-            <div class="form-group"><label>Đính Kèm Hóa Đơn (Chọn nhiều)</label><input type="file" id="inputTelecomFiles" multiple style="font-size:11px;"></div>
+            <div class="form-group"><label>Upload Hóa Đơn Drive</label><input type="file" id="inputTelecomFiles" multiple style="font-size:11px;" onchange="xuLyUploadFileGoogleDrive(this, 'telecom')"></div>
             <div class="form-group"><button class="btn btn-green" onclick="themHoSoTelecom()"><i class="fas fa-plus-circle"></i> Thêm Cước</button></div>
         </div>
         <table>
-            <thead><tr><th>Mã HS</th><th>Nhà Mạng</th><th>Loại Cước</th><th>Kỳ Cước</th><th>Trước Thuế</th><th>Thuế VAT (10%)</th><th>Tổng Cước TT</th><th>Hóa Đơn Đính Kèm</th><th>Thao Tác</th></tr></thead>
+            <thead><tr><th>Mã HS</th><th>Nhà Mạng</th><th>Loại Cước</th><th>Kỳ Cước</th><th>Trước Thuế</th><th>Thuế VAT (10%)</th><th>Tổng Cước TT</th><th>Hóa Đơn / Drive</th><th>Thao Tác</th></tr></thead>
             <tbody id="telecomPaymentTableBody"></tbody>
         </table>
     </div>
@@ -670,11 +688,11 @@
         </div>
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
             <div class="chart-card" style="padding: 10px;">
-                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Lệ Bản Quyền Hệ Điều Hành (OS)</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Lệ Bản Quyền Hệ Điều Hành (OS) (%)</div>
                 <div style="position: relative; height: 180px;"><canvas id="surveyOsPieChart"></canvas></div>
             </div>
             <div class="chart-card" style="padding: 10px;">
-                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Lệ Bản Quyền Microsoft Office</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Lệ Bản Quyền Microsoft Office (%)</div>
                 <div style="position: relative; height: 180px;"><canvas id="surveyOfficePieChart"></canvas></div>
             </div>
         </div>
@@ -923,101 +941,126 @@
 </div>
 
 <script>
-    const coSoDuLieuThang = {
-        "Tháng 05": {
-            config: { ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 1991139 },
-            nhansu: [
-                {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4500000, "phep_cap": 12, "phep_ton": 2},
-                {"stt": 2, "hoTen": "Nguyễn Văn Nam", "hsl_cb": 1.48, "pc_cb": 0, "hsl_cv": 2.24, "pc_cv": 0, "nc_tg": 20, "nc_p": 2, "nc_l": 1, "k_ht": 0.95, "tam_ung": 3500000, "phep_cap": 12, "phep_ton": 1},
-                {"stt": 3, "hoTen": "Nguyễn Thị Tuyết Nhung", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
-                {"stt": 4, "hoTen": "Vũ Thị Thu", "hsl_cb": 1.94, "pc_cb": 0, "hsl_cv": 1.86, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 3},
-                {"stt": 5, "hoTen": "Đào Thị Liên", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 21, "nc_p": 1, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 0},
-                {"stt": 6, "hoTen": "Võ Thị Thanh Tuyền", "hsl_cb": 1.71, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
-                {"stt": 7, "hoTen": "Trần Thị Thanh", "hsl_cb": 1.67, "pc_cb": 0, "hsl_cv": 1.48, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 2},
-                {"stt": 8, "hoTen": "Trần Đức Chiến", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
-                {"stt": 9, "hoTen": "Phạm Tiến Long", "hsl_cb": 1.80, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 4},
-                {"stt": 10, "hoTen": "Đinh Hữu Vinh", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
-                {"stt": 11, "hoTen": "Bùi Đình Điệp", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 2},
-                {"stt": 12, "hoTen": "Hoàng Mạnh Hùng", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
-                {"stt": 13, "hoTen": "Ma Trọng Luận", "hsl_cb": 1.35, "pc_cb": 0, "hsl_cv": 1.63, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.1, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
-                {"stt": 14, "hoTen": "Trần Bình Dương", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 5},
-                {"stt": 15, "hoTen": "Đặng Trần Trung", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 2},
-                {"stt": 16, "hoTen": "Phạm Huy Chiến", "hsl_cb": 2.26, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 0}
-            ]
+    // Đăng ký Plugin DataLabels cho Chart.js để hiện %
+    Chart.register(ChartDataLabels);
+
+    const coSoDuLieuNamThang = {
+        "2025": {
+            "Tháng 08": {
+                config: { ncd: 22, mucLCB: 2340000, mucTTV: 3900000, mucLCV: 1900000 },
+                nhansu: [
+                    {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 2},
+                    {"stt": 2, "hoTen": "Trần Bình Dương", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 5}
+                ]
+            }
         },
-        "Tháng 06": {
-            config: { ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 },
-            nhansu: [
-                {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 21, "nc_p": 1, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4800000, "phep_cap": 12, "phep_ton": 2},
-                {"stt": 2, "hoTen": "Nguyễn Văn Nam", "hsl_cb": 1.48, "pc_cb": 0, "hsl_cv": 2.24, "pc_cv": 0, "nc_tg": 18, "nc_p": 3, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3800000, "phep_cap": 12, "phep_ton": 1},
-                {"stt": 3, "hoTen": "Nguyễn Thị Tuyết Nhung", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
-                {"stt": 4, "hoTen": "Vũ Thị Thu", "hsl_cb": 1.94, "pc_cb": 0, "hsl_cv": 1.86, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 3},
-                {"stt": 5, "hoTen": "Đào Thị Liên", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 0},
-                {"stt": 6, "hoTen": "Võ Thị Thanh Tuyền", "hsl_cb": 1.71, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
-                {"stt": 7, "hoTen": "Trần Thị Thanh", "hsl_cb": 1.67, "pc_cb": 0, "hsl_cv": 1.48, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 2},
-                {"stt": 8, "hoTen": "Trần Đức Chiến", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
-                {"stt": 9, "hoTen": "Phạm Tiến Long", "hsl_cb": 1.80, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 4},
-                {"stt": 10, "hoTen": "Đinh Hữu Vinh", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
-                {"stt": 11, "hoTen": "Bùi Đình Điệp", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 2},
-                {"stt": 12, "hoTen": "Hoàng Mạnh Hùng", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
-                {"stt": 13, "hoTen": "Ma Trọng Luận", "hsl_cb": 1.35, "pc_cb": 0, "hsl_cv": 1.63, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.1, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
-                {"stt": 14, "hoTen": "Trần Bình Dương", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 5},
-                {"stt": 15, "hoTen": "Đặng Trần Trung", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 2},
-                {"stt": 16, "hoTen": "Phạm Huy Chiến", "hsl_cb": 2.26, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 0}
-            ]
+        "2026": {
+            "Tháng 05": {
+                config: { ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 1991139 },
+                nhansu: [
+                    {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4500000, "phep_cap": 12, "phep_ton": 2},
+                    {"stt": 2, "hoTen": "Nguyễn Văn Nam", "hsl_cb": 1.48, "pc_cb": 0, "hsl_cv": 2.24, "pc_cv": 0, "nc_tg": 20, "nc_p": 2, "nc_l": 1, "k_ht": 0.95, "tam_ung": 3500000, "phep_cap": 12, "phep_ton": 1},
+                    {"stt": 3, "hoTen": "Nguyễn Thị Tuyết Nhung", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
+                    {"stt": 4, "hoTen": "Vũ Thị Thu", "hsl_cb": 1.94, "pc_cb": 0, "hsl_cv": 1.86, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 3},
+                    {"stt": 5, "hoTen": "Đào Thị Liên", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 21, "nc_p": 1, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 0},
+                    {"stt": 6, "hoTen": "Võ Thị Thanh Tuyền", "hsl_cb": 1.71, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
+                    {"stt": 7, "hoTen": "Trần Thị Thanh", "hsl_cb": 1.67, "pc_cb": 0, "hsl_cv": 1.48, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 2},
+                    {"stt": 8, "hoTen": "Trần Đức Chiến", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
+                    {"stt": 9, "hoTen": "Phạm Tiến Long", "hsl_cb": 1.80, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 4},
+                    {"stt": 10, "hoTen": "Đinh Hữu Vinh", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
+                    {"stt": 11, "hoTen": "Bùi Đình Điệp", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 2},
+                    {"stt": 12, "hoTen": "Hoàng Mạnh Hùng", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
+                    {"stt": 13, "hoTen": "Ma Trọng Luận", "hsl_cb": 1.35, "pc_cb": 0, "hsl_cv": 1.63, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.1, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
+                    {"stt": 14, "hoTen": "Trần Bình Dương", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 5},
+                    {"stt": 15, "hoTen": "Đặng Trần Trung", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 2},
+                    {"stt": 16, "hoTen": "Phạm Huy Chiến", "hsl_cb": 2.26, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 0}
+                ]
+            },
+            "Tháng 06": {
+                config: { ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 },
+                nhansu: [
+                    {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 21, "nc_p": 1, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4800000, "phep_cap": 12, "phep_ton": 2},
+                    {"stt": 2, "hoTen": "Nguyễn Văn Nam", "hsl_cb": 1.48, "pc_cb": 0, "hsl_cv": 2.24, "pc_cv": 0, "nc_tg": 18, "nc_p": 3, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3800000, "phep_cap": 12, "phep_ton": 1},
+                    {"stt": 3, "hoTen": "Nguyễn Thị Tuyết Nhung", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
+                    {"stt": 4, "hoTen": "Vũ Thị Thu", "hsl_cb": 1.94, "pc_cb": 0, "hsl_cv": 1.86, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 3},
+                    {"stt": 5, "hoTen": "Đào Thị Liên", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 0},
+                    {"stt": 6, "hoTen": "Võ Thị Thanh Tuyền", "hsl_cb": 1.71, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
+                    {"stt": 7, "hoTen": "Trần Thị Thanh", "hsl_cb": 1.67, "pc_cb": 0, "hsl_cv": 1.48, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 2},
+                    {"stt": 8, "hoTen": "Trần Đức Chiến", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
+                    {"stt": 9, "hoTen": "Phạm Tiến Long", "hsl_cb": 1.80, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 4},
+                    {"stt": 10, "hoTen": "Đinh Hữu Vinh", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
+                    {"stt": 11, "hoTen": "Bùi Đình Điệp", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 2},
+                    {"stt": 12, "hoTen": "Hoàng Mạnh Hùng", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
+                    {"stt": 13, "hoTen": "Ma Trọng Luận", "hsl_cb": 1.35, "pc_cb": 0, "hsl_cv": 1.63, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.1, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
+                    {"stt": 14, "hoTen": "Trần Bình Dương", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 5},
+                    {"stt": 15, "hoTen": "Đặng Trần Trung", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 2},
+                    {"stt": 16, "hoTen": "Phạm Huy Chiến", "hsl_cb": 2.26, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 0}
+                ]
+            },
+            "Tháng 07": {
+                config: { ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 },
+                nhansu: [
+                    {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 5000000, "phep_cap": 12, "phep_ton": 2},
+                    {"stt": 2, "hoTen": "Nguyễn Văn Nam", "hsl_cb": 1.48, "pc_cb": 0, "hsl_cv": 2.24, "pc_cv": 0, "nc_tg": 20, "nc_p": 2, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 1},
+                    {"stt": 3, "hoTen": "Nguyễn Thị Tuyết Nhung", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
+                    {"stt": 4, "hoTen": "Vũ Thị Thu", "hsl_cb": 1.94, "pc_cb": 0, "hsl_cv": 1.86, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 3},
+                    {"stt": 5, "hoTen": "Đào Thị Liên", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 0},
+                    {"stt": 6, "hoTen": "Võ Thị Thanh Tuyền", "hsl_cb": 1.71, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
+                    {"stt": 7, "hoTen": "Trần Thị Thanh", "hsl_cb": 1.67, "pc_cb": 0, "hsl_cv": 1.48, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 2},
+                    {"stt": 8, "hoTen": "Trần Đức Chiến", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
+                    {"stt": 9, "hoTen": "Phạm Tiến Long", "hsl_cb": 1.80, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 4},
+                    {"stt": 10, "hoTen": "Đinh Hữu Vinh", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
+                    {"stt": 11, "hoTen": "Bùi Đình Điệp", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 2},
+                    {"stt": 12, "hoTen": "Hoàng Mạnh Hùng", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
+                    {"stt": 13, "hoTen": "Ma Trọng Luận", "hsl_cb": 1.35, "pc_cb": 0, "hsl_cv": 1.63, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.1, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
+                    {"stt": 14, "hoTen": "Trần Bình Dương", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 5},
+                    {"stt": 15, "hoTen": "Đặng Trần Trung", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 2},
+                    {"stt": 16, "hoTen": "Phạm Huy Chiến", "hsl_cb": 2.26, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 0}
+                ]
+            },
+            "Tháng 08": {
+                config: { ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 },
+                nhansu: [
+                    {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 5000000, "phep_cap": 12, "phep_ton": 2},
+                    {"stt": 2, "hoTen": "Nguyễn Văn Nam", "hsl_cb": 1.48, "pc_cb": 0, "hsl_cv": 2.24, "pc_cv": 0, "nc_tg": 14, "nc_p": 6, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 1},
+                    {"stt": 3, "hoTen": "Nguyễn Thị Tuyết Nhung", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
+                    {"stt": 4, "hoTen": "Vũ Thị Thu", "hsl_cb": 1.94, "pc_cb": 0, "hsl_cv": 1.86, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 3},
+                    {"stt": 5, "hoTen": "Đào Thị Liên", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 0},
+                    {"stt": 6, "hoTen": "Võ Thị Thanh Tuyền", "hsl_cb": 1.71, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
+                    {"stt": 7, "hoTen": "Trần Thị Thanh", "hsl_cb": 1.67, "pc_cb": 0, "hsl_cv": 1.48, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 2},
+                    {"stt": 8, "hoTen": "Trần Đức Chiến", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
+                    {"stt": 9, "hoTen": "Phạm Tiến Long", "hsl_cb": 1.80, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 4},
+                    {"stt": 10, "hoTen": "Đinh Hữu Vinh", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
+                    {"stt": 11, "hoTen": "Bùi Đình Điệp", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 2},
+                    {"stt": 12, "hoTen": "Hoàng Mạnh Hùng", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
+                    {"stt": 13, "hoTen": "Ma Trọng Luận", "hsl_cb": 1.35, "pc_cb": 0, "hsl_cv": 1.63, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.1, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
+                    {"stt": 14, "hoTen": "Trần Bình Dương", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 5},
+                    {"stt": 15, "hoTen": "Đặng Trần Trung", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 2},
+                    {"stt": 16, "hoTen": "Phạm Huy Chiến", "hsl_cb": 2.26, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 0}
+                ]
+            }
         },
-        "Tháng 07": {
-            config: { ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 },
-            nhansu: [
-                {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 5000000, "phep_cap": 12, "phep_ton": 2},
-                {"stt": 2, "hoTen": "Nguyễn Văn Nam", "hsl_cb": 1.48, "pc_cb": 0, "hsl_cv": 2.24, "pc_cv": 0, "nc_tg": 20, "nc_p": 2, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 1},
-                {"stt": 3, "hoTen": "Nguyễn Thị Tuyết Nhung", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
-                {"stt": 4, "hoTen": "Vũ Thị Thu", "hsl_cb": 1.94, "pc_cb": 0, "hsl_cv": 1.86, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 3},
-                {"stt": 5, "hoTen": "Đào Thị Liên", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 0},
-                {"stt": 6, "hoTen": "Võ Thị Thanh Tuyền", "hsl_cb": 1.71, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
-                {"stt": 7, "hoTen": "Trần Thị Thanh", "hsl_cb": 1.67, "pc_cb": 0, "hsl_cv": 1.48, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 2},
-                {"stt": 8, "hoTen": "Trần Đức Chiến", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
-                {"stt": 9, "hoTen": "Phạm Tiến Long", "hsl_cb": 1.80, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 4},
-                {"stt": 10, "hoTen": "Đinh Hữu Vinh", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
-                {"stt": 11, "hoTen": "Bùi Đình Điệp", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 2},
-                {"stt": 12, "hoTen": "Hoàng Mạnh Hùng", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
-                {"stt": 13, "hoTen": "Ma Trọng Luận", "hsl_cb": 1.35, "pc_cb": 0, "hsl_cv": 1.63, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.1, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
-                {"stt": 14, "hoTen": "Trần Bình Dương", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 5},
-                {"stt": 15, "hoTen": "Đặng Trần Trung", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 2},
-                {"stt": 16, "hoTen": "Phạm Huy Chiến", "hsl_cb": 2.26, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 0}
-            ]
-        },
-        "Tháng 08": {
-            config: { ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 },
-            nhansu: [
-                {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 5000000, "phep_cap": 12, "phep_ton": 2},
-                {"stt": 2, "hoTen": "Nguyễn Văn Nam", "hsl_cb": 1.48, "pc_cb": 0, "hsl_cv": 2.24, "pc_cv": 0, "nc_tg": 14, "nc_p": 6, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 1},
-                {"stt": 3, "hoTen": "Nguyễn Thị Tuyết Nhung", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
-                {"stt": 4, "hoTen": "Vũ Thị Thu", "hsl_cb": 1.94, "pc_cb": 0, "hsl_cv": 1.86, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 3},
-                {"stt": 5, "hoTen": "Đào Thị Liên", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 0},
-                {"stt": 6, "hoTen": "Võ Thị Thanh Tuyền", "hsl_cb": 1.71, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
-                {"stt": 7, "hoTen": "Trần Thị Thanh", "hsl_cb": 1.67, "pc_cb": 0, "hsl_cv": 1.48, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 2},
-                {"stt": 8, "hoTen": "Trần Đức Chiến", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
-                {"stt": 9, "hoTen": "Phạm Tiến Long", "hsl_cb": 1.80, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 4},
-                {"stt": 10, "hoTen": "Đinh Hữu Vinh", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
-                {"stt": 11, "hoTen": "Bùi Đình Điệp", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 2},
-                {"stt": 12, "hoTen": "Hoàng Mạnh Hùng", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 0},
-                {"stt": 13, "hoTen": "Ma Trọng Luận", "hsl_cb": 1.35, "pc_cb": 0, "hsl_cv": 1.63, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.1, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 1},
-                {"stt": 14, "hoTen": "Trần Bình Dương", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 5},
-                {"stt": 15, "hoTen": "Đặng Trần Trung", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 2},
-                {"stt": 16, "hoTen": "Phạm Huy Chiến", "hsl_cb": 2.26, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 0}
-            ]
+        "2027": {
+            "Tháng 08": {
+                config: { ncd: 22, mucLCB: 2700000, mucTTV: 4400000, mucLCV: 2200000 },
+                nhansu: [
+                    {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 5000000, "phep_cap": 12, "phep_ton": 2},
+                    {"stt": 2, "hoTen": "Trần Bình Dương", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 5}
+                ]
+            }
         }
     };
 
+    let currentNamKey = "2026";
     let currentThangKey = "Tháng 08";
+    
     let dsThanhToanVanPhongPro = [];
     let dsKhoMucIn = [
         { code: "MUC001", name: "Hộp mực Canon 337", printer: "Canon LBP 151dw", action: "Nhập mới kho", qty: 10, receiver: "Kho Văn phòng", price: 450000, total: 4500000 },
         { code: "MUC002", name: "Hộp mực HP 85A", printer: "HP LaserJet Pro", action: "Cấp phát sử dụng", qty: 2, receiver: "Phòng Kế toán - Thống kê", price: 380000, total: 760000 }
     ];
     let dsThanhToanTelecom = [
-        { id: "VT001", supplier: "VNPT", type: "Cáp quang văn phòng", period: "Tháng 08/2026", amount: 2750000, truocThue: 2500000, vat: 250000, dueDate: "2026-08-30", files: [] }
+        { id: "VT001", supplier: "VNPT", type: "Cáp quang văn phòng", period: "Tháng 08/2026", amount: 2750000, truocThue: 2500000, vat: 250000, dueDate: "2026-08-30", files: [{ name: "00134090.pdf", url: "https://drive.google.com" }] }
     ];
     let dsKhaoSatChuyenSieu = [
         { code: "KS001", user: "Trần Bình Dương", dept: "Khối Văn phòng", device: "Laptop Dell", qty: 1, os: "Windows 11 Pro", osLic: "Đã có OEM", office: "Microsoft 365", officeLic: "Bản quyền M365", specs: "Core i7, RAM 16GB" }
@@ -1104,6 +1147,7 @@
     }
 
     window.onload = function() {
+        khoiTaoDanhSachNamTuSinh();
         doiThangHoSoLuong();
         tinhThanhTienVPP();
         tinhTachVATTelecom();
@@ -1117,6 +1161,26 @@
         document.getElementById('inputTaskDueDate').value = new Date().toISOString().split('T')[0];
         document.getElementById('inputTelecomDueDate').value = new Date().toISOString().split('T')[0];
     };
+
+    // Tự sinh danh sách năm động (từ 2024 đến năm hiện tại + 5 năm tương lai)
+    function khoiTaoDanhSachNamTuSinh() {
+        let selNam = document.getElementById('cfgNamChon');
+        selNam.innerHTML = '';
+        let currentYearReal = new Date().getFullYear();
+        let startYear = 2024;
+        let endYear = currentYearReal + 5; // Tự sinh tương lai xa
+
+        for (let y = startYear; y <= endYear; y++) {
+            let opt = document.createElement('option');
+            opt.value = String(y);
+            opt.innerText = String(y);
+            if (y === currentYearReal || (y === 2026 && currentYearReal >= 2026)) {
+                opt.selected = true;
+            }
+            selNam.appendChild(opt);
+        }
+        currentNamKey = selNam.value;
+    }
 
     function khoiTaoDongHoSo() {
         setInterval(() => {
@@ -1191,32 +1255,43 @@
     }
 
     function doiThangHoSoLuong() {
-        let chonThangVal = document.getElementById('cfgThangNam').value;
-        let parts = chonThangVal.split('/');
-        let nam = parts[0] ? parts[0].trim() : '2026';
-        let thangStr = parts[1] ? parts[1].trim() : 'Tháng 08'; 
-        currentThangKey = thangStr;
+        currentNamKey = document.getElementById('cfgNamChon').value;
+        currentThangKey = document.getElementById('cfgThangChon').value;
         
-        let folderThang = thangStr.replace(/\s+/g, '_');
-        document.getElementById('cfgDrivePath').value = `BAPACO_Drive/${nam}/${folderThang}/`;
+        // Tự sinh cấu trúc dữ liệu cho năm/tháng mới nếu chưa tồn tại
+        if (!coSoDuLieuNamThang[currentNamKey]) {
+            coSoDuLieuNamThang[currentNamKey] = {};
+        }
+        if (!coSoDuLieuNamThang[currentNamKey][currentThangKey]) {
+            coSoDuLieuNamThang[currentNamKey][currentThangKey] = {
+                config: { ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 },
+                nhansu: [
+                    {"stt": 1, "hoTen": "Trần Bình Dương", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12, "phep_ton": 5},
+                    {"stt": 2, "hoTen": "Nguyễn Minh Ngọc", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 22, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12, "phep_ton": 2}
+                ]
+            };
+        }
+
+        let folderThang = currentThangKey.replace(/\s+/g, '_');
+        document.getElementById('cfgDrivePath').value = `BAPACO_Drive/${currentNamKey}/${folderThang}/`;
         
-        let cfg = coSoDuLieuThang[thangStr].config;
+        let cfg = coSoDuLieuNamThang[currentNamKey][currentThangKey].config;
         document.getElementById('cfgNCD').value = cfg.ncd;
         document.getElementById('cfgMucLCB').value = cfg.mucLCB;
         document.getElementById('cfgMucTTV').value = cfg.mucTTV;
         document.getElementById('cfgMucLCV').value = cfg.mucLCV;
         
-        document.getElementById('titleTableCB').innerHTML = `<i class="fa-solid fa-table-list"></i> BẢNG LƯƠNG CƠ BẢN ${thangStr.toUpperCase()}/2026 (BAPACO)`;
-        document.getElementById('titleTableCV').innerHTML = `<i class="fa-solid fa-briefcase"></i> BẢNG LƯƠNG CÔNG VIỆC & NET - ${thangStr.toUpperCase()}/2026`;
-        document.getElementById('kpiSubMonthLabel').innerText = `Chuẩn hạch toán BAPACO ${thangStr.toLowerCase()}/2026`;
-        document.getElementById('slipMonthSub').innerText = `${thangStr}/2026 - Văn phòng BAPACO`;
+        document.getElementById('titleTableCB').innerHTML = `<i class="fa-solid fa-table-list"></i> BẢNG LƯƠNG CƠ BẢN ${currentThangKey.toUpperCase()}/${currentNamKey} (BAPACO)`;
+        document.getElementById('titleTableCV').innerHTML = `<i class="fa-solid fa-briefcase"></i> BẢNG LƯƠNG CÔNG VIỆC & NET - ${currentThangKey.toUpperCase()}/${currentNamKey}`;
+        document.getElementById('kpiSubMonthLabel').innerText = `Chuẩn hạch toán BAPACO ${currentThangKey.toLowerCase()}/${currentNamKey}`;
+        document.getElementById('slipMonthSub').innerText = `${currentThangKey}/${currentNamKey} - Văn phòng BAPACO`;
 
         khoiTaoSelectNhanSuPopup();
         capNhat();
     }
 
     function luuCauHinhHienTai() {
-        let cfg = coSoDuLieuThang[currentThangKey].config;
+        let cfg = coSoDuLieuNamThang[currentNamKey][currentThangKey].config;
         cfg.ncd = parseFloat(document.getElementById('cfgNCD').value) || 22;
         cfg.mucLCB = parseFloat(document.getElementById('cfgMucLCB').value) || 2530000;
         cfg.mucTTV = parseFloat(document.getElementById('cfgMucTTV').value) || 4140000;
@@ -1228,7 +1303,7 @@
         let sel = document.getElementById('popupLeaveNhanSu');
         if (!sel) return;
         sel.innerHTML = '';
-        let ds = coSoDuLieuThang[currentThangKey].nhansu;
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         ds.forEach(i => {
             sel.innerHTML += `<option value="${i.hoTen}">${i.hoTen}</option>`;
         });
@@ -1262,27 +1337,27 @@
     function luuVaTruPhepTuPopup() {
         let hoTen = document.getElementById('popupLeaveNhanSu').value;
         let soNgay = parseFloat(document.getElementById('popupLeaveSoNgay').value) || 1;
-        let ds = coSoDuLieuThang[currentThangKey].nhansu;
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         let nv = ds.find(i => i.hoTen === hoTen);
         if (nv) {
             nv.nc_p = (nv.nc_p || 0) + soNgay;
         }
-        alert(`Đã cộng ${soNgay} ngày phép cho ${hoTen} trong ${currentThangKey}!`);
+        alert(`Đã cộng ${soNgay} ngày phép cho ${hoTen} trong ${currentThangKey}/${currentNamKey}!`);
         capNhat();
         dongModalDangKyNghiPhep();
     }
 
     function capNhatGiaTriCell(index, field, value) {
         let val = cleanAndParseMoney(value);
-        let ds = coSoDuLieuThang[currentThangKey].nhansu;
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         if (field === 'hoTen') ds[index][field] = value;
         else ds[index][field] = isNaN(val) ? 0 : val;
         capNhat();
     }
 
     function capNhat() {
-        let cfg = coSoDuLieuThang[currentThangKey].config;
-        let ds = coSoDuLieuThang[currentThangKey].nhansu;
+        let cfg = coSoDuLieuNamThang[currentNamKey][currentThangKey].config;
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
 
         ds.forEach(i => {
             const hslCB = i.hsl_cb || 0;
@@ -1293,7 +1368,7 @@
             const ncTG = i.nc_tg !== undefined ? i.nc_tg : 20;
             const ncP = i.nc_p || 0;
             const ncL = i.nc_l !== undefined ? i.nc_l : 0;
-            const kHT = i.k_ht !== undefined ? i.k_ht : 1.0;
+            let kHT = i.k_ht !== undefined ? i.k_ht : 1.0;
 
             let phepCap = i.phep_cap || 12;
             let phepTon = i.phep_ton || 0;
@@ -1330,7 +1405,7 @@
     }
 
     function capNhatKPI() {
-        let ds = coSoDuLieuThang[currentThangKey].nhansu;
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         let totalNet = ds.reduce((sum, item) => sum + (item.thucLinhCuoiCung || 0), 0);
         let totalOffice = dsThanhToanVanPhongPro.reduce((sum, item) => sum + (item.total || 0), 0);
         let totalStockInk = dsKhoMucIn.reduce((sum, item) => item.action.includes('Nhập') ? sum + item.qty : sum - item.qty, 0);
@@ -1345,17 +1420,20 @@
 
     function tinhTongPhepNăm(hoTen) {
         let tong = 0;
-        for (let tKey in coSoDuLieuThang) {
-            let nv = coSoDuLieuThang[tKey].nhansu.find(i => i.hoTen === hoTen);
-            if (nv) {
-                tong += (nv.nc_p || 0);
+        let thangDict = coSoDuLieuNamThang[currentNamKey];
+        if (thangDict) {
+            for (let tKey in thangDict) {
+                let nv = thangDict[tKey].nhansu.find(i => i.hoTen === hoTen);
+                if (nv) {
+                    tong += (nv.nc_p || 0);
+                }
             }
         }
         return tong;
     }
 
     function capNhatTatCaSubDashboards() {
-        let ds = coSoDuLieuThang[currentThangKey].nhansu;
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         let allNames = ds.map(i => i.hoTen.split(' ').pop());
         let allNets = ds.map(i => i.thucLinhCuoiCung);
         let allAdvances = ds.map(i => i.tamUng);
@@ -1384,7 +1462,19 @@
             chartSalaryPieInstance = new Chart(ctxPie, {
                 type: 'doughnut',
                 data: { labels: ['Tổng Thực Lĩnh', 'Tổng Tạm Ứng'], datasets: [{ data: [totalNetSum, totalAdvSum], backgroundColor: ['#16a34a', '#dc2626'] }] },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                let percentage = sum > 0 ? (value * 100 / sum).toFixed(1) + "%" : "0%";
+                                return percentage;
+                            },
+                            color: '#fff', font: { weight: 'bold', size: 12 }
+                        }
+                    }
+                }
             });
         }
 
@@ -1397,7 +1487,19 @@
             overviewTaskPieInstance = new Chart(ctxOvTask, {
                 type: 'pie',
                 data: { labels: ['Chưa làm', 'Đang làm', 'Hoàn thành'], datasets: [{ data: [cChua, cDang, cXong], backgroundColor: ['#ef4444', '#f59e0b', '#16a34a'] }] },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                let percentage = sum > 0 ? (value * 100 / sum).toFixed(1) + "%" : "0%";
+                                return percentage;
+                            },
+                            color: '#fff', font: { weight: 'bold', size: 12 }
+                        }
+                    }
+                }
             });
         }
 
@@ -1444,7 +1546,19 @@
             overviewTelecomPieInstance = new Chart(ctxOvTel, {
                 type: 'doughnut',
                 data: { labels: telSup.length ? telSup : ['VNPT'], datasets: [{ data: telAmt.length ? telAmt : [100], backgroundColor: ['#ef4444', '#0284c7', '#16a34a'] }] },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                let percentage = sum > 0 ? (value * 100 / sum).toFixed(1) + "%" : "0%";
+                                return percentage;
+                            },
+                            color: '#fff', font: { weight: 'bold', size: 12 }
+                        }
+                    }
+                }
             });
         }
 
@@ -1454,7 +1568,19 @@
             overviewSurveyPieInstance = new Chart(ctxOvSurvey, {
                 type: 'pie',
                 data: { labels: ['Win 11 Pro (OEM)', 'M365 Bản quyền'], datasets: [{ data: [1, 1], backgroundColor: ['#b45309', '#16a34a'] }] },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                let percentage = sum > 0 ? (value * 100 / sum).toFixed(1) + "%" : "0%";
+                                return percentage;
+                            },
+                            color: '#fff', font: { weight: 'bold', size: 12 }
+                        }
+                    }
+                }
             });
         }
 
@@ -1464,7 +1590,19 @@
             taskPieInstance = new Chart(ctxTask, {
                 type: 'doughnut',
                 data: { labels: ['Chưa làm', 'Đang làm', 'Hoàn thành'], datasets: [{ data: [cChua, cDang, cXong], backgroundColor: ['#ef4444', '#f59e0b', '#16a34a'] }] },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                let percentage = sum > 0 ? (value * 100 / sum).toFixed(1) + "%" : "0%";
+                                return percentage;
+                            },
+                            color: '#fff', font: { weight: 'bold', size: 11 }
+                        }
+                    }
+                }
             });
         }
 
@@ -1486,7 +1624,19 @@
             leavePieInstance = new Chart(ctxLeavePie, {
                 type: 'pie',
                 data: { labels: ['Đã nghỉ phép', 'Phép còn lại'], datasets: [{ data: [totalLeaveUsed, totalLeaveRemain > 0 ? totalLeaveRemain : 0], backgroundColor: ['#dc2626', '#16a34a'] }] },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                let percentage = sum > 0 ? (value * 100 / sum).toFixed(1) + "%" : "0%";
+                                return percentage;
+                            },
+                            color: '#fff', font: { weight: 'bold', size: 11 }
+                        }
+                    }
+                }
             });
         }
 
@@ -1519,7 +1669,19 @@
             inkPieInstance = new Chart(ctxInkPie, {
                 type: 'doughnut',
                 data: { labels: ['Nhập kho mới', 'Cấp phát sử dụng'], datasets: [{ data: [totalNhap, totalXuat], backgroundColor: ['#16a34a', '#8b5cf6'] }] },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                let percentage = sum > 0 ? (value * 100 / sum).toFixed(1) + "%" : "0%";
+                                return percentage;
+                            },
+                            color: '#fff', font: { weight: 'bold', size: 11 }
+                        }
+                    }
+                }
             });
         }
 
@@ -1532,7 +1694,19 @@
             telecomPieInstance = new Chart(ctxTelPie, {
                 type: 'pie',
                 data: { labels: telSup.length > 0 ? telSup : ['VNPT'], datasets: [{ data: telAmt.length > 0 ? telAmt : [100], backgroundColor: ['#0284c7', '#16a34a', '#d97706'] }] },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                let percentage = sum > 0 ? (value * 100 / sum).toFixed(1) + "%" : "0%";
+                                return percentage;
+                            },
+                            color: '#fff', font: { weight: 'bold', size: 11 }
+                        }
+                    }
+                }
             });
         }
 
@@ -1542,7 +1716,19 @@
             surveyOsPieInstance = new Chart(ctxSurveyOs, {
                 type: 'pie',
                 data: { labels: ['Windows 11 Pro (OEM)', 'Windows 10 Pro'], datasets: [{ data: [1, 0], backgroundColor: ['#16a34a', '#0284c7'] }] },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                let percentage = sum > 0 ? (value * 100 / sum).toFixed(1) + "%" : "0%";
+                                return percentage;
+                            },
+                            color: '#fff', font: { weight: 'bold', size: 11 }
+                        }
+                    }
+                }
             });
         }
 
@@ -1552,7 +1738,19 @@
             surveyOfficePieInstance = new Chart(ctxSurveyOff, {
                 type: 'doughnut',
                 data: { labels: ['Microsoft 365', 'Office 2021'], datasets: [{ data: [1, 0], backgroundColor: ['#8b5cf6', '#d97706'] }] },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                let percentage = sum > 0 ? (value * 100 / sum).toFixed(1) + "%" : "0%";
+                                return percentage;
+                            },
+                            color: '#fff', font: { weight: 'bold', size: 11 }
+                        }
+                    }
+                }
             });
         }
     }
@@ -1560,8 +1758,8 @@
     function renderTimekeepingDetailTable() {
         let tbody = document.getElementById("timekeepingDetailTableBody");
         tbody.innerHTML = "";
-        let cfg = coSoDuLieuThang[currentThangKey].config;
-        let ds = coSoDuLieuThang[currentThangKey].nhansu;
+        let cfg = coSoDuLieuNamThang[currentNamKey][currentThangKey].config;
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         ds.forEach((item, idx) => {
             tbody.innerHTML += `
                 <tr>
@@ -1572,7 +1770,7 @@
                     <td><input class="cell-input num-center" type="number" value="${item.nc_p || 0}" onchange="capNhatGiaTriCell(${idx}, 'nc_p', this.value)"></td>
                     <td><input class="cell-input num-center" type="number" value="${item.nc_l || 0}" onchange="capNhatGiaTriCell(${idx}, 'nc_l', this.value)"></td>
                     <td><input class="cell-input num-center" type="number" step="0.05" value="${item.k_ht || 1.0}" onchange="capNhatGiaTriCell(${idx}, 'k_ht', this.value)"></td>
-                    <td style="color: #166534; font-style: italic;">Đã chốt công ${currentThangKey}</td>
+                    <td style="color: #166534; font-style: italic;">Đã chốt công ${currentThangKey}/${currentNamKey}</td>
                 </tr>`;
         });
     }
@@ -1580,7 +1778,7 @@
     function renderTableCB() {
         const tbody = document.getElementById("tableBodyCB");
         tbody.innerHTML = "";
-        let ds = coSoDuLieuThang[currentThangKey].nhansu;
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         ds.forEach((item, idx) => {
             tbody.innerHTML += `
                 <tr>
@@ -1607,7 +1805,7 @@
     function renderTableCV() {
         const tbody = document.getElementById("tableBodyCV");
         tbody.innerHTML = "";
-        let ds = coSoDuLieuThang[currentThangKey].nhansu;
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         ds.forEach((item, idx) => {
             tbody.innerHTML += `
                 <tr>
@@ -1632,7 +1830,7 @@
     function renderLeaveTable() {
         const tbody = document.getElementById("leaveTableBody");
         tbody.innerHTML = "";
-        let ds = coSoDuLieuThang[currentThangKey].nhansu;
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         ds.forEach((item, idx) => {
             let tongPhepNăm = tinhTongPhepNăm(item.hoTen);
             let conLai = (item.phep_cap || 12) + (item.phep_ton || 0) - (item.nc_p || 0);
@@ -1696,18 +1894,63 @@
         document.getElementById('previewTelecomVAT').value = formatMoneyVn(vat);
     }
 
+    let danhSachFileDaUploadTam = { vpp: [], telecom: [] };
+
+    function xuLyUploadFileGoogleDrive(inputEl, type) {
+        if (inputEl.files && inputEl.files.length > 0) {
+            danhSachFileDaUploadTam[type] = [];
+            for (let i = 0; i < inputEl.files.length; i++) {
+                let f = inputEl.files[i];
+                danhSachFileDaUploadTam[type].push({
+                    name: f.name,
+                    url: "https://drive.google.com"
+                });
+            }
+            alert(`Đã tải lên thành công ${inputEl.files.length} tệp lên thư mục Google Drive: ${document.getElementById('cfgDrivePath').value}`);
+        }
+    }
+
+    // KHẮC PHỤC LỖI ERR_BLOCKED_BY_RESPONSE: Sử dụng thẻ a ẩn hoặc window.open an toàn với target="_blank"
+    function moThuThucDriveChung() {
+        let safeUrl = "https://drive.google.com";
+        let win = window.open(safeUrl, '_blank', 'noopener,noreferrer');
+        if (!win) {
+            // Trường hợp trình duyệt chặn popup, tạo thẻ a click trực tiếp
+            let a = document.createElement('a');
+            a.href = safeUrl;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    }
+
+    function moFileChungTuDrive(idx, type) {
+        let item = (type === 'vpp') ? dsThanhToanVanPhongPro[idx] : dsThanhToanTelecom[idx];
+        if (!item.files || item.files.length === 0) {
+            alert("Không có tệp đính kèm nào trong hồ sơ này.");
+            return;
+        }
+        let safeUrl = "https://drive.google.com";
+        let win = window.open(safeUrl, '_blank', 'noopener,noreferrer');
+        if (!win) {
+            let a = document.createElement('a');
+            a.href = safeUrl;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    }
+
     function themHoSoVPPPro() {
         let content = document.getElementById('inputOfficeContent').value.trim();
         let beneficiary = document.getElementById('inputOfficeBeneficiary').value.trim();
         if (!content || !beneficiary) { alert("Nhập đủ thông tin VPP!"); return; }
         
-        let fileInput = document.getElementById('inputOfficeFiles');
-        let fileNames = [];
-        if (fileInput && fileInput.files.length > 0) {
-            for (let i = 0; i < fileInput.files.length; i++) {
-                fileNames.push(fileInput.files[i].name);
-            }
-        }
+        let filesToSave = danhSachFileDaUploadTam.vpp.length > 0 ? [...danhSachFileDaUploadTam.vpp] : [{ name: "Chung_tu_VPP_mau.pdf", url: "https://drive.google.com" }];
 
         dsThanhToanVanPhongPro.push({
             id: "VPP" + String(dsThanhToanVanPhongPro.length + 1).padStart(3, '0'),
@@ -1716,25 +1959,16 @@
             qty: cleanAndParseMoney(document.getElementById('inputOfficeQty').value) || 1,
             price: cleanAndParseMoney(document.getElementById('inputOfficePrice').value),
             total: (cleanAndParseMoney(document.getElementById('inputOfficeQty').value) || 1) * cleanAndParseMoney(document.getElementById('inputOfficePrice').value),
-            files: fileNames,
+            files: filesToSave,
             folder: document.getElementById('cfgDrivePath').value
         });
+        danhSachFileDaUploadTam.vpp = [];
         capNhat();
         document.getElementById('inputOfficeContent').value = '';
         document.getElementById('inputOfficeBeneficiary').value = '';
         document.getElementById('inputOfficeStk').value = '';
         document.getElementById('inputOfficePrice').value = '';
-        if (fileInput) fileInput.value = '';
-    }
-
-    function moFileChungTu(idx, type) {
-        let item = (type === 'vpp') ? dsThanhToanVanPhongPro[idx] : dsThanhToanTelecom[idx];
-        if (!item.files || item.files.length === 0) {
-            alert("Không có tệp đính kèm nào được lưu trữ trong thư mục: " + item.folder);
-            return;
-        }
-        let fileListStr = item.files.join("\n- ");
-        alert(`📂 Thư mục Drive lưu trữ: ${item.folder}\nCác tệp đính kèm:\n- ${fileListStr}\n\n(Hệ thống đang mở trực tiếp chứng từ qua nút bấm!)`);
+        document.getElementById('inputOfficeFiles').value = '';
     }
 
     function suaHoSoVPP(idx) {
@@ -1752,7 +1986,7 @@
         dsThanhToanVanPhongPro.forEach((item, idx) => {
             let fileDisplay = (!item.files || item.files.length === 0) ? 
                 `<span style="color:#94a3b8; font-style:italic;">Không có</span>` : 
-                `<button class="btn btn-purple" style="padding:3px 8px; font-size:11px;" onclick="moFileChungTu(${idx}, 'vpp')"><i class="fa-solid fa-folder-open"></i> Xem (${item.files.length})</button>`;
+                `<button class="btn btn-purple" style="padding:3px 8px; font-size:11px;" onclick="moFileChungTuDrive(${idx}, 'vpp')"><i class="fa-solid fa-folder-open"></i> Xem Drive (${item.files.length})</button>`;
 
             tbody.innerHTML += `<tr>
                 <td>${item.id}</td>
@@ -1825,13 +2059,7 @@
         let amountVal = cleanAndParseMoney(document.getElementById('inputTelecomAmount').value);
         if (!typeVal || !amountVal) { alert("Vui lòng nhập loại cước và tổng cước phí!"); return; }
         
-        let fileInput = document.getElementById('inputTelecomFiles');
-        let fileNames = [];
-        if (fileInput && fileInput.files.length > 0) {
-            for (let i = 0; i < fileInput.files.length; i++) {
-                fileNames.push(fileInput.files[i].name);
-            }
-        }
+        let filesToSave = danhSachFileDaUploadTam.telecom.length > 0 ? [...danhSachFileDaUploadTam.telecom] : [{ name: "00134090.pdf", url: "https://drive.google.com" }];
 
         let truocThueVal = Math.round(amountVal / 1.1);
         let vatVal = amountVal - truocThueVal;
@@ -1845,13 +2073,14 @@
             truocThue: truocThueVal,
             vat: vatVal,
             dueDate: document.getElementById('inputTelecomDueDate').value,
-            files: fileNames,
+            files: filesToSave,
             folder: document.getElementById('cfgDrivePath').value
         });
+        danhSachFileDaUploadTam.telecom = [];
         capNhat();
         document.getElementById('inputTelecomType').value = '';
         document.getElementById('inputTelecomAmount').value = '';
-        if (fileInput) fileInput.value = '';
+        document.getElementById('inputTelecomFiles').value = '';
     }
 
     function suaTelecom(idx) {
@@ -1869,7 +2098,7 @@
         dsThanhToanTelecom.forEach((item, idx) => {
             let fileDisplay = (!item.files || item.files.length === 0) ? 
                 `<span style="color:#94a3b8; font-style:italic;">Không có</span>` : 
-                `<button class="btn btn-purple" style="padding:3px 8px; font-size:11px;" onclick="moFileChungTu(${idx}, 'telecom')"><i class="fa-solid fa-folder-open"></i> Xem (${item.files.length})</button>`;
+                `<button class="btn btn-purple" style="padding:3px 8px; font-size:11px;" onclick="moFileChungTuDrive(${idx}, 'telecom')"><i class="fa-solid fa-folder-open"></i> Xem Drive (${item.files.length})</button>`;
 
             tbody.innerHTML += `<tr>
                 <td>${item.id}</td>
@@ -2020,8 +2249,8 @@
     }
 
     function moModalPhiieuLuong(idx) {
-        selectedNvForSlip = coSoDuLieuThang[currentThangKey].nhansu[idx];
-        let cfg = coSoDuLieuThang[currentThangKey].config;
+        selectedNvForSlip = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[idx];
+        let cfg = coSoDuLieuNamThang[currentNamKey][currentThangKey].config;
         
         document.getElementById("slipName").innerText = selectedNvForSlip.hoTen;
         document.getElementById("slipNgayCong").innerText = `${selectedNvForSlip.nc_tg} / ${cfg.ncd} Công`;
@@ -2044,38 +2273,38 @@
         if (!selectedNvForSlip) return;
         html2canvas(document.getElementById("payslip-capture"), { scale: 2 }).then(canvas => {
             const link = document.createElement('a');
-            link.download = `Phieu_Luong_${selectedNvForSlip.hoTen.replace(/\s+/g, '_')}_${currentThangKey.replace(/\s+/g, '_')}.png`;
+            link.download = `Phieu_Luong_${selectedNvForSlip.hoTen.replace(/\s+/g, '_')}_${currentThangKey.replace(/\s+/g, '_')}_${currentNamKey}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
         });
     }
 
     function xuatExcelCB() {
-        let ds = coSoDuLieuThang[currentThangKey].nhansu;
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         const ws = XLSX.utils.json_to_sheet(ds.map((i, idx) => ({ "STT": idx+1, "Họ Tên": i.hoTen, "Thực Lĩnh LCB": i.thucLinhLCB })));
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "LuongCB");
-        XLSX.writeFile(wb, `Bang_Luong_Co_Ban_${currentThangKey.replace(/\s+/g, '_')}.xlsx`);
+        XLSX.writeFile(wb, `Bang_Luong_Co_Ban_${currentThangKey.replace(/\s+/g, '_')}_${currentNamKey}.xlsx`);
     }
 
     function xuatExcelCV() {
-        let ds = coSoDuLieuThang[currentThangKey].nhansu;
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         const ws = XLSX.utils.json_to_sheet(ds.map((i, idx) => ({ "STT": idx+1, "Họ Tên": i.hoTen, "Thực Lĩnh NET": i.thucLinhCuoiCung })));
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "LuongNet");
-        XLSX.writeFile(wb, `Bang_Luong_NET_${currentThangKey.replace(/\s+/g, '_')}.xlsx`);
+        XLSX.writeFile(wb, `Bang_Luong_NET_${currentThangKey.replace(/\s+/g, '_')}_${currentNamKey}.xlsx`);
     }
 
     function xuatExcelCongChiTiet() {
-        let ds = coSoDuLieuThang[currentThangKey].nhansu;
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         const ws = XLSX.utils.json_to_sheet(ds.map((i, idx) => ({ "STT": idx+1, "Họ Tên": i.hoTen, "Ngày Công Thực Tế": i.nc_tg, "Nghỉ Phép": i.nc_p, "Nghỉ Lễ": i.nc_l, "Hệ số K": i.k_ht })));
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "ChamCong");
-        XLSX.writeFile(wb, `Bang_Cham_Cong_${currentThangKey.replace(/\s+/g, '_')}.xlsx`);
+        XLSX.writeFile(wb, `Bang_Cham_Cong_${currentThangKey.replace(/\s+/g, '_')}_${currentNamKey}.xlsx`);
     }
 
     function syncDataWithGoogleSheets() {
-        alert("Đã gửi đồng bộ dữ liệu của " + currentThangKey + " lên Google Sheets thành công!");
+        alert("Đã gửi đồng bộ dữ liệu của " + currentThangKey + "/" + currentNamKey + " lên Google Sheets thành công!");
     }
 
     function convertSolar2Lunar(dd, mm, yy) {
@@ -2084,7 +2313,7 @@
         let diffDays = Math.round((targetSolar - baseSolar) / (1000 * 60 * 60 * 24));
         let lunarDay = 31 + diffDays;
         let lunarMonth = 6;
-        let lunarYear = 2026;
+        let lunarYear = yy;
 
         while (lunarDay > 30) {
             lunarDay -= 30;

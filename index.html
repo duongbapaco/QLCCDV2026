@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -69,7 +70,7 @@
         .config-item label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
         .config-item input, .config-item select { padding: 7px 10px; border-radius: 6px; border: 1px solid var(--border-color); font-weight: 700; font-size: 13px; color: #0f172a; outline: none; background: #fff; }
 
-        .form-card { background: #f8fafc; border: 1px dashed var(--primary); padding: 14px; border-radius: 8px; margin-bottom: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; align-items: flex-end; }
+        .form-card { background: #f8fafc; border: 1px dashed var(--primary); padding: 14px; border-radius: 8px; margin-bottom: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; align-items: flex-end; }
         .form-group { display: flex; flex-direction: column; gap: 4px; }
         .form-group label { font-size: 12px; font-weight: 700; color: var(--text-muted); }
         .form-group input, .form-group select { padding: 7px 10px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; outline: none; background: white; }
@@ -460,10 +461,33 @@
 
     <!-- TAB 4: THANH TOÁN VĂN PHÒNG -->
     <div id="officePaymentTab" class="tab-pane table-card">
-        <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG (ĐỒNG BỘ THEO NĂM & THÁNG)</div></div>
+        <div class="table-header-bar">
+            <div class="table-title"><i class="fa-solid fa-file-invoice"></i> QUẢN LÝ THANH TOÁN VĂN PHÒNG & VPP (<span id="titleVppYearSpan">2026</span>)</div>
+            <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Thư Mục Gốc Drive</button>
+        </div>
+
+        <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 14px; border-radius: 8px; margin-bottom: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; align-items: flex-end;">
+            <input type="hidden" id="editOfficeIndex" value="-1">
+            <div class="form-group"><label>Mã Hồ Sơ</label><input type="text" id="autoOfficeId" readonly style="background: #e2e8f0; font-weight: bold;" value="VPP-01"></div>
+            <div class="form-group"><label>Đơn Vị / Thụ Hưởng</label><input type="text" id="inputOfficeBeneficiary" placeholder="VD: Hồng Hà"></div>
+            <div class="form-group"><label>Nội Dung VPP</label><input type="text" id="inputOfficeContent" placeholder="VD: Bút, Giấy A4..."></div>
+            <div class="form-group"><label>Đơn Vị Tính</label><select id="inputOfficeUnit"><option value="Cái">Cái</option><option value="Hộp">Hộp</option><option value="Ram">Ram</option><option value="Quyển">Quyển</option><option value="Tập">Tập</option><option value="Bộ">Bộ</option><option value="Chiếc">Chiếc</option><option value="Lô">Lô</option><option value="Thùng">Thùng</option><option value="Xấp">Xấp</option><option value="Cuộn">Cuộn</option></select></div>
+            <div class="form-group"><label>Số Tài Khoản</label><input type="text" id="inputOfficeStk" placeholder="Số TK..."></div>
+            <div class="form-group"><label>Tên Ngân Hàng</label><input type="text" id="inputOfficeBank" placeholder="VD: Vietcombank, BIDV..."></div>
+            <div class="form-group"><label>Số Lượng</label><input type="number" id="inputOfficeQty" value="1" min="1" oninput="tinhThanhTienVPP()"></div>
+            <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputOfficePrice" placeholder="0" oninput="tinhThanhTienVPP()"></div>
+            <div class="form-group"><label>Thành Tiền</label><input type="text" id="previewOfficeTotal" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;" value="0 đ"></div>
+            <div class="form-group"><label>Ngày Chứng Từ</label><input type="date" id="inputOfficeDate"></div>
+            <div class="form-group"><label>Hóa Đơn / Drive</label><input type="file" id="inputOfficeFiles" multiple style="font-size:11px;" onchange="xuLyUploadFileGoogleDrive(this, 'vpp')"></div>
+            <div class="form-group" style="display: flex; gap: 6px;">
+                <button class="btn btn-green" id="btnOfficeAction" onclick="luuHoacCapNhatVPP()"><i class="fas fa-plus-circle"></i> Tải Lên & Thêm</button>
+                <button class="btn btn-red hidden" id="btnOfficeCancel" onclick="huySuaVPP()"><i class="fas fa-xmark"></i> Hủy</button>
+            </div>
+        </div>
+
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
             <div class="chart-card" style="padding: 10px;">
-                <div class="chart-title"><i class="fa-solid fa-chart-bar"></i> Biểu Đồ Cột: Giá Trị Hồ Sơ VPP (VNĐ)</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-bar"></i> Biểu Đồ Cột: Giá Trị VPP Lũy Kế (VNĐ)</div>
                 <div style="position: relative; height: 180px;"><canvas id="officeBarChart"></canvas></div>
             </div>
             <div class="chart-card" style="padding: 10px;">
@@ -471,26 +495,27 @@
                 <div style="position: relative; height: 180px;"><canvas id="officePieChart"></canvas></div>
             </div>
         </div>
-        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
-            <input type="hidden" id="editOfficeIndex" value="-1">
-            <div class="form-group"><label>Mã Hồ Sơ VPP</label><input type="text" id="autoOfficeId" readonly style="background: #e2e8f0; font-weight: bold;"></div>
-            <div class="form-group"><label>Nội Dung Thanh Toán</label><input type="text" id="inputOfficeContent" placeholder="VD: Mua sắm vật tư..."></div>
-            <div class="form-group"><label>Đơn Vị Thụ Hưởng</label><input type="text" id="inputOfficeBeneficiary" placeholder="VD: Hồng Hà"></div>
-            <div class="form-group"><label>Số Tài Khoản</label><input type="text" id="inputOfficeStk" placeholder="Số TK..."></div>
-            <div class="form-group"><label>Ngày Tháng Năm</label><input type="date" id="inputOfficeDate"></div>
-            <div class="form-group"><label>Số Lượng</label><input type="number" id="inputOfficeQty" value="1" min="1" oninput="tinhThanhTienVPP()"></div>
-            <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputOfficePrice" placeholder="0" oninput="tinhThanhTienVPP()"></div>
-            <div class="form-group"><label>Thành Tiền</label><input type="text" id="previewOfficeTotal" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;" value="0 đ"></div>
-            <div class="form-group"><label>Upload File / Drive</label><input type="file" id="inputOfficeFiles" multiple style="font-size:11px;" onchange="xuLyUploadFileGoogleDrive(this, 'vpp')"></div>
-            <div class="form-group" style="display: flex; gap: 6px;">
-                <button class="btn btn-blue" id="btnOfficeAction" onclick="luuHoacCapNhatVPP()"><i class="fas fa-plus-circle"></i> Thêm Hồ Sơ</button>
-                <button class="btn btn-red hidden" id="btnOfficeCancel" onclick="huySuaVPP()"><i class="fas fa-xmark"></i> Hủy</button>
-            </div>
+
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Đơn Vị Thụ Hưởng</th>
+                        <th>Nội Dung Thanh Toán</th>
+                        <th>ĐVT</th>
+                        <th>Số Tài Khoản</th>
+                        <th>Tên Ngân Hàng</th>
+                        <th>Số Lượng x Đơn Giá</th>
+                        <th>Thành Tiền (VNĐ)</th>
+                        <th>Ngày Tháng</th>
+                        <th>Tệp Đính Kèm</th>
+                        <th>Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody id="officePaymentTableBody"></tbody>
+            </table>
         </div>
-        <table>
-            <thead><tr><th>Mã</th><th>Nội Dung</th><th>Đơn Vị Thụ Hưởng</th><th>STK</th><th>Ngày</th><th>SL & Giá</th><th>Thành Tiền</th><th>Hóa Đơn / Drive</th><th>Thao Tác</th></tr></thead>
-            <tbody id="officePaymentTableBody"></tbody>
-        </table>
     </div>
 
     <!-- TAB 5: KHO MỰC IN -->
@@ -548,13 +573,13 @@
         </div>
     </div>
 
-    <!-- TAB 7: CƯỚC VIỄN THÔNG (DASHBOARD CỘNG DỒN CẢ NĂM) -->
+    <!-- TAB 7: CƯỚC VIỄN THÔNG (FORM THÔNG MINH CŨ ĐÃ KHÔI PHỤC HOÀN TOÀN) -->
     <div id="telecomPaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-wifi"></i> DASHBOARD & THANH TOÁN CƯỚC VIỄN THÔNG (CỘNG DỒN CẢ NĂM)</div>
+            <div class="table-title"><i class="fa-solid fa-wifi"></i> QUẢN LÝ CƯỚC MẠNG & INTERNET (<span id="titleTelecomYearSpan">2026</span>)</div>
+            <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Thư Mục Gốc Drive</button>
         </div>
         
-        <!-- DASHBOARD CỘNG DỒN TẤT CẢ CÁC THÁNG -->
         <div class="kpi-grid" style="margin-bottom: 14px;">
             <div class="kpi-card" style="border-left: 4px solid #0284c7;">
                 <div class="kpi-title">Tổng Cước Trước Thuế (Lũy Kế Năm)</div>
@@ -573,6 +598,24 @@
             </div>
         </div>
 
+        <!-- FORM THÔNG MINH CŨ ĐÚNG YÊU CẦU -->
+        <div style="background: #f8fafc; border: 1px dashed var(--primary); padding: 14px; border-radius: 8px; margin-bottom: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; align-items: flex-end;">
+            <input type="hidden" id="editTelecomIndex" value="-1">
+            <div class="form-group"><label>Mã HS</label><input type="text" id="inputTelecomMaHs" readonly style="background: #e2e8f0; font-weight: bold;" value="VT-01"></div>
+            <div class="form-group"><label>Nhà Mạng</label><select id="inputTelecomSupplier"><option value="VNPT">VNPT</option><option value="Viettel">Viettel</option><option value="Mobifone">Mobifone</option></select></div>
+            <div class="form-group"><label>Loại Cước</label><input type="text" id="inputTelecomType" placeholder="VD: Cáp quang..."></div>
+            <div class="form-group"><label>Kỳ Cước</label><input type="text" id="inputTelecomKyCuoc" placeholder="Tháng 08/2026" value="Tháng 08/2026"></div>
+            <div class="form-group"><label>Tổng Cước (Đã VAT)</label><input type="text" id="inputTelecomTongVat" placeholder="2.500.000" oninput="tinhTienTelecomTuTong()"></div>
+            <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
+            <div class="form-group"><label>Thuế VAT (10%)</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
+            <div class="form-group"><label>Hạn TT</label><input type="date" id="inputTelecomDate" value="2026-08-14"></div>
+            <div class="form-group"><label>Upload Drive</label><input type="file" id="inputTelecomFiles" style="font-size:11px;" onchange="xuLyUploadFileGoogleDrive(this, 'telecom')"></div>
+            <div class="form-group" style="grid-column: span 2; display: flex; gap: 6px;">
+                <button class="btn btn-green" id="btnTelecomAction" onclick="luuHoacCapNhatTelecom()"><i class="fas fa-plus-circle"></i> Thêm Cước</button>
+                <button class="btn btn-red hidden" id="btnTelecomCancel" onclick="huySuaTelecom()"><i class="fas fa-xmark"></i> Hủy</button>
+            </div>
+        </div>
+
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
             <div class="chart-card" style="padding: 10px;">
                 <div class="chart-title"><i class="fa-solid fa-chart-column"></i> Biểu Đồ Cột: Cước Viễn Thông Lũy Kế (VNĐ)</div>
@@ -584,26 +627,24 @@
             </div>
         </div>
 
-        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));">
-            <input type="hidden" id="editTelecomIndex" value="-1">
-            <div class="form-group"><label>Mã HS</label><input type="text" id="autoTelecomId" readonly style="background:#e2e8f0; font-weight:bold;"></div>
-            <div class="form-group"><label>Nhà Mạng</label><select id="inputTelecomSupplier"><option value="VNPT">VNPT</option><option value="Viettel">Viettel</option><option value="Mobifone">Mobifone</option></select></div>
-            <div class="form-group"><label>Loại Cước</label><input type="text" id="inputTelecomType" placeholder="VD: Cáp quang..."></div>
-            <div class="form-group"><label>Kỳ Cước</label><input type="text" id="inputTelecomPeriod" value="Tháng 08/2026"></div>
-            <div class="form-group"><label>Tổng Cước (Đã VAT)</label><input type="text" id="inputTelecomAmount" placeholder="2.500.000" oninput="tinhTachVATTelecom()"></div>
-            <div class="form-group"><label>Trước Thuế</label><input type="text" id="previewTelecomTruocThue" readonly style="background:#f1f5f9; font-weight:bold;"></div>
-            <div class="form-group"><label>Thuế VAT (10%)</label><input type="text" id="previewTelecomVAT" readonly style="background:#f1f5f9; color:#dc2626; font-weight:bold;"></div>
-            <div class="form-group"><label>Hạn TT</label><input type="date" id="inputTelecomDueDate"></div>
-            <div class="form-group"><label>Upload Drive</label><input type="file" id="inputTelecomFiles" multiple style="font-size:11px;" onchange="xuLyUploadFileGoogleDrive(this, 'telecom')"></div>
-            <div class="form-group" style="display: flex; gap: 6px;">
-                <button class="btn btn-green" id="btnTelecomAction" onclick="luuHoacCapNhatTelecom()"><i class="fas fa-plus-circle"></i> Thêm Cước</button>
-                <button class="btn btn-red hidden" id="btnTelecomCancel" onclick="huySuaTelecom()"><i class="fas fa-xmark"></i> Hủy</button>
-            </div>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mã HS</th>
+                        <th>Nhà Mạng</th>
+                        <th>Loại Cước</th>
+                        <th>Kỳ Cước</th>
+                        <th>Trước Thuế</th>
+                        <th>Thuế VAT (10%)</th>
+                        <th>Tổng Cước TT</th>
+                        <th>Hóa Đơn / Drive</th>
+                        <th>Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody id="telecomPaymentTableBody"></tbody>
+            </table>
         </div>
-        <table>
-            <thead><tr><th>Mã HS</th><th>Nhà Mạng</th><th>Loại Cước</th><th>Kỳ Cước</th><th>Trước Thuế</th><th>Thuế VAT (10%)</th><th>Tổng Cước TT</th><th>Hóa Đơn / Drive</th><th>Thao Tác</th></tr></thead>
-            <tbody id="telecomPaymentTableBody"></tbody>
-        </table>
     </div>
 
     <!-- TAB 8: KHẢO SÁT PHẦN MỀM -->
@@ -767,7 +808,7 @@
     </div>
 </div>
 
-<!-- TRÌNH PHÁT NHẠC THƯ GIÃN ẨN (AUDIO PLAYER) -->
+<!-- TRÌNH PHÁT NHẠC THƯ GIÃN ẨN -->
 <audio id="relaxAudioPlayer" loop>
     <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf7f6.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
 </audio>
@@ -781,7 +822,6 @@
             <span id="digitalDateDisplay">14/08/2026</span>
         </div>
         
-        <!-- WIDGET DỰ BÁO THỜI TIẾT (PHÚ THỌ) -->
         <div class="weather-banner" id="weatherWidgetBox">
             <div>
                 <div style="font-weight: 800; font-size: 13px;"><i class="fa-solid fa-cloud-sun"></i> Thời Tiết Phú Thọ</div>
@@ -985,13 +1025,14 @@
         currentNamKey = document.getElementById('cfgNamChon').value;
         currentThangKey = document.getElementById('cfgThangChon').value;
         
+        document.getElementById('titleTelecomYearSpan').innerText = currentNamKey;
+        document.getElementById('titleVppYearSpan').innerText = currentNamKey;
+
         let mNum = parseInt(currentThangKey.replace('Tháng ', ''));
         let yNum = parseInt(currentNamKey);
         if (!isNaN(mNum)) viewingMonth = mNum;
         if (!isNaN(yNum)) viewingYear = yNum;
         taoLichVanNienChiTiet(viewingMonth, viewingYear, 1);
-
-        document.getElementById('inputTelecomPeriod').value = `${currentThangKey}/${currentNamKey}`;
         
         if (!coSoDuLieuNamThang[currentNamKey]) coSoDuLieuNamThang[currentNamKey] = {};
         if (!coSoDuLieuNamThang[currentNamKey][currentThangKey]) {
@@ -1046,7 +1087,6 @@
         veTatCaBieuDoDashboard();
     }
 
-    // HÀM LẤY TOÀN BỘ VPP CỘNG DỒN CẢ NĂM (TẤT CẢ CÁC THÁNG)
     function layTatCaDanhSachVPP() {
         let allVpp = [];
         let monthsObj = dsThanhToanVanPhongProByMonth;
@@ -1058,7 +1098,6 @@
         return allVpp;
     }
 
-    // HÀM LẤY TOÀN BỘ CƯỚC VIỄN THÔNG CỘNG DỒN CẢ NĂM (TẤT CẢ CÁC THÁNG)
     function layTatCaDanhSachTelecom() {
         let allTelecom = [];
         let monthsObj = dsThanhToanTelecomByMonth;
@@ -1164,80 +1203,14 @@
         document.getElementById('previewOfficeTotal').value = (q * p).toLocaleString('vi-VN') + ' đ';
     }
 
-    function tinhTachVATTelecom() {
-        let amt = parseFloat(document.getElementById('inputTelecomAmount').value.replace(/[^0-9]/g,'')) || 0;
-        let truocThue = Math.round(amt / 1.1);
-        let vat = amt - truocThue;
-        document.getElementById('previewTelecomTruocThue').value = truocThue.toLocaleString('vi-VN') + ' đ';
-        document.getElementById('previewTelecomVAT').value = vat.toLocaleString('vi-VN') + ' đ';
+    function tinhTienTelecomTuTong() {
+        let tong = parseFloat(document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g,'')) || 0;
+        let truocThue = Math.round(tong / 1.1);
+        let vat = tong - truocThue;
+        document.getElementById('inputTelecomTruocThueInput').value = truocThue.toLocaleString('vi-VN');
+        document.getElementById('inputTelecomVatInput').value = vat.toLocaleString('vi-VN');
     }
 
-    // 1. Quản lý Công việc
-    function luuHoacCapNhatCongViec() {
-        let name = document.getElementById('inputTaskName').value.trim();
-        if (!name) { alert("Nhập nội dung công việc!"); return; }
-        let editIdx = parseInt(document.getElementById('editTaskIndex').value);
-        let assignee = document.getElementById('inputTaskAssignee').value;
-        let dueDate = document.getElementById('inputTaskDueDate').value;
-        let status = document.getElementById('inputTaskStatus').value;
-
-        if (editIdx > -1) {
-            danhSachCongViec[editIdx] = { ...danhSachCongViec[editIdx], name, assignee, dueDate, status };
-            alert("✅ Cập nhật công việc thành công!");
-            huySuaCongViec();
-        } else {
-            danhSachCongViec.push({ id: danhSachCongViec.length + 1, name, assignee, dueDate, status });
-            alert("✅ Đã thêm mới công việc thành công!");
-            document.getElementById('inputTaskName').value = '';
-        }
-        renderTaskTable();
-    }
-    function suaCongViec(idx) {
-        let t = danhSachCongViec[idx];
-        document.getElementById('inputTaskName').value = t.name;
-        document.getElementById('inputTaskAssignee').value = t.assignee;
-        document.getElementById('inputTaskDueDate').value = t.dueDate;
-        document.getElementById('inputTaskStatus').value = t.status;
-        document.getElementById('editTaskIndex').value = idx;
-        document.getElementById('btnTaskAction').innerHTML = '<i class="fas fa-save"></i> Cập Nhật';
-        document.getElementById('btnTaskCancel').classList.remove('hidden');
-    }
-    function huySuaCongViec() {
-        document.getElementById('inputTaskName').value = '';
-        document.getElementById('editTaskIndex').value = -1;
-        document.getElementById('btnTaskAction').innerHTML = '<i class="fas fa-plus-circle"></i> Thêm Công Việc';
-        document.getElementById('btnTaskCancel').classList.add('hidden');
-    }
-    function renderTaskTable() {
-        let tbody = document.getElementById('taskTableBody');
-        tbody.innerHTML = '';
-        let completed = 0;
-        danhSachCongViec.forEach((t, idx) => {
-            if (t.status === 'Hoàn thành') completed++;
-            
-            let nextStatus = t.status === 'Chưa làm' ? 'Đang làm' : (t.status === 'Đang làm' ? 'Hoàn thành' : 'Chưa làm');
-            let badgeClass = t.status === 'Hoàn thành' ? 'badge-net' : (t.status === 'Đang làm' ? 'badge-warning' : 'badge-danger');
-
-            tbody.innerHTML += `<tr>
-                <td style="text-align:center;">${idx+1}</td>
-                <td><b>${t.name}</b></td>
-                <td>${t.assignee}</td>
-                <td>${t.dueDate}</td>
-                <td style="text-align:center;">
-                    <span class="${badgeClass}" style="cursor: pointer;" title="Bấm để đổi trạng thái" onclick="danhSachCongViec[${idx}].status='${nextStatus}';renderTaskTable();">${t.status} 🔄</span>
-                </td>
-                <td style="text-align:center;">
-                    <button class="btn btn-blue" style="padding:3px 6px;" onclick="suaCongViec(${idx})" title="Sửa"><i class="fas fa-pen"></i></button>
-                    <button class="btn btn-red" style="padding:3px 6px;" onclick="danhSachCongViec.splice(${idx},1);renderTaskTable();" title="Xóa"><i class="fas fa-trash"></i></button>
-                </td>
-            </tr>`;
-        });
-        
-        luuTruVaoLocalStorage();
-        veTatCaBieuDoDashboard();
-    }
-
-    // 2. Thanh toán VPP (Đồng bộ theo Tháng/Năm)
     function layDanhSachVPPHienTai() {
         let key = `${currentNamKey}_${currentThangKey}`;
         if (!dsThanhToanVanPhongProByMonth[key]) dsThanhToanVanPhongProByMonth[key] = [];
@@ -1255,28 +1228,41 @@
         let total = qty * price;
         let currentList = layDanhSachVPPHienTai();
 
+        let vppItem = {
+            id: editIdx > -1 ? currentList[editIdx].id : ("VPP-0" + (currentList.length + 1)),
+            content,
+            beneficiary,
+            unit: document.getElementById('inputOfficeUnit').value,
+            stk: document.getElementById('inputOfficeStk').value,
+            bank: document.getElementById('inputOfficeBank').value,
+            date: document.getElementById('inputOfficeDate').value || `${currentNamKey}-08-14`,
+            qty, price, total
+        };
+
         if (editIdx > -1) {
-            currentList[editIdx] = { ...currentList[editIdx], content, beneficiary, stk: document.getElementById('inputOfficeStk').value, date: document.getElementById('inputOfficeDate').value, qty, price, total };
+            currentList[editIdx] = vppItem;
             alert("✅ Cập nhật hồ sơ VPP thành công!");
             huySuaVPP();
         } else {
-            currentList.push({
-                id: "VPP0" + (currentList.length + 1),
-                content, beneficiary, stk: document.getElementById('inputOfficeStk').value,
-                date: document.getElementById('inputOfficeDate').value || `${currentNamKey}-08-14`,
-                qty, price, total
-            });
+            currentList.push(vppItem);
             alert(`✅ Đã thêm mới hồ sơ VPP vào ${currentThangKey} năm ${currentNamKey} thành công!`);
             document.getElementById('inputOfficeContent').value = '';
+            document.getElementById('inputOfficeBeneficiary').value = '';
+            document.getElementById('inputOfficeStk').value = '';
+            document.getElementById('inputOfficeBank').value = '';
+            document.getElementById('inputOfficePrice').value = '';
         }
         capNhat();
     }
+
     function suaVPP(idx) {
         let currentList = layDanhSachVPPHienTai();
         let item = currentList[idx];
         document.getElementById('inputOfficeContent').value = item.content;
         document.getElementById('inputOfficeBeneficiary').value = item.beneficiary;
-        document.getElementById('inputOfficeStk').value = item.stk;
+        document.getElementById('inputOfficeUnit').value = item.unit || 'Cái';
+        document.getElementById('inputOfficeStk').value = item.stk || '';
+        document.getElementById('inputOfficeBank').value = item.bank || '';
         document.getElementById('inputOfficeDate').value = item.date;
         document.getElementById('inputOfficeQty').value = item.qty;
         document.getElementById('inputOfficePrice').value = item.price;
@@ -1285,25 +1271,44 @@
         document.getElementById('btnOfficeAction').innerHTML = '<i class="fas fa-save"></i> Cập Nhật';
         document.getElementById('btnOfficeCancel').classList.remove('hidden');
     }
+
     function huySuaVPP() {
         document.getElementById('inputOfficeContent').value = '';
+        document.getElementById('inputOfficeBeneficiary').value = '';
+        document.getElementById('inputOfficeStk').value = '';
+        document.getElementById('inputOfficeBank').value = '';
+        document.getElementById('inputOfficePrice').value = '';
         document.getElementById('editOfficeIndex').value = -1;
-        document.getElementById('btnOfficeAction').innerHTML = '<i class="fas fa-plus-circle"></i> Thêm Hồ Sơ';
+        document.getElementById('btnOfficeAction').innerHTML = '<i class="fas fa-plus-circle"></i> Tải Lên & Thêm';
         document.getElementById('btnOfficeCancel').classList.add('hidden');
     }
+
     function renderOfficePaymentTable() {
         let tbody = document.getElementById('officePaymentTableBody');
         tbody.innerHTML = '';
         let currentList = layDanhSachVPPHienTai();
         currentList.forEach((item, idx) => {
-            tbody.innerHTML += `<tr><td>${item.id}</td><td><b>${item.content}</b></td><td>${item.beneficiary}</td><td>${item.stk}</td><td>${item.date}</td><td>${item.qty} x ${item.price.toLocaleString()}</td><td style="color:#15803d; font-weight:bold;">${item.total.toLocaleString()} đ</td><td style="text-align:center;"><button class="btn btn-purple" style="padding:3px 8px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Drive</button></td><td style="text-align:center;">
-                <button class="btn btn-blue" style="padding:3px 6px;" onclick="suaVPP(${idx})"><i class="fas fa-pen"></i></button>
-                <button class="btn btn-red" style="padding:3px 6px;" onclick="layDanhSachVPPHienTai().splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
-            </td></tr>`;
+            tbody.innerHTML += `<tr>
+                <td>${item.id}</td>
+                <td><b>${item.beneficiary}</b></td>
+                <td>${item.content}</td>
+                <td><span class="badge-warning">${item.unit || 'Cái'}</span></td>
+                <td>${item.stk || '--'}</td>
+                <td>${item.bank || '--'}</td>
+                <td>${item.qty} x ${item.price.toLocaleString()} đ</td>
+                <td style="color:#15803d; font-weight:bold;">${item.total.toLocaleString()} đ</td>
+                <td>${item.date}</td>
+                <td style="text-align:center;"><button class="btn btn-purple" style="padding:3px 8px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Drive</button></td>
+                <td style="text-align:center;">
+                    <button class="btn btn-blue" style="padding:3px 6px;" onclick="suaVPP(${idx})"><i class="fas fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px;" onclick="layDanhSachVPPHienTai().splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>`;
         });
+        document.getElementById('autoOfficeId').value = "VPP-0" + (currentList.length + 1);
     }
 
-    // 3. Kho Mực In
+    // Kho Mực In
     function luuHoacCapNhatKhoMuc() {
         let name = document.getElementById('inputInkName').value.trim();
         if (!name) { alert("Nhập tên mực!"); return; }
@@ -1353,7 +1358,7 @@
         document.getElementById('xntTableBody').innerHTML = `<tr><td>1</td><td>MUC001</td><td>Hộp mực Canon 337</td><td>5</td><td>10</td><td>2</td><td style="font-weight:bold; color:#0284c7;">13</td><td><span class="badge-net">Ổn định</span></td></tr>`;
     }
 
-    // 4. Cước Viễn Thông (Đồng bộ theo Tháng/Năm)
+    // Cước Viễn Thông
     function layDanhSachTelecomHienTai() {
         let key = `${currentNamKey}_${currentThangKey}`;
         if (!dsThanhToanTelecomByMonth[key]) dsThanhToanTelecomByMonth[key] = [];
@@ -1362,67 +1367,102 @@
 
     function luuHoacCapNhatTelecom() {
         let type = document.getElementById('inputTelecomType').value.trim();
-        let amount = parseFloat(document.getElementById('inputTelecomAmount').value.replace(/[^0-9]/g,'')) || 0;
-        if (!type || !amount) { alert("Nhập đủ thông tin cước viễn thông!"); return; }
+        let tong = parseFloat(document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g,'')) || 0;
+        if (!type || !tong) { alert("Nhập đủ loại cước và tổng cước!"); return; }
         
         let editIdx = parseInt(document.getElementById('editTelecomIndex').value);
-        let truocThue = Math.round(amount/1.1);
-        let vat = amount - truocThue;
+        let truocThue = Math.round(tong / 1.1);
+        let vat = tong - truocThue;
         let currentList = layDanhSachTelecomHienTai();
 
+        let itemData = {
+            maHs: document.getElementById('inputTelecomMaHs').value,
+            supplier: document.getElementById('inputTelecomSupplier').value,
+            type,
+            kyCuoc: document.getElementById('inputTelecomKyCuoc').value,
+            tong,
+            truocThue,
+            vat,
+            period: document.getElementById('inputTelecomDate').value
+        };
+
         if (editIdx > -1) {
-            currentList[editIdx] = { ...currentList[editIdx], supplier: document.getElementById('inputTelecomSupplier').value, type, period: document.getElementById('inputTelecomPeriod').value, amount, truocThue, vat };
+            currentList[editIdx] = { ...currentList[editIdx], ...itemData };
             alert("✅ Cập nhật cước viễn thông thành công!");
             huySuaTelecom();
         } else {
-            currentList.push({ id: "VT0" + (currentList.length+1), supplier: document.getElementById('inputTelecomSupplier').value, type, period: document.getElementById('inputTelecomPeriod').value, amount, truocThue, vat });
+            itemData.id = "VT-0" + (currentList.length + 1);
+            currentList.push(itemData);
             alert(`✅ Đã thêm cước viễn thông vào ${currentThangKey} năm ${currentNamKey} thành công!`);
             document.getElementById('inputTelecomType').value = '';
+            document.getElementById('inputTelecomTongVat').value = '';
+            document.getElementById('inputTelecomTruocThueInput').value = '';
+            document.getElementById('inputTelecomVatInput').value = '';
         }
         capNhat();
     }
+
     function suaTelecom(idx) {
         let currentList = layDanhSachTelecomHienTai();
         let item = currentList[idx];
+        document.getElementById('inputTelecomMaHs').value = item.maHs || ('VT-0' + (idx+1));
         document.getElementById('inputTelecomSupplier').value = item.supplier;
         document.getElementById('inputTelecomType').value = item.type;
-        document.getElementById('inputTelecomPeriod').value = item.period;
-        document.getElementById('inputTelecomAmount').value = item.amount;
-        tinhTachVATTelecom();
+        document.getElementById('inputTelecomKyCuoc').value = item.kyCuoc;
+        document.getElementById('inputTelecomTongVat').value = item.tong.toLocaleString();
+        document.getElementById('inputTelecomTruocThueInput').value = item.truocThue.toLocaleString();
+        document.getElementById('inputTelecomVatInput').value = item.vat.toLocaleString();
+        document.getElementById('inputTelecomDate').value = item.period;
         document.getElementById('editTelecomIndex').value = idx;
         document.getElementById('btnTelecomAction').innerHTML = '<i class="fas fa-save"></i> Cập Nhật';
         document.getElementById('btnTelecomCancel').classList.remove('hidden');
     }
+
     function huySuaTelecom() {
-        document.getElementById('inputTelecomType').value = '';
         document.getElementById('editTelecomIndex').value = -1;
+        document.getElementById('inputTelecomType').value = '';
+        document.getElementById('inputTelecomTongVat').value = '';
+        document.getElementById('inputTelecomTruocThueInput').value = '';
+        document.getElementById('inputTelecomVatInput').value = '';
         document.getElementById('btnTelecomAction').innerHTML = '<i class="fas fa-plus-circle"></i> Thêm Cước';
         document.getElementById('btnTelecomCancel').classList.add('hidden');
     }
+
     function renderTelecomPaymentTable() {
         let tbody = document.getElementById('telecomPaymentTableBody');
         tbody.innerHTML = '';
         let currentList = layDanhSachTelecomHienTai();
         
         currentList.forEach((item, idx) => {
-            tbody.innerHTML += `<tr><td>${item.id}</td><td>${item.supplier}</td><td><b>${item.type}</b></td><td>${item.period}</td><td style="text-align:right;">${item.truocThue.toLocaleString()} đ</td><td style="text-align:right; color:#dc2626;">${item.vat.toLocaleString()} đ</td><td style="text-align:right; font-weight:bold; color:#15803d;">${item.amount.toLocaleString()} đ</td><td style="text-align:center;"><button class="btn btn-purple" style="padding:3px 8px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Drive</button></td><td style="text-align:center;">
-                <button class="btn btn-blue" style="padding:3px 6px;" onclick="suaTelecom(${idx})"><i class="fas fa-pen"></i></button>
-                <button class="btn btn-red" style="padding:3px 6px;" onclick="layDanhSachTelecomHienTai().splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
-            </td></tr>`;
+            tbody.innerHTML += `<tr>
+                <td><b>${item.maHs || ('VT-0' + (idx+1))}</b></td>
+                <td><span class="badge-net">${item.supplier}</span></td>
+                <td>${item.type}</td>
+                <td>${item.kyCuoc}</td>
+                <td style="text-align:right;">${(item.truocThue || 0).toLocaleString()} đ</td>
+                <td style="text-align:right; color:#dc2626;">${(item.vat || 0).toLocaleString()} đ</td>
+                <td style="text-align:right; font-weight:bold; color:#15803d;">${(item.tong || 0).toLocaleString()} đ</td>
+                <td style="text-align:center;"><button class="btn btn-purple" style="padding:3px 8px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Drive</button></td>
+                <td style="text-align:center;">
+                    <button class="btn btn-blue" style="padding:3px 6px;" onclick="suaTelecom(${idx})"><i class="fas fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px;" onclick="layDanhSachTelecomHienTai().splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>`;
         });
 
-        // TÍNH TOÁN CỘNG DỒN TẤT CẢ CÁC THÁNG TRONG NĂM CHO DASHBOARD CƯỚC VIỄN THÔNG
+        document.getElementById('inputTelecomMaHs').value = "VT-0" + (currentList.length + 1);
+
         let allYearTelecom = layTatCaDanhSachTelecom();
         let sumTruocThueYear = allYearTelecom.reduce((s, i) => s + (i.truocThue || 0), 0);
         let sumVATYear = allYearTelecom.reduce((s, i) => s + (i.vat || 0), 0);
-        let sumAmountYear = allYearTelecom.reduce((s, i) => s + (i.amount || 0), 0);
+        let sumAmountYear = allYearTelecom.reduce((s, i) => s + (i.tong || 0), 0);
 
         document.getElementById('telecomKpiTruocThue').innerText = sumTruocThueYear.toLocaleString('vi-VN') + ' đ';
         document.getElementById('telecomKpiVAT').innerText = sumVATYear.toLocaleString('vi-VN') + ' đ';
         document.getElementById('telecomKpiTongThanhToan').innerText = sumAmountYear.toLocaleString('vi-VN') + ' đ';
     }
 
-    // 5. Khảo sát Phần mềm
+    // Khảo sát Phần mềm
     function luuHoacCapNhatKhaoSat() {
         let user = document.getElementById('inputSurveyUser').value.trim();
         if (!user) { alert("Nhập tên người dùng!"); return; }
@@ -1699,7 +1739,7 @@
             if (window.mySalaryPie) window.mySalaryPie.destroy();
             let totalNet = ds.reduce((s,i)=>s+(i.thucLinhCuoiCung||0),0);
             let totalOfficeYear = allYearVpp.reduce((s,i)=>s+(i.total||0),0);
-            let totalTelecomYear = allYearTelecom.reduce((s,i)=>s+(i.amount||0),0);
+            let totalTelecomYear = allYearTelecom.reduce((s,i)=>s+(i.tong||0),0);
             window.mySalaryPie = new Chart(ctxSalaryPie, {
                 type: 'doughnut',
                 data: { labels: ['Quỹ Lương NET', 'Thanh Toán VP (Năm)', 'Cước Viễn Thông (Năm)'], datasets: [{ data: [totalNet, totalOfficeYear, totalTelecomYear], backgroundColor: ['#0284c7', '#16a34a', '#d97706'] }] },
@@ -1712,7 +1752,7 @@
             if (window.myOverviewBar) window.myOverviewBar.destroy();
             let totalNet = ds.reduce((s,i)=>s+(i.thucLinhCuoiCung||0),0);
             let totalOfficeYear = allYearVpp.reduce((s,i)=>s+(i.total||0),0);
-            let totalTelecomYear = allYearTelecom.reduce((s,i)=>s+(i.amount||0),0);
+            let totalTelecomYear = allYearTelecom.reduce((s,i)=>s+(i.tong||0),0);
             let totalVATYear = allYearTelecom.reduce((s,i)=>s+(i.vat||0),0);
             window.myOverviewBar = new Chart(ctxOverviewBar, {
                 type: 'bar',
@@ -1830,11 +1870,12 @@
         }
 
         let ctxTelecomBar = document.getElementById('telecomBarChart');
+        let currentTelecomList = layDanhSachTelecomHienTai();
         if (ctxTelecomBar) {
             if (window.myTelecomBar) window.myTelecomBar.destroy();
             window.myTelecomBar = new Chart(ctxTelecomBar, {
                 type: 'bar',
-                data: { labels: allYearTelecom.map(i => i.supplier + ' (' + i.period + ')'), datasets: [{ label: 'Cước (VNĐ)', data: allYearTelecom.map(i => i.amount), backgroundColor: ['#0284c7', '#ef4444', '#f59e0b', '#10b981'] }] },
+                data: { labels: currentTelecomList.map(i => i.supplier + ' (' + i.type + ')'), datasets: [{ label: 'Cước (VNĐ)', data: currentTelecomList.map(i => i.tong), backgroundColor: ['#0284c7', '#ef4444', '#f59e0b', '#10b981'] }] },
                 options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false }, datalabels: { formatter: (v) => v.toLocaleString() + ' đ', color: '#0f172a', anchor: 'end', align: 'top', font: { weight: 'bold', size: 10 } } } }
             });
         }
@@ -1843,7 +1884,7 @@
             if (window.myTelecomPie) window.myTelecomPie.destroy();
             window.myTelecomPie = new Chart(ctxTelecomPie, {
                 type: 'doughnut',
-                data: { labels: allYearTelecom.map(i => i.supplier + ' (' + i.period + ')'), datasets: [{ data: allYearTelecom.map(i => i.amount), backgroundColor: ['#0284c7', '#e11d48', '#fbbf24', '#10b981'] }] },
+                data: { labels: currentTelecomList.map(i => i.supplier), datasets: [{ data: currentTelecomList.map(i => i.tong), backgroundColor: ['#0284c7', '#e11d48', '#fbbf24', '#10b981'] }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: percentPluginConfig }
             });
         }

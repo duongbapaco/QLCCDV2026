@@ -25,7 +25,7 @@
             --yellow-text: #854d0e;
             --red-badge: #fee2e2;
             --red-text: #991b1b;
-            font-size: 17px; /* Phóng to cỡ chữ gốc toàn bộ ứng dụng */
+            font-size: 17px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -109,7 +109,6 @@
         .badge-danger { background: var(--red-badge); color: var(--red-text); padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 13px; display: inline-block; }
         .badge-warning { background: #fef9c3; color: #854d0e; padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 13px; display: inline-block; }
 
-        /* WIDGET LỊCH VẠN NIÊN, THỜI TIẾT & PHONG THỦY NỔI */
         .van-nien-widget-float {
             position: fixed; bottom: 24px; right: 24px; width: 480px; background: white;
             border-radius: 12px; box-shadow: 0 15px 30px -5px rgba(0,0,0,0.3); border: 2.5px solid var(--primary);
@@ -380,14 +379,14 @@
             <div class="form-group"><label>Nội Dung Công Việc</label><input type="text" id="inputTaskName" placeholder="VD: Lập báo cáo điều hành..."></div>
             <div class="form-group"><label>Người Thực Hiện</label><input type="text" id="inputTaskAssignee" value="Trần Bình Dương"></div>
             <div class="form-group"><label>Hạn Hoàn Thành</label><input type="date" id="inputTaskDueDate"></div>
-            <div class="form-group"><label>Trạng Thái</label><select id="inputTaskStatus"><option value="Chưa làm">⏳ Chưa làm</option><option value="Đang làm">🔄 Đang làm</option><option value="Hoàn thành">✅ Hoàn thành</option></select></div>
+            <div class="form-group"><label>Trạng Thái Mặc Định</label><select id="inputTaskStatus"><option value="Chưa làm">⏳ Chưa làm</option><option value="Đang làm">🔄 Đang làm</option><option value="Hoàn thành">✅ Hoàn thành</option></select></div>
             <div class="form-group" style="display: flex; gap: 8px;">
                 <button class="btn btn-blue" id="btnTaskAction" onclick="luuHoacCapNhatCongViec()"><i class="fas fa-plus-circle"></i> Thêm Công Việc</button>
                 <button class="btn btn-red hidden" id="btnTaskCancel" onclick="huySuaCongViec()"><i class="fas fa-xmark"></i> Hủy</button>
             </div>
         </div>
         <table>
-            <thead><tr><th>STT</th><th>Nội Dung Công Việc</th><th>Người Thực Hiện</th><th>Hạn Hoàn Thành</th><th>Trạng Thái</th><th>Thao Tác</th></tr></thead>
+            <thead><tr><th>STT</th><th>Nội Dung Công Việc</th><th>Người Thực Hiện</th><th>Hạn Hoàn Thành</th><th>Trạng Thái (Bấm mũi tên để đổi nhanh)</th><th>Thao Tác</th></tr></thead>
             <tbody id="taskTableBody"></tbody>
         </table>
     </div>
@@ -1084,6 +1083,7 @@
         renderInkInventoryTable();
         renderTelecomPaymentTable();
         renderSurveyTable();
+        renderTaskTable();
         capNhatKPI();
         veTatCaBieuDoDashboard();
     }
@@ -1202,6 +1202,93 @@
         document.getElementById(tabId).classList.add('active');
         btnEl.classList.add('active');
         setTimeout(() => { veTatCaBieuDoDashboard(); }, 100);
+    }
+
+    // Quản lý công việc với Nút Mũi Tên Quay Vòng Trạng Thái Nhanh
+    function renderTaskTable() {
+        let tbody = document.getElementById('taskTableBody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        danhSachCongViec.forEach((item, idx) => {
+            let badgeClass = item.status === 'Hoàn thành' ? 'badge-net' : (item.status === 'Đang làm' ? 'badge-warning' : 'badge-danger');
+            tbody.innerHTML += `<tr>
+                <td style="text-align:center;">${idx + 1}</td>
+                <td><b>${item.name}</b></td>
+                <td>${item.assignee}</td>
+                <td style="text-align:center;">${item.dueDate || '--'}</td>
+                <td style="text-align:center; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span class="${badgeClass}">${item.status}</span>
+                    <button class="btn btn-blue" style="padding: 4px 10px; font-size: 13px;" title="Bấm để đổi nhanh trạng thái" onclick="xoayVongTrangThaiCongViec(${idx})">
+                        <i class="fa-solid fa-rotate"></i> Đổi trạng thái
+                    </button>
+                </td>
+                <td style="text-align:center;">
+                    <button class="btn btn-blue" style="padding:4px 8px;" onclick="suaCongViec(${idx})"><i class="fas fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:4px 8px;" onclick="xoaCongViec(${idx})"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>`;
+        });
+    }
+
+    function xoayVongTrangThaiCongViec(idx) {
+        let currentStatus = danhSachCongViec[idx].status;
+        let nextStatus = "Chưa làm";
+        if (currentStatus === "Chưa làm") {
+            nextStatus = "Đang làm";
+        } else if (currentStatus === "Đang làm") {
+            nextStatus = "Hoàn thành";
+        } else {
+            nextStatus = "Chưa làm";
+        }
+        danhSachCongViec[idx].status = nextStatus;
+        capNhat();
+    }
+
+    function luuHoacCapNhatCongViec() {
+        let name = document.getElementById('inputTaskName').value.trim();
+        let assignee = document.getElementById('inputTaskAssignee').value.trim();
+        let dueDate = document.getElementById('inputTaskDueDate').value;
+        let status = document.getElementById('inputTaskStatus').value;
+
+        if (!name) { alert("⚠️ Vui lòng nhập nội dung công việc!"); return; }
+        let editIdx = parseInt(document.getElementById('editTaskIndex').value);
+
+        if (editIdx > -1) {
+            danhSachCongViec[editIdx] = { id: danhSachCongViec[editIdx].id, name, assignee, dueDate, status };
+            alert("✅ Cập nhật công việc thành công!");
+            huySuaCongViec();
+        } else {
+            let newId = danhSachCongViec.length > 0 ? Math.max(...danhSachCongViec.map(t => t.id || 0)) + 1 : 1;
+            danhSachCongViec.push({ id: newId, name, assignee, dueDate, status });
+            alert("✅ Thêm công việc mới thành công!");
+            document.getElementById('inputTaskName').value = '';
+        }
+        capNhat();
+    }
+
+    function suaCongViec(idx) {
+        let item = danhSachCongViec[idx];
+        document.getElementById('inputTaskName').value = item.name;
+        document.getElementById('inputTaskAssignee').value = item.assignee;
+        document.getElementById('inputTaskDueDate').value = item.dueDate || '';
+        document.getElementById('inputTaskStatus').value = item.status;
+        document.getElementById('editTaskIndex').value = idx;
+        document.getElementById('btnTaskAction').innerHTML = '<i class="fas fa-save"></i> Cập Nhật';
+        document.getElementById('btnTaskCancel').classList.remove('hidden');
+    }
+
+    function huySuaCongViec() {
+        document.getElementById('inputTaskName').value = '';
+        document.getElementById('editTaskIndex').value = -1;
+        document.getElementById('btnTaskAction').innerHTML = '<i class="fas fa-plus-circle"></i> Thêm Công Việc';
+        document.getElementById('btnTaskCancel').classList.add('hidden');
+    }
+
+    function xoaCongViec(idx) {
+        if (confirm("Bạn có chắc chắn muốn xóa công việc này không?")) {
+            danhSachCongViec.splice(idx, 1);
+            capNhat();
+        }
     }
 
     function tinhThanhTienVPP() {

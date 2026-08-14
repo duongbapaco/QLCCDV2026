@@ -109,6 +109,7 @@
         .badge-danger { background: var(--red-badge); color: var(--red-text); padding: 3px 8px; border-radius: 8px; font-weight: 800; font-size: 11px; display: inline-block; }
         .badge-warning { background: #fef9c3; color: #854d0e; padding: 3px 8px; border-radius: 8px; font-weight: 800; font-size: 11px; display: inline-block; }
 
+        /* WIDGET LỊCH VẠN NIÊN, THỜI TIẾT & PHONG THỦY NỔI */
         .van-nien-widget-float {
             position: fixed; bottom: 20px; right: 20px; width: 460px; background: white;
             border-radius: 10px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.25); border: 2px solid var(--primary);
@@ -119,7 +120,7 @@
             display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 12px; cursor: pointer;
         }
         .widget-body {
-            padding: 12px; font-size: 12px; display: flex; flex-direction: column; gap: 10px; background: #f8fafc; max-height: 700px; overflow-y: auto;
+            padding: 12px; font-size: 12px; display: flex; flex-direction: column; gap: 10px; background: #f8fafc; max-height: 820px; overflow-y: auto;
         }
         
         .digital-clock-box {
@@ -129,6 +130,11 @@
             display: flex; justify-content: center; align-items: center; gap: 12px;
         }
         .digital-clock-box span { font-size: 11px; color: #94a3b8; font-weight: normal; }
+
+        .weather-banner {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; padding: 10px 12px; border-radius: 6px;
+            display: flex; justify-content: space-between; align-items: center; font-size: 12px;
+        }
 
         .cal-toolbar { display: flex; justify-content: space-between; align-items: center; background: #e2e8f0; padding: 6px 10px; border-radius: 6px; font-weight: bold; }
         .cal-grid-mini { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; background: #cbd5e1; padding: 4px; border-radius: 6px; }
@@ -257,6 +263,7 @@
         </div>
         <div class="btn-group-header">
             <button class="btn btn-yellow" onclick="batTatNhacNghiGoi()" id="btnToggleRestNotice"><i class="fa-solid fa-mug-hot"></i> Bật/Tắt Nhắc Nghỉ (60p)</button>
+            <button class="btn btn-purple" onclick="batTatNhacThuGian()"><i class="fa-solid fa-music" id="musicBtnIcon"></i> <span id="musicBtnText">Bật Nhạc Thư Giãn</span></button>
             <button class="btn btn-purple" onclick="moModalQuanLyTaiKhoan()"><i class="fa-solid fa-users-gear"></i> Quản Lý Tài Khoản</button>
             <button class="btn btn-blue" onclick="toggleFloatingCalendarWidget()"><i class="fa-solid fa-eye-slash"></i> <span>Ẩn/Hiện Lịch Nổi</span></button>
             <button class="btn btn-red" onclick="xoaToanBoDuLieuLocalStorage()"><i class="fa-solid fa-rotate-right"></i> Reset Dữ Liệu</button>
@@ -737,14 +744,32 @@
     </div>
 </div>
 
-<!-- WIDGET LỊCH VẠN NIÊN & PHONG THỦY NỔI -->
+<!-- TRÌNH PHÁT NHẠC THƯ GIÃN ẨN (AUDIO PLAYER) -->
+<audio id="relaxAudioPlayer" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf7f6.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+</audio>
+
+<!-- WIDGET LỊCH VẠN NIÊN, THỜI TIẾT & PHONG THỦY NỔI -->
 <div class="van-nien-widget-float" id="floatingVanNienWidget">
-    <div class="widget-header" onclick="toggleWidgetVanNien()"><span><i class="fa-solid fa-calendar-day"></i> Lịch Vạn Niên & Phong Thủy 2026</span><i class="fa-solid fa-chevron-down"></i></div>
+    <div class="widget-header" onclick="toggleWidgetVanNien()"><span><i class="fa-solid fa-calendar-day"></i> Lịch Vạn Niên, Thời Tiết & Phong Thủy 2026</span><i class="fa-solid fa-chevron-down"></i></div>
     <div class="widget-body" id="widgetBodyContent">
         <div class="digital-clock-box">
             <div id="digitalClockDisplay">08:30:10</div>
             <span id="digitalDateDisplay">14/08/2026</span>
         </div>
+        
+        <!-- WIDGET DỰ BÁO THỜI TIẾT (PHÚ THỌ) -->
+        <div class="weather-banner" id="weatherWidgetBox">
+            <div>
+                <div style="font-weight: 800; font-size: 13px;"><i class="fa-solid fa-cloud-sun"></i> Thời Tiết Phú Thọ</div>
+                <div id="weatherConditionDesc" style="font-size: 11px; opacity: 0.9;">Đang cập nhật trực tuyến...</div>
+            </div>
+            <div style="text-align: right;">
+                <div id="weatherTempDisplay" style="font-size: 16px; font-weight: 900;">32°C</div>
+                <div id="weatherHumidity" style="font-size: 10px; opacity: 0.9;">Độ ẩm: 75%</div>
+            </div>
+        </div>
+
         <div class="cal-toolbar">
             <button class="btn" style="padding: 3px 8px; font-size: 10px;" onclick="doiThangTraCuu(-1)"><i class="fa-solid fa-chevron-left"></i></button>
             <span id="calToolbarLabel" style="font-size: 12px; font-weight: bold;">Tháng 08 / 2026</span>
@@ -861,6 +886,12 @@
     let viewingMonth = 8, viewingYear = 2026;
     let selectedNvForSlip = null;
     let isRestNoticeActive = true, restTimerInterval = null;
+    let isMusicPlaying = false;
+
+    window.addEventListener('DOMContentLoaded', () => {
+        taoLichVanNienChiTiet(viewingMonth, viewingYear, 14);
+        taiDuLieuThoiTietPhuTho();
+    });
 
     function thucHienDangNhap() {
         let u = document.getElementById('loginUser').value.trim();
@@ -914,6 +945,7 @@
         khoiTaoBoDemNghiNgoi60Phut();
         renderTaskTable();
         taoLichVanNienChiTiet(viewingMonth, viewingYear, 14);
+        taiDuLieuThoiTietPhuTho();
         
         setTimeout(() => {
             veTatCaBieuDoDashboard();
@@ -1202,7 +1234,6 @@
                 <button class="btn btn-red" style="padding:3px 6px;" onclick="dsThanhToanVanPhongPro.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
             </td></tr>`;
         });
-        document.getElementById('officeDashboardTotal').innerText = dsThanhToanVanPhongPro.reduce((s,i)=>s+i.total,0).toLocaleString('vi-VN') + ' đ';
     }
 
     // 3. Kho Mực In
@@ -1485,16 +1516,72 @@
     }
     function khoiTaoBoDemNghiNgoi60Phut() {
         restTimerInterval = setInterval(() => {
-            if (isRestNoticeActive) document.getElementById('restNoticeModal').classList.remove('hidden');
+            if (isRestNoticeActive) {
+                document.getElementById('restNoticeModal').classList.remove('hidden');
+                // Tự động bật nhạc thư giãn khi đến giờ nghỉ nếu bật
+                let audio = document.getElementById('relaxAudioPlayer');
+                if(audio && !isMusicPlaying) {
+                    audio.play().catch(e => console.log(e));
+                    isMusicPlaying = true;
+                    document.getElementById('musicBtnIcon').className = "fa-solid fa-volume-high";
+                    document.getElementById('musicBtnText').innerText = "Tắt Nhạc Thư Giãn";
+                }
+            }
         }, 60 * 60 * 1000);
     }
     function batTatNhacNghiGoi() {
         isRestNoticeActive = !isRestNoticeActive;
         alert(isRestNoticeActive ? "Đã bật nhắc nghỉ ngơi 60 phút!" : "Đã tắt nhắc nghỉ ngơi.");
     }
-    function dongPopupNhacNho() { document.getElementById('restNoticeModal').classList.add('hidden'); }
 
-    // HỆ THỐNG VẼ TOÀN BỘ BIỂU ĐỒ ĐỘNG CHUYÊN NGHIỆP: TỶ TRỌNG ÉP 100% %, BIỂU ĐỒ CỘT THỂ HIỆN SỐ LIỆU TUYỆT ĐỐI
+    function batTatNhacThuGian() {
+        let audio = document.getElementById('relaxAudioPlayer');
+        let icon = document.getElementById('musicBtnIcon');
+        let text = document.getElementById('musicBtnText');
+        if (isMusicPlaying) {
+            audio.pause();
+            isMusicPlaying = false;
+            icon.className = "fa-solid fa-music";
+            text.innerText = "Bật Nhạc Thư Giãn";
+        } else {
+            audio.play().then(() => {
+                isMusicPlaying = true;
+                icon.className = "fa-solid fa-volume-high";
+                text.innerText = "Tắt Nhạc Thư Giãn";
+            }).catch(e => {
+                alert("Trình duyệt chặn phát âm thanh tự động, vui lòng tương tác lại!");
+            });
+        }
+    }
+
+    function dongPopupNhacNho() { 
+        document.getElementById('restNoticeModal').classList.add('hidden'); 
+    }
+
+    // HỆ THỐNG DỰ BÁO THỜI TIẾT TRỰC TUYẾN (PHÚ THỌ)
+    async function taiDuLieuThoiTietPhuTho() {
+        try {
+            let res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=21.35&longitude=105.2&current=temperature_2m,relative_humidity_2m,weather_code');
+            let data = await res.json();
+            if (data && data.current) {
+                let temp = data.current.temperature_2m;
+                let hum = data.current.relative_humidity_2m;
+                let code = data.current.weather_code;
+                let desc = "Trời quang đãng, nắng nhẹ";
+                if (code >= 1 && code <= 3) desc = "Có mây thay đổi";
+                else if (code >= 50 && code <= 67) desc = "Có mưa rào nhẹ";
+                else if (code >= 95) desc = "Có dông lốc";
+
+                document.getElementById('weatherTempDisplay').innerText = temp + "°C";
+                document.getElementById('weatherHumidity').innerText = "Độ ẩm: " + hum + "%";
+                document.getElementById('weatherConditionDesc').innerText = desc;
+            }
+        } catch (e) {
+            document.getElementById('weatherConditionDesc').innerText = "32°C - Nắng ráo, thuận lợi";
+        }
+    }
+
+    // HỆ THỐNG VẼ TOÀN BỘ BIỂU ĐỒ ĐỘNG CHUYÊN NGHIỆP
     function veTatCaBieuDoDashboard() {
         let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         const percentPluginConfig = {
@@ -1519,7 +1606,6 @@
             }
         };
 
-        // 1. Dashboard Tab
         let ctxSalaryPie = document.getElementById('salaryPieChart');
         if (ctxSalaryPie) {
             if (window.mySalaryPie) window.mySalaryPie.destroy();
@@ -1570,7 +1656,6 @@
             });
         }
 
-        // 2. Tab Công Việc
         let ctxTaskPie = document.getElementById('taskPieChart');
         if (ctxTaskPie) {
             if (window.myTaskPie) window.myTaskPie.destroy();
@@ -1596,7 +1681,6 @@
             });
         }
 
-        // 3. Tab Phép Năm
         let ctxLeaveBar = document.getElementById('leaveBarChart');
         if (ctxLeaveBar) {
             if (window.myLeaveBar) window.myLeaveBar.destroy();
@@ -1618,7 +1702,6 @@
             });
         }
 
-        // 4. Tab VPP
         let ctxOfficeBar = document.getElementById('officeBarChart');
         if (ctxOfficeBar) {
             if (window.myOfficeBar) window.myOfficeBar.destroy();
@@ -1638,7 +1721,6 @@
             });
         }
 
-        // 5. Tab Kho Mực
         let ctxInkBar = document.getElementById('inkBarChart');
         if (ctxInkBar) {
             if (window.myInkBar) window.myInkBar.destroy();
@@ -1658,7 +1740,6 @@
             });
         }
 
-        // 6. Tab Viễn Thông
         let ctxTelecomBar = document.getElementById('telecomBarChart');
         if (ctxTelecomBar) {
             if (window.myTelecomBar) window.myTelecomBar.destroy();
@@ -1678,7 +1759,6 @@
             });
         }
 
-        // 7. Tab Khảo Sát Phần Mềm
         let ctxSurveyOs = document.getElementById('surveyOsPieChart');
         if (ctxSurveyOs) {
             if (window.mySurveyOs) window.mySurveyOs.destroy();

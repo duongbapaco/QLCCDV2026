@@ -458,7 +458,7 @@
         </div>
     </div>
 
-    <!-- TAB 4: THANH TOÁN VĂN PHÒNG (Đồng bộ theo Năm/Tháng) -->
+    <!-- TAB 4: THANH TOÁN VĂN PHÒNG -->
     <div id="officePaymentTab" class="tab-pane table-card">
         <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG (ĐỒNG BỘ THEO NĂM & THÁNG)</div></div>
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
@@ -548,19 +548,42 @@
         </div>
     </div>
 
-    <!-- TAB 7: CƯỚC VIỄN THÔNG (Đồng bộ theo Tháng/Năm) -->
+    <!-- TAB 7: CƯỚC VIỄN THÔNG (CÓ DASHBOARD RIÊNG) -->
     <div id="telecomPaymentTab" class="tab-pane table-card">
-        <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-wifi"></i> THANH TOÁN CƯỚC VIỄN THÔNG & TÁCH THUẾ VAT (ĐỒNG BỘ THEO NĂM & THÁNG)</div></div>
+        <div class="table-header-bar">
+            <div class="table-title"><i class="fa-solid fa-wifi"></i> DASHBOARD & THANH TOÁN CƯỚC VIỄN THÔNG</div>
+        </div>
+        
+        <!-- DASHBOARD RIÊNG CHO CƯỚC VIỄN THÔNG -->
+        <div class="kpi-grid" style="margin-bottom: 14px;">
+            <div class="kpi-card" style="border-left: 4px solid #0284c7;">
+                <div class="kpi-title">Tổng Cước Trước Thuế</div>
+                <div class="kpi-value" style="color: #0284c7;" id="telecomKpiTruocThue">0 VNĐ</div>
+                <div class="kpi-sub">Hạch toán chưa VAT</div>
+            </div>
+            <div class="kpi-card" style="border-left: 4px solid #ef4444;">
+                <div class="kpi-title">Tổng Thuế VAT (10%)</div>
+                <div class="kpi-value" style="color: #ef4444;" id="telecomKpiVAT">0 VNĐ</div>
+                <div class="kpi-sub">Khấu trừ thuế nhà mạng</div>
+            </div>
+            <div class="kpi-card" style="border-left: 4px solid #16a34a;">
+                <div class="kpi-title">Tổng Cước Thanh Toán (NET)</div>
+                <div class="kpi-value" style="color: #15803d;" id="telecomKpiTongThanhToan">0 VNĐ</div>
+                <div class="kpi-sub">Đã gồm VAT</div>
+            </div>
+        </div>
+
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
             <div class="chart-card" style="padding: 10px;">
-                <div class="chart-title"><i class="fa-solid fa-chart-column"></i> Biểu Đồ Cột: Cước Viễn Thông (VNĐ)</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-column"></i> Biểu Đồ Cột: Cước Viễn Thông Theo Nhà Mạng (VNĐ)</div>
                 <div style="position: relative; height: 180px;"><canvas id="telecomBarChart"></canvas></div>
             </div>
             <div class="chart-card" style="padding: 10px;">
-                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Cước Viễn Thông (%)</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Chi Phí Viễn Thông (%)</div>
                 <div style="position: relative; height: 180px;"><canvas id="telecomPieChart"></canvas></div>
             </div>
         </div>
+
         <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));">
             <input type="hidden" id="editTelecomIndex" value="-1">
             <div class="form-group"><label>Mã HS</label><input type="text" id="autoTelecomId" readonly style="background:#e2e8f0; font-weight:bold;"></div>
@@ -874,8 +897,6 @@
     };
 
     let coSoDuLieuNamThang = JSON.parse(localStorage.getItem('bapaco_db_data')) || defaultCoSoDuLieuNamThang;
-    
-    // Quản lý VPP và Cước Viễn Thông tách biệt hoàn toàn theo Năm & Tháng
     let dsThanhToanVanPhongProByMonth = JSON.parse(localStorage.getItem('bapaco_vpp_map_data')) || {};
     let dsThanhToanTelecomByMonth = JSON.parse(localStorage.getItem('bapaco_telecom_map_data')) || {};
     
@@ -964,7 +985,6 @@
         currentNamKey = document.getElementById('cfgNamChon').value;
         currentThangKey = document.getElementById('cfgThangChon').value;
         
-        // Tự động chuyển đổi tháng năm trên lịch vạn niên và tiêu đề cước
         let mNum = parseInt(currentThangKey.replace('Tháng ', ''));
         let yNum = parseInt(currentNamKey);
         if (!isNaN(mNum)) viewingMonth = mNum;
@@ -975,7 +995,6 @@
         
         if (!coSoDuLieuNamThang[currentNamKey]) coSoDuLieuNamThang[currentNamKey] = {};
         if (!coSoDuLieuNamThang[currentNamKey][currentThangKey]) {
-            // Lấy dữ liệu mẫu của tháng gần nhất hoặc tháng 08/2026 làm gốc khi sinh năm/tháng mới
             let templateMonth = coSoDuLieuNamThang["2026"]["Tháng 08"];
             coSoDuLieuNamThang[currentNamKey][currentThangKey] = JSON.parse(JSON.stringify(templateMonth));
         }
@@ -1357,12 +1376,23 @@
         let tbody = document.getElementById('telecomPaymentTableBody');
         tbody.innerHTML = '';
         let currentList = layDanhSachTelecomHienTai();
+        
+        let sumTruocThue = 0, sumVAT = 0, sumAmount = 0;
         currentList.forEach((item, idx) => {
+            sumTruocThue += item.truocThue;
+            sumVAT += item.vat;
+            sumAmount += item.amount;
+
             tbody.innerHTML += `<tr><td>${item.id}</td><td>${item.supplier}</td><td><b>${item.type}</b></td><td>${item.period}</td><td style="text-align:right;">${item.truocThue.toLocaleString()} đ</td><td style="text-align:right; color:#dc2626;">${item.vat.toLocaleString()} đ</td><td style="text-align:right; font-weight:bold; color:#15803d;">${item.amount.toLocaleString()} đ</td><td style="text-align:center;"><button class="btn btn-purple" style="padding:3px 8px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Drive</button></td><td style="text-align:center;">
                 <button class="btn btn-blue" style="padding:3px 6px;" onclick="suaTelecom(${idx})"><i class="fas fa-pen"></i></button>
                 <button class="btn btn-red" style="padding:3px 6px;" onclick="layDanhSachTelecomHienTai().splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
             </td></tr>`;
         });
+
+        // Cập nhật KPI riêng cho tab cước viễn thông
+        document.getElementById('telecomKpiTruocThue').innerText = sumTruocThue.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('telecomKpiVAT').innerText = sumVAT.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('telecomKpiTongThanhToan').innerText = sumAmount.toLocaleString('vi-VN') + ' đ';
     }
 
     // 5. Khảo sát Phần mềm

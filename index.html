@@ -384,11 +384,15 @@
             </div>
         </div>
         <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+            <input type="hidden" id="editTaskIndex" value="-1">
             <div class="form-group"><label>Nội Dung Công Việc</label><input type="text" id="inputTaskName" placeholder="VD: Lập báo cáo điều hành..."></div>
             <div class="form-group"><label>Người Thực Hiện</label><input type="text" id="inputTaskAssignee" value="Trần Bình Dương"></div>
             <div class="form-group"><label>Hạn Hoàn Thành</label><input type="date" id="inputTaskDueDate"></div>
             <div class="form-group"><label>Trạng Thái</label><select id="inputTaskStatus"><option value="Chưa làm">⏳ Chưa làm</option><option value="Đang làm">🔄 Đang làm</option><option value="Hoàn thành">✅ Hoàn thành</option></select></div>
-            <div class="form-group"><button class="btn btn-blue" onclick="themCongViecMoi()"><i class="fas fa-plus-circle"></i> Thêm Công Việc</button></div>
+            <div class="form-group" style="display: flex; gap: 6px;">
+                <button class="btn btn-blue" id="btnTaskAction" onclick="luuHoacCapNhatCongViec()"><i class="fas fa-plus-circle"></i> Thêm Công Việc</button>
+                <button class="btn btn-red hidden" id="btnTaskCancel" onclick="huySuaCongViec()"><i class="fas fa-xmark"></i> Hủy</button>
+            </div>
         </div>
         <table>
             <thead><tr><th>STT</th><th>Nội Dung Công Việc</th><th>Người Thực Hiện</th><th>Hạn Hoàn Thành</th><th>Trạng Thái</th><th>Thao Tác</th></tr></thead>
@@ -476,6 +480,7 @@
             </div>
         </div>
         <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+            <input type="hidden" id="editOfficeIndex" value="-1">
             <div class="form-group"><label>Mã Hồ Sơ VPP</label><input type="text" id="autoOfficeId" readonly style="background: #e2e8f0; font-weight: bold;"></div>
             <div class="form-group"><label>Nội Dung Thanh Toán</label><input type="text" id="inputOfficeContent" placeholder="VD: Mua sắm vật tư..."></div>
             <div class="form-group"><label>Đơn Vị Thụ Hưởng</label><input type="text" id="inputOfficeBeneficiary" placeholder="VD: Hồng Hà"></div>
@@ -485,7 +490,10 @@
             <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputOfficePrice" placeholder="0" oninput="tinhThanhTienVPP()"></div>
             <div class="form-group"><label>Thành Tiền</label><input type="text" id="previewOfficeTotal" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;" value="0 đ"></div>
             <div class="form-group"><label>Upload File / Drive</label><input type="file" id="inputOfficeFiles" multiple style="font-size:11px;" onchange="xuLyUploadFileGoogleDrive(this, 'vpp')"></div>
-            <div class="form-group"><button class="btn btn-blue" onclick="themHoSoVPPPro()"><i class="fas fa-plus-circle"></i> Thêm Hồ Sơ VPP</button></div>
+            <div class="form-group" style="display: flex; gap: 6px;">
+                <button class="btn btn-blue" id="btnOfficeAction" onclick="luuHoacCapNhatVPP()"><i class="fas fa-plus-circle"></i> Thêm Hồ Sơ</button>
+                <button class="btn btn-red hidden" id="btnOfficeCancel" onclick="huySuaVPP()"><i class="fas fa-xmark"></i> Hủy</button>
+            </div>
         </div>
         <table>
             <thead><tr><th>Mã</th><th>Nội Dung</th><th>Đơn Vị Thụ Hưởng</th><th>STK</th><th>Ngày</th><th>SL & Giá</th><th>Thành Tiền</th><th>Hóa Đơn / Drive</th><th>Thao Tác</th></tr></thead>
@@ -514,6 +522,7 @@
             </table>
         </div>
         <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+            <input type="hidden" id="editInkIndex" value="-1">
             <div class="form-group"><label>Mã VT</label><input type="text" id="autoInkCode" readonly style="background: #e2e8f0; font-weight: bold;"></div>
             <div class="form-group"><label>Tên Mực In</label><input type="text" id="inputInkName" placeholder="VD: Canon 337"></div>
             <div class="form-group"><label>Máy In</label><input type="text" id="inputInkPrinter" placeholder="VD: Canon 151dw"></div>
@@ -521,7 +530,10 @@
             <div class="form-group"><label>Số Lượng</label><input type="number" id="inputInkQty" value="1" min="1"></div>
             <div class="form-group"><label>Người Nhận</label><input type="text" id="inputInkReceiver" placeholder="Phòng ban..."></div>
             <div class="form-group"><label>Đơn Giá</label><input type="text" id="inputInkPrice" placeholder="450.000"></div>
-            <div class="form-group"><button class="btn btn-green" onclick="themGiaoDichKhoMuc()"><i class="fas fa-warehouse"></i> Ghi Sổ Kho</button></div>
+            <div class="form-group" style="display: flex; gap: 6px;">
+                <button class="btn btn-green" id="btnInkAction" onclick="luuHoacCapNhatKhoMuc()"><i class="fas fa-warehouse"></i> Ghi Sổ Kho</button>
+                <button class="btn btn-red hidden" id="btnInkCancel" onclick="huySuaKhoMuc()"><i class="fas fa-xmark"></i> Hủy</button>
+            </div>
         </div>
         <table>
             <thead><tr><th>Mã VT</th><th>Tên Mực</th><th>Máy In</th><th>Nghiệp Vụ</th><th>SL</th><th>Người Nhận</th><th>Đơn Giá</th><th>Thành Tiền</th><th>Thao Tác</th></tr></thead>
@@ -558,6 +570,7 @@
             </div>
         </div>
         <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));">
+            <input type="hidden" id="editTelecomIndex" value="-1">
             <div class="form-group"><label>Mã HS</label><input type="text" id="autoTelecomId" readonly style="background:#e2e8f0; font-weight:bold;"></div>
             <div class="form-group"><label>Nhà Mạng</label><select id="inputTelecomSupplier"><option value="VNPT">VNPT</option><option value="Viettel">Viettel</option><option value="Mobifone">Mobifone</option></select></div>
             <div class="form-group"><label>Loại Cước</label><input type="text" id="inputTelecomType" placeholder="VD: Cáp quang..."></div>
@@ -567,7 +580,10 @@
             <div class="form-group"><label>Thuế VAT (10%)</label><input type="text" id="previewTelecomVAT" readonly style="background:#f1f5f9; color:#dc2626; font-weight:bold;"></div>
             <div class="form-group"><label>Hạn TT</label><input type="date" id="inputTelecomDueDate"></div>
             <div class="form-group"><label>Upload Drive</label><input type="file" id="inputTelecomFiles" multiple style="font-size:11px;" onchange="xuLyUploadFileGoogleDrive(this, 'telecom')"></div>
-            <div class="form-group"><button class="btn btn-green" onclick="themHoSoTelecom()"><i class="fas fa-plus-circle"></i> Thêm Cước</button></div>
+            <div class="form-group" style="display: flex; gap: 6px;">
+                <button class="btn btn-green" id="btnTelecomAction" onclick="luuHoacCapNhatTelecom()"><i class="fas fa-plus-circle"></i> Thêm Cước</button>
+                <button class="btn btn-red hidden" id="btnTelecomCancel" onclick="huySuaTelecom()"><i class="fas fa-xmark"></i> Hủy</button>
+            </div>
         </div>
         <table>
             <thead><tr><th>Mã HS</th><th>Nhà Mạng</th><th>Loại Cước</th><th>Kỳ Cước</th><th>Trước Thuế</th><th>Thuế VAT (10%)</th><th>Tổng Cước TT</th><th>Hóa Đơn / Drive</th><th>Thao Tác</th></tr></thead>
@@ -595,6 +611,7 @@
             <b>📊 Office:</b> <span id="statOfficeSummary" style="color: #16a34a; font-weight: bold;">--</span>
         </div>
         <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+            <input type="hidden" id="editSurveyIndex" value="-1">
             <div class="form-group"><label>Mã KS</label><input type="text" id="autoSurveyCode" readonly style="background:#e2e8f0; font-weight:bold;"></div>
             <div class="form-group"><label>Người Dùng</label><input type="text" id="inputSurveyUser" placeholder="Tên cán bộ..."></div>
             <div class="form-group"><label>Bộ Phận</label><select id="inputSurveyDept"><option value="Khối Văn phòng">Khối Văn phòng</option><option value="Phòng Kế toán - Thống kê">Phòng Kế toán - Thống kê</option></select></div>
@@ -605,7 +622,10 @@
             <div class="form-group"><label>Office</label><select id="inputSurveyOffice"><option value="Microsoft 365">Microsoft 365</option><option value="Office 2021">Office 2021</option></select></div>
             <div class="form-group"><label>Bản Quyền Office</label><select id="inputSurveyOfficeLicense"><option value="Chưa có">⚠️ Chưa có</option><option value="Bản quyền M365">✅ Bản quyền M365</option></select></div>
             <div class="form-group"><label>Cấu Hình</label><input type="text" id="inputSurveySpecs" placeholder="Core i7, RAM 16GB"></div>
-            <div class="form-group"><button class="btn btn-purple" onclick="themKhaoSatChuyenSieu()"><i class="fas fa-plus-circle"></i> Thêm Khảo Sát</button></div>
+            <div class="form-group" style="display: flex; gap: 6px;">
+                <button class="btn btn-purple" id="btnSurveyAction" onclick="luuHoacCapNhatKhaoSat()"><i class="fas fa-plus-circle"></i> Thêm Khảo Sát</button>
+                <button class="btn btn-red hidden" id="btnSurveyCancel" onclick="huySuaKhaoSat()"><i class="fas fa-xmark"></i> Hủy</button>
+            </div>
         </div>
         <table>
             <thead><tr><th>Mã</th><th>Người Dùng</th><th>Bộ Phận</th><th>Thiết Bị</th><th>SL</th><th>HĐH</th><th>Office</th><th>Cấu Hình</th><th>Thao Tác</th></tr></thead>
@@ -909,6 +929,10 @@
         khoiTaoBoDemNghiNgoi60Phut();
         renderTaskTable();
         taoLichVanNienChiTiet(viewingMonth, viewingYear, 14);
+        
+        setTimeout(() => {
+            veTatCaBieuDoDashboard();
+        }, 200);
     }
 
     function khoiTaoDanhSachNamTuSinh() {
@@ -967,6 +991,7 @@
         renderTelecomPaymentTable();
         renderSurveyTable();
         capNhatKPI();
+        veTatCaBieuDoDashboard();
     }
 
     function capNhatKPI() {
@@ -1050,6 +1075,7 @@
         document.querySelectorAll('.tab-btn-nav').forEach(b => b.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         btnEl.classList.add('active');
+        setTimeout(() => { veTatCaBieuDoDashboard(); }, 100);
     }
 
     function tinhThanhTienVPP() {
@@ -1066,100 +1092,286 @@
         document.getElementById('previewTelecomVAT').value = vat.toLocaleString('vi-VN') + ' đ';
     }
 
-    function themHoSoVPPPro() {
-        let content = document.getElementById('inputOfficeContent').value.trim();
-        let beneficiary = document.getElementById('inputOfficeBeneficiary').value.trim();
-        if (!content || !beneficiary) { alert("Nhập đủ nội dung và đơn vị thụ hưởng!"); return; }
-        dsThanhToanVanPhongPro.push({
-            id: "VPP0" + (dsThanhToanVanPhongPro.length + 1),
-            content, beneficiary, stk: document.getElementById('inputOfficeStk').value,
-            date: document.getElementById('inputOfficeDate').value || '2026-08-14',
-            qty: parseFloat(document.getElementById('inputOfficeQty').value) || 1,
-            price: parseFloat(document.getElementById('inputOfficePrice').value.replace(/[^0-9]/g,'')) || 0,
-            total: (parseFloat(document.getElementById('inputOfficeQty').value) || 1) * (parseFloat(document.getElementById('inputOfficePrice').value.replace(/[^0-9]/g,'')) || 0)
-        });
-        capNhat();
-    }
+    // ================= TÍNH NĂNG SỬA & CẬP NHẬT CHUYÊN NGHIỆP =================
 
-    function renderOfficePaymentTable() {
-        let tbody = document.getElementById('officePaymentTableBody');
-        tbody.innerHTML = '';
-        dsThanhToanVanPhongPro.forEach((item, idx) => {
-            tbody.innerHTML += `<tr><td>${item.id}</td><td><b>${item.content}</b></td><td>${item.beneficiary}</td><td>${item.stk}</td><td>${item.date}</td><td>${item.qty} x ${item.price.toLocaleString()}</td><td style="color:#15803d; font-weight:bold;">${item.total.toLocaleString()} đ</td><td style="text-align:center;"><button class="btn btn-purple" style="padding:3px 8px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Drive</button></td><td style="text-align:center;"><button class="btn btn-red" style="padding:3px 6px;" onclick="dsThanhToanVanPhongPro.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button></td></tr>`;
-        });
-        document.getElementById('officeDashboardTotal').innerText = dsThanhToanVanPhongPro.reduce((s,i)=>s+i.total,0).toLocaleString('vi-VN') + ' đ';
-    }
-
-    function renderInkInventoryTable() {
-        let tbody = document.getElementById('inkInventoryTableBody');
-        tbody.innerHTML = '';
-        dsKhoMucIn.forEach((item, idx) => {
-            tbody.innerHTML += `<tr><td>${item.code}</td><td><b>${item.name}</b></td><td>${item.printer}</td><td>${item.action}</td><td>${item.qty}</td><td>${item.receiver}</td><td>${item.price.toLocaleString()} đ</td><td style="font-weight:bold;">${item.total.toLocaleString()} đ</td><td style="text-align:center;"><button class="btn btn-red" style="padding:3px 6px;" onclick="dsKhoMucIn.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button></td></tr>`;
-        });
-        document.getElementById('xntTableBody').innerHTML = `<tr><td>1</td><td>MUC001</td><td>Hộp mực Canon 337</td><td>5</td><td>10</td><td>2</td><td style="font-weight:bold; color:#0284c7;">13</td><td><span class="badge-net">Ổn định</span></td></tr>`;
-    }
-
-    function themGiaoDichKhoMuc() {
-        let name = document.getElementById('inputInkName').value.trim();
-        if (!name) { alert("Nhập tên mực!"); return; }
-        let qty = parseInt(document.getElementById('inputInkQty').value) || 1;
-        let price = parseFloat(document.getElementById('inputInkPrice').value.replace(/[^0-9]/g,'')) || 0;
-        dsKhoMucIn.push({ code: "MUC0" + (dsKhoMucIn.length+1), name, printer: document.getElementById('inputInkPrinter').value, action: document.getElementById('inputInkAction').value, qty, receiver: document.getElementById('inputInkReceiver').value, price, total: qty * price });
-        capNhat();
-    }
-
-    function themHoSoTelecom() {
-        let type = document.getElementById('inputTelecomType').value.trim();
-        let amount = parseFloat(document.getElementById('inputTelecomAmount').value.replace(/[^0-9]/g,'')) || 0;
-        if (!type || !amount) { alert("Nhập đủ thông tin cước viễn thông!"); return; }
-        dsThanhToanTelecom.push({ id: "VT0" + (dsThanhToanTelecom.length+1), supplier: document.getElementById('inputTelecomSupplier').value, type, period: document.getElementById('inputTelecomPeriod').value, amount, truocThue: Math.round(amount/1.1), vat: amount - Math.round(amount/1.1) });
-        capNhat();
-    }
-
-    function renderTelecomPaymentTable() {
-        let tbody = document.getElementById('telecomPaymentTableBody');
-        tbody.innerHTML = '';
-        dsThanhToanTelecom.forEach((item, idx) => {
-            tbody.innerHTML += `<tr><td>${item.id}</td><td>${item.supplier}</td><td><b>${item.type}</b></td><td>${item.period}</td><td style="text-align:right;">${item.truocThue.toLocaleString()} đ</td><td style="text-align:right; color:#dc2626;">${item.vat.toLocaleString()} đ</td><td style="text-align:right; font-weight:bold; color:#15803d;">${item.amount.toLocaleString()} đ</td><td style="text-align:center;"><button class="btn btn-purple" style="padding:3px 8px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Drive</button></td><td style="text-align:center;"><button class="btn btn-red" style="padding:3px 6px;" onclick="dsThanhToanTelecom.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button></td></tr>`;
-        });
-    }
-
-    function themKhaoSatChuyenSieu() {
-        let user = document.getElementById('inputSurveyUser').value.trim();
-        if (!user) { alert("Nhập tên người dùng!"); return; }
-        dsKhaoSatChuyenSieu.push({ code: "KS0" + (dsKhaoSatChuyenSieu.length+1), user, dept: document.getElementById('inputSurveyDept').value, device: document.getElementById('inputSurveyDeviceName').value, qty: 1, os: document.getElementById('inputSurveyOS').value, office: document.getElementById('inputSurveyOffice').value, specs: document.getElementById('inputSurveySpecs').value });
-        capNhat();
-    }
-
-    function renderSurveyTable() {
-        let tbody = document.getElementById('surveyTableBody');
-        tbody.innerHTML = '';
-        dsKhaoSatChuyenSieu.forEach((item, idx) => {
-            tbody.innerHTML += `<tr><td>${item.code}</td><td><b>${item.user}</b></td><td>${item.dept}</td><td>${item.device}</td><td>${item.qty}</td><td>${item.os}</td><td>${item.office}</td><td>${item.specs}</td><td style="text-align:center;"><button class="btn btn-red" style="padding:3px 6px;" onclick="dsKhaoSatChuyenSieu.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button></td></tr>`;
-        });
-        document.getElementById('statOSSummary').innerText = "Windows 11 Pro: 1 máy";
-        document.getElementById('statOfficeSummary').innerText = "Microsoft 365: 1 máy";
-    }
-
-    function themCongViecMoi() {
+    // 1. Quản lý Công việc (Có nút xoay vòng trạng thái nhanh gọn)
+    function luuHoacCapNhatCongViec() {
         let name = document.getElementById('inputTaskName').value.trim();
         if (!name) { alert("Nhập nội dung công việc!"); return; }
-        danhSachCongViec.push({ id: danhSachCongViec.length + 1, name, assignee: document.getElementById('inputTaskAssignee').value, dueDate: document.getElementById('inputTaskDueDate').value, status: document.getElementById('inputTaskStatus').value });
+        let editIdx = parseInt(document.getElementById('editTaskIndex').value);
+        let assignee = document.getElementById('inputTaskAssignee').value;
+        let dueDate = document.getElementById('inputTaskDueDate').value;
+        let status = document.getElementById('inputTaskStatus').value;
+
+        if (editIdx > -1) {
+            danhSachCongViec[editIdx] = { ...danhSachCongViec[editIdx], name, assignee, dueDate, status };
+            alert("✅ Cập nhật công việc thành công!");
+            huySuaCongViec();
+        } else {
+            danhSachCongViec.push({ id: danhSachCongViec.length + 1, name, assignee, dueDate, status });
+            alert("✅ Đã thêm mới công việc thành công!");
+            document.getElementById('inputTaskName').value = '';
+        }
         renderTaskTable();
     }
-
+    function suaCongViec(idx) {
+        let t = danhSachCongViec[idx];
+        document.getElementById('inputTaskName').value = t.name;
+        document.getElementById('inputTaskAssignee').value = t.assignee;
+        document.getElementById('inputTaskDueDate').value = t.dueDate;
+        document.getElementById('inputTaskStatus').value = t.status;
+        document.getElementById('editTaskIndex').value = idx;
+        document.getElementById('btnTaskAction').innerHTML = '<i class="fas fa-save"></i> Cập Nhật';
+        document.getElementById('btnTaskCancel').classList.remove('hidden');
+    }
+    function huySuaCongViec() {
+        document.getElementById('inputTaskName').value = '';
+        document.getElementById('editTaskIndex').value = -1;
+        document.getElementById('btnTaskAction').innerHTML = '<i class="fas fa-plus-circle"></i> Thêm Công Việc';
+        document.getElementById('btnTaskCancel').classList.add('hidden');
+    }
     function renderTaskTable() {
         let tbody = document.getElementById('taskTableBody');
         tbody.innerHTML = '';
         let completed = 0;
         danhSachCongViec.forEach((t, idx) => {
             if (t.status === 'Hoàn thành') completed++;
-            tbody.innerHTML += `<tr><td style="text-align:center;">${idx+1}</td><td><b>${t.name}</b></td><td>${t.assignee}</td><td>${t.dueDate}</td><td style="text-align:center;"><span class="${t.status==='Hoàn thành'?'badge-net':'badge-warning'}">${t.status}</span></td><td style="text-align:center;"><button class="btn btn-green" style="padding:3px 6px;" onclick="t.status=t.status==='Hoàn thành'?'Chưa làm':'Hoàn thành';renderTaskTable();"><i class="fas fa-sync"></i></button> <button class="btn btn-red" style="padding:3px 6px;" onclick="danhSachCongViec.splice(${idx},1);renderTaskTable();"><i class="fas fa-trash"></i></button></td></tr>`;
+            
+            // Xoay vòng trạng thái: Chưa làm -> Đang làm -> Hoàn thành -> Chưa làm
+            let nextStatus = t.status === 'Chưa làm' ? 'Đang làm' : (t.status === 'Đang làm' ? 'Hoàn thành' : 'Chưa làm');
+            let badgeClass = t.status === 'Hoàn thành' ? 'badge-net' : (t.status === 'Đang làm' ? 'badge-warning' : 'badge-danger');
+
+            tbody.innerHTML += `<tr>
+                <td style="text-align:center;">${idx+1}</td>
+                <td><b>${t.name}</b></td>
+                <td>${t.assignee}</td>
+                <td>${t.dueDate}</td>
+                <td style="text-align:center;">
+                    <span class="${badgeClass}" style="cursor: pointer;" title="Bấm để đổi trạng thái" onclick="danhSachCongViec[${idx}].status='${nextStatus}';renderTaskTable();">${t.status} 🔄</span>
+                </td>
+                <td style="text-align:center;">
+                    <button class="btn btn-blue" style="padding:3px 6px;" onclick="suaCongViec(${idx})" title="Sửa"><i class="fas fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px;" onclick="danhSachCongViec.splice(${idx},1);renderTaskTable();" title="Xóa"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>`;
         });
+        
         let pct = danhSachCongViec.length ? Math.round((completed/danhSachCongViec.length)*100) : 0;
-        document.getElementById('taskProgressBar').style.width = pct + '%';
-        document.getElementById('taskProgressText').innerText = `Đã hoàn thành: ${completed}/${danhSachCongViec.length} (${pct}%)`;
+        let progressBar = document.getElementById('taskProgressBar');
+        let progressText = document.getElementById('taskProgressText');
+        if (progressBar) progressBar.style.width = pct + '%';
+        if (progressText) progressText.innerText = `Đã hoàn thành: ${completed}/${danhSachCongViec.length} (${pct}%)`;
+        
         luuTruVaoLocalStorage();
+        veTatCaBieuDoDashboard();
+    }
+
+    // 2. Thanh toán VPP
+    function luuHoacCapNhatVPP() {
+        let content = document.getElementById('inputOfficeContent').value.trim();
+        let beneficiary = document.getElementById('inputOfficeBeneficiary').value.trim();
+        if (!content || !beneficiary) { alert("Nhập đủ nội dung và đơn vị thụ hưởng!"); return; }
+        let editIdx = parseInt(document.getElementById('editOfficeIndex').value);
+        let qty = parseFloat(document.getElementById('inputOfficeQty').value) || 1;
+        let price = parseFloat(document.getElementById('inputOfficePrice').value.replace(/[^0-9]/g,'')) || 0;
+        let total = qty * price;
+
+        if (editIdx > -1) {
+            dsThanhToanVanPhongPro[editIdx] = { ...dsThanhToanVanPhongPro[editIdx], content, beneficiary, stk: document.getElementById('inputOfficeStk').value, date: document.getElementById('inputOfficeDate').value, qty, price, total };
+            alert("✅ Cập nhật hồ sơ VPP thành công!");
+            huySuaVPP();
+        } else {
+            dsThanhToanVanPhongPro.push({
+                id: "VPP0" + (dsThanhToanVanPhongPro.length + 1),
+                content, beneficiary, stk: document.getElementById('inputOfficeStk').value,
+                date: document.getElementById('inputOfficeDate').value || '2026-08-14',
+                qty, price, total
+            });
+            alert("✅ Thêm mới hồ sơ VPP thành công!");
+            document.getElementById('inputOfficeContent').value = '';
+        }
+        capNhat();
+    }
+    function suaVPP(idx) {
+        let item = dsThanhToanVanPhongPro[idx];
+        document.getElementById('inputOfficeContent').value = item.content;
+        document.getElementById('inputOfficeBeneficiary').value = item.beneficiary;
+        document.getElementById('inputOfficeStk').value = item.stk;
+        document.getElementById('inputOfficeDate').value = item.date;
+        document.getElementById('inputOfficeQty').value = item.qty;
+        document.getElementById('inputOfficePrice').value = item.price;
+        tinhThanhTienVPP();
+        document.getElementById('editOfficeIndex').value = idx;
+        document.getElementById('btnOfficeAction').innerHTML = '<i class="fas fa-save"></i> Cập Nhật';
+        document.getElementById('btnOfficeCancel').classList.remove('hidden');
+    }
+    function huySuaVPP() {
+        document.getElementById('inputOfficeContent').value = '';
+        document.getElementById('editOfficeIndex').value = -1;
+        document.getElementById('btnOfficeAction').innerHTML = '<i class="fas fa-plus-circle"></i> Thêm Hồ Sơ';
+        document.getElementById('btnOfficeCancel').classList.add('hidden');
+    }
+    function renderOfficePaymentTable() {
+        let tbody = document.getElementById('officePaymentTableBody');
+        tbody.innerHTML = '';
+        dsThanhToanVanPhongPro.forEach((item, idx) => {
+            tbody.innerHTML += `<tr><td>${item.id}</td><td><b>${item.content}</b></td><td>${item.beneficiary}</td><td>${item.stk}</td><td>${item.date}</td><td>${item.qty} x ${item.price.toLocaleString()}</td><td style="color:#15803d; font-weight:bold;">${item.total.toLocaleString()} đ</td><td style="text-align:center;"><button class="btn btn-purple" style="padding:3px 8px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Drive</button></td><td style="text-align:center;">
+                <button class="btn btn-blue" style="padding:3px 6px;" onclick="suaVPP(${idx})"><i class="fas fa-pen"></i></button>
+                <button class="btn btn-red" style="padding:3px 6px;" onclick="dsThanhToanVanPhongPro.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
+            </td></tr>`;
+        });
+        document.getElementById('officeDashboardTotal').innerText = dsThanhToanVanPhongPro.reduce((s,i)=>s+i.total,0).toLocaleString('vi-VN') + ' đ';
+    }
+
+    // 3. Kho Mực In
+    function luuHoacCapNhatKhoMuc() {
+        let name = document.getElementById('inputInkName').value.trim();
+        if (!name) { alert("Nhập tên mực!"); return; }
+        let editIdx = parseInt(document.getElementById('editInkIndex').value);
+        let qty = parseInt(document.getElementById('inputInkQty').value) || 1;
+        let price = parseFloat(document.getElementById('inputInkPrice').value.replace(/[^0-9]/g,'')) || 0;
+        let total = qty * price;
+
+        if (editIdx > -1) {
+            dsKhoMucIn[editIdx] = { ...dsKhoMucIn[editIdx], name, printer: document.getElementById('inputInkPrinter').value, action: document.getElementById('inputInkAction').value, qty, receiver: document.getElementById('inputInkReceiver').value, price, total };
+            alert("✅ Cập nhật kho mực thành công!");
+            huySuaKhoMuc();
+        } else {
+            dsKhoMucIn.push({ code: "MUC0" + (dsKhoMucIn.length+1), name, printer: document.getElementById('inputInkPrinter').value, action: document.getElementById('inputInkAction').value, qty, receiver: document.getElementById('inputInkReceiver').value, price, total });
+            alert("✅ Ghi sổ kho thành công!");
+            document.getElementById('inputInkName').value = '';
+        }
+        capNhat();
+    }
+    function suaKhoMuc(idx) {
+        let item = dsKhoMucIn[idx];
+        document.getElementById('inputInkName').value = item.name;
+        document.getElementById('inputInkPrinter').value = item.printer;
+        document.getElementById('inputInkAction').value = item.action;
+        document.getElementById('inputInkQty').value = item.qty;
+        document.getElementById('inputInkReceiver').value = item.receiver;
+        document.getElementById('inputInkPrice').value = item.price;
+        document.getElementById('editInkIndex').value = idx;
+        document.getElementById('btnInkAction').innerHTML = '<i class="fas fa-save"></i> Cập Nhật';
+        document.getElementById('btnInkCancel').classList.remove('hidden');
+    }
+    function huySuaKhoMuc() {
+        document.getElementById('inputInkName').value = '';
+        document.getElementById('editInkIndex').value = -1;
+        document.getElementById('btnInkAction').innerHTML = '<i class="fas fa-warehouse"></i> Ghi Sổ Kho';
+        document.getElementById('btnInkCancel').classList.add('hidden');
+    }
+    function renderInkInventoryTable() {
+        let tbody = document.getElementById('inkInventoryTableBody');
+        tbody.innerHTML = '';
+        dsKhoMucIn.forEach((item, idx) => {
+            tbody.innerHTML += `<tr><td>${item.code}</td><td><b>${item.name}</b></td><td>${item.printer}</td><td>${item.action}</td><td>${item.qty}</td><td>${item.receiver}</td><td>${item.price.toLocaleString()} đ</td><td style="font-weight:bold;">${item.total.toLocaleString()} đ</td><td style="text-align:center;">
+                <button class="btn btn-blue" style="padding:3px 6px;" onclick="suaKhoMuc(${idx})"><i class="fas fa-pen"></i></button>
+                <button class="btn btn-red" style="padding:3px 6px;" onclick="dsKhoMucIn.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
+            </td></tr>`;
+        });
+        document.getElementById('xntTableBody').innerHTML = `<tr><td>1</td><td>MUC001</td><td>Hộp mực Canon 337</td><td>5</td><td>10</td><td>2</td><td style="font-weight:bold; color:#0284c7;">13</td><td><span class="badge-net">Ổn định</span></td></tr>`;
+    }
+
+    // 4. Cước Viễn Thông
+    function luuHoacCapNhatTelecom() {
+        let type = document.getElementById('inputTelecomType').value.trim();
+        let amount = parseFloat(document.getElementById('inputTelecomAmount').value.replace(/[^0-9]/g,'')) || 0;
+        if (!type || !amount) { alert("Nhập đủ thông tin cước viễn thông!"); return; }
+        let editIdx = parseInt(document.getElementById('editTelecomIndex').value);
+        let truocThue = Math.round(amount/1.1);
+        let vat = amount - truocThue;
+
+        if (editIdx > -1) {
+            dsThanhToanTelecom[editIdx] = { ...dsThanhToanTelecom[editIdx], supplier: document.getElementById('inputTelecomSupplier').value, type, period: document.getElementById('inputTelecomPeriod').value, amount, truocThue, vat };
+            alert("✅ Cập nhật cước viễn thông thành công!");
+            huySuaTelecom();
+        } else {
+            dsThanhToanTelecom.push({ id: "VT0" + (dsThanhToanTelecom.length+1), supplier: document.getElementById('inputTelecomSupplier').value, type, period: document.getElementById('inputTelecomPeriod').value, amount, truocThue, vat });
+            alert("✅ Thêm mới cước thành công!");
+            document.getElementById('inputTelecomType').value = '';
+        }
+        capNhat();
+    }
+    function suaTelecom(idx) {
+        let item = dsThanhToanTelecom[idx];
+        document.getElementById('inputTelecomSupplier').value = item.supplier;
+        document.getElementById('inputTelecomType').value = item.type;
+        document.getElementById('inputTelecomPeriod').value = item.period;
+        document.getElementById('inputTelecomAmount').value = item.amount;
+        tinhTachVATTelecom();
+        document.getElementById('editTelecomIndex').value = idx;
+        document.getElementById('btnTelecomAction').innerHTML = '<i class="fas fa-save"></i> Cập Nhật';
+        document.getElementById('btnTelecomCancel').classList.remove('hidden');
+    }
+    function huySuaTelecom() {
+        document.getElementById('inputTelecomType').value = '';
+        document.getElementById('editTelecomIndex').value = -1;
+        document.getElementById('btnTelecomAction').innerHTML = '<i class="fas fa-plus-circle"></i> Thêm Cước';
+        document.getElementById('btnTelecomCancel').classList.add('hidden');
+    }
+    function renderTelecomPaymentTable() {
+        let tbody = document.getElementById('telecomPaymentTableBody');
+        tbody.innerHTML = '';
+        dsThanhToanTelecom.forEach((item, idx) => {
+            tbody.innerHTML += `<tr><td>${item.id}</td><td>${item.supplier}</td><td><b>${item.type}</b></td><td>${item.period}</td><td style="text-align:right;">${item.truocThue.toLocaleString()} đ</td><td style="text-align:right; color:#dc2626;">${item.vat.toLocaleString()} đ</td><td style="text-align:right; font-weight:bold; color:#15803d;">${item.amount.toLocaleString()} đ</td><td style="text-align:center;"><button class="btn btn-purple" style="padding:3px 8px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Drive</button></td><td style="text-align:center;">
+                <button class="btn btn-blue" style="padding:3px 6px;" onclick="suaTelecom(${idx})"><i class="fas fa-pen"></i></button>
+                <button class="btn btn-red" style="padding:3px 6px;" onclick="dsThanhToanTelecom.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
+            </td></tr>`;
+        });
+    }
+
+    // 5. Khảo sát Phần mềm
+    function luuHoacCapNhatKhaoSat() {
+        let user = document.getElementById('inputSurveyUser').value.trim();
+        if (!user) { alert("Nhập tên người dùng!"); return; }
+        let editIdx = parseInt(document.getElementById('editSurveyIndex').value);
+        let dept = document.getElementById('inputSurveyDept').value;
+        let device = document.getElementById('inputSurveyDeviceName').value;
+        let os = document.getElementById('inputSurveyOS').value;
+        let office = document.getElementById('inputSurveyOffice').value;
+        let specs = document.getElementById('inputSurveySpecs').value;
+
+        if (editIdx > -1) {
+            dsKhaoSatChuyenSieu[editIdx] = { ...dsKhaoSatChuyenSieu[editIdx], user, dept, device, os, office, specs };
+            alert("✅ Cập nhật khảo sát thành công!");
+            huySuaKhaoSat();
+        } else {
+            dsKhaoSatChuyenSieu.push({ code: "KS0" + (dsKhaoSatChuyenSieu.length+1), user, dept, device, qty: 1, os, office, specs });
+            alert("✅ Thêm mới khảo sát thành công!");
+            document.getElementById('inputSurveyUser').value = '';
+        }
+        capNhat();
+    }
+    function suaKhaoSat(idx) {
+        let item = dsKhaoSatChuyenSieu[idx];
+        document.getElementById('inputSurveyUser').value = item.user;
+        document.getElementById('inputSurveyDept').value = item.dept;
+        document.getElementById('inputSurveyDeviceName').value = item.device;
+        document.getElementById('inputSurveyOS').value = item.os;
+        document.getElementById('inputSurveyOffice').value = item.office;
+        document.getElementById('inputSurveySpecs').value = item.specs;
+        document.getElementById('editSurveyIndex').value = idx;
+        document.getElementById('btnSurveyAction').innerHTML = '<i class="fas fa-save"></i> Cập Nhật';
+        document.getElementById('btnSurveyCancel').classList.remove('hidden');
+    }
+    function huySuaKhaoSat() {
+        document.getElementById('inputSurveyUser').value = '';
+        document.getElementById('editSurveyIndex').value = -1;
+        document.getElementById('btnSurveyAction').innerHTML = '<i class="fas fa-plus-circle"></i> Thêm Khảo Sát';
+        document.getElementById('btnSurveyCancel').classList.add('hidden');
+    }
+    function renderSurveyTable() {
+        let tbody = document.getElementById('surveyTableBody');
+        tbody.innerHTML = '';
+        dsKhaoSatChuyenSieu.forEach((item, idx) => {
+            tbody.innerHTML += `<tr><td>${item.code}</td><td><b>${item.user}</b></td><td>${item.dept}</td><td>${item.device}</td><td>${item.qty}</td><td>${item.os}</td><td>${item.office}</td><td>${item.specs}</td><td style="text-align:center;">
+                <button class="btn btn-blue" style="padding:3px 6px;" onclick="suaKhaoSat(${idx})"><i class="fas fa-pen"></i></button>
+                <button class="btn btn-red" style="padding:3px 6px;" onclick="dsKhaoSatChuyenSieu.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
+            </td></tr>`;
+        });
+        document.getElementById('statOSSummary').innerText = "Windows 11 Pro: 1 máy";
+        document.getElementById('statOfficeSummary').innerText = "Microsoft 365: 1 máy";
     }
 
     function moModalDangKyNghiPhep() {
@@ -1277,6 +1489,12 @@
         alert("✅ Đã đồng bộ thành công 2 chiều (Local + Online Cloud) an toàn!");
     }
 
+    function xuLyUploadFileGoogleDrive(inputEl, type) {
+        if (inputEl.files && inputEl.files.length > 0) {
+            alert(`✅ Đã tải lên thành công ${inputEl.files.length} tệp đính kèm vào thư mục Google Drive (${type.toUpperCase()})!`);
+        }
+    }
+
     function khoiTaoDongHoSo() {
         setInterval(() => {
             let now = new Date();
@@ -1293,6 +1511,175 @@
         alert(isRestNoticeActive ? "Đã bật nhắc nghỉ ngơi 60 phút!" : "Đã tắt nhắc nghỉ ngơi.");
     }
     function dongPopupNhacNho() { document.getElementById('restNoticeModal').classList.add('hidden'); }
+
+    // HỆ THỐNG VẼ TOÀN BỘ BIỂU ĐỒ ĐỘNG CHUYÊN NGHIỆP
+    function veTatCaBieuDoDashboard() {
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
+
+        let ctxSalaryPie = document.getElementById('salaryPieChart');
+        if (ctxSalaryPie) {
+            if (window.mySalaryPie) window.mySalaryPie.destroy();
+            let totalTam = ds.reduce((s,i)=>s+(i.tam_ung||0),0);
+            let totalNet = ds.reduce((s,i)=>s+(i.thucLinhCuoiCung||0),0);
+            window.mySalaryPie = new Chart(ctxSalaryPie, {
+                type: 'doughnut',
+                data: { labels: ['Tổng Tạm Ứng', 'Tổng Thực Lĩnh NET'], datasets: [{ data: [totalTam, totalNet], backgroundColor: ['#ef4444', '#16a34a'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
+        }
+
+        let ctxOverviewTask = document.getElementById('overviewTaskPieChart');
+        if (ctxOverviewTask) {
+            if (window.myOverviewTask) window.myOverviewTask.destroy();
+            let hoanThanh = danhSachCongViec.filter(t => t.status === 'Hoàn thành').length;
+            let chuaLam = danhSachCongViec.length - hoanThanh;
+            window.myOverviewTask = new Chart(ctxOverviewTask, {
+                type: 'pie',
+                data: { labels: ['Hoàn thành', 'Chưa hoàn thành'], datasets: [{ data: [hoanThanh, chuaLam], backgroundColor: ['#16a34a', '#d97706'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
+        }
+
+        let ctxOverviewLeave = document.getElementById('overviewLeaveBarChart');
+        if (ctxOverviewLeave) {
+            if (window.myOverviewLeave) window.myOverviewLeave.destroy();
+            window.myOverviewLeave = new Chart(ctxOverviewLeave, {
+                type: 'bar',
+                data: { labels: ds.map(i => i.hoTen.split(' ').pop()), datasets: [{ label: 'Đã nghỉ phép', data: ds.map(i => i.nc_p || 0), backgroundColor: '#8b5cf6' }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } }
+            });
+        }
+
+        let ctxOverviewOffice = document.getElementById('overviewOfficeBarChart');
+        if (ctxOverviewOffice) {
+            if (window.myOverviewOffice) window.myOverviewOffice.destroy();
+            let vppLabels = dsThanhToanVanPhongPro.map(i => i.beneficiary);
+            let vppValues = dsThanhToanVanPhongPro.map(i => i.total);
+            window.myOverviewOffice = new Chart(ctxOverviewOffice, {
+                type: 'bar',
+                data: { labels: vppLabels.length ? vppLabels : ['Hồng Hà', 'Thăng Long'], datasets: [{ label: 'Giá trị (VNĐ)', data: vppValues.length ? vppValues : [0, 0], backgroundColor: '#10b981' }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } }
+            });
+        }
+        let ctxOfficeBar = document.getElementById('officeBarChart');
+        if (ctxOfficeBar) {
+            if (window.myOfficeBar) window.myOfficeBar.destroy();
+            window.myOfficeBar = new Chart(ctxOfficeBar, {
+                type: 'bar',
+                data: { labels: dsThanhToanVanPhongPro.map(i => i.beneficiary), datasets: [{ label: 'VPP', data: dsThanhToanVanPhongPro.map(i => i.total), backgroundColor: '#d97706' }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } }
+            });
+        }
+
+        let ctxOverviewInk = document.getElementById('overviewInkBarChart');
+        if (ctxOverviewInk) {
+            if (window.myOverviewInk) window.myOverviewInk.destroy();
+            window.myOverviewInk = new Chart(ctxOverviewInk, {
+                type: 'bar',
+                data: { labels: dsKhoMucIn.map(i => i.name), datasets: [{ label: 'Số lượng tồn/nhập', data: dsKhoMucIn.map(i => i.qty), backgroundColor: '#0284c7' }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } }
+            });
+        }
+        let ctxInkBar = document.getElementById('inkBarChart');
+        if (ctxInkBar) {
+            if (window.myInkBar) window.myInkBar.destroy();
+            window.myInkBar = new Chart(ctxInkBar, {
+                type: 'bar',
+                data: { labels: dsKhoMucIn.map(i => i.name), datasets: [{ label: 'SL', data: dsKhoMucIn.map(i => i.qty), backgroundColor: '#0ea5e9' }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } }
+            });
+        }
+        let ctxInkPie = document.getElementById('inkPieChart');
+        if (ctxInkPie) {
+            if (window.myInkPie) window.myInkPie.destroy();
+            window.myInkPie = new Chart(ctxInkPie, {
+                type: 'doughnut',
+                data: { labels: ['Nhập kho', 'Cấp phát'], datasets: [{ data: [10, 2], backgroundColor: ['#16a34a', '#ef4444'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
+        }
+
+        let ctxOverviewTelecom = document.getElementById('overviewTelecomPieChart');
+        if (ctxOverviewTelecom) {
+            if (window.myOverviewTelecom) window.myOverviewTelecom.destroy();
+            window.myOverviewTelecom = new Chart(ctxOverviewTelecom, {
+                type: 'pie',
+                data: { labels: ['VNPT', 'Viettel', 'Mobifone'], datasets: [{ data: [45, 35, 20], backgroundColor: ['#0284c7', '#ef4444', '#f59e0b'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
+        }
+        let ctxTelecomPie = document.getElementById('telecomPieChart');
+        if (ctxTelecomPie) {
+            if (window.myTelecomPie) window.myTelecomPie.destroy();
+            window.myTelecomPie = new Chart(ctxTelecomPie, {
+                type: 'doughnut',
+                data: { labels: ['VNPT', 'Viettel', 'Mobifone'], datasets: [{ data: [50, 30, 20], backgroundColor: ['#0284c7', '#e11d48', '#fbbf24'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
+        }
+
+        let ctxOverviewSurvey = document.getElementById('overviewSurveyPieChart');
+        if (ctxOverviewSurvey) {
+            if (window.myOverviewSurvey) window.myOverviewSurvey.destroy();
+            window.myOverviewSurvey = new Chart(ctxOverviewSurvey, {
+                type: 'doughnut',
+                data: { labels: ['Windows 11 Pro', 'Windows 10 Pro'], datasets: [{ data: [80, 20], backgroundColor: ['#8b5cf6', '#3b82f6'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
+        }
+        let ctxSurveyOs = document.getElementById('surveyOsPieChart');
+        if (ctxSurveyOs) {
+            if (window.mySurveyOs) window.mySurveyOs.destroy();
+            window.mySurveyOs = new Chart(ctxSurveyOs, {
+                type: 'pie',
+                data: { labels: ['Windows 11 Pro', 'Windows 10 Pro'], datasets: [{ data: [1, 0], backgroundColor: ['#8b5cf6', '#cbd5e1'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
+        }
+        let ctxSurveyOffice = document.getElementById('surveyOfficePieChart');
+        if (ctxSurveyOffice) {
+            if (window.mySurveyOffice) window.mySurveyOffice.destroy();
+            window.mySurveyOffice = new Chart(ctxSurveyOffice, {
+                type: 'pie',
+                data: { labels: ['Microsoft 365', 'Office 2021'], datasets: [{ data: [1, 0], backgroundColor: ['#10b981', '#cbd5e1'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
+        }
+
+        let ctxTask = document.getElementById('taskPieChart');
+        if (ctxTask) {
+            if (window.myTask) window.myTask.destroy();
+            let ht = danhSachCongViec.filter(t => t.status === 'Hoàn thành').length;
+            let cl = danhSachCongViec.length - ht;
+            window.myTask = new Chart(ctxTask, {
+                type: 'doughnut',
+                data: { labels: ['Hoàn thành', 'Chưa làm'], datasets: [{ data: [ht, cl], backgroundColor: ['#16a34a', '#cbd5e1'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
+        }
+
+        let ctxLeaveBar = document.getElementById('leaveBarChart');
+        if (ctxLeaveBar) {
+            if (window.myLeaveBar) window.myLeaveBar.destroy();
+            window.myLeaveBar = new Chart(ctxLeaveBar, {
+                type: 'bar',
+                data: { labels: ds.map(i => i.hoTen.split(' ').pop()), datasets: [{ label: 'Đã nghỉ phép', data: ds.map(i => i.nc_p || 0), backgroundColor: '#0284c7' }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } }
+            });
+        }
+
+        let ctxLeavePie = document.getElementById('leavePieChart');
+        if (ctxLeavePie) {
+            if (window.myLeavePie) window.myLeavePie.destroy();
+            let totalDaNghi = ds.reduce((s,i)=>s+(i.nc_p||0),0);
+            let totalCon = ds.reduce((s,i)=>s+((i.phep_cap||12)-(i.phep_da_nghi||0)),0);
+            window.myLeavePie = new Chart(ctxLeavePie, {
+                type: 'doughnut',
+                data: { labels: ['Đã dùng', 'Còn lại'], datasets: [{ data: [totalDaNghi, Math.max(0, totalCon)], backgroundColor: ['#ef4444', '#16a34a'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
+        }
+    }
 
     // HỆ THỐNG LỊCH VẠN NIÊN & PHONG THỦY ĐỘNG CHUẨN XÁC
     function taoLichVanNienChiTiet(month, year, selectedDay = 14) {

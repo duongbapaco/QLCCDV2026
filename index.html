@@ -303,9 +303,9 @@
             <div class="kpi-sub" id="kpiSubMonthLabel">Chuẩn hạch toán BAPACO</div>
         </div>
         <div class="kpi-card">
-            <div class="kpi-title">Tổng Thanh Toán VPP</div>
+            <div class="kpi-title">Tổng Thanh Toán VPP (Lũy Kế Năm)</div>
             <div class="kpi-value" style="color: #d97706;" id="kpiTotalPayment">0 VNĐ</div>
-            <div class="kpi-sub">Kèm hóa đơn chứng từ Drive</div>
+            <div class="kpi-sub">Cộng dồn tất cả các tháng</div>
         </div>
         <div class="kpi-card">
             <div class="kpi-title">Tồn Kho Mực In Hiện Tại</div>
@@ -548,38 +548,38 @@
         </div>
     </div>
 
-    <!-- TAB 7: CƯỚC VIỄN THÔNG (CÓ DASHBOARD RIÊNG) -->
+    <!-- TAB 7: CƯỚC VIỄN THÔNG (DASHBOARD CỘNG DỒN CẢ NĂM) -->
     <div id="telecomPaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-wifi"></i> DASHBOARD & THANH TOÁN CƯỚC VIỄN THÔNG</div>
+            <div class="table-title"><i class="fa-solid fa-wifi"></i> DASHBOARD & THANH TOÁN CƯỚC VIỄN THÔNG (CỘNG DỒN CẢ NĂM)</div>
         </div>
         
-        <!-- DASHBOARD RIÊNG CHO CƯỚC VIỄN THÔNG -->
+        <!-- DASHBOARD CỘNG DỒN TẤT CẢ CÁC THÁNG -->
         <div class="kpi-grid" style="margin-bottom: 14px;">
             <div class="kpi-card" style="border-left: 4px solid #0284c7;">
-                <div class="kpi-title">Tổng Cước Trước Thuế</div>
+                <div class="kpi-title">Tổng Cước Trước Thuế (Lũy Kế Năm)</div>
                 <div class="kpi-value" style="color: #0284c7;" id="telecomKpiTruocThue">0 VNĐ</div>
-                <div class="kpi-sub">Hạch toán chưa VAT</div>
+                <div class="kpi-sub">Cộng dồn tất cả các tháng</div>
             </div>
             <div class="kpi-card" style="border-left: 4px solid #ef4444;">
-                <div class="kpi-title">Tổng Thuế VAT (10%)</div>
+                <div class="kpi-title">Tổng Thuế VAT 10% (Lũy Kế Năm)</div>
                 <div class="kpi-value" style="color: #ef4444;" id="telecomKpiVAT">0 VNĐ</div>
-                <div class="kpi-sub">Khấu trừ thuế nhà mạng</div>
+                <div class="kpi-sub">Cộng dồn tất cả các tháng</div>
             </div>
             <div class="kpi-card" style="border-left: 4px solid #16a34a;">
-                <div class="kpi-title">Tổng Cước Thanh Toán (NET)</div>
+                <div class="kpi-title">Tổng Cước Thanh Toán NET (Lũy Kế Năm)</div>
                 <div class="kpi-value" style="color: #15803d;" id="telecomKpiTongThanhToan">0 VNĐ</div>
-                <div class="kpi-sub">Đã gồm VAT</div>
+                <div class="kpi-sub">Cộng dồn tất cả các tháng</div>
             </div>
         </div>
 
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
             <div class="chart-card" style="padding: 10px;">
-                <div class="chart-title"><i class="fa-solid fa-chart-column"></i> Biểu Đồ Cột: Cước Viễn Thông Theo Nhà Mạng (VNĐ)</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-column"></i> Biểu Đồ Cột: Cước Viễn Thông Lũy Kế (VNĐ)</div>
                 <div style="position: relative; height: 180px;"><canvas id="telecomBarChart"></canvas></div>
             </div>
             <div class="chart-card" style="padding: 10px;">
-                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Chi Phí Viễn Thông (%)</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Chi Phí Viễn Thông Lũy Kế (%)</div>
                 <div style="position: relative; height: 180px;"><canvas id="telecomPieChart"></canvas></div>
             </div>
         </div>
@@ -1046,15 +1046,42 @@
         veTatCaBieuDoDashboard();
     }
 
+    // HÀM LẤY TOÀN BỘ VPP CỘNG DỒN CẢ NĂM (TẤT CẢ CÁC THÁNG)
+    function layTatCaDanhSachVPP() {
+        let allVpp = [];
+        let monthsObj = dsThanhToanVanPhongProByMonth;
+        for (let key in monthsObj) {
+            if (key.startsWith(currentNamKey)) {
+                allVpp = allVpp.concat(monthsObj[key]);
+            }
+        }
+        return allVpp;
+    }
+
+    // HÀM LẤY TOÀN BỘ CƯỚC VIỄN THÔNG CỘNG DỒN CẢ NĂM (TẤT CẢ CÁC THÁNG)
+    function layTatCaDanhSachTelecom() {
+        let allTelecom = [];
+        let monthsObj = dsThanhToanTelecomByMonth;
+        for (let key in monthsObj) {
+            if (key.startsWith(currentNamKey)) {
+                allTelecom = allTelecom.concat(monthsObj[key]);
+            }
+        }
+        return allTelecom;
+    }
+
     function capNhatKPI() {
         let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         let totalNet = ds.reduce((sum, i) => sum + (i.thucLinhCuoiCung || 0), 0);
-        let currentVppList = layDanhSachVPPHienTai();
-        let totalOffice = currentVppList.reduce((sum, i) => sum + (i.total || 0), 0);
+        
+        let allYearVpp = layTatCaDanhSachVPP();
+        let totalOfficeYear = allYearVpp.reduce((sum, i) => sum + (i.total || 0), 0);
+        
         let totalStockInk = dsKhoMucIn.reduce((sum, i) => i.action.includes('Nhập') ? sum + i.qty : sum - i.qty, 0);
         let totalTamUng = ds.reduce((sum, i) => sum + (i.tam_ung || 0), 0);
+        
         document.getElementById("kpiTotalNet").innerText = totalNet.toLocaleString('vi-VN') + ' đ';
-        document.getElementById("kpiTotalPayment").innerText = totalOffice.toLocaleString('vi-VN') + ' đ';
+        document.getElementById("kpiTotalPayment").innerText = totalOfficeYear.toLocaleString('vi-VN') + ' đ';
         document.getElementById("kpiTotalInkStock").innerText = totalStockInk + " Hộp";
         document.getElementById("kpiTotalSurvey").innerText = dsKhaoSatChuyenSieu.length + " Thiết bị";
         document.getElementById("kpiTotalTamUng").innerText = totalTamUng.toLocaleString('vi-VN') + ' đ';
@@ -1377,22 +1404,22 @@
         tbody.innerHTML = '';
         let currentList = layDanhSachTelecomHienTai();
         
-        let sumTruocThue = 0, sumVAT = 0, sumAmount = 0;
         currentList.forEach((item, idx) => {
-            sumTruocThue += item.truocThue;
-            sumVAT += item.vat;
-            sumAmount += item.amount;
-
             tbody.innerHTML += `<tr><td>${item.id}</td><td>${item.supplier}</td><td><b>${item.type}</b></td><td>${item.period}</td><td style="text-align:right;">${item.truocThue.toLocaleString()} đ</td><td style="text-align:right; color:#dc2626;">${item.vat.toLocaleString()} đ</td><td style="text-align:right; font-weight:bold; color:#15803d;">${item.amount.toLocaleString()} đ</td><td style="text-align:center;"><button class="btn btn-purple" style="padding:3px 8px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Drive</button></td><td style="text-align:center;">
                 <button class="btn btn-blue" style="padding:3px 6px;" onclick="suaTelecom(${idx})"><i class="fas fa-pen"></i></button>
                 <button class="btn btn-red" style="padding:3px 6px;" onclick="layDanhSachTelecomHienTai().splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
             </td></tr>`;
         });
 
-        // Cập nhật KPI riêng cho tab cước viễn thông
-        document.getElementById('telecomKpiTruocThue').innerText = sumTruocThue.toLocaleString('vi-VN') + ' đ';
-        document.getElementById('telecomKpiVAT').innerText = sumVAT.toLocaleString('vi-VN') + ' đ';
-        document.getElementById('telecomKpiTongThanhToan').innerText = sumAmount.toLocaleString('vi-VN') + ' đ';
+        // TÍNH TOÁN CỘNG DỒN TẤT CẢ CÁC THÁNG TRONG NĂM CHO DASHBOARD CƯỚC VIỄN THÔNG
+        let allYearTelecom = layTatCaDanhSachTelecom();
+        let sumTruocThueYear = allYearTelecom.reduce((s, i) => s + (i.truocThue || 0), 0);
+        let sumVATYear = allYearTelecom.reduce((s, i) => s + (i.vat || 0), 0);
+        let sumAmountYear = allYearTelecom.reduce((s, i) => s + (i.amount || 0), 0);
+
+        document.getElementById('telecomKpiTruocThue').innerText = sumTruocThueYear.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('telecomKpiVAT').innerText = sumVATYear.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('telecomKpiTongThanhToan').innerText = sumAmountYear.toLocaleString('vi-VN') + ' đ';
     }
 
     // 5. Khảo sát Phần mềm
@@ -1642,8 +1669,8 @@
 
     function veTatCaBieuDoDashboard() {
         let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
-        let currentTelecomList = layDanhSachTelecomHienTai();
-        let currentVppList = layDanhSachVPPHienTai();
+        let allYearTelecom = layTatCaDanhSachTelecom();
+        let allYearVpp = layTatCaDanhSachVPP();
 
         const percentPluginConfig = {
             tooltip: {
@@ -1671,11 +1698,11 @@
         if (ctxSalaryPie) {
             if (window.mySalaryPie) window.mySalaryPie.destroy();
             let totalNet = ds.reduce((s,i)=>s+(i.thucLinhCuoiCung||0),0);
-            let totalOffice = currentVppList.reduce((s,i)=>s+(i.total||0),0);
-            let totalTelecom = currentTelecomList.reduce((s,i)=>s+(i.amount||0),0);
+            let totalOfficeYear = allYearVpp.reduce((s,i)=>s+(i.total||0),0);
+            let totalTelecomYear = allYearTelecom.reduce((s,i)=>s+(i.amount||0),0);
             window.mySalaryPie = new Chart(ctxSalaryPie, {
                 type: 'doughnut',
-                data: { labels: ['Quỹ Lương NET', 'Thanh Toán VP', 'Cước Viễn Thông'], datasets: [{ data: [totalNet, totalOffice, totalTelecom], backgroundColor: ['#0284c7', '#16a34a', '#d97706'] }] },
+                data: { labels: ['Quỹ Lương NET', 'Thanh Toán VP (Năm)', 'Cước Viễn Thông (Năm)'], datasets: [{ data: [totalNet, totalOfficeYear, totalTelecomYear], backgroundColor: ['#0284c7', '#16a34a', '#d97706'] }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: percentPluginConfig }
             });
         }
@@ -1684,12 +1711,12 @@
         if (ctxOverviewBar) {
             if (window.myOverviewBar) window.myOverviewBar.destroy();
             let totalNet = ds.reduce((s,i)=>s+(i.thucLinhCuoiCung||0),0);
-            let totalOffice = currentVppList.reduce((s,i)=>s+(i.total||0),0);
-            let totalTelecom = currentTelecomList.reduce((s,i)=>s+(i.amount||0),0);
-            let totalVAT = currentTelecomList.reduce((s,i)=>s+(i.vat||0),0);
+            let totalOfficeYear = allYearVpp.reduce((s,i)=>s+(i.total||0),0);
+            let totalTelecomYear = allYearTelecom.reduce((s,i)=>s+(i.amount||0),0);
+            let totalVATYear = allYearTelecom.reduce((s,i)=>s+(i.vat||0),0);
             window.myOverviewBar = new Chart(ctxOverviewBar, {
                 type: 'bar',
-                data: { labels: ['Thanh Toán VP', 'Cước Viễn Thông', 'Tiền Lương NET', 'Tiền Thuế'], datasets: [{ label: 'Giá trị (VNĐ)', data: [totalOffice, totalTelecom, totalNet, totalVAT], backgroundColor: ['#16a34a', '#d97706', '#0284c7', '#ef4444'] }] },
+                data: { labels: ['Thanh Toán VP (Năm)', 'Cước Viễn Thông (Năm)', 'Tiền Lương NET', 'Tiền Thuế (Năm)'], datasets: [{ label: 'Giá trị (VNĐ)', data: [totalOfficeYear, totalTelecomYear, totalNet, totalVATYear], backgroundColor: ['#16a34a', '#d97706', '#0284c7', '#ef4444'] }] },
                 options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false }, datalabels: { formatter: (v) => v.toLocaleString() + ' đ', color: '#0f172a', anchor: 'end', align: 'top', font: { weight: 'bold', size: 10 } } } }
             });
         }
@@ -1764,6 +1791,7 @@
         }
 
         let ctxOfficeBar = document.getElementById('officeBarChart');
+        let currentVppList = layDanhSachVPPHienTai();
         if (ctxOfficeBar) {
             if (window.myOfficeBar) window.myOfficeBar.destroy();
             window.myOfficeBar = new Chart(ctxOfficeBar, {
@@ -1806,7 +1834,7 @@
             if (window.myTelecomBar) window.myTelecomBar.destroy();
             window.myTelecomBar = new Chart(ctxTelecomBar, {
                 type: 'bar',
-                data: { labels: currentTelecomList.map(i => i.supplier), datasets: [{ label: 'Cước (VNĐ)', data: currentTelecomList.map(i => i.amount), backgroundColor: ['#0284c7', '#ef4444', '#f59e0b'] }] },
+                data: { labels: allYearTelecom.map(i => i.supplier + ' (' + i.period + ')'), datasets: [{ label: 'Cước (VNĐ)', data: allYearTelecom.map(i => i.amount), backgroundColor: ['#0284c7', '#ef4444', '#f59e0b', '#10b981'] }] },
                 options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false }, datalabels: { formatter: (v) => v.toLocaleString() + ' đ', color: '#0f172a', anchor: 'end', align: 'top', font: { weight: 'bold', size: 10 } } } }
             });
         }
@@ -1815,7 +1843,7 @@
             if (window.myTelecomPie) window.myTelecomPie.destroy();
             window.myTelecomPie = new Chart(ctxTelecomPie, {
                 type: 'doughnut',
-                data: { labels: currentTelecomList.map(i => i.supplier), datasets: [{ data: currentTelecomList.map(i => i.amount), backgroundColor: ['#0284c7', '#e11d48', '#fbbf24'] }] },
+                data: { labels: allYearTelecom.map(i => i.supplier + ' (' + i.period + ')'), datasets: [{ data: allYearTelecom.map(i => i.amount), backgroundColor: ['#0284c7', '#e11d48', '#fbbf24', '#10b981'] }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: percentPluginConfig }
             });
         }

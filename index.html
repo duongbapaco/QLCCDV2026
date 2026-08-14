@@ -335,32 +335,20 @@
     <div id="dashboardTab" class="tab-pane table-card" style="background: transparent; border: none; padding: 0;">
         <div class="charts-multi-grid">
             <div class="chart-card">
-                <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #16a34a;"></i> Tỷ Trọng Tạm Ứng So Với Thực Lĩnh (%)</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #0284c7;"></i> Tỷ Trọng Tài Chính Tổng Quan (%)</div>
                 <div style="position: relative; height: 260px;"><canvas id="salaryPieChart"></canvas></div>
             </div>
             <div class="chart-card">
-                <div class="chart-title"><i class="fa-solid fa-list-check" style="color: #d97706;"></i> Tổng Quan Trạng Thái Công Việc (%)</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-column" style="color: #16a34a;"></i> Biểu Đồ Cột: Tổng Quan Thanh Toán & Lương (VNĐ)</div>
+                <div style="position: relative; height: 260px;"><canvas id="overviewBarChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #d97706;"></i> Tỷ Trọng Trạng Thái Công Việc (%)</div>
                 <div style="position: relative; height: 260px;"><canvas id="overviewTaskPieChart"></canvas></div>
             </div>
             <div class="chart-card">
-                <div class="chart-title"><i class="fa-solid fa-calendar-days" style="color: #8b5cf6;"></i> Thống Kê Ngày Nghỉ Phép Nhân Sự</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-column" style="color: #8b5cf6;"></i> Biểu Đồ Cột: Ngày Nghỉ Phép Nhân Sự</div>
                 <div style="position: relative; height: 260px;"><canvas id="overviewLeaveBarChart"></canvas></div>
-            </div>
-            <div class="chart-card">
-                <div class="chart-title"><i class="fa-solid fa-file-invoice" style="color: #15803d;"></i> Thanh Toán Văn Phòng Phẩm Theo Đơn Vị</div>
-                <div style="position: relative; height: 260px;"><canvas id="overviewOfficeBarChart"></canvas></div>
-            </div>
-            <div class="chart-card">
-                <div class="chart-title"><i class="fa-solid fa-warehouse" style="color: #0284c7;"></i> Tình Hình Xuất Nhập Tồn Kho Mực In</div>
-                <div style="position: relative; height: 260px;"><canvas id="overviewInkBarChart"></canvas></div>
-            </div>
-            <div class="chart-card">
-                <div class="chart-title"><i class="fa-solid fa-wifi" style="color: #ef4444;"></i> Tỷ Trọng Cước Viễn Thông Theo Nhà Mạng (%)</div>
-                <div style="position: relative; height: 260px;"><canvas id="overviewTelecomPieChart"></canvas></div>
-            </div>
-            <div class="chart-card">
-                <div class="chart-title"><i class="fa-solid fa-clipboard-check" style="color: #b45309;"></i> Tỷ Lệ Bản Quyền Phần Mềm (%)</div>
-                <div style="position: relative; height: 260px;"><canvas id="overviewSurveyPieChart"></canvas></div>
             </div>
         </div>
     </div>
@@ -373,14 +361,11 @@
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
             <div class="chart-card" style="padding: 10px;">
                 <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Lệ Trạng Thái Công Việc (%)</div>
-                <div style="position: relative; height: 160px;"><canvas id="taskPieChart"></canvas></div>
+                <div style="position: relative; height: 180px;"><canvas id="taskPieChart"></canvas></div>
             </div>
-            <div class="chart-card" style="padding: 10px; display: flex; flex-direction: column; justify-content: center;">
-                <div style="font-weight: bold; font-size: 12px; margin-bottom: 6px; color: #0369a1;"><i class="fa-solid fa-chart-line"></i> TIẾN ĐỘ HOÀN THÀNH CÔNG VIỆC CHUNG</div>
-                <div style="background: #e2e8f0; border-radius: 6px; height: 16px; width: 100%; overflow: hidden; margin-bottom: 8px;">
-                    <div id="taskProgressBar" style="background: #16a34a; width: 0%; height: 100%; transition: width 0.3s;"></div>
-                </div>
-                <div style="font-size: 12px; color: #64748b; text-align: right;" id="taskProgressText">Đã hoàn thành: 0%</div>
+            <div class="chart-card" style="padding: 10px;">
+                <div class="chart-title"><i class="fa-solid fa-chart-column"></i> Biểu Đồ Cột: Số Lượng Công Việc</div>
+                <div style="position: relative; height: 180px;"><canvas id="taskBarChart"></canvas></div>
             </div>
         </div>
         <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
@@ -450,7 +435,7 @@
         </div>
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
             <div class="chart-card" style="padding: 10px;">
-                <div class="chart-title"><i class="fa-solid fa-chart-column"></i> Thống Kê Ngày Nghỉ Phép Từng Nhân Sự</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-column"></i> Biểu Đồ Cột: Ngày Nghỉ Phép Từng Nhân Sự</div>
                 <div style="position: relative; height: 180px;"><canvas id="leaveBarChart"></canvas></div>
             </div>
             <div class="chart-card" style="padding: 10px;">
@@ -471,12 +456,12 @@
         <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG</div></div>
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
             <div class="chart-card" style="padding: 10px;">
-                <div class="chart-title"><i class="fa-solid fa-chart-bar"></i> Giá Trị Hồ Sơ VPP Theo Đơn Vị Thụ Hưởng</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-bar"></i> Biểu Đồ Cột: Giá Trị Hồ Sơ VPP (VNĐ)</div>
                 <div style="position: relative; height: 180px;"><canvas id="officeBarChart"></canvas></div>
             </div>
-            <div class="chart-card" style="padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                <div class="chart-title" style="align-self: flex-start;"><i class="fa-solid fa-wallet"></i> Tổng Giá Trị Thanh Toán VPP</div>
-                <div style="font-size: 28px; font-weight: 800; color: #d97706; margin-top: 15px;" id="officeDashboardTotal">0 đ</div>
+            <div class="chart-card" style="padding: 10px;">
+                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Thanh Toán VPP (%)</div>
+                <div style="position: relative; height: 180px;"><canvas id="officePieChart"></canvas></div>
             </div>
         </div>
         <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
@@ -506,7 +491,7 @@
         <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-warehouse"></i> QUẢN LÝ KHO MỰC IN & XNT</div></div>
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
             <div class="chart-card" style="padding: 10px;">
-                <div class="chart-title"><i class="fa-solid fa-chart-column"></i> Thống Kê Xuất - Nhập - Tồn Kho Mực In</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-column"></i> Biểu Đồ Cột: Tồn Kho Mực In</div>
                 <div style="position: relative; height: 180px;"><canvas id="inkBarChart"></canvas></div>
             </div>
             <div class="chart-card" style="padding: 10px;">
@@ -561,12 +546,12 @@
         <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-wifi"></i> THANH TOÁN CƯỚC VIỄN THÔNG & TÁCH THUẾ VAT</div></div>
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
             <div class="chart-card" style="padding: 10px;">
-                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Cước Viễn Thông Theo Nhà Mạng (%)</div>
-                <div style="position: relative; height: 180px;"><canvas id="telecomPieChart"></canvas></div>
+                <div class="chart-title"><i class="fa-solid fa-chart-column"></i> Biểu Đồ Cột: Cước Viễn Thông (VNĐ)</div>
+                <div style="position: relative; height: 180px;"><canvas id="telecomBarChart"></canvas></div>
             </div>
-            <div class="chart-card" style="padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                <div class="chart-title" style="align-self: flex-start;"><i class="fa-solid fa-file-invoice-dollar"></i> Tổng Cước Phí & Thuế VAT</div>
-                <div style="font-size: 28px; font-weight: 800; color: #0284c7; margin-top: 15px;" id="telecomDashboardTotal">0 đ</div>
+            <div class="chart-card" style="padding: 10px;">
+                <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Cước Viễn Thông (%)</div>
+                <div style="position: relative; height: 180px;"><canvas id="telecomPieChart"></canvas></div>
             </div>
         </div>
         <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));">
@@ -1092,9 +1077,7 @@
         document.getElementById('previewTelecomVAT').value = vat.toLocaleString('vi-VN') + ' đ';
     }
 
-    // ================= TÍNH NĂNG SỬA & CẬP NHẬT CHUYÊN NGHIỆP =================
-
-    // 1. Quản lý Công việc (Có nút xoay vòng trạng thái nhanh gọn)
+    // 1. Quản lý Công việc
     function luuHoacCapNhatCongViec() {
         let name = document.getElementById('inputTaskName').value.trim();
         if (!name) { alert("Nhập nội dung công việc!"); return; }
@@ -1137,7 +1120,6 @@
         danhSachCongViec.forEach((t, idx) => {
             if (t.status === 'Hoàn thành') completed++;
             
-            // Xoay vòng trạng thái: Chưa làm -> Đang làm -> Hoàn thành -> Chưa làm
             let nextStatus = t.status === 'Chưa làm' ? 'Đang làm' : (t.status === 'Đang làm' ? 'Hoàn thành' : 'Chưa làm');
             let badgeClass = t.status === 'Hoàn thành' ? 'badge-net' : (t.status === 'Đang làm' ? 'badge-warning' : 'badge-danger');
 
@@ -1512,19 +1494,56 @@
     }
     function dongPopupNhacNho() { document.getElementById('restNoticeModal').classList.add('hidden'); }
 
-    // HỆ THỐNG VẼ TOÀN BỘ BIỂU ĐỒ ĐỘNG CHUYÊN NGHIỆP
+    // HỆ THỐNG VẼ TOÀN BỘ BIỂU ĐỒ ĐỘNG CHUYÊN NGHIỆP: TỶ TRỌNG ÉP 100% %, BIỂU ĐỒ CỘT THỂ HIỆN SỐ LIỆU TUYỆT ĐỐI
     function veTatCaBieuDoDashboard() {
         let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
+        const percentPluginConfig = {
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        let sum = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                        let val = context.raw;
+                        let percentage = sum > 0 ? ((val / sum) * 100).toFixed(1) : 0;
+                        return ` ${context.label}: ${val.toLocaleString()} (${percentage}%)`;
+                    }
+                }
+            },
+            datalabels: {
+                formatter: (value, ctx) => {
+                    let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                    let percentage = sum > 0 ? ((value / sum) * 100).toFixed(1) : 0;
+                    return percentage + '%';
+                },
+                color: '#fff',
+                font: { weight: 'bold', size: 12 }
+            }
+        };
 
+        // 1. Dashboard Tab
         let ctxSalaryPie = document.getElementById('salaryPieChart');
         if (ctxSalaryPie) {
             if (window.mySalaryPie) window.mySalaryPie.destroy();
-            let totalTam = ds.reduce((s,i)=>s+(i.tam_ung||0),0);
             let totalNet = ds.reduce((s,i)=>s+(i.thucLinhCuoiCung||0),0);
+            let totalOffice = dsThanhToanVanPhongPro.reduce((s,i)=>s+(i.total||0),0);
+            let totalTelecom = dsThanhToanTelecom.reduce((s,i)=>s+(i.amount||0),0);
             window.mySalaryPie = new Chart(ctxSalaryPie, {
                 type: 'doughnut',
-                data: { labels: ['Tổng Tạm Ứng', 'Tổng Thực Lĩnh NET'], datasets: [{ data: [totalTam, totalNet], backgroundColor: ['#ef4444', '#16a34a'] }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+                data: { labels: ['Quỹ Lương NET', 'Thanh Toán VP', 'Cước Viễn Thông'], datasets: [{ data: [totalNet, totalOffice, totalTelecom], backgroundColor: ['#0284c7', '#16a34a', '#d97706'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: percentPluginConfig }
+            });
+        }
+
+        let ctxOverviewBar = document.getElementById('overviewBarChart');
+        if (ctxOverviewBar) {
+            if (window.myOverviewBar) window.myOverviewBar.destroy();
+            let totalNet = ds.reduce((s,i)=>s+(i.thucLinhCuoiCung||0),0);
+            let totalOffice = dsThanhToanVanPhongPro.reduce((s,i)=>s+(i.total||0),0);
+            let totalTelecom = dsThanhToanTelecom.reduce((s,i)=>s+(i.amount||0),0);
+            let totalVAT = dsThanhToanTelecom.reduce((s,i)=>s+(i.vat||0),0);
+            window.myOverviewBar = new Chart(ctxOverviewBar, {
+                type: 'bar',
+                data: { labels: ['Thanh Toán VP', 'Cước Viễn Thông', 'Tiền Lương NET', 'Tiền Thuế'], datasets: [{ label: 'Giá trị (VNĐ)', data: [totalOffice, totalTelecom, totalNet, totalVAT], backgroundColor: ['#16a34a', '#d97706', '#0284c7', '#ef4444'] }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false }, datalabels: { formatter: (v) => v.toLocaleString() + ' đ', color: '#0f172a', anchor: 'end', align: 'top', font: { weight: 'bold', size: 10 } } } }
             });
         }
 
@@ -1532,11 +1551,12 @@
         if (ctxOverviewTask) {
             if (window.myOverviewTask) window.myOverviewTask.destroy();
             let hoanThanh = danhSachCongViec.filter(t => t.status === 'Hoàn thành').length;
-            let chuaLam = danhSachCongViec.length - hoanThanh;
+            let dangLam = danhSachCongViec.filter(t => t.status === 'Đang làm').length;
+            let chuaLam = danhSachCongViec.filter(t => t.status === 'Chưa làm').length;
             window.myOverviewTask = new Chart(ctxOverviewTask, {
                 type: 'pie',
-                data: { labels: ['Hoàn thành', 'Chưa hoàn thành'], datasets: [{ data: [hoanThanh, chuaLam], backgroundColor: ['#16a34a', '#d97706'] }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+                data: { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: [hoanThanh, dangLam, chuaLam], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: percentPluginConfig }
             });
         }
 
@@ -1545,129 +1565,47 @@
             if (window.myOverviewLeave) window.myOverviewLeave.destroy();
             window.myOverviewLeave = new Chart(ctxOverviewLeave, {
                 type: 'bar',
-                data: { labels: ds.map(i => i.hoTen.split(' ').pop()), datasets: [{ label: 'Đã nghỉ phép', data: ds.map(i => i.nc_p || 0), backgroundColor: '#8b5cf6' }] },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } }
+                data: { labels: ds.slice(0, 8).map(i => i.hoTen.split(' ').pop()), datasets: [{ label: 'Đã nghỉ phép', data: ds.slice(0, 8).map(i => i.nc_p || 0), backgroundColor: '#8b5cf6' }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false }, datalabels: { formatter: (v) => v + ' ngày', color: '#0f172a', anchor: 'end', align: 'top', font: { weight: 'bold', size: 10 } } } }
             });
         }
 
-        let ctxOverviewOffice = document.getElementById('overviewOfficeBarChart');
-        if (ctxOverviewOffice) {
-            if (window.myOverviewOffice) window.myOverviewOffice.destroy();
-            let vppLabels = dsThanhToanVanPhongPro.map(i => i.beneficiary);
-            let vppValues = dsThanhToanVanPhongPro.map(i => i.total);
-            window.myOverviewOffice = new Chart(ctxOverviewOffice, {
-                type: 'bar',
-                data: { labels: vppLabels.length ? vppLabels : ['Hồng Hà', 'Thăng Long'], datasets: [{ label: 'Giá trị (VNĐ)', data: vppValues.length ? vppValues : [0, 0], backgroundColor: '#10b981' }] },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } }
-            });
-        }
-        let ctxOfficeBar = document.getElementById('officeBarChart');
-        if (ctxOfficeBar) {
-            if (window.myOfficeBar) window.myOfficeBar.destroy();
-            window.myOfficeBar = new Chart(ctxOfficeBar, {
-                type: 'bar',
-                data: { labels: dsThanhToanVanPhongPro.map(i => i.beneficiary), datasets: [{ label: 'VPP', data: dsThanhToanVanPhongPro.map(i => i.total), backgroundColor: '#d97706' }] },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } }
-            });
-        }
-
-        let ctxOverviewInk = document.getElementById('overviewInkBarChart');
-        if (ctxOverviewInk) {
-            if (window.myOverviewInk) window.myOverviewInk.destroy();
-            window.myOverviewInk = new Chart(ctxOverviewInk, {
-                type: 'bar',
-                data: { labels: dsKhoMucIn.map(i => i.name), datasets: [{ label: 'Số lượng tồn/nhập', data: dsKhoMucIn.map(i => i.qty), backgroundColor: '#0284c7' }] },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } }
-            });
-        }
-        let ctxInkBar = document.getElementById('inkBarChart');
-        if (ctxInkBar) {
-            if (window.myInkBar) window.myInkBar.destroy();
-            window.myInkBar = new Chart(ctxInkBar, {
-                type: 'bar',
-                data: { labels: dsKhoMucIn.map(i => i.name), datasets: [{ label: 'SL', data: dsKhoMucIn.map(i => i.qty), backgroundColor: '#0ea5e9' }] },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } }
-            });
-        }
-        let ctxInkPie = document.getElementById('inkPieChart');
-        if (ctxInkPie) {
-            if (window.myInkPie) window.myInkPie.destroy();
-            window.myInkPie = new Chart(ctxInkPie, {
-                type: 'doughnut',
-                data: { labels: ['Nhập kho', 'Cấp phát'], datasets: [{ data: [10, 2], backgroundColor: ['#16a34a', '#ef4444'] }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-            });
-        }
-
-        let ctxOverviewTelecom = document.getElementById('overviewTelecomPieChart');
-        if (ctxOverviewTelecom) {
-            if (window.myOverviewTelecom) window.myOverviewTelecom.destroy();
-            window.myOverviewTelecom = new Chart(ctxOverviewTelecom, {
-                type: 'pie',
-                data: { labels: ['VNPT', 'Viettel', 'Mobifone'], datasets: [{ data: [45, 35, 20], backgroundColor: ['#0284c7', '#ef4444', '#f59e0b'] }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-            });
-        }
-        let ctxTelecomPie = document.getElementById('telecomPieChart');
-        if (ctxTelecomPie) {
-            if (window.myTelecomPie) window.myTelecomPie.destroy();
-            window.myTelecomPie = new Chart(ctxTelecomPie, {
-                type: 'doughnut',
-                data: { labels: ['VNPT', 'Viettel', 'Mobifone'], datasets: [{ data: [50, 30, 20], backgroundColor: ['#0284c7', '#e11d48', '#fbbf24'] }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-            });
-        }
-
-        let ctxOverviewSurvey = document.getElementById('overviewSurveyPieChart');
-        if (ctxOverviewSurvey) {
-            if (window.myOverviewSurvey) window.myOverviewSurvey.destroy();
-            window.myOverviewSurvey = new Chart(ctxOverviewSurvey, {
-                type: 'doughnut',
-                data: { labels: ['Windows 11 Pro', 'Windows 10 Pro'], datasets: [{ data: [80, 20], backgroundColor: ['#8b5cf6', '#3b82f6'] }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-            });
-        }
-        let ctxSurveyOs = document.getElementById('surveyOsPieChart');
-        if (ctxSurveyOs) {
-            if (window.mySurveyOs) window.mySurveyOs.destroy();
-            window.mySurveyOs = new Chart(ctxSurveyOs, {
-                type: 'pie',
-                data: { labels: ['Windows 11 Pro', 'Windows 10 Pro'], datasets: [{ data: [1, 0], backgroundColor: ['#8b5cf6', '#cbd5e1'] }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-            });
-        }
-        let ctxSurveyOffice = document.getElementById('surveyOfficePieChart');
-        if (ctxSurveyOffice) {
-            if (window.mySurveyOffice) window.mySurveyOffice.destroy();
-            window.mySurveyOffice = new Chart(ctxSurveyOffice, {
-                type: 'pie',
-                data: { labels: ['Microsoft 365', 'Office 2021'], datasets: [{ data: [1, 0], backgroundColor: ['#10b981', '#cbd5e1'] }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-            });
-        }
-
-        let ctxTask = document.getElementById('taskPieChart');
-        if (ctxTask) {
-            if (window.myTask) window.myTask.destroy();
+        // 2. Tab Công Việc
+        let ctxTaskPie = document.getElementById('taskPieChart');
+        if (ctxTaskPie) {
+            if (window.myTaskPie) window.myTaskPie.destroy();
             let ht = danhSachCongViec.filter(t => t.status === 'Hoàn thành').length;
-            let cl = danhSachCongViec.length - ht;
-            window.myTask = new Chart(ctxTask, {
+            let dl = danhSachCongViec.filter(t => t.status === 'Đang làm').length;
+            let cl = danhSachCongViec.filter(t => t.status === 'Chưa làm').length;
+            window.myTaskPie = new Chart(ctxTaskPie, {
                 type: 'doughnut',
-                data: { labels: ['Hoàn thành', 'Chưa làm'], datasets: [{ data: [ht, cl], backgroundColor: ['#16a34a', '#cbd5e1'] }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+                data: { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: [ht, dl, cl], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: percentPluginConfig }
+            });
+        }
+        let ctxTaskBar = document.getElementById('taskBarChart');
+        if (ctxTaskBar) {
+            if (window.myTaskBar) window.myTaskBar.destroy();
+            let ht = danhSachCongViec.filter(t => t.status === 'Hoàn thành').length;
+            let dl = danhSachCongViec.filter(t => t.status === 'Đang làm').length;
+            let cl = danhSachCongViec.filter(t => t.status === 'Chưa làm').length;
+            window.myTaskBar = new Chart(ctxTaskBar, {
+                type: 'bar',
+                data: { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ label: 'Số lượng', data: [ht, dl, cl], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false }, datalabels: { formatter: (v) => v + ' việc', color: '#0f172a', anchor: 'end', align: 'top', font: { weight: 'bold', size: 10 } } } }
             });
         }
 
+        // 3. Tab Phép Năm
         let ctxLeaveBar = document.getElementById('leaveBarChart');
         if (ctxLeaveBar) {
             if (window.myLeaveBar) window.myLeaveBar.destroy();
             window.myLeaveBar = new Chart(ctxLeaveBar, {
                 type: 'bar',
-                data: { labels: ds.map(i => i.hoTen.split(' ').pop()), datasets: [{ label: 'Đã nghỉ phép', data: ds.map(i => i.nc_p || 0), backgroundColor: '#0284c7' }] },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } }
+                data: { labels: ds.slice(0, 8).map(i => i.hoTen.split(' ').pop()), datasets: [{ label: 'Đã nghỉ phép', data: ds.slice(0, 8).map(i => i.nc_p || 0), backgroundColor: '#0284c7' }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false }, datalabels: { formatter: (v) => v + ' ngày', color: '#0f172a', anchor: 'end', align: 'top', font: { weight: 'bold', size: 10 } } } }
             });
         }
-
         let ctxLeavePie = document.getElementById('leavePieChart');
         if (ctxLeavePie) {
             if (window.myLeavePie) window.myLeavePie.destroy();
@@ -1676,7 +1614,87 @@
             window.myLeavePie = new Chart(ctxLeavePie, {
                 type: 'doughnut',
                 data: { labels: ['Đã dùng', 'Còn lại'], datasets: [{ data: [totalDaNghi, Math.max(0, totalCon)], backgroundColor: ['#ef4444', '#16a34a'] }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+                options: { responsive: true, maintainAspectRatio: false, plugins: percentPluginConfig }
+            });
+        }
+
+        // 4. Tab VPP
+        let ctxOfficeBar = document.getElementById('officeBarChart');
+        if (ctxOfficeBar) {
+            if (window.myOfficeBar) window.myOfficeBar.destroy();
+            window.myOfficeBar = new Chart(ctxOfficeBar, {
+                type: 'bar',
+                data: { labels: dsThanhToanVanPhongPro.map(i => i.beneficiary), datasets: [{ label: 'VPP (VNĐ)', data: dsThanhToanVanPhongPro.map(i => i.total), backgroundColor: '#d97706' }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false }, datalabels: { formatter: (v) => v.toLocaleString() + ' đ', color: '#0f172a', anchor: 'end', align: 'top', font: { weight: 'bold', size: 10 } } } }
+            });
+        }
+        let ctxOfficePie = document.getElementById('officePieChart');
+        if (ctxOfficePie) {
+            if (window.myOfficePie) window.myOfficePie.destroy();
+            window.myOfficePie = new Chart(ctxOfficePie, {
+                type: 'doughnut',
+                data: { labels: dsThanhToanVanPhongPro.map(i => i.beneficiary), datasets: [{ data: dsThanhToanVanPhongPro.map(i => i.total), backgroundColor: ['#d97706', '#0284c7', '#16a34a', '#8b5cf6'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: percentPluginConfig }
+            });
+        }
+
+        // 5. Tab Kho Mực
+        let ctxInkBar = document.getElementById('inkBarChart');
+        if (ctxInkBar) {
+            if (window.myInkBar) window.myInkBar.destroy();
+            window.myInkBar = new Chart(ctxInkBar, {
+                type: 'bar',
+                data: { labels: dsKhoMucIn.map(i => i.name), datasets: [{ label: 'Số lượng', data: dsKhoMucIn.map(i => i.qty), backgroundColor: '#0ea5e9' }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false }, datalabels: { formatter: (v) => v + ' hộp', color: '#0f172a', anchor: 'end', align: 'top', font: { weight: 'bold', size: 10 } } } }
+            });
+        }
+        let ctxInkPie = document.getElementById('inkPieChart');
+        if (ctxInkPie) {
+            if (window.myInkPie) window.myInkPie.destroy();
+            window.myInkPie = new Chart(ctxInkPie, {
+                type: 'doughnut',
+                data: { labels: ['Nhập kho', 'Cấp phát'], datasets: [{ data: [10, 2], backgroundColor: ['#16a34a', '#ef4444'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: percentPluginConfig }
+            });
+        }
+
+        // 6. Tab Viễn Thông
+        let ctxTelecomBar = document.getElementById('telecomBarChart');
+        if (ctxTelecomBar) {
+            if (window.myTelecomBar) window.myTelecomBar.destroy();
+            window.myTelecomBar = new Chart(ctxTelecomBar, {
+                type: 'bar',
+                data: { labels: ['VNPT', 'Viettel', 'Mobifone'], datasets: [{ label: 'Cước (VNĐ)', data: [1200000, 950000, 600000], backgroundColor: ['#0284c7', '#ef4444', '#f59e0b'] }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false }, datalabels: { formatter: (v) => v.toLocaleString() + ' đ', color: '#0f172a', anchor: 'end', align: 'top', font: { weight: 'bold', size: 10 } } } }
+            });
+        }
+        let ctxTelecomPie = document.getElementById('telecomPieChart');
+        if (ctxTelecomPie) {
+            if (window.myTelecomPie) window.myTelecomPie.destroy();
+            window.myTelecomPie = new Chart(ctxTelecomPie, {
+                type: 'doughnut',
+                data: { labels: ['VNPT', 'Viettel', 'Mobifone'], datasets: [{ data: [50, 30, 20], backgroundColor: ['#0284c7', '#e11d48', '#fbbf24'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: percentPluginConfig }
+            });
+        }
+
+        // 7. Tab Khảo Sát Phần Mềm
+        let ctxSurveyOs = document.getElementById('surveyOsPieChart');
+        if (ctxSurveyOs) {
+            if (window.mySurveyOs) window.mySurveyOs.destroy();
+            window.mySurveyOs = new Chart(ctxSurveyOs, {
+                type: 'pie',
+                data: { labels: ['Windows 11 Pro', 'Windows 10 Pro'], datasets: [{ data: [1, 0], backgroundColor: ['#8b5cf6', '#cbd5e1'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: percentPluginConfig }
+            });
+        }
+        let ctxSurveyOffice = document.getElementById('surveyOfficePieChart');
+        if (ctxSurveyOffice) {
+            if (window.mySurveyOffice) window.mySurveyOffice.destroy();
+            window.mySurveyOffice = new Chart(ctxSurveyOffice, {
+                type: 'pie',
+                data: { labels: ['Microsoft 365', 'Office 2021'], datasets: [{ data: [1, 0], backgroundColor: ['#10b981', '#cbd5e1'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: percentPluginConfig }
             });
         }
     }

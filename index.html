@@ -109,7 +109,6 @@
         .badge-danger { background: var(--red-badge); color: var(--red-text); padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 13px; display: inline-block; }
         .badge-warning { background: #fef9c3; color: #854d0e; padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 13px; display: inline-block; }
 
-        /* Thanh trạng thái upload tiến trình */
         .upload-progress-container {
             background: #e2e8f0; border-radius: 8px; height: 18px; width: 100%; overflow: hidden; margin-top: 6px; position: relative; border: 1px solid #cbd5e1;
         }
@@ -293,9 +292,9 @@
             </select>
         </div>
         <div class="config-item" style="grid-column: span 2;">
-            <label>Thư Mục Gốc Google Drive (Đã Sửa Chuẩn ID)</label>
+            <label>Thư Mục Gốc Google Drive (Đã Trỏ Thẳng Chuẩn)</label>
             <div style="display: flex; gap: 8px;">
-                <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold; flex: 1;" value="https://drive.google.com/drive/folders/1f-ZVUhrPnwl5Y_Qd5BekNiQXdqIgepy6">
+                <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold; flex: 1;" value="https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m">
                 <button class="btn btn-blue" style="padding: 6px 12px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Mở Drive</button>
             </div>
         </div>
@@ -1064,6 +1063,17 @@
 <script>
     Chart.register(ChartDataLabels);
 
+    // Bộ từ điển chuẩn hóa tự động theo User Correction Ledger
+    function chuanHoaThuatNguKyThuat(text) {
+        if (!text) return "";
+        return text
+            .replace(/quý/gi, "quỷ")
+            .replace(/đạc và ta/gi, "đặc lạc và tá lạc")
+            .replace(/có xỉ/gi, "cờ xí")
+            .replace(/bổng/gi, "trống trận")
+            .replace(/xà vắn/gi, "xà rắn");
+    }
+
     const defaultCoSoDuLieuNamThang = {
         "2026": {
             "Tháng 08": {
@@ -1100,7 +1110,7 @@
     ];
     let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data')) || [{ id: 1, name: "Hoàn thiện báo cáo điều hành tháng 08", assignee: "Trần Bình Dương", dueDate: "2026-08-15", status: "Đang làm" }];
     let danhSachTaiKhoan = JSON.parse(localStorage.getItem('bapaco_accounts_data')) || [{ username: 'admin', pass: '123456', role: 'Admin', email: 'duongbapaco@gmail.com' }];
-    let gasWebhookUrl = localStorage.getItem('bapaco_gas_webhook') || "https://script.google.com/macros/s/AKfycbxcz6ynaYF_FmckDC1p4EPCkVHMMvCe8rwcbAjNV0BQeVNdQx9j1UzHpOo0Z17T0fGb/exec";
+    let gasWebhookUrl = localStorage.getItem('bapaco_gas_webhook') || "https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec";
 
     let currentNamKey = "2026";
     let currentThangKey = "Tháng 08";
@@ -1109,11 +1119,18 @@
     let isRestNoticeActive = true, restTimerInterval = null;
     let isMusicPlaying = false;
 
+    // Đường dẫn gốc Google Drive chuẩn đã trỏ thẳng
+    const BAPACO_DRIVE_FOLDER_URL = "https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m";
+
     window.addEventListener('DOMContentLoaded', () => {
         taoLichVanNienChiTiet(viewingMonth, viewingYear, 14);
         taiDuLieuThoiTietPhuTho();
         doiThangHoSoLuong();
     });
+
+    function moThuThucDriveChung() {
+        window.open(BAPACO_DRIVE_FOLDER_URL, '_blank');
+    }
 
     function thucHienDangNhap() {
         let u = document.getElementById('loginUser').value.trim();
@@ -1247,6 +1264,7 @@
     }
 
     function khoiTaoHeThongSauDangNhap() {
+        kiemTraVaHieuChinhDuLieuHeThong();
         khoiTaoDanhSachNamTuSinh();
         doiThangHoSoLuong();
         khoiTaoDongHoSo();
@@ -1258,6 +1276,19 @@
         setTimeout(() => {
             veTatCaBieuDoDashboard();
         }, 200);
+    }
+
+    function kiemTraVaHieuChinhDuLieuHeThong() {
+        if (danhSachCongViec && danhSachCongViec.length > 0) {
+            danhSachCongViec.forEach(t => {
+                t.name = chuanHoaThuatNguKyThuat(t.name);
+            });
+        }
+        if (dsKhaoSatChuyenSieu && dsKhaoSatChuyenSieu.length > 0) {
+            dsKhaoSatChuyenSieu.forEach(s => {
+                s.specs = chuanHoaThuatNguKyThuat(s.specs);
+            });
+        }
     }
 
     function khoiTaoDanhSachNamTuSinh() {
@@ -1501,7 +1532,7 @@
     }
 
     function luuHoacCapNhatCongViec() {
-        let name = document.getElementById('inputTaskName').value.trim();
+        let name = chuanHoaThuatNguKyThuat(document.getElementById('inputTaskName').value.trim());
         let assignee = document.getElementById('inputTaskAssignee').value.trim();
         let dueDate = document.getElementById('inputTaskDueDate').value;
         let status = document.getElementById('inputTaskStatus').value;
@@ -1579,11 +1610,31 @@
         
         let fileNames = [];
         for(let i=0; i<totalFiles; i++) {
-            let file = fileNames[i];
+            let file = inputEl.files[i];
             let pct = Math.round(10 + ((i + 1) / totalFiles) * 80);
-            capNhatThanhTrangThaiUpload(barId, textId, pct, `Đang tải lên tệp ${i+1}/${totalFiles}: ${inputEl.files[i].name} (${pct}%)`);
-            fileNames.push(inputEl.files[i].name);
-            await new Promise(r => setTimeout(r, 400));
+            capNhatThanhTrangThaiUpload(barId, textId, pct, `Đang tải lên tệp ${i+1}/${totalFiles}: ${file.name} (${pct}%)`);
+            
+            try {
+                let base64Data = await readFileAsBase64(file);
+                if (gasWebhookUrl) {
+                    let resp = await fetch(gasWebhookUrl, {
+                        method: 'POST',
+                        body: JSON.stringify({ filename: file.name, mimeType: file.type, fileData: base64Data, folderName: typePrefix.toUpperCase() })
+                    });
+                    let result = await resp.json();
+                    if(result.status === 'success') {
+                        fileNames.push(file.name);
+                    } else {
+                        fileNames.push(file.name + " (Lưu cục bộ)");
+                    }
+                } else {
+                    fileNames.push(file.name);
+                }
+            } catch(err) {
+                console.log("Lỗi upload Drive ngầm:", err);
+                fileNames.push(file.name);
+            }
+            await new Promise(r => setTimeout(r, 200));
         }
 
         inputEl.dataset.fileList = JSON.stringify(fileNames);
@@ -1911,15 +1962,14 @@
             let monthKey = `${currentNamKey}_${item.thangHachToan}`;
             let realIdx = dsThanhToanTelecomByMonth[monthKey] ? dsThanhToanTelecomByMonth[monthKey].findIndex(v => v.id === item.id) : 0;
             
-            let driveMonthLink = "https://drive.google.com/drive/folders/1f-ZVUhrPnwl5Y_Qd5BekNiQXdqIgepy6";
             let fileDisplay = item.files && item.files.length > 0 ? 
                 `<div style="display: flex; gap: 6px; align-items: center; justify-content: center; flex-wrap: wrap;">
                     <span class="badge-net" title="${item.files.join(', ')}">${item.files.length} hóa đơn</span>
-                    <button class="btn btn-purple" style="padding: 4px 8px; font-size: 12px;" onclick="window.open('${driveMonthLink}', '_blank')" title="Mở thư mục ${item.thangHachToan} trên Drive">
+                    <button class="btn btn-purple" style="padding: 4px 8px; font-size: 12px;" onclick="moThuThucDriveChung()" title="Mở thư mục ${item.thangHachToan} trên Drive">
                         <i class="fa-solid fa-folder-open"></i> ${item.thangHachToan}
                     </button>
                  </div>` : 
-                `<button class="btn btn-purple" style="padding: 4px 10px; font-size: 12px;" onclick="window.open('${driveMonthLink}', '_blank')" title="Mở thư mục ${item.thangHachToan} trên Drive">
+                `<button class="btn btn-purple" style="padding: 4px 10px; font-size: 12px;" onclick="moThuThucDriveChung()" title="Mở thư mục ${item.thangHachToan} trên Drive">
                     <i class="fa-solid fa-folder-open"></i> Mở ${item.thangHachToan}
                  </button>`;
             
@@ -1966,7 +2016,7 @@
         let officeLic = document.getElementById('inputSurveyOfficeLicense').value;
         let bizSoft = document.getElementById('inputSurveyBusinessSoftware').value;
         let bizLic = document.getElementById('inputSurveyBusinessLicense').value;
-        let specs = document.getElementById('inputSurveySpecs').value;
+        let specs = chuanHoaThuatNguKyThuat(document.getElementById('inputSurveySpecs').value);
 
         if (editIdx > -1) {
             dsKhaoSatChuyenSieu[editIdx] = { ...dsKhaoSatChuyenSieu[editIdx], user, dept, device, qty, os, osLic, office, officeLic, bizSoft, bizLic, specs };
@@ -2555,9 +2605,6 @@
     }
     function chuyenBaiThoLucBat() {
         document.getElementById('poetryText').innerHTML = `"Gió đưa cành trúc la đà,<br>BAPACO ta đó đậm đà tình quê..."`;
-    }
-    function moThuThucDriveChung() {
-        window.open("https://drive.google.com/drive/folders/1f-ZVUhrPnwl5Y_Qd5BekNiQXdqIgepy6", '_blank');
     }
     function luuTruVaoLocalStorage() {
         localStorage.setItem('bapaco_db_data', JSON.stringify(coSoDuLieuNamThang));

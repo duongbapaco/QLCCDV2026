@@ -602,11 +602,11 @@
             <div class="form-group"><label>Mã HS</label><input type="text" id="inputTelecomMaHs" readonly style="background: #e2e8f0; font-weight: bold;" value="VT-01"></div>
             <div class="form-group"><label>Nhà Mạng</label><select id="inputTelecomSupplier"><option value="VNPT">VNPT</option><option value="Viettel">Viettel</option><option value="Mobifone">Mobifone</option></select></div>
             <div class="form-group"><label>Loại Cước</label><input type="text" id="inputTelecomType" placeholder="VD: Cáp quang..."></div>
-            <div class="form-group"><label>Kỳ Cước</label><input type="text" id="inputTelecomKyCuoc" placeholder="Tháng 08/2026" value="Tháng 08/2026"></div>
+            <div class="form-group"><label>Kỳ Cước</label><input type="text" id="inputTelecomKyCuoc" placeholder="Tháng 07/2026" value="Tháng 07/2026"></div>
             <div class="form-group"><label>Tổng Cước (Đã VAT)</label><input type="text" id="inputTelecomTongVat" placeholder="2.500.000" oninput="tinhTienTelecomTuTong()"></div>
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Thuế VAT (10%)</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
-            <div class="form-group"><label>Hạn TT</label><input type="date" id="inputTelecomDate" value="2026-08-14"></div>
+            <div class="form-group"><label>Hạn TT</label><input type="date" id="inputTelecomDate" value="2026-07-14"></div>
             <div class="form-group"><label>Upload Drive (Nhiều file)</label><input type="file" id="inputTelecomFiles" multiple style="font-size:12px;" onchange="xuLyUploadFileGoogleDrive(this, 'telecom')"></div>
             <div class="form-group" style="grid-column: span 2; display: flex; gap: 8px;">
                 <button class="btn btn-green" id="btnTelecomAction" onclick="luuHoacCapNhatTelecom()"><i class="fas fa-plus-circle"></i> Thêm Cước</button>
@@ -1548,6 +1548,7 @@
     function luuHoacCapNhatTelecom() {
         let type = document.getElementById('inputTelecomType').value.trim();
         let tong = parseFloat(document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g,'')) || 0;
+        let kyCuocVal = document.getElementById('inputTelecomKyCuoc').value.trim(); // Ví dụ: "Tháng 07/2026"
         if (!type || !tong) { alert("⚠️ Vui lòng nhập đủ loại cước và tổng cước!"); return; }
         
         let editIdx = parseInt(document.getElementById('editTelecomIndex').value);
@@ -1555,12 +1556,12 @@
         let truocThue = Math.round(tong / 1.1);
         let vat = tong - truocThue;
         
-        let kyCuocVal = document.getElementById('inputTelecomKyCuoc').value;
-        let targetMonthName = currentThangKey;
-        if (kyCuocVal.includes("Tháng")) {
+        // Tự động phân tách chính xác tháng từ ô Kỳ Cước (VD: "Tháng 07/2026" -> "Tháng 07")
+        let targetMonthName = "Tháng 07";
+        if (kyCuocVal.toLowerCase().includes("tháng")) {
             let parts = kyCuocVal.split('/');
-            let mPart = parts[0].trim();
-            if (mPart.length >= 8) targetMonthName = mPart.substring(0, 8);
+            let segment = parts[0].trim(); // "Tháng 07"
+            if (segment.length >= 8) targetMonthName = segment.substring(0, 8);
         }
         
         let newMonthKey = `${currentNamKey}_${targetMonthName}`;
@@ -1603,12 +1604,12 @@
             } else {
                 dsThanhToanTelecomByMonth[newMonthKey][editIdx] = itemData;
             }
-            alert(`✅ Cập nhật cước viễn thông thành công!`);
+            alert(`✅ Đã cập nhật và lưu tệp vào đúng ${targetMonthName}!`);
             huySuaTelecom();
         } else {
             itemData.id = "VT-0" + (dsThanhToanTelecomByMonth[newMonthKey].length + 1);
             dsThanhToanTelecomByMonth[newMonthKey].push(itemData);
-            alert(`✅ Đã thêm mới cước viễn thông vào ${targetMonthName} thành công!`);
+            alert(`✅ Đã thêm mới cước và lưu file đính kèm vào đúng thư mục ${targetMonthName} thành công!`);
             document.getElementById('inputTelecomType').value = '';
             document.getElementById('inputTelecomTongVat').value = '';
             document.getElementById('inputTelecomTruocThueInput').value = '';
@@ -1911,7 +1912,7 @@
                 names.push(inputEl.files[i].name);
             }
             inputEl.dataset.fileList = JSON.stringify(names);
-            alert(`✅ Đã nhận thành công ${inputEl.files.length} tệp: [${names.join(', ')}]. Hãy bấm "Thêm Cước" để lưu vào tháng hạch toán tương ứng!`);
+            alert(`✅ Đã nhận thành công ${inputEl.files.length} tệp: [${names.join(', ')}]. Hãy bấm "Thêm Cước" để lưu chính xác vào thư mục kỳ cước tháng đó!`);
         }
     }
 

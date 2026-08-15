@@ -2053,17 +2053,32 @@
 
     function moModalPhiieuLuong(idx) {
         selectedNvForSlip = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[idx];
+        let cfg = coSoDuLieuNamThang[currentNamKey][currentThangKey].config;
+
+        // Cập nhật đúng tháng và năm đang chọn trên thanh cấu hình
+        document.getElementById("slipMonthSub").innerText = `${currentThangKey}/${currentNamKey} - Văn phòng BAPACO`;
         document.getElementById("slipName").innerText = selectedNvForSlip.hoTen;
+        document.getElementById("slipNgayCong").innerText = `${selectedNvForSlip.nc_tg} / ${cfg.ncd} Công`;
+        document.getElementById("slipHeSoK").innerText = selectedNvForSlip.k_ht || 1.0;
+
+        document.getElementById("slipDetailHslCb").innerText = selectedNvForSlip.hsl_cb;
+        document.getElementById("slipDetailHslCv").innerText = selectedNvForSlip.hsl_cv;
+
         document.getElementById("slipTLLCB").innerText = selectedNvForSlip.thucLinhLCB.toLocaleString() + ' đ';
         document.getElementById("slipLCVTT").innerText = selectedNvForSlip.luongCVTT.toLocaleString() + ' đ';
+        
+        let tongBaoHiem = (selectedNvForSlip.bhtn || 0) + (selectedNvForSlip.bhxh || 0);
+        document.getElementById("slipBaoHiem").innerText = "- " + tongBaoHiem.toLocaleString() + ' đ';
         document.getElementById("slipTamUng").innerText = "- " + (selectedNvForSlip.tam_ung||0).toLocaleString() + ' đ';
         document.getElementById("slipThucLinh").innerText = selectedNvForSlip.thucLinhCuoiCung.toLocaleString() + ' đ';
+        
         document.getElementById("previewModal").classList.remove('hidden');
     }
+
     function taiAnhPhieuLuongZalo() {
         html2canvas(document.getElementById("payslip-capture"), { scale: 2 }).then(canvas => {
             let link = document.createElement('a');
-            link.download = 'Phieu_Luong.png';
+            link.download = `Phieu_Luong_${currentThangKey}_${currentNamKey}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
         });

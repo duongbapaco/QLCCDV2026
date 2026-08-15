@@ -1565,94 +1565,99 @@
     }
 
     async function luuHoacCapNhatTelecom() {
-        let type = document.getElementById('inputTelecomType').value.trim();
-        let tong = parseFloat(document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g,'')) || 0;
-        let kyCuocVal = document.getElementById('inputTelecomKyCuoc').value.trim();
-        if (!type || !tong) { alert("⚠️ Vui lòng nhập đủ loại cước và tổng cước!"); return; }
-        
-        let editIdx = parseInt(document.getElementById('editTelecomIndex').value);
-        let oldMonthKey = document.getElementById('editTelecomMonthKey').value;
-        let truocThue = Math.round(tong / 1.1);
-        let vat = tong - truocThue;
-        
-        let targetMonthName = "Tháng 07";
-        if (kyCuocVal.toLowerCase().includes("tháng")) {
-            let parts = kyCuocVal.split('/');
-            let segment = parts[0].trim();
-            if (segment.length >= 8) targetMonthName = segment.substring(0, 8);
-        }
-        
-        let newMonthKey = `${currentNamKey}_${targetMonthName}`;
-        if (!dsThanhToanTelecomByMonth[newMonthKey]) dsThanhToanTelecomByMonth[newMonthKey] = [];
+        try {
+            let type = document.getElementById('inputTelecomType').value.trim();
+            let tong = parseFloat(document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g,'')) || 0;
+            let kyCuocVal = document.getElementById('inputTelecomKyCuoc').value.trim();
+            if (!type || !tong) { alert("⚠️ Vui lòng nhập đủ loại cước và tổng cước!"); return; }
+            
+            let editIdx = parseInt(document.getElementById('editTelecomIndex').value);
+            let oldMonthKey = document.getElementById('editTelecomMonthKey').value;
+            let truocThue = Math.round(tong / 1.1);
+            let vat = tong - truocThue;
+            
+            let targetMonthName = "Tháng 07";
+            if (kyCuocVal.toLowerCase().includes("tháng")) {
+                let parts = kyCuocVal.split('/');
+                let segment = parts[0].trim();
+                if (segment.length >= 8) targetMonthName = segment.substring(0, 8);
+            }
+            
+            let newMonthKey = `${currentNamKey}_${targetMonthName}`;
+            if (!dsThanhToanTelecomByMonth[newMonthKey]) dsThanhToanTelecomByMonth[newMonthKey] = [];
 
-        let fileInput = document.getElementById('inputTelecomFiles');
-        let fileNames = [];
-        
-        if (gasWebhookUrl && fileInput.files && fileInput.files.length > 0) {
-            for(let i=0; i<fileInput.files.length; i++) {
-                let file = fileInput.files[i];
-                let base64Data = await readFileAsBase64(file);
-                try {
-                    let resp = await fetch(gasWebhookUrl, {
-                        method: 'POST',
-                        body: JSON.stringify({ filename: file.name, mimeType: file.type, fileData: base64Data, folderName: targetMonthName })
-                    });
-                    let result = await resp.json();
-                    if(result.status === 'success') {
+            let fileInput = document.getElementById('inputTelecomFiles');
+            let fileNames = [];
+            
+            if (gasWebhookUrl && fileInput && fileInput.files && fileInput.files.length > 0) {
+                for(let i=0; i<fileInput.files.length; i++) {
+                    let file = fileInput.files[i];
+                    try {
+                        let base64Data = await readFileAsBase64(file);
+                        let resp = await fetch(gasWebhookUrl, {
+                            method: 'POST',
+                            body: JSON.stringify({ filename: file.name, mimeType: file.type, fileData: base64Data, folderName: targetMonthName })
+                        });
+                        let result = await resp.json();
+                        if(result.status === 'success') {
+                            fileNames.push(file.name);
+                        } else {
+                            fileNames.push(file.name + " (Lưu tại chỗ)");
+                        }
+                    } catch(err) {
+                        console.log("Lỗi upload Drive ngầm:", err);
                         fileNames.push(file.name);
-                    } else {
-                        fileNames.push(file.name + " (Lưu nội bộ)");
                     }
-                } catch(err) {
-                    fileNames.push(file.name);
+                }
+            } else if (fileInput && fileInput.files && fileInput.files.length > 0) {
+                for(let i=0; i<fileInput.files.length; i++) {
+                    fileNames.push(fileInput.files[i].name);
                 }
             }
-        } else if (fileInput.files && fileInput.files.length > 0) {
-            for(let i=0; i<fileInput.files.length; i++) {
-                fileNames.push(fileInput.files[i].name);
+
+            let existingFiles = [];
+            if (editIdx > -1 && oldMonthKey && dsThanhToanTelecomByMonth[oldMonthKey] && dsThanhToanTelecomByMonth[oldMonthKey][editIdx]) {
+                existingFiles = dsThanhToanTelecomByMonth[oldMonthKey][editIdx].files || [];
             }
-        }
+            let finalFiles = fileNames.length > 0 ? existingFiles.concat(fileNames) : existingFiles;
 
-        let existingFiles = [];
-        if (editIdx > -1 && oldMonthKey && dsThanhToanTelecomByMonth[oldMonthKey] && dsThanhToanTelecomByMonth[oldMonthKey][editIdx]) {
-            existingFiles = dsThanhToanTelecomByMonth[oldMonthKey][editIdx].files || [];
-        }
-        let finalFiles = fileNames.length > 0 ? existingFiles.concat(fileNames) : existingFiles;
+            let itemData = {
+                id: editIdx > -1 ? dsThanhToanTelecomByMonth[oldMonthKey][editIdx].id : ("VT-0" + (dsThanhToanTelecomByMonth[newMonthKey].length + 1)),
+                maHs: document.getElementById('inputTelecomMaHs').value,
+                supplier: document.getElementById('inputTelecomSupplier').value,
+                type,
+                kyCuoc: kyCuocVal,
+                thangHachToan: targetMonthName,
+                tong,
+                truocThue,
+                vat,
+                period: document.getElementById('inputTelecomDate').value,
+                files: finalFiles
+            };
 
-        let itemData = {
-            maHs: document.getElementById('inputTelecomMaHs').value,
-            supplier: document.getElementById('inputTelecomSupplier').value,
-            type,
-            kyCuoc: kyCuocVal,
-            thangHachToan: targetMonthName,
-            tong,
-            truocThue,
-            vat,
-            period: document.getElementById('inputTelecomDate').value,
-            files: finalFiles
-        };
-
-        if (editIdx > -1) {
-            itemData.id = dsThanhToanTelecomByMonth[oldMonthKey][editIdx].id;
-            if (oldMonthKey && oldMonthKey !== newMonthKey) {
-                dsThanhToanTelecomByMonth[oldMonthKey].splice(editIdx, 1);
-                dsThanhToanTelecomByMonth[newMonthKey].push(itemData);
+            if (editIdx > -1) {
+                if (oldMonthKey && oldMonthKey !== newMonthKey) {
+                    dsThanhToanTelecomByMonth[oldMonthKey].splice(editIdx, 1);
+                    dsThanhToanTelecomByMonth[newMonthKey].push(itemData);
+                } else {
+                    dsThanhToanTelecomByMonth[newMonthKey][editIdx] = itemData;
+                }
+                alert(`✅ Cập nhật cước viễn thông thành công!`);
+                huySuaTelecom();
             } else {
-                dsThanhToanTelecomByMonth[newMonthKey][editIdx] = itemData;
+                dsThanhToanTelecomByMonth[newMonthKey].push(itemData);
+                alert(`✅ Đã thêm mới cước và ghi sổ thành công vào ${targetMonthName}!`);
+                document.getElementById('inputTelecomType').value = '';
+                document.getElementById('inputTelecomTongVat').value = '';
+                document.getElementById('inputTelecomTruocThueInput').value = '';
+                document.getElementById('inputTelecomVatInput').value = '';
+                if(fileInput) fileInput.value = '';
             }
-            alert(`✅ Đã cập nhật và tự động tạo/lưu hóa đơn vào thư mục ${targetMonthName} trên Google Drive!`);
-            huySuaTelecom();
-        } else {
-            itemData.id = "VT-0" + (dsThanhToanTelecomByMonth[newMonthKey].length + 1);
-            dsThanhToanTelecomByMonth[newMonthKey].push(itemData);
-            alert(`✅ Đã thêm mới cước, tự động kiểm tra/tạo thư mục ${targetMonthName} và đẩy file lên Google Drive thành công!`);
-            document.getElementById('inputTelecomType').value = '';
-            document.getElementById('inputTelecomTongVat').value = '';
-            document.getElementById('inputTelecomTruocThueInput').value = '';
-            document.getElementById('inputTelecomVatInput').value = '';
-            document.getElementById('inputTelecomFiles').value = '';
+            capNhat();
+        } catch (ex) {
+            console.error("Lỗi thực thi:", ex);
+            alert("⚠️ Có lỗi xảy ra trong quá trình xử lý, anh vui lòng kiểm tra F12 Console.");
         }
-        capNhat();
     }
 
     function readFileAsBase64(file) {
@@ -1750,7 +1755,7 @@
 
     function luuHoacCapNhatKhaoSat() {
         let user = document.getElementById('inputSurveyUser').value.trim();
-        if (!user) { alert("Vول lòng nhập tên người dùng!"); return; }
+        if (!user) { alert("Vui lòng nhập tên người dùng!"); return; }
         let editIdx = parseInt(document.getElementById('editSurveyIndex').value);
         let dept = document.getElementById('inputSurveyDept').value.trim() || "Văn phòng BAPACO";
         let device = document.getElementById('inputSurveyDeviceName').value;

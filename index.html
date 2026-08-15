@@ -598,6 +598,7 @@
 
         <div style="background: #f8fafc; border: 2px dashed var(--primary); padding: 16px; border-radius: 10px; margin-bottom: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; align-items: flex-end;">
             <input type="hidden" id="editTelecomIndex" value="-1">
+            <input type="hidden" id="editTelecomMonthKey" value="">
             <div class="form-group"><label>Mã HS</label><input type="text" id="inputTelecomMaHs" readonly style="background: #e2e8f0; font-weight: bold;" value="VT-01"></div>
             <div class="form-group"><label>Nhà Mạng</label><select id="inputTelecomSupplier"><option value="VNPT">VNPT</option><option value="Viettel">Viettel</option><option value="Mobifone">Mobifone</option></select></div>
             <div class="form-group"><label>Loại Cước</label><input type="text" id="inputTelecomType" placeholder="VD: Cáp quang..."></div>
@@ -1359,13 +1360,6 @@
         document.getElementById('btnTaskCancel').classList.add('hidden');
     }
 
-    function xoaCongViec(idx) {
-        if (confirm("Bạn có chắc chắn muốn xóa công việc này không?")) {
-            danhSachCongViec.splice(idx, 1);
-            capNhat();
-        }
-    }
-
     function tinhThanhTienVPP() {
         let q = parseFloat(document.getElementById('inputOfficeQty').value) || 1;
         let p = parseFloat(document.getElementById('inputOfficePrice').value.replace(/[^0-9]/g,'')) || 0;
@@ -1419,11 +1413,11 @@
 
         if (editIdx > -1) {
             currentList[editIdx] = vppItem;
-            alert(`✅ Cập nhật hồ sơ VPP vào ${currentThangKey} năm ${currentNamKey} thành công!`);
+            alert(`✅ Cập nhật hồ sơ VPP thành công!`);
             huySuaVPP();
         } else {
             currentList.push(vppItem);
-            alert(`✅ Đã thêm mới hồ sơ VPP vào ${currentThangKey} năm ${currentNamKey} thành công!`);
+            alert(`✅ Đã thêm mới hồ sơ VPP thành công!`);
             document.getElementById('inputOfficeContent').value = '';
             document.getElementById('inputOfficeBeneficiary').value = '';
             document.getElementById('inputOfficeStk').value = '';
@@ -1549,15 +1543,23 @@
     function luuHoacCapNhatTelecom() {
         let type = document.getElementById('inputTelecomType').value.trim();
         let tong = parseFloat(document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g,'')) || 0;
-        if (!type || !tong) { alert("Nhập đủ loại cước và tổng cước!"); return; }
+        if (!type || !tong) { alert("⚠️ Vui lòng nhập đủ loại cước và tổng cước!"); return; }
         
         let editIdx = parseInt(document.getElementById('editTelecomIndex').value);
+        let oldMonthKey = document.getElementById('editTelecomMonthKey').value;
         let truocThue = Math.round(tong / 1.1);
         let vat = tong - truocThue;
         
-        let key = `${currentNamKey}_${currentThangKey}`;
-        if (!dsThanhToanTelecomByMonth[key]) dsThanhToanTelecomByMonth[key] = [];
-        let currentList = dsThanhToanTelecomByMonth[key];
+        let kyCuocVal = document.getElementById('inputTelecomKyCuoc').value;
+        let targetMonthName = "Tháng 08";
+        if (kyCuocVal.includes("Tháng")) {
+            let parts = kyCuocVal.split('/');
+            let mPart = parts[0].trim();
+            if (mPart.length >= 8) targetMonthName = mPart.substring(0, 8);
+        }
+        
+        let newMonthKey = `${currentNamKey}_${targetMonthName}`;
+        if (!dsThanhToanTelecomByMonth[newMonthKey]) dsThanhToanTelecomByMonth[newMonthKey] = [];
 
         let fileInput = document.getElementById('inputTelecomFiles');
         let fileNames = [];
@@ -1567,14 +1569,18 @@
             }
         }
 
-        let existingFiles = editIdx > -1 ? (currentList[editIdx].files || []) : [];
+        let existingFiles = [];
+        if (editIdx > -1 && oldMonthKey && dsThanhToanTelecomByMonth[oldMonthKey] && dsThanhToanTelecomByMonth[oldMonthKey][editIdx]) {
+            existingFiles = dsThanhToanTelecomByMonth[oldMonthKey][editIdx].files || [];
+        }
         let finalFiles = fileNames.length > 0 ? existingFiles.concat(fileNames) : existingFiles;
 
         let itemData = {
             maHs: document.getElementById('inputTelecomMaHs').value,
             supplier: document.getElementById('inputTelecomSupplier').value,
             type,
-            kyCuoc: document.getElementById('inputTelecomKyCuoc').value,
+            kyCuoc: kyCuocVal,
+            thangHachToan: targetMonthName,
             tong,
             truocThue,
             vat,
@@ -1583,13 +1589,20 @@
         };
 
         if (editIdx > -1) {
-            currentList[editIdx] = { ...currentList[editIdx], ...itemData };
-            alert(`✅ Cập nhật cước viễn thông vào ${currentThangKey} năm ${currentNamKey} thành công!`);
+            itemData.id = dsThanhToanTelecomByMonth[oldMonthKey][editIdx].id;
+            // Xóa ở mảng cũ nếu đổi tháng
+            if (oldMonthKey && oldMonthKey !== newMonthKey) {
+                dsThanhToanTelecomByMonth[oldMonthKey].splice(editIdx, 1);
+                dsThanhToanTelecomByMonth[newMonthKey].push(itemData);
+            } else {
+                dsThanhToanTelecomByMonth[newMonthKey][editIdx] = itemData;
+            }
+            alert(`✅ Cập nhật cước viễn thông thành công!`);
             huySuaTelecom();
         } else {
-            itemData.id = "VT-0" + (currentList.length + 1);
-            currentList.push(itemData);
-            alert(`✅ Đã thêm cước viễn thông vào ${currentThangKey} năm ${currentNamKey} thành công!`);
+            itemData.id = "VT-0" + (dsThanhToanTelecomByMonth[newMonthKey].length + 1);
+            dsThanhToanTelecomByMonth[newMonthKey].push(itemData);
+            alert(`✅ Đã thêm mới cước viễn thông thành công!`);
             document.getElementById('inputTelecomType').value = '';
             document.getElementById('inputTelecomTongVat').value = '';
             document.getElementById('inputTelecomTruocThueInput').value = '';
@@ -1611,13 +1624,17 @@
         document.getElementById('inputTelecomTruocThueInput').value = item.truocThue.toLocaleString();
         document.getElementById('inputTelecomVatInput').value = item.vat.toLocaleString();
         document.getElementById('inputTelecomDate').value = item.period;
+        
         document.getElementById('editTelecomIndex').value = idx;
+        document.getElementById('editTelecomMonthKey').value = monthKey;
+        
         document.getElementById('btnTelecomAction').innerHTML = '<i class="fas fa-save"></i> Cập Nhật';
         document.getElementById('btnTelecomCancel').classList.remove('hidden');
     }
 
     function huySuaTelecom() {
         document.getElementById('editTelecomIndex').value = -1;
+        document.getElementById('editTelecomMonthKey').value = '';
         document.getElementById('inputTelecomType').value = '';
         document.getElementById('inputTelecomTongVat').value = '';
         document.getElementById('inputTelecomTruocThueInput').value = '';
@@ -1871,7 +1888,7 @@
         if (inputEl.files && inputEl.files.length > 0) {
             let names = [];
             for(let i=0; i<inputEl.files.length; i++) names.push(inputEl.files[i].name);
-            alert(`✅ Đã chọn hàng loạt thành công ${inputEl.files.length} tệp: [${names.join(', ')}] vào đúng ${currentThangKey} năm ${currentNamKey}!`);
+            alert(`✅ Đã chọn hàng loạt thành công ${inputEl.files.length} tệp: [${names.join(', ')}] vào đúng tháng hạch toán!`);
         }
     }
 

@@ -1509,6 +1509,14 @@
         document.getElementById('btnTaskCancel').classList.add('hidden');
     }
 
+    function xoaCongViec(idx) {
+        if (confirm("Bạn có chắc chắn muốn xóa công việc này không?")) {
+            danhSachCongViec.splice(idx, 1);
+            capNhat();
+            alert("✅ Đã xóa công việc thành công!");
+        }
+    }
+
     function tinhThanhTienVPP() {
         let q = parseFloat(document.getElementById('inputOfficeQty').value) || 1;
         let p = parseFloat(document.getElementById('inputOfficePrice').value.replace(/[^0-9]/g,'')) || 0;

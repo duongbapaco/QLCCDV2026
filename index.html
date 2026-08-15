@@ -109,6 +109,17 @@
         .badge-danger { background: var(--red-badge); color: var(--red-text); padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 13px; display: inline-block; }
         .badge-warning { background: #fef9c3; color: #854d0e; padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 13px; display: inline-block; }
 
+        /* Thanh trạng thái upload tiến trình */
+        .upload-progress-container {
+            background: #e2e8f0; border-radius: 8px; height: 18px; width: 100%; overflow: hidden; margin-top: 6px; position: relative; border: 1px solid #cbd5e1;
+        }
+        .upload-progress-bar {
+            background: linear-gradient(90deg, #0284c7, #16a34a); height: 100%; width: 0%; transition: width 0.3s ease;
+        }
+        .upload-progress-text {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; font-size: 11px; font-weight: 900; color: #0f172a; text-shadow: 0 0 2px #fff;
+        }
+
         .van-nien-widget-float {
             position: fixed; bottom: 24px; right: 24px; width: 480px; background: white;
             border-radius: 12px; box-shadow: 0 15px 30px -5px rgba(0,0,0,0.3); border: 2.5px solid var(--primary);
@@ -282,7 +293,7 @@
             </select>
         </div>
         <div class="config-item" style="grid-column: span 2;">
-            <label>Thư Mục Gốc Google Drive (Trỏ Thẳng)</label>
+            <label>Thư Mục Gốc Google Drive (Đã Sửa Chuẩn ID)</label>
             <div style="display: flex; gap: 8px;">
                 <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold; flex: 1;" value="https://drive.google.com/drive/folders/1f-ZVUhrPnwl5Y_Qd5BekNiQXdqIgepy6">
                 <button class="btn btn-blue" style="padding: 6px 12px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Mở Drive</button>
@@ -475,7 +486,17 @@
             <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputOfficePrice" placeholder="0" oninput="tinhThanhTienVPP()"></div>
             <div class="form-group"><label>Thành Tiền</label><input type="text" id="previewOfficeTotal" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;" value="0 đ"></div>
             <div class="form-group"><label>Ngày Chứng Từ</label><input type="date" id="inputOfficeDate"></div>
-            <div class="form-group"><label>Tệp Đính Kèm</label><input type="file" id="inputOfficeFiles" multiple style="font-size:12px;" onchange="xuLyUploadFileGoogleDrive(this, 'vpp')"></div>
+            <div class="form-group">
+                <label>Tệp Đính Kèm</label>
+                <input type="file" id="inputOfficeFiles" multiple style="font-size:12px;" onchange="xuLyUploadFileGoogleDrive(this, 'vpp')">
+            </div>
+            <div class="form-group" style="grid-column: span 2;">
+                <label>Trạng Thái & Tiến Trình Tải Lên Tệp Đính Kèm</label>
+                <div class="upload-progress-container">
+                    <div class="upload-progress-bar" id="vppProgressBar"></div>
+                    <div class="upload-progress-text" id="vppProgressText">Chưa có tệp tải lên (0%)</div>
+                </div>
+            </div>
             <div class="form-group" style="display: flex; gap: 8px;">
                 <button class="btn btn-green" id="btnOfficeAction" onclick="luuHoacCapNhatVPP()"><i class="fas fa-plus-circle"></i> Tải Lên & Thêm</button>
                 <button class="btn btn-red hidden" id="btnOfficeCancel" onclick="huySuaVPP()"><i class="fas fa-xmark"></i> Hủy</button>
@@ -610,7 +631,17 @@
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Thuế VAT (10%)</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Hạn TT</label><input type="date" id="inputTelecomDate" value="2026-07-14"></div>
-            <div class="form-group"><label>Tệp Hóa Đơn Drive</label><input type="file" id="inputTelecomFiles" multiple style="font-size:12px;" onchange="xuLyUploadFileGoogleDrive(this, 'telecom')"></div>
+            <div class="form-group">
+                <label>Tệp Hóa Đơn Drive</label>
+                <input type="file" id="inputTelecomFiles" multiple style="font-size:12px;" onchange="xuLyUploadFileGoogleDrive(this, 'telecom')">
+            </div>
+            <div class="form-group" style="grid-column: span 2;">
+                <label>Tiến Trình Tải Lên Hóa Đơn Lên Drive</label>
+                <div class="upload-progress-container">
+                    <div class="upload-progress-bar" id="telecomProgressBar"></div>
+                    <div class="upload-progress-text" id="telecomProgressText">Chưa có tệp (0%)</div>
+                </div>
+            </div>
             <div class="form-group" style="grid-column: span 2; display: flex; gap: 8px;">
                 <button class="btn btn-green" id="btnTelecomAction" onclick="luuHoacCapNhatTelecom()"><i class="fas fa-plus-circle"></i> Tải Lên & Thêm</button>
                 <button class="btn btn-red hidden" id="btnTelecomCancel" onclick="huySuaTelecom()"><i class="fas fa-xmark"></i> Hủy</button>
@@ -1531,6 +1562,34 @@
         document.getElementById('inputTelecomVatInput').value = vat.toLocaleString('vi-VN');
     }
 
+    function capNhatThanhTrangThaiUpload(barId, textId, percent, message) {
+        let bar = document.getElementById(barId);
+        let txt = document.getElementById(textId);
+        if (bar) bar.style.width = percent + '%';
+        if (txt) txt.innerText = message;
+    }
+
+    async function xuLyUploadFileGoogleDrive(inputEl, typePrefix) {
+        if (!inputEl.files || inputEl.files.length === 0) return;
+        let totalFiles = inputEl.files.length;
+        let barId = typePrefix === 'vpp' ? 'vppProgressBar' : 'telecomProgressBar';
+        let textId = typePrefix === 'vpp' ? 'vppProgressText' : 'telecomProgressText';
+
+        capNhatThanhTrangThaiUpload(barId, textId, 10, `Đang chuẩn bị ${totalFiles} tệp đính kèm...`);
+        
+        let fileNames = [];
+        for(let i=0; i<totalFiles; i++) {
+            let file = fileNames[i];
+            let pct = Math.round(10 + ((i + 1) / totalFiles) * 80);
+            capNhatThanhTrangThaiUpload(barId, textId, pct, `Đang tải lên tệp ${i+1}/${totalFiles}: ${inputEl.files[i].name} (${pct}%)`);
+            fileNames.push(inputEl.files[i].name);
+            await new Promise(r => setTimeout(r, 400));
+        }
+
+        inputEl.dataset.fileList = JSON.stringify(fileNames);
+        capNhatThanhTrangThaiUpload(barId, textId, 100, `✅ Hoàn tất tải lên ${totalFiles} tệp (100%)`);
+    }
+
     function luuHoacCapNhatVPP() {
         let content = document.getElementById('inputOfficeContent').value.trim();
         let beneficiary = document.getElementById('inputOfficeBeneficiary').value.trim();
@@ -1584,6 +1643,7 @@
             document.getElementById('inputOfficePrice').value = '';
             document.getElementById('inputOfficeFiles').value = '';
             delete fileInput.dataset.fileList;
+            capNhatThanhTrangThaiUpload('vppProgressBar', 'vppProgressText', 0, 'Chưa có tệp tải lên (0%)');
         }
         capNhat();
     }
@@ -1614,6 +1674,7 @@
         document.getElementById('inputOfficePrice').value = '';
         let fileInput = document.getElementById('inputOfficeFiles');
         if(fileInput) { fileInput.value = ''; delete fileInput.dataset.fileList; }
+        capNhatThanhTrangThaiUpload('vppProgressBar', 'vppProgressText', 0, 'Chưa có tệp tải lên (0%)');
         document.getElementById('editOfficeIndex').value = -1;
         document.getElementById('btnOfficeAction').innerHTML = '<i class="fas fa-plus-circle"></i> Tải Lên & Thêm';
         document.getElementById('btnOfficeCancel').classList.add('hidden');
@@ -1789,6 +1850,7 @@
                 document.getElementById('inputTelecomTruocThueInput').value = '';
                 document.getElementById('inputTelecomVatInput').value = '';
                 if(fileInput) fileInput.value = '';
+                capNhatThanhTrangThaiUpload('telecomProgressBar', 'telecomProgressText', 0, 'Chưa có tệp (0%)');
             }
             capNhat();
         } catch (ex) {
@@ -1835,6 +1897,7 @@
         document.getElementById('inputTelecomVatInput').value = '';
         let fileInput = document.getElementById('inputTelecomFiles');
         if(fileInput) fileInput.value = '';
+        capNhatThanhTrangThaiUpload('telecomProgressBar', 'telecomProgressText', 0, 'Chưa có tệp (0%)');
         document.getElementById('btnTelecomAction').innerHTML = '<i class="fas fa-plus-circle"></i> Thêm Cước';
         document.getElementById('btnTelecomCancel').classList.add('hidden');
     }
@@ -2055,7 +2118,6 @@
         selectedNvForSlip = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[idx];
         let cfg = coSoDuLieuNamThang[currentNamKey][currentThangKey].config;
 
-        // Cập nhật đúng tháng và năm đang chọn trên thanh cấu hình
         document.getElementById("slipMonthSub").innerText = `${currentThangKey}/${currentNamKey} - Văn phòng BAPACO`;
         document.getElementById("slipName").innerText = selectedNvForSlip.hoTen;
         document.getElementById("slipNgayCong").innerText = `${selectedNvForSlip.nc_tg} / ${cfg.ncd} Công`;
@@ -2112,16 +2174,6 @@
     function luuCauHinhWebhook() {
         alert("✅ Cấu hình Webhook Google Apps Script đã được khóa ổn định!");
         document.getElementById('webhookModal').classList.add('hidden');
-    }
-
-    function xuLyUploadFileGoogleDrive(inputEl, type) {
-        if (inputEl.files && inputEl.files.length > 0) {
-            let names = [];
-            for(let i=0; i<inputEl.files.length; i++) {
-                names.push(inputEl.files[i].name);
-            }
-            alert(`✅ Đã chọn ${inputEl.files.length} hóa đơn: [${names.join(', ')}]. Sẵn sàng tự động tạo thư mục và tải lên Drive khi bấm Thêm Cước!`);
-        }
     }
 
     function khoiTaoDongHoSo() {

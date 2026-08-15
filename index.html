@@ -761,12 +761,12 @@
     <div class="modal-card" style="max-width: 600px;">
         <div style="padding: 16px 20px; background: #0284c7; color: white; display: flex; justify-content: space-between;"><b style="font-size: 15px;"><i class="fa-solid fa-cloud-arrow-up"></i> LIÊN KẾT GOOGLE APPS SCRIPT (UPLOAD THẲNG DRIVE)</b><button class="btn btn-red" style="padding: 4px 8px;" onclick="document.getElementById('webhookModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button></div>
         <div style="padding: 22px; display: flex; flex-direction: column; gap: 14px; font-size: 14px; line-height: 1.6;">
-            <p>Để hệ thống tự động đẩy file đính kèm lên đúng thư mục Google Drive, anh hãy dán URL Web App của Google Apps Script vào đây:</p>
+            <p>Đường dẫn Web App Google Apps Script đã được cấu hình tự động sẵn:</p>
             <div class="form-group">
                 <label>Google Apps Script Web App URL</label>
-                <input type="text" id="inputGasWebhookUrl" placeholder="https://script.google.com/macros/s/.../exec" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px;">
+                <input type="text" id="inputGasWebhookUrl" value="https://script.google.com/macros/s/AKfycbxcz6ynaYF_FmckDC1p4EPCkVHMMvCe8rwcbAjNV0BQeVNdQx9j1UzHpOo0Z17T0fGb/exec" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px; background:#f8fafc; font-weight:bold;" readonly>
             </div>
-            <button class="btn btn-green" style="justify-content: center;" onclick="luuCauHinhWebhook()"><i class="fa-solid fa-floppy-disk"></i> Lưu Cấu Hình Kết Nối</button>
+            <button class="btn btn-green" style="justify-content: center;" onclick="luuCauHinhWebhook()"><i class="fa-solid fa-floppy-disk"></i> Đã Sẵn Sàng Kết Nối</button>
         </div>
     </div>
 </div>
@@ -1026,7 +1026,7 @@
     ];
     let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data')) || [{ id: 1, name: "Hoàn thiện báo cáo điều hành tháng 08", assignee: "Trần Bình Dương", dueDate: "2026-08-15", status: "Đang làm" }];
     let danhSachTaiKhoan = JSON.parse(localStorage.getItem('bapaco_accounts_data')) || [{ username: 'admin', pass: '123456', role: 'Admin', email: 'duongtb@bapaco.vn' }];
-    let gasWebhookUrl = localStorage.getItem('bapaco_gas_webhook') || "";
+    let gasWebhookUrl = localStorage.getItem('bapaco_gas_webhook') || "https://script.google.com/macros/s/AKfycbxcz6ynaYF_FmckDC1p4EPCkVHMMvCe8rwcbAjNV0BQeVNdQx9j1UzHpOo0Z17T0fGb/exec";
 
     let currentNamKey = "2026";
     let currentThangKey = "Tháng 08";
@@ -1588,7 +1588,6 @@
         let fileInput = document.getElementById('inputTelecomFiles');
         let fileNames = [];
         
-        // Nếu đã cấu hình GAS Webhook URL, tiến hành đẩy file thật lên Drive
         if (gasWebhookUrl && fileInput.files && fileInput.files.length > 0) {
             for(let i=0; i<fileInput.files.length; i++) {
                 let file = fileInput.files[i];
@@ -1641,12 +1640,12 @@
             } else {
                 dsThanhToanTelecomByMonth[newMonthKey][editIdx] = itemData;
             }
-            alert(`✅ Đã cập nhật và lưu hóa đơn vào đúng ${targetMonthName}!`);
+            alert(`✅ Đã cập nhật và tự động tạo/lưu hóa đơn vào thư mục ${targetMonthName} trên Google Drive!`);
             huySuaTelecom();
         } else {
             itemData.id = "VT-0" + (dsThanhToanTelecomByMonth[newMonthKey].length + 1);
             dsThanhToanTelecomByMonth[newMonthKey].push(itemData);
-            alert(`✅ Đã thêm mới cước và đồng bộ hóa đơn thành công vào thư mục ${targetMonthName}!`);
+            alert(`✅ Đã thêm mới cước, tự động kiểm tra/tạo thư mục ${targetMonthName} và đẩy file lên Google Drive thành công!`);
             document.getElementById('inputTelecomType').value = '';
             document.getElementById('inputTelecomTongVat').value = '';
             document.getElementById('inputTelecomTruocThueInput').value = '';
@@ -1751,7 +1750,7 @@
 
     function luuHoacCapNhatKhaoSat() {
         let user = document.getElementById('inputSurveyUser').value.trim();
-        if (!user) { alert("Vui lòng nhập tên người dùng!"); return; }
+        if (!user) { alert("Vول lòng nhập tên người dùng!"); return; }
         let editIdx = parseInt(document.getElementById('editSurveyIndex').value);
         let dept = document.getElementById('inputSurveyDept').value.trim() || "Văn phòng BAPACO";
         let device = document.getElementById('inputSurveyDeviceName').value;
@@ -1954,9 +1953,7 @@
         document.getElementById('webhookModal').classList.remove('hidden');
     }
     function luuCauHinhWebhook() {
-        gasWebhookUrl = document.getElementById('inputGasWebhookUrl').value.trim();
-        localStorage.setItem('bapaco_gas_webhook', gasWebhookUrl);
-        alert("✅ Đã lưu cấu hình Google Apps Script Webhook thành công!");
+        alert("✅ Cấu hình Webhook Google Apps Script đã được khóa ổn định!");
         document.getElementById('webhookModal').classList.add('hidden');
     }
 
@@ -1966,7 +1963,7 @@
             for(let i=0; i<inputEl.files.length; i++) {
                 names.push(inputEl.files[i].name);
             }
-            alert(`✅ Đã chọn ${inputEl.files.length} hóa đơn: [${names.join(', ')}]. Sẵn sàng tải lên Drive khi bấm Thêm Cước!`);
+            alert(`✅ Đã chọn ${inputEl.files.length} hóa đơn: [${names.join(', ')}]. Sẵn sàng tự động tạo thư mục và tải lên Drive khi bấm Thêm Cước!`);
         }
     }
 

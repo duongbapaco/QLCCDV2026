@@ -1659,7 +1659,19 @@
         allYearTelecom.forEach((item, idx) => {
             let monthKey = `${currentNamKey}_${item.thangHachToan}`;
             let realIdx = dsThanhToanTelecomByMonth[monthKey] ? dsThanhToanTelecomByMonth[monthKey].findIndex(v => v.id === item.id) : 0;
-            let fileDisplay = item.files && item.files.length > 0 ? `<span class="badge-net" title="${item.files.join(', ')}">${item.files.length} file đính kèm</span>` : `<button class="btn btn-purple" style="padding:4px 8px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Drive</button>`;
+            
+            // Nút bấm màu tím mở thư mục tháng tương ứng
+            let driveMonthLink = "https://drive.google.com/drive/folders/178tb6bmU0IUlkvqJGYzsASsye43Yl2Pi";
+            let fileDisplay = item.files && item.files.length > 0 ? 
+                `<div style="display: flex; gap: 6px; align-items: center; justify-content: center; flex-wrap: wrap;">
+                    <span class="badge-net" title="${item.files.join(', ')}">${item.files.length} file</span>
+                    <button class="btn btn-purple" style="padding: 4px 8px; font-size: 12px;" onclick="window.open('${driveMonthLink}', '_blank')" title="Mở thư mục ${item.thangHachToan} trên Drive">
+                        <i class="fa-solid fa-folder-open"></i> ${item.thangHachToan}
+                    </button>
+                 </div>` : 
+                `<button class="btn btn-purple" style="padding: 4px 10px; font-size: 12px;" onclick="window.open('${driveMonthLink}', '_blank')" title="Mở thư mục ${item.thangHachToan} trên Drive">
+                    <i class="fa-solid fa-folder-open"></i> Mở ${item.thangHachToan}
+                 </button>`;
             
             tbody.innerHTML += `<tr>
                 <td><b>${item.maHs || ('VT-0' + (idx+1))}</b></td>

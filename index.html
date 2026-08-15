@@ -240,7 +240,7 @@
             <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 4px; font-weight: 600;">Nhập email đã đăng ký để nhận mã khôi phục mật khẩu tạm thời:</div>
             <div class="form-group">
                 <label>Email Nhận Mã</label>
-                <input type="email" id="forgotEmail" placeholder="duongtb@bapaco.vn" onkeydown="handleForgotKeydown(event)">
+                <input type="email" id="forgotEmail" placeholder="duongbapaco@gmail.com" onkeydown="handleForgotKeydown(event)">
             </div>
             <button class="btn btn-green" style="padding: 12px; justify-content: center; font-size: 15px;" onclick="guiMaKhoiPhucMatKhau()">
                 <i class="fa-solid fa-paper-plane"></i> Gửi Mã Khôi Phục
@@ -936,13 +936,56 @@
     </div>
 </div>
 
-<!-- MODAL QUẢN LÝ TÀI KHOẢN -->
+<!-- MODAL QUẢN LÝ TÀI KHOẢN CHUYÊN NGHIỆP -->
 <div class="modal-overlay hidden" id="userManagementModal">
-    <div class="modal-card" style="max-width: 640px;">
-        <div style="padding: 16px 20px; background: #8b5cf6; color: white; display: flex; justify-content: space-between;"><b style="font-size: 15px;"><i class="fa-solid fa-users-gear"></i> QUẢN LÝ TÀI KHOẢN & EMAIL KHÔI PHỤC</b><button class="btn btn-red" style="padding: 4px 8px;" onclick="document.getElementById('userManagementModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button></div>
-        <div style="padding: 20px; display: flex; flex-direction: column; gap: 16px;">
+    <div class="modal-card" style="max-width: 820px;">
+        <div style="padding: 16px 20px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; display: flex; justify-content: space-between; align-items: center;">
+            <b style="font-size: 16px;"><i class="fa-solid fa-users-gear"></i> QUẢN LÝ HỆ THỐNG TÀI KHOẢN & PHÂN QUYỀN BAPACO</b>
+            <button class="btn btn-red" style="padding: 4px 8px;" onclick="dongModalQuanLyTaiKhoan()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div style="padding: 20px; display: flex; flex-direction: column; gap: 16px; background: #f8fafc; max-height: 80vh; overflow-y: auto;">
+            
+            <!-- Form thêm / sửa tài khoản -->
+            <div style="background: white; padding: 16px; border-radius: 10px; border: 1.5px dashed #8b5cf6; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; align-items: flex-end;">
+                <input type="hidden" id="editUserIndex" value="-1">
+                <div class="form-group">
+                    <label>Tên Đăng Nhập (*)</label>
+                    <input type="text" id="inputAccUsername" placeholder="VD: duongtb">
+                </div>
+                <div class="form-group">
+                    <label>Mật Khẩu (*)</label>
+                    <input type="text" id="inputAccPassword" placeholder="Mật khẩu...">
+                </div>
+                <div class="form-group">
+                    <label>Email Nhận Khôi Phục</label>
+                    <input type="email" id="inputAccEmail" placeholder="duongbapaco@gmail.com" value="duongbapaco@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label>Quyền Hạn</label>
+                    <select id="inputAccRole">
+                        <option value="Admin">🔑 Admin (Quản trị toàn quyền)</option>
+                        <option value="Manager">📊 Manager (Quản lý điều hành)</option>
+                        <option value="User">👤 User (Nhân sự xem/nhập liệu)</option>
+                    </select>
+                </div>
+                <div class="form-group" style="display: flex; gap: 8px;">
+                    <button class="btn btn-purple" id="btnAccAction" onclick="luuHoacCapNhatTaiKhoan()"><i class="fas fa-user-plus"></i> Thêm Tài Khoản</button>
+                    <button class="btn btn-red hidden" id="btnAccCancel" onclick="huySuaTaiKhoan()"><i class="fas fa-xmark"></i></button>
+                </div>
+            </div>
+
+            <!-- Bảng danh sách tài khoản -->
             <table>
-                <thead><tr><th>Tên Đăng Nhập</th><th>Email Nhận Mật Khẩu</th><th>Quyền</th><th>Thao Tác</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên Đăng Nhập</th>
+                        <th>Mật Khẩu</th>
+                        <th>Email Khôi Phục</th>
+                        <th>Quyền Hạn</th>
+                        <th>Thao Tác</th>
+                    </tr>
+                </thead>
                 <tbody id="userListTableBody"></tbody>
             </table>
         </div>
@@ -1025,7 +1068,7 @@
         { code: "KS-01", user: "Trần Bình Dương", dept: "Văn phòng Tổng công ty", device: "Laptop Dell", qty: 1, os: "Windows 11 Pro", osLic: "Bản quyền OEM / Retail", office: "Microsoft 365", officeLic: "Bản quyền chính hãng", bizSoft: "Cloudoffice", bizLic: "Bản quyền doanh nghiệp", specs: "Core i7, RAM 16GB" }
     ];
     let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data')) || [{ id: 1, name: "Hoàn thiện báo cáo điều hành tháng 08", assignee: "Trần Bình Dương", dueDate: "2026-08-15", status: "Đang làm" }];
-    let danhSachTaiKhoan = JSON.parse(localStorage.getItem('bapaco_accounts_data')) || [{ username: 'admin', pass: '123456', role: 'Admin', email: 'duongtb@bapaco.vn' }];
+    let danhSachTaiKhoan = JSON.parse(localStorage.getItem('bapaco_accounts_data')) || [{ username: 'admin', pass: '123456', role: 'Admin', email: 'duongbapaco@gmail.com' }];
     let gasWebhookUrl = localStorage.getItem('bapaco_gas_webhook') || "https://script.google.com/macros/s/AKfycbxcz6ynaYF_FmckDC1p4EPCkVHMMvCe8rwcbAjNV0BQeVNdQx9j1UzHpOo0Z17T0fGb/exec";
 
     let currentNamKey = "2026";
@@ -1078,12 +1121,98 @@
     }
 
     function moModalQuanLyTaiKhoan() {
+        renderUserListTable();
+        document.getElementById('userManagementModal').classList.remove('hidden');
+    }
+
+    function dongModalQuanLyTaiKhoan() {
+        document.getElementById('userManagementModal').classList.add('hidden');
+        huySuaTaiKhoan();
+    }
+
+    function renderUserListTable() {
         let tbody = document.getElementById('userListTableBody');
         tbody.innerHTML = '';
         danhSachTaiKhoan.forEach((acc, idx) => {
-            tbody.innerHTML += `<tr><td><b>${acc.username}</b></td><td><input class="cell-input" value="${acc.email || ''}" onchange="danhSachTaiKhoan[${idx}].email=this.value;luuTruVaoLocalStorage();"></td><td>${acc.role}</td></tr>`;
+            let roleBadge = acc.role === 'Admin' ? '<span class="badge-danger">Admin</span>' : (acc.role === 'Manager' ? '<span class="badge-warning">Manager</span>' : '<span class="badge-net">User</span>');
+            tbody.innerHTML += `<tr>
+                <td style="text-align:center;">${idx + 1}</td>
+                <td><b>${acc.username}</b></td>
+                <td><code>${acc.pass}</code></td>
+                <td>${acc.email || '--'}</td>
+                <td style="text-align:center;">${roleBadge}</td>
+                <td style="text-align:center;">
+                    <button class="btn btn-blue" style="padding:4px 8px;" onclick="suaTaiKhoan(${idx})" title="Sửa"><i class="fas fa-pen"></i></button>
+                    ${danhSachTaiKhoan.length > 1 ? `<button class="btn btn-red" style="padding:4px 8px;" onclick="xoaTaiKhoan(${idx})" title="Xóa"><i class="fas fa-trash"></i></button>` : ''}
+                </td>
+            </tr>`;
         });
-        document.getElementById('userManagementModal').classList.remove('hidden');
+    }
+
+    function luuHoacCapNhatTaiKhoan() {
+        let username = document.getElementById('inputAccUsername').value.trim();
+        let pass = document.getElementById('inputAccPassword').value.trim();
+        let email = document.getElementById('inputAccEmail').value.trim();
+        let role = document.getElementById('inputAccRole').value;
+
+        if (!username || !pass) {
+            alert("⚠️ Vui lòng nhập đầy đủ Tên đăng nhập và Mật khẩu!");
+            return;
+        }
+
+        let editIdx = parseInt(document.getElementById('editUserIndex').value);
+
+        if (editIdx > -1) {
+            danhSachTaiKhoan[editIdx] = { username, pass, email, role };
+            alert("✅ Cập nhật tài khoản thành công!");
+            huySuaTaiKhoan();
+        } else {
+            let exits = danhSachTaiKhoan.some(acc => acc.username === username);
+            if (exits) {
+                alert("⚠️ Tên đăng nhập này đã tồn tại trong hệ thống!");
+                return;
+            }
+            danhSachTaiKhoan.push({ username, pass, email, role });
+            alert("✅ Thêm tài khoản mới thành công!");
+            document.getElementById('inputAccUsername').value = '';
+            document.getElementById('inputAccPassword').value = '';
+        }
+        
+        localStorage.setItem('bapaco_accounts_data', JSON.stringify(danhSachTaiKhoan));
+        renderUserListTable();
+    }
+
+    function suaTaiKhoan(idx) {
+        let acc = danhSachTaiKhoan[idx];
+        document.getElementById('inputAccUsername').value = acc.username;
+        document.getElementById('inputAccPassword').value = acc.pass;
+        document.getElementById('inputAccEmail').value = acc.email || '';
+        document.getElementById('inputAccRole').value = acc.role || 'User';
+        document.getElementById('editUserIndex').value = idx;
+        document.getElementById('btnAccAction').innerHTML = '<i class="fas fa-save"></i> Cập Nhật';
+        document.getElementById('btnAccCancel').classList.remove('hidden');
+    }
+
+    function huySuaTaiKhoan() {
+        document.getElementById('inputAccUsername').value = '';
+        document.getElementById('inputAccPassword').value = '';
+        document.getElementById('inputAccEmail').value = 'duongbapaco@gmail.com';
+        document.getElementById('editUserIndex').value = -1;
+        document.getElementById('btnAccAction').innerHTML = '<i class="fas fa-user-plus"></i> Thêm Tài Khoản';
+        document.getElementById('btnAccCancel').classList.add('hidden');
+    }
+
+    function xoaTaiKhoan(idx) {
+        if (danhSachTaiKhoan.length <= 1) {
+            alert("⚠️ Hệ thống cần duy trì ít nhất một tài khoản quản trị!");
+            return;
+        }
+        if (confirm(`Bạn có chắc chắn muốn xóa tài khoản "${danhSachTaiKhoan[idx].username}" không?`)) {
+            danhSachTaiKhoan.splice(idx, 1);
+            localStorage.setItem('bapaco_accounts_data', JSON.stringify(danhSachTaiKhoan));
+            renderUserListTable();
+            alert("✅ Đã xóa tài khoản thành công!");
+        }
     }
 
     function khoiTaoHeThongSauDangNhap() {

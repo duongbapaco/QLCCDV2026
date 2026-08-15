@@ -436,12 +436,12 @@
     <!-- TAB 3: QUẢN LÝ PHÉP -->
     <div id="leaveTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-calendar-days"></i> THEO DÕI & QUẢN LÝ NGÀY PHÉP (LUẬT LĐ: KHÔNG CỘNG DỒN TỒN PHÉP)</div>
+            <div class="table-title"><i class="fa-solid fa-calendar-days"></i> THEO DÕI & QUẢN LÝ NGÀY PHÉP (Cộng dồn tự động các tháng trong năm)</div>
             <button class="btn btn-blue" onclick="moModalDangKyNghiPhep()"><i class="fa-solid fa-file-pen"></i> Đăng Ký Nghỉ Phép Mới</button>
         </div>
         <div class="charts-multi-grid" style="margin-bottom: 16px;">
             <div class="chart-card" style="padding: 12px;">
-                <div class="chart-title"><i class="fa-solid fa-chart-column"></i> Biểu Đồ Cột: Ngày Nghỉ Phép Từng Nhân Sự</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-column"></i> Biểu Đồ Cột: Tổng Số Ngày Nghỉ Phép Lũy Kế</div>
                 <div style="position: relative; height: 200px;"><canvas id="leaveBarChart"></canvas></div>
             </div>
             <div class="chart-card" style="padding: 12px;">
@@ -451,7 +451,7 @@
         </div>
         <div style="overflow-x: auto;">
             <table>
-                <thead><tr><th>STT</th><th>Họ và Tên</th><th>Phép Cấp (Năm)</th><th>Đã Nghỉ (Tháng)</th><th>Tổng Phép Đã Nghỉ</th><th>Nghỉ Lễ</th><th>Phép Còn Lại (Đúng Luật)</th><th>Trạng Thái & Cảnh Báo</th></tr></thead>
+                <thead><tr><th>STT</th><th>Họ và Tên</th><th>Phép Cấp (Năm)</th><th>Đã Nghỉ (Lũy Kế Năm)</th><th>Nghỉ Lễ (Lũy Kế)</th><th>Phép Còn Lại (Đúng Luật)</th><th>Trạng Thái & Cảnh Báo</th></tr></thead>
                 <tbody id="leaveTableBody"></tbody>
             </table>
         </div>
@@ -646,7 +646,7 @@
         </div>
     </div>
 
-    <!-- TAB 8: KHẢO SÁT PHẦN MỀM (ĐÃ NÂNG CẤP ĐẦY ĐỦ THÔNG SỐ THEO YÊU CẦU) -->
+    <!-- TAB 8: KHẢO SÁT PHẦN MỀM -->
     <div id="surveyTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-clipboard-check"></i> KHẢO SÁT THIẾT BỊ, OS, OFFICE & PHẦN MỀM NGHIỆP VỤ</div>
@@ -1181,6 +1181,26 @@
         return allTelecom;
     }
 
+    // Cơ chế tính lũy kế phép đã nghỉ qua tất cả các tháng trong năm
+    function layTongLuyKePhepDaNghi(tenNhanSu) {
+        let totalP = 0;
+        let totalL = 0;
+        let yearData = coSoDuLieuNamThang[currentNamKey];
+        if (yearData) {
+            for (let mKey in yearData) {
+                let monthData = yearData[mKey];
+                if (monthData && monthData.nhansu) {
+                    let nv = monthData.nhansu.find(i => i.hoTen === tenNhanSu);
+                    if (nv) {
+                        totalP += (nv.nc_p || 0);
+                        totalL += (nv.nc_l || 0);
+                    }
+                }
+            }
+        }
+        return { totalP, totalL };
+    }
+
     function capNhatKPI() {
         let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         let totalNet = ds.reduce((sum, i) => sum + (i.thucLinhCuoiCung || 0), 0);
@@ -1245,16 +1265,17 @@
         tbody.innerHTML = "";
         coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.forEach((item, idx) => {
             let phepCap = item.phep_cap || 12;
-            let phepDaNghi = item.phep_da_nghi || 0;
-            let phepConLai = phepCap - phepDaNghi;
+            let luyKe = layTongLuyKePhepDaNghi(item.hoTen);
+            let tongDaNghi = luyKe.totalP;
+            let phepConLai = phepCap - tongDaNghi;
             let badge = phepConLai < 0 ? `<span class="badge-danger">Vượt mức (${Math.abs(phepConLai)}d)</span>` : `<span class="badge-net">Còn lại (${phepConLai}d)</span>`;
+            
             tbody.innerHTML += `<tr>
                 <td style="text-align:center;">${idx+1}</td>
                 <td><b>${item.hoTen}</b></td>
                 <td style="text-align:center;"><input class="cell-input num-center" type="number" value="${phepCap}" onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].phep_cap=parseFloat(this.value)||12;capNhat();"></td>
-                <td style="text-align:center;">${item.nc_p||0}</td>
-                <td style="text-align:center;"><input class="cell-input num-center" type="number" value="${phepDaNghi}" onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].phep_da_nghi=parseFloat(this.value)||0;capNhat();"></td>
-                <td style="text-align:center;">${item.nc_l||0}</td>
+                <td style="text-align:center; font-weight:bold; color:#d97706;">${tongDaNghi} ngày (Lũy kế)</td>
+                <td style="text-align:center;">${luyKe.totalL} ngày</td>
                 <td style="text-align:center; font-weight:bold; color:${phepConLai<0?'#dc2626':'#16a34a'};">${phepConLai} ngày</td>
                 <td style="text-align:center;">${badge}</td>
             </tr>`;
@@ -1464,7 +1485,6 @@
         document.getElementById('autoOfficeId').value = "VPP-0" + (curList.length + 1);
     }
 
-    // Kho Mực In
     function luuHoacCapNhatKhoMuc() {
         let name = document.getElementById('inputInkName').value.trim();
         if (!name) { alert("Nhập tên mực!"); return; }
@@ -1514,7 +1534,6 @@
         document.getElementById('xntTableBody').innerHTML = `<tr><td>1</td><td>MUC001</td><td>Hộp mực Canon 337</td><td>5</td><td>10</td><td>2</td><td style="font-weight:bold; color:#0284c7;">13</td><td><span class="badge-net">Ổn định</span></td></tr>`;
     }
 
-    // Cước Viễn Thông
     function luuHoacCapNhatTelecom() {
         let type = document.getElementById('inputTelecomType').value.trim();
         let tong = parseFloat(document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g,'')) || 0;
@@ -1621,7 +1640,6 @@
         document.getElementById('telecomKpiTongThanhToan').innerText = sumAmountYear.toLocaleString('vi-VN') + ' đ';
     }
 
-    // Khảo sát Phần mềm & Thiết bị đầy đủ
     function luuHoacCapNhatKhaoSat() {
         let user = document.getElementById('inputSurveyUser').value.trim();
         if (!user) { alert("Vui lòng nhập tên người dùng!"); return; }
@@ -1727,8 +1745,8 @@
         let nv = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.find(i => i.hoTen === hoTen);
         if (nv) {
             let phepCap = nv.phep_cap || 12;
-            let phepDaNghi = nv.phep_da_nghi || 0;
-            let phepCon = phepCap - phepDaNghi;
+            let tongDaNghi = layTongLuyKePhepDaNghi(hoTen).totalP;
+            let phepCon = phepCap - tongDaNghi;
             let el = document.getElementById('popupPhepConLaiHienThi');
             el.innerText = phepCon + " Ngày";
             el.style.color = phepCon < 0 ? "#dc2626" : "#16a34a";
@@ -1759,9 +1777,11 @@
             nv.phep_da_nghi = (nv.phep_da_nghi || 0) + soNgayNghi;
         }
         capNhat();
-        alert(`✅ Đã đăng ký thành công ${soNgayNghi} ngày phép cho nhân sự: ${hoTen}!`);
+        alert(`✅ Đã đăng ký thành công ${soNgayNghi} ngày phép cho nhân sự: ${hoTen} tại ${currentThangGroup()}!`);
         dongModalDangKyNghiPhep();
     }
+
+    function currentThangGroup() { return currentThangKey; }
 
     function xemVaInPhieuGiaoNhan() {
         document.getElementById('printSlipFrom').innerText = document.getElementById('inputSlipFrom').value;
@@ -1969,7 +1989,7 @@
             if (window.myOverviewLeave) window.myOverviewLeave.destroy();
             window.myOverviewLeave = new Chart(ctxOverviewLeave, {
                 type: 'bar',
-                data: { labels: ds.slice(0, 8).map(i => i.hoTen.split(' ').pop()), datasets: [{ label: 'Đã nghỉ phép', data: ds.slice(0, 8).map(i => i.nc_p || 0), backgroundColor: '#8b5cf6' }] },
+                data: { labels: ds.slice(0, 8).map(i => i.hoTen.split(' ').pop()), datasets: [{ label: 'Lũy kế phép đã nghỉ', data: ds.slice(0, 8).map(i => layTongLuyKePhepDaNghi(i.hoTen).totalP), backgroundColor: '#8b5cf6' }] },
                 options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false }, datalabels: { formatter: (v) => v + ' ngày', color: '#0f172a', anchor: 'end', align: 'top', font: { weight: 'bold', size: 11 } } } }
             });
         }
@@ -2004,18 +2024,18 @@
             if (window.myLeaveBar) window.myLeaveBar.destroy();
             window.myLeaveBar = new Chart(ctxLeaveBar, {
                 type: 'bar',
-                data: { labels: ds.slice(0, 8).map(i => i.hoTen.split(' ').pop()), datasets: [{ label: 'Đã nghỉ phép', data: ds.slice(0, 8).map(i => i.nc_p || 0), backgroundColor: '#0284c7' }] },
+                data: { labels: ds.slice(0, 8).map(i => i.hoTen.split(' ').pop()), datasets: [{ label: 'Lũy kế phép đã nghỉ', data: ds.slice(0, 8).map(i => layTongLuyKePhepDaNghi(i.hoTen).totalP), backgroundColor: '#0284c7' }] },
                 options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false }, datalabels: { formatter: (v) => v + ' ngày', color: '#0f172a', anchor: 'end', align: 'top', font: { weight: 'bold', size: 11 } } } }
             });
         }
         let ctxLeavePie = document.getElementById('leavePieChart');
         if (ctxLeavePie) {
             if (window.myLeavePie) window.myLeavePie.destroy();
-            let totalDaNghi = ds.reduce((s,i)=>s+(i.nc_p||0),0);
-            let totalCon = ds.reduce((s,i)=>s+((i.phep_cap||12)-(i.phep_da_nghi||0)),0);
+            let totalDaNghiYear = ds.reduce((s,i)=>s+layTongLuyKePhepDaNghi(i.hoTen).totalP,0);
+            let totalConYear = ds.reduce((s,i)=>s+((i.phep_cap||12)-layTongLuyKePhepDaNghi(i.hoTen).totalP),0);
             window.myLeavePie = new Chart(ctxLeavePie, {
                 type: 'doughnut',
-                data: { labels: ['Đã dùng', 'Còn lại'], datasets: [{ data: [totalDaNghi, Math.max(0, totalCon)], backgroundColor: ['#ef4444', '#16a34a'] }] },
+                data: { labels: ['Đã dùng (Lũy kế)', 'Còn lại'], datasets: [{ data: [totalDaNghiYear, Math.max(0, totalConYear)], backgroundColor: ['#ef4444', '#16a34a'] }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: percentPluginConfig }
             });
         }

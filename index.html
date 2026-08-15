@@ -284,7 +284,7 @@
         <div class="config-item" style="grid-column: span 2;">
             <label>Thư Mục Gốc Google Drive (Trỏ Thẳng)</label>
             <div style="display: flex; gap: 8px;">
-                <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold; flex: 1;" value="https://drive.google.com/drive/folders/178tb6bmU0IUlkvqJGYzsASsye43Yl2Pi">
+                <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold; flex: 1;" value="https://drive.google.com/drive/folders/1f-ZVUhrPnwl5Y_Qd5BekNiQXdqIgepy6">
                 <button class="btn btn-blue" style="padding: 6px 12px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Mở Drive</button>
             </div>
         </div>
@@ -575,7 +575,10 @@
     <div id="telecomPaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-wifi"></i> QUẢN LÝ CƯỚC MẠNG & INTERNET (<span id="titleTelecomYearSpan">2026</span> - Hiển thị liền mạch)</div>
-            <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Thư Mục Gốc Drive</button>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn btn-green" onclick="moHuongDanTaoThuMucDrive()"><i class="fa-solid fa-folder-plus"></i> Hướng Dẫn Thư Mục Drive</button>
+                <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Thư Mục Gốc Drive</button>
+            </div>
         </div>
         
         <div class="kpi-grid" style="margin-bottom: 16px;">
@@ -607,7 +610,7 @@
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Thuế VAT (10%)</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Hạn TT</label><input type="date" id="inputTelecomDate" value="2026-07-14"></div>
-            <div class="form-group"><label>Upload Drive (Nhiều file)</label><input type="file" id="inputTelecomFiles" multiple style="font-size:12px;" onchange="xuLyUploadFileGoogleDrive(this, 'telecom')"></div>
+            <div class="form-group"><label>Tệp Hóa Đơn</label><input type="file" id="inputTelecomFiles" multiple style="font-size:12px;" onchange="xuLyUploadFileGoogleDrive(this, 'telecom')"></div>
             <div class="form-group" style="grid-column: span 2; display: flex; gap: 8px;">
                 <button class="btn btn-green" id="btnTelecomAction" onclick="luuHoacCapNhatTelecom()"><i class="fas fa-plus-circle"></i> Thêm Cước</button>
                 <button class="btn btn-red hidden" id="btnTelecomCancel" onclick="huySuaTelecom()"><i class="fas fa-xmark"></i> Hủy</button>
@@ -749,6 +752,21 @@
                 </thead>
                 <tbody id="surveyTableBody"></tbody>
             </table>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL HƯỚNG DẪN TẠO THƯ MỤC DRIVE -->
+<div class="modal-overlay hidden" id="driveGuideModal">
+    <div class="modal-card" style="max-width: 580px;">
+        <div style="padding: 16px 20px; background: #0284c7; color: white; display: flex; justify-content: space-between;"><b style="font-size: 15px;"><i class="fa-solid fa-folder-plus"></i> HƯỚNG DẪN ĐỒNG BỘ THƯ MỤC DRIVE</b><button class="btn btn-red" style="padding: 4px 8px;" onclick="document.getElementById('driveGuideModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button></div>
+        <div style="padding: 22px; display: flex; flex-direction: column; gap: 14px; font-size: 14px; line-height: 1.6;">
+            <p><b>Anh Dương ơi, do bảo mật trình duyệt web tĩnh, hệ thống không thể tự tạo thư mục vật lý lên Google Drive của anh. Anh hãy thực hiện 2 bước đơn giản sau:</b></p>
+            <ol style="padding-left: 20px; display: flex; flex-direction: column; gap: 8px;">
+                <li>Mở thư mục <b>Tháng 07</b> trên Google Drive của anh.</li>
+                <li>Tạo một thư mục con tên là: <code style="background:#e2e8f0; padding:2px 6px; border-radius:4px; font-weight:bold; color:#0369a1;">Cuoc_Dien_Thoai_Internet</code> để lưu hóa đơn các nhà mạng VNPT, Viettel, Mobifone.</li>
+            </ol>
+            <button class="btn btn-blue" style="justify-content: center; margin-top: 10px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Mở Ngay Thư Mục Gốc Trên Drive</button>
         </div>
     </div>
 </div>
@@ -1548,7 +1566,7 @@
     function luuHoacCapNhatTelecom() {
         let type = document.getElementById('inputTelecomType').value.trim();
         let tong = parseFloat(document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g,'')) || 0;
-        let kyCuocVal = document.getElementById('inputTelecomKyCuoc').value.trim(); // Ví dụ: "Tháng 07/2026"
+        let kyCuocVal = document.getElementById('inputTelecomKyCuoc').value.trim();
         if (!type || !tong) { alert("⚠️ Vui lòng nhập đủ loại cước và tổng cước!"); return; }
         
         let editIdx = parseInt(document.getElementById('editTelecomIndex').value);
@@ -1556,11 +1574,10 @@
         let truocThue = Math.round(tong / 1.1);
         let vat = tong - truocThue;
         
-        // Tự động phân tách chính xác tháng từ ô Kỳ Cước (VD: "Tháng 07/2026" -> "Tháng 07")
         let targetMonthName = "Tháng 07";
         if (kyCuocVal.toLowerCase().includes("tháng")) {
             let parts = kyCuocVal.split('/');
-            let segment = parts[0].trim(); // "Tháng 07"
+            let segment = parts[0].trim();
             if (segment.length >= 8) targetMonthName = segment.substring(0, 8);
         }
         
@@ -1604,7 +1621,7 @@
             } else {
                 dsThanhToanTelecomByMonth[newMonthKey][editIdx] = itemData;
             }
-            alert(`✅ Đã cập nhật và lưu tệp vào đúng ${targetMonthName}!`);
+            alert(`✅ Đã cập nhật và lưu hóa đơn vào đúng ${targetMonthName}!`);
             huySuaTelecom();
         } else {
             itemData.id = "VT-0" + (dsThanhToanTelecomByMonth[newMonthKey].length + 1);
@@ -1662,11 +1679,10 @@
             let monthKey = `${currentNamKey}_${item.thangHachToan}`;
             let realIdx = dsThanhToanTelecomByMonth[monthKey] ? dsThanhToanTelecomByMonth[monthKey].findIndex(v => v.id === item.id) : 0;
             
-            // Nút bấm màu tím mở thư mục tháng tương ứng
-            let driveMonthLink = "https://drive.google.com/drive/folders/178tb6bmU0IUlkvqJGYzsASsye43Yl2Pi";
+            let driveMonthLink = "https://drive.google.com/drive/folders/1f-ZVUhrPnwl5Y_Qd5BekNiQXdqIgepy6";
             let fileDisplay = item.files && item.files.length > 0 ? 
                 `<div style="display: flex; gap: 6px; align-items: center; justify-content: center; flex-wrap: wrap;">
-                    <span class="badge-net" title="${item.files.join(', ')}">${item.files.length} file</span>
+                    <span class="badge-net" title="${item.files.join(', ')}">${item.files.length} hóa đơn</span>
                     <button class="btn btn-purple" style="padding: 4px 8px; font-size: 12px;" onclick="window.open('${driveMonthLink}', '_blank')" title="Mở thư mục ${item.thangHachToan} trên Drive">
                         <i class="fa-solid fa-folder-open"></i> ${item.thangHachToan}
                     </button>
@@ -1912,7 +1928,7 @@
                 names.push(inputEl.files[i].name);
             }
             inputEl.dataset.fileList = JSON.stringify(names);
-            alert(`✅ Đã nhận thành công ${inputEl.files.length} tệp: [${names.join(', ')}]. Hãy bấm "Thêm Cước" để lưu chính xác vào thư mục kỳ cước tháng đó!`);
+            alert(`✅ Đã nhận thành công ${inputEl.files.length} hóa đơn: [${names.join(', ')}]. Hãy bấm "Thêm Cước" để lưu vào hệ thống!`);
         }
     }
 
@@ -2297,7 +2313,10 @@
         document.getElementById('poetryText').innerHTML = `"Gió đưa cành trúc la đà,<br>BAPACO ta đó đậm đà tình quê..."`;
     }
     function moThuThucDriveChung() {
-        window.open("https://drive.google.com/drive/folders/178tb6bmU0IUlkvqJGYzsASsye43Yl2Pi", '_blank');
+        window.open("https://drive.google.com/drive/folders/1f-ZVUhrPnwl5Y_Qd5BekNiQXdqIgepy6", '_blank');
+    }
+    function moHuongDanTaoThuMucDrive() {
+        document.getElementById('driveGuideModal').classList.remove('hidden');
     }
     function luuTruVaoLocalStorage() {
         localStorage.setItem('bapaco_db_data', JSON.stringify(coSoDuLieuNamThang));

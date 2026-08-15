@@ -1402,6 +1402,9 @@
             }
         }
 
+        let existingFiles = editIdx > -1 ? (currentList[editIdx].files || []) : [];
+        let finalFiles = fileNames.length > 0 ? existingFiles.concat(fileNames) : existingFiles;
+
         let vppItem = {
             id: editIdx > -1 ? currentList[editIdx].id : ("VPP-0" + (currentList.length + 1)),
             content,
@@ -1411,12 +1414,12 @@
             bank: document.getElementById('inputOfficeBank').value,
             date: document.getElementById('inputOfficeDate').value || `${currentNamKey}-08-14`,
             qty, price, total,
-            files: fileNames.length > 0 ? fileNames : (editIdx > -1 ? currentList[editIdx].files : [])
+            files: finalFiles
         };
 
         if (editIdx > -1) {
             currentList[editIdx] = vppItem;
-            alert("✅ Cập nhật hồ sơ VPP thành công!");
+            alert(`✅ Cập nhật hồ sơ VPP vào ${currentThangKey} năm ${currentNamKey} thành công!`);
             huySuaVPP();
         } else {
             currentList.push(vppItem);
@@ -1564,6 +1567,9 @@
             }
         }
 
+        let existingFiles = editIdx > -1 ? (currentList[editIdx].files || []) : [];
+        let finalFiles = fileNames.length > 0 ? existingFiles.concat(fileNames) : existingFiles;
+
         let itemData = {
             maHs: document.getElementById('inputTelecomMaHs').value,
             supplier: document.getElementById('inputTelecomSupplier').value,
@@ -1573,12 +1579,12 @@
             truocThue,
             vat,
             period: document.getElementById('inputTelecomDate').value,
-            files: fileNames.length > 0 ? fileNames : (editIdx > -1 ? currentList[editIdx].files : [])
+            files: finalFiles
         };
 
         if (editIdx > -1) {
             currentList[editIdx] = { ...currentList[editIdx], ...itemData };
-            alert("✅ Cập nhật cước viễn thông thành công!");
+            alert(`✅ Cập nhật cước viễn thông vào ${currentThangKey} năm ${currentNamKey} thành công!`);
             huySuaTelecom();
         } else {
             itemData.id = "VT-0" + (currentList.length + 1);
@@ -1865,7 +1871,7 @@
         if (inputEl.files && inputEl.files.length > 0) {
             let names = [];
             for(let i=0; i<inputEl.files.length; i++) names.push(inputEl.files[i].name);
-            alert(`✅ Đã chọn hàng loạt thành công ${inputEl.files.length} tệp: [${names.join(', ')}] cho ${type.toUpperCase()} tại ${currentThangKey} năm ${currentNamKey}!`);
+            alert(`✅ Đã chọn hàng loạt thành công ${inputEl.files.length} tệp: [${names.join(', ')}] vào đúng ${currentThangKey} năm ${currentNamKey}!`);
         }
     }
 

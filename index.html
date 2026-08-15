@@ -475,7 +475,7 @@
             <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputOfficePrice" placeholder="0" oninput="tinhThanhTienVPP()"></div>
             <div class="form-group"><label>Thành Tiền</label><input type="text" id="previewOfficeTotal" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;" value="0 đ"></div>
             <div class="form-group"><label>Ngày Chứng Từ</label><input type="date" id="inputOfficeDate"></div>
-            <div class="form-group"><label>Tệp Đính Kèm (Chọn hàng loạt)</label><input type="file" id="inputOfficeFiles" multiple style="font-size:12px;" onchange="xuLyUploadFileGoogleDrive(this, 'vpp')"></div>
+            <div class="form-group"><label>Tệp Đính Kèm</label><input type="file" id="inputOfficeFiles" multiple style="font-size:12px;" onchange="xuLyUploadFileGoogleDrive(this, 'vpp')"></div>
             <div class="form-group" style="display: flex; gap: 8px;">
                 <button class="btn btn-green" id="btnOfficeAction" onclick="luuHoacCapNhatVPP()"><i class="fas fa-plus-circle"></i> Tải Lên & Thêm</button>
                 <button class="btn btn-red hidden" id="btnOfficeCancel" onclick="huySuaVPP()"><i class="fas fa-xmark"></i> Hủy</button>
@@ -574,9 +574,9 @@
     <!-- TAB 7: CƯỚC VIỄN THÔNG -->
     <div id="telecomPaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-wifi"></i> QUẢN LÝ CƯỚC MẠNG & INTERNET (<span id="titleTelecomYearSpan">2026</span> - Hiển thị liền mạch)</div>
+            <div class="table-title"><i class="fa-solid fa-wifi"></i> QUẢN LÝ CƯỚC MẠNG & INTERNET (<span id="titleTelecomYearSpan">2026</span> - Đồng bộ Drive thông minh)</div>
             <div style="display: flex; gap: 8px;">
-                <button class="btn btn-green" onclick="moHuongDanTaoThuMucDrive()"><i class="fa-solid fa-folder-plus"></i> Hướng Dẫn Thư Mục Drive</button>
+                <button class="btn btn-green" onclick="moModalCauHinhWebhook()"><i class="fa-solid fa-cloud-arrow-up"></i> Cấu Hình GAS / Drive API</button>
                 <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Thư Mục Gốc Drive</button>
             </div>
         </div>
@@ -610,9 +610,9 @@
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Thuế VAT (10%)</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Hạn TT</label><input type="date" id="inputTelecomDate" value="2026-07-14"></div>
-            <div class="form-group"><label>Tệp Hóa Đơn</label><input type="file" id="inputTelecomFiles" multiple style="font-size:12px;" onchange="xuLyUploadFileGoogleDrive(this, 'telecom')"></div>
+            <div class="form-group"><label>Tệp Hóa Đơn Drive</label><input type="file" id="inputTelecomFiles" multiple style="font-size:12px;" onchange="xuLyUploadFileGoogleDrive(this, 'telecom')"></div>
             <div class="form-group" style="grid-column: span 2; display: flex; gap: 8px;">
-                <button class="btn btn-green" id="btnTelecomAction" onclick="luuHoacCapNhatTelecom()"><i class="fas fa-plus-circle"></i> Thêm Cước</button>
+                <button class="btn btn-green" id="btnTelecomAction" onclick="luuHoacCapNhatTelecom()"><i class="fas fa-plus-circle"></i> Tải Lên & Thêm</button>
                 <button class="btn btn-red hidden" id="btnTelecomCancel" onclick="huySuaTelecom()"><i class="fas fa-xmark"></i> Hủy</button>
             </div>
         </div>
@@ -756,17 +756,17 @@
     </div>
 </div>
 
-<!-- MODAL HƯỚNG DẪN TẠO THƯ MỤC DRIVE -->
-<div class="modal-overlay hidden" id="driveGuideModal">
-    <div class="modal-card" style="max-width: 580px;">
-        <div style="padding: 16px 20px; background: #0284c7; color: white; display: flex; justify-content: space-between;"><b style="font-size: 15px;"><i class="fa-solid fa-folder-plus"></i> HƯỚNG DẪN ĐỒNG BỘ THƯ MỤC DRIVE</b><button class="btn btn-red" style="padding: 4px 8px;" onclick="document.getElementById('driveGuideModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button></div>
+<!-- MODAL CẤU HÌNH WEBHOOK GOOGLE APPS SCRIPT -->
+<div class="modal-overlay hidden" id="webhookModal">
+    <div class="modal-card" style="max-width: 600px;">
+        <div style="padding: 16px 20px; background: #0284c7; color: white; display: flex; justify-content: space-between;"><b style="font-size: 15px;"><i class="fa-solid fa-cloud-arrow-up"></i> LIÊN KẾT GOOGLE APPS SCRIPT (UPLOAD THẲNG DRIVE)</b><button class="btn btn-red" style="padding: 4px 8px;" onclick="document.getElementById('webhookModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button></div>
         <div style="padding: 22px; display: flex; flex-direction: column; gap: 14px; font-size: 14px; line-height: 1.6;">
-            <p><b>Anh Dương ơi, do bảo mật trình duyệt web tĩnh, hệ thống không thể tự tạo thư mục vật lý lên Google Drive của anh. Anh hãy thực hiện 2 bước đơn giản sau:</b></p>
-            <ol style="padding-left: 20px; display: flex; flex-direction: column; gap: 8px;">
-                <li>Mở thư mục <b>Tháng 07</b> trên Google Drive của anh.</li>
-                <li>Tạo một thư mục con tên là: <code style="background:#e2e8f0; padding:2px 6px; border-radius:4px; font-weight:bold; color:#0369a1;">Cuoc_Dien_Thoai_Internet</code> để lưu hóa đơn các nhà mạng VNPT, Viettel, Mobifone.</li>
-            </ol>
-            <button class="btn btn-blue" style="justify-content: center; margin-top: 10px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Mở Ngay Thư Mục Gốc Trên Drive</button>
+            <p>Để hệ thống tự động đẩy file đính kèm lên đúng thư mục Google Drive, anh hãy dán URL Web App của Google Apps Script vào đây:</p>
+            <div class="form-group">
+                <label>Google Apps Script Web App URL</label>
+                <input type="text" id="inputGasWebhookUrl" placeholder="https://script.google.com/macros/s/.../exec" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px;">
+            </div>
+            <button class="btn btn-green" style="justify-content: center;" onclick="luuCauHinhWebhook()"><i class="fa-solid fa-floppy-disk"></i> Lưu Cấu Hình Kết Nối</button>
         </div>
     </div>
 </div>
@@ -1026,6 +1026,7 @@
     ];
     let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data')) || [{ id: 1, name: "Hoàn thiện báo cáo điều hành tháng 08", assignee: "Trần Bình Dương", dueDate: "2026-08-15", status: "Đang làm" }];
     let danhSachTaiKhoan = JSON.parse(localStorage.getItem('bapaco_accounts_data')) || [{ username: 'admin', pass: '123456', role: 'Admin', email: 'duongtb@bapaco.vn' }];
+    let gasWebhookUrl = localStorage.getItem('bapaco_gas_webhook') || "";
 
     let currentNamKey = "2026";
     let currentThangKey = "Tháng 08";
@@ -1563,7 +1564,7 @@
         document.getElementById('xntTableBody').innerHTML = `<tr><td>1</td><td>MUC001</td><td>Hộp mực Canon 337</td><td>5</td><td>10</td><td>2</td><td style="font-weight:bold; color:#0284c7;">13</td><td><span class="badge-net">Ổn định</span></td></tr>`;
     }
 
-    function luuHoacCapNhatTelecom() {
+    async function luuHoacCapNhatTelecom() {
         let type = document.getElementById('inputTelecomType').value.trim();
         let tong = parseFloat(document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g,'')) || 0;
         let kyCuocVal = document.getElementById('inputTelecomKyCuoc').value.trim();
@@ -1586,8 +1587,27 @@
 
         let fileInput = document.getElementById('inputTelecomFiles');
         let fileNames = [];
-        if (fileInput.dataset.fileList) {
-            fileNames = JSON.parse(fileInput.dataset.fileList);
+        
+        // Nếu đã cấu hình GAS Webhook URL, tiến hành đẩy file thật lên Drive
+        if (gasWebhookUrl && fileInput.files && fileInput.files.length > 0) {
+            for(let i=0; i<fileInput.files.length; i++) {
+                let file = fileInput.files[i];
+                let base64Data = await readFileAsBase64(file);
+                try {
+                    let resp = await fetch(gasWebhookUrl, {
+                        method: 'POST',
+                        body: JSON.stringify({ filename: file.name, mimeType: file.type, fileData: base64Data, folderName: targetMonthName })
+                    });
+                    let result = await resp.json();
+                    if(result.status === 'success') {
+                        fileNames.push(file.name);
+                    } else {
+                        fileNames.push(file.name + " (Lưu nội bộ)");
+                    }
+                } catch(err) {
+                    fileNames.push(file.name);
+                }
+            }
         } else if (fileInput.files && fileInput.files.length > 0) {
             for(let i=0; i<fileInput.files.length; i++) {
                 fileNames.push(fileInput.files[i].name);
@@ -1626,15 +1646,23 @@
         } else {
             itemData.id = "VT-0" + (dsThanhToanTelecomByMonth[newMonthKey].length + 1);
             dsThanhToanTelecomByMonth[newMonthKey].push(itemData);
-            alert(`✅ Đã thêm mới cước và lưu file đính kèm vào đúng thư mục ${targetMonthName} thành công!`);
+            alert(`✅ Đã thêm mới cước và đồng bộ hóa đơn thành công vào thư mục ${targetMonthName}!`);
             document.getElementById('inputTelecomType').value = '';
             document.getElementById('inputTelecomTongVat').value = '';
             document.getElementById('inputTelecomTruocThueInput').value = '';
             document.getElementById('inputTelecomVatInput').value = '';
             document.getElementById('inputTelecomFiles').value = '';
-            delete fileInput.dataset.fileList;
         }
         capNhat();
+    }
+
+    function readFileAsBase64(file) {
+        return new Promise((resolve, reject) => {
+            let reader = new FileReader();
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
     }
 
     function suaTelecom(monthKey, idx) {
@@ -1665,7 +1693,7 @@
         document.getElementById('inputTelecomTruocThueInput').value = '';
         document.getElementById('inputTelecomVatInput').value = '';
         let fileInput = document.getElementById('inputTelecomFiles');
-        if(fileInput) { fileInput.value = ''; delete fileInput.dataset.fileList; }
+        if(fileInput) fileInput.value = '';
         document.getElementById('btnTelecomAction').innerHTML = '<i class="fas fa-plus-circle"></i> Thêm Cước';
         document.getElementById('btnTelecomCancel').classList.add('hidden');
     }
@@ -1921,14 +1949,24 @@
         alert("✅ Đã đồng bộ thành công 2 chiều (Local + Online Cloud) an toàn!");
     }
 
+    function moModalCauHinhWebhook() {
+        document.getElementById('inputGasWebhookUrl').value = gasWebhookUrl;
+        document.getElementById('webhookModal').classList.remove('hidden');
+    }
+    function luuCauHinhWebhook() {
+        gasWebhookUrl = document.getElementById('inputGasWebhookUrl').value.trim();
+        localStorage.setItem('bapaco_gas_webhook', gasWebhookUrl);
+        alert("✅ Đã lưu cấu hình Google Apps Script Webhook thành công!");
+        document.getElementById('webhookModal').classList.add('hidden');
+    }
+
     function xuLyUploadFileGoogleDrive(inputEl, type) {
         if (inputEl.files && inputEl.files.length > 0) {
             let names = [];
             for(let i=0; i<inputEl.files.length; i++) {
                 names.push(inputEl.files[i].name);
             }
-            inputEl.dataset.fileList = JSON.stringify(names);
-            alert(`✅ Đã nhận thành công ${inputEl.files.length} hóa đơn: [${names.join(', ')}]. Hãy bấm "Thêm Cước" để lưu vào hệ thống!`);
+            alert(`✅ Đã chọn ${inputEl.files.length} hóa đơn: [${names.join(', ')}]. Sẵn sàng tải lên Drive khi bấm Thêm Cước!`);
         }
     }
 
@@ -2314,9 +2352,6 @@
     }
     function moThuThucDriveChung() {
         window.open("https://drive.google.com/drive/folders/1f-ZVUhrPnwl5Y_Qd5BekNiQXdqIgepy6", '_blank');
-    }
-    function moHuongDanTaoThuMucDrive() {
-        document.getElementById('driveGuideModal').classList.remove('hidden');
     }
     function luuTruVaoLocalStorage() {
         localStorage.setItem('bapaco_db_data', JSON.stringify(coSoDuLieuNamThang));

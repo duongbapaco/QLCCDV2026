@@ -572,7 +572,7 @@
         </div>
     </div>
 
-    <!-- TAB 7: CƯỚC VIỄN THÔNG (FORM THÔNG MINH ĐÃ KHÔI PHỤC HOÀN TOÀN) -->
+    <!-- TAB 7: CƯỚC VIỄN THÔNG -->
     <div id="telecomPaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-wifi"></i> QUẢN LÝ CƯỚC MẠNG & INTERNET (<span id="titleTelecomYearSpan">2026</span> - Hiển thị liền mạch)</div>
@@ -597,7 +597,6 @@
             </div>
         </div>
 
-        <!-- FORM THÔNG MINH CHÍNH XÁC YÊU CẦU -->
         <div style="background: #f8fafc; border: 2px dashed var(--primary); padding: 16px; border-radius: 10px; margin-bottom: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; align-items: flex-end;">
             <input type="hidden" id="editTelecomIndex" value="-1">
             <div class="form-group"><label>Mã HS</label><input type="text" id="inputTelecomMaHs" readonly style="background: #e2e8f0; font-weight: bold;" value="VT-01"></div>
@@ -647,10 +646,10 @@
         </div>
     </div>
 
-    <!-- TAB 8: KHẢO SÁT PHẦN MỀM -->
+    <!-- TAB 8: KHẢO SÁT PHẦN MỀM (ĐÃ NÂNG CẤP ĐẦY ĐỦ THÔNG SỐ THEO YÊU CẦU) -->
     <div id="surveyTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-clipboard-check"></i> KHẢO SÁT THIẾT BỊ & BẢN QUYỀN</div>
+            <div class="table-title"><i class="fa-solid fa-clipboard-check"></i> KHẢO SÁT THIẾT BỊ, OS, OFFICE & PHẦN MỀM NGHIỆP VỤ</div>
         </div>
         <div class="charts-multi-grid" style="margin-bottom: 16px;">
             <div class="chart-card" style="padding: 12px;">
@@ -663,30 +662,94 @@
             </div>
         </div>
         <div style="margin-bottom: 16px; background: #f8fafc; border: 1px solid var(--border-color); padding: 14px; border-radius: 8px; font-size: 14px; font-weight: 700;">
-            <b>💻 OS:</b> <span id="statOSSummary" style="color: #0284c7; font-weight: 900;">--</span> | 
-            <b>📊 Office:</b> <span id="statOfficeSummary" style="color: #16a34a; font-weight: 900;">--</span>
+            <b>💻 Tổng quan hệ thống:</b> <span id="statOSSummary" style="color: #0284c7; font-weight: 900;">--</span> | 
+            <b>📊 Phần mềm nghiệp vụ:</b> <span id="statOfficeSummary" style="color: #16a34a; font-weight: 900;">--</span>
         </div>
-        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        
+        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));">
             <input type="hidden" id="editSurveyIndex" value="-1">
-            <div class="form-group"><label>Mã KS</label><input type="text" id="autoSurveyCode" readonly style="background:#e2e8f0; font-weight:bold;"></div>
+            <div class="form-group"><label>Mã KS</label><input type="text" id="autoSurveyCode" readonly style="background:#e2e8f0; font-weight:bold;" value="KS-01"></div>
             <div class="form-group"><label>Người Dùng</label><input type="text" id="inputSurveyUser" placeholder="Tên cán bộ..."></div>
-            <div class="form-group"><label>Bộ Phận</label><select id="inputSurveyDept"><option value="Khối Văn phòng">Khối Văn phòng</option><option value="Phòng Kế toán - Thống kê">Phòng Kế toán - Thống kê</option></select></div>
-            <div class="form-group"><label>Thiết Bị</label><select id="inputSurveyDeviceName"><option value="Laptop Dell">Laptop Dell</option><option value="PC HP">PC HP</option></select></div>
-            <div class="form-group"><label>SL</label><input type="number" id="inputSurveyQty" value="1" min="1"></div>
-            <div class="form-group"><label>OS</label><select id="inputSurveyOS"><option value="Windows 11 Pro">Windows 11 Pro</option><option value="Windows 10 Pro">Windows 10 Pro</option></select></div>
-            <div class="form-group"><label>Bản Quyền OS</label><select id="inputSurveyOSLicense"><option value="Chưa có">⚠️ Chưa có</option><option value="Đã có OEM">✅ Đã có OEM</option></select></div>
-            <div class="form-group"><label>Office</label><select id="inputSurveyOffice"><option value="Microsoft 365">Microsoft 365</option><option value="Office 2021">Office 2021</option></select></div>
-            <div class="form-group"><label>Bản Quyền Office</label><select id="inputSurveyOfficeLicense"><option value="Chưa có">⚠️ Chưa có</option><option value="Bản quyền M365">✅ Bản quyền M365</option></select></div>
-            <div class="form-group"><label>Cấu Hình</label><input type="text" id="inputSurveySpecs" placeholder="Core i7, RAM 16GB"></div>
+            <div class="form-group"><label>Bộ Phận (Tự nhập)</label><input type="text" id="inputSurveyDept" placeholder="VD: Văn phòng, Kế toán..."></div>
+            <div class="form-group"><label>Trang Thiết Bị</label><select id="inputSurveyDeviceName">
+                <option value="Laptop Dell">Laptop Dell</option>
+                <option value="Laptop HP">Laptop HP</option>
+                <option value="Laptop Lenovo">Laptop Lenovo</option>
+                <option value="PC Văn phòng">PC Văn phòng</option>
+                <option value="Máy trạm Workstation">Máy trạm Workstation</option>
+                <option value="Máy in">Máy in</option>
+                <option value="Máy photocopy">Máy photocopy</option>
+            </select></div>
+            <div class="form-group"><label>Số Lượng</label><input type="number" id="inputSurveyQty" value="1" min="1"></div>
+            
+            <div class="form-group"><label>Hệ Điều Hành (OS)</label><select id="inputSurveyOS">
+                <option value="Windows 11 Pro">Windows 11 Pro</option>
+                <option value="Windows 10 Pro">Windows 10 Pro</option>
+                <option value="Windows 8 / 8.1">Windows 8 / 8.1</option>
+                <option value="Windows 7">Windows 7</option>
+                <option value="MacOS">MacOS</option>
+                <option value="Linux">Linux</option>
+            </select></div>
+            <div class="form-group"><label>Bản Quyền OS</label><select id="inputSurveyOSLicense">
+                <option value="Bản quyền OEM / Retail">✅ Bản quyền OEM / Retail</option>
+                <option value="Chưa có bản quyền">⚠️ Chưa có bản quyền</option>
+            </select></div>
+
+            <div class="form-group"><label>Microsoft Office</label><select id="inputSurveyOffice">
+                <option value="Microsoft 365">Microsoft 365</option>
+                <option value="Office 2021">Office 2021</option>
+                <option value="Office 2019">Office 2019</option>
+                <option value="Office 2016">Office 2016</option>
+                <option value="Office 2013">Office 2013</option>
+                <option value="Office 2010">Office 2010</option>
+                <option value="Không dùng">❌ Không dùng</option>
+            </select></div>
+            <div class="form-group"><label>Bản Quyền Office</label><select id="inputSurveyOfficeLicense">
+                <option value="Bản quyền chính hãng">✅ Bản quyền chính hãng</option>
+                <option value="Chưa có bản quyền">⚠️ Chưa có bản quyền</option>
+                <option value="Không áp dụng">➖ Không áp dụng</option>
+            </select></div>
+
+            <div class="form-group"><label>Phần Mềm Nghiệp Vụ</label><select id="inputSurveyBusinessSoftware">
+                <option value="Asia">Phần mềm Asia (Kế toán)</option>
+                <option value="Quasoft">Phần mềm Quasoft</option>
+                <option value="Cloudoffice">Cloudoffice (Văn phòng điện tử)</option>
+                <option value="AutoCAD">AutoCAD (Thiết kế kỹ thuật)</option>
+                <option value="Solidworks">SolidWorks (Thiết kế 3D)</option>
+                <option value="Không dùng">❌ Không dùng</option>
+            </select></div>
+            <div class="form-group"><label>Bản Quyền NV</label><select id="inputSurveyBusinessLicense">
+                <option value="Bản quyền doanh nghiệp">✅ Bản quyền doanh nghiệp</option>
+                <option value="Chưa có bản quyền">⚠️ Chưa có bản quyền</option>
+                <option value="Không áp dụng">➖ Không áp dụng</option>
+            </select></div>
+
+            <div class="form-group"><label>Cấu Hình Phần Cứng</label><input type="text" id="inputSurveySpecs" placeholder="Core i7, RAM 16GB, SSD 512GB"></div>
             <div class="form-group" style="display: flex; gap: 8px;">
                 <button class="btn btn-purple" id="btnSurveyAction" onclick="luuHoacCapNhatKhaoSat()"><i class="fas fa-plus-circle"></i> Thêm Khảo Sát</button>
                 <button class="btn btn-red hidden" id="btnSurveyCancel" onclick="huySuaKhaoSat()"><i class="fas fa-xmark"></i> Hủy</button>
             </div>
         </div>
-        <table>
-            <thead><tr><th>Mã</th><th>Người Dùng</th><th>Bộ Phận</th><th>Thiết Bị</th><th>SL</th><th>HĐH</th><th>Office</th><th>Cấu Hình</th><th>Thao Tác</th></tr></thead>
-            <tbody id="surveyTableBody"></tbody>
-        </table>
+
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mã</th>
+                        <th>Người Dùng</th>
+                        <th>Bộ Phận</th>
+                        <th>Thiết Bị</th>
+                        <th>SL</th>
+                        <th>HĐH (OS) & Bản Quyền</th>
+                        <th>Office & Bản Quyền</th>
+                        <th>Phần Mềm Nghiệp Vụ & Bản Quyền</th>
+                        <th>Cấu Hình</th>
+                        <th>Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody id="surveyTableBody"></tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -941,7 +1004,9 @@
     let dsThanhToanTelecomByMonth = JSON.parse(localStorage.getItem('bapaco_telecom_map_data')) || {};
     
     let dsKhoMucIn = JSON.parse(localStorage.getItem('bapaco_ink_data')) || [{ code: "MUC001", name: "Hộp mực Canon 337", printer: "Canon LBP 151dw", action: "Nhập mới kho", qty: 10, receiver: "Kho Văn phòng", price: 450000, total: 4500000 }];
-    let dsKhaoSatChuyenSieu = JSON.parse(localStorage.getItem('bapaco_survey_data')) || [];
+    let dsKhaoSatChuyenSieu = JSON.parse(localStorage.getItem('bapaco_survey_data')) || [
+        { code: "KS-01", user: "Trần Bình Dương", dept: "Văn phòng Tổng công ty", device: "Laptop Dell", qty: 1, os: "Windows 11 Pro", osLic: "Bản quyền OEM / Retail", office: "Microsoft 365", officeLic: "Bản quyền chính hãng", bizSoft: "Cloudoffice", bizLic: "Bản quyền doanh nghiệp", specs: "Core i7, RAM 16GB" }
+    ];
     let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data')) || [{ id: 1, name: "Hoàn thiện báo cáo điều hành tháng 08", assignee: "Trần Bình Dương", dueDate: "2026-08-15", status: "Đang làm" }];
     let danhSachTaiKhoan = JSON.parse(localStorage.getItem('bapaco_accounts_data')) || [{ username: 'admin', pass: '123456', role: 'Admin', email: 'duongtb@bapaco.vn' }];
 
@@ -1204,7 +1269,6 @@
         setTimeout(() => { veTatCaBieuDoDashboard(); }, 100);
     }
 
-    // Quản lý công việc với Nút Mũi Tên Quay Vòng Trạng Thái Nhanh
     function renderTaskTable() {
         let tbody = document.getElementById('taskTableBody');
         if (!tbody) return;
@@ -1232,14 +1296,7 @@
 
     function xoayVongTrangThaiCongViec(idx) {
         let currentStatus = danhSachCongViec[idx].status;
-        let nextStatus = "Chưa làm";
-        if (currentStatus === "Chưa làm") {
-            nextStatus = "Đang làm";
-        } else if (currentStatus === "Đang làm") {
-            nextStatus = "Hoàn thành";
-        } else {
-            nextStatus = "Chưa làm";
-        }
+        let nextStatus = currentStatus === "Chưa làm" ? "Đang làm" : (currentStatus === "Đang làm" ? "Hoàn thành" : "Chưa làm");
         danhSachCongViec[idx].status = nextStatus;
         capNhat();
     }
@@ -1564,57 +1621,88 @@
         document.getElementById('telecomKpiTongThanhToan').innerText = sumAmountYear.toLocaleString('vi-VN') + ' đ';
     }
 
-    // Khảo sát Phần mềm
+    // Khảo sát Phần mềm & Thiết bị đầy đủ
     function luuHoacCapNhatKhaoSat() {
         let user = document.getElementById('inputSurveyUser').value.trim();
-        if (!user) { alert("Nhập tên người dùng!"); return; }
+        if (!user) { alert("Vui lòng nhập tên người dùng!"); return; }
         let editIdx = parseInt(document.getElementById('editSurveyIndex').value);
-        let dept = document.getElementById('inputSurveyDept').value;
+        let dept = document.getElementById('inputSurveyDept').value.trim() || "Văn phòng BAPACO";
         let device = document.getElementById('inputSurveyDeviceName').value;
+        let qty = parseInt(document.getElementById('inputSurveyQty').value) || 1;
         let os = document.getElementById('inputSurveyOS').value;
+        let osLic = document.getElementById('inputSurveyOSLicense').value;
         let office = document.getElementById('inputSurveyOffice').value;
+        let officeLic = document.getElementById('inputSurveyOfficeLicense').value;
+        let bizSoft = document.getElementById('inputSurveyBusinessSoftware').value;
+        let bizLic = document.getElementById('inputSurveyBusinessLicense').value;
         let specs = document.getElementById('inputSurveySpecs').value;
 
         if (editIdx > -1) {
-            dsKhaoSatChuyenSieu[editIdx] = { ...dsKhaoSatChuyenSieu[editIdx], user, dept, device, os, office, specs };
+            dsKhaoSatChuyenSieu[editIdx] = { ...dsKhaoSatChuyenSieu[editIdx], user, dept, device, qty, os, osLic, office, officeLic, bizSoft, bizLic, specs };
             alert("✅ Cập nhật khảo sát thành công!");
             huySuaKhaoSat();
         } else {
-            dsKhaoSatChuyenSieu.push({ code: "KS0" + (dsKhaoSatChuyenSieu.length+1), user, dept, device, qty: 1, os, office, specs });
+            let newCode = "KS-0" + (dsKhaoSatChuyenSieu.length + 1);
+            dsKhaoSatChuyenSieu.push({ code: newCode, user, dept, device, qty, os, osLic, office, officeLic, bizSoft, bizLic, specs });
             alert("✅ Thêm mới khảo sát thành công!");
             document.getElementById('inputSurveyUser').value = '';
+            document.getElementById('inputSurveySpecs').value = '';
         }
         capNhat();
     }
+
     function suaKhaoSat(idx) {
         let item = dsKhaoSatChuyenSieu[idx];
+        document.getElementById('autoSurveyCode').value = item.code;
         document.getElementById('inputSurveyUser').value = item.user;
         document.getElementById('inputSurveyDept').value = item.dept;
         document.getElementById('inputSurveyDeviceName').value = item.device;
+        document.getElementById('inputSurveyQty').value = item.qty;
         document.getElementById('inputSurveyOS').value = item.os;
+        document.getElementById('inputSurveyOSLicense').value = item.osLic;
         document.getElementById('inputSurveyOffice').value = item.office;
+        document.getElementById('inputSurveyOfficeLicense').value = item.officeLic;
+        document.getElementById('inputSurveyBusinessSoftware').value = item.bizSoft;
+        document.getElementById('inputSurveyBusinessLicense').value = item.bizLic;
         document.getElementById('inputSurveySpecs').value = item.specs;
         document.getElementById('editSurveyIndex').value = idx;
         document.getElementById('btnSurveyAction').innerHTML = '<i class="fas fa-save"></i> Cập Nhật';
         document.getElementById('btnSurveyCancel').classList.remove('hidden');
     }
+
     function huySuaKhaoSat() {
         document.getElementById('inputSurveyUser').value = '';
+        document.getElementById('inputSurveySpecs').value = '';
         document.getElementById('editSurveyIndex').value = -1;
+        document.getElementById('autoSurveyCode').value = "KS-0" + (dsKhaoSatChuyenSieu.length + 1);
         document.getElementById('btnSurveyAction').innerHTML = '<i class="fas fa-plus-circle"></i> Thêm Khảo Sát';
         document.getElementById('btnSurveyCancel').classList.add('hidden');
     }
+
     function renderSurveyTable() {
         let tbody = document.getElementById('surveyTableBody');
+        if(!tbody) return;
         tbody.innerHTML = '';
         dsKhaoSatChuyenSieu.forEach((item, idx) => {
-            tbody.innerHTML += `<tr><td>${item.code}</td><td><b>${item.user}</b></td><td>${item.dept}</td><td>${item.device}</td><td>${item.qty}</td><td>${item.os}</td><td>${item.office}</td><td>${item.specs}</td><td style="text-align:center;">
-                <button class="btn btn-blue" style="padding:4px 8px;" onclick="suaKhaoSat(${idx})"><i class="fas fa-pen"></i></button>
-                <button class="btn btn-red" style="padding:4px 8px;" onclick="dsKhaoSatChuyenSieu.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
-            </td></tr>`;
+            tbody.innerHTML += `<tr>
+                <td><b>${item.code}</b></td>
+                <td>${item.user}</td>
+                <td><span class="badge-warning">${item.dept}</span></td>
+                <td><b>${item.device}</b></td>
+                <td style="text-align:center;">${item.qty}</td>
+                <td>${item.os} <br><small style="color:var(--text-muted);">${item.osLic}</small></td>
+                <td>${item.office} <br><small style="color:var(--text-muted);">${item.officeLic}</small></td>
+                <td><b>${item.bizSoft}</b> <br><small style="color:var(--text-muted);">${item.bizLic}</small></td>
+                <td>${item.specs || '--'}</td>
+                <td style="text-align:center;">
+                    <button class="btn btn-blue" style="padding:4px 8px;" onclick="suaKhaoSat(${idx})"><i class="fas fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:4px 8px;" onclick="dsKhaoSatChuyenSieu.splice(${idx},1);capNhat();"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>`;
         });
-        document.getElementById('statOSSummary').innerText = "Windows 11 Pro: 1 máy";
-        document.getElementById('statOfficeSummary').innerText = "Microsoft 365: 1 máy";
+        document.getElementById('autoSurveyCode').value = "KS-0" + (dsKhaoSatChuyenSieu.length + 1);
+        document.getElementById('statOSSummary').innerText = `Tổng số ${dsKhaoSatChuyenSieu.length} thiết bị đã khảo sát đầy đủ.`;
+        document.getElementById('statOfficeSummary').innerText = `Đã đồng bộ các phần mềm Asia, Quasoft, Cloudoffice, AutoCAD, SolidWorks.`;
     }
 
     function moModalDangKyNghiPhep() {
@@ -1996,7 +2084,7 @@
             if (window.mySurveyOs) window.mySurveyOs.destroy();
             window.mySurveyOs = new Chart(ctxSurveyOs, {
                 type: 'pie',
-                data: { labels: ['Windows 11 Pro', 'Windows 10 Pro'], datasets: [{ data: [1, 0], backgroundColor: ['#8b5cf6', '#cbd5e1'] }] },
+                data: { labels: ['Windows 11 Pro', 'Windows 10 Pro', 'Khác'], datasets: [{ data: [1, 0, 0], backgroundColor: ['#8b5cf6', '#0284c7', '#cbd5e1'] }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: percentPluginConfig }
             });
         }
@@ -2005,7 +2093,7 @@
             if (window.mySurveyOffice) window.mySurveyOffice.destroy();
             window.mySurveyOffice = new Chart(ctxSurveyOffice, {
                 type: 'pie',
-                data: { labels: ['Microsoft 365', 'Office 2021'], datasets: [{ data: [1, 0], backgroundColor: ['#10b981', '#cbd5e1'] }] },
+                data: { labels: ['Microsoft 365', 'Office 2021/2019', 'Khác'], datasets: [{ data: [1, 0, 0], backgroundColor: ['#10b981', '#f59e0b', '#cbd5e1'] }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: percentPluginConfig }
             });
         }

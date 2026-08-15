@@ -602,7 +602,7 @@
             <div class="form-group"><label>Mã HS</label><input type="text" id="inputTelecomMaHs" readonly style="background: #e2e8f0; font-weight: bold;" value="VT-01"></div>
             <div class="form-group"><label>Nhà Mạng</label><select id="inputTelecomSupplier"><option value="VNPT">VNPT</option><option value="Viettel">Viettel</option><option value="Mobifone">Mobifone</option></select></div>
             <div class="form-group"><label>Loại Cước</label><input type="text" id="inputTelecomType" placeholder="VD: Cáp quang..."></div>
-            <div class="form-group"><label>Kỳ Cước</label><input type="text" id="inputTelecomKyCuoc" placeholder="Tháng 07/2026" value="Tháng 07/2026"></div>
+            <div class="form-group"><label>Kỳ Cước</label><input type="text" id="inputTelecomKyCuoc" placeholder="Tháng 08/2026" value="Tháng 08/2026"></div>
             <div class="form-group"><label>Tổng Cước (Đã VAT)</label><input type="text" id="inputTelecomTongVat" placeholder="2.500.000" oninput="tinhTienTelecomTuTong()"></div>
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Thuế VAT (10%)</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
@@ -637,7 +637,7 @@
                         <th>Trước Thuế</th>
                         <th>Thuế VAT (10%)</th>
                         <th>Tổng Cước TT</th>
-                        <th>Hóa Đơn / Drive</th>
+                        <th>Hóa Đơn / Thư Mục Tháng</th>
                         <th>Thao Tác</th>
                     </tr>
                 </thead>
@@ -1019,6 +1019,7 @@
     window.addEventListener('DOMContentLoaded', () => {
         taoLichVanNienChiTiet(viewingMonth, viewingYear, 14);
         taiDuLieuThoiTietPhuTho();
+        doiThangHoSoLuong();
     });
 
     function thucHienDangNhap() {
@@ -1096,7 +1097,7 @@
         let yNum = parseInt(currentNamKey);
         if (!isNaN(mNum)) viewingMonth = mNum;
         if (!isNaN(yNum)) viewingYear = yNum;
-        taoLichVanNienChiTiet(viewingMonth, viewingYear, 1);
+        taoLichVanNienChiTiet(viewingMonth, viewingYear, 14);
         
         if (!coSoDuLieuNamThang[currentNamKey]) coSoDuLieuNamThang[currentNamKey] = {};
         if (!coSoDuLieuNamThang[currentNamKey][currentThangKey]) {
@@ -1555,7 +1556,7 @@
         let vat = tong - truocThue;
         
         let kyCuocVal = document.getElementById('inputTelecomKyCuoc').value;
-        let targetMonthName = "Tháng 08";
+        let targetMonthName = currentThangKey;
         if (kyCuocVal.includes("Tháng")) {
             let parts = kyCuocVal.split('/');
             let mPart = parts[0].trim();
@@ -1607,7 +1608,7 @@
         } else {
             itemData.id = "VT-0" + (dsThanhToanTelecomByMonth[newMonthKey].length + 1);
             dsThanhToanTelecomByMonth[newMonthKey].push(itemData);
-            alert(`✅ Đã thêm mới cước viễn thông thành công!`);
+            alert(`✅ Đã thêm mới cước viễn thông vào ${targetMonthName} thành công!`);
             document.getElementById('inputTelecomType').value = '';
             document.getElementById('inputTelecomTongVat').value = '';
             document.getElementById('inputTelecomTruocThueInput').value = '';
@@ -1910,7 +1911,7 @@
                 names.push(inputEl.files[i].name);
             }
             inputEl.dataset.fileList = JSON.stringify(names);
-            alert(`✅ Đã nhận thành công ${inputEl.files.length} tệp: [${names.join(', ')}]. Hãy bấm "Cập nhật" để lưu vào tháng hạch toán tương ứng!`);
+            alert(`✅ Đã nhận thành công ${inputEl.files.length} tệp: [${names.join(', ')}]. Hãy bấm "Thêm Cước" để lưu vào tháng hạch toán tương ứng!`);
         }
     }
 

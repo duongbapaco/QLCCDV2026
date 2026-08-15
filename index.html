@@ -124,11 +124,10 @@
         
         .digital-clock-box {
             background: #0f172a; color: #38bdf8; padding: 12px; border-radius: 8px; text-align: center;
-            font-family: monospace; font-size: 24px; font-weight: 900; letter-spacing: 2px;
+            font-family: monospace; font-size: 26px; font-weight: 900; letter-spacing: 2px;
             border: 1px solid #334155; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
-            display: flex; justify-content: center; align-items: center; gap: 14px;
+            display: flex; justify-content: center; align-items: center;
         }
-        .digital-clock-box span { font-size: 13px; color: #94a3b8; font-weight: bold; }
 
         .weather-banner {
             background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; padding: 12px 14px; border-radius: 8px;
@@ -882,7 +881,6 @@
     <div class="widget-body" id="widgetBodyContent">
         <div class="digital-clock-box">
             <div id="digitalClockDisplay">08:30:10</div>
-            <span id="digitalDateDisplay">14/08/2026</span>
         </div>
         
         <div class="weather-banner" id="weatherWidgetBox">
@@ -1181,7 +1179,6 @@
         return allTelecom;
     }
 
-    // Cơ chế tính lũy kế phép đã nghỉ qua tất cả các tháng trong năm
     function layTongLuyKePhepDaNghi(tenNhanSu) {
         let totalP = 0;
         let totalL = 0;

@@ -602,7 +602,7 @@
             <div class="form-group"><label>Mã HS</label><input type="text" id="inputTelecomMaHs" readonly style="background: #e2e8f0; font-weight: bold;" value="VT-01"></div>
             <div class="form-group"><label>Nhà Mạng</label><select id="inputTelecomSupplier"><option value="VNPT">VNPT</option><option value="Viettel">Viettel</option><option value="Mobifone">Mobifone</option></select></div>
             <div class="form-group"><label>Loại Cước</label><input type="text" id="inputTelecomType" placeholder="VD: Cáp quang..."></div>
-            <div class="form-group"><label>Kỳ Cước</label><input type="text" id="inputTelecomKyCuoc" placeholder="Tháng 08/2026" value="Tháng 08/2026"></div>
+            <div class="form-group"><label>Kỳ Cước</label><input type="text" id="inputTelecomKyCuoc" placeholder="Tháng 07/2026" value="Tháng 07/2026"></div>
             <div class="form-group"><label>Tổng Cước (Đã VAT)</label><input type="text" id="inputTelecomTongVat" placeholder="2.500.000" oninput="tinhTienTelecomTuTong()"></div>
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Thuế VAT (10%)</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
@@ -1390,7 +1390,9 @@
 
         let fileInput = document.getElementById('inputOfficeFiles');
         let fileNames = [];
-        if (fileInput.files && fileInput.files.length > 0) {
+        if (fileInput.dataset.fileList) {
+            fileNames = JSON.parse(fileInput.dataset.fileList);
+        } else if (fileInput.files && fileInput.files.length > 0) {
             for(let i=0; i<fileInput.files.length; i++) {
                 fileNames.push(fileInput.files[i].name);
             }
@@ -1424,6 +1426,7 @@
             document.getElementById('inputOfficeBank').value = '';
             document.getElementById('inputOfficePrice').value = '';
             document.getElementById('inputOfficeFiles').value = '';
+            delete fileInput.dataset.fileList;
         }
         capNhat();
     }
@@ -1452,7 +1455,8 @@
         document.getElementById('inputOfficeStk').value = '';
         document.getElementById('inputOfficeBank').value = '';
         document.getElementById('inputOfficePrice').value = '';
-        document.getElementById('inputOfficeFiles').value = '';
+        let fileInput = document.getElementById('inputOfficeFiles');
+        if(fileInput) { fileInput.value = ''; delete fileInput.dataset.fileList; }
         document.getElementById('editOfficeIndex').value = -1;
         document.getElementById('btnOfficeAction').innerHTML = '<i class="fas fa-plus-circle"></i> Tải Lên & Thêm';
         document.getElementById('btnOfficeCancel').classList.add('hidden');
@@ -1563,7 +1567,9 @@
 
         let fileInput = document.getElementById('inputTelecomFiles');
         let fileNames = [];
-        if (fileInput.files && fileInput.files.length > 0) {
+        if (fileInput.dataset.fileList) {
+            fileNames = JSON.parse(fileInput.dataset.fileList);
+        } else if (fileInput.files && fileInput.files.length > 0) {
             for(let i=0; i<fileInput.files.length; i++) {
                 fileNames.push(fileInput.files[i].name);
             }
@@ -1590,7 +1596,6 @@
 
         if (editIdx > -1) {
             itemData.id = dsThanhToanTelecomByMonth[oldMonthKey][editIdx].id;
-            // Xóa ở mảng cũ nếu đổi tháng
             if (oldMonthKey && oldMonthKey !== newMonthKey) {
                 dsThanhToanTelecomByMonth[oldMonthKey].splice(editIdx, 1);
                 dsThanhToanTelecomByMonth[newMonthKey].push(itemData);
@@ -1608,6 +1613,7 @@
             document.getElementById('inputTelecomTruocThueInput').value = '';
             document.getElementById('inputTelecomVatInput').value = '';
             document.getElementById('inputTelecomFiles').value = '';
+            delete fileInput.dataset.fileList;
         }
         capNhat();
     }
@@ -1639,7 +1645,8 @@
         document.getElementById('inputTelecomTongVat').value = '';
         document.getElementById('inputTelecomTruocThueInput').value = '';
         document.getElementById('inputTelecomVatInput').value = '';
-        document.getElementById('inputTelecomFiles').value = '';
+        let fileInput = document.getElementById('inputTelecomFiles');
+        if(fileInput) { fileInput.value = ''; delete fileInput.dataset.fileList; }
         document.getElementById('btnTelecomAction').innerHTML = '<i class="fas fa-plus-circle"></i> Thêm Cước';
         document.getElementById('btnTelecomCancel').classList.add('hidden');
     }
@@ -1887,8 +1894,11 @@
     function xuLyUploadFileGoogleDrive(inputEl, type) {
         if (inputEl.files && inputEl.files.length > 0) {
             let names = [];
-            for(let i=0; i<inputEl.files.length; i++) names.push(inputEl.files[i].name);
-            alert(`✅ Đã chọn hàng loạt thành công ${inputEl.files.length} tệp: [${names.join(', ')}] vào đúng tháng hạch toán!`);
+            for(let i=0; i<inputEl.files.length; i++) {
+                names.push(inputEl.files[i].name);
+            }
+            inputEl.dataset.fileList = JSON.stringify(names);
+            alert(`✅ Đã nhận thành công ${inputEl.files.length} tệp: [${names.join(', ')}]. Hãy bấm "Cập nhật" để lưu vào tháng hạch toán tương ứng!`);
         }
     }
 

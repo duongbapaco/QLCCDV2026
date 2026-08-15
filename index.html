@@ -475,7 +475,7 @@
             <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputOfficePrice" placeholder="0" oninput="tinhThanhTienVPP()"></div>
             <div class="form-group"><label>Thành Tiền</label><input type="text" id="previewOfficeTotal" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;" value="0 đ"></div>
             <div class="form-group"><label>Ngày Chứng Từ</label><input type="date" id="inputOfficeDate"></div>
-            <div class="form-group"><label>Hóa Đơn / Drive</label><input type="file" id="inputOfficeFiles" multiple style="font-size:12px;" onchange="xuLyUploadFileGoogleDrive(this, 'vpp')"></div>
+            <div class="form-group"><label>Tệp Đính Kèm (Chọn hàng loạt)</label><input type="file" id="inputOfficeFiles" multiple style="font-size:12px;" onchange="xuLyUploadFileGoogleDrive(this, 'vpp')"></div>
             <div class="form-group" style="display: flex; gap: 8px;">
                 <button class="btn btn-green" id="btnOfficeAction" onclick="luuHoacCapNhatVPP()"><i class="fas fa-plus-circle"></i> Tải Lên & Thêm</button>
                 <button class="btn btn-red hidden" id="btnOfficeCancel" onclick="huySuaVPP()"><i class="fas fa-xmark"></i> Hủy</button>
@@ -606,7 +606,7 @@
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Thuế VAT (10%)</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Hạn TT</label><input type="date" id="inputTelecomDate" value="2026-08-14"></div>
-            <div class="form-group"><label>Upload Drive</label><input type="file" id="inputTelecomFiles" style="font-size:12px;" onchange="xuLyUploadFileGoogleDrive(this, 'telecom')"></div>
+            <div class="form-group"><label>Upload Drive (Nhiều file)</label><input type="file" id="inputTelecomFiles" multiple style="font-size:12px;" onchange="xuLyUploadFileGoogleDrive(this, 'telecom')"></div>
             <div class="form-group" style="grid-column: span 2; display: flex; gap: 8px;">
                 <button class="btn btn-green" id="btnTelecomAction" onclick="luuHoacCapNhatTelecom()"><i class="fas fa-plus-circle"></i> Thêm Cước</button>
                 <button class="btn btn-red hidden" id="btnTelecomCancel" onclick="huySuaTelecom()"><i class="fas fa-xmark"></i> Hủy</button>
@@ -1394,6 +1394,14 @@
         if (!dsThanhToanVanPhongProByMonth[key]) dsThanhToanVanPhongProByMonth[key] = [];
         let currentList = dsThanhToanVanPhongProByMonth[key];
 
+        let fileInput = document.getElementById('inputOfficeFiles');
+        let fileNames = [];
+        if (fileInput.files && fileInput.files.length > 0) {
+            for(let i=0; i<fileInput.files.length; i++) {
+                fileNames.push(fileInput.files[i].name);
+            }
+        }
+
         let vppItem = {
             id: editIdx > -1 ? currentList[editIdx].id : ("VPP-0" + (currentList.length + 1)),
             content,
@@ -1402,7 +1410,8 @@
             stk: document.getElementById('inputOfficeStk').value,
             bank: document.getElementById('inputOfficeBank').value,
             date: document.getElementById('inputOfficeDate').value || `${currentNamKey}-08-14`,
-            qty, price, total
+            qty, price, total,
+            files: fileNames.length > 0 ? fileNames : (editIdx > -1 ? currentList[editIdx].files : [])
         };
 
         if (editIdx > -1) {
@@ -1417,6 +1426,7 @@
             document.getElementById('inputOfficeStk').value = '';
             document.getElementById('inputOfficeBank').value = '';
             document.getElementById('inputOfficePrice').value = '';
+            document.getElementById('inputOfficeFiles').value = '';
         }
         capNhat();
     }
@@ -1445,6 +1455,7 @@
         document.getElementById('inputOfficeStk').value = '';
         document.getElementById('inputOfficeBank').value = '';
         document.getElementById('inputOfficePrice').value = '';
+        document.getElementById('inputOfficeFiles').value = '';
         document.getElementById('editOfficeIndex').value = -1;
         document.getElementById('btnOfficeAction').innerHTML = '<i class="fas fa-plus-circle"></i> Tải Lên & Thêm';
         document.getElementById('btnOfficeCancel').classList.add('hidden');
@@ -1458,6 +1469,7 @@
         allYearVpp.forEach((item, idx) => {
             let monthKey = `${currentNamKey}_${item.thangHachToan}`;
             let realIdx = dsThanhToanVanPhongProByMonth[monthKey] ? dsThanhToanVanPhongProByMonth[monthKey].findIndex(v => v.id === item.id) : 0;
+            let fileDisplay = item.files && item.files.length > 0 ? `<span class="badge-net" title="${item.files.join(', ')}">${item.files.length} file đính kèm</span>` : `<button class="btn btn-purple" style="padding:4px 8px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Drive</button>`;
             
             tbody.innerHTML += `<tr>
                 <td>${item.id}</td>
@@ -1470,7 +1482,7 @@
                 <td>${item.qty} x ${item.price.toLocaleString()} đ</td>
                 <td style="color:#15803d; font-weight:bold;">${item.total.toLocaleString()} đ</td>
                 <td>${item.date}</td>
-                <td style="text-align:center;"><button class="btn btn-purple" style="padding:4px 8px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Drive</button></td>
+                <td style="text-align:center;">${fileDisplay}</td>
                 <td style="text-align:center;">
                     <button class="btn btn-blue" style="padding:4px 8px;" onclick="suaVPP('${monthKey}', ${realIdx})"><i class="fas fa-pen"></i></button>
                     <button class="btn btn-red" style="padding:4px 8px;" onclick="dsThanhToanVanPhongProByMonth['${monthKey}'].splice(${realIdx},1);capNhat();"><i class="fas fa-trash"></i></button>
@@ -1544,6 +1556,14 @@
         if (!dsThanhToanTelecomByMonth[key]) dsThanhToanTelecomByMonth[key] = [];
         let currentList = dsThanhToanTelecomByMonth[key];
 
+        let fileInput = document.getElementById('inputTelecomFiles');
+        let fileNames = [];
+        if (fileInput.files && fileInput.files.length > 0) {
+            for(let i=0; i<fileInput.files.length; i++) {
+                fileNames.push(fileInput.files[i].name);
+            }
+        }
+
         let itemData = {
             maHs: document.getElementById('inputTelecomMaHs').value,
             supplier: document.getElementById('inputTelecomSupplier').value,
@@ -1552,7 +1572,8 @@
             tong,
             truocThue,
             vat,
-            period: document.getElementById('inputTelecomDate').value
+            period: document.getElementById('inputTelecomDate').value,
+            files: fileNames.length > 0 ? fileNames : (editIdx > -1 ? currentList[editIdx].files : [])
         };
 
         if (editIdx > -1) {
@@ -1567,6 +1588,7 @@
             document.getElementById('inputTelecomTongVat').value = '';
             document.getElementById('inputTelecomTruocThueInput').value = '';
             document.getElementById('inputTelecomVatInput').value = '';
+            document.getElementById('inputTelecomFiles').value = '';
         }
         capNhat();
     }
@@ -1594,6 +1616,7 @@
         document.getElementById('inputTelecomTongVat').value = '';
         document.getElementById('inputTelecomTruocThueInput').value = '';
         document.getElementById('inputTelecomVatInput').value = '';
+        document.getElementById('inputTelecomFiles').value = '';
         document.getElementById('btnTelecomAction').innerHTML = '<i class="fas fa-plus-circle"></i> Thêm Cước';
         document.getElementById('btnTelecomCancel').classList.add('hidden');
     }
@@ -1606,6 +1629,7 @@
         allYearTelecom.forEach((item, idx) => {
             let monthKey = `${currentNamKey}_${item.thangHachToan}`;
             let realIdx = dsThanhToanTelecomByMonth[monthKey] ? dsThanhToanTelecomByMonth[monthKey].findIndex(v => v.id === item.id) : 0;
+            let fileDisplay = item.files && item.files.length > 0 ? `<span class="badge-net" title="${item.files.join(', ')}">${item.files.length} file đính kèm</span>` : `<button class="btn btn-purple" style="padding:4px 8px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Drive</button>`;
             
             tbody.innerHTML += `<tr>
                 <td><b>${item.maHs || ('VT-0' + (idx+1))}</b></td>
@@ -1616,7 +1640,7 @@
                 <td style="text-align:right;">${(item.truocThue || 0).toLocaleString()} đ</td>
                 <td style="text-align:right; color:#dc2626;">${(item.vat || 0).toLocaleString()} đ</td>
                 <td style="text-align:right; font-weight:bold; color:#15803d;">${(item.tong || 0).toLocaleString()} đ</td>
-                <td style="text-align:center;"><button class="btn btn-purple" style="padding:4px 8px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Drive</button></td>
+                <td style="text-align:center;">${fileDisplay}</td>
                 <td style="text-align:center;">
                     <button class="btn btn-blue" style="padding:4px 8px;" onclick="suaTelecom('${monthKey}', ${realIdx})"><i class="fas fa-pen"></i></button>
                     <button class="btn btn-red" style="padding:4px 8px;" onclick="dsThanhToanTelecomByMonth['${monthKey}'].splice(${realIdx},1);capNhat();"><i class="fas fa-trash"></i></button>
@@ -1839,7 +1863,9 @@
 
     function xuLyUploadFileGoogleDrive(inputEl, type) {
         if (inputEl.files && inputEl.files.length > 0) {
-            alert(`✅ Đã tải lên thành công ${inputEl.files.length} tệp đính kèm vào thư mục Google Drive (${type.toUpperCase()}) của ${currentThangKey} năm ${currentNamKey}!`);
+            let names = [];
+            for(let i=0; i<inputEl.files.length; i++) names.push(inputEl.files[i].name);
+            alert(`✅ Đã chọn hàng loạt thành công ${inputEl.files.length} tệp: [${names.join(', ')}] cho ${type.toUpperCase()} tại ${currentThangKey} năm ${currentNamKey}!`);
         }
     }
 

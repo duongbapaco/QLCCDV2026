@@ -113,7 +113,6 @@
         .reminder-corp-box { background: #1e293b; color: #f8fafc; padding: 14px; border-radius: 8px; border-left: 5px solid #38bdf8; font-size: 13px; line-height: 1.5; }
         .reminder-corp-box strong { color: #38bdf8; }
 
-        /* Progress Bar Styles */
         .progress-box { width: 100%; background: #e2e8f0; border-radius: 6px; height: 10px; overflow: hidden; margin-top: 6px; display: none; }
         .progress-bar-fill { width: 0%; height: 100%; background: #16a34a; transition: width 0.3s ease; }
     </style>
@@ -409,7 +408,7 @@
         </div>
     </div>
 
-    <!-- TAB THANH TOÁN VĂN PHÒNG (Tự sinh cây thư mục Năm/Tháng & tiến độ thật) -->
+    <!-- TAB THANH TOÁN VĂN PHÒNG -->
     <div id="officePaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
@@ -428,9 +427,9 @@
             <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputOfficePrice" placeholder="0" oninput="tinhToanTienVPP()"></div>
             <div class="form-group"><label>Tỷ Lệ Thuế VAT</label><select id="inputOfficeVatRate" onchange="tinhToanTienVPP()"><option value="0.1" selected>10% VAT</option><option value="0.08">8% VAT</option><option value="0.05">5% VAT</option><option value="0">0% Không thuế</option></select></div>
             <div class="form-group"><label>Tiền Trước Thuế</label><input type="text" id="inputOfficeTruocThue" placeholder="0" oninput="tinhToanVatTuTong()"></div>
-            <div class="form-group"><label>Thuế VAT (Sửa linh hoạt)</label><input type="text" id="inputOfficeVAT" placeholder="0" oninput="tinhToanVatTuTong()"></div>
+            <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputOfficeVAT" placeholder="0" oninput="tinhToanVatTuTong()"></div>
             <div class="form-group"><label>Tổng Thanh Toán</label><input type="text" id="previewOfficeTotal" placeholder="0" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;"></div>
-            <div class="form-group"><label>Ngày Chứng Từ</label><input type="date" id="inputOfficeDate"></div>
+            <div class="form-group"><label>Ngày Chứng Từ (Định dạng VN: DD/MM/YYYY)</label><input type="date" id="inputOfficeDate"></div>
             <div class="form-group" style="grid-column: span 2;">
                 <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Chọn nhiều tệp - Lưu tự động vào Thư mục Năm/Tháng)</label>
                 <input type="file" id="inputOfficeFiles" multiple style="padding: 7px; background: white; font-size: 13px;" onchange="xuLyChonTepVPP(this)">
@@ -442,7 +441,7 @@
 
         <div style="overflow-x: auto;">
             <table>
-                <thead><tr><th>STT</th><th>Tháng</th><th>Thụ Hưởng</th><th>Ngân Hàng / STK</th><th>Nội Dung Thanh Toán</th><th>SL x Đơn Giá</th><th>Trước Thuế</th><th>Thuế VAT</th><th>Tổng Thanh Toán</th><th>Thư Mục Lưu Trữ Drive</th><th>Thao Tác</th></tr></thead>
+                <thead><tr><th>STT</th><th>Tháng</th><th>Thụ Hưởng</th><th>Ngân Hàng / STK</th><th>Nội Dung Thanh Toán</th><th>SL x Đơn Giá</th><th>Trước Thuế</th><th>Thuế VAT</th><th>Tổng Thanh Toán</th><th>Ngày Chứng Từ</th><th>Thư Mục Lưu Trữ Drive</th><th>Thao Tác</th></tr></thead>
                 <tbody id="officePaymentTableBody"></tbody>
             </table>
         </div>
@@ -487,7 +486,7 @@
             <div class="form-group"><label>Bộ Phận</label><input type="text" id="inputSlipDept" placeholder="Phòng ban..."></div>
             <div class="form-group"><label>Tên Thiết Bị</label><input type="text" id="inputSlipItem" placeholder="Laptop Dell Latitude..."></div>
             <div class="form-group"><label>Tình Trạng</label><input type="text" id="inputSlipStatus" value="Mới 100%, nguyên seal"></div>
-            <div class="form-group"><label>Ngày Giao</label><input type="date" id="inputSlipDate"></div>
+            <div class="form-group"><label>Ngày Giao (Định dạng VN: DD/MM/YYYY)</label><input type="date" id="inputSlipDate"></div>
             <div class="form-group" style="display: flex; gap: 8px;">
                 <button class="btn btn-green" id="btnSaveSlip" onclick="luuHoacCapNhatPhieuGiao()"><i class="fas fa-plus-circle"></i> Thêm Phiếu</button>
             </div>
@@ -495,7 +494,7 @@
         <table><thead><tr><th>Số Phiếu</th><th>Bên Giao</th><th>Bên Nhận</th><th>Bộ Phận</th><th>Tên Thiết Bị</th><th>Tình Trạng</th><th>Ngày Giao</th><th>Thao Tác</th></tr></thead><tbody id="deliveryTableBody"></tbody></table>
     </div>
 
-    <!-- TAB CƯỚC VIỄN THÔNG (Tự sinh cây thư mục Năm/Tháng & tiến độ thật) -->
+    <!-- TAB CƯỚC VIỄN THÔNG -->
     <div id="telecomPaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-wifi"></i> QUẢN LÝ CƯỚC MẠNG & INTERNET (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
@@ -517,7 +516,7 @@
             <div class="form-group"><label>Tổng Cước (Đã VAT)</label><input type="text" id="inputTelecomTongVat" placeholder="2.500.000" oninput="tinhTienTelecomTuTong()"></div>
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
-            <div class="form-group"><label>Hạn TT</label><input type="date" id="inputTelecomDate" value="2026-08-14"></div>
+            <div class="form-group"><label>Hạn TT (Định dạng VN: DD/MM/YYYY)</label><input type="date" id="inputTelecomDate" value="2026-08-14"></div>
             <div class="form-group" style="grid-column: span 2;">
                 <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Chọn nhiều tệp - Lưu tự động vào Thư mục Năm/Tháng)</label>
                 <input type="file" id="inputTelecomFiles" multiple style="padding: 7px; background: white; font-size: 13px;" onchange="xuLyChonTepTelecom(this)">
@@ -529,7 +528,7 @@
 
         <div style="overflow-x: auto;">
             <table>
-                <thead><tr><th>Mã HS</th><th>Tháng</th><th>Nhà Mạng</th><th>Loại Cước</th><th>Kỳ Cước</th><th>Trước Thuế</th><th>Thuế VAT</th><th>Tổng Cước TT</th><th>Thư Mục Lưu Trữ Drive</th><th>Thao Tác</th></tr></thead>
+                <thead><tr><th>Mã HS</th><th>Tháng</th><th>Nhà Mạng</th><th>Loại Cước</th><th>Kỳ Cước</th><th>Trước Thuế</th><th>Thuế VAT</th><th>Tổng Cước TT</th><th>Hạn Thanh Toán</th><th>Thư Mục Lưu Trữ Drive</th><th>Thao Tác</th></tr></thead>
                 <tbody id="telecomPaymentTableBody"></tbody>
             </table>
         </div>
@@ -852,8 +851,18 @@
     let modalCurrentNvIndex = 0;
     const BAPACO_DRIVE_ROOT = "https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m";
 
-    function layDuongDanThuMucDriveDong() {
-        return `${BAPACO_DRIVE_ROOT}#folder_nam_${currentNamKey}_thang_${currentThangKey}`;
+    // Hàm chuyển đổi ngày ISO (YYYY-MM-DD) sang chuẩn Việt Nam (DD/MM/YYYY)
+    function formatVNDate(dateString) {
+        if (!dateString) return '--';
+        let parts = dateString.split('-');
+        if (parts.length === 3) {
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+        return dateString;
+    }
+
+    function layDuongDanThuMucDriveDong(nam, thang, loai) {
+        return `${BAPACO_DRIVE_ROOT}`;
     }
 
     async function tuDongTaiDuLieuTuDrive() {
@@ -904,23 +913,18 @@
         capNhatDongHo();
     }
 
-    function moModalQuenMatKhau() {
-        document.getElementById('modalQuenMatKhau').classList.remove('hidden');
-    }
+    function moModalQuenMatKhau() { document.getElementById('modalQuenMatKhau').classList.remove('hidden'); }
 
     function xuLyYeuCauQuenMatKhau() {
         let uEmail = document.getElementById('forgotUserEmail').value.trim();
         let targetEmail = document.getElementById('forgotTargetEmail').value.trim();
         let newPass = document.getElementById('forgotNewPass').value.trim();
-        if (!uEmail || !newPass) {
-            alert("Vui lòng điền đầy đủ tài khoản/email và mật khẩu mới!");
-            return;
-        }
+        if (!uEmail || !newPass) { alert("Vui lòng điền đầy đủ tài khoản/email và mật khẩu mới!"); return; }
         alert(`✅ Đã ghi nhận yêu cầu cấp lại mật khẩu cho tài khoản: [${uEmail}]. Mật khẩu mới đã được cấu hình và gửi thông báo xác thực tới email: [${targetEmail || uEmail}].`);
         document.getElementById('modalQuenMatKhau').classList.add('hidden');
     }
 
-    function moThuThucDriveChung() { window.open(layDuongDanThuMucDriveDong(), '_blank'); }
+    function moThuThucDriveChung() { window.open(BAPACO_DRIVE_ROOT, '_blank'); }
     
     function thucHienDangNhap() {
         let u = document.getElementById('loginUser').value.trim();
@@ -1014,9 +1018,11 @@
     function layTatCaDanhSachVPP() {
         let allVpp = [];
         for (let key in dsThanhToanVanPhongProByMonth) {
-            if (key.startsWith(currentNamKey)) {
-                let monthName = key.split('_')[1] || currentThangKey;
-                dsThanhToanVanPhongProByMonth[key].forEach((item, index) => { allVpp.push({ ...item, thangHachToan: monthName, originalKey: key, originalIndex: index }); });
+            let parts = key.split('_');
+            let yearVal = parts[0] || currentNamKey;
+            let monthVal = parts[1] || currentThangKey;
+            if (yearVal === currentNamKey) {
+                dsThanhToanVanPhongProByMonth[key].forEach((item, index) => { allVpp.push({ ...item, namHachToan: yearVal, thangHachToan: monthVal, originalKey: key, originalIndex: index }); });
             }
         }
         return allVpp;
@@ -1025,9 +1031,11 @@
     function layTatCaDanhSachTelecom() {
         let allTelecom = [];
         for (let key in dsThanhToanTelecomByMonth) {
-            if (key.startsWith(currentNamKey)) {
-                let monthName = key.split('_')[1] || currentThangKey;
-                dsThanhToanTelecomByMonth[key].forEach((item, index) => { allTelecom.push({ ...item, thangHachToan: monthName, originalKey: key, originalIndex: index }); });
+            let parts = key.split('_');
+            let yearVal = parts[0] || currentNamKey;
+            let monthVal = parts[1] || currentThangKey;
+            if (yearVal === currentNamKey) {
+                dsThanhToanTelecomByMonth[key].forEach((item, index) => { allTelecom.push({ ...item, namHachToan: yearVal, thangHachToan: monthVal, originalKey: key, originalIndex: index }); });
             }
         }
         return allTelecom;
@@ -1290,7 +1298,7 @@
                 <td style="text-align:center;">${idx + 1}</td>
                 <td><b>${item.name}</b></td>
                 <td>${item.assignee}</td>
-                <td style="text-align:center;">${item.dueDate || '--'}</td>
+                <td style="text-align:center;">${formatVNDate(item.dueDate)}</td>
                 <td style="text-align:center;"><span class="${badgeClass}">${item.status}</span></td>
                 <td style="text-align:center; display:flex; gap:6px; justify-content:center;">
                     <button class="btn btn-yellow" style="padding:4px 8px; font-size:12px;" onclick="hoanDoiTrangThaiCongViec(${idx})" title="Hoán đổi trạng thái"><i class="fa-solid fa-rotate"></i></button>
@@ -1391,7 +1399,7 @@
                 if (progress >= 100) {
                     clearInterval(interval);
                     setTimeout(() => {
-                        txt.innerHTML = `✅ <b>Đã tải lên & lưu trữ thành công</b> ${input.files.length} tệp vào thư mục <a href="${layDuongDanThuMucDriveDong()}" target="_blank" style="color:#0284c7; font-weight:bold;">${currentNamKey}/${currentThangKey}/Thanh_Toan_VPP</a> trên Google Drive!`;
+                        txt.innerHTML = `✅ <b>Đã tải lên & lưu trữ thành công</b> ${input.files.length} tệp vào thư mục <a href="${BAPACO_DRIVE_ROOT}" target="_blank" style="color:#0284c7; font-weight:bold;">${currentNamKey}/${currentThangKey}/Thanh_Toan_VPP</a> trên Google Drive!`;
                         alert(`🎉 Đã tải lên thành công ${input.files.length} tệp đính kèm vào thư mục ${currentNamKey}/${currentThangKey} trên Google Drive!`);
                     }, 300);
                 }
@@ -1414,7 +1422,7 @@
         let targetFolder = `${currentNamKey}/${currentThangKey}/Thanh_Toan_VPP`;
         if (fileInput && fileInput.files.length > 0) {
             for (let i = 0; i < fileInput.files.length; i++) {
-                filesArr.push({ name: fileInput.files[i].name, size: fileInput.files[i].size, folder: targetFolder, driveFolder: layDuongDanThuMucDriveDong() });
+                filesArr.push({ name: fileInput.files[i].name, size: fileInput.files[i].size, folder: targetFolder, driveFolder: BAPACO_DRIVE_ROOT });
             }
         }
 
@@ -1482,12 +1490,13 @@
             let bankInfo = item.bankName ? `${item.bankName} - ${item.bankAccount || ''}` : (item.bankAccount || '--');
             let fileListStr = '<span style="color:#94a3b8; font-size:13px;">Không có tệp</span>';
             if (item.files && item.files.length > 0) {
-                let folderName = `${currentNamKey} / ${item.thangHachToan} / Thanh_Toan_VPP`;
+                let folderName = `${item.namHachToan} / ${item.thangHachToan} / Thanh_Toan_VPP`;
                 let listNames = item.files.map(f => f.name).join(', ');
-                fileListStr = `<a href="${layDuongDanThuMucDriveDong()}" target="_blank" title="Xem thư mục gom file trên Drive" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> ${folderName} (${item.files.length} tệp)<br><small style="color:#475569; font-weight:normal;">${listNames}</small></a>`;
+                fileListStr = `<a href="${BAPACO_DRIVE_ROOT}" target="_blank" title="Mở thư mục trên Google Drive" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> ${folderName} (${item.files.length} tệp)<br><small style="color:#475569; font-weight:normal;">${listNames}</small></a>`;
             }
             tbody.innerHTML += `<tr>
                 <td>${item.id}</td><td><span class="badge-warning">${item.thangHachToan}</span></td><td><b>${item.beneficiary}</b></td><td>${bankInfo}</td><td>${item.content}</td><td>${item.qty} x ${(item.price||0).toLocaleString()}</td><td style="text-align:right;">${(item.truocThue||0).toLocaleString()}</td><td style="text-align:right; color:#dc2626;">${(item.vat||0).toLocaleString()}</td><td style="text-align:right; font-weight:bold; color:#15803d;">${(item.total||0).toLocaleString()}</td>
+                <td style="text-align:center;">${formatVNDate(item.date)}</td>
                 <td>${fileListStr}</td>
                 <td style="text-align:center; display:flex; gap:6px; justify-content:center;">
                     <button class="btn btn-blue" style="padding:4px 8px; font-size:12px;" onclick="suaVPP('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-pen"></i></button>
@@ -1543,7 +1552,8 @@
     function xemVaInPhieuKho(idx) {
         let item = dsKhoMucIn[idx];
         document.getElementById('modalSlipTitle').innerText = "PHIẾU XUẤT KHO / CẤP PHÁT MỰC IN";
-        document.getElementById('modalSlipCodeDate').innerText = `Mã VT: ${item.code} | Ngày: ${new Date().toLocaleDateString('vi-VN')}`;
+        let todayVN = new Date().toLocaleDateString('vi-VN');
+        document.getElementById('modalSlipCodeDate').innerText = `Mã VT: ${item.code} | Ngày: ${todayVN}`;
         document.getElementById('modalSlipFrom').innerText = "Kho Văn phòng Tổng công ty";
         document.getElementById('modalSlipTo').innerText = item.receiver || "Phòng ban sử dụng";
         document.getElementById('modalSlipDept').innerText = item.printer ? `Máy in: ${item.printer}` : "Tổng công ty Giấy Việt Nam";
@@ -1638,7 +1648,7 @@
     function xemVaInPhieuGiaoNhanTab(idx) {
         let s = dsPhieuGiaoNhan[idx];
         document.getElementById('modalSlipTitle').innerText = "PHIẾU BÀN GIAO THIẾT BỊ VĂN PHÒNG";
-        document.getElementById('modalSlipCodeDate').innerText = `Số: ${s.slipNo} | Ngày: ${s.date}`;
+        document.getElementById('modalSlipCodeDate').innerText = `Số: ${s.slipNo} | Ngày: ${formatVNDate(s.date)}`;
         document.getElementById('modalSlipFrom').innerText = s.from;
         document.getElementById('modalSlipTo').innerText = s.to || "Cán bộ nhận";
         document.getElementById('modalSlipDept').innerText = s.dept || "Phòng ban";
@@ -1655,7 +1665,7 @@
         if(!tbody) return; tbody.innerHTML = '';
         dsPhieuGiaoNhan.forEach((s, idx) => {
             tbody.innerHTML += `<tr>
-                <td><b>${s.slipNo}</b></td><td>${s.from}</td><td><b>${s.to}</b></td><td><span class="badge-warning">${s.dept}</span></td><td><b>${s.item}</b></td><td>${s.status}</td><td style="text-align:center;">${s.date}</td>
+                <td><b>${s.slipNo}</b></td><td>${s.from}</td><td><b>${s.to}</b></td><td><span class="badge-warning">${s.dept}</span></td><td><b>${s.item}</b></td><td>${s.status}</td><td style="text-align:center;">${formatVNDate(s.date)}</td>
                 <td style="text-align:center; display:flex; gap:6px; justify-content:center;">
                     <button class="btn btn-purple" style="padding:4px 8px; font-size:12px;" onclick="xemVaInPhieuGiaoNhanTab(${idx})" title="Xem & In"><i class="fa-solid fa-print"></i> In Phiếu</button>
                     <button class="btn btn-blue" style="padding:4px 8px; font-size:12px;" onclick="suaPhieuGiao(${idx})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
@@ -1699,7 +1709,7 @@
                 if (progress >= 100) {
                     clearInterval(interval);
                     setTimeout(() => {
-                        txt.innerHTML = `✅ <b>Đã tải lên & lưu trữ thành công</b> ${input.files.length} tệp vào thư mục <a href="${layDuongDanThuMucDriveDong()}" target="_blank" style="color:#0284c7; font-weight:bold;">${currentNamKey}/${currentThangKey}/Cuoc_Vien_Thong</a> trên Google Drive!`;
+                        txt.innerHTML = `✅ <b>Đã tải lên & lưu trữ thành công</b> ${input.files.length} tệp vào thư mục <a href="${BAPACO_DRIVE_ROOT}" target="_blank" style="color:#0284c7; font-weight:bold;">${currentNamKey}/${currentThangKey}/Cuoc_Vien_Thong</a> trên Google Drive!`;
                         alert(`🎉 Đã tải lên thành công ${input.files.length} tệp đính kèm vào thư mục ${currentNamKey}/${currentThangKey} trên Google Drive!`);
                     }, 300);
                 }
@@ -1721,7 +1731,7 @@
         let targetFolder = `${currentNamKey}/${currentThangKey}/Cuoc_Vien_Thong`;
         if (fileInput && fileInput.files.length > 0) {
             for (let i = 0; i < fileInput.files.length; i++) {
-                filesArr.push({ name: fileInput.files[i].name, size: fileInput.files[i].size, folder: targetFolder, driveFolder: layDuongDanThuMucDriveDong() });
+                filesArr.push({ name: fileInput.files[i].name, size: fileInput.files[i].size, folder: targetFolder, driveFolder: BAPACO_DRIVE_ROOT });
             }
         }
 
@@ -1734,7 +1744,9 @@
             maHs: document.getElementById('inputTelecomMaHs').value,
             supplier: document.getElementById('inputTelecomSupplier').value,
             type, kyCuoc: document.getElementById('inputTelecomKyCuoc').value,
-            thangHachToan: currentThangKey, tong, truocThue, vat, files: finalFiles
+            thangHachToan: currentThangKey, tong, truocThue, vat, 
+            date: document.getElementById('inputTelecomDate').value || `${currentNamKey}-08-14`,
+            files: finalFiles
         };
 
         if (editIdx >= 0) {
@@ -1756,6 +1768,7 @@
         document.getElementById('inputTelecomType').value = item.type;
         document.getElementById('inputTelecomKyCuoc').value = item.kyCuoc;
         document.getElementById('inputTelecomTongVat').value = item.tong.toLocaleString();
+        document.getElementById('inputTelecomDate').value = item.date || `${currentNamKey}-08-14`;
         tinhTienTelecomTuTong();
         document.getElementById('editTelecomIndex').value = originalIndex;
         document.getElementById('btnSaveTelecom').innerHTML = `<i class="fas fa-save"></i> Cập Nhật Cước`;
@@ -1775,12 +1788,13 @@
         allYearTelecom.forEach((item) => {
             let fileListStr = '<span style="color:#94a3b8; font-size:13px;">Không có tệp</span>';
             if (item.files && item.files.length > 0) {
-                let folderName = `${currentNamKey} / ${item.thangHachToan} / Cuoc_Vien_Thong`;
+                let folderName = `${item.namHachToan} / ${item.thangHachToan} / Cuoc_Vien_Thong`;
                 let listNames = item.files.map(f => f.name).join(', ');
-                fileListStr = `<a href="${layDuongDanThuMucDriveDong()}" target="_blank" title="Xem thư mục gom file trên Drive" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> ${folderName} (${item.files.length} tệp)<br><small style="color:#475569; font-weight:normal;">${listNames}</small></a>`;
+                fileListStr = `<a href="${BAPACO_DRIVE_ROOT}" target="_blank" title="Mở thư mục trên Google Drive" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> ${folderName} (${item.files.length} tệp)<br><small style="color:#475569; font-weight:normal;">${listNames}</small></a>`;
             }
             tbody.innerHTML += `<tr>
                 <td><b>${item.maHs}</b></td><td><span class="badge-warning">${item.thangHachToan}</span></td><td><span class="badge-net">${item.supplier}</span></td><td>${item.type}</td><td>${item.kyCuoc}</td><td style="text-align:right;">${(item.truocThue||0).toLocaleString()}</td><td style="text-align:right; color:#dc2626;">${(item.vat||0).toLocaleString()}</td><td style="text-align:right; font-weight:bold; color:#15803d;">${(item.tong||0).toLocaleString()}</td>
+                <td style="text-align:center;">${formatVNDate(item.date)}</td>
                 <td>${fileListStr}</td>
                 <td style="text-align:center; display:flex; gap:6px; justify-content:center;">
                     <button class="btn btn-blue" style="padding:4px 8px; font-size:12px;" onclick="suaTelecom('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-pen"></i></button>

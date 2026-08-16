@@ -860,22 +860,27 @@
         }
     };
 
-    let coSoDuLieuNamThang = JSON.parse(localStorage.getItem('bapaco_db_data')) || defaultCoSoDuLieuNamThang;
-    let dsThanhToanVanPhongProByMonth = JSON.parse(localStorage.getItem('bapaco_vpp_map_data')) || {};
-    let dsThanhToanTelecomByMonth = JSON.parse(localStorage.getItem('bapaco_telecom_map_data')) || {};
-    let dsKhoMucIn = JSON.parse(localStorage.getItem('bapaco_ink_data')) || [{ code: "MUC001", name: "Hộp mực Canon 337", printer: "Canon LBP 151dw", action: "Cấp phát sử dụng", qty: 2, receiver: "Phòng Hành chính", price: 450000, total: 900000 }];
-    let dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('bapaco_delivery_data')) || [{ slipNo: "PGN-2026/08-01", from: "Trần Bình Dương - Văn phòng Tổng công ty", to: "Nguyễn Minh Ngọc", dept: "Phòng Kế toán", item: "Laptop Dell Latitude", status: "Mới 100%, nguyên seal", date: "2026-08-14" }];
-    let dsKhaoSatChuyenSieu = JSON.parse(localStorage.getItem('bapaco_survey_data')) || [{ code: "KS-01", user: "Trần Bình Dương", dept: "Văn phòng Tổng công ty", device: "Laptop cá nhân", os: "Windows 11 Pro", osLicense: "✅ Có bản quyền chính hãng", office: "Microsoft 365 (Cloud)", officeLicense: "✅ Bản quyền Tổng công ty", bizSoft: "Cloudoffice (Văn thư)", bizLicense: "✅ Có bản quyền chính hãng", specs: "Core i7, RAM 16GB, SSD 512GB" }];
-    let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data')) || [{ id: 1, name: "Hoàn thiện báo cáo điều hành tháng 08", assignee: "Trần Bình Dương", dueDate: "2026-08-15", status: "Đang làm" }];
-    let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('bapaco_accounts_data')) || [
-        { email: "admin@vinapaco.com.vn", fullName: "Trần Bình Dương", role: "Admin", status: "Active", notifyEmail: "duongtb@vinapaco.com.vn" },
-        { email: "ketoan@vinapaco.com.vn", fullName: "Nguyễn Minh Ngọc", role: "Editor", status: "Active", notifyEmail: "nguyenminhngoc@vinapaco.com.vn" }
-    ];
+  const _now = new Date();
+const _namHienTai = String(_now.getFullYear());
+const _thangHienTai = "Tháng " + String(_now.getMonth() + 1).padStart(2, '0');
+const _thangSo = String(_now.getMonth() + 1).padStart(2, '0');
 
-    let gasWebhookUrl = "https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec";
-    let currentNamKey = "2026";
-    let currentThangKey = "Tháng 08";
-    let modalCurrentNvIndex = 0;
+let coSoDuLieuNamThang = JSON.parse(localStorage.getItem('bapaco_db_data')) || defaultCoSoDuLieuNamThang;
+let dsThanhToanVanPhongProByMonth = JSON.parse(localStorage.getItem('bapaco_vpp_map_data')) || {};
+let dsThanhToanTelecombyMonth = JSON.parse(localStorage.getItem('bapaco_telecom_map_data')) || {};
+let dsKhoMucIn = JSON.parse(localStorage.getItem('bapaco_ink_data')) || [{ code: "MUC001", name: "Hộp mực Canon 337", printer: "Canon LBP 151dw", action: "Cấp phát sử dụng" }];
+let dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('bapaco_delivery_data')) || [{ slipNo: `PGN-${_namHienTai}/${_thangSo}-01`, from: "Trần Bình Dương - Văn phòng Tổng công ty", to: "Người nhận" }];
+let dsKhaoSatChuyenSieu = JSON.parse(localStorage.getItem('bapaco_survey_data')) || [{ code: "KS-01", user: "Trần Bình Dương", dept: "Văn phòng Tổng công ty", device: "Laptop" }];
+let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data')) || [{ id: 1, name: `Hoàn thiện báo cáo điều hành ${_thangHienTai}`, assignee: "Trần Bình Dương", dueDate: `${_namHienTai}-${_thangSo}-30`, status: "Đang thực hiện" }];
+let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('bapaco_accounts_data')) || [
+    { email: "admin@vinapaco.com.vn", fullName: "Trần Bình Dương", role: "Admin", status: "Active", notifyEmail: "duongtb@vinapaco.com.vn" },
+    { email: "ketoan@vinapaco.com.vn", fullName: "Nguyễn Minh Ngọc", role: "Editor", status: "Active", notifyEmail: "nguyenminhngoc@vinapaco.com.vn" }
+];
+
+let gasWebhookUrl = "https://script.google.com/macros/s/AKfycbyZ1A_yPUcMEUW44MLHEAV1R1fT9OH4_VtwCMQL1Gv1-MHlxvXkbq0jfxLy7-Pj8B4W8w/exec";
+let currentNamKey = _namHienTai;
+let currentThangKey = _thangHienTai;
+let modalCurrentNvIndex = 0;
     
     const BAPACO_DRIVE_BASE_URL = "https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m";
 

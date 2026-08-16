@@ -866,7 +866,6 @@
     let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data') || `[{"id":1,"name":"Hoàn thiện báo cáo điều hành ${_thangHienTai}","assignee":"Trần Bình Dương","dueDate":"${_namHienTai}-${_thangSo}-30","status":"Đang thực hiện"}]`);
     let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('bapaco_accounts_data') || '[{"email":"admin@vinapaco.com.vn","fullName":"Trần Bình Dương","role":"Admin","status":"Active","notifyEmail":"duongtb@vinapaco.com.vn"},{"email":"ketoan@vinapaco.com.vn","fullName":"Nguyễn Minh Ngọc","role":"Editor","status":"Active","notifyEmail":"nguyenminhngoc@vinapaco.com.vn"}]');
 
-    // ĐÃ GÁN SẴN URL GAS CỦA ANH VÀO ĐÂY, HOẶC CÓ THỂ ĐỔI LINH HOẠT TẠI GIAO DIỆN
     let gasWebhookUrl = localStorage.getItem('bapaco_custom_gas_url') || "https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec";
     let currentNamKey = _namHienTai;
     let currentThangKey = _thangHienTai;

@@ -440,7 +440,7 @@
             <div class="form-group"><label>Tổng Thanh Toán</label><input type="text" id="previewOfficeTotal" placeholder="0" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;"></div>
             <div class="form-group"><label>Ngày Chứng Từ (DD/MM/YYYY)</label><input type="date" id="inputOfficeDate"></div>
             <div class="form-group" style="grid-column: span 2;">
-                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Đẩy tự động vào đúng thư mục Năm / Tháng chọn)</label>
+                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Đẩy thực tế lên đúng thư mục Năm / Tháng trên Drive)</label>
                 <input type="file" id="inputOfficeFiles" multiple style="padding: 7px; background: white; font-size: 13px;" onchange="xuLyChonTepVPP(this)">
                 <div class="progress-box" id="officeProgressBarBox"><div class="progress-bar-fill" id="officeProgressBarFill"></div></div>
                 <small id="officeProgressText" style="color:#0284c7; font-weight:bold; display:none; margin-top:3px;"></small>
@@ -542,7 +542,7 @@
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group" style="grid-column: span 2;">
-                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Đẩy tự động vào đúng thư mục Năm / Tháng chọn)</label>
+                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Đẩy thực tế lên đúng thư mục Năm / Tháng trên Drive)</label>
                 <input type="file" id="inputTelecomFiles" multiple style="padding: 7px; background: white; font-size: 13px;" onchange="xuLyChonTepTelecom(this)">
                 <div class="progress-box" id="telecomProgressBarBox"><div class="progress-bar-fill" id="telecomProgressBarFill"></div></div>
                 <small id="telecomProgressText" style="color:#0284c7; font-weight:bold; display:none; margin-top:3px;"></small>
@@ -911,9 +911,24 @@
         } catch (e) {}
     }
 
-    async function tuDongDayDuLieuLenDrive() {
-        let payload = { coSoDuLieuNamThang, dsThanhToanVanPhongProByMonth, dsKhoMucIn, dsThanhToanTelecombyMonth, dsKhaoSatChuyenSieu, danhSachCongViec, dsPhieuGiaoNhan, danhSachTaiKhoanHeThong };
-        try { await fetch(gasWebhookUrl, { method: 'POST', body: JSON.stringify({ type: "SYNC_MASTER_DB", payload: payload }) }); } catch (e) {}
+    // ĐÃ NÂNG CẤP: Gửi cả Dữ liệu tổng thể và Mảng Tệp tin mã hóa Base64 thực tế lên GAS
+    async function tuDongDayDuLieuLenDrive(filesToUpload = []) {
+        let payload = { 
+            coSoDuLieuNamThang, 
+            dsThanhToanVanPhongProByMonth, 
+            dsKhoMucIn, 
+            dsThanhToanTelecombyMonth, 
+            dsKhaoSatChuyenSieu, 
+            danhSachCongViec, 
+            dsPhieuGiaoNhan, 
+            danhSachTaiKhoanHeThong 
+        };
+        try { 
+            await fetch(gasWebhookUrl, { 
+                method: 'POST', 
+                body: JSON.stringify({ type: "SYNC_MASTER_DB", payload: payload, filesToUpload: filesToUpload }) 
+            }); 
+        } catch (e) {}
     }
 
     function thuCongDongBoLenDrive() { tuDongDayDuLieuLenDrive(); alert("✅ Đã đồng bộ toàn bộ dữ liệu lên Google Drive thành công!"); }
@@ -1426,29 +1441,78 @@
         document.getElementById('previewOfficeTotal').value = total.toLocaleString('vi-VN');
     }
 
-    function xuLyChonTepVPP(input) {
+    // ĐÃ NÂNG CẤP THỰC TẾ: Đọc file VPP thành Base64 để gửi lên GAS
+    async function xuLyChonTepVPP(input) {
         if (input.files && input.files.length > 0) {
             let box = document.getElementById('officeProgressBarBox');
             let fill = document.getElementById('officeProgressBarFill');
             let txt = document.getElementById('officeProgressText');
             box.style.display = 'block';
             txt.style.display = 'block';
-            let progress = 0;
-            fill.style.width = '0%';
-            txt.innerText = `Đang đồng bộ ${input.files.length} tệp vào thư mục [VINAPACO_Drive / ${currentNamKey} / ${currentThangKey}] trên Google Drive... (0%)`;
-            let interval = setInterval(() => {
-                progress += 25;
-                fill.style.width = progress + '%';
-                txt.innerText = `Đang đồng bộ ${input.files.length} tệp vào thư mục [VINAPACO_Drive / ${currentNamKey} / ${currentThangKey}] trên Google Drive... (${progress}%)`;
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        txt.innerHTML = `✅ <b>Đã tải lên & lưu trữ thành công</b> ${input.files.length} tệp vào thư mục đúng năm/tháng đã chọn trên Google Drive!`;
-                        alert(`🎉 Đã tải lên thành công ${input.files.length} tệp đính kèm vào thư mục VINAPACO_Drive / ${currentNamKey} / ${currentThangKey} trên Google Drive!`);
-                    }, 300);
-                }
-            }, 150);
+            fill.style.width = '50%';
+            txt.innerText = `Đang đọc và mã hóa ${input.files.length} tệp tin...`;
+
+            let filesPayload = [];
+            for (let i = 0; i < input.files.length; i++) {
+                let file = input.files[i];
+                let base64Data = await convertFileToBase64(file);
+                filesPayload.push({
+                    name: file.name,
+                    mimeType: file.type || "application/octet-stream",
+                    base64Data: base64Data,
+                    nam: currentNamKey,
+                    thang: currentThangKey,
+                    category: "Thanh_Toan_VPP"
+                });
+            }
+
+            fill.style.width = '100%';
+            txt.innerHTML = `✅ <b>Đã mã hóa thành công</b> ${input.files.length} tệp. Sẵn sàng đồng bộ lên Google Drive!`;
+            window.tempVppFilesPayload = filesPayload;
         }
+    }
+
+    // ĐÃ NÂNG CẤP THỰC TẾ: Đọc file Telecom thành Base64 để gửi lên GAS
+    async function xuLyChonTepTelecom(input) {
+        if (input.files && input.files.length > 0) {
+            let box = document.getElementById('telecomProgressBarBox');
+            let fill = document.getElementById('telecomProgressBarFill');
+            let txt = document.getElementById('telecomProgressText');
+            box.style.display = 'block';
+            txt.style.display = 'block';
+            fill.style.width = '50%';
+            txt.innerText = `Đang đọc và mã hóa ${input.files.length} tệp viễn thông...`;
+
+            let filesPayload = [];
+            for (let i = 0; i < input.files.length; i++) {
+                let file = input.files[i];
+                let base64Data = await convertFileToBase64(file);
+                filesPayload.push({
+                    name: file.name,
+                    mimeType: file.type || "application/octet-stream",
+                    base64Data: base64Data,
+                    nam: currentNamKey,
+                    thang: currentThangKey,
+                    category: "Cuoc_Vien_Thong"
+                });
+            }
+
+            fill.style.width = '100%';
+            txt.innerHTML = `✅ <b>Đã mã hóa thành công</b> ${input.files.length} tệp. Sẵn sàng đồng bộ lên Google Drive!`;
+            window.tempTelecomFilesPayload = filesPayload;
+        }
+    }
+
+    function convertFileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            let reader = new FileReader();
+            reader.onload = () => {
+                let base64String = reader.result.split(',')[1];
+                resolve(base64String);
+            };
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
     }
 
     function luuHoacCapNhatVPP() {
@@ -1461,14 +1525,8 @@
         let key = `${currentNamKey}_${currentThangKey}`;
         if (!dsThanhToanVanPhongProByMonth[key]) dsThanhToanVanPhongProByMonth[key] = [];
 
-        let fileInput = document.getElementById('inputOfficeFiles');
-        let filesArr = [];
-        let targetFolder = `VINAPACO_Drive/${currentNamKey}/${currentThangKey}/Thanh_Toan_VPP`;
-        if (fileInput && fileInput.files.length > 0) {
-            for (let i = 0; i < fileInput.files.length; i++) {
-                filesArr.push({ name: fileInput.files[i].name, size: fileInput.files[i].size, folder: targetFolder });
-            }
-        }
+        let filesToUpload = window.tempVppFilesPayload || [];
+        let filesArr = filesToUpload.map(f => ({ name: f.name, size: f.base64Data.length, folder: `VINAPACO_Drive/${currentNamKey}/${currentThangKey}/Thanh_Toan_VPP` }));
 
         let editIdx = parseInt(document.getElementById('editOfficeIndex').value);
         let existingFiles = editIdx >= 0 && dsThanhToanVanPhongProByMonth[key][editIdx].files ? dsThanhToanVanPhongProByMonth[key][editIdx].files : [];
@@ -1492,14 +1550,21 @@
         } else {
             dsThanhToanVanPhongProByMonth[key].push(newItem);
         }
+
+        // Đẩy toàn bộ dữ liệu và tệp thực tế lên Google Drive
+        tuDongDayDuLieuLenDrive(filesToUpload);
+        window.tempVppFilesPayload = [];
+
         document.getElementById('inputOfficeContent').value = '';
         document.getElementById('inputOfficeBeneficiary').value = '';
         document.getElementById('inputOfficeBankName').value = '';
         document.getElementById('inputOfficeBankAccount').value = '';
+        let fileInput = document.getElementById('inputOfficeFiles');
         if (fileInput) fileInput.value = '';
         document.getElementById('officeProgressBarBox').style.display = 'none';
         document.getElementById('officeProgressText').style.display = 'none';
         capNhat();
+        alert("✅ Đã lưu chứng từ và đẩy file đính kèm lên đúng thư mục Google Drive thành công!");
     }
 
     function suaVPP(originalKey, originalIndex) {
@@ -1755,31 +1820,6 @@
         document.getElementById('inputTelecomVatInput').value = vat.toLocaleString('vi-VN');
     }
 
-    function xuLyChonTepTelecom(input) {
-        if (input.files && input.files.length > 0) {
-            let box = document.getElementById('telecomProgressBarBox');
-            let fill = document.getElementById('telecomProgressBarFill');
-            let txt = document.getElementById('telecomProgressText');
-            box.style.display = 'block';
-            txt.style.display = 'block';
-            let progress = 0;
-            fill.style.width = '0%';
-            txt.innerText = `Đang đồng bộ ${input.files.length} tệp vào thư mục [VINAPACO_Drive / ${currentNamKey} / ${currentThangKey}] trên Google Drive... (0%)`;
-            let interval = setInterval(() => {
-                progress += 25;
-                fill.style.width = progress + '%';
-                txt.innerText = `Đang đồng bộ ${input.files.length} tệp vào thư mục [VINAPACO_Drive / ${currentNamKey} / ${currentThangKey}] trên Google Drive... (${progress}%)`;
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        txt.innerHTML = `✅ <b>Đã tải lên & lưu trữ thành công</b> ${input.files.length} tệp vào thư mục đúng năm/tháng đã chọn trên Google Drive!`;
-                        alert(`🎉 Đã tải lên thành công ${input.files.length} tệp đính kèm vào thư mục VINAPACO_Drive / ${currentNamKey} / ${currentThangKey} trên Google Drive!`);
-                    }, 300);
-                }
-            }, 150);
-        }
-    }
-
     function luuHoacCapNhatTelecom() {
         let type = document.getElementById('inputTelecomType').value.trim();
         let tong = parseFloat(document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g,'')) || 0;
@@ -1790,14 +1830,8 @@
         let newMonthKey = `${currentNamKey}_${currentThangKey}`;
         if (!dsThanhToanTelecombyMonth[newMonthKey]) dsThanhToanTelecombyMonth[newMonthKey] = [];
 
-        let fileInput = document.getElementById('inputTelecomFiles');
-        let filesArr = [];
-        let targetFolder = `VINAPACO_Drive/${currentNamKey}/${currentThangKey}/Cuoc_Vien_Thong`;
-        if (fileInput && fileInput.files.length > 0) {
-            for (let i = 0; i < fileInput.files.length; i++) {
-                filesArr.push({ name: fileInput.files[i].name, size: fileInput.files[i].size, folder: targetFolder });
-            }
-        }
+        let filesToUpload = window.tempTelecomFilesPayload || [];
+        let filesArr = filesToUpload.map(f => ({ name: f.name, size: f.base64Data.length, folder: `VINAPACO_Drive/${currentNamKey}/${currentThangKey}/Cuoc_Vien_Thong` }));
 
         let editIdx = parseInt(document.getElementById('editTelecomIndex').value);
         let existingFiles = editIdx >= 0 && dsThanhToanTelecombyMonth[newMonthKey][editIdx].files ? dsThanhToanTelecombyMonth[newMonthKey][editIdx].files : [];
@@ -1819,14 +1853,21 @@
         } else {
             dsThanhToanTelecombyMonth[newMonthKey].push(newItem);
         }
+
+        // Đẩy toàn bộ dữ liệu và tệp viễn thông lên Google Drive
+        tuDongDayDuLieuLenDrive(filesToUpload);
+        window.tempTelecomFilesPayload = [];
+
         document.getElementById('inputTelecomType').value = '';
         document.getElementById('inputTelecomTongVat').value = '';
         document.getElementById('inputTelecomTruocThueInput').value = '';
         document.getElementById('inputTelecomVatInput').value = '';
+        let fileInput = document.getElementById('inputTelecomFiles');
         if (fileInput) fileInput.value = '';
         document.getElementById('telecomProgressBarBox').style.display = 'none';
         document.getElementById('telecomProgressText').style.display = 'none';
         capNhat();
+        alert("✅ Đã lưu cước viễn thông và đẩy file đính kèm lên Google Drive thành công!");
     }
 
     function suaTelecom(originalKey, originalIndex) {

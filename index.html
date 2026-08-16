@@ -527,7 +527,7 @@
             <div class="form-group"><label>Mã HS</label><input type="text" id="inputTelecomMaHs" readonly style="background: #e2e8f0; font-weight: bold;" value="VT-01"></div>
             <div class="form-group"><label>Nhà Mạng</label><select id="inputTelecomSupplier"><option value="VNPT">VNPT</option><option value="Viettel">Viettel</option><option value="Mobifone">Mobifone</option></select></div>
             <div class="form-group"><label>Loại Cước</label><input type="text" id="inputTelecomType" placeholder="VD: Cáp quang..."></div>
-            <div class="form-group"><label>Kỳ Cước</label><input type="text" id="inputTelecomKyCuoc" placeholder="Tháng 08/2026" value="Tháng 08/2026"></div>
+            <div class="form-group"><label>Kỳ Cước</label><input type="text" id="inputTelecomKyCuoc" readonly style="background:#e2e8f0;" value="Tháng 08/2026"></div>
             <div class="form-group"><label>Tổng Cước (Đã VAT)</label><input type="text" id="inputTelecomTongVat" placeholder="2.500.000" oninput="tinhTienTelecomTuTong()"></div>
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
@@ -919,7 +919,7 @@
                 coSoDuLieuNamThang = result.coSoDuLieuNamThang;
                 dsThanhToanVanPhongProByMonth = result.dsThanhToanVanPhongProByMonth || {};
                 dsKhoMucIn = result.dsKhoMucIn || [];
-                dsThanhToanTelecomByMonth = result.dsThanhToanTelecomByMonth || {};
+                dsThanhToanTelecombyMonth = result.dsThanhToanTelecombyMonth || {};
                 dsKhaoSatChuyenSieu = result.dsKhaoSatChuyenSieu || [];
                 danhSachCongViec = result.danhSachCongViec || [];
                 dsPhieuGiaoNhan = result.dsPhieuGiaoNhan || dsPhieuGiaoNhan;
@@ -930,7 +930,7 @@
     }
 
     async function tuDongDayDuLieuLenDrive() {
-        let payload = { coSoDuLieuNamThang, dsThanhToanVanPhongProByMonth, dsKhoMucIn, dsThanhToanTelecomByMonth, dsKhaoSatChuyenSieu, danhSachCongViec, dsPhieuGiaoNhan, danhSachTaiKhoanHeThong };
+        let payload = { coSoDuLieuNamThang, dsThanhToanVanPhongProByMonth, dsKhoMucIn, dsThanhToanTelecombyMonth, dsKhaoSatChuyenSieu, danhSachCongViec, dsPhieuGiaoNhan, danhSachTaiKhoanHeThong };
         try { await fetch(gasWebhookUrl, { method: 'POST', body: JSON.stringify({ type: "SYNC_MASTER_DB", payload: payload }) }); } catch (e) {}
     }
 
@@ -1002,6 +1002,12 @@
         document.querySelectorAll('.thangHienTaiTitle').forEach(el => el.innerText = `${currentThangKey}/${currentNamKey}`);
         let pathInput = document.getElementById('cfgDrivePath');
         if(pathInput) pathInput.value = `VINAPACO_Drive / ${currentNamKey} / ${currentThangKey}`;
+
+        // Tự động cập nhật thẳng vào ô kỳ cước viễn thông khi thay đổi tháng/năm ở thanh cấu hình
+        let kyCuocInput = document.getElementById('inputTelecomKyCuoc');
+        if (kyCuocInput) {
+            kyCuocInput.value = `${currentThangKey}/${currentNamKey}`;
+        }
 
         if (!coSoDuLieuNamThang[currentNamKey]) coSoDuLieuNamThang[currentNamKey] = {};
         if (!coSoDuLieuNamThang[currentNamKey][currentThangKey]) {
@@ -1803,6 +1809,7 @@
     function luuHoacCapNhatTelecom() {
         let type = document.getElementById('inputTelecomType').value.trim();
         let tong = parseFloat(document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g,'')) || 0;
+        let kyCuocVal = document.getElementById('inputTelecomKyCuoc').value.trim();
         if (!type || !tong) { alert("Nhập đủ loại cước và tổng cước!"); return; }
         let truocThue = Math.round(tong / 1.1);
         let vat = tong - truocThue;
@@ -1826,7 +1833,7 @@
             id: editIdx >= 0 ? dsThanhToanTelecombyMonth[newMonthKey][editIdx].id : "VT-0" + (dsThanhToanTelecombyMonth[newMonthKey].length + 1),
             maHs: document.getElementById('inputTelecomMaHs').value,
             supplier: document.getElementById('inputTelecomSupplier').value,
-            type, kyCuoc: document.getElementById('inputTelecomKyCuoc').value,
+            type, kyCuoc: kyCuocVal,
             thangHachToan: currentThangKey, tong, truocThue, vat, 
             files: finalFiles
         };
@@ -1838,6 +1845,10 @@
         } else {
             dsThanhToanTelecombyMonth[newMonthKey].push(newItem);
         }
+        document.getElementById('inputTelecomType').value = '';
+        document.getElementById('inputTelecomTongVat').value = '';
+        document.getElementById('inputTelecomTruocThueInput').value = '';
+        document.getElementById('inputTelecomVatInput').value = '';
         if (fileInput) fileInput.value = '';
         document.getElementById('telecomProgressBarBox').style.display = 'none';
         document.getElementById('telecomProgressText').style.display = 'none';

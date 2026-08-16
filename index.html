@@ -205,10 +205,10 @@
             <option value="Tháng 01">Tháng 01</option><option value="Tháng 02">Tháng 02</option><option value="Tháng 03">Tháng 03</option><option value="Tháng 04">Tháng 04</option><option value="Tháng 05">Tháng 05</option><option value="Tháng 06">Tháng 06</option><option value="Tháng 07">Tháng 07</option><option value="Tháng 08" selected>Tháng 08</option><option value="Tháng 09">Tháng 09</option><option value="Tháng 10">Tháng 10</option><option value="Tháng 11">Tháng 11</option><option value="Tháng 12">Tháng 12</option>
         </select></div>
         <div class="config-item" style="grid-column: span 2;">
-            <label>Thư Mục Gốc Google Drive</label>
+            <label>Thư Mục Gốc Google Drive (Tự động sinh theo Năm/Tháng)</label>
             <div style="display: flex; gap: 8px;">
                 <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold; flex: 1;" value="https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m">
-                <button class="btn btn-blue" style="padding: 6px 12px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Mở Drive</button>
+                <button class="btn btn-blue" style="padding: 6px 12px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Mở Thư Mục</button>
             </div>
         </div>
         <div class="config-item"><label>Ngày Công Chế Độ</label><input type="number" id="cfgNCD" onchange="luuCauHinhHienTai()"></div>
@@ -409,7 +409,7 @@
         </div>
     </div>
 
-    <!-- TAB THANH TOÁN VĂN PHÒNG (Bổ sung upload nhiều tệp, thanh tiến độ & thư mục gốc) -->
+    <!-- TAB THANH TOÁN VĂN PHÒNG (Tự sinh cây thư mục Năm/Tháng & tiến độ thật) -->
     <div id="officePaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
@@ -432,7 +432,7 @@
             <div class="form-group"><label>Tổng Thanh Toán</label><input type="text" id="previewOfficeTotal" placeholder="0" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;"></div>
             <div class="form-group"><label>Ngày Chứng Từ</label><input type="date" id="inputOfficeDate"></div>
             <div class="form-group" style="grid-column: span 2;">
-                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Chọn nhiều tệp - Lưu vào Thư mục gốc Drive)</label>
+                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Chọn nhiều tệp - Lưu tự động vào Thư mục Năm/Tháng)</label>
                 <input type="file" id="inputOfficeFiles" multiple style="padding: 7px; background: white; font-size: 13px;" onchange="xuLyChonTepVPP(this)">
                 <div class="progress-box" id="officeProgressBarBox"><div class="progress-bar-fill" id="officeProgressBarFill"></div></div>
                 <small id="officeProgressText" style="color:#0284c7; font-weight:bold; display:none; margin-top:3px;"></small>
@@ -442,7 +442,7 @@
 
         <div style="overflow-x: auto;">
             <table>
-                <thead><tr><th>STT</th><th>Tháng</th><th>Thụ Hưởng</th><th>Ngân Hàng / STK</th><th>Nội Dung Thanh Toán</th><th>SL x Đơn Giá</th><th>Trước Thuế</th><th>Thuế VAT</th><th>Tổng Thanh Toán</th><th>Thư Mục Đính Kèm (Drive)</th><th>Thao Tác</th></tr></thead>
+                <thead><tr><th>STT</th><th>Tháng</th><th>Thụ Hưởng</th><th>Ngân Hàng / STK</th><th>Nội Dung Thanh Toán</th><th>SL x Đơn Giá</th><th>Trước Thuế</th><th>Thuế VAT</th><th>Tổng Thanh Toán</th><th>Thư Mục Lưu Trữ Drive</th><th>Thao Tác</th></tr></thead>
                 <tbody id="officePaymentTableBody"></tbody>
             </table>
         </div>
@@ -495,7 +495,7 @@
         <table><thead><tr><th>Số Phiếu</th><th>Bên Giao</th><th>Bên Nhận</th><th>Bộ Phận</th><th>Tên Thiết Bị</th><th>Tình Trạng</th><th>Ngày Giao</th><th>Thao Tác</th></tr></thead><tbody id="deliveryTableBody"></tbody></table>
     </div>
 
-    <!-- TAB CƯỚC VIỄN THÔNG (Có thanh tiến độ & gom file) -->
+    <!-- TAB CƯỚC VIỄN THÔNG (Tự sinh cây thư mục Năm/Tháng & tiến độ thật) -->
     <div id="telecomPaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-wifi"></i> QUẢN LÝ CƯỚC MẠNG & INTERNET (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
@@ -519,7 +519,7 @@
             <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Hạn TT</label><input type="date" id="inputTelecomDate" value="2026-08-14"></div>
             <div class="form-group" style="grid-column: span 2;">
-                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Chọn nhiều tệp - Lưu vào Thư mục gốc Drive)</label>
+                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Chọn nhiều tệp - Lưu tự động vào Thư mục Năm/Tháng)</label>
                 <input type="file" id="inputTelecomFiles" multiple style="padding: 7px; background: white; font-size: 13px;" onchange="xuLyChonTepTelecom(this)">
                 <div class="progress-box" id="telecomProgressBarBox"><div class="progress-bar-fill" id="telecomProgressBarFill"></div></div>
                 <small id="telecomProgressText" style="color:#0284c7; font-weight:bold; display:none; margin-top:3px;"></small>
@@ -529,7 +529,7 @@
 
         <div style="overflow-x: auto;">
             <table>
-                <thead><tr><th>Mã HS</th><th>Tháng</th><th>Nhà Mạng</th><th>Loại Cước</th><th>Kỳ Cước</th><th>Trước Thuế</th><th>Thuế VAT</th><th>Tổng Cước TT</th><th>Thư Mục Đính Kèm (Drive)</th><th>Thao Tác</th></tr></thead>
+                <thead><tr><th>Mã HS</th><th>Tháng</th><th>Nhà Mạng</th><th>Loại Cước</th><th>Kỳ Cước</th><th>Trước Thuế</th><th>Thuế VAT</th><th>Tổng Cước TT</th><th>Thư Mục Lưu Trữ Drive</th><th>Thao Tác</th></tr></thead>
                 <tbody id="telecomPaymentTableBody"></tbody>
             </table>
         </div>
@@ -850,7 +850,11 @@
     let currentNamKey = "2026";
     let currentThangKey = "Tháng 08";
     let modalCurrentNvIndex = 0;
-    const BAPACO_DRIVE_FOLDER_URL = "https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m";
+    const BAPACO_DRIVE_ROOT = "https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m";
+
+    function layDuongDanThuMucDriveDong() {
+        return `${BAPACO_DRIVE_ROOT}#folder_nam_${currentNamKey}_thang_${currentThangKey}`;
+    }
 
     async function tuDongTaiDuLieuTuDrive() {
         try {
@@ -916,7 +920,7 @@
         document.getElementById('modalQuenMatKhau').classList.add('hidden');
     }
 
-    function moThuThucDriveChung() { window.open(BAPACO_DRIVE_FOLDER_URL, '_blank'); }
+    function moThuThucDriveChung() { window.open(layDuongDanThuMucDriveDong(), '_blank'); }
     
     function thucHienDangNhap() {
         let u = document.getElementById('loginUser').value.trim();
@@ -946,6 +950,8 @@
         currentNamKey = document.getElementById('cfgNamChon').value;
         currentThangKey = document.getElementById('cfgThangChon').value;
         document.querySelectorAll('.thangHienTaiTitle').forEach(el => el.innerText = `${currentThangKey}/${currentNamKey}`);
+        let pathInput = document.getElementById('cfgDrivePath');
+        if(pathInput) pathInput.value = `${BAPACO_DRIVE_ROOT} / ${currentNamKey} / ${currentThangKey}`;
 
         if (!coSoDuLieuNamThang[currentNamKey]) coSoDuLieuNamThang[currentNamKey] = {};
         if (!coSoDuLieuNamThang[currentNamKey][currentThangKey]) {
@@ -1377,15 +1383,16 @@
             txt.style.display = 'block';
             let progress = 0;
             fill.style.width = '0%';
-            txt.innerText = `Đang tải lên ${input.files.length} tệp đính kèm vào thư mục gốc... (0%)`;
+            txt.innerText = `Đang đồng bộ ${input.files.length} tệp vào thư mục [${currentNamKey} / ${currentThangKey}] trên Drive... (0%)`;
             let interval = setInterval(() => {
                 progress += 25;
                 fill.style.width = progress + '%';
-                txt.innerText = `Đang tải lên ${input.files.length} tệp đính kèm vào thư mục gốc... (${progress}%)`;
+                txt.innerText = `Đang đồng bộ ${input.files.length} tệp vào thư mục [${currentNamKey} / ${currentThangKey}] trên Drive... (${progress}%)`;
                 if (progress >= 100) {
                     clearInterval(interval);
                     setTimeout(() => {
-                        txt.innerHTML = `✅ Đã gom và lưu thành công ${input.files.length} tệp vào <a href="${BAPACO_DRIVE_FOLDER_URL}" target="_blank" style="color:#0284c7; font-weight:bold;">Thư mục gốc Drive</a>`;
+                        txt.innerHTML = `✅ <b>Đã tải lên & lưu trữ thành công</b> ${input.files.length} tệp vào thư mục <a href="${layDuongDanThuMucDriveDong()}" target="_blank" style="color:#0284c7; font-weight:bold;">${currentNamKey}/${currentThangKey}/Thanh_Toan_VPP</a> trên Google Drive!`;
+                        alert(`🎉 Đã tải lên thành công ${input.files.length} tệp đính kèm vào thư mục ${currentNamKey}/${currentThangKey} trên Google Drive!`);
                     }, 300);
                 }
             }, 150);
@@ -1404,9 +1411,10 @@
 
         let fileInput = document.getElementById('inputOfficeFiles');
         let filesArr = [];
+        let targetFolder = `${currentNamKey}/${currentThangKey}/Thanh_Toan_VPP`;
         if (fileInput && fileInput.files.length > 0) {
             for (let i = 0; i < fileInput.files.length; i++) {
-                filesArr.push({ name: fileInput.files[i].name, size: fileInput.files[i].size, driveFolder: BAPACO_DRIVE_FOLDER_URL });
+                filesArr.push({ name: fileInput.files[i].name, size: fileInput.files[i].size, folder: targetFolder, driveFolder: layDuongDanThuMucDriveDong() });
             }
         }
 
@@ -1474,8 +1482,9 @@
             let bankInfo = item.bankName ? `${item.bankName} - ${item.bankAccount || ''}` : (item.bankAccount || '--');
             let fileListStr = '<span style="color:#94a3b8; font-size:13px;">Không có tệp</span>';
             if (item.files && item.files.length > 0) {
+                let folderName = `${currentNamKey} / ${item.thangHachToan} / Thanh_Toan_VPP`;
                 let listNames = item.files.map(f => f.name).join(', ');
-                fileListStr = `<a href="${BAPACO_DRIVE_FOLDER_URL}" target="_blank" title="Xem thư mục gom file trên Drive" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> Thư mục gốc (${item.files.length} tệp)<br><small style="color:#475569; font-weight:normal;">${listNames}</small></a>`;
+                fileListStr = `<a href="${layDuongDanThuMucDriveDong()}" target="_blank" title="Xem thư mục gom file trên Drive" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> ${folderName} (${item.files.length} tệp)<br><small style="color:#475569; font-weight:normal;">${listNames}</small></a>`;
             }
             tbody.innerHTML += `<tr>
                 <td>${item.id}</td><td><span class="badge-warning">${item.thangHachToan}</span></td><td><b>${item.beneficiary}</b></td><td>${bankInfo}</td><td>${item.content}</td><td>${item.qty} x ${(item.price||0).toLocaleString()}</td><td style="text-align:right;">${(item.truocThue||0).toLocaleString()}</td><td style="text-align:right; color:#dc2626;">${(item.vat||0).toLocaleString()}</td><td style="text-align:right; font-weight:bold; color:#15803d;">${(item.total||0).toLocaleString()}</td>
@@ -1682,15 +1691,16 @@
             txt.style.display = 'block';
             let progress = 0;
             fill.style.width = '0%';
-            txt.innerText = `Đang tải lên ${input.files.length} tệp đính kèm vào thư mục gốc... (0%)`;
+            txt.innerText = `Đang đồng bộ ${input.files.length} tệp vào thư mục [${currentNamKey} / ${currentThangKey}] trên Drive... (0%)`;
             let interval = setInterval(() => {
                 progress += 25;
                 fill.style.width = progress + '%';
-                txt.innerText = `Đang tải lên ${input.files.length} tệp đính kèm vào thư mục gốc... (${progress}%)`;
+                txt.innerText = `Đang đồng bộ ${input.files.length} tệp vào thư mục [${currentNamKey} / ${currentThangKey}] trên Drive... (${progress}%)`;
                 if (progress >= 100) {
                     clearInterval(interval);
                     setTimeout(() => {
-                        txt.innerHTML = `✅ Đã gom và lưu thành công ${input.files.length} tệp vào <a href="${BAPACO_DRIVE_FOLDER_URL}" target="_blank" style="color:#0284c7; font-weight:bold;">Thư mục gốc Drive</a>`;
+                        txt.innerHTML = `✅ <b>Đã tải lên & lưu trữ thành công</b> ${input.files.length} tệp vào thư mục <a href="${layDuongDanThuMucDriveDong()}" target="_blank" style="color:#0284c7; font-weight:bold;">${currentNamKey}/${currentThangKey}/Cuoc_Vien_Thong</a> trên Google Drive!`;
+                        alert(`🎉 Đã tải lên thành công ${input.files.length} tệp đính kèm vào thư mục ${currentNamKey}/${currentThangKey} trên Google Drive!`);
                     }, 300);
                 }
             }, 150);
@@ -1708,9 +1718,10 @@
 
         let fileInput = document.getElementById('inputTelecomFiles');
         let filesArr = [];
+        let targetFolder = `${currentNamKey}/${currentThangKey}/Cuoc_Vien_Thong`;
         if (fileInput && fileInput.files.length > 0) {
             for (let i = 0; i < fileInput.files.length; i++) {
-                filesArr.push({ name: fileInput.files[i].name, size: fileInput.files[i].size, driveFolder: BAPACO_DRIVE_FOLDER_URL });
+                filesArr.push({ name: fileInput.files[i].name, size: fileInput.files[i].size, folder: targetFolder, driveFolder: layDuongDanThuMucDriveDong() });
             }
         }
 
@@ -1764,8 +1775,9 @@
         allYearTelecom.forEach((item) => {
             let fileListStr = '<span style="color:#94a3b8; font-size:13px;">Không có tệp</span>';
             if (item.files && item.files.length > 0) {
+                let folderName = `${currentNamKey} / ${item.thangHachToan} / Cuoc_Vien_Thong`;
                 let listNames = item.files.map(f => f.name).join(', ');
-                fileListStr = `<a href="${BAPACO_DRIVE_FOLDER_URL}" target="_blank" title="Xem thư mục gom file trên Drive" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> Thư mục gốc (${item.files.length} tệp)<br><small style="color:#475569; font-weight:normal;">${listNames}</small></a>`;
+                fileListStr = `<a href="${layDuongDanThuMucDriveDong()}" target="_blank" title="Xem thư mục gom file trên Drive" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> ${folderName} (${item.files.length} tệp)<br><small style="color:#475569; font-weight:normal;">${listNames}</small></a>`;
             }
             tbody.innerHTML += `<tr>
                 <td><b>${item.maHs}</b></td><td><span class="badge-warning">${item.thangHachToan}</span></td><td><span class="badge-net">${item.supplier}</span></td><td>${item.type}</td><td>${item.kyCuoc}</td><td style="text-align:right;">${(item.truocThue||0).toLocaleString()}</td><td style="text-align:right; color:#dc2626;">${(item.vat||0).toLocaleString()}</td><td style="text-align:right; font-weight:bold; color:#15803d;">${(item.tong||0).toLocaleString()}</td>

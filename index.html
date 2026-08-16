@@ -422,7 +422,18 @@
             <div class="form-group"><label>Tên Ngân Hàng</label><input type="text" id="inputOfficeBankName" placeholder="VD: Vietcombank"></div>
             <div class="form-group"><label>Số Tài Khoản</label><input type="text" id="inputOfficeBankAccount" placeholder="VD: 001100..."></div>
             <div class="form-group"><label>Nội Dung Thanh Toán</label><input type="text" id="inputOfficeContent" placeholder="VD: Thanh toán tiền dịch vụ..."></div>
-            <div class="form-group"><label>ĐVT</label><select id="inputOfficeUnit"><option value="Cái">Cái</option><option value="Hộp">Hộp</option><option value="Bộ">Bộ</option><option value="Lô">Lô</option><option value="Tháng">Tháng</option></select></div>
+            <div class="form-group"><label>ĐVT</label><select id="inputOfficeUnit">
+                <option value="Cái">Cái</option>
+                <option value="Hộp">Hộp</option>
+                <option value="Bộ">Bộ</option>
+                <option value="Lô">Lô</option>
+                <option value="Tháng">Tháng</option>
+                <option value="Quyển">Quyển</option>
+                <option value="Tập">Tập</option>
+                <option value="Kg">Kg</option>
+                <option value="Mét">Mét</option>
+                <option value="Gói">Gói</option>
+            </select></div>
             <div class="form-group"><label>Số Lượng</label><input type="number" id="inputOfficeQty" value="1" min="1" oninput="tinhToanTienVPP()"></div>
             <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputOfficePrice" placeholder="0" oninput="tinhToanTienVPP()"></div>
             <div class="form-group"><label>Tỷ Lệ Thuế VAT</label><select id="inputOfficeVatRate" onchange="tinhToanTienVPP()"><option value="0.1" selected>10% VAT</option><option value="0.08">8% VAT</option><option value="0.05">5% VAT</option><option value="0">0% Không thuế</option></select></div>
@@ -448,6 +459,7 @@
                         <th style="width: 150px;">Thụ Hưởng</th>
                         <th style="width: 130px;">Ngân Hàng / STK</th>
                         <th>Nội Dung Thanh Toán</th>
+                        <th style="width: 60px; text-align: center;">ĐVT</th>
                         <th style="width: 110px;">SL x Đơn Giá</th>
                         <th style="width: 110px;">Trước Thuế</th>
                         <th style="width: 90px;">Thuế VAT</th>
@@ -1003,7 +1015,6 @@
         let pathInput = document.getElementById('cfgDrivePath');
         if(pathInput) pathInput.value = `VINAPACO_Drive / ${currentNamKey} / ${currentThangKey}`;
 
-        // Tự động cập nhật thẳng vào ô kỳ cước viễn thông khi thay đổi tháng/năm ở thanh cấu hình
         let kyCuocInput = document.getElementById('inputTelecomKyCuoc');
         if (kyCuocInput) {
             kyCuocInput.value = `${currentThangKey}/${currentNamKey}`;
@@ -1562,6 +1573,7 @@
                 <td><b>${item.beneficiary}</b></td>
                 <td>${bankInfo}</td>
                 <td>${item.content}</td>
+                <td style="text-align:center;"><span class="badge-net">${item.unit || 'Cái'}</span></td>
                 <td style="text-align:center;">${item.qty} x ${(item.price||0).toLocaleString()}</td>
                 <td style="text-align:right;">${(item.truocThue||0).toLocaleString()}</td>
                 <td style="text-align:right; color:#dc2626;">${(item.vat||0).toLocaleString()}</td>
@@ -2089,8 +2101,9 @@
             plugins: {
                 datalabels: {
                     formatter: (value, ctx) => {
+                        if (!value || value === 0) return '';
                         let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-                        if (sum === 0) return '0%';
+                        if (sum === 0) return '';
                         let percentage = (value * 100 / sum).toFixed(1) + "%";
                         return percentage;
                     },

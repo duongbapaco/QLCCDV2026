@@ -860,27 +860,45 @@
         }
     };
 
-  const _now = new Date();
-const _namHienTai = String(_now.getFullYear());
-const _thangHienTai = "Tháng " + String(_now.getMonth() + 1).padStart(2, '0');
-const _thangSo = String(_now.getMonth() + 1).padStart(2, '0');
+    const _now = new Date();
+    const _namHienTai = String(_now.getFullYear());
+    const _thangHienTai = "Tháng " + String(_now.getMonth() + 1).padStart(2, '0');
+    const _thangSo = String(_now.getMonth() + 1).padStart(2, '0');
 
-let coSoDuLieuNamThang = JSON.parse(localStorage.getItem('bapaco_db_data')) || defaultCoSoDuLieuNamThang;
-let dsThanhToanVanPhongProByMonth = JSON.parse(localStorage.getItem('bapaco_vpp_map_data')) || {};
-let dsThanhToanTelecombyMonth = JSON.parse(localStorage.getItem('bapaco_telecom_map_data')) || {};
-let dsKhoMucIn = JSON.parse(localStorage.getItem('bapaco_ink_data')) || [{ code: "MUC001", name: "Hộp mực Canon 337", printer: "Canon LBP 151dw", action: "Cấp phát sử dụng" }];
-let dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('bapaco_delivery_data')) || [{ slipNo: `PGN-${_namHienTai}/${_thangSo}-01`, from: "Trần Bình Dương - Văn phòng Tổng công ty", to: "Người nhận" }];
-let dsKhaoSatChuyenSieu = JSON.parse(localStorage.getItem('bapaco_survey_data')) || [{ code: "KS-01", user: "Trần Bình Dương", dept: "Văn phòng Tổng công ty", device: "Laptop" }];
-let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data')) || [{ id: 1, name: `Hoàn thiện báo cáo điều hành ${_thangHienTai}`, assignee: "Trần Bình Dương", dueDate: `${_namHienTai}-${_thangSo}-30`, status: "Đang thực hiện" }];
-let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('bapaco_accounts_data')) || [
-    { email: "admin@vinapaco.com.vn", fullName: "Trần Bình Dương", role: "Admin", status: "Active", notifyEmail: "duongtb@vinapaco.com.vn" },
-    { email: "ketoan@vinapaco.com.vn", fullName: "Nguyễn Minh Ngọc", role: "Editor", status: "Active", notifyEmail: "nguyenminhngoc@vinapaco.com.vn" }
-];
+    let coSoDuLieuNamThang = defaultCoSoDuLieuNamThang;
+    try {
+        let savedDb = localStorage.getItem('bapaco_db_data');
+        if (savedDb) {
+            let parsed = JSON.parse(savedDb);
+            if (parsed && typeof parsed === 'object') coSoDuLieuNamThang = parsed;
+        }
+    } catch (e) {
+        coSoDuLieuNamThang = defaultCoSoDuLieuNamThang;
+    }
 
-let gasWebhookUrl = "https://script.google.com/macros/s/AKfycbyZ1A_yPUcMEUW44MLHEAV1R1fT9OH4_VtwCMQL1Gv1-MHlxvXkbq0jfxLy7-Pj8B4W8w/exec";
-let currentNamKey = _namHienTai;
-let currentThangKey = _thangHienTai;
-let modalCurrentNvIndex = 0;
+    if (!coSoDuLieuNamThang[_namHienTai]) coSoDuLieuNamThang[_namHienTai] = {};
+    if (!coSoDuLieuNamThang[_namHienTai][_thangHienTai]) {
+        coSoDuLieuNamThang[_namHienTai][_thangHienTai] = {
+            config: { ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 },
+            nhansu: [
+                {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 0, "phep_cap": 12, "phep_da_nghi": 0},
+                {"stt": 2, "hoTen": "Trần Bình Dương", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 0, "phep_cap": 12, "phep_da_nghi": 0}
+            ]
+        };
+    }
+
+    let dsThanhToanVanPhongProByMonth = JSON.parse(localStorage.getItem('bapaco_vpp_map_data') || '{}');
+    let dsThanhToanTelecombyMonth = JSON.parse(localStorage.getItem('bapaco_telecom_map_data') || '{}');
+    let dsKhoMucIn = JSON.parse(localStorage.getItem('bapaco_ink_data') || '[{"code":"MUC001","name":"Hộp mực Canon 337","printer":"Canon LBP 151dw","action":"Cấp phát sử dụng"}]');
+    let dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('bapaco_delivery_data') || `[{"slipNo":"PGN-${_namHienTai}/${_thangSo}-01","from":"Trần Bình Dương - Văn phòng Tổng công ty","to":"Người nhận"}]`);
+    let dsKhaoSatChuyenSieu = JSON.parse(localStorage.getItem('bapaco_survey_data') || '[{"code":"KS-01","user":"Trần Bình Dương","dept":"Văn phòng Tổng công ty","device":"Laptop"}]');
+    let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data') || `[{"id":1,"name":"Hoàn thiện báo cáo điều hành ${_thangHienTai}","assignee":"Trần Bình Dương","dueDate":"${_namHienTai}-${_thangSo}-30","status":"Đang thực hiện"}]`);
+    let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('bapaco_accounts_data') || '[{"email":"admin@vinapaco.com.vn","fullName":"Trần Bình Dương","role":"Admin","status":"Active","notifyEmail":"duongtb@vinapaco.com.vn"},{"email":"ketoan@vinapaco.com.vn","fullName":"Nguyễn Minh Ngọc","role":"Editor","status":"Active","notifyEmail":"nguyenminhngoc@vinapaco.com.vn"}]');
+
+    let gasWebhookUrl = "https://script.google.com/macros/s/AKfycbyZ1A_yPUcMEUW44MLHEAV1R1fT9OH4_VtwCMQL1Gv1-MHlxvXkbq0jfxLy7-Pj8B4W8w/exec";
+    let currentNamKey = _namHienTai;
+    let currentThangKey = _thangHienTai;
+    let modalCurrentNvIndex = 0;
     
     const BAPACO_DRIVE_BASE_URL = "https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m";
 
@@ -1066,12 +1084,12 @@ let modalCurrentNvIndex = 0;
 
     function layTatCaDanhSachTelecomTheoNam() {
         let allTelecom = [];
-        for (let key in dsThanhToanTelecomByMonth) {
+        for (let key in dsThanhToanTelecombyMonth) {
             let parts = key.split('_');
             let yearVal = parts[0];
             let monthVal = parts[1];
             if (yearVal === currentNamKey) {
-                dsThanhToanTelecomByMonth[key].forEach((item, index) => {
+                dsThanhToanTelecombyMonth[key].forEach((item, index) => {
                     allTelecom.push({ ...item, namHachToan: yearVal, thangHachToan: monthVal, originalKey: key, originalIndex: index });
                 });
             }
@@ -1789,7 +1807,7 @@ let modalCurrentNvIndex = 0;
         let truocThue = Math.round(tong / 1.1);
         let vat = tong - truocThue;
         let newMonthKey = `${currentNamKey}_${currentThangKey}`;
-        if (!dsThanhToanTelecomByMonth[newMonthKey]) dsThanhToanTelecomByMonth[newMonthKey] = [];
+        if (!dsThanhToanTelecombyMonth[newMonthKey]) dsThanhToanTelecombyMonth[newMonthKey] = [];
 
         let fileInput = document.getElementById('inputTelecomFiles');
         let filesArr = [];
@@ -1801,11 +1819,11 @@ let modalCurrentNvIndex = 0;
         }
 
         let editIdx = parseInt(document.getElementById('editTelecomIndex').value);
-        let existingFiles = editIdx >= 0 && dsThanhToanTelecomByMonth[newMonthKey][editIdx].files ? dsThanhToanTelecomByMonth[newMonthKey][editIdx].files : [];
+        let existingFiles = editIdx >= 0 && dsThanhToanTelecombyMonth[newMonthKey][editIdx].files ? dsThanhToanTelecombyMonth[newMonthKey][editIdx].files : [];
         let finalFiles = filesArr.length > 0 ? filesArr : existingFiles;
 
         let newItem = {
-            id: editIdx >= 0 ? dsThanhToanTelecomByMonth[newMonthKey][editIdx].id : "VT-0" + (dsThanhToanTelecomByMonth[newMonthKey].length + 1),
+            id: editIdx >= 0 ? dsThanhToanTelecombyMonth[newMonthKey][editIdx].id : "VT-0" + (dsThanhToanTelecombyMonth[newMonthKey].length + 1),
             maHs: document.getElementById('inputTelecomMaHs').value,
             supplier: document.getElementById('inputTelecomSupplier').value,
             type, kyCuoc: document.getElementById('inputTelecomKyCuoc').value,
@@ -1814,11 +1832,11 @@ let modalCurrentNvIndex = 0;
         };
 
         if (editIdx >= 0) {
-            dsThanhToanTelecomByMonth[newMonthKey][editIdx] = newItem;
+            dsThanhToanTelecombyMonth[newMonthKey][editIdx] = newItem;
             document.getElementById('editTelecomIndex').value = -1;
             document.getElementById('btnSaveTelecom').innerHTML = `<i class="fas fa-plus-circle"></i> Thêm Cước`;
         } else {
-            dsThanhToanTelecomByMonth[newMonthKey].push(newItem);
+            dsThanhToanTelecombyMonth[newMonthKey].push(newItem);
         }
         if (fileInput) fileInput.value = '';
         document.getElementById('telecomProgressBarBox').style.display = 'none';
@@ -1827,7 +1845,7 @@ let modalCurrentNvIndex = 0;
     }
 
     function suaTelecom(originalKey, originalIndex) {
-        let item = dsThanhToanTelecomByMonth[originalKey][originalIndex];
+        let item = dsThanhToanTelecombyMonth[originalKey][originalIndex];
         document.getElementById('inputTelecomSupplier').value = item.supplier;
         document.getElementById('inputTelecomType').value = item.type;
         document.getElementById('inputTelecomKyCuoc').value = item.kyCuoc;
@@ -1839,7 +1857,7 @@ let modalCurrentNvIndex = 0;
 
     function xoaTelecom(originalKey, originalIndex) {
         if (confirm("Xóa cước viễn thông này?")) {
-            dsThanhToanTelecomByMonth[originalKey].splice(originalIndex, 1);
+            dsThanhToanTelecombyMonth[originalKey].splice(originalIndex, 1);
             capNhat();
         }
     }
@@ -2101,7 +2119,7 @@ let modalCurrentNvIndex = 0;
         localStorage.setItem('bapaco_vpp_map_data', JSON.stringify(dsThanhToanVanPhongProByMonth));
         localStorage.setItem('bapaco_ink_data', JSON.stringify(dsKhoMucIn));
         localStorage.setItem('bapaco_delivery_data', JSON.stringify(dsPhieuGiaoNhan));
-        localStorage.setItem('bapaco_telecom_map_data', JSON.stringify(dsThanhToanTelecomByMonth));
+        localStorage.setItem('bapaco_telecom_map_data', JSON.stringify(dsThanhToanTelecombyMonth));
         localStorage.setItem('bapaco_survey_data', JSON.stringify(dsKhaoSatChuyenSieu));
         localStorage.setItem('bapaco_task_data', JSON.stringify(danhSachCongViec));
         localStorage.setItem('bapaco_accounts_data', JSON.stringify(danhSachTaiKhoanHeThong));

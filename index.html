@@ -214,15 +214,16 @@
     </div>
 
     <div class="kpi-grid">
-        <div class="kpi-card"><div class="kpi-title">Tổng Quỹ Lương Cuối Cùng (NET)</div><div class="kpi-value" style="color: #15803d;" id="kpiTotalNet">0 VNĐ</div><div class="kpi-sub">Chuẩn hạch toán Tổng công ty Giấy Việt Nam</div></div>
-        <div class="kpi-card"><div class="kpi-title">Tổng Thanh Toán VP (Lũy Kế)</div><div class="kpi-value" style="color: #d97706;" id="kpiTotalPayment">0 VNĐ</div><div class="kpi-sub">Cộng dồn liền mạch các tháng</div></div>
+        <div class="kpi-card"><div class="kpi-title">Tổng Quỹ Lương Cuối Cùng (NET)</div><div class="kpi-value" style="color: #15803d;" id="kpiTotalNet">0</div><div class="kpi-sub">Chuẩn hạch toán Tổng công ty Giấy Việt Nam</div></div>
+        <div class="kpi-card"><div class="kpi-title">Tổng Thanh Toán VP (Lũy Kế)</div><div class="kpi-value" style="color: #d97706;" id="kpiTotalPayment">0</div><div class="kpi-sub">Cộng dồn liền mạch các tháng</div></div>
         <div class="kpi-card"><div class="kpi-title">Tồn Kho Mực In Hiện Tại</div><div class="kpi-value" style="color: #0284c7;" id="kpiTotalInkStock">0 Hộp</div><div class="kpi-sub">Quản lý nhập xuất tồn</div></div>
         <div class="kpi-card"><div class="kpi-title">Tổng Thiết Bị Khảo Sát</div><div class="kpi-value" style="color: #8b5cf6;" id="kpiTotalSurvey">0 Thiết bị</div><div class="kpi-sub">Kiểm tra bản quyền phần mềm</div></div>
-        <div class="kpi-card"><div class="kpi-title">Tổng Tạm Ứng Đã Trừ</div><div class="kpi-value" style="color: #dc2626;" id="kpiTotalTamUng">0 VNĐ</div><div class="kpi-sub">Hạch toán giữa tháng</div></div>
+        <div class="kpi-card"><div class="kpi-title">Tổng Tạm Ứng Đã Trừ</div><div class="kpi-value" style="color: #dc2626;" id="kpiTotalTamUng">0</div><div class="kpi-sub">Hạch toán giữa tháng</div></div>
     </div>
 
     <div class="tab-nav">
         <button class="tab-btn-nav active" onclick="switchTab('dashboardTab', this)"><i class="fa-solid fa-chart-pie"></i> DB Tổng Quan</button>
+        <button class="tab-btn-nav" onclick="switchTab('accountManagerTab', this)"><i class="fa-solid fa-users-gear"></i> Quản Lý Tài Khoản</button>
         <button class="tab-btn-nav" onclick="switchTab('taskTab', this)"><i class="fa-solid fa-list-check"></i> Quản Lý Công Việc</button>
         <button class="tab-btn-nav" onclick="switchTab('timekeepingDetailTab', this)"><i class="fa-solid fa-business-time"></i> Chấm Công</button>
         <button class="tab-btn-nav" onclick="switchTab('salaryCBTab', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Lương Cơ Bản</button>
@@ -235,7 +236,7 @@
         <button class="tab-btn-nav" onclick="switchTab('surveyTab', this)"><i class="fa-solid fa-clipboard-check"></i> Khảo Sát</button>
     </div>
 
-    <!-- TAB 0: DASHBOARD (Có bảng tổng kết số liệu bên dưới) -->
+    <!-- TAB 0: DASHBOARD (Biểu đồ tỷ trọng chỉ hiển thị %, không hiển thị số tuyệt đối trực tiếp) -->
     <div id="dashboardTab" class="tab-pane table-card" style="background: transparent; border: none; padding: 0;">
         <div class="charts-multi-grid">
             <div class="chart-card">
@@ -256,7 +257,7 @@
             </div>
         </div>
 
-        <!-- Bảng tổng kết số liệu chi tiết phía dưới Dashboard -->
+        <!-- Bảng tổng kết số liệu chi tiết phía dưới Dashboard (Chỉ chứa con số, có cột đơn vị đi kèm) -->
         <div class="table-card" style="margin-top: 16px;">
             <div class="table-header-bar">
                 <div class="table-title"><i class="fa-solid fa-table"></i> BẢNG TỔNG KẾT SỐ LIỆU ĐỐI SOÁT TỔNG QUAN HỆ THỐNG</div>
@@ -266,13 +267,64 @@
                     <tr><th>STT</th><th>Hạng Mục Quản Trị</th><th>Chỉ Số Tài Chính / Giá Trị</th><th>Đơn Vị Tính</th><th>Trạng Thái Định Mức</th></tr>
                 </thead>
                 <tbody id="dashboardSummaryTableBody">
-                    <tr><td style="text-align:center;">1</td><td><b>Quỹ Lương NET Nhân Sự</b></td><td id="sumNetVal" style="color:#15803d; font-weight:bold;">0 VNĐ</td><td>VNĐ</td><td><span class="badge-net">Ổn định</span></td></tr>
-                    <tr><td style="text-align:center;">2</td><td><b>Thanh Toán Văn Phòng Phẩm & Dịch Vụ</b></td><td id="sumVppVal" style="color:#d97706; font-weight:bold;">0 VNĐ</td><td>VNĐ</td><td><span class="badge-warning">Theo lũy kế</span></td></tr>
-                    <tr><td style="text-align:center;">3</td><td><b>Cước Viễn Thông & Internet</b></td><td id="sumTelecomVal" style="color:#0284c7; font-weight:bold;">0 VNĐ</td><td>VNĐ</td><td><span class="badge-net">Đã thanh toán</span></td></tr>
-                    <tr><td style="text-align:center;">4</td><td><b>Tổng Số Công Việc Hoàn Thành</b></td><td id="sumTaskVal" style="font-weight:bold;">0 Công việc</td><td>Công việc</td><td><span class="badge-net">Đúng hạn</span></td></tr>
+                    <tr><td style="text-align:center;">1</td><td><b>Quỹ Lương NET Nhân Sự</b></td><td id="sumNetVal" style="color:#15803d; font-weight:bold;">0</td><td>VNĐ</td><td><span class="badge-net">Ổn định</span></td></tr>
+                    <tr><td style="text-align:center;">2</td><td><b>Thanh Toán Văn Phòng Phẩm & Dịch Vụ</b></td><td id="sumVppVal" style="color:#d97706; font-weight:bold;">0</td><td>VNĐ</td><td><span class="badge-warning">Theo lũy kế</span></td></tr>
+                    <tr><td style="text-align:center;">3</td><td><b>Cước Viễn Thông & Internet</b></td><td id="sumTelecomVal" style="color:#0284c7; font-weight:bold;">0</td><td>VNĐ</td><td><span class="badge-net">Đã thanh toán</span></td></tr>
+                    <tr><td style="text-align:center;">4</td><td><b>Tổng Số Công Việc Hoàn Thành</b></td><td id="sumTaskVal" style="font-weight:bold;">0</td><td>Công việc</td><td><span class="badge-net">Đúng hạn</span></td></tr>
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <!-- TAB QUẢN LÝ TÀI KHOẢN (MỚI BỔ SUNG THEO YÊU CẦU) -->
+    <div id="accountManagerTab" class="tab-pane table-card">
+        <div class="table-header-bar">
+            <div class="table-title"><i class="fa-solid fa-users-gear"></i> QUẢN LÝ TÀI KHOẢN, PHÂN QUYỀN & BẢO MẬT HỆ THỐNG VINAPACO</div>
+            <button class="btn btn-green" onclick="moModalThemTaiKhoan()"><i class="fa-solid fa-user-plus"></i> Thêm Tài Khoản Mới</button>
+        </div>
+
+        <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 16px; border-radius: 10px; margin-bottom: 16px; font-size: 14px; font-weight: 600; line-height: 1.6;">
+            🛡️ <b>Quy chế phân quyền:</b> 
+            <ul style="margin-left: 20px; margin-top: 6px;">
+                <li><b>Admin:</b> Toàn quyền quản trị, chỉnh sửa dữ liệu tài chính, cấu hình hệ thống và quản lý tài khoản người dùng.</li>
+                <li><b>Editor:</b> Quyền nhập liệu, cập nhật chấm công, theo dõi kho và tiến độ công việc.</li>
+                <li><b>Viewer:</b> Chỉ xem báo cáo tổng hợp và tra cứu phiếu lương cá nhân.</li>
+            </ul>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên Tài Khoản / Email</th>
+                    <th>Họ và Tên Cán Bộ</th>
+                    <th>Vai Trò (Role)</th>
+                    <th>Trạng Thái</th>
+                    <th>Email Nhận Thông Báo / Reset</th>
+                    <th>Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody id="accountTableBody">
+                <tr>
+                    <td style="text-align:center;">1</td>
+                    <td><b>admin@vinapaco.com.vn</b></td>
+                    <td>Trần Bình Dương</td>
+                    <td><span class="badge-net">Admin</span></td>
+                    <td><span class="badge-net">Active</span></td>
+                    <td>duongtb@vinapaco.com.vn</td>
+                    <td style="text-align:center;"><button class="btn btn-blue" style="padding:4px 8px; font-size:12px;" onclick="suaTaiKhoan(0)"><i class="fa-solid fa-pen"></i></button></td>
+                </tr>
+                <tr>
+                    <td style="text-align:center;">2</td>
+                    <td><b>ketoan@vinapaco.com.vn</b></td>
+                    <td>Nguyễn Minh Ngọc</td>
+                    <td><span class="badge-warning">Editor</span></td>
+                    <td><span class="badge-net">Active</span></td>
+                    <td>nguyenminhngoc@vinapaco.com.vn</td>
+                    <td style="text-align:center;"><button class="btn btn-blue" style="padding:4px 8px; font-size:12px;" onclick="suaTaiKhoan(1)"><i class="fa-solid fa-pen"></i></button></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <!-- TAB QUẢN LÝ CÔNG VIỆC -->
@@ -311,7 +363,7 @@
         <div style="overflow-x: auto;"><table><thead><tr><th>STT</th><th>Họ và Tên</th><th>NCD Chuẩn</th><th>Ngày Công Thực Tế</th><th>Nghỉ Phép (P)</th><th>Nghỉ Lễ (L)</th><th>Hệ Số (K)</th><th>Ghi Chú</th></tr></thead><tbody id="timekeepingDetailTableBody"></tbody></table></div>
     </div>
 
-    <!-- TAB LƯƠNG CƠ BẢN -->
+    <!-- TAB LƯƠNG CƠ BẢN (Đã bỏ chữ đ thừa) -->
     <div id="salaryCBTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-table-list"></i> BẢNG LƯƠNG CƠ BẢN (ĐIỀU CHỈNH THÔNG SỐ ĐỘNG)</div>
@@ -320,7 +372,7 @@
         <div style="overflow-x: auto;"><table><thead><tr><th>STT</th><th>Họ và Tên</th><th>HSL.CB</th><th>PC.CB</th><th>L.HĐLĐ</th><th>L.CB</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>Ki</th><th>L.TG</th><th>L.Lễ/Phép</th><th>Tổng Tiền</th><th>BHTN(1%)</th><th>BHXH</th><th>Thực Lĩnh LCB</th></tr></thead><tbody id="tableBodyCB"></tbody></table></div>
     </div>
 
-    <!-- TAB LƯƠNG CV & PHIẾU LƯƠNG -->
+    <!-- TAB LƯƠNG CV & PHIẾU LƯƠNG (Đã bỏ chữ đ thừa) -->
     <div id="salaryCVTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-briefcase"></i> BẢNG LƯƠNG CÔNG VIỆC & QUẢN LÝ PHIẾU LƯƠNG (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
@@ -461,9 +513,9 @@
         </div>
         
         <div class="kpi-grid" style="margin-bottom: 16px;">
-            <div class="kpi-card" style="border-left: 5px solid #0284c7;"><div class="kpi-title">Tổng Cước Trước Thuế</div><div class="kpi-value" style="color: #0284c7;" id="telecomKpiTruocThue">0 VNĐ</div><div class="kpi-sub">Cộng dồn liền mạch</div></div>
-            <div class="kpi-card" style="border-left: 5px solid #ef4444;"><div class="kpi-title">Tổng Thuế VAT</div><div class="kpi-value" style="color: #ef4444;" id="telecomKpiVAT">0 VNĐ</div><div class="kpi-sub">Cộng dồn liền mạch</div></div>
-            <div class="kpi-card" style="border-left: 5px solid #16a34a;"><div class="kpi-title">Tổng Thanh Toán (Đã VAT)</div><div class="kpi-value" style="color: #15803d;" id="telecomKpiTongThanhToan">0 VNĐ</div><div class="kpi-sub">Cộng dồn liền mạch</div></div>
+            <div class="kpi-card" style="border-left: 5px solid #0284c7;"><div class="kpi-title">Tổng Cước Trước Thuế</div><div class="kpi-value" style="color: #0284c7;" id="telecomKpiTruocThue">0</div><div class="kpi-sub">Cộng dồn liền mạch</div></div>
+            <div class="kpi-card" style="border-left: 5px solid #ef4444;"><div class="kpi-title">Tổng Thuế VAT</div><div class="kpi-value" style="color: #ef4444;" id="telecomKpiVAT">0</div><div class="kpi-sub">Cộng dồn liền mạch</div></div>
+            <div class="kpi-card" style="border-left: 5px solid #16a34a;"><div class="kpi-title">Tổng Thanh Toán (Đã VAT)</div><div class="kpi-value" style="color: #15803d;" id="telecomKpiTongThanhToan">0</div><div class="kpi-sub">Cộng dồn liền mạch</div></div>
         </div>
 
         <div style="background: #f8fafc; border: 2px dashed var(--primary); padding: 16px; border-radius: 10px; margin-bottom: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; align-items: flex-end;">
@@ -595,6 +647,25 @@
     </div>
 </div>
 
+<!-- MODAL THÊM / SỬA TÀI KHOẢN -->
+<div class="modal-overlay hidden" id="modalTaiKhoan">
+    <div class="modal-card" style="max-width: 480px;">
+        <div style="padding: 18px 24px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center;">
+            <b style="text-transform: uppercase;"><i class="fa-solid fa-user-gear"></i> Quản Lý Thông Tin Tài Khoản</b>
+            <button class="btn btn-red" style="padding: 4px 10px;" onclick="document.getElementById('modalTaiKhoan').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div style="padding: 24px; display: flex; flex-direction: column; gap: 14px; background: #f8fafc;">
+            <input type="hidden" id="editAccountIndex" value="-1">
+            <div class="form-group"><label>Tên Đăng Nhập / Email</label><input type="text" id="accEmail" placeholder="nhanvien@vinapaco.com.vn"></div>
+            <div class="form-group"><label>Họ và Tên Cán Bộ</label><input type="text" id="accFullName" placeholder="Nguyễn Văn A"></div>
+            <div class="form-group"><label>Vai Trò (Role)</label><select id="accRole"><option value="Admin">Admin</option><option value="Editor">Editor</option><option value="Viewer">Viewer</option></select></div>
+            <div class="form-group"><label>Trạng Thái</label><select id="accStatus"><option value="Active">Active (Hoạt động)</option><option value="Locked">Locked (Khóa)</option></select></div>
+            <div class="form-group"><label>Email Nhận Thông Báo / Reset</label><input type="text" id="accNotifyEmail" placeholder="email.thuc.te@gmail.com"></div>
+            <button class="btn btn-green" style="padding: 12px; justify-content: center;" onclick="luuTaiKhoanHeThong()"><i class="fa-solid fa-floppy-disk"></i> Lưu Tài Khoản</button>
+        </div>
+    </div>
+</div>
+
 <!-- MODAL XEM VÀ IN PHIẾU GIAO NHẬN XUẤT KHO MỰC / THIẾT BỊ -->
 <div class="modal-overlay hidden" id="previewSlipModal">
     <div class="modal-card" style="max-width: 680px; padding: 0;">
@@ -620,7 +691,7 @@
                         <tr><th>STT</th><th>Tên Hàng Hóa / Thiết Bị</th><th>ĐVT</th><th>Số Lượng</th><th style="text-align:right;">Đơn Giá</th><th style="text-align:right;">Thành Tiền</th></tr>
                     </thead>
                     <tbody id="modalSlipTableBody">
-                        <tr><td style="text-align:center;">1</td><td id="modalItemName">--</td><td style="text-align:center;">Hộp</td><td style="text-align:center;" id="modalItemQty">1</td><td style="text-align:right;" id="modalItemPrice">0 đ</td><td style="text-align:right; font-weight:bold;" id="modalItemTotal">0 đ</td></tr>
+                        <tr><td style="text-align:center;">1</td><td id="modalItemName">--</td><td style="text-align:center;">Hộp</td><td style="text-align:center;" id="modalItemQty">1</td><td style="text-align:right;" id="modalItemPrice">0</td><td style="text-align:right; font-weight:bold;" id="modalItemTotal">0</td></tr>
                     </tbody>
                 </table>
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; margin-top: 24px; font-size: 13px; font-weight: bold; color: #475569;">
@@ -774,6 +845,10 @@
     let dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('bapaco_delivery_data')) || [{ slipNo: "PGN-2026/08-01", from: "Trần Bình Dương - Văn phòng Tổng công ty", to: "Nguyễn Minh Ngọc", dept: "Phòng Kế toán", item: "Laptop Dell Latitude", status: "Mới 100%, nguyên seal", date: "2026-08-14" }];
     let dsKhaoSatChuyenSieu = JSON.parse(localStorage.getItem('bapaco_survey_data')) || [{ code: "KS-01", user: "Trần Bình Dương", dept: "Văn phòng Tổng công ty", device: "Laptop cá nhân", os: "Windows 11 Pro", osLicense: "✅ Có bản quyền chính hãng", office: "Microsoft 365 (Cloud)", officeLicense: "✅ Bản quyền Tổng công ty", bizSoft: "Cloudoffice (Văn thư)", bizLicense: "✅ Có bản quyền chính hãng", specs: "Core i7, RAM 16GB, SSD 512GB" }];
     let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data')) || [{ id: 1, name: "Hoàn thiện báo cáo điều hành tháng 08", assignee: "Trần Bình Dương", dueDate: "2026-08-15", status: "Đang làm" }];
+    let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('bapaco_accounts_data')) || [
+        { email: "admin@vinapaco.com.vn", fullName: "Trần Bình Dương", role: "Admin", status: "Active", notifyEmail: "duongtb@vinapaco.com.vn" },
+        { email: "ketoan@vinapaco.com.vn", fullName: "Nguyễn Minh Ngọc", role: "Editor", status: "Active", notifyEmail: "nguyenminhngoc@vinapaco.com.vn" }
+    ];
 
     let gasWebhookUrl = "https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec";
     let currentNamKey = "2026";
@@ -793,13 +868,14 @@
                 dsKhaoSatChuyenSieu = result.dsKhaoSatChuyenSieu || [];
                 danhSachCongViec = result.danhSachCongViec || [];
                 dsPhieuGiaoNhan = result.dsPhieuGiaoNhan || dsPhieuGiaoNhan;
+                danhSachTaiKhoanHeThong = result.danhSachTaiKhoanHeThong || danhSachTaiKhoanHeThong;
                 luuTruVaoLocalStorage();
             }
         } catch (e) {}
     }
 
     async function tuDongDayDuLieuLenDrive() {
-        let payload = { coSoDuLieuNamThang, dsThanhToanVanPhongProByMonth, dsKhoMucIn, dsThanhToanTelecomByMonth, dsKhaoSatChuyenSieu, danhSachCongViec, dsPhieuGiaoNhan };
+        let payload = { coSoDuLieuNamThang, dsThanhToanVanPhongProByMonth, dsKhoMucIn, dsThanhToanTelecomByMonth, dsKhaoSatChuyenSieu, danhSachCongViec, dsPhieuGiaoNhan, danhSachTaiKhoanHeThong };
         try { await fetch(gasWebhookUrl, { method: 'POST', body: JSON.stringify({ type: "SYNC_MASTER_DB", payload: payload }) }); } catch (e) {}
     }
 
@@ -811,6 +887,7 @@
         khoiTaoDanhSachNamTuSinh();
         doiThangHoSoLuong();
         khoiTaoDonghoVaThoiGianThuc();
+        renderAccountTable();
     });
 
     function khoiTaoDonghoVaThoiGianThuc() {
@@ -861,6 +938,7 @@
         khoiTaoDanhSachNamTuSinh();
         doiThangHoSoLuong();
         renderTaskTable();
+        renderAccountTable();
         setTimeout(() => { veTatCaBieuDoDashboard(); }, 200);
     }
 
@@ -925,6 +1003,7 @@
         renderTelecomPaymentTable();
         renderSurveyTable();
         renderTaskTable();
+        renderAccountTable();
         khoiTaoDanhSachNhanSuModalSelect();
         capNhatKPI();
         veTatCaBieuDoDashboard();
@@ -975,19 +1054,85 @@
         let totalStockInk = dsKhoMucIn.reduce((sum, i) => i.action.includes('Nhập') ? sum + i.qty : sum - i.qty, 0);
         let totalTamUng = ds.reduce((sum, i) => sum + (i.tam_ung || 0), 0);
         
-        document.getElementById("kpiTotalNet").innerText = totalNet.toLocaleString('vi-VN') + ' đ';
-        document.getElementById("kpiTotalPayment").innerText = totalOfficeYear.toLocaleString('vi-VN') + ' đ';
+        document.getElementById("kpiTotalNet").innerText = totalNet.toLocaleString('vi-VN');
+        document.getElementById("kpiTotalPayment").innerText = totalOfficeYear.toLocaleString('vi-VN');
         document.getElementById("kpiTotalInkStock").innerText = totalStockInk + " Hộp";
         document.getElementById("kpiTotalSurvey").innerText = dsKhaoSatChuyenSieu.length + " Thiết bị";
-        document.getElementById("kpiTotalTamUng").innerText = totalTamUng.toLocaleString('vi-VN') + ' đ';
+        document.getElementById("kpiTotalTamUng").innerText = totalTamUng.toLocaleString('vi-VN');
 
-        // Cập nhật bảng tổng kết số liệu Dashboard
         let totalTelecom = layTatCaDanhSachTelecom().reduce((s,i)=>s+(i.tong||0),0);
         let totalTasksDone = danhSachCongViec.filter(t=>t.status==='Hoàn thành').length;
-        document.getElementById("sumNetVal").innerText = totalNet.toLocaleString('vi-VN') + ' VNĐ';
-        document.getElementById("sumVppVal").innerText = totalOfficeYear.toLocaleString('vi-VN') + ' VNĐ';
-        document.getElementById("sumTelecomVal").innerText = totalTelecom.toLocaleString('vi-VN') + ' VNĐ';
-        document.getElementById("sumTaskVal").innerText = totalTasksDone + " / " + danhSachCongViec.length + " Công việc";
+        document.getElementById("sumNetVal").innerText = totalNet.toLocaleString('vi-VN');
+        document.getElementById("sumVppVal").innerText = totalOfficeYear.toLocaleString('vi-VN');
+        document.getElementById("sumTelecomVal").innerText = totalTelecom.toLocaleString('vi-VN');
+        document.getElementById("sumTaskVal").innerText = totalTasksDone + " / " + danhSachCongViec.length;
+    }
+
+    function renderAccountTable() {
+        let tbody = document.getElementById('accountTableBody');
+        if(!tbody) return; tbody.innerHTML = '';
+        danhSachTaiKhoanHeThong.forEach((acc, idx) => {
+            let roleBadge = acc.role === 'Admin' ? '<span class="badge-net">Admin</span>' : (acc.role === 'Editor' ? '<span class="badge-warning">Editor</span>' : '<span class="badge-danger">Viewer</span>');
+            let statusBadge = acc.status === 'Active' ? '<span class="badge-net">Active</span>' : '<span class="badge-danger">Locked</span>';
+            tbody.innerHTML += `<tr>
+                <td style="text-align:center;">${idx + 1}</td>
+                <td><b>${acc.email}</b></td>
+                <td>${acc.fullName}</td>
+                <td style="text-align:center;">${roleBadge}</td>
+                <td style="text-align:center;">${statusBadge}</td>
+                <td>${acc.notifyEmail || '--'}</td>
+                <td style="text-align:center; display:flex; gap:6px; justify-content:center;">
+                    <button class="btn btn-blue" style="padding:4px 8px; font-size:12px;" onclick="suaTaiKhoan(${idx})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:4px 8px; font-size:12px;" onclick="xoaTaiKhoan(${idx})"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            </tr>`;
+        });
+    }
+
+    function moModalThemTaiKhoan() {
+        document.getElementById('editAccountIndex').value = -1;
+        document.getElementById('accEmail').value = '';
+        document.getElementById('accFullName').value = '';
+        document.getElementById('accRole').value = 'Editor';
+        document.getElementById('accStatus').value = 'Active';
+        document.getElementById('accNotifyEmail').value = '';
+        document.getElementById('modalTaiKhoan').classList.remove('hidden');
+    }
+
+    function suaTaiKhoan(idx) {
+        let acc = danhSachTaiKhoanHeThong[idx];
+        document.getElementById('editAccountIndex').value = idx;
+        document.getElementById('accEmail').value = acc.email;
+        document.getElementById('accFullName').value = acc.fullName;
+        document.getElementById('accRole').value = acc.role;
+        document.getElementById('accStatus').value = acc.status;
+        document.getElementById('accNotifyEmail').value = acc.notifyEmail || '';
+        document.getElementById('modalTaiKhoan').classList.remove('hidden');
+    }
+
+    function luuTaiKhoanHeThong() {
+        let email = document.getElementById('accEmail').value.trim();
+        let fullName = document.getElementById('accFullName').value.trim();
+        if (!email || !fullName) { alert("Vui lòng nhập đủ email và họ tên!"); return; }
+        let role = document.getElementById('accRole').value;
+        let status = document.getElementById('accStatus').value;
+        let notifyEmail = document.getElementById('accNotifyEmail').value.trim();
+        let editIdx = parseInt(document.getElementById('editAccountIndex').value);
+
+        if (editIdx >= 0) {
+            danhSachTaiKhoanHeThong[editIdx] = { email, fullName, role, status, notifyEmail };
+        } else {
+            danhSachTaiKhoanHeThong.push({ email, fullName, role, status, notifyEmail });
+        }
+        document.getElementById('modalTaiKhoan').classList.add('hidden');
+        capNhat();
+    }
+
+    function xoaTaiKhoan(idx) {
+        if (confirm("Bạn có chắc chắn muốn xóa tài khoản này không?")) {
+            danhSachTaiKhoanHeThong.splice(idx, 1);
+            capNhat();
+        }
     }
 
     function renderTimekeepingDetailTable() {
@@ -1008,18 +1153,18 @@
                 <td><b>${item.hoTen}</b></td>
                 <td style="text-align:center;"><input class="cell-input num-center" type="number" step="0.01" value="${item.hsl_cb}" onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].hsl_cb=parseFloat(this.value)||0;capNhat();"></td>
                 <td style="text-align:center;"><input class="cell-input num-center" type="number" step="0.05" value="${item.pc_cb||0}" onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].pc_cb=parseFloat(this.value)||0;capNhat();"></td>
-                <td style="text-align:right;">${item.luongHDLD.toLocaleString()} đ</td>
-                <td style="text-align:right;">${item.luongCBThang.toLocaleString()} đ</td>
+                <td style="text-align:right;">${item.luongHDLD.toLocaleString()}</td>
+                <td style="text-align:right;">${item.luongCBThang.toLocaleString()}</td>
                 <td style="text-align:center;">${item.nc_tg}</td>
                 <td style="text-align:center;">${item.nc_p||0}</td>
                 <td style="text-align:center;">${item.nc_l||0}</td>
                 <td style="text-align:center;">${item.k_ht||1.0}</td>
-                <td style="text-align:right;">${item.luongCBTG.toLocaleString()} đ</td>
-                <td style="text-align:right;">${item.luongCBLP.toLocaleString()} đ</td>
-                <td style="text-align:right; font-weight:bold;">${item.tongLCB.toLocaleString()} đ</td>
-                <td style="text-align:right; color:#dc2626;">${item.bhtn.toLocaleString()} đ</td>
-                <td style="text-align:right; color:#dc2626;">${item.bhxh.toLocaleString()} đ</td>
-                <td style="text-align:right; color:#0284c7; font-weight:bold;">${item.thucLinhLCB.toLocaleString()} đ</td>
+                <td style="text-align:right;">${item.luongCBTG.toLocaleString()}</td>
+                <td style="text-align:right;">${item.luongCBLP.toLocaleString()}</td>
+                <td style="text-align:right; font-weight:bold;">${item.tongLCB.toLocaleString()}</td>
+                <td style="text-align:right; color:#dc2626;">${item.bhtn.toLocaleString()}</td>
+                <td style="text-align:right; color:#dc2626;">${item.bhxh.toLocaleString()}</td>
+                <td style="text-align:right; color:#0284c7; font-weight:bold;">${item.thucLinhLCB.toLocaleString()}</td>
             </tr>`;
         });
     }
@@ -1033,15 +1178,15 @@
                 <td><b>${item.hoTen}</b></td>
                 <td style="text-align:center;">${item.hsl_cv}</td>
                 <td style="text-align:center;">${item.pc_cv||0}</td>
-                <td style="text-align:right;">${item.luongCVGoc.toLocaleString()} đ</td>
+                <td style="text-align:right;">${item.luongCVGoc.toLocaleString()}</td>
                 <td style="text-align:center;">${item.nc_tg}</td>
                 <td style="text-align:center;">${item.nc_p||0}</td>
                 <td style="text-align:center;">${item.nc_l||0}</td>
                 <td style="text-align:center;">${item.k_ht||1.0}</td>
-                <td style="text-align:right; font-weight:bold;">${item.luongCVTT.toLocaleString()} đ</td>
+                <td style="text-align:right; font-weight:bold;">${item.luongCVTT.toLocaleString()}</td>
                 <td><input class="cell-input money-input" type="text" value="${(item.tam_ung||0).toLocaleString()}" onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].tam_ung=parseFloat(this.value.replace(/[^0-9]/g,''))||0;capNhat();"></td>
-                <td style="text-align:right; font-weight:bold;">${item.thucLinhCV.toLocaleString()} đ</td>
-                <td style="text-align:right;"><span class="badge-net">${item.thucLinhCuoiCung.toLocaleString()} đ</span></td>
+                <td style="text-align:right; font-weight:bold;">${item.thucLinhCV.toLocaleString()}</td>
+                <td style="text-align:right;"><span class="badge-net">${item.thucLinhCuoiCung.toLocaleString()}</span></td>
                 <td style="text-align:center;"><button class="btn btn-blue" style="padding:4px 10px;" onclick="moModalPhiieuLuong(${idx})"><i class="fa-solid fa-paper-plane"></i></button></td>
             </tr>`;
         });
@@ -1051,7 +1196,7 @@
         let sel = document.getElementById('selectModalNhanSu');
         if (!sel) return; sel.innerHTML = '';
         coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.forEach((item, idx) => {
-            sel.innerHTML += `<option value="${idx}">${idx+1}. ${item.hoTen} (${item.thucLinhCuoiCung.toLocaleString()} đ)</option>`;
+            sel.innerHTML += `<option value="${idx}">${idx+1}. ${item.hoTen} (${item.thucLinhCuoiCung.toLocaleString()} VNĐ)</option>`;
         });
     }
 
@@ -1061,7 +1206,7 @@
         let kw = keyword.toLowerCase();
         coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.forEach((item, idx) => {
             if (item.hoTen.toLowerCase().includes(kw)) {
-                sel.innerHTML += `<option value="${idx}">${idx+1}. ${item.hoTen} (${item.thucLinhCuoiCung.toLocaleString()} đ)</option>`;
+                sel.innerHTML += `<option value="${idx}">${idx+1}. ${item.hoTen} (${item.thucLinhCuoiCung.toLocaleString()} VNĐ)</option>`;
             }
         });
         let firstOpt = sel.querySelector('option');
@@ -1217,14 +1362,14 @@
         let total = truocThue + vat;
         document.getElementById('inputOfficeTruocThue').value = truocThue.toLocaleString('vi-VN');
         document.getElementById('inputOfficeVAT').value = vat.toLocaleString('vi-VN');
-        document.getElementById('previewOfficeTotal').value = total.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('previewOfficeTotal').value = total.toLocaleString('vi-VN');
     }
 
     function tinhToanVatTuTong() {
         let truocThue = parseFloat(document.getElementById('inputOfficeTruocThue').value.replace(/[^0-9]/g,'')) || 0;
         let vat = parseFloat(document.getElementById('inputOfficeVAT').value.replace(/[^0-9]/g,'')) || 0;
         let total = Math.round(truocThue + vat);
-        document.getElementById('previewOfficeTotal').value = total.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('previewOfficeTotal').value = total.toLocaleString('vi-VN');
     }
 
     function luuHoacCapNhatVPP() {
@@ -1274,7 +1419,7 @@
         document.getElementById('inputOfficePrice').value = (item.price || 0).toLocaleString();
         document.getElementById('inputOfficeTruocThue').value = (item.truocThue || 0).toLocaleString();
         document.getElementById('inputOfficeVAT').value = (item.vat || 0).toLocaleString();
-        document.getElementById('previewOfficeTotal').value = (item.total || 0).toLocaleString() + ' đ';
+        document.getElementById('previewOfficeTotal').value = (item.total || 0).toLocaleString();
         document.getElementById('inputOfficeDate').value = item.date || '';
         document.getElementById('editOfficeIndex').value = originalIndex;
         document.getElementById('btnSaveVpp').innerHTML = `<i class="fas fa-save"></i> Cập Nhật Chứng Từ`;
@@ -1294,7 +1439,7 @@
         allYearVpp.forEach((item) => {
             let bankInfo = item.bankName ? `${item.bankName} - ${item.bankAccount || ''}` : (item.bankAccount || '--');
             tbody.innerHTML += `<tr>
-                <td>${item.id}</td><td><span class="badge-warning">${item.thangHachToan}</span></td><td><b>${item.beneficiary}</b></td><td>${bankInfo}</td><td>${item.content}</td><td>${item.qty} x ${(item.price||0).toLocaleString()} đ</td><td style="text-align:right;">${(item.truocThue||0).toLocaleString()} đ</td><td style="text-align:right; color:#dc2626;">${(item.vat||0).toLocaleString()} đ</td><td style="text-align:right; font-weight:bold; color:#15803d;">${(item.total||0).toLocaleString()} đ</td>
+                <td>${item.id}</td><td><span class="badge-warning">${item.thangHachToan}</span></td><td><b>${item.beneficiary}</b></td><td>${bankInfo}</td><td>${item.content}</td><td>${item.qty} x ${(item.price||0).toLocaleString()}</td><td style="text-align:right;">${(item.truocThue||0).toLocaleString()}</td><td style="text-align:right; color:#dc2626;">${(item.vat||0).toLocaleString()}</td><td style="text-align:right; font-weight:bold; color:#15803d;">${(item.total||0).toLocaleString()}</td>
                 <td style="text-align:center; display:flex; gap:6px; justify-content:center;">
                     <button class="btn btn-blue" style="padding:4px 8px; font-size:12px;" onclick="suaVPP('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-pen"></i></button>
                     <button class="btn btn-red" style="padding:4px 8px; font-size:12px;" onclick="xoaVPP('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-trash"></i></button>
@@ -1356,8 +1501,8 @@
         document.getElementById('modalSlipStatus').innerText = item.action;
         document.getElementById('modalItemName').innerText = `${item.name} (${item.printer || 'Dùng chung'})`;
         document.getElementById('modalItemQty').innerText = item.qty;
-        document.getElementById('modalItemPrice').innerText = item.price.toLocaleString() + ' đ';
-        document.getElementById('modalItemTotal').innerText = item.total.toLocaleString() + ' đ';
+        document.getElementById('modalItemPrice').innerText = item.price.toLocaleString();
+        document.getElementById('modalItemTotal').innerText = item.total.toLocaleString();
         document.getElementById('previewSlipModal').classList.remove('hidden');
     }
 
@@ -1385,7 +1530,7 @@
         if(!tbody) return; tbody.innerHTML = '';
         dsKhoMucIn.forEach((item, idx) => {
             tbody.innerHTML += `<tr>
-                <td>${item.code}</td><td><b>${item.name}</b></td><td>${item.printer}</td><td>${item.action}</td><td>${item.qty}</td><td>${item.receiver}</td><td>${item.price.toLocaleString()} đ</td><td style="font-weight:bold;">${item.total.toLocaleString()} đ</td>
+                <td>${item.code}</td><td><b>${item.name}</b></td><td>${item.printer}</td><td>${item.action}</td><td>${item.qty}</td><td>${item.receiver}</td><td>${item.price.toLocaleString()}</td><td style="font-weight:bold;">${item.total.toLocaleString()}</td>
                 <td style="text-align:center; display:flex; gap:6px; justify-content:center;">
                     <button class="btn btn-purple" style="padding:4px 8px; font-size:12px;" onclick="xemVaInPhieuKho(${idx})" title="Xem & In phiếu xuất/giao"><i class="fa-solid fa-print"></i> In Phiếu</button>
                     <button class="btn btn-blue" style="padding:4px 8px; font-size:12px;" onclick="suaKhoMuc(${idx})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
@@ -1451,8 +1596,8 @@
         document.getElementById('modalSlipStatus').innerText = s.status;
         document.getElementById('modalItemName').innerText = s.item;
         document.getElementById('modalItemQty').innerText = "1";
-        document.getElementById('modalItemPrice').innerText = "0 đ";
-        document.getElementById('modalItemTotal').innerText = "0 đ";
+        document.getElementById('modalItemPrice').innerText = "0";
+        document.getElementById('modalItemTotal').innerText = "0";
         document.getElementById('previewSlipModal').classList.remove('hidden');
     }
 
@@ -1540,16 +1685,16 @@
         let allYearTelecom = layTatCaDanhSachTelecom();
         allYearTelecom.forEach((item) => {
             tbody.innerHTML += `<tr>
-                <td><b>${item.maHs}</b></td><td><span class="badge-warning">${item.thangHachToan}</span></td><td><span class="badge-net">${item.supplier}</span></td><td>${item.type}</td><td>${item.kyCuoc}</td><td style="text-align:right;">${(item.truocThue||0).toLocaleString()} đ</td><td style="text-align:right; color:#dc2626;">${(item.vat||0).toLocaleString()} đ</td><td style="text-align:right; font-weight:bold; color:#15803d;">${(item.tong||0).toLocaleString()} đ</td>
+                <td><b>${item.maHs}</b></td><td><span class="badge-warning">${item.thangHachToan}</span></td><td><span class="badge-net">${item.supplier}</span></td><td>${item.type}</td><td>${item.kyCuoc}</td><td style="text-align:right;">${(item.truocThue||0).toLocaleString()}</td><td style="text-align:right; color:#dc2626;">${(item.vat||0).toLocaleString()}</td><td style="text-align:right; font-weight:bold; color:#15803d;">${(item.tong||0).toLocaleString()}</td>
                 <td style="text-align:center; display:flex; gap:6px; justify-content:center;">
                     <button class="btn btn-blue" style="padding:4px 8px; font-size:12px;" onclick="suaTelecom('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-pen"></i></button>
                     <button class="btn btn-red" style="padding:4px 8px; font-size:12px;" onclick="xoaTelecom('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>`;
         });
-        document.getElementById('telecomKpiTruocThue').innerText = allYearTelecom.reduce((s, i) => s + (i.truocThue || 0), 0).toLocaleString('vi-VN') + ' đ';
-        document.getElementById('telecomKpiVAT').innerText = allYearTelecom.reduce((s, i) => s + (i.vat || 0), 0).toLocaleString('vi-VN') + ' đ';
-        document.getElementById('telecomKpiTongThanhToan').innerText = allYearTelecom.reduce((s, i) => s + (i.tong || 0), 0).toLocaleString('vi-VN') + ' đ';
+        document.getElementById('telecomKpiTruocThue').innerText = allYearTelecom.reduce((s, i) => s + (i.truocThue || 0), 0).toLocaleString('vi-VN');
+        document.getElementById('telecomKpiVAT').innerText = allYearTelecom.reduce((s, i) => s + (i.vat || 0), 0).toLocaleString('vi-VN');
+        document.getElementById('telecomKpiTongThanhToan').innerText = allYearTelecom.reduce((s, i) => s + (i.tong || 0), 0).toLocaleString('vi-VN');
     }
 
     function luuHoacCapNhatKhaoSat() {
@@ -1700,11 +1845,11 @@
         document.getElementById("slipPcCv").innerText = nv.pc_cv || 0;
         document.getElementById("slipNcTg").innerText = nv.nc_tg + ' ngày';
         document.getElementById("slipKht").innerText = nv.k_ht || 1.0;
-        document.getElementById("slipLCB").innerText = nv.thucLinhLCB.toLocaleString() + ' đ';
-        document.getElementById("slipLCV").innerText = nv.thucLinhCV.toLocaleString() + ' đ';
-        document.getElementById("slipBHXH").innerText = '-' + nv.bhxh.toLocaleString() + ' đ';
-        document.getElementById("slipBHTN").innerText = '-' + nv.bhtn.toLocaleString() + ' đ';
-        document.getElementById("slipTamUng").innerText = '-' + (nv.tam_ung||0).toLocaleString() + ' đ';
+        document.getElementById("slipLCB").innerText = nv.thucLinhLCB.toLocaleString();
+        document.getElementById("slipLCV").innerText = nv.thucLinhCV.toLocaleString();
+        document.getElementById("slipBHXH").innerText = '-' + nv.bhxh.toLocaleString();
+        document.getElementById("slipBHTN").innerText = '-' + nv.bhtn.toLocaleString();
+        document.getElementById("slipTamUng").innerText = '-' + (nv.tam_ung||0).toLocaleString();
         document.getElementById("slipThucLinh").innerText = nv.thucLinhCuoiCung.toLocaleString() + ' VNĐ';
         document.getElementById("previewModal").classList.remove('hidden');
     }
@@ -1727,29 +1872,44 @@
         let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         let allYearTelecom = layTatCaDanhSachTelecom(); let allYearVpp = layTatCaDanhSachVPP();
         
-        // Cấu hình ẩn hoàn toàn các con số trực tiếp trên biểu đồ (datalabels: false)
-        const pCfg = { plugins: { datalabels: { display: false } } };
+        // Cấu hình biểu đồ tỷ trọng (Pie/Doughnut) chỉ hiển thị % dựa trên tooltip hoặc datalabels format phần trăm
+        const percentagePluginConfig = {
+            plugins: {
+                datalabels: {
+                    formatter: (value, ctx) => {
+                        let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                        if (sum === 0) return '0%';
+                        let percentage = (value * 100 / sum).toFixed(1) + "%";
+                        return percentage;
+                    },
+                    color: '#fff',
+                    font: { weight: 'bold', size: 13 }
+                }
+            }
+        };
+
+        const nonePluginConfig = { plugins: { datalabels: { display: false } } };
 
         let ctxSalPie = document.getElementById('salaryPieChart');
-        if (ctxSalPie) { if(window.mySalaryPie) window.mySalaryPie.destroy(); window.mySalaryPie = new Chart(ctxSalPie, { type: 'doughnut', data: { labels: ['Quỹ Lương NET', 'Thanh Toán VP', 'Viễn Thông'], datasets: [{ data: [ds.reduce((s,i)=>s+(i.thucLinhCuoiCung||0),0), allYearVpp.reduce((s,i)=>s+(i.total||0),0), allYearTelecom.reduce((s,i)=>s+(i.tong||0),0)], backgroundColor: ['#0284c7', '#16a34a', '#d97706'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: pCfg } }); }
+        if (ctxSalPie) { if(window.mySalaryPie) window.mySalaryPie.destroy(); window.mySalaryPie = new Chart(ctxSalPie, { type: 'doughnut', data: { labels: ['Quỹ Lương NET', 'Thanh Toán VP', 'Viễn Thông'], datasets: [{ data: [ds.reduce((s,i)=>s+(i.thucLinhCuoiCung||0),0), allYearVpp.reduce((s,i)=>s+(i.total||0),0), allYearTelecom.reduce((s,i)=>s+(i.tong||0),0)], backgroundColor: ['#0284c7', '#16a34a', '#d97706'] }] }, options: { responsive: true, maintainAspectRatio: false, ...percentagePluginConfig } }); }
 
         let ctxOvBar = document.getElementById('overviewBarChart');
         if (ctxOvBar) { if(window.myOverviewBar) window.myOverviewBar.destroy(); window.myOverviewBar = new Chart(ctxOvBar, { type: 'bar', data: { labels: ['Thanh Toán VP', 'Viễn Thông', 'Lương NET'], datasets: [{ data: [allYearVpp.reduce((s,i)=>s+(i.total||0),0), allYearTelecom.reduce((s,i)=>s+(i.tong||0),0), ds.reduce((s,i)=>s+(i.thucLinhCuoiCung||0),0)], backgroundColor: ['#16a34a', '#d97706', '#0284c7'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } } } }); }
 
         let ctxOvTask = document.getElementById('overviewTaskPieChart');
-        if (ctxOvTask) { if(window.myOverviewTask) window.myOverviewTask.destroy(); window.myOverviewTask = new Chart(ctxOvTask, { type: 'pie', data: { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: [danhSachCongViec.filter(t=>t.status==='Hoàn thành').length, danhSachCongViec.filter(t=>t.status==='Đang làm').length, danhSachCongViec.filter(t=>t.status==='Chưa làm').length], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: pCfg } }); }
+        if (ctxOvTask) { if(window.myOverviewTask) window.myOverviewTask.destroy(); window.myOverviewTask = new Chart(ctxOvTask, { type: 'pie', data: { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: [danhSachCongViec.filter(t=>t.status==='Hoàn thành').length, danhSachCongViec.filter(t=>t.status==='Đang làm').length, danhSachCongViec.filter(t=>t.status==='Chưa làm').length], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] }, options: { responsive: true, maintainAspectRatio: false, ...percentagePluginConfig } }); }
 
         let ctxOvLeave = document.getElementById('overviewLeaveBarChart');
         if (ctxOvLeave) { if(window.myOverviewLeave) window.myOverviewLeave.destroy(); window.myOverviewLeave = new Chart(ctxOvLeave, { type: 'bar', data: { labels: ds.slice(0, 8).map(i => i.hoTen.split(' ').pop()), datasets: [{ data: ds.slice(0, 8).map(i => layTongLuyKePhepDaNghi(i.hoTen).totalP), backgroundColor: '#8b5cf6' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } } } }); }
 
         let ctxTPie = document.getElementById('taskPieChart');
-        if (ctxTPie) { if(window.myTaskPie) window.myTaskPie.destroy(); window.myTaskPie = new Chart(ctxTPie, { type: 'doughnut', data: { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: [danhSachCongViec.filter(t=>t.status==='Hoàn thành').length, danhSachCongViec.filter(t=>t.status==='Đang làm').length, danhSachCongViec.filter(t=>t.status==='Chưa làm').length], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: pCfg } }); }
+        if (ctxTPie) { if(window.myTaskPie) window.myTaskPie.destroy(); window.myTaskPie = new Chart(ctxTPie, { type: 'doughnut', data: { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: [danhSachCongViec.filter(t=>t.status==='Hoàn thành').length, danhSachCongViec.filter(t=>t.status==='Đang làm').length, danhSachCongViec.filter(t=>t.status==='Chưa làm').length], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] }, options: { responsive: true, maintainAspectRatio: false, ...percentagePluginConfig } }); }
 
         let ctxTBar = document.getElementById('taskBarChart');
         if (ctxTBar) { if(window.myTaskBar) window.myTaskBar.destroy(); window.myTaskBar = new Chart(ctxTBar, { type: 'bar', data: { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: [danhSachCongViec.filter(t=>t.status==='Hoàn thành').length, danhSachCongViec.filter(t=>t.status==='Đang làm').length, danhSachCongViec.filter(t=>t.status==='Chưa làm').length], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } } } }); }
 
         let ctxLPie = document.getElementById('leavePieChart');
-        if (ctxLPie) { if(window.myLeavePie) window.myLeavePie.destroy(); window.myLeavePie = new Chart(ctxLPie, { type: 'doughnut', data: { labels: ['Đã dùng Lũy Kế', 'Còn lại'], datasets: [{ data: [ds.reduce((s,i)=>s+layTongLuyKePhepDaNghi(i.hoTen).totalP,0), ds.reduce((s,i)=>s+((i.phep_cap||12)-layTongLuyKePhepDaNghi(i.hoTen).totalP),0)], backgroundColor: ['#ef4444', '#16a34a'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: pCfg } }); }
+        if (ctxLPie) { if(window.myLeavePie) window.myLeavePie.destroy(); window.myLeavePie = new Chart(ctxLPie, { type: 'doughnut', data: { labels: ['Đã dùng Lũy Kế', 'Còn lại'], datasets: [{ data: [ds.reduce((s,i)=>s+layTongLuyKePhepDaNghi(i.hoTen).totalP,0), ds.reduce((s,i)=>s+((i.phep_cap||12)-layTongLuyKePhepDaNghi(i.hoTen).totalP),0)], backgroundColor: ['#ef4444', '#16a34a'] }] }, options: { responsive: true, maintainAspectRatio: false, ...percentagePluginConfig } }); }
 
         let ctxLBar = document.getElementById('leaveBarChart');
         if (ctxLBar) { if(window.myLeaveBar) window.myLeaveBar.destroy(); window.myLeaveBar = new Chart(ctxLBar, { type: 'bar', data: { labels: ds.slice(0, 8).map(i => i.hoTen.split(' ').pop()), datasets: [{ data: ds.slice(0, 8).map(i => layTongLuyKePhepDaNghi(i.hoTen).totalP), backgroundColor: '#0284c7' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } } } }); }
@@ -1763,6 +1923,7 @@
         localStorage.setItem('bapaco_telecom_map_data', JSON.stringify(dsThanhToanTelecomByMonth));
         localStorage.setItem('bapaco_survey_data', JSON.stringify(dsKhaoSatChuyenSieu));
         localStorage.setItem('bapaco_task_data', JSON.stringify(danhSachCongViec));
+        localStorage.setItem('bapaco_accounts_data', JSON.stringify(danhSachTaiKhoanHeThong));
     }
 </script>
 </body>

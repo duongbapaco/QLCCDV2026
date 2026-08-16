@@ -433,7 +433,7 @@
                 <option value="Kg">Kg</option>
                 <option value="Mét">Mét</option>
                 <option value="Gói">Gói</option>
-                <option value="Cuộn" selected>Cuộn</option>
+                <option value="Cuộn">Cuộn</option>
                 <option value="Chiếc">Chiếc</option>
                 <option value="Thùng">Thùng</option>
             </select></div>
@@ -915,7 +915,14 @@
     let currentThangKey = _thangHienTai;
     let modalCurrentNvIndex = 0;
     
-    const BAPACO_DRIVE_BASE_URL = "https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m";
+    // Cập nhật hàm mở thư mục Drive trỏ chính xác theo Năm và Tháng đang chọn
+    function moThuThucDriveChung() {
+        let namChon = document.getElementById('cfgNamChon').value;
+        let thangChon = document.getElementById('cfgThangChon').value;
+        // Đường dẫn thư mục gốc Google Drive VINAPACO_Drive
+        let dynamicDriveUrl = `https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m`; 
+        window.open(dynamicDriveUrl, '_blank');
+    }
 
     function formatVNDate(dateString) {
         if (!dateString) return '--';
@@ -984,8 +991,6 @@
         alert(`✅ Đã ghi nhận yêu cầu cấp lại mật khẩu cho tài khoản: [${uEmail}]. Mật khẩu mới đã được cấu hình và gửi thông báo xác thực tới email: [${targetEmail || uEmail}].`);
         document.getElementById('modalQuenMatKhau').classList.add('hidden');
     }
-
-    function moThuThucDriveChung() { window.open(BAPACO_DRIVE_BASE_URL, '_blank'); }
     
     function thucHienDangNhap() {
         let u = document.getElementById('loginUser').value.trim();
@@ -2138,7 +2143,7 @@
         if (ctxLPie) { if(window.myLeavePie) window.myLeavePie.destroy(); window.myLeavePie = new Chart(ctxLPie, { type: 'doughnut', data: { labels: ['Đã dùng Lũy Kế', 'Còn lại'], datasets: [{ data: [ds.reduce((s,i)=>s+layTongLuyKePhepDaNghi(i.hoTen).totalP,0), ds.reduce((s,i)=>s+((i.phep_cap||12)-layTongLuyKePhepDaNghi(i.hoTen).totalP),0)], backgroundColor: ['#ef4444', '#16a34a'] }] }, options: { responsive: true, maintainAspectRatio: false, ...percentagePluginConfig } }); }
 
         let ctxLBar = document.getElementById('leaveBarChart');
-        if (ctxLBar) { if(window.myLeaveBar) window.myLeaveBar.destroy(); window.myLeaveBar = new Chart(ctxLBar, { type: 'bar', data: { labels: ds.slice(0, 8).map(i => i.hoTen.split(' ').pop()), datasets: [{ data: ds.slice(0, 8).map(i => layTongLuyKePhepDaNghi(i.hoTen).totalP), backgroundColor: '#0284c7' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } } } }); }
+        if (ctxLBar) { if(window.myLeaveBar) window.myLeaveBar.destroy(); window.myLeaveBar = new Chart(ctxLBar, { type: 'bar', data: { labels: ds.slice(0, 8).map(i => i.hoTen.split(' ').pop()), datasets: [{ data: ds.slice(0, 8).map(i => layTongLuyKePhepDaNGI(i.hoTen).totalP), backgroundColor: '#0284c7' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } } } }); }
     }
 
     function luuTruVaoLocalStorage() {

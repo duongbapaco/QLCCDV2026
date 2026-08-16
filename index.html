@@ -200,13 +200,13 @@
 
     <div class="config-bar">
         <div class="config-item"><label>Năm Lưu Trữ</label><select id="cfgNamChon" onchange="doiThangHoSoLuong()"></select></div>
-        <div class="config-item"><label>Tháng Lưu Trữ</label><select id="cfgThangChon" onchange="doiThangHoSoLuong()">
+        <div class="config-item"><label>Tháng Nhập / Lưu Trữ</label><select id="cfgThangChon" onchange="doiThangHoSoLuong()">
             <option value="Tháng 01">Tháng 01</option><option value="Tháng 02">Tháng 02</option><option value="Tháng 03">Tháng 03</option><option value="Tháng 04">Tháng 04</option><option value="Tháng 05">Tháng 05</option><option value="Tháng 06">Tháng 06</option><option value="Tháng 07">Tháng 07</option><option value="Tháng 08" selected>Tháng 08</option><option value="Tháng 09">Tháng 09</option><option value="Tháng 10">Tháng 10</option><option value="Tháng 11">Tháng 11</option><option value="Tháng 12">Tháng 12</option>
         </select></div>
         <div class="config-item" style="grid-column: span 2;">
-            <label>Thư Mục Google Drive (Tự động sinh đúng Năm / Tháng chọn)</label>
+            <label>Đường Dẫn Thư Mục Google Drive (Tự động sinh theo Năm & Tháng chọn)</label>
             <div style="display: flex; gap: 8px;">
-                <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold; flex: 1;" value="2026 / Tháng 08 (BAPACO_Drive)">
+                <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold; flex: 1;" value="BAPACO_Drive / 2026 / Tháng 08">
                 <button class="btn btn-blue" style="padding: 6px 12px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Mở Thư Mục</button>
             </div>
         </div>
@@ -431,7 +431,7 @@
             <div class="form-group"><label>Tổng Thanh Toán</label><input type="text" id="previewOfficeTotal" placeholder="0" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;"></div>
             <div class="form-group"><label>Ngày Chứng Từ (DD/MM/YYYY)</label><input type="date" id="inputOfficeDate"></div>
             <div class="form-group" style="grid-column: span 2;">
-                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Lưu đúng cấu trúc Năm / Tháng đã chọn)</label>
+                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Đẩy tự động vào đúng thư mục Năm / Tháng chọn)</label>
                 <input type="file" id="inputOfficeFiles" multiple style="padding: 7px; background: white; font-size: 13px;" onchange="xuLyChonTepVPP(this)">
                 <div class="progress-box" id="officeProgressBarBox"><div class="progress-bar-fill" id="officeProgressBarFill"></div></div>
                 <small id="officeProgressText" style="color:#0284c7; font-weight:bold; display:none; margin-top:3px;"></small>
@@ -532,7 +532,7 @@
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group" style="grid-column: span 2;">
-                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Lưu đúng cấu trúc Năm / Tháng đã chọn)</label>
+                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Đẩy tự động vào đúng thư mục Năm / Tháng chọn)</label>
                 <input type="file" id="inputTelecomFiles" multiple style="padding: 7px; background: white; font-size: 13px;" onchange="xuLyChonTepTelecom(this)">
                 <div class="progress-box" id="telecomProgressBarBox"><div class="progress-bar-fill" id="telecomProgressBarFill"></div></div>
                 <small id="telecomProgressText" style="color:#0284c7; font-weight:bold; display:none; margin-top:3px;"></small>
@@ -978,7 +978,7 @@
         currentThangKey = document.getElementById('cfgThangChon').value;
         document.querySelectorAll('.thangHienTaiTitle').forEach(el => el.innerText = `${currentThangKey}/${currentNamKey}`);
         let pathInput = document.getElementById('cfgDrivePath');
-        if(pathInput) pathInput.value = `${currentNamKey} / ${currentThangKey} (BAPACO_Drive)`;
+        if(pathInput) pathInput.value = `BAPACO_Drive / ${currentNamKey} / ${currentThangKey}`;
 
         if (!coSoDuLieuNamThang[currentNamKey]) coSoDuLieuNamThang[currentNamKey] = {};
         if (!coSoDuLieuNamThang[currentNamKey][currentThangKey]) {
@@ -1044,7 +1044,6 @@
         veTatCaBieuDoDashboard();
     }
 
-    // LẤY DANH SÁCH LIỀN MẠCH CÁC THÁNG TRONG CÙNG MỘT NĂM ĐANG CHỌN CHO CƯỚC VIỄN THÔNG & VPP
     function layTatCaDanhSachVPPTheoNam() {
         let allVpp = [];
         for (let key in dsThanhToanVanPhongProByMonth) {
@@ -1425,16 +1424,16 @@
             txt.style.display = 'block';
             let progress = 0;
             fill.style.width = '0%';
-            txt.innerText = `Đang đồng bộ ${input.files.length} tệp vào thư mục [${currentNamKey} / ${currentThangKey}] trên Drive... (0%)`;
+            txt.innerText = `Đang đồng bộ ${input.files.length} tệp vào thư mục [BAPACO_Drive / ${currentNamKey} / ${currentThangKey}] trên Google Drive... (0%)`;
             let interval = setInterval(() => {
                 progress += 25;
                 fill.style.width = progress + '%';
-                txt.innerText = `Đang đồng bộ ${input.files.length} tệp vào thư mục [${currentNamKey} / ${currentThangKey}] trên Drive... (${progress}%)`;
+                txt.innerText = `Đang đồng bộ ${input.files.length} tệp vào thư mục [BAPACO_Drive / ${currentNamKey} / ${currentThangKey}] trên Google Drive... (${progress}%)`;
                 if (progress >= 100) {
                     clearInterval(interval);
                     setTimeout(() => {
-                        txt.innerHTML = `✅ <b>Đã tải lên & lưu trữ thành công</b> ${input.files.length} tệp vào thư mục đúng tháng/năm đã chọn trên Google Drive!`;
-                        alert(`🎉 Đã tải lên thành công ${input.files.length} tệp đính kèm vào thư mục ${currentNamKey} / ${currentThangKey} trên Google Drive!`);
+                        txt.innerHTML = `✅ <b>Đã tải lên & lưu trữ thành công</b> ${input.files.length} tệp vào thư mục đúng năm/tháng đã chọn trên Google Drive!`;
+                        alert(`🎉 Đã tải lên thành công ${input.files.length} tệp đính kèm vào thư mục BAPACO_Drive / ${currentNamKey} / ${currentThangKey} trên Google Drive!`);
                     }, 300);
                 }
             }, 150);
@@ -1453,7 +1452,7 @@
 
         let fileInput = document.getElementById('inputOfficeFiles');
         let filesArr = [];
-        let targetFolder = `${currentNamKey}/${currentThangKey}/Thanh_Toan_VPP`;
+        let targetFolder = `BAPACO_Drive/${currentNamKey}/${currentThangKey}/Thanh_Toan_VPP`;
         if (fileInput && fileInput.files.length > 0) {
             for (let i = 0; i < fileInput.files.length; i++) {
                 filesArr.push({ name: fileInput.files[i].name, size: fileInput.files[i].size, folder: targetFolder, driveFolder: BAPACO_DRIVE_BASE_URL });
@@ -1524,7 +1523,7 @@
             let bankInfo = item.bankName ? `${item.bankName} - ${item.bankAccount || ''}` : (item.bankAccount || '--');
             let fileListStr = '<span style="color:#94a3b8; font-size:13px;">Không có tệp</span>';
             if (item.files && item.files.length > 0) {
-                let folderName = `${item.namHachToan} / ${item.thangHachToan} / Thanh_Toan_VPP`;
+                let folderName = `BAPACO_Drive / ${item.namHachToan} / ${item.thangHachToan} / Thanh_Toan_VPP`;
                 let listNames = item.files.map(f => f.name).join(', ');
                 fileListStr = `<a href="${BAPACO_DRIVE_BASE_URL}" target="_blank" title="Mở thư mục trên Google Drive" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> ${folderName} (${item.files.length} tệp)<br><small style="color:#475569; font-weight:normal;">${listNames}</small></a>`;
             }
@@ -1762,16 +1761,16 @@
             txt.style.display = 'block';
             let progress = 0;
             fill.style.width = '0%';
-            txt.innerText = `Đang đồng bộ ${input.files.length} tệp vào thư mục [${currentNamKey} / ${currentThangKey}] trên Drive... (0%)`;
+            txt.innerText = `Đang đồng bộ ${input.files.length} tệp vào thư mục [BAPACO_Drive / ${currentNamKey} / ${currentThangKey}] trên Google Drive... (0%)`;
             let interval = setInterval(() => {
                 progress += 25;
                 fill.style.width = progress + '%';
-                txt.innerText = `Đang đồng bộ ${input.files.length} tệp vào thư mục [${currentNamKey} / ${currentThangKey}] trên Drive... (${progress}%)`;
+                txt.innerText = `Đang đồng bộ ${input.files.length} tệp vào thư mục [BAPACO_Drive / ${currentNamKey} / ${currentThangKey}] trên Google Drive... (${progress}%)`;
                 if (progress >= 100) {
                     clearInterval(interval);
                     setTimeout(() => {
-                        txt.innerHTML = `✅ <b>Đã tải lên & lưu trữ thành công</b> ${input.files.length} tệp vào thư mục đúng tháng/năm đã chọn trên Google Drive!`;
-                        alert(`🎉 Đã tải lên thành công ${input.files.length} tệp đính kèm vào thư mục ${currentNamKey} / ${currentThangKey} trên Google Drive!`);
+                        txt.innerHTML = `✅ <b>Đã tải lên & lưu trữ thành công</b> ${input.files.length} tệp vào thư mục đúng năm/tháng đã chọn trên Google Drive!`;
+                        alert(`🎉 Đã tải lên thành công ${input.files.length} tệp đính kèm vào thư mục BAPACO_Drive / ${currentNamKey} / ${currentThangKey} trên Google Drive!`);
                     }, 300);
                 }
             }, 150);
@@ -1789,7 +1788,7 @@
 
         let fileInput = document.getElementById('inputTelecomFiles');
         let filesArr = [];
-        let targetFolder = `${currentNamKey}/${currentThangKey}/Cuoc_Vien_Thong`;
+        let targetFolder = `BAPACO_Drive/${currentNamKey}/${currentThangKey}/Cuoc_Vien_Thong`;
         if (fileInput && fileInput.files.length > 0) {
             for (let i = 0; i < fileInput.files.length; i++) {
                 filesArr.push({ name: fileInput.files[i].name, size: fileInput.files[i].size, folder: targetFolder, driveFolder: BAPACO_DRIVE_BASE_URL });
@@ -1847,7 +1846,7 @@
         yearTelecom.forEach((item) => {
             let fileListStr = '<span style="color:#94a3b8; font-size:13px;">Không có tệp</span>';
             if (item.files && item.files.length > 0) {
-                let folderName = `${currentNamKey} / ${item.thangHachToan} / Cuoc_Vien_Thong`;
+                let folderName = `BAPACO_Drive / ${currentNamKey} / ${item.thangHachToan} / Cuoc_Vien_Thong`;
                 let listNames = item.files.map(f => f.name).join(', ');
                 fileListStr = `<a href="${BAPACO_DRIVE_BASE_URL}" target="_blank" title="Mở thư mục trên Google Drive" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> ${folderName} (${item.files.length} tệp)<br><small style="color:#475569; font-weight:normal;">${listNames}</small></a>`;
             }

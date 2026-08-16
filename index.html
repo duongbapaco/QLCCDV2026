@@ -486,7 +486,7 @@
             <div class="form-group"><label>Thành Tiền</label><input type="text" id="previewOfficeTotal" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;" value="0 đ"></div>
             <div class="form-group"><label>Ngày Chứng Từ</label><input type="date" id="inputOfficeDate"></div>
             <div class="form-group">
-                <label>Tệp Đính Kèm</label>
+                <label>Tệp Đính Kèm (Sinh Thư Mục Drive)</label>
                 <input type="file" id="inputOfficeFiles" multiple style="font-size:12px;" onchange="xuLyUploadFileGoogleDrive(this, 'vpp')">
             </div>
             <div class="form-group" style="grid-column: span 2;">
@@ -631,7 +631,7 @@
             <div class="form-group"><label>Thuế VAT (10%)</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Hạn TT</label><input type="date" id="inputTelecomDate" value="2026-07-14"></div>
             <div class="form-group">
-                <label>Tệp Hóa Đơn Drive</label>
+                <label>Tệp Hóa Đơn Drive (Sinh Thư Mục)</label>
                 <input type="file" id="inputTelecomFiles" multiple style="font-size:12px;" onchange="xuLyUploadFileGoogleDrive(this, 'telecom')">
             </div>
             <div class="form-group" style="grid-column: span 2;">
@@ -789,9 +789,9 @@
 <!-- MODAL CẤU HÌNH WEBHOOK GOOGLE APPS SCRIPT -->
 <div class="modal-overlay hidden" id="webhookModal">
     <div class="modal-card" style="max-width: 600px;">
-        <div style="padding: 16px 20px; background: #0284c7; color: white; display: flex; justify-content: space-between;"><b style="font-size: 15px;"><i class="fa-solid fa-cloud-arrow-up"></i> LIÊN KẾT GOOGLE APPS SCRIPT (UPLOAD THẲNG DRIVE)</b><button class="btn btn-red" style="padding: 4px 8px;" onclick="document.getElementById('webhookModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button></div>
+        <div style="padding: 16px 20px; background: #0284c7; color: white; display: flex; justify-content: space-between;"><b style="font-size: 15px;"><i class="fa-solid fa-cloud-arrow-up"></i> LIÊN KẾT GOOGLE APPS SCRIPT (AUTO SINH THƯ MỤC DRIVE)</b><button class="btn btn-red" style="padding: 4px 8px;" onclick="document.getElementById('webhookModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button></div>
         <div style="padding: 22px; display: flex; flex-direction: column; gap: 14px; font-size: 14px; line-height: 1.6;">
-            <p>Đường dẫn Web App Google Apps Script đã được cấu hình tự động sẵn:</p>
+            <p>Đường dẫn Web App Google Apps Script đã được cấu hình tự động sẵn sàng:</p>
             <div class="form-group">
                 <label>Google Apps Script Web App URL</label>
                 <input type="text" id="inputGasWebhookUrl" value="https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px; background:#f8fafc; font-weight:bold;" readonly>
@@ -1110,7 +1110,9 @@
     ];
     let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data')) || [{ id: 1, name: "Hoàn thiện báo cáo điều hành tháng 08", assignee: "Trần Bình Dương", dueDate: "2026-08-15", status: "Đang làm" }];
     let danhSachTaiKhoan = JSON.parse(localStorage.getItem('bapaco_accounts_data')) || [{ username: 'admin', pass: '123456', role: 'Admin', email: 'duongbapaco@gmail.com' }];
-    let gasWebhookUrl = localStorage.getItem('bapaco_gas_webhook') || "https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec";
+    
+    // Webhook Google Apps Script chuẩn đã tích hợp sẵn tính năng tự sinh thư mục tháng/năm
+    let gasWebhookUrl = "https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec";
 
     let currentNamKey = "2026";
     let currentThangKey = "Tháng 08";
@@ -1600,6 +1602,7 @@
         if (txt) txt.innerText = message;
     }
 
+    // Tích hợp gửi dữ liệu lên Google Apps Script Webhook để tự sinh thư mục và upload file vào Google Drive
     async function xuLyUploadFileGoogleDrive(inputEl, typePrefix) {
         if (!inputEl.files || inputEl.files.length === 0) return;
         let totalFiles = inputEl.files.length;
@@ -1619,7 +1622,13 @@
                 if (gasWebhookUrl) {
                     let resp = await fetch(gasWebhookUrl, {
                         method: 'POST',
-                        body: JSON.stringify({ filename: file.name, mimeType: file.type, fileData: base64Data, folderName: typePrefix.toUpperCase() })
+                        body: JSON.stringify({ 
+                            filename: file.name, 
+                            mimeType: file.type, 
+                            fileData: base64Data, 
+                            folderName: currentThangKey, // Truyền đúng tên tháng để GAS tự sinh thư mục
+                            year: currentNamKey            // Truyền đúng năm
+                        })
                     });
                     let result = await resp.json();
                     if(result.status === 'success') {
@@ -1638,7 +1647,7 @@
         }
 
         inputEl.dataset.fileList = JSON.stringify(fileNames);
-        capNhatThanhTrangThaiUpload(barId, textId, 100, `✅ Hoàn tất tải lên ${totalFiles} tệp (100%)`);
+        capNhatThanhTrangThaiUpload(barId, textId, 100, `✅ Hoàn tất tải lên ${totalFiles} tệp lên thư mục ${currentThangKey}_${currentNamKey} (100%)`);
     }
 
     function luuHoacCapNhatVPP() {
@@ -1825,7 +1834,7 @@
             let truocThue = Math.round(tong / 1.1);
             let vat = tong - truocThue;
             
-            let targetMonthName = "Tháng 07";
+            let targetMonthName = currentThangKey;
             if (kyCuocVal.toLowerCase().includes("tháng")) {
                 let parts = kyCuocVal.split('/');
                 let segment = parts[0].trim();
@@ -1845,7 +1854,13 @@
                         let base64Data = await readFileAsBase64(file);
                         let resp = await fetch(gasWebhookUrl, {
                             method: 'POST',
-                            body: JSON.stringify({ filename: file.name, mimeType: file.type, fileData: base64Data, folderName: targetMonthName })
+                            body: JSON.stringify({ 
+                                filename: file.name, 
+                                mimeType: file.type, 
+                                fileData: base64Data, 
+                                folderName: targetMonthName, // Tự sinh thư mục tháng tương ứng
+                                year: currentNamKey            // Truyền đúng năm
+                            })
                         });
                         let result = await resp.json();
                         if(result.status === 'success') {
@@ -1895,7 +1910,7 @@
                 huySuaTelecom();
             } else {
                 dsThanhToanTelecomByMonth[newMonthKey].push(itemData);
-                alert(`✅ Đã thêm mới cước và ghi sổ thành công vào ${targetMonthName}!`);
+                alert(`✅ Đã thêm mới cước và ghi sổ thành công vào ${targetMonthName}_${currentNamKey}!`);
                 document.getElementById('inputTelecomType').value = '';
                 document.getElementById('inputTelecomTongVat').value = '';
                 document.getElementById('inputTelecomTruocThueInput').value = '';

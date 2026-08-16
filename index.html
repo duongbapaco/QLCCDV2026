@@ -204,7 +204,7 @@
             <option value="Tháng 01">Tháng 01</option><option value="Tháng 02">Tháng 02</option><option value="Tháng 03">Tháng 03</option><option value="Tháng 04">Tháng 04</option><option value="Tháng 05">Tháng 05</option><option value="Tháng 06">Tháng 06</option><option value="Tháng 07">Tháng 07</option><option value="Tháng 08" selected>Tháng 08</option><option value="Tháng 09">Tháng 09</option><option value="Tháng 10">Tháng 10</option><option value="Tháng 11">Tháng 11</option><option value="Tháng 12">Tháng 12</option>
         </select></div>
         <div class="config-item" style="grid-column: span 2;">
-            <label>Thư Mục Gốc Google Drive (Tự động sinh theo Năm/Tháng)</label>
+            <label>Thư Mục Google Drive (Tự động sinh theo Năm/Tháng)</label>
             <div style="display: flex; gap: 8px;">
                 <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold; flex: 1;" value="https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m">
                 <button class="btn btn-blue" style="padding: 6px 12px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Mở Thư Mục</button>
@@ -330,7 +330,7 @@
             <input type="hidden" id="editTaskIndex" value="-1">
             <div class="form-group"><label>Nội Dung Công Việc</label><input type="text" id="inputTaskName" placeholder="VD: Lập báo cáo điều hành..."></div>
             <div class="form-group"><label>Người Thực Hiện</label><input type="text" id="inputTaskAssignee" value="Trần Bình Dương"></div>
-            <div class="form-group"><label>Hạn Hoàn Thành</label><input type="date" id="inputTaskDueDate"></div>
+            <div class="form-group"><label>Hạn Hoàn Thành (DD/MM/YYYY)</label><input type="date" id="inputTaskDueDate"></div>
             <div class="form-group"><label>Trạng Thái</label><select id="inputTaskStatus"><option value="Chưa làm">⏳ Chưa làm</option><option value="Đang làm">🔄 Đang làm</option><option value="Hoàn thành">✅ Hoàn thành</option></select></div>
             <div class="form-group" style="display: flex; gap: 8px;"><button class="btn btn-blue" id="btnSaveTask" onclick="luuHoacCapNhatCongViec()"><i class="fas fa-plus-circle"></i> Thêm Công Việc</button></div>
         </div>
@@ -429,9 +429,9 @@
             <div class="form-group"><label>Tiền Trước Thuế</label><input type="text" id="inputOfficeTruocThue" placeholder="0" oninput="tinhToanVatTuTong()"></div>
             <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputOfficeVAT" placeholder="0" oninput="tinhToanVatTuTong()"></div>
             <div class="form-group"><label>Tổng Thanh Toán</label><input type="text" id="previewOfficeTotal" placeholder="0" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;"></div>
-            <div class="form-group"><label>Ngày Chứng Từ (Định dạng VN: DD/MM/YYYY)</label><input type="date" id="inputOfficeDate"></div>
+            <div class="form-group"><label>Ngày Chứng Từ (DD/MM/YYYY)</label><input type="date" id="inputOfficeDate"></div>
             <div class="form-group" style="grid-column: span 2;">
-                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Chọn nhiều tệp - Lưu tự động vào Thư mục Năm/Tháng)</label>
+                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Chọn nhiều tệp - Lưu đúng Năm/Tháng)</label>
                 <input type="file" id="inputOfficeFiles" multiple style="padding: 7px; background: white; font-size: 13px;" onchange="xuLyChonTepVPP(this)">
                 <div class="progress-box" id="officeProgressBarBox"><div class="progress-bar-fill" id="officeProgressBarFill"></div></div>
                 <small id="officeProgressText" style="color:#0284c7; font-weight:bold; display:none; margin-top:3px;"></small>
@@ -486,7 +486,7 @@
             <div class="form-group"><label>Bộ Phận</label><input type="text" id="inputSlipDept" placeholder="Phòng ban..."></div>
             <div class="form-group"><label>Tên Thiết Bị</label><input type="text" id="inputSlipItem" placeholder="Laptop Dell Latitude..."></div>
             <div class="form-group"><label>Tình Trạng</label><input type="text" id="inputSlipStatus" value="Mới 100%, nguyên seal"></div>
-            <div class="form-group"><label>Ngày Giao (Định dạng VN: DD/MM/YYYY)</label><input type="date" id="inputSlipDate"></div>
+            <div class="form-group"><label>Ngày Giao (DD/MM/YYYY)</label><input type="date" id="inputSlipDate"></div>
             <div class="form-group" style="display: flex; gap: 8px;">
                 <button class="btn btn-green" id="btnSaveSlip" onclick="luuHoacCapNhatPhieuGiao()"><i class="fas fa-plus-circle"></i> Thêm Phiếu</button>
             </div>
@@ -516,9 +516,9 @@
             <div class="form-group"><label>Tổng Cước (Đã VAT)</label><input type="text" id="inputTelecomTongVat" placeholder="2.500.000" oninput="tinhTienTelecomTuTong()"></div>
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
-            <div class="form-group"><label>Hạn TT (Định dạng VN: DD/MM/YYYY)</label><input type="date" id="inputTelecomDate" value="2026-08-14"></div>
+            <div class="form-group"><label>Hạn TT (DD/MM/YYYY)</label><input type="date" id="inputTelecomDate" value="2026-08-14"></div>
             <div class="form-group" style="grid-column: span 2;">
-                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Chọn nhiều tệp - Lưu tự động vào Thư mục Năm/Tháng)</label>
+                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Chọn nhiều tệp - Lưu đúng Năm/Tháng)</label>
                 <input type="file" id="inputTelecomFiles" multiple style="padding: 7px; background: white; font-size: 13px;" onchange="xuLyChonTepTelecom(this)">
                 <div class="progress-box" id="telecomProgressBarBox"><div class="progress-bar-fill" id="telecomProgressBarFill"></div></div>
                 <small id="telecomProgressText" style="color:#0284c7; font-weight:bold; display:none; margin-top:3px;"></small>
@@ -861,8 +861,9 @@
         return dateString;
     }
 
+    // Hàm trả về link gốc chính xác của Google Drive (không bị lỗi query tìm kiếm ngầm)
     function layDuongDanThuMucDriveDong(nam, thang, loai) {
-        return `${BAPACO_DRIVE_ROOT}`;
+        return BAPACO_DRIVE_ROOT;
     }
 
     async function tuDongTaiDuLieuTuDrive() {

@@ -148,7 +148,7 @@
         </div>
         <div style="padding: 24px; display: flex; flex-direction: column; gap: 14px; background: #f8fafc;">
             <div class="form-group"><label>Email / Tên tài khoản cần khôi phục</label><input type="email" id="forgotUserEmail" placeholder="nhanvien@vinapaco.com.vn" value="admin@vinapaco.com.vn"></div>
-            <div class="form-group"><label>Email nhận mật khẩu mới (Cho phép sửa linh hoạt đúng email thật)</label><input type="email" id="forgotTargetEmail" placeholder="nhanvien.thucte@gmail.com" value="duongtb@vinapaco.com.vn"></div>
+            <div class="form-group"><label>Email nhận mật khẩu mới</label><input type="email" id="forgotTargetEmail" placeholder="nhanvien.thucte@gmail.com" value="duongtb@vinapaco.com.vn"></div>
             <div class="form-group"><label>Mật khẩu mới (Tự định nghĩa)</label><input type="password" id="forgotNewPass" placeholder="Nhập mật khẩu mới..." value="123456"></div>
             <button class="btn btn-green" style="padding: 12px; justify-content: center;" onclick="xuLyYeuCauQuenMatKhau()"><i class="fa-solid fa-paper-plane"></i> Gửi Yêu Cầu & Cập Nhật Mật Khẩu</button>
         </div>
@@ -168,6 +168,13 @@
             <button class="btn btn-blue" onclick="thuCongTaiVeTuDrive()"><i class="fa-solid fa-cloud-arrow-down"></i> Tải Về Mới Nhất</button>
             <button class="btn btn-red" onclick="dangXuatHeThong()"><i class="fa-solid fa-right-from-bracket"></i> Thoát</button>
         </div>
+    </div>
+
+    <!-- Ô CẤU HÌNH NHANH GAS WEBHOOK URL TRỰC TIẾP TRÊN GIAO DIỆN -->
+    <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 12px 18px; border-radius: 10px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+        <span style="font-size: 13px; font-weight: 800; color: #0369a1; text-transform: uppercase;"><i class="fa-solid fa-link"></i> Cấu Hình GAS Webhook URL:</span>
+        <input type="text" id="inputGasUrlSetting" style="flex: 1; min-width: 320px; padding: 7px 10px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; font-weight: bold; background: #f8fafc;" value="https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec">
+        <button class="btn btn-blue" style="padding: 7px 12px; font-size: 13px;" onclick="luuGasUrlNhanh()"><i class="fa-solid fa-floppy-disk"></i> Lưu URL</button>
     </div>
 
     <div class="top-info-bar">
@@ -423,19 +430,7 @@
             <div class="form-group"><label>Số Tài Khoản</label><input type="text" id="inputOfficeBankAccount" placeholder="VD: 001100..."></div>
             <div class="form-group"><label>Nội Dung Thanh Toán</label><input type="text" id="inputOfficeContent" placeholder="VD: Thanh toán tiền dịch vụ..."></div>
             <div class="form-group"><label>ĐVT</label><select id="inputOfficeUnit">
-                <option value="Cái">Cái</option>
-                <option value="Hộp">Hộp</option>
-                <option value="Bộ">Bộ</option>
-                <option value="Lô">Lô</option>
-                <option value="Tháng">Tháng</option>
-                <option value="Quyển">Quyển</option>
-                <option value="Tập">Tập</option>
-                <option value="Kg">Kg</option>
-                <option value="Mét">Mét</option>
-                <option value="Gói">Gói</option>
-                <option value="Cuộn">Cuộn</option>
-                <option value="Chiếc">Chiếc</option>
-                <option value="Thùng">Thùng</option>
+                <option value="Cái">Cái</option><option value="Hộp">Hộp</option><option value="Bộ">Bộ</option><option value="Lô">Lô</option><option value="Tháng">Tháng</option><option value="Quyển">Quyển</option><option value="Tập">Tập</option><option value="Kg">Kg</option><option value="Mét">Mét</option><option value="Gói">Gói</option><option value="Cuộn">Cuộn</option><option value="Chiếc">Chiếc</option><option value="Thùng">Thùng</option>
             </select></div>
             <div class="form-group"><label>Số Lượng</label><input type="number" id="inputOfficeQty" value="1" min="1" oninput="tinhToanTienVPP()"></div>
             <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputOfficePrice" placeholder="0" oninput="tinhToanTienVPP()"></div>
@@ -597,66 +592,31 @@
             <div class="form-group"><label>Người Sử Dụng</label><input type="text" id="inputSurveyUser" placeholder="Họ tên cán bộ..."></div>
             <div class="form-group"><label>Bộ Phận / Phòng Ban</label><input type="text" id="inputSurveyDept" placeholder="Phòng ban..."></div>
             <div class="form-group"><label>Loại Thiết Bị</label><select id="inputSurveyDeviceName">
-                <option value="Laptop cá nhân">Laptop cá nhân</option>
-                <option value="Desktop văn phòng">Desktop văn phòng</option>
-                <option value="Máy trạm Workstation">Máy trạm Workstation</option>
-                <option value="Máy chủ Server">Máy chủ Server</option>
-                <option value="Thiết bị khác">Thiết bị khác</option>
+                <option value="Laptop cá nhân">Laptop cá nhân</option><option value="Desktop văn phòng">Desktop văn phòng</option><option value="Máy trạm Workstation">Máy trạm Workstation</option><option value="Máy chủ Server">Máy chủ Server</option><option value="Thiết bị khác">Thiết bị khác</option>
             </select></div>
             
             <div class="form-group"><label>Hệ Điều Hành (OS)</label><select id="inputSurveyOS">
-                <option value="Windows 7 (Cũ - Hết hỗ trợ)">Windows 7 (Cũ - Hết hỗ trợ)</option>
-                <option value="Windows 8 / 8.1">Windows 8 / 8.1</option>
-                <option value="Windows 10 Home">Windows 10 Home</option>
-                <option value="Windows 10 Pro">Windows 10 Pro</option>
-                <option value="Windows 11 Home">Windows 11 Home</option>
-                <option value="Windows 11 Pro">Windows 11 Pro</option>
-                <option value="macOS (Apple)">macOS (Apple)</option>
-                <option value="Ubuntu / Linux">Ubuntu / Linux</option>
-                <option value="Không dùng OS khác">Không dùng</option>
+                <option value="Windows 7 (Cũ - Hết hỗ trợ)">Windows 7 (Cũ - Hết hỗ trợ)</option><option value="Windows 8 / 8.1">Windows 8 / 8.1</option><option value="Windows 10 Home">Windows 10 Home</option><option value="Windows 10 Pro">Windows 10 Pro</option><option value="Windows 11 Home">Windows 11 Home</option><option value="Windows 11 Pro" selected>Windows 11 Pro</option><option value="macOS (Apple)">macOS (Apple)</option><option value="Ubuntu / Linux">Ubuntu / Linux</option><option value="Không dùng OS khác">Không dùng</option>
             </select></div>
 
             <div class="form-group"><label>Bản Quyền OS</label><select id="inputSurveyOSLicense">
-                <option value="✅ Có bản quyền chính hãng">✅ Có bản quyền chính hãng</option>
-                <option value="⚠️ Chưa có bản quyền / Lậu">⚠️ Chưa có bản quyền / Lậu</option>
-                <option value="Miễn phí / Mã nguồn mở">Miễn phí / Mã nguồn mở</option>
-                <option value="Không dùng">Không dùng</option>
+                <option value="✅ Có bản quyền chính hãng" selected>✅ Có bản quyền chính hãng</option><option value="⚠️ Chưa có bản quyền / Lậu">⚠️ Chưa có bản quyền / Lậu</option><option value="Miễn phí / Mã nguồn mở">Miễn phí / Mã nguồn mở</option><option value="Không dùng">Không dùng</option>
             </select></div>
 
             <div class="form-group"><label>Microsoft Office</label><select id="inputSurveyOffice">
-                <option value="Office 2010 (Cũ)">Office 2010 (Cũ)</option>
-                <option value="Office 2013">Office 2013</option>
-                <option value="Office 2016">Office 2016</option>
-                <option value="Office 2019">Office 2019</option>
-                <option value="Office 2021">Office 2021</option>
-                <option value="Office 2024">Office 2024</option>
-                <option value="Microsoft 365 (Cloud)">Microsoft 365 (Cloud)</option>
-                <option value="LibreOffice / Khác">LibreOffice / Khác</option>
-                <option value="Không dùng">Không dùng</option>
+                <option value="Office 2010 (Cũ)">Office 2010 (Cũ)</option><option value="Office 2013">Office 2013</option><option value="Office 2016">Office 2016</option><option value="Office 2019">Office 2019</option><option value="Office 2021">Office 2021</option><option value="Office 2024">Office 2024</option><option value="Microsoft 365 (Cloud)" selected>Microsoft 365 (Cloud)</option><option value="LibreOffice / Khác">LibreOffice / Khác</option><option value="Không dùng">Không dùng</option>
             </select></div>
 
             <div class="form-group"><label>Bản Quyền Office</label><select id="inputSurveyOfficeLicense">
-                <option value="✅ Bản quyền Tổng công ty">✅ Bản quyền Tổng công ty</option>
-                <option value="✅ Bản quyền cá nhân/Doanh nghiệp">✅ Bản quyền cá nhân/Doanh nghiệp</option>
-                <option value="⚠️ Chưa có bản quyền / Dùng lậu">⚠️ Chưa có bản quyền / Dùng lậu</option>
-                <option value="Không dùng">Không dùng</option>
+                <option value="✅ Bản quyền Tổng công ty" selected>✅ Bản quyền Tổng công ty</option><option value="✅ Bản quyền cá nhân/Doanh nghiệp">✅ Bản quyền cá nhân/Doanh nghiệp</option><option value="⚠️ Chưa có bản quyền / Dùng lậu">⚠️ Chưa có bản quyền / Dùng lậu</option><option value="Không dùng">Không dùng</option>
             </select></div>
 
             <div class="form-group"><label>Phần Mềm Nghiệp Vụ</label><select id="inputSurveyBusinessSoftware">
-                <option value="Asia (Kế toán)">Asia (Kế toán)</option>
-                <option value="Quasoft (Quản lý)">Quasoft (Quản lý)</option>
-                <option value="Cloudoffice (Văn thư)">Cloudoffice (Văn thư)</option>
-                <option value="AutoCAD (Thiết kế)">AutoCAD (Thiết kế)</option>
-                <option value="SolidWorks (Kỹ thuật)">SolidWorks (Kỹ thuật)</option>
-                <option value="MISA (Tài chính)">MISA (Tài chính)</option>
-                <option value="Phần mềm chuyên ngành khác">Phần mềm chuyên ngành khác</option>
-                <option value="Không dùng">Không dùng</option>
+                <option value="Asia (Kế toán)">Asia (Kế toán)</option><option value="Quasoft (Quản lý)">Quasoft (Quản lý)</option><option value="Cloudoffice (Văn thư)" selected>Cloudoffice (Văn thư)</option><option value="AutoCAD (Thiết kế)">AutoCAD (Thiết kế)</option><option value="SolidWorks (Kỹ thuật)">SolidWorks (Kỹ thuật)</option><option value="MISA (Tài chính)">MISA (Tài chính)</option><option value="Phần mềm chuyên ngành khác">Phần mềm chuyên ngành khác</option><option value="Không dùng">Không dùng</option>
             </select></div>
 
             <div class="form-group"><label>Bản Quyền NV</label><select id="inputSurveyBusinessLicense">
-                <option value="✅ Có bản quyền chính hãng">✅ Có bản quyền chính hãng</option>
-                <option value="⚠️ Chưa có bản quyền / Dùng lậu">⚠️ Chưa có bản quyền / Dùng lậu</option>
-                <option value="Không dùng">Không dùng</option>
+                <option value="✅ Có bản quyền chính hãng" selected>✅ Có bản quyền chính hãng</option><option value="⚠️ Chưa có bản quyền / Dùng lậu">⚠️ Chưa có bản quyền / Dùng lậu</option><option value="Không dùng">Không dùng</option>
             </select></div>
 
             <div class="form-group"><label>Cấu Hình Phần Cứng</label><input type="text" id="inputSurveySpecs" placeholder="Core i7, RAM 16GB, SSD 512GB"></div>
@@ -756,11 +716,7 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
                 <div class="form-group"><label>1. Chọn Nhân Sự</label><select id="popupLeaveNhanSu" style="padding: 10px; border-radius: 8px; font-weight: bold;"></select></div>
                 <div class="form-group"><label>2. Hình Thức / Lý Do Nghỉ</label><select id="popupLeaveType" style="padding: 10px; border-radius: 8px; font-weight: bold;">
-                    <option value="Phép năm">Nghỉ phép năm hưởng lương</option>
-                    <option value="Việc riêng">Nghỉ việc riêng (Kết hôn, tang chế...)</option>
-                    <option value="Ốm đau">Nghỉ ốm đau / Chế độ BHXH</option>
-                    <option value="Thai sản">Nghỉ chế độ thai sản</option>
-                    <option value="Không lương">Nghỉ không hưởng lương</option>
+                    <option value="Phép năm">Nghỉ phép năm hưởng lương</option><option value="Việc riêng">Nghỉ việc riêng (Kết hôn, tang chế...)</option><option value="Ốm đau">Nghỉ ốm đau / Chế độ BHXH</option><option value="Thai sản">Nghỉ chế độ thai sản</option><option value="Không lương">Nghỉ không hưởng lương</option>
                 </select></div>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
@@ -910,16 +866,21 @@
     let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data') || `[{"id":1,"name":"Hoàn thiện báo cáo điều hành ${_thangHienTai}","assignee":"Trần Bình Dương","dueDate":"${_namHienTai}-${_thangSo}-30","status":"Đang thực hiện"}]`);
     let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('bapaco_accounts_data') || '[{"email":"admin@vinapaco.com.vn","fullName":"Trần Bình Dương","role":"Admin","status":"Active","notifyEmail":"duongtb@vinapaco.com.vn"},{"email":"ketoan@vinapaco.com.vn","fullName":"Nguyễn Minh Ngọc","role":"Editor","status":"Active","notifyEmail":"nguyenminhngoc@vinapaco.com.vn"}]');
 
-    let gasWebhookUrl = "https://script.google.com/macros/s/AKfycbyZ1A_yPUcMEUW44MLHEAV1R1fT9OH4_VtwCMQL1Gv1-MHlxvXkbq0jfxLy7-Pj8B4W8w/exec";
+    // ĐÃ GÁN SẴN URL GAS CỦA ANH VÀO ĐÂY, HOẶC CÓ THỂ ĐỔI LINH HOẠT TẠI GIAO DIỆN
+    let gasWebhookUrl = localStorage.getItem('bapaco_custom_gas_url') || "https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec";
     let currentNamKey = _namHienTai;
     let currentThangKey = _thangHienTai;
     let modalCurrentNvIndex = 0;
     
-    // Cập nhật hàm mở thư mục Drive trỏ chính xác theo Năm và Tháng đang chọn
+    function luuGasUrlNhanh() {
+        let val = document.getElementById('inputGasUrlSetting').value.trim();
+        if(!val) { alert("Vui lòng nhập đường dẫn GAS Webhook URL hợp lệ!"); return; }
+        gasWebhookUrl = val;
+        localStorage.setItem('bapaco_custom_gas_url', val);
+        alert("✅ Đã cập nhật thành công Gas Webhook URL mới cho hệ thống!");
+    }
+
     function moThuThucDriveChung() {
-        let namChon = document.getElementById('cfgNamChon').value;
-        let thangChon = document.getElementById('cfgThangChon').value;
-        // Đường dẫn thư mục gốc Google Drive VINAPACO_Drive
         let dynamicDriveUrl = `https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m`; 
         window.open(dynamicDriveUrl, '_blank');
     }
@@ -960,6 +921,9 @@
     async function thuCongTaiVeTuDrive() { await tuDongTaiDuLieuTuDrive(); capNhat(); alert("✅ Đã tải về dữ liệu mới nhất từ Google Drive!"); }
 
     window.addEventListener('DOMContentLoaded', async () => {
+        let inputUrlSetting = document.getElementById('inputGasUrlSetting');
+        if(inputUrlSetting) inputUrlSetting.value = gasWebhookUrl;
+
         await tuDongTaiDuLieuTuDrive();
         khoiTaoDanhSachNamTuSinh();
         doiThangHoSoLuong();
@@ -1503,7 +1467,7 @@
         let targetFolder = `VINAPACO_Drive/${currentNamKey}/${currentThangKey}/Thanh_Toan_VPP`;
         if (fileInput && fileInput.files.length > 0) {
             for (let i = 0; i < fileInput.files.length; i++) {
-                filesArr.push({ name: fileInput.files[i].name, size: fileInput.files[i].size, folder: targetFolder, driveFolder: BAPACO_DRIVE_BASE_URL });
+                filesArr.push({ name: fileInput.files[i].name, size: fileInput.files[i].size, folder: targetFolder });
             }
         }
 
@@ -1573,7 +1537,7 @@
             if (item.files && item.files.length > 0) {
                 let folderName = `VINAPACO_Drive / ${item.namHachToan} / ${item.thangHachToan} / Thanh_Toan_VPP`;
                 let listNames = item.files.map(f => f.name).join(', ');
-                fileListStr = `<a href="${BAPACO_DRIVE_BASE_URL}" target="_blank" title="Mở thư mục trên Google Drive" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> ${folderName} (${item.files.length} tệp)<br><small style="color:#475569; font-weight:normal;">${listNames}</small></a>`;
+                fileListStr = `<a href="https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m" target="_blank" title="Mở thư mục trên Google Drive" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> ${folderName} (${item.files.length} tệp)<br><small style="color:#475569; font-weight:normal;">${listNames}</small></a>`;
             }
             tbody.innerHTML += `<tr>
                 <td style="text-align:center;">${item.id}</td>
@@ -1659,17 +1623,8 @@
 
     function xuatBaoCaoXNTExcel() {
         let dataToExport = dsKhoMucIn.map((i, index) => ({
-            "STT": index + 1,
-            "Mã VT": i.code,
-            "Tên Vật Tư": i.name,
-            "Máy In": i.printer,
-            "Nghiệp Vụ": i.action,
-            "Số Lượng": i.qty,
-            "Người Nhận": i.receiver,
-            "Đơn Giá": i.price,
-            "Thành Tiền": i.total
+            "STT": index + 1, "Mã VT": i.code, "Tên Vật Tư": i.name, "Máy In": i.printer, "Nghiệp Vụ": i.action, "Số Lượng": i.qty, "Người Nhận": i.receiver, "Đơn Giá": i.price, "Thành Tiền": i.total
         }));
-
         let ws = XLSX.utils.json_to_sheet(dataToExport);
         let wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "BaoCaoXuatNhapTon");
@@ -1841,7 +1796,7 @@
         let targetFolder = `VINAPACO_Drive/${currentNamKey}/${currentThangKey}/Cuoc_Vien_Thong`;
         if (fileInput && fileInput.files.length > 0) {
             for (let i = 0; i < fileInput.files.length; i++) {
-                filesArr.push({ name: fileInput.files[i].name, size: fileInput.files[i].size, folder: targetFolder, driveFolder: BAPACO_DRIVE_BASE_URL });
+                filesArr.push({ name: fileInput.files[i].name, size: fileInput.files[i].size, folder: targetFolder });
             }
         }
 
@@ -1902,7 +1857,7 @@
             if (item.files && item.files.length > 0) {
                 let folderName = `VINAPACO_Drive / ${currentNamKey} / ${item.thangHachToan} / Cuoc_Vien_Thong`;
                 let listNames = item.files.map(f => f.name).join(', ');
-                fileListStr = `<a href="${BAPACO_DRIVE_BASE_URL}" target="_blank" title="Mở thư mục trên Google Drive" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> ${folderName} (${item.files.length} tệp)<br><small style="color:#475569; font-weight:normal;">${listNames}</small></a>`;
+                fileListStr = `<a href="https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m" target="_blank" title="Mở thư mục trên Google Drive" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> ${folderName} (${item.files.length} tệp)<br><small style="color:#475569; font-weight:normal;">${listNames}</small></a>`;
             }
             tbody.innerHTML += `<tr>
                 <td style="text-align:center;"><b>${item.maHs}</b></td>
@@ -2017,20 +1972,8 @@
 
     function xuatExcelBaoCaoKhaoSat() {
         let dataToExport = dsKhaoSatChuyenSieu.map((i, index) => ({
-            "STT": index + 1,
-            "Mã Khảo Sát": i.code,
-            "Người Sử Dụng": i.user,
-            "Bộ Phận / Phòng Ban": i.dept,
-            "Loại Thiết Bị": i.device,
-            "Hệ Điều Hành (OS)": i.os,
-            "Bản Quyền OS": i.osLicense,
-            "Microsoft Office": i.office,
-            "Bản Quyền Office": i.officeLicense,
-            "Phần Mềm Nghiệp Vụ": i.bizSoft,
-            "Bản Quyền NV": i.bizLicense,
-            "Cấu Hình Phần Cứng": i.specs
+            "STT": index + 1, "Mã Khảo Sát": i.code, "Người Sử Dụng": i.user, "Bộ Phận / Phòng Ban": i.dept, "Loại Thiết Bị": i.device, "Hệ Điều Hành (OS)": i.os, "Bản Quyền OS": i.osLicense, "Microsoft Office": i.office, "Bản Quyền Office": i.officeLicense, "Phần Mềm Nghiệp Vụ": i.bizSoft, "Bản Quyền NV": i.bizLicense, "Cấu Hình Phần Cứng": i.specs
         }));
-
         let ws = XLSX.utils.json_to_sheet(dataToExport);
         let wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "BaoCaoKhaoSatBanQuyen");
@@ -2143,7 +2086,7 @@
         if (ctxLPie) { if(window.myLeavePie) window.myLeavePie.destroy(); window.myLeavePie = new Chart(ctxLPie, { type: 'doughnut', data: { labels: ['Đã dùng Lũy Kế', 'Còn lại'], datasets: [{ data: [ds.reduce((s,i)=>s+layTongLuyKePhepDaNghi(i.hoTen).totalP,0), ds.reduce((s,i)=>s+((i.phep_cap||12)-layTongLuyKePhepDaNghi(i.hoTen).totalP),0)], backgroundColor: ['#ef4444', '#16a34a'] }] }, options: { responsive: true, maintainAspectRatio: false, ...percentagePluginConfig } }); }
 
         let ctxLBar = document.getElementById('leaveBarChart');
-        if (ctxLBar) { if(window.myLeaveBar) window.myLeaveBar.destroy(); window.myLeaveBar = new Chart(ctxLBar, { type: 'bar', data: { labels: ds.slice(0, 8).map(i => i.hoTen.split(' ').pop()), datasets: [{ data: ds.slice(0, 8).map(i => layTongLuyKePhepDaNGI(i.hoTen).totalP), backgroundColor: '#0284c7' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } } } }); }
+        if (ctxLBar) { if(window.myLeaveBar) window.myLeaveBar.destroy(); window.myLeaveBar = new Chart(ctxLBar, { type: 'bar', data: { labels: ds.slice(0, 8).map(i => i.hoTen.split(' ').pop()), datasets: [{ data: ds.slice(0, 8).map(i => layTongLuyKePhepDaNghi(i.hoTen).totalP), backgroundColor: '#0284c7' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } } } }); }
     }
 
     function luuTruVaoLocalStorage() {

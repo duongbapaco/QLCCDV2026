@@ -235,13 +235,43 @@
         <button class="tab-btn-nav" onclick="switchTab('surveyTab', this)"><i class="fa-solid fa-clipboard-check"></i> Khảo Sát</button>
     </div>
 
-    <!-- TAB 0: DASHBOARD -->
+    <!-- TAB 0: DASHBOARD (Có bảng tổng kết số liệu bên dưới) -->
     <div id="dashboardTab" class="tab-pane table-card" style="background: transparent; border: none; padding: 0;">
         <div class="charts-multi-grid">
-            <div class="chart-card"><div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #0284c7;"></i> Tỷ Trọng Tài Chính Tổng Quan (%)</div><div style="position: relative; height: 280px;"><canvas id="salaryPieChart"></canvas></div></div>
-            <div class="chart-card"><div class="chart-title"><i class="fa-solid fa-chart-column" style="color: #16a34a;"></i> Biểu Đồ Cột: Tổng Quan Thanh Toán & Lương (VNĐ)</div><div style="position: relative; height: 280px;"><canvas id="overviewBarChart"></canvas></div></div>
-            <div class="chart-card"><div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #d97706;"></i> Tỷ Trọng Trạng Thái Công Việc (%)</div><div style="position: relative; height: 280px;"><canvas id="overviewTaskPieChart"></canvas></div></div>
-            <div class="chart-card"><div class="chart-title"><i class="fa-solid fa-chart-column" style="color: #8b5cf6;"></i> Biểu Đồ Cột: Ngày Nghỉ Phép Nhân Sự</div><div style="position: relative; height: 280px;"><canvas id="overviewLeaveBarChart"></canvas></div></div>
+            <div class="chart-card">
+                <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #0284c7;"></i> Tỷ Trọng Tài Chính Tổng Quan (%)</div>
+                <div style="position: relative; height: 260px;"><canvas id="salaryPieChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title"><i class="fa-solid fa-chart-column" style="color: #16a34a;"></i> Biểu Đồ Cột: Tổng Quan Thanh Toán & Lương (VNĐ)</div>
+                <div style="position: relative; height: 260px;"><canvas id="overviewBarChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #d97706;"></i> Tỷ Trọng Trạng Thái Công Việc (%)</div>
+                <div style="position: relative; height: 260px;"><canvas id="overviewTaskPieChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title"><i class="fa-solid fa-chart-column" style="color: #8b5cf6;"></i> Biểu Đồ Cột: Ngày Nghỉ Phép Nhân Sự</div>
+                <div style="position: relative; height: 260px;"><canvas id="overviewLeaveBarChart"></canvas></div>
+            </div>
+        </div>
+
+        <!-- Bảng tổng kết số liệu chi tiết phía dưới Dashboard -->
+        <div class="table-card" style="margin-top: 16px;">
+            <div class="table-header-bar">
+                <div class="table-title"><i class="fa-solid fa-table"></i> BẢNG TỔNG KẾT SỐ LIỆU ĐỐI SOÁT TỔNG QUAN HỆ THỐNG</div>
+            </div>
+            <table>
+                <thead>
+                    <tr><th>STT</th><th>Hạng Mục Quản Trị</th><th>Chỉ Số Tài Chính / Giá Trị</th><th>Đơn Vị Tính</th><th>Trạng Thái Định Mức</th></tr>
+                </thead>
+                <tbody id="dashboardSummaryTableBody">
+                    <tr><td style="text-align:center;">1</td><td><b>Quỹ Lương NET Nhân Sự</b></td><td id="sumNetVal" style="color:#15803d; font-weight:bold;">0 VNĐ</td><td>VNĐ</td><td><span class="badge-net">Ổn định</span></td></tr>
+                    <tr><td style="text-align:center;">2</td><td><b>Thanh Toán Văn Phòng Phẩm & Dịch Vụ</b></td><td id="sumVppVal" style="color:#d97706; font-weight:bold;">0 VNĐ</td><td>VNĐ</td><td><span class="badge-warning">Theo lũy kế</span></td></tr>
+                    <tr><td style="text-align:center;">3</td><td><b>Cước Viễn Thông & Internet</b></td><td id="sumTelecomVal" style="color:#0284c7; font-weight:bold;">0 VNĐ</td><td>VNĐ</td><td><span class="badge-net">Đã thanh toán</span></td></tr>
+                    <tr><td style="text-align:center;">4</td><td><b>Tổng Số Công Việc Hoàn Thành</b></td><td id="sumTaskVal" style="font-weight:bold;">0 Công việc</td><td>Công việc</td><td><span class="badge-net">Đúng hạn</span></td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -252,6 +282,15 @@
             <div class="chart-card" style="padding: 12px;"><div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Lệ Trạng Thái Công Việc (%)</div><div style="position: relative; height: 200px;"><canvas id="taskPieChart"></canvas></div></div>
             <div class="chart-card" style="padding: 12px;"><div class="chart-title"><i class="fa-solid fa-chart-column"></i> Biểu Đồ Cột: Số Lượng Công Việc</div><div style="position: relative; height: 200px;"><canvas id="taskBarChart"></canvas></div></div>
         </div>
+        
+        <div class="table-card" style="margin-bottom: 16px;">
+            <div class="table-title" style="font-size: 14px; margin-bottom: 10px;"><i class="fa-solid fa-table"></i> Bảng Tổng Kết Trạng Thái Công Việc</div>
+            <table>
+                <thead><tr><th>Trạng Thái Công Việc</th><th>Số Lượng</th><th>Tỷ Trọng (%)</th><th>Đánh Giá Thực Hiện</th></tr></thead>
+                <tbody id="taskSummaryTableBody"></tbody>
+            </table>
+        </div>
+
         <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
             <input type="hidden" id="editTaskIndex" value="-1">
             <div class="form-group"><label>Nội Dung Công Việc</label><input type="text" id="inputTaskName" placeholder="VD: Lập báo cáo điều hành..."></div>
@@ -315,6 +354,15 @@
             <div class="chart-card" style="padding: 12px;"><div class="chart-title"><i class="fa-solid fa-chart-column"></i> Biểu Đồ Cột: Tổng Số Phép Lũy Kế Cả Năm</div><div style="position: relative; height: 200px;"><canvas id="leaveBarChart"></canvas></div></div>
             <div class="chart-card" style="padding: 12px;"><div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Phép Đã Dùng / Tổng Phép</div><div style="position: relative; height: 200px;"><canvas id="leavePieChart"></canvas></div></div>
         </div>
+
+        <div class="table-card" style="margin-bottom: 16px;">
+            <div class="table-title" style="font-size: 14px; margin-bottom: 10px;"><i class="fa-solid fa-table"></i> Bảng Tổng Kết Quản Lý Phép Năm</div>
+            <table>
+                <thead><tr><th>Chỉ Số Phép Năm</th><th>Tổng Số Ngày</th><th>Tỷ Trọng (%)</th><th>Đánh Giá Chấp Hành</th></tr></thead>
+                <tbody id="leaveSummaryTableBody"></tbody>
+            </table>
+        </div>
+
         <div style="overflow-x: auto;">
             <table>
                 <thead>
@@ -358,7 +406,7 @@
         </div>
     </div>
 
-    <!-- TAB KHO MỰC IN (Bổ sung nút In Phiếu Giao Nhận & Xuất Báo Cáo XNT) -->
+    <!-- TAB KHO MỰC IN -->
     <div id="inkInventoryTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-warehouse"></i> QUẢN LÝ KHO MỰC IN & XUẤT NHẬP TỒN (XNT)</div>
@@ -932,6 +980,14 @@
         document.getElementById("kpiTotalInkStock").innerText = totalStockInk + " Hộp";
         document.getElementById("kpiTotalSurvey").innerText = dsKhaoSatChuyenSieu.length + " Thiết bị";
         document.getElementById("kpiTotalTamUng").innerText = totalTamUng.toLocaleString('vi-VN') + ' đ';
+
+        // Cập nhật bảng tổng kết số liệu Dashboard
+        let totalTelecom = layTatCaDanhSachTelecom().reduce((s,i)=>s+(i.tong||0),0);
+        let totalTasksDone = danhSachCongViec.filter(t=>t.status==='Hoàn thành').length;
+        document.getElementById("sumNetVal").innerText = totalNet.toLocaleString('vi-VN') + ' VNĐ';
+        document.getElementById("sumVppVal").innerText = totalOfficeYear.toLocaleString('vi-VN') + ' VNĐ';
+        document.getElementById("sumTelecomVal").innerText = totalTelecom.toLocaleString('vi-VN') + ' VNĐ';
+        document.getElementById("sumTaskVal").innerText = totalTasksDone + " / " + danhSachCongViec.length + " Công việc";
     }
 
     function renderTimekeepingDetailTable() {
@@ -1032,11 +1088,14 @@
     function renderLeaveTable() {
         let tbody = document.getElementById("leaveTableBody");
         if(!tbody) return; tbody.innerHTML = "";
+        let totalPhepCap = 0, totalPhepDung = 0;
         coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.forEach((item, idx) => {
             let phepCap = item.phep_cap || 12;
             let nghiThangNay = item.nc_p || 0;
             let leThangNay = item.nc_l || 0;
             let luyKe = layTongLuyKePhepDaNghi(item.hoTen);
+            totalPhepCap += phepCap;
+            totalPhepDung += luyKe.totalP;
             let conLai = phepCap - luyKe.totalP;
             let badge = conLai < 0 ? `<span class="badge-danger">Vượt mức phép</span>` : `<span class="badge-net">Còn ${conLai} ngày</span>`;
             
@@ -1051,6 +1110,15 @@
                 <td style="text-align:center;">${badge}</td>
             </tr>`;
         });
+
+        let summaryLeaveBody = document.getElementById("leaveSummaryTableBody");
+        if (summaryLeaveBody) {
+            summaryLeaveBody.innerHTML = `
+                <tr><td>Tổng số phép cấp cả năm</td><td style="font-weight:bold; color:#0284c7;">${totalPhepCap} ngày</td><td>100%</td><td><span class="badge-net">Định mức chuẩn</span></td></tr>
+                <tr><td>Tổng số phép đã nghỉ lũy kế</td><td style="font-weight:bold; color:#d97706;">${totalPhepDung} ngày</td><td>${((totalPhepDung/totalPhepCap)*100).toFixed(1)}%</td><td><span class="badge-warning">Đang sử dụng</span></td></tr>
+                <tr><td>Tổng số phép còn lại toàn đơn vị</td><td style="font-weight:bold; color:#16a34a;">${totalPhepCap - totalPhepDung} ngày</td><td>${(((totalPhepCap - totalPhepDung)/totalPhepCap)*100).toFixed(1)}%</td><td><span class="badge-net">An toàn</span></td></tr>
+            `;
+        }
     }
 
     function switchTab(tabId, btnEl) {
@@ -1064,7 +1132,12 @@
     function renderTaskTable() {
         let tbody = document.getElementById('taskTableBody');
         if (!tbody) return; tbody.innerHTML = '';
+        let countDone = 0, countDoing = 0, countTodo = 0;
         danhSachCongViec.forEach((item, idx) => {
+            if (item.status === 'Hoàn thành') countDone++;
+            else if (item.status === 'Đang làm') countDoing++;
+            else countTodo++;
+
             let badgeClass = item.status === 'Hoàn thành' ? 'badge-net' : (item.status === 'Đang làm' ? 'badge-warning' : 'badge-danger');
             tbody.innerHTML += `<tr>
                 <td style="text-align:center;">${idx + 1}</td>
@@ -1079,6 +1152,16 @@
                 </td>
             </tr>`;
         });
+
+        let totalTasks = danhSachCongViec.length || 1;
+        let sumTaskBody = document.getElementById("taskSummaryTableBody");
+        if (sumTaskBody) {
+            sumTaskBody.innerHTML = `
+                <tr><td>✅ Hoàn thành</td><td style="font-weight:bold; color:#15803d;">${countDone} Công việc</td><td>${((countDone/totalTasks)*100).toFixed(1)}%</td><td><span class="badge-net">Đạt yêu cầu</span></td></tr>
+                <tr><td>🔄 Đang thực hiện</td><td style="font-weight:bold; color:#d97706;">${countDoing} Công việc</td><td>${((countDoing/totalTasks)*100).toFixed(1)}%</td><td><span class="badge-warning">Đang tiến hành</span></td></tr>
+                <tr><td>⏳ Chưa bắt đầu</td><td style="font-weight:bold; color:#dc2626;">${countTodo} Công việc</td><td>${((countTodo/totalTasks)*100).toFixed(1)}%</td><td><span class="badge-danger">Cần đôn đốc</span></td></tr>
+            `;
+        }
     }
 
     function hoanDoiTrangThaiCongViec(idx) {
@@ -1643,31 +1726,33 @@
     function veTatCaBieuDoDashboard() {
         let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         let allYearTelecom = layTatCaDanhSachTelecom(); let allYearVpp = layTatCaDanhSachVPP();
+        
+        // Cấu hình ẩn hoàn toàn các con số trực tiếp trên biểu đồ (datalabels: false)
         const pCfg = { plugins: { datalabels: { display: false } } };
 
         let ctxSalPie = document.getElementById('salaryPieChart');
         if (ctxSalPie) { if(window.mySalaryPie) window.mySalaryPie.destroy(); window.mySalaryPie = new Chart(ctxSalPie, { type: 'doughnut', data: { labels: ['Quỹ Lương NET', 'Thanh Toán VP', 'Viễn Thông'], datasets: [{ data: [ds.reduce((s,i)=>s+(i.thucLinhCuoiCung||0),0), allYearVpp.reduce((s,i)=>s+(i.total||0),0), allYearTelecom.reduce((s,i)=>s+(i.tong||0),0)], backgroundColor: ['#0284c7', '#16a34a', '#d97706'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: pCfg } }); }
 
         let ctxOvBar = document.getElementById('overviewBarChart');
-        if (ctxOvBar) { if(window.myOverviewBar) window.myOverviewBar.destroy(); window.myOverviewBar = new Chart(ctxOvBar, { type: 'bar', data: { labels: ['Thanh Toán VP', 'Viễn Thông', 'Lương NET'], datasets: [{ data: [allYearVpp.reduce((s,i)=>s+(i.total||0),0), allYearTelecom.reduce((s,i)=>s+(i.tong||0),0), ds.reduce((s,i)=>s+(i.thucLinhCuoiCung||0),0)], backgroundColor: ['#16a34a', '#d97706', '#0284c7'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } }); }
+        if (ctxOvBar) { if(window.myOverviewBar) window.myOverviewBar.destroy(); window.myOverviewBar = new Chart(ctxOvBar, { type: 'bar', data: { labels: ['Thanh Toán VP', 'Viễn Thông', 'Lương NET'], datasets: [{ data: [allYearVpp.reduce((s,i)=>s+(i.total||0),0), allYearTelecom.reduce((s,i)=>s+(i.tong||0),0), ds.reduce((s,i)=>s+(i.thucLinhCuoiCung||0),0)], backgroundColor: ['#16a34a', '#d97706', '#0284c7'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } } } }); }
 
         let ctxOvTask = document.getElementById('overviewTaskPieChart');
         if (ctxOvTask) { if(window.myOverviewTask) window.myOverviewTask.destroy(); window.myOverviewTask = new Chart(ctxOvTask, { type: 'pie', data: { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: [danhSachCongViec.filter(t=>t.status==='Hoàn thành').length, danhSachCongViec.filter(t=>t.status==='Đang làm').length, danhSachCongViec.filter(t=>t.status==='Chưa làm').length], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: pCfg } }); }
 
         let ctxOvLeave = document.getElementById('overviewLeaveBarChart');
-        if (ctxOvLeave) { if(window.myOverviewLeave) window.myOverviewLeave.destroy(); window.myOverviewLeave = new Chart(ctxOvLeave, { type: 'bar', data: { labels: ds.slice(0, 8).map(i => i.hoTen.split(' ').pop()), datasets: [{ data: ds.slice(0, 8).map(i => layTongLuyKePhepDaNghi(i.hoTen).totalP), backgroundColor: '#8b5cf6' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } }); }
+        if (ctxOvLeave) { if(window.myOverviewLeave) window.myOverviewLeave.destroy(); window.myOverviewLeave = new Chart(ctxOvLeave, { type: 'bar', data: { labels: ds.slice(0, 8).map(i => i.hoTen.split(' ').pop()), datasets: [{ data: ds.slice(0, 8).map(i => layTongLuyKePhepDaNghi(i.hoTen).totalP), backgroundColor: '#8b5cf6' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } } } }); }
 
         let ctxTPie = document.getElementById('taskPieChart');
         if (ctxTPie) { if(window.myTaskPie) window.myTaskPie.destroy(); window.myTaskPie = new Chart(ctxTPie, { type: 'doughnut', data: { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: [danhSachCongViec.filter(t=>t.status==='Hoàn thành').length, danhSachCongViec.filter(t=>t.status==='Đang làm').length, danhSachCongViec.filter(t=>t.status==='Chưa làm').length], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: pCfg } }); }
 
         let ctxTBar = document.getElementById('taskBarChart');
-        if (ctxTBar) { if(window.myTaskBar) window.myTaskBar.destroy(); window.myTaskBar = new Chart(ctxTBar, { type: 'bar', data: { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: [danhSachCongViec.filter(t=>t.status==='Hoàn thành').length, danhSachCongViec.filter(t=>t.status==='Đang làm').length, danhSachCongViec.filter(t=>t.status==='Chưa làm').length], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } }); }
+        if (ctxTBar) { if(window.myTaskBar) window.myTaskBar.destroy(); window.myTaskBar = new Chart(ctxTBar, { type: 'bar', data: { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: [danhSachCongViec.filter(t=>t.status==='Hoàn thành').length, danhSachCongViec.filter(t=>t.status==='Đang làm').length, danhSachCongViec.filter(t=>t.status==='Chưa làm').length], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } } } }); }
 
         let ctxLPie = document.getElementById('leavePieChart');
         if (ctxLPie) { if(window.myLeavePie) window.myLeavePie.destroy(); window.myLeavePie = new Chart(ctxLPie, { type: 'doughnut', data: { labels: ['Đã dùng Lũy Kế', 'Còn lại'], datasets: [{ data: [ds.reduce((s,i)=>s+layTongLuyKePhepDaNghi(i.hoTen).totalP,0), ds.reduce((s,i)=>s+((i.phep_cap||12)-layTongLuyKePhepDaNghi(i.hoTen).totalP),0)], backgroundColor: ['#ef4444', '#16a34a'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: pCfg } }); }
 
         let ctxLBar = document.getElementById('leaveBarChart');
-        if (ctxLBar) { if(window.myLeaveBar) window.myLeaveBar.destroy(); window.myLeaveBar = new Chart(ctxLBar, { type: 'bar', data: { labels: ds.slice(0, 8).map(i => i.hoTen.split(' ').pop()), datasets: [{ data: ds.slice(0, 8).map(i => layTongLuyKePhepDaNghi(i.hoTen).totalP), backgroundColor: '#0284c7' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } }); }
+        if (ctxLBar) { if(window.myLeaveBar) window.myLeaveBar.destroy(); window.myLeaveBar = new Chart(ctxLBar, { type: 'bar', data: { labels: ds.slice(0, 8).map(i => i.hoTen.split(' ').pop()), datasets: [{ data: ds.slice(0, 8).map(i => layTongLuyKePhepDaNghi(i.hoTen).totalP), backgroundColor: '#0284c7' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } } } }); }
     }
 
     function luuTruVaoLocalStorage() {

@@ -475,7 +475,7 @@
                     <div class="progress-box" id="officeProgressBarBox"><div class="progress-bar-fill" id="officeProgressBarFill"></div></div>
                     <small id="officeProgressText" style="color:#0284c7; font-weight:bold; display:none; margin-top:3px;"></small>
                 </div>
-                <div><button class="btn btn-green" id="btnSaveVpp" onclick="luuHoacCapNhatVPP()" style="width: 100%; justify-content: center;"><i class="fas fa-save"></i> Lưu Chứng Từ</button></div>
+                <div><button class="btn btn-green" id="btnSaveVpp" onclick="luuHoacCapNhatVPP()" style="width: 100%; justify-content: center;"><i class="fas fa-save" id="btnVppIcon"></i> <span id="btnVppText">Lưu Chứng Từ</span></button></div>
             </div>
         </div>
 
@@ -510,7 +510,7 @@
                 <div class="modern-input-group"><label>SL</label><input type="number" id="inputInkQty" value="1" min="1"></div>
                 <div class="modern-input-group"><label>Người Nhận</label><input type="text" id="inputInkReceiver" placeholder="Phòng ban..."></div>
                 <div class="modern-input-group"><label>Đơn Giá</label><input type="text" id="inputInkPrice" placeholder="450000"></div>
-                <div><button class="btn btn-green" id="btnSaveInk" onclick="luuHoacCapNhatKhoMuc()" style="width: 100%; justify-content: center;"><i class="fas fa-warehouse"></i> Ghi Sổ Kho</button></div>
+                <div><button class="btn btn-green" id="btnSaveInk" onclick="luuHoacCapNhatKhoMuc()" style="width: 100%; justify-content: center;"><i class="fas fa-warehouse" id="btnInkIcon"></i> <span id="btnInkText">Ghi Sổ Kho</span></button></div>
             </div>
         </div>
         <table><thead><tr><th>Mã VT</th><th>Tên Mực</th><th>Máy In</th><th>Nghiệp Vụ</th><th>SL</th><th>Người Nhận</th><th>Đơn Giá</th><th>Thành Tiền</th><th>Thao Tác</th></tr></thead><tbody id="inkInventoryTableBody"></tbody></table>
@@ -532,7 +532,7 @@
                 <div class="modern-input-group"><label>Thiết Bị</label><input type="text" id="inputSlipItem" placeholder="Laptop..."></div>
                 <div class="modern-input-group"><label>Tình Trạng</label><input type="text" id="inputSlipStatus" value="Mới 100%"></div>
                 <div class="modern-input-group"><label>Ngày Giao</label><input type="date" id="inputSlipDate"></div>
-                <div><button class="btn btn-green" id="btnSaveSlip" onclick="luuHoacCapNhatPhieuGiao()" style="width: 100%; justify-content: center;"><i class="fas fa-save"></i> Lưu Phiếu Giao</button></div>
+                <div><button class="btn btn-green" id="btnSaveSlip" onclick="luuHoacCapNhatPhieuGiao()" style="width: 100%; justify-content: center;"><i class="fas fa-save" id="btnSlipIcon"></i> <span id="btnSlipText">Lưu Phiếu Giao</span></button></div>
             </div>
         </div>
         <table><thead><tr><th>Số Phiếu</th><th>Bên Giao</th><th>Bên Nhận</th><th>Bộ Phận</th><th>Thiết Bị</th><th>Tình Trạng</th><th>Ngày Giao</th><th>Thao Tác</th></tr></thead><tbody id="deliveryTableBody"></tbody></table>
@@ -549,14 +549,14 @@
 
         <div class="modern-form-box">
             <div style="font-weight: 900; font-size: 14px; margin-bottom: 14px; color: var(--primary-dark); display: flex; align-items: center; gap: 8px;">
-                <i class="fa-solid fa-circle-plus"></i> THÊM / CẬP NHẬT CHỨNG TỪ CƯỚC VIỄN THÔNG
+                <i class="fa-solid fa-circle-plus"></i> THÊM / CẬP NHẬT CHỨNG TỪ CƯỚC VIỄN THÔNG (TỰ ĐỘNG ĐIỀN KỲ CƯỚC)
             </div>
             <input type="hidden" id="editTelecomIndex" value="-1">
             <div class="modern-form-grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
                 <div class="modern-input-group"><label>Mã HS</label><input type="text" id="inputTelecomMaHs" readonly style="background: #e2e8f0; font-weight: bold;" value="VT-01"></div>
                 <div class="modern-input-group"><label>Nhà Mạng</label><select id="inputTelecomSupplier"><option value="VNPT">VNPT</option><option value="Viettel">Viettel</option><option value="Mobifone">Mobifone</option></select></div>
                 <div class="modern-input-group"><label>Loại Cước</label><input type="text" id="inputTelecomType" placeholder="Cáp quang"></div>
-                <div class="modern-input-group"><label>Kỳ Cước</label><input type="text" id="inputTelecomKyCuoc" value="Tháng 08/2026"></div>
+                <div class="modern-input-group"><label>Kỳ Cước (Tự Động)</label><input type="text" id="inputTelecomKyCuoc" readonly style="background: #e2e8f0; font-weight: bold; color: #0284c7;" value="Tháng 08/2026"></div>
                 <div class="modern-input-group"><label>Tổng (Đã VAT)</label><input type="text" id="inputTelecomTongVat" placeholder="2500000" oninput="tinhTienTelecomTuTong()"></div>
                 <div class="modern-input-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" readonly style="background:#f1f5f9;"></div>
                 <div class="modern-input-group"><label>Thuế VAT</label><input type="text" id="inputTelecomVatInput" readonly style="background:#f1f5f9;"></div>
@@ -566,7 +566,7 @@
                     <div class="progress-box" id="telecomProgressBarBox"><div class="progress-bar-fill" id="telecomProgressBarFill"></div></div>
                     <small id="telecomProgressText" style="color:#0284c7; font-weight:bold; display:none; margin-top:3px;"></small>
                 </div>
-                <div><button class="btn btn-green" id="btnSaveTelecom" onclick="luuHoacCapNhatTelecom()" style="width: 100%; justify-content: center;"><i class="fas fa-save"></i> Lưu Cước</button></div>
+                <div><button class="btn btn-green" id="btnSaveTelecom" onclick="luuHoacCapNhatTelecom()" style="width: 100%; justify-content: center;"><i class="fas fa-save" id="btnTelecomIcon"></i> <span id="btnTelecomText">Lưu Cước</span></button></div>
             </div>
         </div>
 
@@ -576,7 +576,7 @@
     <!-- TAB KHẢO SÁT CHUYÊN NGHIỆP -->
     <div id="surveyTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-clipboard-check"></i> KHẢO SÁT THIẾT BỊ, BẢN QUYỀN OS, OFFICE & PHẦN MỀM NGHIỆP VỤ</div>
+            <div class="table-title"><i class="fa-solid fa-clipboard-check"></i> KHẢO SÁT THIẾT Bị, BẢN QUYỀN OS, OFFICE & PHẦN MỀM NGHIỆP VỤ</div>
             <button class="btn btn-green" onclick="xuatExcelBaoCaoKhaoSat()"><i class="fa-solid fa-file-excel"></i> Xuất Báo Cáo Gửi Lãnh Đạo</button>
         </div>
         <div style="margin-bottom: 16px; background: #f8fafc; border: 1px solid var(--border-color); padding: 14px; border-radius: 12px; font-size: 14px; font-weight: 700; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
@@ -600,7 +600,7 @@
                 <div class="modern-input-group"><label>Phần Mềm NV</label><select id="inputSurveyBusinessSoftware"></select></div>
                 <div class="modern-input-group"><label>Bản Quyền NV</label><select id="inputSurveyBusinessLicense"><option value="✅ Có bản quyền chính hãng">✅ Bản quyền</option></select></div>
                 <div class="modern-input-group"><label>Cấu Hình</label><input type="text" id="inputSurveySpecs" placeholder="Core i7, RAM 16GB"></div>
-                <div><button class="btn btn-purple" id="btnSaveSurvey" onclick="luuHoacCapNhatKhaoSat()" style="width: 100%; justify-content: center;"><i class="fas fa-save"></i> Lưu Khảo Sát</button></div>
+                <div><button class="btn btn-purple" id="btnSaveSurvey" onclick="luuHoacCapNhatKhaoSat()" style="width: 100%; justify-content: center;"><i class="fas fa-save" id="btnSurveyIcon"></i> <span id="btnSurveyText">Lưu Khảo Sát</span></button></div>
             </div>
         </div>
         <table><thead><tr><th>Mã</th><th>Người Sử Dụng</th><th>Bộ Phận</th><th>Thiết Bị</th><th>OS & Bản Quyền</th><th>Office & Bản Quyền</th><th>Phần Mềm NV</th><th>Cấu Hình</th><th>Thao Tác</th></tr></thead><tbody id="surveyTableBody"></tbody></table>
@@ -843,7 +843,6 @@
 
     // THUẬT TOÁN ĐỔI DƯƠNG LỊCH SANG ÂM LỊCH & TÍNH PHONG THỦY
     function convertSolarToLunar(solarYear, solarMonth, solarDay) {
-        // Thuật toán xấp quy đổi lịch Âm cơ bản chuẩn xác cho hiển thị văn phòng
         let lunarDay = (solarDay + 14) % 30; if(lunarDay <= 0) lunarDay += 30;
         let lunarMonth = (solarMonth + 11) % 12; if(lunarMonth <= 0) lunarMonth += 12;
         let lunarYear = solarYear;
@@ -1008,6 +1007,12 @@
         currentNamKey = document.getElementById('cfgNamChon').value;
         currentThangKey = document.getElementById('cfgThangChon').value;
         document.querySelectorAll('.thangHienTaiTitle').forEach(el => el.innerText = `${currentThangKey}/${currentNamKey}`);
+
+        // TỰ ĐỘNG ĐIỀN XUỐNG CÁC TRƯỜNG KỲ CƯỚC MỘT CÁCH THÔNG MINH
+        let kyCuocInput = document.getElementById('inputTelecomKyCuoc');
+        if (kyCuocInput) {
+            kyCuocInput.value = `${currentThangKey}/${currentNamKey}`;
+        }
 
         if (!coSoDuLieuNamThang[currentNamKey]) coSoDuLieuNamThang[currentNamKey] = {};
         if (!coSoDuLieuNamThang[currentNamKey][currentThangKey]) {
@@ -1364,8 +1369,14 @@
             truocThue, vat, total, date: document.getElementById('inputOfficeDate').value || `${currentNamKey}-08-17`, files: filesArr
         };
 
-        if (editIdx >= 0) { dsThanhToanVanPhongProByMonth[key][editIdx] = itemObj; document.getElementById('editOfficeIndex').value = -1; }
-        else { dsThanhToanVanPhongProByMonth[key].push(itemObj); }
+        if (editIdx >= 0) {
+            dsThanhToanVanPhongProByMonth[key][editIdx] = itemObj;
+            document.getElementById('editOfficeIndex').value = -1;
+            document.getElementById('btnVppIcon').className = "fas fa-save";
+            document.getElementById('btnVppText').innerText = "Lưu Chứng Từ";
+        } else {
+            dsThanhToanVanPhongProByMonth[key].push(itemObj);
+        }
 
         document.getElementById('inputOfficeContent').value = '';
         document.getElementById('inputOfficeBeneficiary').value = '';
@@ -1394,6 +1405,8 @@
         document.getElementById('inputOfficeUnit').value = item.unit || 'Hộp';
         document.getElementById('inputOfficeQty').value = item.qty;
         document.getElementById('inputOfficePrice').value = item.price;
+        document.getElementById('btnVppIcon').className = "fas fa-sync";
+        document.getElementById('btnVppText').innerText = "Cập Nhật Chứng Từ";
         tinhToanTienVPP();
     }
     function xoaVPP(originalKey, originalIndex) {
@@ -1407,8 +1420,14 @@
         let price = parseFloat(document.getElementById('inputInkPrice').value.replace(/[^0-9]/g,'')) || 0;
         let editIdx = parseInt(document.getElementById('editInkIndex').value);
         let inkObj = { code: editIdx >= 0 ? dsKhoMucIn[editIdx].code : "MUC0" + (dsKhoMucIn.length+1), name, printer: document.getElementById('inputInkPrinter').value, action: document.getElementById('inputInkAction').value, qty, receiver: document.getElementById('inputInkReceiver').value, price, total: qty * price };
-        if (editIdx >= 0) { dsKhoMucIn[editIdx] = inkObj; document.getElementById('editInkIndex').value = -1; }
-        else { dsKhoMucIn.push(inkObj); }
+        if (editIdx >= 0) {
+            dsKhoMucIn[editIdx] = inkObj;
+            document.getElementById('editInkIndex').value = -1;
+            document.getElementById('btnInkIcon').className = "fas fa-warehouse";
+            document.getElementById('btnInkText').innerText = "Ghi Sổ Kho";
+        } else {
+            dsKhoMucIn.push(inkObj);
+        }
         document.getElementById('inputInkName').value = '';
         capNhat();
     }
@@ -1432,6 +1451,8 @@
         document.getElementById('inputInkQty').value = item.qty;
         document.getElementById('inputInkReceiver').value = item.receiver;
         document.getElementById('inputInkPrice').value = item.price;
+        document.getElementById('btnInkIcon').className = "fas fa-sync";
+        document.getElementById('btnInkText').innerText = "Cập Nhật Sổ Kho";
     }
     function xoaKhoMuc(idx) {
         if(confirm("Xóa bản ghi kho mực này?")) { dsKhoMucIn.splice(idx, 1); capNhat(); }
@@ -1457,8 +1478,14 @@
         if (!slipNo || !item) { alert("Nhập đủ thông tin!"); return; }
         let editIdx = parseInt(document.getElementById('editSlipIndex').value);
         let slipObj = { slipNo, from: document.getElementById('inputSlipFrom').value, to: document.getElementById('inputSlipTo').value, dept: document.getElementById('inputSlipDept').value, item, status: document.getElementById('inputSlipStatus').value, date: document.getElementById('inputSlipDate').value || new Date().toISOString().split('T')[0] };
-        if (editIdx >= 0) { dsPhieuGiaoNhan[editIdx] = slipObj; document.getElementById('editSlipIndex').value = -1; }
-        else { dsPhieuGiaoNhan.push(slipObj); }
+        if (editIdx >= 0) {
+            dsPhieuGiaoNhan[editIdx] = slipObj;
+            document.getElementById('editSlipIndex').value = -1;
+            document.getElementById('btnSlipIcon').className = "fas fa-save";
+            document.getElementById('btnSlipText').innerText = "Lưu Phiếu Giao";
+        } else {
+            dsPhieuGiaoNhan.push(slipObj);
+        }
         capNhat();
     }
     function renderDeliveryTable() {
@@ -1480,6 +1507,8 @@
         document.getElementById('inputSlipDept').value = s.dept;
         document.getElementById('inputSlipItem').value = s.item;
         document.getElementById('inputSlipStatus').value = s.status;
+        document.getElementById('btnSlipIcon').className = "fas fa-sync";
+        document.getElementById('btnSlipText').innerText = "Cập Nhật Phiếu Giao";
     }
     function xoaPhieuGiao(idx) {
         if(confirm("Xóa phiếu giao nhận này?")) { dsPhieuGiaoNhan.splice(idx, 1); capNhat(); }
@@ -1547,8 +1576,14 @@
             thangHachToan: currentThangKey, tong, truocThue, vat, files: filesArr
         };
 
-        if (editIdx >= 0) { dsThanhToanTelecomByMonth[newMonthKey][editIdx] = telecomObj; document.getElementById('editTelecomIndex').value = -1; }
-        else { dsThanhToanTelecomByMonth[newMonthKey].push(telecomObj); }
+        if (editIdx >= 0) {
+            dsThanhToanTelecomByMonth[newMonthKey][editIdx] = telecomObj;
+            document.getElementById('editTelecomIndex').value = -1;
+            document.getElementById('btnTelecomIcon').className = "fas fa-save";
+            document.getElementById('btnTelecomText').innerText = "Lưu Cước";
+        } else {
+            dsThanhToanTelecomByMonth[newMonthKey].push(telecomObj);
+        }
         capNhat();
     }
     function renderTelecomPaymentTable() {
@@ -1573,6 +1608,8 @@
         document.getElementById('inputTelecomType').value = item.type;
         document.getElementById('inputTelecomKyCuoc').value = item.kyCuoc;
         document.getElementById('inputTelecomTongVat').value = item.tong;
+        document.getElementById('btnTelecomIcon').className = "fas fa-sync";
+        document.getElementById('btnTelecomText').innerText = "Cập Nhật Cước";
         tinhTienTelecomTuTong();
     }
     function xoaTelecom(originalKey, originalIndex) {
@@ -1596,8 +1633,14 @@
             bizLicense: document.getElementById('inputSurveyBusinessLicense').value,
             specs: document.getElementById('inputSurveySpecs').value
         };
-        if (editIdx >= 0) { dsKhaoSatChuyenSieu[editIdx] = surveyObj; document.getElementById('editSurveyIndex').value = -1; }
-        else { dsKhaoSatChuyenSieu.push(surveyObj); }
+        if (editIdx >= 0) {
+            dsKhaoSatChuyenSieu[editIdx] = surveyObj;
+            document.getElementById('editSurveyIndex').value = -1;
+            document.getElementById('btnSurveyIcon').className = "fas fa-save";
+            document.getElementById('btnSurveyText').innerText = "Lưu Khảo Sát";
+        } else {
+            dsKhaoSatChuyenSieu.push(surveyObj);
+        }
         document.getElementById('inputSurveyUser').value = '';
         capNhat();
     }
@@ -1628,6 +1671,8 @@
         document.getElementById('inputSurveyBusinessSoftware').value = item.bizSoft;
         document.getElementById('inputSurveyBusinessLicense').value = item.bizLicense;
         document.getElementById('inputSurveySpecs').value = item.specs || '';
+        document.getElementById('btnSurveyIcon').className = "fas fa-sync";
+        document.getElementById('btnSurveyText').innerText = "Cập Nhật Khảo Sát";
     }
     function xoaKhaoSat(idx) {
         if(confirm("Xóa bản ghi khảo sát này?")) { dsKhaoSatChuyenSieu.splice(idx, 1); capNhat(); }

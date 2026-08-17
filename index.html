@@ -901,25 +901,21 @@
     function thuCongDongBoLenDrive() { tuDongDayDuLieuLenDrive(); alert("✅ Đã đồng bộ toàn bộ dữ liệu lên Google Drive thành công!"); }
     async function thuCongTaiVeTuDrive() { await tuDongTaiDuLieuTuDrive(); capNhat(); alert("✅ Đã tải về dữ liệu mới nhất từ Google Drive!"); }
 
+    // GỌI CHẠY ĐỒNG HỒ ĐỘC LẬP TỨC THÌ NGAY KHI SCRIPT ĐƯỢC LOAD
+    setInterval(() => {
+        let now = new Date();
+        let clockEl = document.getElementById('liveClockDisplay');
+        let dateEl = document.getElementById('liveDateDisplay');
+        if (clockEl) clockEl.innerText = now.toLocaleTimeString('vi-VN');
+        if (dateEl) dateEl.innerText = now.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    }, 1000);
+
     window.addEventListener('DOMContentLoaded', async () => {
         khoiTaoDropdownSurvey();
         await tuDongTaiDuLieuTuDrive();
         doiThangHoSoLuong();
-        khoiTaoDonghoVaThoiGianThuc();
         renderAccountTable();
     });
-
-    function khoiTaoDonghoVaThoiGianThuc() {
-        function capNhatDongHo() {
-            let now = new Date();
-            let clockEl = document.getElementById('liveClockDisplay');
-            let dateEl = document.getElementById('liveDateDisplay');
-            if(clockEl) clockEl.innerText = now.toLocaleTimeString('vi-VN');
-            if(dateEl) dateEl.innerText = now.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        }
-        capNhatDongHo();
-        setInterval(capNhatDongHo, 1000);
-    }
 
     function moModalQuenMatKhau() { document.getElementById('modalQuenMatKhau').classList.remove('hidden'); }
     function xuLyYeuCauQuenMatKhau() {

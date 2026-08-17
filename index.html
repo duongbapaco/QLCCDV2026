@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Quản Lý Đa Dashboard - VINAPACO Professional Edition</title>
+    <title>Hệ Thống Quản Lý Đa Dashboard - VINAPACO Enterprise Professional Edition</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -30,8 +30,8 @@
         .login-card { background: #ffffff; width: 100%; max-width: 440px; border-radius: 20px; padding: 36px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 18px; }
         .login-form-group { display: flex; flex-direction: column; gap: 6px; }
         .login-form-group label { font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
-        .login-form-group input { padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border-color); font-weight: 700; font-size: 15px; outline: none; width: 100%; background: #f8fafc; transition: all 0.2s; }
-        .login-form-group input:focus { border-color: var(--primary); background: #ffffff; box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15); }
+        .login-form-group input, .login-form-group select { padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border-color); font-weight: 700; font-size: 15px; outline: none; width: 100%; background: #f8fafc; transition: all 0.2s; }
+        .login-form-group input:focus, .login-form-group select:focus { border-color: var(--primary); background: #ffffff; box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15); }
 
         .banner { background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 20px 24px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.3); }
         .banner h1 { font-size: 20px; font-weight: 800; text-transform: uppercase; }
@@ -45,7 +45,7 @@
         .btn-red { background-color: #ef4444; color: white; }
         .btn-yellow { background-color: #d97706; color: white; }
         .btn-purple { background-color: #8b5cf6; color: white; }
-        .btn-action { padding: 5px 10px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; margin: 2px; }
+        .btn-action { padding: 6px 12px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; margin: 2px; font-weight: 700; }
         .edit-btn { background: #f59e0b; color: white; }
         .del-btn { background: #ef4444; color: white; }
 
@@ -93,8 +93,8 @@
         .modern-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; align-items: flex-end; }
         .modern-input-group { display: flex; flex-direction: column; gap: 6px; }
         .modern-input-group label { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
-        .modern-input-group input, .modern-input-group select { padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border-color); font-weight: 700; font-size: 14px; outline: none; background: white; transition: all 0.2s; width: 100%; }
-        .modern-input-group input:focus, .modern-input-group select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15); }
+        .modern-input-group input, .modern-input-group select, .modern-input-group textarea { padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border-color); font-weight: 700; font-size: 14px; outline: none; background: white; transition: all 0.2s; width: 100%; }
+        .modern-input-group input:focus, .modern-input-group select:focus, .modern-input-group textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15); }
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.75); display: flex; justify-content: center; align-items: center; z-index: 10000; backdrop-filter: blur(6px); }
         .modal-card { background: white; width: 100%; max-width: 760px; border-radius: 20px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); max-height: 90vh; display: flex; flex-direction: column; }
@@ -315,7 +315,7 @@
         </div>
     </div>
 
-    <!-- TAB TÀI KHOẢN -->
+    <!-- TAB TÀI KHOẢN (ĐÃ NÂNG CẤP ĐẦY ĐỦ CRUD & CHỨC NĂNG CHUYÊN NGHIỆP) -->
     <div id="accountManagerTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-users-gear"></i> QUẢN LÝ TÀI KHOẢN, PHÂN QUYỀN & BẢO MẬT HỆ THỐNG VINAPACO</div>
@@ -570,21 +570,21 @@
     </div>
 </div>
 
-<!-- MODAL THÊM / SỬA TÀI KHOẢN -->
+<!-- MODAL THÊM / SỬA TÀI KHOẢN (ĐẦY ĐỦ CÁC TRƯỜNG & CHỨC NĂNG) -->
 <div class="modal-overlay hidden" id="modalTaiKhoan">
-    <div class="modal-card" style="max-width: 480px;">
+    <div class="modal-card" style="max-width: 500px;">
         <div style="padding: 18px 24px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center;">
-            <b style="text-transform: uppercase;"><i class="fa-solid fa-user-gear"></i> Quản Lý Thông Tin Tài Khoản</b>
+            <b style="text-transform: uppercase;"><i class="fa-solid fa-user-gear"></i> Quản Lý Thông Tin & Phân Quyền Tài Khoản</b>
             <button class="btn btn-red" style="padding: 4px 10px;" onclick="document.getElementById('modalTaiKhoan').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div style="padding: 24px; display: flex; flex-direction: column; gap: 14px; background: #f8fafc;">
             <input type="hidden" id="editAccountIndex" value="-1">
             <div class="login-form-group"><label>Tên Đăng Nhập / Email</label><input type="text" id="accEmail" placeholder="nhanvien@vinapaco.com.vn"></div>
             <div class="login-form-group"><label>Họ và Tên Cán Bộ</label><input type="text" id="accFullName" placeholder="Nguyễn Văn A"></div>
-            <div class="login-form-group"><label>Vai Trò (Role)</label><select id="accRole" style="padding:10px; border-radius:10px; border:1px solid var(--border-color); font-weight:bold; outline:none;"><option value="Admin">Admin</option><option value="Editor">Editor</option><option value="Viewer">Viewer</option></select></div>
-            <div class="login-form-group"><label>Trạng Thái</label><select id="accStatus" style="padding:10px; border-radius:10px; border:1px solid var(--border-color); font-weight:bold; outline:none;"><option value="Active">Active (Hoạt động)</option><option value="Locked">Locked (Khóa)</option></select></div>
-            <div class="login-form-group"><label>Email Nhận Thông Báo / Reset</label><input type="text" id="accNotifyEmail" placeholder="email.thuc.te@gmail.com"></div>
-            <button class="btn btn-green" style="padding: 12px; justify-content: center;" onclick="luuTaiKhoanHeThong()"><i class="fa-solid fa-floppy-disk"></i> Lưu Tài Khoản</button>
+            <div class="login-form-group"><label>Vai Trò Hệ Thống (Role)</label><select id="accRole"><option value="Admin">Admin (Toàn quyền quản trị)</option><option value="Editor">Editor (Biên tập & nhập liệu)</option><option value="Viewer">Viewer (Chỉ xem báo cáo)</option></select></div>
+            <div class="login-form-group"><label>Trạng Thái Tài Khoản</label><select id="accStatus"><option value="Active">Active (Đang hoạt động)</option><option value="Locked">Locked (Đã khóa tạm thời)</option></select></div>
+            <div class="login-form-group"><label>Email Nhận Thông Báo / Reset Mật Khẩu</label><input type="text" id="accNotifyEmail" placeholder="email.thuc.te@gmail.com"></div>
+            <button class="btn btn-green" style="padding: 12px; justify-content: center;" onclick="luuTaiKhoanHeThong()"><i class="fa-solid fa-floppy-disk"></i> Lưu Thông Tin Tài Khoản</button>
         </div>
     </div>
 </div>
@@ -627,29 +627,38 @@
     </div>
 </div>
 
-<!-- MODAL ĐĂNG KÝ NGHỈ PHÉP CHUẨN DOANH NGHIỆP (ĐÃ KHÔI PHỤC ĐẦY ĐỦ) -->
+<!-- MODAL ĐĂNG KÝ NGHỈ PHÉP CHUẨN DOANH NGHIỆP (ĐÃ KHÔI PHỤC ĐẦY ĐỦ HÌNH THỨC, ĐƠN VỊ TÍNH VÀ CHI TIẾT) -->
 <div class="modal-overlay hidden" id="dangKyNghiPhepModal">
-    <div class="modal-card" style="max-width: 660px;">
+    <div class="modal-card" style="max-width: 680px;">
         <div style="padding: 20px 24px; background: linear-gradient(135deg, #0284c7, #0369a1); color: white; display: flex; justify-content: space-between; align-items: center;">
-            <div style="font-weight: 900; font-size: 16px; text-transform: uppercase;"><i class="fa-solid fa-file-pen"></i> ĐƠN ĐĂNG KÝ NGHỈ PHÉP & BÀN GIAO CÔNG VIỆC</div>
+            <div style="font-weight: 900; font-size: 16px; text-transform: uppercase;"><i class="fa-solid fa-file-pen"></i> ĐƠN ĐĂNG KÝ NGHỈ PHÉP & BÀN GIAO CÔNG VIỆC CHUYÊN NGHIỆP</div>
             <button class="btn btn-red" style="padding: 6px 10px;" onclick="document.getElementById('dangKyNghiPhepModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div style="padding: 28px; display: flex; flex-direction: column; gap: 16px; background: #f8fafc; font-size: 15px;">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-                <div class="login-form-group"><label>1. Chọn Nhân Sự</label><select id="popupLeaveNhanSu" style="padding: 10px; border-radius: 10px; font-weight: bold; border:1px solid var(--border-color); width:100%; outline:none;"></select></div>
-                <div class="login-form-group"><label>2. Hình Thức Nghỉ</label><select id="popupLeaveType" style="padding: 10px; border-radius: 10px; font-weight: bold; border:1px solid var(--border-color); width:100%; outline:none;"><option value="Phép năm">Nghỉ phép năm</option><option value="Việc riêng">Việc riêng</option></select></div>
+                <div class="login-form-group"><label>1. Chọn Nhân Sự</label><select id="popupLeaveNhanSu"></select></div>
+                <div class="login-form-group"><label>2. Hình Thức Nghỉ</label><select id="popupLeaveType">
+                    <option value="Phép năm">Nghỉ phép năm</option>
+                    <option value="Nghỉ bù">Nghỉ bù</option>
+                    <option value="Nghỉ chế độ">Nghỉ chế độ (Hiếu, hỉ, thai sản...)</option>
+                    <option value="Việc riêng hưởng lương">Nghỉ việc riêng có lương</option>
+                    <option value="Nghỉ không lương">Nghỉ không lương</option>
+                </select></div>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-                <div class="login-form-group"><label>3. Từ Ngày</label><input type="date" id="popupLeaveTuNgay" style="padding: 10px; border-radius: 10px; border:1px solid var(--border-color); width:100%; outline:none;" onchange="tinhSoNgayPopup()"></div>
-                <div class="login-form-group"><label>4. Đến Ngày</label><input type="date" id="popupLeaveDenNgay" style="padding: 10px; border-radius: 10px; border:1px solid var(--border-color); width:100%; outline:none;" onchange="tinhSoNgayPopup()"></div>
+                <div class="login-form-group"><label>3. Từ Ngày</label><input type="date" id="popupLeaveTuNgay" onchange="tinhSoNgayPopup()"></div>
+                <div class="login-form-group"><label>4. Đến Ngày</label><input type="date" id="popupLeaveDenNgay" onchange="tinhSoNgayPopup()"></div>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-                <div class="login-form-group"><label>Tổng Số Ngày Nghỉ</label><input type="text" id="popupLeaveSoNgay" readonly value="1.0 Ngày" style="font-weight: bold; color: #0284c7; background: #e2e8f0; padding:10px; border-radius:10px; width:100%;"></div>
-                <div class="login-form-group"><label>Người Nhận Bàn Giao</label><input type="text" id="popupLeaveNguoiBanGiao" placeholder="Họ tên cán bộ nhận thay..." style="padding: 10px; border-radius: 10px; border:1px solid var(--border-color); width:100%; outline:none;"></div>
+                <div class="login-form-group"><label>5. Đơn Vị Tính</label><select id="popupLeaveUnit"><option value="Ngày" selected>Theo Ngày</option><option value="Buổi">Theo Buổi</option><option value="Giờ">Theo Giờ</option></select></div>
+                <div class="login-form-group"><label>6. Tổng Số Lượng</label><input type="text" id="popupLeaveSoNgay" readonly value="1.0 Ngày" style="font-weight: bold; color: #0284c7; background: #e2e8f0;"></div>
             </div>
-            <div class="login-form-group"><label>Nội Dung Bàn Giao & Ghi Chú</label><textarea id="popupLeaveGhiChu" rows="3" placeholder="Liệt kê nhiệm vụ bàn giao..." style="padding: 10px; border-radius: 10px; border: 1px solid var(--border-color); width:100%; outline:none;"></textarea></div>
+            <div style="display: grid; grid-template-columns: 1fr; gap: 14px;">
+                <div class="login-form-group"><label>7. Cán Bộ Nhận Bàn Giao Thay Thế</label><input type="text" id="popupLeaveNguoiBanGiao" placeholder="Họ tên cán bộ nhận bàn giao công việc..."></div>
+            </div>
+            <div class="login-form-group"><label>8. Nội Dung Bàn Giao & Ghi Chú Chi Tiết</label><textarea id="popupLeaveGhiChu" rows="3" placeholder="Liệt kê rõ các nhiệm vụ đang xử lý để bàn giao..."></textarea></div>
         </div>
-        <div class="modal-actions"><button class="btn btn-green" style="padding: 12px 24px;" onclick="luuVaTruPhepTuPopup()"><i class="fa-solid fa-floppy-disk"></i> Xác Nhận & Trừ Phép</button></div>
+        <div class="modal-actions"><button class="btn btn-green" style="padding: 12px 24px;" onclick="luuVaTruPhepTuPopup()"><i class="fa-solid fa-floppy-disk"></i> Xác Nhận & Cập Nhật Phép Năm</button></div>
     </div>
 </div>
 
@@ -857,13 +866,14 @@
                 dsThanhToanTelecomByMonth = result.dsThanhToanTelecomByMonth || {};
                 dsKhaoSatChuyenSieu = result.dsKhaoSatChuyenSieu || [];
                 danhSachCongViec = result.danhSachCongViec || [];
+                danhSachTaiKhoanHeThong = result.danhSachTaiKhoanHeThong || danhSachTaiKhoanHeThong;
                 luuTruVaoLocalStorage();
             }
         } catch (e) {}
     }
 
     async function tuDongDayDuLieuLenDrive() {
-        let payload = { coSoDuLieuNamThang, dsThanhToanVanPhongProByMonth, dsKhoMucIn, dsThanhToanTelecomByMonth, dsKhaoSatChuyenSieu, danhSachCongViec };
+        let payload = { coSoDuLieuNamThang, dsThanhToanVanPhongProByMonth, dsKhoMucIn, dsThanhToanTelecomByMonth, dsKhaoSatChuyenSieu, danhSachCongViec, danhSachTaiKhoanHeThong };
         try { await fetch(gasWebhookUrl, { method: 'POST', body: JSON.stringify({ type: "SYNC_MASTER_DB", payload: payload }) }); } catch (e) {}
     }
 
@@ -1052,42 +1062,81 @@
         document.getElementById("sumTaskVal").innerText = totalTasksDone + " / " + danhSachCongViec.length;
     }
 
+    // --- MODULE QUẢN LÝ TÀI KHOẢN ĐẦY ĐỦ CHỨC NĂNG ---
     function renderAccountTable() {
         let tbody = document.getElementById('accountTableBody');
         if(!tbody) return; tbody.innerHTML = '';
         danhSachTaiKhoanHeThong.forEach((acc, idx) => {
-            let roleBadge = acc.role === 'Admin' ? '<span class="badge-net">Admin</span>' : '<span class="badge-warning">Editor</span>';
-            tbody.innerHTML += `<tr><td style="text-align:center;">${idx + 1}</td><td><b>${acc.email}</b></td><td>${acc.fullName}</td><td style="text-align:center;">${roleBadge}</td><td style="text-align:center;"><span class="badge-net">${acc.status}</span></td><td>${acc.notifyEmail || '--'}</td><td style="text-align:center;">
-                <button class="btn-action edit-btn" onclick="suaTaiKhoan(${idx})"><i class="fa fa-pen"></i></button>
-                <button class="btn-action del-btn" onclick="xoaTaiKhoan(${idx})"><i class="fa fa-trash"></i></button>
-            </td></tr>`;
+            let roleBadge = acc.role === 'Admin' ? '<span class="badge-net">Admin</span>' : (acc.role === 'Editor' ? '<span class="badge-warning">Editor</span>' : '<span class="badge-danger">Viewer</span>');
+            let statusBadge = acc.status === 'Active' ? '<span class="badge-net">Active</span>' : '<span class="badge-danger">Locked</span>';
+            tbody.innerHTML += `<tr>
+                <td style="text-align:center;">${idx + 1}</td>
+                <td><b>${acc.email}</b></td>
+                <td>${acc.fullName}</td>
+                <td style="text-align:center;">${roleBadge}</td>
+                <td style="text-align:center;">${statusBadge}</td>
+                <td>${acc.notifyEmail || '--'}</td>
+                <td style="text-align:center;">
+                    <button class="btn-action edit-btn" onclick="suaTaiKhoan(${idx})"><i class="fa fa-pen"></i> Sửa</button>
+                    <button class="btn-action del-btn" onclick="xoaTaiKhoan(${idx})"><i class="fa fa-trash"></i> Xóa</button>
+                </td>
+            </tr>`;
         });
     }
+
     function moModalThemTaiKhoan() {
         document.getElementById('editAccountIndex').value = -1;
         document.getElementById('accEmail').value = '';
         document.getElementById('accFullName').value = '';
+        document.getElementById('accRole').value = 'Editor';
+        document.getElementById('accStatus').value = 'Active';
+        document.getElementById('accNotifyEmail').value = '';
         document.getElementById('modalTaiKhoan').classList.remove('hidden');
     }
+
     function suaTaiKhoan(idx) {
         let acc = danhSachTaiKhoanHeThong[idx];
         document.getElementById('editAccountIndex').value = idx;
         document.getElementById('accEmail').value = acc.email;
         document.getElementById('accFullName').value = acc.fullName;
+        document.getElementById('accRole').value = acc.role || 'Editor';
+        document.getElementById('accStatus').value = acc.status || 'Active';
+        document.getElementById('accNotifyEmail').value = acc.notifyEmail || '';
         document.getElementById('modalTaiKhoan').classList.remove('hidden');
     }
+
     function xoaTaiKhoan(idx) {
-        if(confirm("Bạn có chắc chắn muốn xóa tài khoản này?")) { danhSachTaiKhoanHeThong.splice(idx, 1); capNhat(); }
+        if(confirm("Bạn có chắc chắn muốn xóa tài khoản này khỏi hệ thống VINAPACO?")) {
+            danhSachTaiKhoanHeThong.splice(idx, 1);
+            capNhat();
+        }
     }
+
     function luuTaiKhoanHeThong() {
         let email = document.getElementById('accEmail').value.trim();
         let fullName = document.getElementById('accFullName').value.trim();
-        if (!email || !fullName) { alert("Vui lòng nhập đủ!"); return; }
+        let role = document.getElementById('accRole').value;
+        let status = document.getElementById('accStatus').value;
+        let notifyEmail = document.getElementById('accNotifyEmail').value.trim();
+
+        if (!email || !fullName) {
+            alert("Vui lòng điền đầy đủ Tên đăng nhập/Email và Họ tên cán bộ!");
+            return;
+        }
+
         let editIdx = parseInt(document.getElementById('editAccountIndex').value);
-        if (editIdx >= 0) { danhSachTaiKhoanHeThong[editIdx] = { email, fullName, role: 'Editor', status: 'Active' }; }
-        else { danhSachTaiKhoanHeThong.push({ email, fullName, role: 'Editor', status: 'Active' }); }
+        let accObj = { email, fullName, role, status, notifyEmail };
+
+        if (editIdx >= 0) {
+            danhSachTaiKhoanHeThong[editIdx] = accObj;
+            document.getElementById('editAccountIndex').value = -1;
+        } else {
+            danhSachTaiKhoanHeThong.push(accObj);
+        }
+
         document.getElementById('modalTaiKhoan').classList.add('hidden');
         capNhat();
+        alert("✅ Đã lưu thông tin tài khoản thành công!");
     }
 
     function renderTaskTable() {
@@ -1514,30 +1563,51 @@
         let ws = XLSX.utils.json_to_sheet(dsKhaoSatChuyenSieu); let wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "KhaoSat"); XLSX.writeFile(wb, "Bao_Cao_Khao_Sat.xlsx");
     }
 
+    // --- MODULE ĐĂNG KÝ NGHỈ PHÉP CHUẨN DOANH NGHIỆP ---
     function moModalDangKyNghiPhep() {
         let sel = document.getElementById('popupLeaveNhanSu');
         if(!sel) return; sel.innerHTML = '';
         coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.forEach(i => { sel.innerHTML += `<option value="${i.hoTen}">${i.hoTen}</option>`; });
         document.getElementById('popupLeaveTuNgay').value = new Date().toISOString().split('T')[0];
         document.getElementById('popupLeaveDenNgay').value = new Date().toISOString().split('T')[0];
+        document.getElementById('popupLeaveSoNgay').value = "1.0 Ngày";
+        document.getElementById('popupLeaveGhiChu').value = "";
         document.getElementById('dangKyNghiPhepModal').classList.remove('hidden');
     }
+
     function tinhSoNgayPopup() {
         let tu = new Date(document.getElementById('popupLeaveTuNgay').value);
         let den = new Date(document.getElementById('popupLeaveDenNgay').value);
+        let unit = document.getElementById('popupLeaveUnit').value;
         if (!isNaN(tu) && !isNaN(den) && den >= tu) {
             let diff = Math.ceil(Math.abs(den - tu) / (1000 * 60 * 60 * 24)) + 1;
-            document.getElementById('popupLeaveSoNgay').value = diff.toFixed(1) + " Ngày";
+            document.getElementById('popupLeaveSoNgay').value = diff.toFixed(1) + " " + unit;
         }
     }
+
     function luuVaTruPhepTuPopup() {
         let hoTen = document.getElementById('popupLeaveNhanSu').value;
-        let soNgay = parseFloat(document.getElementById('popupLeaveSoNgay').value) || 1;
+        let hinhThuc = document.getElementById('popupLeaveType').value;
+        let soNgayStr = document.getElementById('popupLeaveSoNgay').value;
+        let soNgay = parseFloat(soNgayStr) || 1;
+        let nguoiBanGiao = document.getElementById('popupLeaveNguoiBanGiao').value.trim();
+        let ghiChu = document.getElementById('popupLeaveGhiChu').value.trim();
+
+        if(!nguoiBanGiao || !ghiChu) {
+            alert("Vui lòng nhập đầy đủ thông tin Cán bộ nhận bàn giao và Nội dung bàn giao chi tiết!");
+            return;
+        }
+
         let nv = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.find(i => i.hoTen === hoTen);
-        if (nv) { nv.nc_p = (nv.nc_p || 0) + soNgay; nv.phep_da_nghi = (nv.phep_da_nghi || 0) + soNgay; }
+        if (nv) {
+            if (hinhThuc === "Phép năm") {
+                nv.nc_p = (nv.nc_p || 0) + soNgay;
+                nv.phep_da_nghi = (nv.phep_da_nghi || 0) + soNgay;
+            }
+        }
         capNhat();
         document.getElementById('dangKyNghiPhepModal').classList.add('hidden');
-        alert(`✅ Đã trừ phép thành công cho ${hoTen}!`);
+        alert(`✅ Đã đăng ký thành công hình thức [${hinhThuc}] (${soNgayStr}) cho nhân sự ${hoTen}, bàn giao cho ${nguoiBanGiao}!`);
     }
 
     function moModalPhiieuLuong(idx) {

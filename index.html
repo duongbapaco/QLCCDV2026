@@ -866,6 +866,7 @@
     let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data') || `[{"id":1,"name":"Hoàn thiện báo cáo điều hành ${_thangHienTai}","assignee":"Trần Bình Dương","dueDate":"${_namHienTai}-${_thangSo}-30","status":"Đang thực hiện"}]`);
     let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('bapaco_accounts_data') || '[{"email":"admin@vinapaco.com.vn","fullName":"Trần Bình Dương","role":"Admin","status":"Active","notifyEmail":"duongtb@vinapaco.com.vn"},{"email":"ketoan@vinapaco.com.vn","fullName":"Nguyễn Minh Ngọc","role":"Editor","status":"Active","notifyEmail":"nguyenminhngoc@vinapaco.com.vn"}]');
 
+    // ĐÃ GÁN ĐÚNG URL WEBHOOK CHUẨN CỦA ANH
     let gasWebhookUrl = localStorage.getItem('bapaco_custom_gas_url') || "https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec";
     let currentNamKey = _namHienTai;
     let currentThangKey = _thangHienTai;
@@ -1440,7 +1441,7 @@
         document.getElementById('previewOfficeTotal').value = total.toLocaleString('vi-VN');
     }
 
-    // ĐÃ TÍCH HỢP ĐỔI TÊN TỆP THEO NỘI DUNG THANH TOÁN
+    // XU LÝ FILE VPP: Đổi tên tệp theo Nội dung thanh toán
     async function xuLyChonTepVPP(input) {
         if (input.files && input.files.length > 0) {
             let box = document.getElementById('officeProgressBarBox');
@@ -1478,7 +1479,7 @@
         }
     }
 
-    // ĐÃ TÍCH HỢP ĐỔI TÊN TỆP THEO LOẠI CƯỚC VIỄN THÔNG
+    // XU LÝ FILE TELECOM: Đổi tên tệp theo Loại cước viễn thông
     async function xuLyChonTepTelecom(input) {
         if (input.files && input.files.length > 0) {
             let box = document.getElementById('telecomProgressBarBox');

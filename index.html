@@ -132,7 +132,7 @@
         <div id="loginFormBox" style="display: flex; flex-direction: column; gap: 16px;">
             <div class="login-form-group">
                 <label>Tên Đăng Nhập / Email</label>
-                <input type="text" id="loginUser" placeholder="admin@vinapaco.com.vn" value="admin">
+                <input type="text" id="loginUser" placeholder="admin" value="admin">
             </div>
             <div class="login-form-group">
                 <label>Mật Khẩu</label>
@@ -210,10 +210,26 @@
             <button class="btn btn-red" style="padding: 4px 10px;" onclick="document.getElementById('modalQuenMatKhau').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div style="padding: 24px; display: flex; flex-direction: column; gap: 14px; background: #f8fafc;">
-            <div class="login-form-group"><label>Email / Tên tài khoản cần khôi phục</label><input type="email" id="forgotUserEmail" value="admin@vinapaco.com.vn"></div>
+            <div class="login-form-group"><label>Email / Tên tài khoản cần khôi phục</label><input type="email" id="forgotUserEmail" value="admin"></div>
             <div class="login-form-group"><label>Email nhận mật khẩu mới</label><input type="email" id="forgotTargetEmail" value="duongtb@vinapaco.com.vn"></div>
             <div class="login-form-group"><label>Mật khẩu mới</label><input type="password" id="forgotNewPass" value="123456"></div>
             <button class="btn btn-green" style="padding: 12px; justify-content: center;" onclick="xuLyYeuCauQuenMatKhau()"><i class="fa-solid fa-paper-plane"></i> Gửi Yêu Cầu & Cập Nhật Mật Khẩu</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL ĐỔI MẬT KHẨU TRỰC TIẾP -->
+<div class="modal-overlay hidden" id="modalDoiMatKhauTrucTiep">
+    <div class="modal-card" style="max-width: 440px;">
+        <div style="padding: 18px 24px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center;">
+            <b style="text-transform: uppercase;"><i class="fa-solid fa-lock"></i> Đổi Mật Khẩu Tài Khoản</b>
+            <button class="btn btn-red" style="padding: 4px 10px;" onclick="document.getElementById('modalDoiMatKhauTrucTiep').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div style="padding: 24px; display: flex; flex-direction: column; gap: 14px; background: #f8fafc;">
+            <input type="hidden" id="changePassUserEmail">
+            <div class="login-form-group"><label>Tài khoản</label><input type="text" id="changePassDisplayUser" readonly style="background:#e2e8f0; font-weight:bold;"></div>
+            <div class="login-form-group"><label>Mật khẩu mới</label><input type="password" id="inputNewPasswordDirect" placeholder="Nhập mật khẩu mới..."></div>
+            <button class="btn btn-green" style="padding: 12px; justify-content: center;" onclick="xacNhanDoiMatKhauTrucTiep()"><i class="fa-solid fa-floppy-disk"></i> Lưu Mật Khẩu Mới</button>
         </div>
     </div>
 </div>
@@ -696,7 +712,7 @@
     </div>
 </div>
 
-<!-- MODAL PHIẾU LƯƠNG NHÂN SỰ (ĐÃ MỞ RỘNG Ô CHỌN NHÂN SỰ) -->
+<!-- MODAL PHIẾU LƯƠNG NHÂN SỰ -->
 <div class="modal-overlay hidden" id="previewModal">
     <div class="modal-card" style="max-width: 760px; padding: 0; border-radius: 20px; overflow: hidden;">
         <div style="padding: 14px 22px; background: #f8fafc; border-bottom: 1px solid #cbd5e1; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
@@ -705,7 +721,6 @@
                 <input type="text" id="inputTimKiemNhanSuModal" placeholder="🔍 Tìm kiếm nhân sự..." style="padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 13px; font-weight: bold; width: 180px;" oninput="locDanhSachNhanSuModal(this.value)">
             </div>
             <div style="display: flex; gap: 10px; align-items: center;">
-                <!-- Mở rộng kích thước chiều rộng select để không bị nhỏ -->
                 <select id="selectModalNhanSu" style="padding: 8px 14px; border-radius: 8px; font-weight: bold; font-size: 14px; min-width: 240px; border: 1.5px solid var(--primary); background: white;" onchange="chonNhanSuXemPhieuLuong(this.value)"></select>
                 <button class="btn btn-red" style="padding: 6px 10px;" onclick="document.getElementById('previewModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
             </div>
@@ -807,7 +822,13 @@
     let dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('bapaco_delivery_data')) || [{ slipNo: "PGN-2026/08-01", from: "Trần Bình Dương - Văn phòng TCT", to: "Nguyễn Minh Ngọc", dept: "Phòng Kế toán", item: "Laptop Dell Latitude", status: "Mới 100%", date: "2026-08-14" }];
     let dsKhaoSatChuyenSieu = JSON.parse(localStorage.getItem('bapaco_survey_data')) || [{ code: "KS-01", user: "Trần Bình Dương", dept: "Văn phòng TCT", device: "Laptop cá nhân", os: "Windows 11 Pro", osLicense: "✅ Có bản quyền chính hãng", office: "Microsoft 365 (Cloud)", officeLicense: "✅ Bản quyền Tổng công ty", bizSoft: "Cloudoffice (Văn thư)", bizLicense: "✅ Có bản quyền chính hãng", specs: "Core i7, RAM 16GB" }];
     let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data')) || [{ id: 1, name: "Hoàn thiện báo cáo điều hành tháng 08", assignee: "Trần Bình Dương", dueDate: "2026-08-17", status: "Đang làm" }];
-    let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('bapaco_accounts_data')) || [{ email: "admin@vinapaco.com.vn", fullName: "Trần Bình Dương", role: "Admin", status: "Active", notifyEmail: "duongtb@vinapaco.com.vn" }];
+    
+    // Tài khoản mặc định ban đầu bao gồm admin và các cán bộ quản trị
+    let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('bapaco_accounts_data')) || [
+        { email: "admin", fullName: "Quản trị viên Hệ thống (Admin)", role: "Admin", status: "Active", notifyEmail: "admin@vinapaco.com.vn", pass: "123456" },
+        { email: "duongtb@vinapaco.com.vn", fullName: "Trần Bình Dương", role: "Admin", status: "Active", notifyEmail: "duongtb@vinapaco.com.vn", pass: "123456" },
+        { email: "ngocnm@vinapaco.com.vn", fullName: "Nguyễn Minh Ngọc", role: "Editor", status: "Active", notifyEmail: "ngocnm@vinapaco.com.vn", pass: "123456" }
+    ];
 
     let gasWebhookUrl = localStorage.getItem('bapaco_gas_webhook_url') || "https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec";
     let currentNamKey = "2026";
@@ -954,7 +975,6 @@
     function thuCongDongBoLenDrive() { tuDongDayDuLieuLenDrive(); alert("✅ Đã đồng bộ toàn bộ dữ liệu lên Google Drive thành công!"); }
     async function thuCongTaiVeTuDrive() { await tuDongTaiDuLieuTuDrive(); capNhat(); alert("✅ Đã tải về dữ liệu mới nhất từ Google Drive!"); }
 
-    // HÀM CHUYỂN FILE SANG BASE64 ĐỂ UPLOAD LÊN DRIVE QUA WEBHOOK
     function toBase64(file) {
         return new Promise((resolve, reject) => {
             let reader = new FileReader();
@@ -1009,8 +1029,16 @@
         let uEmail = document.getElementById('forgotUserEmail').value.trim();
         let newPass = document.getElementById('forgotNewPass').value.trim();
         if (!uEmail || !newPass) { alert("Vui lòng điền đầy đủ tài khoản và mật khẩu mới!"); return; }
-        alert(`✅ Đã ghi nhận yêu cầu cấp lại mật khẩu cho tài khoản: [${uEmail}].`);
-        document.getElementById('modalQuenMatKhau').classList.add('hidden');
+        
+        let acc = danhSachTaiKhoanHeThong.find(i => i.email === uEmail);
+        if(acc) {
+            acc.pass = newPass;
+            luuTruVaoLocalStorage();
+            alert(`✅ Đã reset thành công mật khẩu mới cho tài khoản: [${uEmail}].`);
+            document.getElementById('modalQuenMatKhau').classList.add('hidden');
+        } else {
+            alert(`⚠️ Không tìm thấy tài khoản [${uEmail}] trong hệ thống!`);
+        }
     }
 
     function moThuThucDriveChung() { window.open(BAPACO_DRIVE_BASE_URL, '_blank'); }
@@ -1018,6 +1046,18 @@
     function thucHienDangNhap() {
         let u = document.getElementById('loginUser').value.trim();
         let p = document.getElementById('loginPass').value.trim();
+        
+        let foundAcc = danhSachTaiKhoanHeThong.find(i => i.email === u);
+        if (foundAcc) {
+            if ((foundAcc.pass && foundAcc.pass === p) || (!foundAcc.pass && p === '123456')) {
+                if (foundAcc.status === 'Locked') { alert("Tài khoản này đang bị khóa. Vui lòng liên hệ Admin!"); return; }
+                document.getElementById('loginModal').classList.add('hidden');
+                document.getElementById('appMainContainer').classList.remove('hidden');
+                khoiTaoHeThongSauDangNhap();
+                return;
+            }
+        }
+        
         if ((u === 'admin' && p === '123456') || u === 'duongbapaco' || p.length >= 6) {
             document.getElementById('loginModal').classList.add('hidden');
             document.getElementById('appMainContainer').classList.remove('hidden');
@@ -1186,6 +1226,7 @@
                 <td>${acc.notifyEmail || '--'}</td>
                 <td style="text-align:center;">
                     <button class="btn-action edit-btn" onclick="suaTaiKhoan(${idx})"><i class="fa fa-pen"></i> Sửa</button>
+                    <button class="btn-action" style="background:#0284c7; color:white;" onclick="moModalDoiMatKhau(${idx})"><i class="fa fa-key"></i> Đổi MK</button>
                     <button class="btn-action del-btn" onclick="xoaTaiKhoan(${idx})"><i class="fa fa-trash"></i> Xóa</button>
                 </td>
             </tr>`;
@@ -1213,7 +1254,33 @@
         document.getElementById('modalTaiKhoan').classList.remove('hidden');
     }
 
+    function moModalDoiMatKhau(idx) {
+        let acc = danhSachTaiKhoanHeThong[idx];
+        document.getElementById('changePassUserEmail').value = acc.email;
+        document.getElementById('changePassDisplayUser').value = `${acc.email} (${acc.fullName})`;
+        document.getElementById('inputNewPasswordDirect').value = '';
+        document.getElementById('modalDoiMatKhauTrucTiep').classList.remove('hidden');
+    }
+
+    function xacNhanDoiMatKhauTrucTiep() {
+        let email = document.getElementById('changePassUserEmail').value;
+        let newPass = document.getElementById('inputNewPasswordDirect').value.trim();
+        if(!newPass) { alert("Vui lòng nhập mật khẩu mới!"); return; }
+
+        let acc = danhSachTaiKhoanHeThong.find(i => i.email === email);
+        if(acc) {
+            acc.pass = newPass;
+            luuTruVaoLocalStorage();
+            document.getElementById('modalDoiMatKhauTrucTiep').classList.add('hidden');
+            alert(`✅ Đổi mật khẩu thành công cho tài khoản [${email}]!`);
+        }
+    }
+
     function xoaTaiKhoan(idx) {
+        if(danhSachTaiKhoanHeThong[idx].email === 'admin') {
+            alert("Không thể xóa tài khoản Quản trị viên (admin) mặc định gốc của hệ thống!");
+            return;
+        }
         if(confirm("Bạn có chắc chắn muốn xóa tài khoản này khỏi hệ thống VINAPACO?")) {
             danhSachTaiKhoanHeThong.splice(idx, 1);
             capNhat();
@@ -1230,13 +1297,13 @@
         if (!email || !fullName) { alert("Vui lòng điền đầy đủ Tên đăng nhập/Email và Họ tên cán bộ!"); return; }
 
         let editIdx = parseInt(document.getElementById('editAccountIndex').value);
-        let accObj = { email, fullName, role, status, notifyEmail };
-
+        
         if (editIdx >= 0) {
-            danhSachTaiKhoanHeThong[editIdx] = accObj;
+            let existingPass = danhSachTaiKhoanHeThong[editIdx].pass || "123456";
+            danhSachTaiKhoanHeThong[editIdx] = { email, fullName, role, status, notifyEmail, pass: existingPass };
             document.getElementById('editAccountIndex').value = -1;
         } else {
-            danhSachTaiKhoanHeThong.push(accObj);
+            danhSachTaiKhoanHeThong.push({ email, fullName, role, status, notifyEmail, pass: "123456" });
         }
 
         document.getElementById('modalTaiKhoan').classList.add('hidden');
@@ -1360,7 +1427,6 @@
         document.getElementById('previewOfficeTotal').value = (truocThue + vat).toLocaleString('vi-VN');
     }
 
-    // UPLOAD THẬT LÊN DRIVE QUA WEBHOOK CHO VĂN PHÒNG PHẨM
     async function luuHoacCapNhatVPP() {
         let content = document.getElementById('inputOfficeContent').value.trim();
         let beneficiary = document.getElementById('inputOfficeBeneficiary').value.trim();
@@ -1576,7 +1642,6 @@
         document.getElementById('inputTelecomVatInput').value = (tong - truocThue).toLocaleString('vi-VN');
     }
 
-    // UPLOAD THẬT LÊN DRIVE QUA WEBHOOK CHO CƯỚC VIỄN THÔNG
     async function luuHoacCapNhatTelecom() {
         let type = document.getElementById('inputTelecomType').value.trim();
         let tong = parseFloat(document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g,'')) || 0;

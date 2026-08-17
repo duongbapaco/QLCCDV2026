@@ -109,7 +109,7 @@
         .progress-box { width: 100%; background: #e2e8f0; border-radius: 6px; height: 8px; overflow: hidden; margin-top: 6px; display: none; }
         .progress-bar-fill { width: 0%; height: 100%; background: #16a34a; transition: width 0.3s ease; }
 
-        /* CSS giao diện Lịch tháng nhỏ gọn trong modal */
+        /* Lịch tháng popup */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
         .cal-header-cell { font-weight: 900; color: #475569; font-size: 13px; padding: 8px 0; background: #f1f5f9; border-radius: 6px; }
         .cal-day-cell { padding: 12px 0; border-radius: 8px; font-weight: 700; background: #f8fafc; border: 1px solid var(--border-color); cursor: pointer; transition: all 0.2s; }
@@ -146,7 +146,7 @@
     </div>
 </div>
 
-<!-- MODAL XEM TOÀN BỘ LỊCH THÁNG (ĐÃ BỔ SUNG THEO YÊU CẦU) -->
+<!-- MODAL XEM TOÀN BỘ LỊCH THÁNG -->
 <div class="modal-overlay hidden" id="modalXemToanBoLich">
     <div class="modal-card" style="max-width: 620px;">
         <div style="padding: 18px 24px; background: linear-gradient(135deg, #0284c7, #0369a1); color: white; display: flex; justify-content: space-between; align-items: center;">
@@ -162,9 +162,7 @@
             <div class="calendar-grid">
                 <div class="cal-header-cell">T2</div><div class="cal-header-cell">T3</div><div class="cal-header-cell">T4</div><div class="cal-header-cell">T5</div><div class="cal-header-cell">T6</div><div class="cal-header-cell">T7</div><div class="cal-header-cell" style="color:#ef4444;">CN</div>
             </div>
-            <div class="calendar-grid" id="calendarDaysGrid">
-                <!-- Các ô ngày sẽ được render tự động bằng JS -->
-            </div>
+            <div class="calendar-grid" id="calendarDaysGrid"></div>
         </div>
         <div class="modal-actions">
             <span style="font-size: 13px; font-weight: 700; color: var(--text-muted);"><i class="fa-solid fa-circle-info" style="color:var(--primary);"></i> Bấm vào ngày bất kỳ để xem lịch trình sự kiện.</span>
@@ -223,7 +221,6 @@
     </div>
 
     <div class="top-info-bar">
-        <!-- ĐÃ BỔ SUNG NÚT BẤM XEM LỊCH NGAY TẠI CỤM ĐỒNG HỒ -->
         <div class="info-widget-card" style="position: relative;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div style="font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-clock"></i> Đồng Hồ Số Thời Gian Thực</div>
@@ -318,7 +315,7 @@
         </div>
     </div>
 
-    <!-- TAB QUẢN LÝ TÀI KHOẢN -->
+    <!-- TAB TÀI KHOẢN -->
     <div id="accountManagerTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-users-gear"></i> QUẢN LÝ TÀI KHOẢN, PHÂN QUYỀN & BẢO MẬT HỆ THỐNG VINAPACO</div>
@@ -330,7 +327,7 @@
         </table>
     </div>
 
-    <!-- TAB QUẢN LÝ CÔNG VIỆC -->
+    <!-- TAB CÔNG VIỆC -->
     <div id="taskTab" class="tab-pane table-card">
         <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-list-check"></i> QUẢN LÝ CÔNG VIỆC HÀNG NGÀY & HOÁN ĐỔI TRẠNG THÁI NHANH</div></div>
         <div class="charts-multi-grid" style="margin-bottom: 16px;">
@@ -630,7 +627,7 @@
     </div>
 </div>
 
-<!-- MODAL ĐĂNG KÝ NGHỈ PHÉP -->
+<!-- MODAL ĐĂNG KÝ NGHỈ PHÉP CHUẨN DOANH NGHIỆP (ĐÃ KHÔI PHỤC ĐẦY ĐỦ) -->
 <div class="modal-overlay hidden" id="dangKyNghiPhepModal">
     <div class="modal-card" style="max-width: 660px;">
         <div style="padding: 20px 24px; background: linear-gradient(135deg, #0284c7, #0369a1); color: white; display: flex; justify-content: space-between; align-items: center;">
@@ -774,9 +771,8 @@
     let modalCurrentNvIndex = 0;
     const BAPACO_DRIVE_BASE_URL = "https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m";
 
-    // Biến cho Modal Lịch
     let calendarCurrentYear = 2026;
-    let calendarCurrentMonth = 7; // Tháng 8 (0-indexed)
+    let calendarCurrentMonth = 7;
 
     function formatVNDate(dateString) {
         if (!dateString) return '--';
@@ -799,7 +795,6 @@
         alert("✅ Đã cập nhật và lưu URL Webhook mới thành công!");
     }
 
-    // --- HÀM ĐIỀU KHIỂN MODAL LỊCH THÁNG ---
     function moModalXemToanBoLich() {
         let now = new Date();
         calendarCurrentYear = now.getFullYear();
@@ -825,7 +820,6 @@
 
         gridEl.innerHTML = '';
         let firstDayIndex = new Date(calendarCurrentYear, calendarCurrentMonth, 1).getDay();
-        // Đổi chủ nhật từ 0 thành 7 để bắt đầu tuần từ Thứ Hai
         firstDayIndex = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
         
         let totalDays = new Date(calendarCurrentYear, calendarCurrentMonth + 1, 0).getDate();
@@ -834,20 +828,17 @@
         let today = new Date();
         let isCurrentMonthYear = (today.getFullYear() === calendarCurrentYear && today.getMonth() === calendarCurrentMonth);
 
-        // Ngày của tháng trước
         for (let i = firstDayIndex; i > 0; i--) {
             let dNum = prevMonthDays - i + 1;
             gridEl.innerHTML += `<div class="cal-day-cell other-month">${dNum}</div>`;
         }
 
-        // Ngày của tháng hiện tại
         for (let d = 1; d <= totalDays; d++) {
             let isToday = (isCurrentMonthYear && today.getDate() === d);
             let cls = isToday ? "cal-day-cell today" : "cal-day-cell";
             gridEl.innerHTML += `<div class="${cls}" onclick="alert('Ngày ${d}/${calendarCurrentMonth+1}/${calendarCurrentYear}: Không có sự kiện khẩn cấp.')">${d}</div>`;
         }
 
-        // Ngày của tháng sau lấp đầy lưới
         let totalCellsRendered = firstDayIndex + totalDays;
         let remainingCells = totalCellsRendered % 7 === 0 ? 0 : 7 - (totalCellsRendered % 7);
         for (let nd = 1; nd <= remainingCells; nd++) {
@@ -895,17 +886,16 @@
             if(clockEl) clockEl.innerText = now.toLocaleTimeString('vi-VN');
             if(dateEl) dateEl.innerText = now.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         }
-        setInterval(capNhatDongHo, 1000);
         capNhatDongHo();
+        setInterval(capNhatDongHo, 1000);
     }
 
     function moModalQuenMatKhau() { document.getElementById('modalQuenMatKhau').classList.remove('hidden'); }
     function xuLyYeuCauQuenMatKhau() {
         let uEmail = document.getElementById('forgotUserEmail').value.trim();
-        let targetEmail = document.getElementById('forgotTargetEmail').value.trim();
         let newPass = document.getElementById('forgotNewPass').value.trim();
         if (!uEmail || !newPass) { alert("Vui lòng điền đầy đủ tài khoản và mật khẩu mới!"); return; }
-        alert(`✅ Đã ghi nhận yêu cầu cấp lại mật khẩu cho tài khoản: [${uEmail}]. Mật khẩu mới đã được cấu hình.`);
+        alert(`✅ Đã ghi nhận yêu cầu cấp lại mật khẩu cho tài khoản: [${uEmail}].`);
         document.getElementById('modalQuenMatKhau').classList.add('hidden');
     }
 
@@ -1062,7 +1052,6 @@
         document.getElementById("sumTaskVal").innerText = totalTasksDone + " / " + danhSachCongViec.length;
     }
 
-    // --- TÀI KHOẢN (CRUD) ---
     function renderAccountTable() {
         let tbody = document.getElementById('accountTableBody');
         if(!tbody) return; tbody.innerHTML = '';
@@ -1101,7 +1090,6 @@
         capNhat();
     }
 
-    // --- CÔNG VIỆC (CRUD) ---
     function renderTaskTable() {
         let tbody = document.getElementById('taskTableBody');
         if (!tbody) return; tbody.innerHTML = '';
@@ -1207,7 +1195,6 @@
         setTimeout(() => { veTatCaBieuDoDashboard(); }, 100);
     }
 
-    // --- THANH TOÁN VP (CRUD) ---
     function tinhToanTienVPP() {
         let q = parseFloat(document.getElementById('inputOfficeQty').value) || 1;
         let p = parseFloat(document.getElementById('inputOfficePrice').value.replace(/[^0-9]/g,'')) || 0;
@@ -1291,7 +1278,6 @@
         if(confirm("Xóa chứng từ văn phòng này?")) { dsThanhToanVanPhongProByMonth[originalKey].splice(originalIndex, 1); capNhat(); }
     }
 
-    // --- KHO MỰC IN (CRUD) ---
     function luuHoacCapNhatKhoMuc() {
         let name = document.getElementById('inputInkName').value.trim();
         if (!name) { alert("Nhập tên mực!"); return; }
@@ -1343,7 +1329,6 @@
         document.getElementById('previewSlipModal').classList.remove('hidden');
     }
 
-    // --- GIAO NHẬN (CRUD) ---
     function luuHoacCapNhatPhieuGiao() {
         let slipNo = document.getElementById('inputSlipNo').value.trim();
         let item = document.getElementById('inputSlipItem').value.trim();
@@ -1397,7 +1382,6 @@
         });
     }
 
-    // --- VIỄN THÔNG (CRUD) ---
     function tinhTienTelecomTuTong() {
         let tong = parseFloat(document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g,'')) || 0;
         let truocThue = Math.round(tong / 1.1);
@@ -1473,7 +1457,6 @@
         if(confirm("Xóa cước viễn thông này?")) { dsThanhToanTelecomByMonth[originalKey].splice(originalIndex, 1); capNhat(); }
     }
 
-    // --- KHẢO SÁT CHUYÊN SÂU (CRUD) ---
     function luuHoacCapNhatKhaoSat() {
         let user = document.getElementById('inputSurveyUser').value.trim();
         if (!user) { alert("Nhập tên người dùng!"); return; }

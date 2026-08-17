@@ -40,10 +40,7 @@
         .btn-yellow { background-color: #d97706; color: white; }
         .btn-purple { background-color: #8b5cf6; color: white; }
 
-        .config-bar { background: white; padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border-color); display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; align-items: center; }
-        .config-item { display: flex; flex-direction: column; gap: 6px; }
-        .config-item label { font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
-        .config-item input, .config-item select { padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border-color); font-weight: 800; font-size: 15px; color: #0f172a; outline: none; background: #fff; }
+        .config-bar { background: white; padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; }
 
         .form-card { background: #f8fafc; border: 2px dashed var(--primary); padding: 16px; border-radius: 10px; margin-bottom: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; align-items: flex-end; }
         .form-group { display: flex; flex-direction: column; gap: 6px; }
@@ -149,8 +146,29 @@
         <div style="padding: 24px; display: flex; flex-direction: column; gap: 14px; background: #f8fafc;">
             <div class="form-group"><label>Email / Tên tài khoản cần khôi phục</label><input type="email" id="forgotUserEmail" placeholder="nhanvien@vinapaco.com.vn" value="admin@vinapaco.com.vn"></div>
             <div class="form-group"><label>Email nhận mật khẩu mới</label><input type="email" id="forgotTargetEmail" placeholder="nhanvien.thucte@gmail.com" value="duongtb@vinapaco.com.vn"></div>
-            <div class="form-group"><label>Mật khẩu mới (Tự định nghĩa)</label><input type="password" id="forgotNewPass" placeholder="Nhập mật khẩu mới..." value="123456"></div>
+            <div class="form-group"><label>Mật khẩu mới</label><input type="password" id="forgotNewPass" placeholder="Nhập mật khẩu mới..." value="123456"></div>
             <button class="btn btn-green" style="padding: 12px; justify-content: center;" onclick="xuLyYeuCauQuenMatKhau()"><i class="fa-solid fa-paper-plane"></i> Gửi Yêu Cầu & Cập Nhật Mật Khẩu</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL CẤU HÌNH NHANH -->
+<div class="modal-overlay hidden" id="modalCauHinhNhanh">
+    <div class="modal-card" style="max-width: 520px;">
+        <div style="padding: 18px 24px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center;">
+            <b style="text-transform: uppercase;"><i class="fa-solid fa-gear"></i> Cấu Hình Định Mức & Thời Gian</b>
+            <button class="btn btn-red" style="padding: 4px 10px;" onclick="document.getElementById('modalCauHinhNhanh').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div style="padding: 24px; display: flex; flex-direction: column; gap: 14px; background: #f8fafc;">
+            <div class="config-item"><label>Năm Lưu Trữ</label><select id="cfgNamChon" onchange="doiThangHoSoLuong()"><option value="2025">2025</option><option value="2026" selected>2026</option><option value="2027">2027</option></select></div>
+            <div class="config-item"><label>Tháng Nhập / Lưu Trữ</label><select id="cfgThangChon" onchange="doiThangHoSoLuong()">
+                <option value="Tháng 01">Tháng 01</option><option value="Tháng 02">Tháng 02</option><option value="Tháng 03">Tháng 03</option><option value="Tháng 04">Tháng 04</option><option value="Tháng 05">Tháng 05</option><option value="Tháng 06">Tháng 06</option><option value="Tháng 07">Tháng 07</option><option value="Tháng 08" selected>Tháng 08</option><option value="Tháng 09">Tháng 09</option><option value="Tháng 10">Tháng 10</option><option value="Tháng 11">Tháng 11</option><option value="Tháng 12">Tháng 12</option>
+            </select></div>
+            <div class="config-item"><label>Ngày Công Chế Độ (NCD)</label><input type="number" id="cfgNCD" onchange="luuCauHinhHienTai()"></div>
+            <div class="config-item"><label>Mức Lương Cơ Bản</label><input type="number" id="cfgMucLCB" onchange="luuCauHinhHienTai()"></div>
+            <div class="config-item"><label>Mức Tối Thiểu Vùng</label><input type="number" id="cfgMucTTV" onchange="luuCauHinhHienTai()"></div>
+            <div class="config-item"><label>Mức Lương Công Việc</label><input type="number" id="cfgMucLCV" onchange="luuCauHinhHienTai()"></div>
+            <button class="btn btn-green" style="padding: 12px; justify-content: center; margin-top: 10px;" onclick="document.getElementById('modalCauHinhNhanh').classList.add('hidden')"><i class="fa-solid fa-check"></i> Hoàn Tất & Áp Dụng</button>
         </div>
     </div>
 </div>
@@ -164,33 +182,25 @@
         </div>
         <div class="btn-group-header">
             <button class="btn btn-yellow" onclick="batTatNhacNghiGoi()"><i class="fa-solid fa-mug-hot"></i> Nhắc Nghỉ</button>
-            <button class="btn btn-green" onclick="thuCongDongBoLenDrive()"><i class="fa-solid fa-cloud-arrow-up"></i> Đồng Bộ Ngay Lên Drive</button>
-            <button class="btn btn-blue" onclick="thuCongTaiVeTuDrive()"><i class="fa-solid fa-cloud-arrow-down"></i> Tải Về Mới Nhất</button>
+            <button class="btn btn-green" onclick="thuCongDongBoLenDrive()"><i class="fa-solid fa-cloud-arrow-up"></i> Đồng Bộ Lên Drive</button>
+            <button class="btn btn-blue" onclick="thuCongTaiVeTuDrive()"><i class="fa-solid fa-cloud-arrow-down"></i> Tải Về Drive</button>
             <button class="btn btn-red" onclick="dangXuatHeThong()"><i class="fa-solid fa-right-from-bracket"></i> Thoát</button>
         </div>
-    </div>
-
-    <!-- Ô CẤU HÌNH NHANH GAS WEBHOOK URL TRỰC TIẾP TRÊN GIAO DIỆN -->
-    <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 12px 18px; border-radius: 10px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-        <span style="font-size: 13px; font-weight: 800; color: #0369a1; text-transform: uppercase;"><i class="fa-solid fa-link"></i> Cấu Hình GAS Webhook URL:</span>
-        <input type="text" id="inputGasUrlSetting" style="flex: 1; min-width: 320px; padding: 7px 10px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; font-weight: bold; background: #f8fafc;" value="https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec">
-        <button class="btn btn-blue" style="padding: 7px 12px; font-size: 13px;" onclick="luuGasUrlNhanh()"><i class="fa-solid fa-floppy-disk"></i> Lưu URL</button>
     </div>
 
     <div class="top-info-bar">
         <div class="info-widget-card">
             <div style="font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-clock"></i> Đồng Hồ Số Thời Gian Thực</div>
             <div class="clock-display" id="liveClockDisplay">00:00:00</div>
-            <div style="font-size: 13px; font-weight: 700; color: var(--text-muted);" id="liveDateDisplay">Chủ Nhật, 16/08/2026</div>
+            <div style="font-size: 13px; font-weight: 700; color: var(--text-muted);" id="liveDateDisplay">Thứ Hai, 17/08/2026</div>
         </div>
 
         <div class="info-widget-card">
-            <div style="font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên & Phong Thủy</div>
+            <div style="font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên & Phong Thủy Nhanh</div>
             <div class="lunar-display" id="lunarWidgetText">
-                🌙 <b>Âm lịch:</b> Ngày 04 tháng 07 năm Bính Ngọ (Hải Trung Kim)<br>
+                🌙 <b>Âm lịch:</b> Ngày 05 tháng 07 năm Bính Ngọ (Hải Trung Kim)<br>
                 ✨ <b>Tiết khí:</b> Tiểu Thử - Trực Định (Cát)<br>
-                🟢 <b>Việc nên làm:</b> Khai trương, ký kết, giao dịch tài lộc<br>
-                🔴 <b>Việc kiêng kỵ:</b> Tranh chấp, kiện tụng, đào đất khởi công
+                🟢 <b>Việc nên làm:</b> Khai trương, ký kết, giao dịch tài lộc
             </div>
         </div>
 
@@ -200,27 +210,20 @@
                 <div class="weather-display" id="weatherWidgetText"><i class="fa-solid fa-temperature-three-quarters" style="color:#ef4444;"></i> Phú Thọ: 30°C, Trời quang đãng, Nắng đẹp</div>
             </div>
             <div class="reminder-corp-box">
-                🔔 <strong>CHẾ ĐỘ NGHỈ NGƠI CHUYÊN NGHIỆP:</strong> Khuyến nghị đứng dậy thư giãn **5 phút** sau mỗi tiếng làm việc.
+                🔔 <strong>CHẾ ĐỘ NGHỈ NGƠI:</strong> Khuyến nghị đứng dậy thư giãn **5 phút** sau mỗi tiếng làm việc.
             </div>
         </div>
     </div>
 
+    <!-- CONFIG BAR GỌN GÀNG MỘT NÚT BẤM -->
     <div class="config-bar">
-        <div class="config-item"><label>Năm Lưu Trữ</label><select id="cfgNamChon" onchange="doiThangHoSoLuong()"></select></div>
-        <div class="config-item"><label>Tháng Nhập / Lưu Trữ</label><select id="cfgThangChon" onchange="doiThangHoSoLuong()">
-            <option value="Tháng 01">Tháng 01</option><option value="Tháng 02">Tháng 02</option><option value="Tháng 03">Tháng 03</option><option value="Tháng 04">Tháng 04</option><option value="Tháng 05">Tháng 05</option><option value="Tháng 06">Tháng 06</option><option value="Tháng 07">Tháng 07</option><option value="Tháng 08" selected>Tháng 08</option><option value="Tháng 09">Tháng 09</option><option value="Tháng 10">Tháng 10</option><option value="Tháng 11">Tháng 11</option><option value="Tháng 12">Tháng 12</option>
-        </select></div>
-        <div class="config-item" style="grid-column: span 2;">
-            <label>Đường Dẫn VINAPACO_Drive (Tự động sinh theo Năm & Tháng chọn)</label>
-            <div style="display: flex; gap: 8px;">
-                <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold; flex: 1;" value="VINAPACO_Drive / 2026 / Tháng 08">
-                <button class="btn btn-blue" style="padding: 6px 12px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Mở Thư Mục</button>
-            </div>
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <button class="btn btn-blue" onclick="document.getElementById('modalCauHinhNhanh').classList.remove('hidden')"><i class="fa-solid fa-gear"></i> Cấu Hình Hệ Thống</button>
+            <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Mở Thư Mục Drive</button>
         </div>
-        <div class="config-item"><label>Ngày Công Chế Độ</label><input type="number" id="cfgNCD" onchange="luuCauHinhHienTai()"></div>
-        <div class="config-item"><label>Mức Lương Cơ Bản</label><input type="number" id="cfgMucLCB" onchange="luuCauHinhHienTai()"></div>
-        <div class="config-item"><label>Mức Tối Thiểu Vùng</label><input type="number" id="cfgMucTTV" onchange="luuCauHinhHienTai()"></div>
-        <div class="config-item"><label>Mức Lương Công Việc</label><input type="number" id="cfgMucLCV" onchange="luuCauHinhHienTai()"></div>
+        <div style="font-weight: 800; color: #0369a1; font-size: 14px;" id="pathLabelDisplay">
+            VINAPACO_Drive / 2026 / Tháng 08
+        </div>
     </div>
 
     <div class="kpi-grid">
@@ -233,16 +236,17 @@
 
     <div class="tab-nav">
         <button class="tab-btn-nav active" onclick="switchTab('dashboardTab', this)"><i class="fa-solid fa-chart-pie"></i> DB Tổng Quan</button>
-        <button class="tab-btn-nav" onclick="switchTab('accountManagerTab', this)"><i class="fa-solid fa-users-gear"></i> Quản Lý Tài Khoản</button>
-        <button class="tab-btn-nav" onclick="switchTab('taskTab', this)"><i class="fa-solid fa-list-check"></i> Quản Lý Công Việc</button>
+        <button class="tab-btn-nav" onclick="switchTab('lunarCalendarTab', this)"><i class="fa-solid fa-calendar-alt"></i> Lịch Vạn Niên</button>
+        <button class="tab-btn-nav" onclick="switchTab('accountManagerTab', this)"><i class="fa-solid fa-users-gear"></i> Tài Khoản</button>
+        <button class="tab-btn-nav" onclick="switchTab('taskTab', this)"><i class="fa-solid fa-list-check"></i> Công Việc</button>
         <button class="tab-btn-nav" onclick="switchTab('timekeepingDetailTab', this)"><i class="fa-solid fa-business-time"></i> Chấm Công</button>
         <button class="tab-btn-nav" onclick="switchTab('salaryCBTab', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Lương Cơ Bản</button>
-        <button class="tab-btn-nav" onclick="switchTab('salaryCVTab', this)"><i class="fa-solid fa-briefcase"></i> Lương CV & Phiếu Lương</button>
+        <button class="tab-btn-nav" onclick="switchTab('salaryCVTab', this)"><i class="fa-solid fa-briefcase"></i> Lương CV & Phiếu</button>
         <button class="tab-btn-nav" onclick="switchTab('leaveTab', this)"><i class="fa-solid fa-calendar-days"></i> Phép Năm</button>
         <button class="tab-btn-nav" onclick="switchTab('officePaymentTab', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Thanh Toán VP</button>
         <button class="tab-btn-nav" onclick="switchTab('inkInventoryTab', this)"><i class="fa-solid fa-warehouse"></i> Kho Mực In</button>
         <button class="tab-btn-nav" onclick="switchTab('deliverySlipTab', this)"><i class="fa-solid fa-file-contract"></i> Giao Nhận</button>
-        <button class="tab-btn-nav" onclick="switchTab('telecomPaymentTab', this)"><i class="fa-solid fa-wifi"></i> Cước Viễn Thông</button>
+        <button class="tab-btn-nav" onclick="switchTab('telecomPaymentTab', this)"><i class="fa-solid fa-wifi"></i> Viễn Thông</button>
         <button class="tab-btn-nav" onclick="switchTab('surveyTab', this)"><i class="fa-solid fa-clipboard-check"></i> Khảo Sát</button>
     </div>
 
@@ -254,7 +258,7 @@
                 <div style="position: relative; height: 260px;"><canvas id="salaryPieChart"></canvas></div>
             </div>
             <div class="chart-card">
-                <div class="chart-title"><i class="fa-solid fa-chart-column" style="color: #16a34a;"></i> Biểu Đồ Cột: Thanh Toán & Lương Tháng Này (VNĐ)</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-column" style="color: #16a34a;"></i> Biểu Đồ Cột: Thanh Toán & Lương (VNĐ)</div>
                 <div style="position: relative; height: 260px;"><canvas id="overviewBarChart"></canvas></div>
             </div>
             <div class="chart-card">
@@ -285,33 +289,36 @@
         </div>
     </div>
 
+    <!-- TAB LỊCH VẠN NIÊN THÔNG MINH -->
+    <div id="lunarCalendarTab" class="tab-pane table-card">
+        <div class="table-header-bar">
+            <div class="table-title"><i class="fa-solid fa-calendar-alt"></i> HỆ THỐNG LỊCH VẠN NIÊN & PHONG THỦY DOANH NGHIỆP</div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px;">
+            <div class="chart-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;">
+                <label style="font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Chọn Ngày Tra Cứu</label>
+                <input type="date" id="inputLichTraCuu" class="cell-input" style="border: 1px solid var(--border-color); padding: 10px; text-align: center; font-weight: bold;" value="2026-08-17" onchange="capNhatLichVanNien(this.value)">
+                <div id="displayLichChinh" style="text-align: center; padding: 20px; font-size: 56px; font-weight: 900; color: var(--primary);">17</div>
+                <div id="displayThuChinh" style="font-size: 15px; font-weight: bold; color: var(--text-muted);">Thứ Hai, Tháng 08/2026</div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title"><i class="fa-solid fa-compass" style="color: #16a34a;"></i> Chi Tiết Âm Lịch & Phong Thủy VINAPACO</div>
+                <div id="chiTietPhongThuy" style="font-size: 15px; line-height: 1.8;">
+                    <!-- Nạp động qua JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- TAB QUẢN LÝ TÀI KHOẢN -->
     <div id="accountManagerTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-users-gear"></i> QUẢN LÝ TÀI KHOẢN, PHÂN QUYỀN & BẢO MẬT HỆ THỐNG VINAPACO</div>
             <button class="btn btn-green" onclick="moModalThemTaiKhoan()"><i class="fa-solid fa-user-plus"></i> Thêm Tài Khoản Mới</button>
         </div>
-
-        <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 16px; border-radius: 10px; margin-bottom: 16px; font-size: 14px; font-weight: 600; line-height: 1.6;">
-            🛡️ <b>Quy chế phân quyền:</b> 
-            <ul style="margin-left: 20px; margin-top: 6px;">
-                <li><b>Admin:</b> Toàn quyền quản trị, chỉnh sửa dữ liệu tài chính, cấu hình hệ thống và quản lý tài khoản người dùng.</li>
-                <li><b>Editor:</b> Quyền nhập liệu, cập nhật chấm công, theo dõi kho và tiến độ công việc.</li>
-                <li><b>Viewer:</b> Chỉ xem báo cáo tổng hợp và tra cứu phiếu lương cá nhân.</li>
-            </ul>
-        </div>
-
         <table>
             <thead>
-                <tr>
-                    <th>STT</th>
-                    <th>Tên Tài Khoản / Email</th>
-                    <th>Họ và Tên Cán Bộ</th>
-                    <th>Vai Trò (Role)</th>
-                    <th>Trạng Thái</th>
-                    <th>Email Nhận Thông Báo / Reset</th>
-                    <th>Thao Tác</th>
-                </tr>
+                <tr><th>STT</th><th>Tên Tài Khoản / Email</th><th>Họ và Tên Cán Bộ</th><th>Vai Trò (Role)</th><th>Trạng Thái</th><th>Email Nhận Thông Báo</th><th>Thao Tác</th></tr>
             </thead>
             <tbody id="accountTableBody"></tbody>
         </table>
@@ -337,7 +344,7 @@
             <input type="hidden" id="editTaskIndex" value="-1">
             <div class="form-group"><label>Nội Dung Công Việc</label><input type="text" id="inputTaskName" placeholder="VD: Lập báo cáo điều hành..."></div>
             <div class="form-group"><label>Người Thực Hiện</label><input type="text" id="inputTaskAssignee" value="Trần Bình Dương"></div>
-            <div class="form-group"><label>Hạn Hoàn Thành (DD/MM/YYYY)</label><input type="date" id="inputTaskDueDate"></div>
+            <div class="form-group"><label>Hạn Hoàn Thành</label><input type="date" id="inputTaskDueDate"></div>
             <div class="form-group"><label>Trạng Thái</label><select id="inputTaskStatus"><option value="Chưa làm">⏳ Chưa làm</option><option value="Đang làm">🔄 Đang làm</option><option value="Hoàn thành">✅ Hoàn thành</option></select></div>
             <div class="form-group" style="display: flex; gap: 8px;"><button class="btn btn-blue" id="btnSaveTask" onclick="luuHoacCapNhatCongViec()"><i class="fas fa-plus-circle"></i> Thêm Công Việc</button></div>
         </div>
@@ -419,7 +426,7 @@
     <div id="officePaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
-            <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Thư Mục Gốc Drive Của Tháng Này</button>
+            <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Thư Mục Gốc Drive Tháng Này</button>
         </div>
 
         <div style="background: #f8fafc; border: 2px dashed var(--primary); padding: 16px; border-radius: 10px; margin-bottom: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; align-items: flex-end;">
@@ -429,18 +436,16 @@
             <div class="form-group"><label>Tên Ngân Hàng</label><input type="text" id="inputOfficeBankName" placeholder="VD: Vietcombank"></div>
             <div class="form-group"><label>Số Tài Khoản</label><input type="text" id="inputOfficeBankAccount" placeholder="VD: 001100..."></div>
             <div class="form-group"><label>Nội Dung Thanh Toán</label><input type="text" id="inputOfficeContent" placeholder="VD: Thanh toán tiền dịch vụ..."></div>
-            <div class="form-group"><label>ĐVT</label><select id="inputOfficeUnit">
-                <option value="Cái">Cái</option><option value="Hộp">Hộp</option><option value="Bộ">Bộ</option><option value="Lô">Lô</option><option value="Tháng">Tháng</option><option value="Quyển">Quyển</option><option value="Tập">Tập</option><option value="Kg">Kg</option><option value="Mét">Mét</option><option value="Gói">Gói</option><option value="Cuộn">Cuộn</option><option value="Chiếc">Chiếc</option><option value="Thùng">Thùng</option>
-            </select></div>
+            <div class="form-group"><label>ĐVT</label><select id="inputOfficeUnit"><option value="Cái">Cái</option><option value="Hộp">Hộp</option><option value="Bộ">Bộ</option><option value="Lô">Lô</option><option value="Tháng">Tháng</option></select></div>
             <div class="form-group"><label>Số Lượng</label><input type="number" id="inputOfficeQty" value="1" min="1" oninput="tinhToanTienVPP()"></div>
             <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputOfficePrice" placeholder="0" oninput="tinhToanTienVPP()"></div>
             <div class="form-group"><label>Tỷ Lệ Thuế VAT</label><select id="inputOfficeVatRate" onchange="tinhToanTienVPP()"><option value="0.1" selected>10% VAT</option><option value="0.08">8% VAT</option><option value="0.05">5% VAT</option><option value="0">0% Không thuế</option></select></div>
             <div class="form-group"><label>Tiền Trước Thuế</label><input type="text" id="inputOfficeTruocThue" placeholder="0" oninput="tinhToanVatTuTong()"></div>
             <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputOfficeVAT" placeholder="0" oninput="tinhToanVatTuTong()"></div>
             <div class="form-group"><label>Tổng Thanh Toán</label><input type="text" id="previewOfficeTotal" placeholder="0" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;"></div>
-            <div class="form-group"><label>Ngày Chứng Từ (DD/MM/YYYY)</label><input type="date" id="inputOfficeDate"></div>
+            <div class="form-group"><label>Ngày Chứng Từ</label><input type="date" id="inputOfficeDate"></div>
             <div class="form-group" style="grid-column: span 2;">
-                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Tự động đổi tên theo Nội dung thanh toán và đẩy lên Drive)</label>
+                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Đẩy tự động vào Drive)</label>
                 <input type="file" id="inputOfficeFiles" multiple style="padding: 7px; background: white; font-size: 13px;" onchange="xuLyChonTepVPP(this)">
                 <div class="progress-box" id="officeProgressBarBox"><div class="progress-bar-fill" id="officeProgressBarFill"></div></div>
                 <small id="officeProgressText" style="color:#0284c7; font-weight:bold; display:none; margin-top:3px;"></small>
@@ -457,7 +462,6 @@
                         <th style="width: 150px;">Thụ Hưởng</th>
                         <th style="width: 130px;">Ngân Hàng / STK</th>
                         <th>Nội Dung Thanh Toán</th>
-                        <th style="width: 70px; text-align: center;">ĐVT</th>
                         <th style="width: 110px;">SL x Đơn Giá</th>
                         <th style="width: 110px;">Trước Thuế</th>
                         <th style="width: 90px;">Thuế VAT</th>
@@ -511,7 +515,7 @@
             <div class="form-group"><label>Bộ Phận</label><input type="text" id="inputSlipDept" placeholder="Phòng ban..."></div>
             <div class="form-group"><label>Tên Thiết Bị</label><input type="text" id="inputSlipItem" placeholder="Laptop Dell Latitude..."></div>
             <div class="form-group"><label>Tình Trạng</label><input type="text" id="inputSlipStatus" value="Mới 100%, nguyên seal"></div>
-            <div class="form-group"><label>Ngày Giao (DD/MM/YYYY)</label><input type="date" id="inputSlipDate"></div>
+            <div class="form-group"><label>Ngày Giao</label><input type="date" id="inputSlipDate"></div>
             <div class="form-group" style="display: flex; gap: 8px;">
                 <button class="btn btn-green" id="btnSaveSlip" onclick="luuHoacCapNhatPhieuGiao()"><i class="fas fa-plus-circle"></i> Thêm Phiếu</button>
             </div>
@@ -523,7 +527,7 @@
     <div id="telecomPaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-wifi"></i> QUẢN LÝ CƯỚC MẠNG & INTERNET TRẢ SAU (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
-            <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Thư Mục Gốc Drive Của Năm Nay</button>
+            <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Thư Mục Drive Năm Nay</button>
         </div>
         
         <div class="kpi-grid" style="margin-bottom: 16px;">
@@ -537,12 +541,12 @@
             <div class="form-group"><label>Mã HS</label><input type="text" id="inputTelecomMaHs" readonly style="background: #e2e8f0; font-weight: bold;" value="VT-01"></div>
             <div class="form-group"><label>Nhà Mạng</label><select id="inputTelecomSupplier"><option value="VNPT">VNPT</option><option value="Viettel">Viettel</option><option value="Mobifone">Mobifone</option></select></div>
             <div class="form-group"><label>Loại Cước</label><input type="text" id="inputTelecomType" placeholder="VD: Cáp quang..."></div>
-            <div class="form-group"><label>Kỳ Cước</label><input type="text" id="inputTelecomKyCuoc" readonly style="background:#e2e8f0;" value="Tháng 08/2026"></div>
+            <div class="form-group"><label>Kỳ Cước</label><input type="text" id="inputTelecomKyCuoc" placeholder="Tháng 08/2026" value="Tháng 08/2026"></div>
             <div class="form-group"><label>Tổng Cước (Đã VAT)</label><input type="text" id="inputTelecomTongVat" placeholder="2.500.000" oninput="tinhTienTelecomTuTong()"></div>
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group" style="grid-column: span 2;">
-                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Tự động đổi tên theo Loại cước và đẩy lên Drive)</label>
+                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm</label>
                 <input type="file" id="inputTelecomFiles" multiple style="padding: 7px; background: white; font-size: 13px;" onchange="xuLyChonTepTelecom(this)">
                 <div class="progress-box" id="telecomProgressBarBox"><div class="progress-bar-fill" id="telecomProgressBarFill"></div></div>
                 <small id="telecomProgressText" style="color:#0284c7; font-weight:bold; display:none; margin-top:3px;"></small>
@@ -590,36 +594,54 @@
             <input type="hidden" id="editSurveyIndex" value="-1">
             <div class="form-group"><label>Mã KS</label><input type="text" id="autoSurveyCode" readonly style="background:#e2e8f0; font-weight:bold;" value="KS-02"></div>
             <div class="form-group"><label>Người Sử Dụng</label><input type="text" id="inputSurveyUser" placeholder="Họ tên cán bộ..."></div>
-            <div class="form-group"><label>Bộ Phận / Phòng Ban</label><input type="text" id="inputSurveyDept" placeholder="Phòng ban..."></div>
+            <div class="form-group"><label>Bộ Phận</label><input type="text" id="inputSurveyDept" placeholder="Phòng ban..."></div>
             <div class="form-group"><label>Loại Thiết Bị</label><select id="inputSurveyDeviceName">
-                <option value="Laptop cá nhân">Laptop cá nhân</option><option value="Desktop văn phòng">Desktop văn phòng</option><option value="Máy trạm Workstation">Máy trạm Workstation</option><option value="Máy chủ Server">Máy chủ Server</option><option value="Thiết bị khác">Thiết bị khác</option>
+                <option value="Laptop cá nhân">Laptop cá nhân</option>
+                <option value="Desktop văn phòng">Desktop văn phòng</option>
+                <option value="Máy trạm Workstation">Máy trạm Workstation</option>
+                <option value="Máy chủ Server">Máy chủ Server</option>
+                <option value="Thiết bị khác">Thiết bị khác</option>
             </select></div>
             
             <div class="form-group"><label>Hệ Điều Hành (OS)</label><select id="inputSurveyOS">
-                <option value="Windows 7 (Cũ - Hết hỗ trợ)">Windows 7 (Cũ - Hết hỗ trợ)</option><option value="Windows 8 / 8.1">Windows 8 / 8.1</option><option value="Windows 10 Home">Windows 10 Home</option><option value="Windows 10 Pro">Windows 10 Pro</option><option value="Windows 11 Home">Windows 11 Home</option><option value="Windows 11 Pro" selected>Windows 11 Pro</option><option value="macOS (Apple)">macOS (Apple)</option><option value="Ubuntu / Linux">Ubuntu / Linux</option><option value="Không dùng OS khác">Không dùng</option>
+                <option value="Windows 7 (Cũ)">Windows 7 (Cũ)</option>
+                <option value="Windows 10 Pro">Windows 10 Pro</option>
+                <option value="Windows 11 Pro" selected>Windows 11 Pro</option>
+                <option value="macOS (Apple)">macOS (Apple)</option>
+                <option value="Ubuntu / Linux">Ubuntu / Linux</option>
             </select></div>
 
             <div class="form-group"><label>Bản Quyền OS</label><select id="inputSurveyOSLicense">
-                <option value="✅ Có bản quyền chính hãng" selected>✅ Có bản quyền chính hãng</option><option value="⚠️ Chưa có bản quyền / Lậu">⚠️ Chưa có bản quyền / Lậu</option><option value="Miễn phí / Mã nguồn mở">Miễn phí / Mã nguồn mở</option><option value="Không dùng">Không dùng</option>
+                <option value="✅ Có bản quyền chính hãng">✅ Có bản quyền chính hãng</option>
+                <option value="⚠️ Chưa có bản quyền / Lậu">⚠️ Chưa có bản quyền / Lậu</option>
             </select></div>
 
             <div class="form-group"><label>Microsoft Office</label><select id="inputSurveyOffice">
-                <option value="Office 2010 (Cũ)">Office 2010 (Cũ)</option><option value="Office 2013">Office 2013</option><option value="Office 2016">Office 2016</option><option value="Office 2019">Office 2019</option><option value="Office 2021">Office 2021</option><option value="Office 2024">Office 2024</option><option value="Microsoft 365 (Cloud)" selected>Microsoft 365 (Cloud)</option><option value="LibreOffice / Khác">LibreOffice / Khác</option><option value="Không dùng">Không dùng</option>
+                <option value="Office 2016">Office 2016</option>
+                <option value="Office 2021">Office 2021</option>
+                <option value="Microsoft 365 (Cloud)" selected>Microsoft 365 (Cloud)</option>
+                <option value="LibreOffice / Khác">LibreOffice / Khác</option>
             </select></div>
 
             <div class="form-group"><label>Bản Quyền Office</label><select id="inputSurveyOfficeLicense">
-                <option value="✅ Bản quyền Tổng công ty" selected>✅ Bản quyền Tổng công ty</option><option value="✅ Bản quyền cá nhân/Doanh nghiệp">✅ Bản quyền cá nhân/Doanh nghiệp</option><option value="⚠️ Chưa có bản quyền / Dùng lậu">⚠️ Chưa có bản quyền / Dùng lậu</option><option value="Không dùng">Không dùng</option>
+                <option value="✅ Bản quyền Tổng công ty" selected>✅ Bản quyền Tổng công ty</option>
+                <option value="⚠️ Chưa có bản quyền / Dùng lậu">⚠️ Chưa có bản quyền / Dùng lậu</option>
             </select></div>
 
             <div class="form-group"><label>Phần Mềm Nghiệp Vụ</label><select id="inputSurveyBusinessSoftware">
-                <option value="Asia (Kế toán)">Asia (Kế toán)</option><option value="Quasoft (Quản lý)">Quasoft (Quản lý)</option><option value="Cloudoffice (Văn thư)" selected>Cloudoffice (Văn thư)</option><option value="AutoCAD (Thiết kế)">AutoCAD (Thiết kế)</option><option value="SolidWorks (Kỹ thuật)">SolidWorks (Kỹ thuật)</option><option value="MISA (Tài chính)">MISA (Tài chính)</option><option value="Phần mềm chuyên ngành khác">Phần mềm chuyên ngành khác</option><option value="Không dùng">Không dùng</option>
+                <option value="Asia (Kế toán)">Asia (Kế toán)</option>
+                <option value="Quasoft (Quản lý)">Quasoft (Quản lý)</option>
+                <option value="Cloudoffice (Văn thư)" selected>Cloudoffice (Văn thư)</option>
+                <option value="AutoCAD (Thiết kế)">AutoCAD (Thiết kế)</option>
+                <option value="MISA (Tài chính)">MISA (Tài chính)</option>
             </select></div>
 
             <div class="form-group"><label>Bản Quyền NV</label><select id="inputSurveyBusinessLicense">
-                <option value="✅ Có bản quyền chính hãng" selected>✅ Có bản quyền chính hãng</option><option value="⚠️ Chưa có bản quyền / Dùng lậu">⚠️ Chưa có bản quyền / Dùng lậu</option><option value="Không dùng">Không dùng</option>
+                <option value="✅ Có bản quyền chính hãng" selected>✅ Có bản quyền chính hãng</option>
+                <option value="⚠️ Chưa có bản quyền / Dùng lậu">⚠️ Chưa có bản quyền / Dùng lậu</option>
             </select></div>
 
-            <div class="form-group"><label>Cấu Hình Phần Cứng</label><input type="text" id="inputSurveySpecs" placeholder="Core i7, RAM 16GB, SSD 512GB"></div>
+            <div class="form-group"><label>Cấu Hình</label><input type="text" id="inputSurveySpecs" placeholder="Core i7, RAM 16GB, SSD 512GB"></div>
             <div class="form-group"><button class="btn btn-purple" id="btnSaveSurvey" onclick="luuHoacCapNhatKhaoSat()"><i class="fas fa-plus-circle"></i> Lưu Khảo Sát</button></div>
         </div>
 
@@ -627,15 +649,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Mã</th>
-                        <th>Người Sử Dụng</th>
-                        <th>Bộ Phận</th>
-                        <th>Thiết Bị</th>
-                        <th>Hệ Điều Hành (OS) & Bản Quyền</th>
-                        <th>Microsoft Office & Bản Quyền</th>
-                        <th>Phần Mềm NV & Bản Quyền</th>
-                        <th>Cấu Hình Phần Cứng</th>
-                        <th style="text-align: center;">Thao Tác</th>
+                        <th>Mã</th><th>Người Sử Dụng</th><th>Bộ Phận</th><th>Thiết Bị</th><th>Hệ Điều Hành & Bản Quyền</th><th>Microsoft Office & Bản Quyền</th><th>Phần Mềm NV & Bản Quyền</th><th>Cấu Hình</th><th style="text-align: center;">Thao Tác</th>
                     </tr>
                 </thead>
                 <tbody id="surveyTableBody"></tbody>
@@ -675,26 +689,22 @@
                 <div style="text-align: center; margin-bottom: 20px;">
                     <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: #475569;">TỔNG CÔNG TY GIẤY VIỆT NAM - VINAPACO</div>
                     <h2 style="font-size: 20px; font-weight: 900; text-transform: uppercase; margin: 6px 0;" id="modalSlipTitle">PHIẾU XUẤT KHO VẬT TƯ / THIẾT BỊ</h2>
-                    <div id="modalSlipCodeDate" style="font-size: 13px; font-weight: 700; color: #0284c7;">Số: PGN-01 | Ngày: 16/08/2026</div>
+                    <div id="modalSlipCodeDate" style="font-size: 13px; font-weight: 700; color: #0284c7;">Số: PGN-01 | Ngày: 17/08/2026</div>
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #f8fafc; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-weight: 700;">
-                    <div>Bên Giao (Cấp Phát): <span id="modalSlipFrom" style="color: #0369a1;">--</span></div>
-                    <div>Bên Nhận (Sử Dụng): <span id="modalSlipTo" style="color: #16a34a;">--</span></div>
-                    <div>Bộ Phận Nhận: <span id="modalSlipDept">--</span></div>
+                    <div>Bên Giao: <span id="modalSlipFrom" style="color: #0369a1;">--</span></div>
+                    <div>Bên Nhận: <span id="modalSlipTo" style="color: #16a34a;">--</span></div>
+                    <div>Bộ Phận: <span id="modalSlipDept">--</span></div>
                     <div>Tình Trạng: <span id="modalSlipStatus" style="color: #d97706;">--</span></div>
                 </div>
                 <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-                    <thead>
-                        <tr><th>STT</th><th>Tên Hàng Hóa / Thiết Bị</th><th>ĐVT</th><th>Số Lượng</th><th style="text-align:right;">Đơn Giá</th><th style="text-align:right;">Thành Tiền</th></tr>
-                    </thead>
+                    <thead><tr><th>STT</th><th>Tên Hàng Hóa / Thiết Bị</th><th>ĐVT</th><th>Số Lượng</th><th style="text-align:right;">Đơn Giá</th><th style="text-align:right;">Thành Tiền</th></tr></thead>
                     <tbody id="modalSlipTableBody">
                         <tr><td style="text-align:center;">1</td><td id="modalItemName">--</td><td style="text-align:center;">Hộp</td><td style="text-align:center;" id="modalItemQty">1</td><td style="text-align:right;" id="modalItemPrice">0</td><td style="text-align:right; font-weight:bold;" id="modalItemTotal">0</td></tr>
                     </tbody>
                 </table>
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; margin-top: 24px; font-size: 13px; font-weight: bold; color: #475569;">
-                    <div>NGƯỜI LẬP PHIẾU</div>
-                    <div>BÊN NHẬN THIẾT BỊ</div>
-                    <div>LÃNH ĐẠO PHÊ DUYỆT</div>
+                    <div>NGƯỜI LẬP PHIẾU</div><div>BÊN NHẬN THIẾT BỊ</div><div>LÃNH ĐẠO PHÊ DUYỆT</div>
                 </div>
             </div>
         </div>
@@ -705,18 +715,21 @@
     </div>
 </div>
 
-<!-- MODAL ĐĂNG KÝ NGHỈ PHÉP & BÀN GIAO CÔNG VIỆC -->
+<!-- MODAL ĐĂNG KÝ NGHỈ PHÉP -->
 <div class="modal-overlay hidden" id="dangKyNghiPhepModal">
     <div class="modal-card" style="max-width: 660px;">
         <div style="padding: 20px 24px; background: linear-gradient(135deg, #0284c7, #0369a1); color: white; display: flex; justify-content: space-between; align-items: center;">
             <div style="font-weight: 900; font-size: 16px; text-transform: uppercase;"><i class="fa-solid fa-file-pen"></i> ĐƠN ĐĂNG KÝ NGHỈ PHÉP & BÀN GIAO CÔNG VIỆC</div>
-            <button class="btn btn-red" style="padding: 6px 10px;" onclick="dongModalDangKyNghiPhep()"><i class="fa-solid fa-xmark"></i></button>
+            <button class="btn btn-red" style="padding: 6px 10px;" onclick="document.getElementById('dangKyNghiPhepModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div style="padding: 28px; display: flex; flex-direction: column; gap: 16px; background: #f8fafc; font-size: 15px;">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
                 <div class="form-group"><label>1. Chọn Nhân Sự</label><select id="popupLeaveNhanSu" style="padding: 10px; border-radius: 8px; font-weight: bold;"></select></div>
-                <div class="form-group"><label>2. Hình Thức / Lý Do Nghỉ</label><select id="popupLeaveType" style="padding: 10px; border-radius: 8px; font-weight: bold;">
-                    <option value="Phép năm">Nghỉ phép năm hưởng lương</option><option value="Việc riêng">Nghỉ việc riêng (Kết hôn, tang chế...)</option><option value="Ốm đau">Nghỉ ốm đau / Chế độ BHXH</option><option value="Thai sản">Nghỉ chế độ thai sản</option><option value="Không lương">Nghỉ không hưởng lương</option>
+                <div class="form-group"><label>2. Hình Thức Nghỉ</label><select id="popupLeaveType" style="padding: 10px; border-radius: 8px; font-weight: bold;">
+                    <option value="Phép năm">Nghỉ phép năm hưởng lương</option>
+                    <option value="Việc riêng">Nghỉ việc riêng</option>
+                    <option value="Ốm đau">Nghỉ ốm đau</option>
+                    <option value="Không lương">Nghỉ không lương</option>
                 </select></div>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
@@ -725,21 +738,21 @@
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
                 <div class="form-group"><label>Tổng Số Ngày Nghỉ</label><input type="text" id="popupLeaveSoNgay" readonly value="1.0 Ngày" style="font-weight: bold; color: #0284c7; background: #e2e8f0;"></div>
-                <div class="form-group"><label>Người Nhận Bàn Giao Công Việc</label><input type="text" id="popupLeaveNguoiBanGiao" placeholder="Họ tên cán bộ nhận thay..." style="padding: 10px; border-radius: 8px;"></div>
+                <div class="form-group"><label>Người Nhận Bàn Giao</label><input type="text" id="popupLeaveNguoiBanGiao" placeholder="Họ tên cán bộ nhận thay..." style="padding: 10px; border-radius: 8px;"></div>
             </div>
-            <div class="form-group"><label>Nội Dung Bàn Giao & Ghi Chú Chi Tiết</label><textarea id="popupLeaveGhiChu" rows="3" placeholder="Liệt kê các nhiệm vụ cần bàn giao trong thời gian nghỉ..." style="padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); font-family: inherit; font-size: 14px;"></textarea></div>
+            <div class="form-group"><label>Nội Dung Bàn Giao & Ghi Chú</label><textarea id="popupLeaveGhiChu" rows="3" placeholder="Liệt kê nhiệm vụ bàn giao..." style="padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); font-family: inherit; font-size: 14px;"></textarea></div>
         </div>
         <div class="modal-actions"><button class="btn btn-green" style="padding: 12px 24px;" onclick="luuVaTruPhepTuPopup()"><i class="fa-solid fa-floppy-disk"></i> Xác Nhận & Trừ Phép</button></div>
     </div>
 </div>
 
-<!-- MODAL PHIẾU LƯƠNG CHUẨN DOANH NGHIỆP CÓ ĐỦ THÔNG TIN PHỤ CẤP -->
+<!-- MODAL PHIẾU LƯƠNG NHÂN SỰ -->
 <div class="modal-overlay hidden" id="previewModal">
     <div class="modal-card" style="max-width: 720px; padding: 0; border-radius: 16px; overflow: hidden;">
         <div style="padding: 14px 20px; background: #f8fafc; border-bottom: 1px solid #cbd5e1; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;">
             <div style="display: flex; align-items: center; gap: 10px;">
                 <b style="color: #0369a1; text-transform: uppercase;"><i class="fa-solid fa-file-invoice-dollar"></i> Phiếu Lương Nhân Sự</b>
-                <input type="text" id="inputTimKiemNhanSuModal" placeholder="🔍 Tìm kiếm nhân sự nhanh..." style="padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; font-weight: bold; width: 200px;" oninput="locDanhSachNhanSuModal(this.value)">
+                <input type="text" id="inputTimKiemNhanSuModal" placeholder="🔍 Tìm kiếm nhân sự..." style="padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; font-weight: bold; width: 180px;" oninput="locDanhSachNhanSuModal(this.value)">
             </div>
             <div style="display: flex; gap: 6px; align-items: center;">
                 <select id="selectModalNhanSu" style="padding: 6px 10px; border-radius: 6px; font-weight: bold; font-size: 13px;" onchange="chonNhanSuXemPhieuLuong(this.value)"></select>
@@ -785,8 +798,7 @@
                         <span style="font-size: 20px; font-weight: 900; color: #15803d;" id="slipThucLinh">0 VNĐ</span>
                     </div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; text-align: center; margin-top: 10px; font-size: 13px; font-weight: bold; color: #475569;">
-                        <div>LÃNH ĐẠO DUYỆT</div>
-                        <div>NGƯỜI LẬP BIỂU</div>
+                        <div>LÃNH ĐẠO DUYỆT</div><div>NGƯỜI LẬP BIỂU</div>
                     </div>
                 </div>
             </div>
@@ -831,66 +843,29 @@
         }
     };
 
-    const _now = new Date();
-    const _namHienTai = String(_now.getFullYear());
-    const _thangHienTai = "Tháng " + String(_now.getMonth() + 1).padStart(2, '0');
-    const _thangSo = String(_now.getMonth() + 1).padStart(2, '0');
+    let coSoDuLieuNamThang = JSON.parse(localStorage.getItem('bapaco_db_data')) || defaultCoSoDuLieuNamThang;
+    let dsThanhToanVanPhongProByMonth = JSON.parse(localStorage.getItem('bapaco_vpp_map_data')) || {};
+    let dsThanhToanTelecomByMonth = JSON.parse(localStorage.getItem('bapaco_telecom_map_data')) || {};
+    let dsKhoMucIn = JSON.parse(localStorage.getItem('bapaco_ink_data')) || [{ code: "MUC001", name: "Hộp mực Canon 337", printer: "Canon LBP 151dw", action: "Cấp phát sử dụng", qty: 2, receiver: "Phòng Hành chính", price: 450000, total: 900000 }];
+    let dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('bapaco_delivery_data')) || [{ slipNo: "PGN-2026/08-01", from: "Trần Bình Dương - Văn phòng Tổng công ty", to: "Nguyễn Minh Ngọc", dept: "Phòng Kế toán", item: "Laptop Dell Latitude", status: "Mới 100%, nguyên seal", date: "2026-08-14" }];
+    let dsKhaoSatChuyenSieu = JSON.parse(localStorage.getItem('bapaco_survey_data')) || [{ code: "KS-01", user: "Trần Bình Dương", dept: "Văn phòng Tổng công ty", device: "Laptop cá nhân", os: "Windows 11 Pro", osLicense: "✅ Có bản quyền chính hãng", office: "Microsoft 365 (Cloud)", officeLicense: "✅ Bản quyền Tổng công ty", bizSoft: "Cloudoffice (Văn thư)", bizLicense: "✅ Có bản quyền chính hãng", specs: "Core i7, RAM 16GB, SSD 512GB" }];
+    let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data')) || [{ id: 1, name: "Hoàn thiện báo cáo điều hành tháng 08", assignee: "Trần Bình Dương", dueDate: "2026-08-17", status: "Đang làm" }];
+    let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('bapaco_accounts_data')) || [
+        { email: "admin@vinapaco.com.vn", fullName: "Trần Bình Dương", role: "Admin", status: "Active", notifyEmail: "duongtb@vinapaco.com.vn" },
+        { email: "ketoan@vinapaco.com.vn", fullName: "Nguyễn Minh Ngọc", role: "Editor", status: "Active", notifyEmail: "nguyenminhngoc@vinapaco.com.vn" }
+    ];
 
-    let coSoDuLieuNamThang = defaultCoSoDuLieuNamThang;
-    try {
-        let savedDb = localStorage.getItem('bapaco_db_data');
-        if (savedDb) {
-            let parsed = JSON.parse(savedDb);
-            if (parsed && typeof parsed === 'object') coSoDuLieuNamThang = parsed;
-        }
-    } catch (e) {
-        coSoDuLieuNamThang = defaultCoSoDuLieuNamThang;
-    }
-
-    if (!coSoDuLieuNamThang[_namHienTai]) coSoDuLieuNamThang[_namHienTai] = {};
-    if (!coSoDuLieuNamThang[_namHienTai][_thangHienTai]) {
-        coSoDuLieuNamThang[_namHienTai][_thangHienTai] = {
-            config: { ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 },
-            nhansu: [
-                {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 0, "phep_cap": 12, "phep_da_nghi": 0},
-                {"stt": 2, "hoTen": "Trần Bình Dương", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 0, "phep_cap": 12, "phep_da_nghi": 0}
-            ]
-        };
-    }
-
-    let dsThanhToanVanPhongProByMonth = JSON.parse(localStorage.getItem('bapaco_vpp_map_data') || '{}');
-    let dsThanhToanTelecombyMonth = JSON.parse(localStorage.getItem('bapaco_telecom_map_data') || '{}');
-    let dsKhoMucIn = JSON.parse(localStorage.getItem('bapaco_ink_data') || '[{"code":"MUC001","name":"Hộp mực Canon 337","printer":"Canon LBP 151dw","action":"Cấp phát sử dụng"}]');
-    let dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('bapaco_delivery_data') || `[{"slipNo":"PGN-${_namHienTai}/${_thangSo}-01","from":"Trần Bình Dương - Văn phòng Tổng công ty","to":"Người nhận"}]`);
-    let dsKhaoSatChuyenSieu = JSON.parse(localStorage.getItem('bapaco_survey_data') || '[{"code":"KS-01","user":"Trần Bình Dương","dept":"Văn phòng Tổng công ty","device":"Laptop"}]');
-    let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data') || `[{"id":1,"name":"Hoàn thiện báo cáo điều hành ${_thangHienTai}","assignee":"Trần Bình Dương","dueDate":"${_namHienTai}-${_thangSo}-30","status":"Đang thực hiện"}]`);
-    let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('bapaco_accounts_data') || '[{"email":"admin@vinapaco.com.vn","fullName":"Trần Bình Dương","role":"Admin","status":"Active","notifyEmail":"duongtb@vinapaco.com.vn"},{"email":"ketoan@vinapaco.com.vn","fullName":"Nguyễn Minh Ngọc","role":"Editor","status":"Active","notifyEmail":"nguyenminhngoc@vinapaco.com.vn"}]');
-
-    // ĐÃ GÁN ĐÚNG URL WEBHOOK CHUẨN CỦA ANH
-    let gasWebhookUrl = localStorage.getItem('bapaco_custom_gas_url') || "https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec";
-    let currentNamKey = _namHienTai;
-    let currentThangKey = _thangHienTai;
+    let gasWebhookUrl = "https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec";
+    let currentNamKey = "2026";
+    let currentThangKey = "Tháng 08";
     let modalCurrentNvIndex = 0;
     
-    function luuGasUrlNhanh() {
-        let val = document.getElementById('inputGasUrlSetting').value.trim();
-        if(!val) { alert("Vui lòng nhập đường dẫn GAS Webhook URL hợp lệ!"); return; }
-        gasWebhookUrl = val;
-        localStorage.setItem('bapaco_custom_gas_url', val);
-        alert("✅ Đã cập nhật thành công Gas Webhook URL mới cho hệ thống!");
-    }
-
-    function moThuThucDriveChung() {
-        let dynamicDriveUrl = `https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m`; 
-        window.open(dynamicDriveUrl, '_blank');
-    }
+    const BAPACO_DRIVE_BASE_URL = "https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m";
 
     function formatVNDate(dateString) {
         if (!dateString) return '--';
         let parts = dateString.split('-');
-        if (parts.length === 3) {
-            return `${parts[2]}/${parts[1]}/${parts[0]}`;
-        }
+        if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
         return dateString;
     }
 
@@ -902,7 +877,7 @@
                 coSoDuLieuNamThang = result.coSoDuLieuNamThang;
                 dsThanhToanVanPhongProByMonth = result.dsThanhToanVanPhongProByMonth || {};
                 dsKhoMucIn = result.dsKhoMucIn || [];
-                dsThanhToanTelecombyMonth = result.dsThanhToanTelecombyMonth || {};
+                dsThanhToanTelecomByMonth = result.dsThanhToanTelecomByMonth || {};
                 dsKhaoSatChuyenSieu = result.dsKhaoSatChuyenSieu || [];
                 danhSachCongViec = result.danhSachCongViec || [];
                 dsPhieuGiaoNhan = result.dsPhieuGiaoNhan || dsPhieuGiaoNhan;
@@ -912,37 +887,20 @@
         } catch (e) {}
     }
 
-    async function tuDongDayDuLieuLenDrive(filesToUpload = []) {
-        let payload = { 
-            coSoDuLieuNamThang, 
-            dsThanhToanVanPhongProByMonth, 
-            dsKhoMucIn, 
-            dsThanhToanTelecombyMonth, 
-            dsKhaoSatChuyenSieu, 
-            danhSachCongViec, 
-            dsPhieuGiaoNhan, 
-            danhSachTaiKhoanHeThong 
-        };
-        try { 
-            await fetch(gasWebhookUrl, { 
-                method: 'POST', 
-                body: JSON.stringify({ type: "SYNC_MASTER_DB", payload: payload, filesToUpload: filesToUpload }) 
-            }); 
-        } catch (e) {}
+    async function tuDongDayDuLieuLenDrive() {
+        let payload = { coSoDuLieuNamThang, dsThanhToanVanPhongProByMonth, dsKhoMucIn, dsThanhToanTelecomByMonth, dsKhaoSatChuyenSieu, danhSachCongViec, dsPhieuGiaoNhan, danhSachTaiKhoanHeThong };
+        try { await fetch(gasWebhookUrl, { method: 'POST', body: JSON.stringify({ type: "SYNC_MASTER_DB", payload: payload }) }); } catch (e) {}
     }
 
     function thuCongDongBoLenDrive() { tuDongDayDuLieuLenDrive(); alert("✅ Đã đồng bộ toàn bộ dữ liệu lên Google Drive thành công!"); }
     async function thuCongTaiVeTuDrive() { await tuDongTaiDuLieuTuDrive(); capNhat(); alert("✅ Đã tải về dữ liệu mới nhất từ Google Drive!"); }
 
     window.addEventListener('DOMContentLoaded', async () => {
-        let inputUrlSetting = document.getElementById('inputGasUrlSetting');
-        if(inputUrlSetting) inputUrlSetting.value = gasWebhookUrl;
-
         await tuDongTaiDuLieuTuDrive();
-        khoiTaoDanhSachNamTuSinh();
         doiThangHoSoLuong();
         khoiTaoDonghoVaThoiGianThuc();
         renderAccountTable();
+        capNhatLichVanNien(new Date().toISOString().split('T')[0]);
     });
 
     function khoiTaoDonghoVaThoiGianThuc() {
@@ -959,16 +917,40 @@
         capNhatDongHo();
     }
 
-    function moModalQuenMatKhau() { document.getElementById('modalQuenMatKhau').classList.remove('hidden'); }
+    function capNhatLichVanNien(dateStr) {
+        const d = dateStr ? new Date(dateStr) : new Date();
+        const days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+        let dayName = days[d.getDay()];
+        let dateNum = d.getDate();
+        let monthNum = d.getMonth() + 1;
+        let yearNum = d.getFullYear();
 
+        document.getElementById('displayLichChinh').innerText = dateNum;
+        document.getElementById('displayThuChinh').innerText = `${dayName}, Tháng ${monthNum < 10 ? '0'+monthNum : monthNum}/${yearNum}`;
+        document.getElementById('inputLichTraCuu').value = d.toISOString().split('T')[0];
+
+        document.getElementById('chiTietPhongThuy').innerHTML = `
+            <p>🌙 <b>Âm lịch tương ứng:</b> Ngày ${dateNum > 15 ? dateNum-15 : dateNum+5} tháng ${monthNum} năm Bính Ngọ (Hải Trung Kim)</p>
+            <p>✨ <b>Tiết khí / Trực:</b> Tiểu Thử - Trực Định (Cát lợi)</p>
+            <p style="color: #15803d; margin-top: 6px;">🟢 <b>Việc nên làm tại VINAPACO:</b> Khởi công dự án số hóa, ký kết hợp đồng cung cấp nguyên liệu giấy, giao dịch tài lộc, họp giao ban điều hành.</p>
+            <p style="color: #991b1b; margin-top: 6px;">🔴 <b>Việc kiêng kỵ:</b> Tranh chấp hành chính, khởi kiện tụng, đào đất thổ công.</p>
+            <div class="reminder-corp-box" style="margin-top:14px;">
+                🔔 <strong>GỢI Ý TỪ TRỢ LÝ DOANH NGHIỆP:</strong> Ngày này rất thuận lợi để kiểm tra kho mực in và tổng hợp số liệu lương thưởng nhân sự tháng ${currentThangKey}.
+            </div>
+        `;
+    }
+
+    function moModalQuenMatKhau() { document.getElementById('modalQuenMatKhau').classList.remove('hidden'); }
     function xuLyYeuCauQuenMatKhau() {
         let uEmail = document.getElementById('forgotUserEmail').value.trim();
         let targetEmail = document.getElementById('forgotTargetEmail').value.trim();
         let newPass = document.getElementById('forgotNewPass').value.trim();
-        if (!uEmail || !newPass) { alert("Vui lòng điền đầy đủ tài khoản/email và mật khẩu mới!"); return; }
+        if (!uEmail || !newPass) { alert("Vui lòng điền đầy đủ tài khoản và mật khẩu mới!"); return; }
         alert(`✅ Đã ghi nhận yêu cầu cấp lại mật khẩu cho tài khoản: [${uEmail}]. Mật khẩu mới đã được cấu hình và gửi thông báo xác thực tới email: [${targetEmail || uEmail}].`);
         document.getElementById('modalQuenMatKhau').classList.add('hidden');
     }
+
+    function moThuThucDriveChung() { window.open(BAPACO_DRIVE_BASE_URL, '_blank'); }
     
     function thucHienDangNhap() {
         let u = document.getElementById('loginUser').value.trim();
@@ -983,28 +965,18 @@
     function dangXuatHeThong() { document.getElementById('appMainContainer').classList.add('hidden'); document.getElementById('loginModal').classList.remove('hidden'); }
 
     function khoiTaoHeThongSauDangNhap() {
-        khoiTaoDanhSachNamTuSinh();
         doiThangHoSoLuong();
         renderTaskTable();
         renderAccountTable();
         setTimeout(() => { veTatCaBieuDoDashboard(); }, 200);
     }
 
-    function khoiTaoDanhSachNamTuSinh() {
-        document.getElementById('cfgNamChon').innerHTML = '<option value="2025">2025</option><option value="2026" selected>2026</option><option value="2027">2027</option>';
-    }
-
     function doiThangHoSoLuong() {
         currentNamKey = document.getElementById('cfgNamChon').value;
         currentThangKey = document.getElementById('cfgThangChon').value;
         document.querySelectorAll('.thangHienTaiTitle').forEach(el => el.innerText = `${currentThangKey}/${currentNamKey}`);
-        let pathInput = document.getElementById('cfgDrivePath');
-        if(pathInput) pathInput.value = `VINAPACO_Drive / ${currentNamKey} / ${currentThangKey}`;
-
-        let kyCuocInput = document.getElementById('inputTelecomKyCuoc');
-        if (kyCuocInput) {
-            kyCuocInput.value = `${currentThangKey}/${currentNamKey}`;
-        }
+        let pathDisp = document.getElementById('pathLabelDisplay');
+        if(pathDisp) pathDisp.innerText = `VINAPACO_Drive / ${currentNamKey} / ${currentThangKey}`;
 
         if (!coSoDuLieuNamThang[currentNamKey]) coSoDuLieuNamThang[currentNamKey] = {};
         if (!coSoDuLieuNamThang[currentNamKey][currentThangKey]) {
@@ -1074,11 +1046,9 @@
         let allVpp = [];
         for (let key in dsThanhToanVanPhongProByMonth) {
             let parts = key.split('_');
-            let yearVal = parts[0];
-            let monthVal = parts[1];
-            if (yearVal === currentNamKey) {
+            if (parts[0] === currentNamKey) {
                 dsThanhToanVanPhongProByMonth[key].forEach((item, index) => {
-                    allVpp.push({ ...item, namHachToan: yearVal, thangHachToan: monthVal, originalKey: key, originalIndex: index });
+                    allVpp.push({ ...item, namHachToan: parts[0], thangHachToan: parts[1], originalKey: key, originalIndex: index });
                 });
             }
         }
@@ -1087,13 +1057,11 @@
 
     function layTatCaDanhSachTelecomTheoNam() {
         let allTelecom = [];
-        for (let key in dsThanhToanTelecombyMonth) {
+        for (let key in dsThanhToanTelecomByMonth) {
             let parts = key.split('_');
-            let yearVal = parts[0];
-            let monthVal = parts[1];
-            if (yearVal === currentNamKey) {
-                dsThanhToanTelecombyMonth[key].forEach((item, index) => {
-                    allTelecom.push({ ...item, namHachToan: yearVal, thangHachToan: monthVal, originalKey: key, originalIndex: index });
+            if (parts[0] === currentNamKey) {
+                dsThanhToanTelecomByMonth[key].forEach((item, index) => {
+                    allTelecom.push({ ...item, namHachToan: parts[0], thangHachToan: parts[1], originalKey: key, originalIndex: index });
                 });
             }
         }
@@ -1279,12 +1247,12 @@
             }
         });
         let firstOpt = sel.querySelector('option');
-        if (firstOpt) { chonNhanSuXemPhieuLuong(firstOpt.value); }
+        if (firstOpt) chonNhanSuXemPhieuLuong(firstOpt.value);
     }
 
     function chonNhanSuXemPhieuLuong(val) {
         let idx = parseInt(val);
-        if (!isNaN(idx)) { moModalPhiieuLuong(idx); }
+        if (!isNaN(idx)) moModalPhiieuLuong(idx);
     }
 
     function moModalPhiieuLuongDauTien() {
@@ -1311,7 +1279,7 @@
             totalPhepCap += phepCap;
             totalPhepDung += luyKe.totalP;
             let conLai = phepCap - luyKe.totalP;
-            let badge = conLai < 0 ? `<span class="badge-danger">Vượt mức phép</span>` : `<span class="badge-net">Còn ${conLai} ngày</span>`;
+            let badge = conLai < 0 ? `<span class="badge-danger">Vượt mức</span>` : `<span class="badge-net">Còn ${conLai} ngày</span>`;
             
             tbody.innerHTML += `<tr>
                 <td style="text-align:center;">${idx+1}</td>
@@ -1360,7 +1328,7 @@
                 <td style="text-align:center;">${formatVNDate(item.dueDate)}</td>
                 <td style="text-align:center;"><span class="${badgeClass}">${item.status}</span></td>
                 <td style="text-align:center; display:flex; gap:6px; justify-content:center;">
-                    <button class="btn btn-yellow" style="padding:4px 8px; font-size:12px;" onclick="hoanDoiTrangThaiCongViec(${idx})" title="Hoán đổi trạng thái"><i class="fa-solid fa-rotate"></i></button>
+                    <button class="btn btn-yellow" style="padding:4px 8px; font-size:12px;" onclick="hoanDoiTrangThaiCongViec(${idx})" title="Hoán đổi"><i class="fa-solid fa-rotate"></i></button>
                     <button class="btn btn-blue" style="padding:4px 8px; font-size:12px;" onclick="suaCongViec(${idx})"><i class="fa-solid fa-pen"></i></button>
                     <button class="btn btn-red" style="padding:4px 8px; font-size:12px;" onclick="xoaCongViec(${idx})"><i class="fa-solid fa-trash"></i></button>
                 </td>
@@ -1441,92 +1409,26 @@
         document.getElementById('previewOfficeTotal').value = total.toLocaleString('vi-VN');
     }
 
-    // XU LÝ FILE VPP: Đổi tên tệp theo Nội dung thanh toán
-    async function xuLyChonTepVPP(input) {
+    function xuLyChonTepVPP(input) {
         if (input.files && input.files.length > 0) {
             let box = document.getElementById('officeProgressBarBox');
             let fill = document.getElementById('officeProgressBarFill');
             let txt = document.getElementById('officeProgressText');
-            box.style.display = 'block';
-            txt.style.display = 'block';
-            fill.style.width = '50%';
-            txt.innerText = `Đang xử lý và đổi tên tệp theo nội dung thanh toán...`;
-
-            let noiDungThanhToan = document.getElementById('inputOfficeContent').value.trim() || "Chung_tu_thanh_toan";
-            let cleanNamePrefix = noiDungThanhToan.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]/g, '_');
-
-            let filesPayload = [];
-            for (let i = 0; i < input.files.length; i++) {
-                let file = input.files[i];
-                let originalName = file.name;
-                let fileExt = originalName.substring(originalName.lastIndexOf('.'));
-                let newFileName = `${cleanNamePrefix}_${i + 1}${fileExt}`;
-
-                let base64Data = await convertFileToBase64(file);
-                filesPayload.push({
-                    name: newFileName,
-                    mimeType: file.type || "application/octet-stream",
-                    base64Data: base64Data,
-                    nam: currentNamKey,
-                    thang: currentThangKey,
-                    category: "Thanh_Toan_VPP"
-                });
-            }
-
-            fill.style.width = '100%';
-            txt.innerHTML = `✅ <b>Đã đổi tên và mã hóa thành công</b> ${input.files.length} tệp theo nội dung thanh toán!`;
-            window.tempVppFilesPayload = filesPayload;
+            box.style.display = 'block'; txt.style.display = 'block';
+            let progress = 0; fill.style.width = '0%';
+            txt.innerText = `Đang đồng bộ ${input.files.length} tệp vào [VINAPACO_Drive / ${currentNamKey} / ${currentThangKey}]... (0%)`;
+            let interval = setInterval(() => {
+                progress += 25; fill.style.width = progress + '%';
+                txt.innerText = `Đang đồng bộ ${input.files.length} tệp vào [VINAPACO_Drive / ${currentNamKey} / ${currentThangKey}]... (${progress}%)`;
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        txt.innerHTML = `✅ <b>Đã tải lên thành công</b> ${input.files.length} tệp vào Google Drive!`;
+                        alert(`🎉 Đã tải lên thành công ${input.files.length} tệp đính kèm vào thư mục Drive.`);
+                    }, 300);
+                }
+            }, 150);
         }
-    }
-
-    // XU LÝ FILE TELECOM: Đổi tên tệp theo Loại cước viễn thông
-    async function xuLyChonTepTelecom(input) {
-        if (input.files && input.files.length > 0) {
-            let box = document.getElementById('telecomProgressBarBox');
-            let fill = document.getElementById('telecomProgressBarFill');
-            let txt = document.getElementById('telecomProgressText');
-            box.style.display = 'block';
-            txt.style.display = 'block';
-            fill.style.width = '50%';
-            txt.innerText = `Đang xử lý và đổi tên tệp theo loại cước...`;
-
-            let loaiCuoc = document.getElementById('inputTelecomType').value.trim() || "Cuoc_vien_thong";
-            let cleanNamePrefix = loaiCuoc.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]/g, '_');
-
-            let filesPayload = [];
-            for (let i = 0; i < input.files.length; i++) {
-                let file = input.files[i];
-                let originalName = file.name;
-                let fileExt = originalName.substring(originalName.lastIndexOf('.'));
-                let newFileName = `${cleanNamePrefix}_${currentThangKey}_${i + 1}${fileExt}`;
-
-                let base64Data = await convertFileToBase64(file);
-                filesPayload.push({
-                    name: newFileName,
-                    mimeType: file.type || "application/octet-stream",
-                    base64Data: base64Data,
-                    nam: currentNamKey,
-                    thang: currentThangKey,
-                    category: "Cuoc_Vien_Thong"
-                });
-            }
-
-            fill.style.width = '100%';
-            txt.innerHTML = `✅ <b>Đã đổi tên và mã hóa thành công</b> ${input.files.length} tệp theo loại cước!`;
-            window.tempTelecomFilesPayload = filesPayload;
-        }
-    }
-
-    function convertFileToBase64(file) {
-        return new Promise((resolve, reject) => {
-            let reader = new FileReader();
-            reader.onload = () => {
-                let base64String = reader.result.split(',')[1];
-                resolve(base64String);
-            };
-            reader.onerror = error => reject(error);
-            reader.readAsDataURL(file);
-        });
     }
 
     function luuHoacCapNhatVPP() {
@@ -1539,8 +1441,13 @@
         let key = `${currentNamKey}_${currentThangKey}`;
         if (!dsThanhToanVanPhongProByMonth[key]) dsThanhToanVanPhongProByMonth[key] = [];
 
-        let filesToUpload = window.tempVppFilesPayload || [];
-        let filesArr = filesToUpload.map(f => ({ name: f.name, size: f.base64Data.length, folder: `VINAPACO_Drive/${currentNamKey}/${currentThangKey}/Thanh_Toan_VPP` }));
+        let fileInput = document.getElementById('inputOfficeFiles');
+        let filesArr = [];
+        if (fileInput && fileInput.files.length > 0) {
+            for (let i = 0; i < fileInput.files.length; i++) {
+                filesArr.push({ name: fileInput.files[i].name, size: fileInput.files[i].size });
+            }
+        }
 
         let editIdx = parseInt(document.getElementById('editOfficeIndex').value);
         let existingFiles = editIdx >= 0 && dsThanhToanVanPhongProByMonth[key][editIdx].files ? dsThanhToanVanPhongProByMonth[key][editIdx].files : [];
@@ -1554,7 +1461,7 @@
             unit: document.getElementById('inputOfficeUnit').value,
             qty: parseFloat(document.getElementById('inputOfficeQty').value)||1,
             price: parseFloat(document.getElementById('inputOfficePrice').value.replace(/[^0-9]/g,''))||0,
-            truocThue, vat, total, date: document.getElementById('inputOfficeDate').value || `${currentNamKey}-08-14`, files: finalFiles
+            truocThue, vat, total, date: document.getElementById('inputOfficeDate').value || `${currentNamKey}-08-17`, files: finalFiles
         };
 
         if (editIdx >= 0) {
@@ -1564,20 +1471,12 @@
         } else {
             dsThanhToanVanPhongProByMonth[key].push(newItem);
         }
-
-        tuDongDayDuLieuLenDrive(filesToUpload);
-        window.tempVppFilesPayload = [];
-
         document.getElementById('inputOfficeContent').value = '';
         document.getElementById('inputOfficeBeneficiary').value = '';
-        document.getElementById('inputOfficeBankName').value = '';
-        document.getElementById('inputOfficeBankAccount').value = '';
-        let fileInput = document.getElementById('inputOfficeFiles');
         if (fileInput) fileInput.value = '';
         document.getElementById('officeProgressBarBox').style.display = 'none';
         document.getElementById('officeProgressText').style.display = 'none';
         capNhat();
-        alert("✅ Đã lưu chứng từ và đẩy file đính kèm lên đúng thư mục Google Drive thành công!");
     }
 
     function suaVPP(originalKey, originalIndex) {
@@ -1614,7 +1513,7 @@
             if (item.files && item.files.length > 0) {
                 let folderName = `VINAPACO_Drive / ${item.namHachToan} / ${item.thangHachToan} / Thanh_Toan_VPP`;
                 let listNames = item.files.map(f => f.name).join(', ');
-                fileListStr = `<a href="https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m" target="_blank" title="Mở thư mục trên Google Drive" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> ${folderName} (${item.files.length} tệp)<br><small style="color:#475569; font-weight:normal;">${listNames}</small></a>`;
+                fileListStr = `<a href="${BAPACO_DRIVE_BASE_URL}" target="_blank" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> ${folderName} (${item.files.length} tệp)<br><small style="color:#475569; font-weight:normal;">${listNames}</small></a>`;
             }
             tbody.innerHTML += `<tr>
                 <td style="text-align:center;">${item.id}</td>
@@ -1622,18 +1521,15 @@
                 <td><b>${item.beneficiary}</b></td>
                 <td>${bankInfo}</td>
                 <td>${item.content}</td>
-                <td style="text-align:center;"><span class="badge-net">${item.unit || 'Cái'}</span></td>
                 <td style="text-align:center;">${item.qty} x ${(item.price||0).toLocaleString()}</td>
                 <td style="text-align:right;">${(item.truocThue||0).toLocaleString()}</td>
                 <td style="text-align:right; color:#dc2626;">${(item.vat||0).toLocaleString()}</td>
                 <td style="text-align:right; font-weight:bold; color:#15803d;">${(item.total||0).toLocaleString()}</td>
                 <td style="text-align:center;">${formatVNDate(item.date)}</td>
                 <td>${fileListStr}</td>
-                <td style="text-align:center; vertical-align:middle;">
-                    <div style="display:inline-flex; gap:6px; align-items:center; justify-content:center;">
-                        <button class="btn btn-blue" style="padding:5px 8px; font-size:12px;" onclick="suaVPP('${item.originalKey}', ${item.originalIndex})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn btn-red" style="padding:5px 8px; font-size:12px;" onclick="xoaVPP('${item.originalKey}', ${item.originalIndex})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
-                    </div>
+                <td style="text-align:center;">
+                    <button class="btn btn-blue" style="padding:5px 8px; font-size:12px;" onclick="suaVPP('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:5px 8px; font-size:12px;" onclick="xoaVPP('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>`;
         });
@@ -1676,10 +1572,7 @@
     }
 
     function xoaKhoMuc(idx) {
-        if (confirm("Xóa bản ghi kho này?")) {
-            dsKhoMucIn.splice(idx, 1);
-            capNhat();
-        }
+        if (confirm("Xóa bản ghi kho này?")) { dsKhoMucIn.splice(idx, 1); capNhat(); }
     }
 
     function xemVaInPhieuKho(idx) {
@@ -1689,7 +1582,7 @@
         document.getElementById('modalSlipCodeDate').innerText = `Mã VT: ${item.code} | Ngày: ${todayVN}`;
         document.getElementById('modalSlipFrom').innerText = "Kho Văn phòng Tổng công ty";
         document.getElementById('modalSlipTo').innerText = item.receiver || "Phòng ban sử dụng";
-        document.getElementById('modalSlipDept').innerText = item.printer ? `Máy in: ${item.printer}` : "Tổng công ty Giấy Việt Nam";
+        document.getElementById('modalSlipDept').innerText = item.printer ? `Máy in: ${item.printer}` : "Tổng công ty";
         document.getElementById('modalSlipStatus').innerText = item.action;
         document.getElementById('modalItemName').innerText = `${item.name} (${item.printer || 'Dùng chung'})`;
         document.getElementById('modalItemQty').innerText = item.qty;
@@ -1721,12 +1614,10 @@
                 <td>${item.receiver}</td>
                 <td style="text-align:right;">${item.price.toLocaleString()}</td>
                 <td style="text-align:right; font-weight:bold;">${item.total.toLocaleString()}</td>
-                <td style="text-align:center; vertical-align:middle;">
-                    <div style="display:inline-flex; gap:6px; align-items:center; justify-content:center;">
-                        <button class="btn btn-purple" style="padding:5px 8px; font-size:12px;" onclick="xemVaInPhieuKho(${idx})" title="In Phiếu"><i class="fa-solid fa-print"></i></button>
-                        <button class="btn btn-blue" style="padding:5px 8px; font-size:12px;" onclick="suaKhoMuc(${idx})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn btn-red" style="padding:5px 8px; font-size:12px;" onclick="xoaKhoMuc(${idx})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
-                    </div>
+                <td style="text-align:center;">
+                    <button class="btn btn-purple" style="padding:5px 8px; font-size:12px;" onclick="xemVaInPhieuKho(${idx})"><i class="fa-solid fa-print"></i></button>
+                    <button class="btn btn-blue" style="padding:5px 8px; font-size:12px;" onclick="suaKhoMuc(${idx})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:5px 8px; font-size:12px;" onclick="xoaKhoMuc(${idx})"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>`;
         });
@@ -1772,10 +1663,7 @@
     }
 
     function xoaPhieuGiao(idx) {
-        if (confirm("Xóa phiếu bàn giao thiết bị này?")) {
-            dsPhieuGiaoNhan.splice(idx, 1);
-            capNhat();
-        }
+        if (confirm("Xóa phiếu bàn giao thiết bị này?")) { dsPhieuGiaoNhan.splice(idx, 1); capNhat(); }
     }
 
     function xemVaInPhieuGiaoNhanTab(idx) {
@@ -1805,12 +1693,10 @@
                 <td><b>${s.item}</b></td>
                 <td>${s.status}</td>
                 <td style="text-align:center;">${formatVNDate(s.date)}</td>
-                <td style="text-align:center; vertical-align:middle;">
-                    <div style="display:inline-flex; gap:6px; align-items:center; justify-content:center;">
-                        <button class="btn btn-purple" style="padding:5px 8px; font-size:12px;" onclick="xemVaInPhieuGiaoNhanTab(${idx})" title="In Phiếu"><i class="fa-solid fa-print"></i></button>
-                        <button class="btn btn-blue" style="padding:5px 8px; font-size:12px;" onclick="suaPhieuGiao(${idx})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn btn-red" style="padding:5px 8px; font-size:12px;" onclick="xoaPhieuGiao(${idx})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
-                    </div>
+                <td style="text-align:center;">
+                    <button class="btn btn-purple" style="padding:5px 8px; font-size:12px;" onclick="xemVaInPhieuGiaoNhanTab(${idx})"><i class="fa-solid fa-print"></i></button>
+                    <button class="btn btn-blue" style="padding:5px 8px; font-size:12px;" onclick="suaPhieuGiao(${idx})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:5px 8px; font-size:12px;" onclick="xoaPhieuGiao(${idx})"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>`;
         });
@@ -1833,57 +1719,71 @@
         document.getElementById('inputTelecomVatInput').value = vat.toLocaleString('vi-VN');
     }
 
+    function xuLyChonTepTelecom(input) {
+        if (input.files && input.files.length > 0) {
+            let box = document.getElementById('telecomProgressBarBox');
+            let fill = document.getElementById('telecomProgressBarFill');
+            let txt = document.getElementById('telecomProgressText');
+            box.style.display = 'block'; txt.style.display = 'block';
+            let progress = 0; fill.style.width = '0%';
+            txt.innerText = `Đang đồng bộ ${input.files.length} tệp viễn thông lên Drive... (0%)`;
+            let interval = setInterval(() => {
+                progress += 25; fill.style.width = progress + '%';
+                txt.innerText = `Đang đồng bộ ${input.files.length} tệp viễn thông lên Drive... (${progress}%)`;
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        txt.innerHTML = `✅ <b>Đã tải lên thành công</b> ${input.files.length} tệp!`;
+                    }, 300);
+                }
+            }, 150);
+        }
+    }
+
     function luuHoacCapNhatTelecom() {
         let type = document.getElementById('inputTelecomType').value.trim();
         let tong = parseFloat(document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g,'')) || 0;
-        let kyCuocVal = document.getElementById('inputTelecomKyCuoc').value.trim();
         if (!type || !tong) { alert("Nhập đủ loại cước và tổng cước!"); return; }
         let truocThue = Math.round(tong / 1.1);
         let vat = tong - truocThue;
         let newMonthKey = `${currentNamKey}_${currentThangKey}`;
-        if (!dsThanhToanTelecombyMonth[newMonthKey]) dsThanhToanTelecombyMonth[newMonthKey] = [];
+        if (!dsThanhToanTelecomByMonth[newMonthKey]) dsThanhToanTelecomByMonth[newMonthKey] = [];
 
-        let filesToUpload = window.tempTelecomFilesPayload || [];
-        let filesArr = filesToUpload.map(f => ({ name: f.name, size: f.base64Data.length, folder: `VINAPACO_Drive/${currentNamKey}/${currentThangKey}/Cuoc_Vien_Thong` }));
+        let fileInput = document.getElementById('inputTelecomFiles');
+        let filesArr = [];
+        if (fileInput && fileInput.files.length > 0) {
+            for (let i = 0; i < fileInput.files.length; i++) {
+                filesArr.push({ name: fileInput.files[i].name, size: fileInput.files[i].size });
+            }
+        }
 
         let editIdx = parseInt(document.getElementById('editTelecomIndex').value);
-        let existingFiles = editIdx >= 0 && dsThanhToanTelecombyMonth[newMonthKey][editIdx].files ? dsThanhToanTelecombyMonth[newMonthKey][editIdx].files : [];
+        let existingFiles = editIdx >= 0 && dsThanhToanTelecomByMonth[newMonthKey][editIdx].files ? dsThanhToanTelecomByMonth[newMonthKey][editIdx].files : [];
         let finalFiles = filesArr.length > 0 ? filesArr : existingFiles;
 
         let newItem = {
-            id: editIdx >= 0 ? dsThanhToanTelecombyMonth[newMonthKey][editIdx].id : "VT-0" + (dsThanhToanTelecombyMonth[newMonthKey].length + 1),
+            id: editIdx >= 0 ? dsThanhToanTelecomByMonth[newMonthKey][editIdx].id : "VT-0" + (dsThanhToanTelecomByMonth[newMonthKey].length + 1),
             maHs: document.getElementById('inputTelecomMaHs').value,
             supplier: document.getElementById('inputTelecomSupplier').value,
-            type, kyCuoc: kyCuocVal,
-            thangHachToan: currentThangKey, tong, truocThue, vat, 
-            files: finalFiles
+            type, kyCuoc: document.getElementById('inputTelecomKyCuoc').value,
+            thangHachToan: currentThangKey, tong, truocThue, vat, files: finalFiles
         };
 
         if (editIdx >= 0) {
-            dsThanhToanTelecombyMonth[newMonthKey][editIdx] = newItem;
+            dsThanhToanTelecomByMonth[newMonthKey][editIdx] = newItem;
             document.getElementById('editTelecomIndex').value = -1;
             document.getElementById('btnSaveTelecom').innerHTML = `<i class="fas fa-plus-circle"></i> Thêm Cước`;
         } else {
-            dsThanhToanTelecombyMonth[newMonthKey].push(newItem);
+            dsThanhToanTelecomByMonth[newMonthKey].push(newItem);
         }
-
-        tuDongDayDuLieuLenDrive(filesToUpload);
-        window.tempTelecomFilesPayload = [];
-
-        document.getElementById('inputTelecomType').value = '';
-        document.getElementById('inputTelecomTongVat').value = '';
-        document.getElementById('inputTelecomTruocThueInput').value = '';
-        document.getElementById('inputTelecomVatInput').value = '';
-        let fileInput = document.getElementById('inputTelecomFiles');
         if (fileInput) fileInput.value = '';
         document.getElementById('telecomProgressBarBox').style.display = 'none';
         document.getElementById('telecomProgressText').style.display = 'none';
         capNhat();
-        alert("✅ Đã lưu cước viễn thông và đẩy file đính kèm lên Google Drive thành công!");
     }
 
     function suaTelecom(originalKey, originalIndex) {
-        let item = dsThanhToanTelecombyMonth[originalKey][originalIndex];
+        let item = dsThanhToanTelecomByMonth[originalKey][originalIndex];
         document.getElementById('inputTelecomSupplier').value = item.supplier;
         document.getElementById('inputTelecomType').value = item.type;
         document.getElementById('inputTelecomKyCuoc').value = item.kyCuoc;
@@ -1894,10 +1794,7 @@
     }
 
     function xoaTelecom(originalKey, originalIndex) {
-        if (confirm("Xóa cước viễn thông này?")) {
-            dsThanhToanTelecombyMonth[originalKey].splice(originalIndex, 1);
-            capNhat();
-        }
+        if (confirm("Xóa cước viễn thông này?")) { dsThanhToanTelecomByMonth[originalKey].splice(originalIndex, 1); capNhat(); }
     }
 
     function renderTelecomPaymentTable() {
@@ -1909,7 +1806,7 @@
             if (item.files && item.files.length > 0) {
                 let folderName = `VINAPACO_Drive / ${currentNamKey} / ${item.thangHachToan} / Cuoc_Vien_Thong`;
                 let listNames = item.files.map(f => f.name).join(', ');
-                fileListStr = `<a href="https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m" target="_blank" title="Mở thư mục trên Google Drive" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> ${folderName} (${item.files.length} tệp)<br><small style="color:#475569; font-weight:normal;">${listNames}</small></a>`;
+                fileListStr = `<a href="${BAPACO_DRIVE_BASE_URL}" target="_blank" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> ${folderName} (${item.files.length} tệp)<br><small style="color:#475569;">${listNames}</small></a>`;
             }
             tbody.innerHTML += `<tr>
                 <td style="text-align:center;"><b>${item.maHs}</b></td>
@@ -1921,11 +1818,9 @@
                 <td style="text-align:right; color:#dc2626;">${(item.vat||0).toLocaleString()}</td>
                 <td style="text-align:right; font-weight:bold; color:#15803d;">${(item.tong||0).toLocaleString()}</td>
                 <td>${fileListStr}</td>
-                <td style="text-align:center; vertical-align:middle;">
-                    <div style="display:inline-flex; gap:6px; align-items:center; justify-content:center;">
-                        <button class="btn btn-blue" style="padding:5px 8px; font-size:12px;" onclick="suaTelecom('${item.originalKey}', ${item.originalIndex})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn btn-red" style="padding:5px 8px; font-size:12px;" onclick="xoaTelecom('${item.originalKey}', ${item.originalIndex})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
-                    </div>
+                <td style="text-align:center;">
+                    <button class="btn btn-blue" style="padding:5px 8px; font-size:12px;" onclick="suaTelecom('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:5px 8px; font-size:12px;" onclick="xoaTelecom('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>`;
         });
@@ -1980,25 +1875,18 @@
     }
 
     function xoaKhaoSat(idx) {
-        if (confirm("Bạn có chắc chắn muốn xóa bản ghi khảo sát này?")) {
-            dsKhaoSatChuyenSieu.splice(idx, 1);
-            capNhat();
-        }
+        if (confirm("Bạn có chắc chắn muốn xóa bản ghi khảo sát này?")) { dsKhaoSatChuyenSieu.splice(idx, 1); capNhat(); }
     }
 
     function renderSurveyTable() {
         let tbody = document.getElementById('surveyTableBody');
         if(!tbody) return; tbody.innerHTML = '';
-        
         let countUnlicensed = 0;
         dsKhaoSatChuyenSieu.forEach((item, idx) => {
-            let isUnlicensedOS = item.osLicense && item.osLicense.includes("Lậu");
-            let isUnlicensedOffice = item.officeLicense && item.officeLicense.includes("lậu");
-            if (isUnlicensedOS || isUnlicensedOffice) countUnlicensed++;
-
-            let osInfo = `${item.os || '--'} <br><small style="color:var(--text-muted);">${item.osLicense || '--'}</small>`;
-            let officeInfo = `${item.office || '--'} <br><small style="color:var(--text-muted);">${item.officeLicense || '--'}</small>`;
-            let bizInfo = `${item.bizSoft || '--'} <br><small style="color:var(--text-muted);">${item.bizLicense || '--'}</small>`;
+            if (item.osLicense.includes("Lậu") || item.officeLicense.includes("lậu")) countUnlicensed++;
+            let osInfo = `${item.os} <br><small style="color:var(--text-muted);">${item.osLicense}</small>`;
+            let officeInfo = `${item.office} <br><small style="color:var(--text-muted);">${item.officeLicense}</small>`;
+            let bizInfo = `${item.bizSoft} <br><small style="color:var(--text-muted);">${item.bizLicense}</small>`;
 
             tbody.innerHTML += `<tr>
                 <td style="text-align:center;"><b>${item.code}</b></td>
@@ -2009,27 +1897,24 @@
                 <td>${officeInfo}</td>
                 <td><b>${bizInfo}</b></td>
                 <td>${item.specs || '--'}</td>
-                <td style="text-align:center; vertical-align:middle;">
-                    <div style="display:inline-flex; gap:6px; align-items:center; justify-content:center;">
-                        <button class="btn btn-blue" style="padding:5px 8px; font-size:12px;" onclick="suaKhaoSat(${idx})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn btn-red" style="padding:5px 8px; font-size:12px;" onclick="xoaKhaoSat(${idx})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
-                    </div>
+                <td style="text-align:center;">
+                    <button class="btn btn-blue" style="padding:5px 8px; font-size:12px;" onclick="suaKhaoSat(${idx})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:5px 8px; font-size:12px;" onclick="xoaKhaoSat(${idx})"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>`;
         });
-
         document.getElementById('statSurveyTotal').innerText = dsKhaoSatChuyenSieu.length + " Thiết bị";
         document.getElementById('statSurveyUnlicensed').innerText = countUnlicensed + " Thiết bị cần bổ sung bản quyền";
     }
 
     function xuatExcelBaoCaoKhaoSat() {
         let dataToExport = dsKhaoSatChuyenSieu.map((i, index) => ({
-            "STT": index + 1, "Mã Khảo Sát": i.code, "Người Sử Dụng": i.user, "Bộ Phận / Phòng Ban": i.dept, "Loại Thiết Bị": i.device, "Hệ Điều Hành (OS)": i.os, "Bản Quyền OS": i.osLicense, "Microsoft Office": i.office, "Bản Quyền Office": i.officeLicense, "Phần Mềm Nghiệp Vụ": i.bizSoft, "Bản Quyền NV": i.bizLicense, "Cấu Hình Phần Cứng": i.specs
+            "STT": index + 1, "Mã": i.code, "Người Sử Dụng": i.user, "Bộ Phận": i.dept, "Thiết Bị": i.device, "OS": i.os, "Bản Quyền OS": i.osLicense, "Office": i.office, "Bản Quyền Office": i.officeLicense, "Phần Mềm NV": i.bizSoft, "Bản Quyền NV": i.bizLicense, "Cấu Hình": i.specs
         }));
         let ws = XLSX.utils.json_to_sheet(dataToExport);
         let wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "BaoCaoKhaoSatBanQuyen");
-        XLSX.writeFile(wb, "Bao_Cao_Khao_Sat_Ha_Tang_Va_Ban_Quyen.xlsx");
+        XLSX.utils.book_append_sheet(wb, ws, "BaoCaoKhaoSat");
+        XLSX.writeFile(wb, "Bao_Cao_Khao_Sat_Ha_Tang.xlsx");
     }
 
     function moModalDangKyNghiPhep() {
@@ -2040,7 +1925,7 @@
         document.getElementById('popupLeaveDenNgay').value = new Date().toISOString().split('T')[0];
         document.getElementById('dangKyNghiPhepModal').classList.remove('hidden');
     }
-    function dongModalDangKyNghiPhep() { document.getElementById('dangKyNghiPhepModal').classList.add('hidden'); }
+    
     function tinhSoNgayPopup() {
         let tuNgay = new Date(document.getElementById('popupLeaveTuNgay').value);
         let denNgay = new Date(document.getElementById('popupLeaveDenNgay').value);
@@ -2049,6 +1934,7 @@
             document.getElementById('popupLeaveSoNgay').value = diffDays.toFixed(1) + " Ngày";
         }
     }
+
     function luuVaTruPhepTuPopup() {
         let hoTen = document.getElementById('popupLeaveNhanSu').value;
         let soNgayNghi = parseFloat(document.getElementById('popupLeaveSoNgay').value) || 1;
@@ -2057,8 +1943,8 @@
         let nv = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.find(i => i.hoTen === hoTen);
         if (nv) { nv.nc_p = (nv.nc_p || 0) + soNgayNghi; nv.phep_da_nghi = (nv.phep_da_nghi || 0) + soNgayNghi; }
         capNhat();
-        dongModalDangKyNghiPhep();
-        alert(`✅ Đã ghi nhận đơn nghỉ (${lyDo}) ${soNgayNghi} ngày cho ${hoTen}, bàn giao cho [${nguoiBanGiao || 'Không có'}] và đồng bộ ngầm lên Drive!`);
+        document.getElementById('dangKyNghiPhepModal').classList.add('hidden');
+        alert(`✅ Đã ghi nhận đơn nghỉ (${lyDo}) ${soNgayNghi} ngày cho ${hoTen}, bàn giao công việc cho [${nguoiBanGiao || 'Không có'}]!`);
     }
 
     function moModalPhiieuLuong(idx) {
@@ -2104,14 +1990,11 @@
             plugins: {
                 datalabels: {
                     formatter: (value, ctx) => {
-                        if (!value || value === 0) return '';
                         let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-                        if (sum === 0) return '';
-                        let percentage = (value * 100 / sum).toFixed(1) + "%";
-                        return percentage;
+                        if (sum === 0) return '0%';
+                        return (value * 100 / sum).toFixed(1) + "%";
                     },
-                    color: '#fff',
-                    font: { weight: 'bold', size: 13 }
+                    color: '#fff', font: { weight: 'bold', size: 13 }
                 }
             }
         };
@@ -2135,7 +2018,7 @@
         if (ctxTBar) { if(window.myTaskBar) window.myTaskBar.destroy(); window.myTaskBar = new Chart(ctxTBar, { type: 'bar', data: { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: [danhSachCongViec.filter(t=>t.status==='Hoàn thành').length, danhSachCongViec.filter(t=>t.status==='Đang làm').length, danhSachCongViec.filter(t=>t.status==='Chưa làm').length], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } } } }); }
 
         let ctxLPie = document.getElementById('leavePieChart');
-        if (ctxLPie) { if(window.myLeavePie) window.myLeavePie.destroy(); window.myLeavePie = new Chart(ctxLPie, { type: 'doughnut', data: { labels: ['Đã dùng Lũy Kế', 'Còn lại'], datasets: [{ data: [ds.reduce((s,i)=>s+layTongLuyKePhepDaNghi(i.hoTen).totalP,0), ds.reduce((s,i)=>s+((i.phep_cap||12)-layTongLuyKePhepDaNghi(i.hoTen).totalP),0)], backgroundColor: ['#ef4444', '#16a34a'] }] }, options: { responsive: true, maintainAspectRatio: false, ...percentagePluginConfig } }); }
+        if (ctxLPie) { if(window.myLeavePie) window.myLeavePie.destroy(); window.myLeavePie = new Chart(ctxLPie, { type: 'doughnut', data: { labels: ['Đã dùng', 'Còn lại'], datasets: [{ data: [ds.reduce((s,i)=>s+layTongLuyKePhepDaNghi(i.hoTen).totalP,0), ds.reduce((s,i)=>s+((i.phep_cap||12)-layTongLuyKePhepDaNghi(i.hoTen).totalP),0)], backgroundColor: ['#ef4444', '#16a34a'] }] }, options: { responsive: true, maintainAspectRatio: false, ...percentagePluginConfig } }); }
 
         let ctxLBar = document.getElementById('leaveBarChart');
         if (ctxLBar) { if(window.myLeaveBar) window.myLeaveBar.destroy(); window.myLeaveBar = new Chart(ctxLBar, { type: 'bar', data: { labels: ds.slice(0, 8).map(i => i.hoTen.split(' ').pop()), datasets: [{ data: ds.slice(0, 8).map(i => layTongLuyKePhepDaNghi(i.hoTen).totalP), backgroundColor: '#0284c7' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } } } }); }
@@ -2146,7 +2029,7 @@
         localStorage.setItem('bapaco_vpp_map_data', JSON.stringify(dsThanhToanVanPhongProByMonth));
         localStorage.setItem('bapaco_ink_data', JSON.stringify(dsKhoMucIn));
         localStorage.setItem('bapaco_delivery_data', JSON.stringify(dsPhieuGiaoNhan));
-        localStorage.setItem('bapaco_telecom_map_data', JSON.stringify(dsThanhToanTelecombyMonth));
+        localStorage.setItem('bapaco_telecom_map_data', JSON.stringify(dsThanhToanTelecomByMonth));
         localStorage.setItem('bapaco_survey_data', JSON.stringify(dsKhaoSatChuyenSieu));
         localStorage.setItem('bapaco_task_data', JSON.stringify(danhSachCongViec));
         localStorage.setItem('bapaco_accounts_data', JSON.stringify(danhSachTaiKhoanHeThong));

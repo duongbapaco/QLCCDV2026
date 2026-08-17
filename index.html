@@ -97,7 +97,24 @@
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.75); display: flex; justify-content: center; align-items: center; z-index: 10000; backdrop-filter: blur(6px); }
         .modal-card { background: white; width: 100%; max-width: 820px; border-radius: 20px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); max-height: 90vh; display: flex; flex-direction: column; }
-        .modal-actions { padding: 18px 24px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+        .modal-actions { padding: 16px 24px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+
+        /* Tối ưu riêng modal Lịch Vạn Niên không bị khuất đáy */
+        #modalXemToanBoLich .modal-card {
+            max-width: 760px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-body-content {
+            padding: 20px;
+            background: #f8fafc;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            flex: 1;
+        }
 
         .top-info-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 10px; }
         .info-widget-card { background: white; padding: 20px; border-radius: 14px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 10px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
@@ -147,14 +164,15 @@
     </div>
 </div>
 
-<!-- MODAL XEM LỊCH & PHONG THỦY -->
+<!-- MODAL XEM LỊCH & PHONG THỦY (ĐÃ KHẮC PHỤC KHUẤT ĐÁY) -->
 <div class="modal-overlay hidden" id="modalXemToanBoLich">
-    <div class="modal-card" style="max-width: 760px;">
-        <div style="padding: 18px 24px; background: linear-gradient(135deg, #0284c7, #0369a1); color: white; display: flex; justify-content: space-between; align-items: center;">
+    <div class="modal-card">
+        <div style="padding: 16px 24px; background: linear-gradient(135deg, #0284c7, #0369a1); color: white; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
             <b style="text-transform: uppercase; font-size: 15px;"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên, Âm Lịch & Phong Thủy Doanh Nghiệp</b>
             <button class="btn btn-red" style="padding: 4px 10px;" onclick="document.getElementById('modalXemToanBoLich').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div style="padding: 24px; display: flex; flex-direction: column; gap: 16px; background: #f8fafc;">
+        
+        <div class="modal-body-content">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <button class="btn btn-blue" style="padding: 6px 12px;" onclick="doiThangLichModal(-1)"><i class="fa-solid fa-chevron-left"></i> Tháng Trước</button>
                 <b id="lblThangNamLichModal" style="font-size: 16px; color: var(--primary-dark); text-transform: uppercase;">Tháng 08/2026</b>
@@ -166,20 +184,21 @@
             </div>
             <div class="calendar-grid" id="calendarDaysGrid"></div>
 
-            <div style="background: white; border: 1px solid var(--border-color); padding: 16px; border-radius: 12px; display: flex; flex-direction: column; gap: 8px;">
+            <div style="background: white; border: 1px solid var(--border-color); padding: 14px; border-radius: 12px; display: flex; flex-direction: column; gap: 8px;">
                 <div style="font-size: 13px; font-weight: 900; color: var(--primary-dark); text-transform: uppercase; display: flex; align-items: center; gap: 8px;">
                     <i class="fa-solid fa-compass"></i> Thông Tin Phong Thủy & Âm Lịch Ngày: <span id="fengShuiSelectedDate" style="color:#dc2626;">17/08/2026</span>
                 </div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; font-size: 13px;">
-                    <div style="background:#f8fafc; padding:8px 12px; border-radius:8px; border:1px solid #e2e8f0;"><b>🌙 Âm Lịch:</b> <span id="fsLunarDate" style="color:#d97706; font-weight:bold;">--</span></div>
-                    <div style="background:#f8fafc; padding:8px 12px; border-radius:8px; border:1px solid #e2e8f0;"><b>🌟 Can Chi Ngày:</b> <span id="fsCanChi" style="color:#0284c7; font-weight:bold;">--</span></div>
-                    <div style="background:#f8fafc; padding:8px 12px; border-radius:8px; border:1px solid #e2e8f0;"><b>🧭 Trực & Sao:</b> <span id="fsTrucSao" style="font-weight:bold;">--</span></div>
-                    <div style="background:#f8fafc; padding:8px 12px; border-radius:8px; border:1px solid #e2e8f0;"><b>⚡ Giờ Hoàng Đạo:</b> <span id="fsHoangDao" style="color:#16a34a; font-weight:bold;">--</span></div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 8px; font-size: 13px;">
+                    <div style="background:#f8fafc; padding:8px 10px; border-radius:8px; border:1px solid #e2e8f0;"><b>🌙 Âm Lịch:</b> <span id="fsLunarDate" style="color:#d97706; font-weight:bold;">--</span></div>
+                    <div style="background:#f8fafc; padding:8px 10px; border-radius:8px; border:1px solid #e2e8f0;"><b>🌟 Can Chi:</b> <span id="fsCanChi" style="color:#0284c7; font-weight:bold;">--</span></div>
+                    <div style="background:#f8fafc; padding:8px 10px; border-radius:8px; border:1px solid #e2e8f0;"><b>🧭 Trực & Sao:</b> <span id="fsTrucSao" style="font-weight:bold;">--</span></div>
+                    <div style="background:#f8fafc; padding:8px 10px; border-radius:8px; border:1px solid #e2e8f0;"><b>⚡ Giờ Hoàng Đạo:</b> <span id="fsHoangDao" style="color:#16a34a; font-weight:bold;">--</span></div>
                 </div>
             </div>
         </div>
+
         <div class="modal-actions">
-            <span style="font-size: 13px; font-weight: 700; color: var(--text-muted);"><i class="fa-solid fa-circle-info" style="color:var(--primary);"></i> Bấm vào ngày bất kỳ trên lịch để tra cứu chi tiết phong thủy.</span>
+            <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);"><i class="fa-solid fa-circle-info" style="color:var(--primary);"></i> Bấm vào ngày bất kỳ để tra cứu chi tiết.</span>
             <button class="btn btn-blue" onclick="document.getElementById('modalXemToanBoLich').classList.add('hidden')">Đóng</button>
         </div>
     </div>
@@ -823,7 +842,6 @@
     let dsKhaoSatChuyenSieu = JSON.parse(localStorage.getItem('bapaco_survey_data')) || [{ code: "KS-01", user: "Trần Bình Dương", dept: "Văn phòng TCT", device: "Laptop cá nhân", os: "Windows 11 Pro", osLicense: "✅ Có bản quyền chính hãng", office: "Microsoft 365 (Cloud)", officeLicense: "✅ Bản quyền Tổng công ty", bizSoft: "Cloudoffice (Văn thư)", bizLicense: "✅ Có bản quyền chính hãng", specs: "Core i7, RAM 16GB" }];
     let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data')) || [{ id: 1, name: "Hoàn thiện báo cáo điều hành tháng 08", assignee: "Trần Bình Dương", dueDate: "2026-08-17", status: "Đang làm" }];
     
-    // Tài khoản mặc định ban đầu bao gồm admin và các cán bộ quản trị
     let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('bapaco_accounts_data')) || [
         { email: "admin", fullName: "Quản trị viên Hệ thống (Admin)", role: "Admin", status: "Active", notifyEmail: "admin@vinapaco.com.vn", pass: "123456" },
         { email: "duongtb@vinapaco.com.vn", fullName: "Trần Bình Dương", role: "Admin", status: "Active", notifyEmail: "duongtb@vinapaco.com.vn", pass: "123456" },

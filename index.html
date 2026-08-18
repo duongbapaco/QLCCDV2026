@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Quản Lý VINAPACO - Full Sync Fixed</title>
+    <title>Hệ Thống Quản Lý VINAPACO - Realtime Render Fixed</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -225,7 +225,6 @@
         </div>
     </div>
 
-    <!-- THANH CẤU HÌNH ĐÃ ĐƯỢC CHIA ĐỀU 4 CỘT CÂN ĐỐI TUYỆT ĐỐI -->
     <div class="config-bar">
         <div class="config-item"><label>Năm Lưu Trữ</label><select id="cfgNamChon" onchange="doiThangHoSoLuong()"></select></div>
         <div class="config-item"><label>Tháng Nhập / Lưu Trữ</label><select id="cfgThangChon" onchange="doiThangHoSoLuong()">
@@ -1847,8 +1846,11 @@
         if (fileInput) fileInput.value = '';
         document.getElementById('officeProgressBarBox').style.display = 'none';
         document.getElementById('officeProgressText').style.display = 'none';
+        
+        // Render ngay lập tức không cần refresh
+        renderOfficePaymentTable();
         capNhat();
-        alert("✅ Đã lưu chứng từ và đẩy file đính kèm lên đúng thư mục Drive thành công!");
+        alert("✅ Đã lưu chứng từ và hiển thị ngay lập tức!");
     }
 
     function suaVPP(originalKey, originalIndex) {
@@ -1871,6 +1873,7 @@
     function xoaVPP(originalKey, originalIndex) {
         if (confirm("Xóa chứng từ thanh toán này?")) {
             dsThanhToanVanPhongProByMonth[originalKey].splice(originalIndex, 1);
+            renderOfficePaymentTable();
             capNhat();
         }
     }
@@ -1931,6 +1934,7 @@
             dsKhoMucIn.push(newItem);
         }
         document.getElementById('inputInkName').value = '';
+        renderInkInventoryTable();
         capNhat();
     }
 
@@ -1949,6 +1953,7 @@
     function xoaKhoMuc(idx) {
         if (confirm("Xóa bản ghi kho này?")) {
             dsKhoMucIn.splice(idx, 1);
+            renderInkInventoryTable();
             capNhat();
         }
     }
@@ -2026,6 +2031,7 @@
         } else {
             dsPhieuGiaoNhan.push(newSlip);
         }
+        renderDeliveryTable();
         capNhat();
     }
 
@@ -2045,6 +2051,7 @@
     function xoaPhieuGiao(idx) {
         if (confirm("Xóa phiếu bàn giao thiết bị này?")) {
             dsPhieuGiaoNhan.splice(idx, 1);
+            renderDeliveryTable();
             capNhat();
         }
     }
@@ -2203,13 +2210,16 @@
             btnSave.className = "btn btn-green";
         }
 
+        // RENDER NGAY LẬP TỨC KHÔNG CẦN REFRESH
+        renderTelecomPaymentTable();
         capNhat();
-        alert("✅ Đã lưu cước viễn thông và đẩy file lên Drive an toàn!");
+        alert("✅ Đã thêm và hiển thị cước viễn thông ngay lập tức!");
     }
 
     function xoaTelecom(originalKey, originalIndex) {
         if (confirm("Xóa cước viễn thông này?")) {
             dsThanhToanTelecombyMonth[originalKey].splice(originalIndex, 1);
+            renderTelecomPaymentTable();
             capNhat();
         }
     }
@@ -2274,6 +2284,7 @@
             dsKhaoSatChuyenSau.push(newItem);
         }
         document.getElementById('inputSurveyUser').value = '';
+        renderSurveyTable();
         capNhat();
     }
 
@@ -2296,6 +2307,7 @@
     function xoaKhaoSat(idx) {
         if (confirm("Bạn có chắc chắn muốn xóa bản ghi khảo sát này?")) {
             dsKhaoSatChuyenSau.splice(idx, 1);
+            renderSurveyTable();
             capNhat();
         }
     }
@@ -2370,6 +2382,7 @@
         let nguoiBanGiao = document.getElementById('popupLeaveNguoiBanGiao').value;
         let nv = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.find(i => i.hoTen === hoTen);
         if (nv) { nv.nc_p = (nv.nc_p || 0) + soNgayNghi; nv.phep_da_nghi = (nv.phep_da_nghi || 0) + soNgayNghi; }
+        renderLeaveTable();
         capNhat();
         dongModalDangKyNghiPhep();
         alert(`✅ Đã ghi nhận đơn nghỉ (${lyDo}) ${soNgayNghi} ngày cho ${hoTen}, bàn giao cho [${nguoiBanGiao || 'Không có'}] và cập nhật an toàn!`);

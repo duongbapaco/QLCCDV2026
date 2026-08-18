@@ -606,7 +606,6 @@
             <div class="form-group"><label>Người Sử Dụng</label><input type="text" id="inputSurveyUser" placeholder="Họ tên cán bộ..."></div>
             <div class="form-group"><label>Bộ Phận / Phòng Ban</label><input type="text" id="inputSurveyDept" placeholder="Phòng ban..."></div>
             
-            <!-- ĐÃ BỔ SUNG ĐẦY ĐỦ LOẠI THIẾT BỊ TỪNG NHÓM CHUYÊN DỤNG -->
             <div class="form-group">
                 <label>Loại Thiết Bị Khảo Sát</label>
                 <select id="inputSurveyDeviceName">
@@ -998,15 +997,23 @@
         try {
             let res = await fetch(gasWebhookUrl + "?nocache=" + new Date().getTime());
             let result = await res.json();
-            if (result && result.coSoDuLieuNamThang) {
-                coSoDuLieuNamThang = result.coSoDuLieuNamThang;
-                dsThanhToanVanPhongProByMonth = result.dsThanhToanVanPhongProByMonth || {};
-                dsKhoMucIn = result.dsKhoMucIn || [];
-                dsThanhToanTelecombyMonth = result.dsThanhToanTelecombyMonth || {};
-                dsKhaoSatChuyenSau = result.dsKhaoSatChuyenSau || [];
-                danhSachCongViec = result.danhSachCongViec || [];
-                dsPhieuGiaoNhan = result.dsPhieuGiaoNhan || dsPhieuGiaoNhan;
-                danhSachTaiKhoanHeThong = result.danhSachTaiKhoanHeThong || danhSachTaiKhoanHeThong;
+            if (result) {
+                if (result.coSoDuLieuNamThang) coSoDuLieuNamThang = result.coSoDuLieuNamThang;
+                if (result.dsThanhToanVanPhongProByMonth) dsThanhToanVanPhongProByMonth = result.dsThanhToanVanPhongProByMonth;
+                if (result.dsKhoMucIn) dsKhoMucIn = result.dsKhoMucIn;
+                
+                if (result.dsThanhToanTelecombyMonth && Object.keys(result.dsThanhToanTelecombyMonth).length > 0) {
+                    dsThanhToanTelecombyMonth = result.dsThanhToanTelecombyMonth;
+                } else {
+                    let localTelecom = localStorage.getItem('bapaco_telecom_map_data');
+                    if (localTelecom) dsThanhToanTelecombyMonth = JSON.parse(localTelecom);
+                }
+
+                if (result.dsKhaoSatChuyenSau) dsKhaoSatChuyenSau = result.dsKhaoSatChuyenSau;
+                if (result.danhSachCongViec) danhSachCongViec = result.danhSachCongViec;
+                if (result.dsPhieuGiaoNhan) dsPhieuGiaoNhan = result.dsPhieuGiaoNhan;
+                if (result.danhSachTaiKhoanHeThong) danhSachTaiKhoanHeThong = result.danhSachTaiKhoanHeThong;
+                
                 luuTruVaoLocalStorage();
             }
         } catch (e) {
@@ -1758,6 +1765,7 @@
             dsThanhToanVanPhongProByMonth[key].push(newItem);
         }
 
+        luuTruVaoLocalStorage();
         tuDongDayDuLieuLenDrive(filesToUpload);
         window.tempVppFilesPayload = [];
 
@@ -2026,64 +2034,107 @@
         document.getElementById('inputTelecomVatInput').value = vat.toLocaleString('vi-VN');
     }
 
+    function suaTelecom(originalKey, originalIndex) {
+        let item = dsThanhToanTelecombyMonth[originalKey][originalIndex];
+        if (!item) return;
+
+        document.getElementById('inputTelecomMaHs').value = item.maHs || 'VT-01';
+        document.getElementById('inputTelecomSupplier').value = item.supplier || 'VNPT';
+        document.getElementById('inputTelecomType').value = item.type || '';
+        document.getElementById('inputTelecomKyCuoc').value = item.kyCuoc || `${currentThangKey}/${currentNamKey}`;
+        document.getElementById('inputTelecomTongVat').value = (item.tong || 0).toLocaleString('vi-VN');
+        
+        tinhTienTelecomTuTong();
+
+        document.getElementById('editTelecomIndex').value = originalIndex;
+        
+        let btnSave = document.getElementById('btnSaveTelecom');
+        if (btnSave) {
+            btnSave.innerHTML = `<i class="fas fa-save"></i> Cập Nhật Cước`;
+            btnSave.className = "btn btn-yellow";
+        }
+    }
+
     function luuHoacCapNhatTelecom() {
         let type = document.getElementById('inputTelecomType').value.trim();
-        let tong = parseFloat(document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g,'')) || 0;
+        let tongStr = document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g, '');
+        let tong = parseFloat(tongStr) || 0;
         let kyCuocVal = document.getElementById('inputTelecomKyCuoc').value.trim();
-        if (!type || !tong) { alert("Nhập đủ loại cước và tổng cước!"); return; }
+
+        if (!type || tong <= 0) {
+            alert("⚠️ Nhập đầy đủ loại cước và số tiền cước hợp lệ!");
+            return;
+        }
+
         let truocThue = Math.round(tong / 1.1);
         let vat = tong - truocThue;
         let newMonthKey = `${currentNamKey}_${currentThangKey}`;
-        if (!dsThanhToanTelecombyMonth[newMonthKey]) dsThanhToanTelecombyMonth[newMonthKey] = [];
+
+        if (!dsThanhToanTelecombyMonth[newMonthKey]) {
+            dsThanhToanTelecombyMonth[newMonthKey] = [];
+        }
 
         let filesToUpload = window.tempTelecomFilesPayload || [];
-        let filesArr = filesToUpload.map(f => ({ name: f.name, size: f.base64Data.length, folder: `VINAPACO_Drive/${currentNamKey}/${currentThangKey}/Cuoc_Vien_Thong` }));
+        let filesArr = filesToUpload.map(f => ({
+            name: f.name,
+            size: f.base64Data.length,
+            folder: `VINAPACO_Drive/${currentNamKey}/${currentThangKey}/Cuoc_Vien_Thong`
+        }));
 
         let editIdx = parseInt(document.getElementById('editTelecomIndex').value);
-        let existingFiles = editIdx >= 0 && dsThanhToanTelecombyMonth[newMonthKey][editIdx].files ? dsThanhToanTelecombyMonth[newMonthKey][editIdx].files : [];
+        let existingFiles = (editIdx >= 0 && dsThanhToanTelecombyMonth[newMonthKey][editIdx] && dsThanhToanTelecombyMonth[newMonthKey][editIdx].files)
+            ? dsThanhToanTelecombyMonth[newMonthKey][editIdx].files
+            : [];
         let finalFiles = filesArr.length > 0 ? filesArr : existingFiles;
 
         let newItem = {
-            id: editIdx >= 0 ? dsThanhToanTelecombyMonth[newMonthKey][editIdx].id : "VT-0" + (dsThanhToanTelecombyMonth[newMonthKey].length + 1),
-            maHs: document.getElementById('inputTelecomMaHs').value,
+            id: (editIdx >= 0 && dsThanhToanTelecombyMonth[newMonthKey][editIdx])
+                ? dsThanhToanTelecombyMonth[newMonthKey][editIdx].id
+                : "VT-0" + (dsThanhToanTelecombyMonth[newMonthKey].length + 1),
+            maHs: document.getElementById('inputTelecomMaHs').value || "VT-01",
             supplier: document.getElementById('inputTelecomSupplier').value,
-            type, kyCuoc: kyCuocVal,
-            thangHachToan: currentThangKey, tong, truocThue, vat, 
+            type: type,
+            kyCuoc: kyCuocVal,
+            thangHachToan: currentThangKey,
+            tong: tong,
+            truocThue: truocThue,
+            vat: vat,
             files: finalFiles
         };
 
         if (editIdx >= 0) {
             dsThanhToanTelecombyMonth[newMonthKey][editIdx] = newItem;
-            document.getElementById('editTelecomIndex').value = -1;
-            document.getElementById('btnSaveTelecom').innerHTML = `<i class="fas fa-plus-circle"></i> Thêm Cước`;
         } else {
             dsThanhToanTelecombyMonth[newMonthKey].push(newItem);
         }
 
+        luuTruVaoLocalStorage();
         tuDongDayDuLieuLenDrive(filesToUpload);
         window.tempTelecomFilesPayload = [];
 
+        document.getElementById('editTelecomIndex').value = -1;
         document.getElementById('inputTelecomType').value = '';
         document.getElementById('inputTelecomTongVat').value = '';
         document.getElementById('inputTelecomTruocThueInput').value = '';
         document.getElementById('inputTelecomVatInput').value = '';
+        
         let fileInput = document.getElementById('inputTelecomFiles');
         if (fileInput) fileInput.value = '';
-        document.getElementById('telecomProgressBarBox').style.display = 'none';
-        document.getElementById('telecomProgressText').style.display = 'none';
-        capNhat();
-        alert("✅ Đã lưu cước viễn thông và đẩy file đính kèm lên Google Drive thành công!");
-    }
+        
+        let progressBox = document.getElementById('telecomProgressBarBox');
+        if (progressBox) progressBox.style.display = 'none';
+        
+        let progressTxt = document.getElementById('telecomProgressText');
+        if (progressTxt) progressTxt.style.display = 'none';
 
-    function suaTelecom(originalKey, originalIndex) {
-        let item = dsThanhToanTelecombyMonth[originalKey][originalIndex];
-        document.getElementById('inputTelecomSupplier').value = item.supplier;
-        document.getElementById('inputTelecomType').value = item.type;
-        document.getElementById('inputTelecomKyCuoc').value = item.kyCuoc;
-        document.getElementById('inputTelecomTongVat').value = item.tong.toLocaleString();
-        tinhTienTelecomTuTong();
-        document.getElementById('editTelecomIndex').value = originalIndex;
-        document.getElementById('btnSaveTelecom').innerHTML = `<i class="fas fa-save"></i> Cập Nhật Cước`;
+        let btnSave = document.getElementById('btnSaveTelecom');
+        if (btnSave) {
+            btnSave.innerHTML = `<i class="fas fa-plus-circle"></i> Thêm Cước`;
+            btnSave.className = "btn btn-green";
+        }
+
+        capNhat();
+        alert("✅ Đã lưu cước viễn thông và đồng bộ an toàn lên Google Drive!");
     }
 
     function xoaTelecom(originalKey, originalIndex) {

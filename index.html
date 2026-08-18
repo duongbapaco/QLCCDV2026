@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Quản Lý VINAPACO - Realtime Render & Month Fix</title>
+    <title>Hệ Thống Quản Lý VINAPACO - Realtime Render & Full Bug Fix</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -1522,7 +1522,7 @@
                 <td><input class="cell-input money-input" type="text" value="${(item.tam_ung||0).toLocaleString()}" onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].tam_ung=parseFloat(this.value.replace(/[^0-9]/g,''))||0;capNhat();"></td>
                 <td style="text-align:right; font-weight:bold;">${item.thucLinhCV.toLocaleString()}</td>
                 <td style="text-align:right;"><span class="badge-net">${item.thucLinhCuoiCung.toLocaleString()}</span></td>
-                <td style="text-align:center;"><button class="btn btn-blue" style="padding:4px 10px;" onclick="moModalPhiieuLuong(${idx})"><i class="fa-solid fa-paper-plane"></i></button></td>
+                <td style="text-align:center;"><button class="btn btn-blue" style="padding:4px 10px;" onclick="moModalPhiieuLuongTheoTen('${item.hoTen}')"><i class="fa-solid fa-paper-plane"></i></button></td>
             </tr>`;
         });
     }
@@ -1531,7 +1531,7 @@
         let sel = document.getElementById('selectModalNhanSu');
         if (!sel) return; sel.innerHTML = '';
         coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.forEach((item, idx) => {
-            sel.innerHTML += `<option value="${idx}">${idx+1}. ${item.hoTen} (${item.thucLinhCuoiCung.toLocaleString()} VNĐ)</option>`;
+            sel.innerHTML += `<option value="${item.hoTen}">${idx+1}. ${item.hoTen} (${item.thucLinhCuoiCung.toLocaleString()} VNĐ)</option>`;
         });
     }
 
@@ -1539,30 +1539,61 @@
         let sel = document.getElementById('selectModalNhanSu');
         if (!sel) return; sel.innerHTML = '';
         let kw = keyword.toLowerCase();
-        coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.forEach((item, idx) => {
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
+        ds.forEach((item, idx) => {
             if (item.hoTen.toLowerCase().includes(kw)) {
-                sel.innerHTML += `<option value="${idx}">${idx+1}. ${item.hoTen} (${item.thucLinhCuoiCung.toLocaleString()} VNĐ)</option>`;
+                sel.innerHTML += `<option value="${item.hoTen}">${idx+1}. ${item.hoTen} (${item.thucLinhCuoiCung.toLocaleString()} VNĐ)</option>`;
             }
         });
         let firstOpt = sel.querySelector('option');
-        if (firstOpt) { chonNhanSuXemPhieuLuong(firstOpt.value); }
+        if (firstOpt) { moModalPhiieuLuongTheoTen(firstOpt.value); }
     }
 
-    function chonNhanSuXemPhieuLuong(val) {
-        let idx = parseInt(val);
-        if (!isNaN(idx)) { moModalPhiieuLuong(idx); }
+    function chonNhanSuXemPhieuLuong(tenNhanSu) {
+        if (tenNhanSu) { moModalPhiieuLuongTheoTen(tenNhanSu); }
     }
 
     function moModalPhiieuLuongDauTien() {
         khoiTaoDanhSachNhanSuModalSelect();
-        moModalPhiieuLuong(0);
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
+        if (ds.length > 0) moModalPhiieuLuongTheoTen(ds[0].hoTen);
     }
 
     function chuyenNhanSuModal(step) {
         let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         modalCurrentNvIndex = (modalCurrentNvIndex + step + ds.length) % ds.length;
-        document.getElementById('selectModalNhanSu').value = modalCurrentNvIndex;
-        moModalPhiieuLuong(modalCurrentNvIndex);
+        let targetNv = ds[modalCurrentNvIndex];
+        if (targetNv) {
+            document.getElementById('selectModalNhanSu').value = targetNv.hoTen;
+            moModalPhiieuLuongTheoTen(targetNv.hoTen);
+        }
+    }
+
+    function moModalPhiieuLuongTheoTen(hoTen) {
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
+        let idx = ds.findIndex(i => i.hoTen === hoTen);
+        if (idx === -1) idx = 0;
+        modalCurrentNvIndex = idx;
+        let nv = ds[idx];
+        
+        let sel = document.getElementById('selectModalNhanSu');
+        if (sel) sel.value = nv.hoTen;
+
+        document.getElementById("slipMonthSub").innerText = `${currentThangKey}/${currentNamKey} - Văn phòng Tổng công ty`;
+        document.getElementById("slipName").innerText = nv.hoTen;
+        document.getElementById("slipHslCb").innerText = nv.hsl_cb;
+        document.getElementById("slipPcCb").innerText = nv.pc_cb || 0;
+        document.getElementById("slipHslCv").innerText = nv.hsl_cv;
+        document.getElementById("slipPcCv").innerText = nv.pc_cv || 0;
+        document.getElementById("slipNcTg").innerText = nv.nc_tg + ' ngày';
+        document.getElementById("slipKht").innerText = nv.k_ht || 1.0;
+        document.getElementById("slipLCB").innerText = nv.thucLinhLCB.toLocaleString();
+        document.getElementById("slipLCV").innerText = nv.thucLinhCV.toLocaleString();
+        document.getElementById("slipBHXH").innerText = '-' + nv.bhxh.toLocaleString();
+        document.getElementById("slipBHTN").innerText = '-' + nv.bhtn.toLocaleString();
+        document.getElementById("slipTamUng").innerText = '-' + (nv.tam_ung||0).toLocaleString();
+        document.getElementById("slipThucLinh").innerText = nv.thucLinhCuoiCung.toLocaleString() + ' VNĐ';
+        document.getElementById("previewModal").classList.remove('hidden');
     }
 
     function renderLeaveTable() {
@@ -2384,26 +2415,6 @@
         capNhat();
         dongModalDangKyNghiPhep();
         alert(`✅ Đã ghi nhận đơn nghỉ (${lyDo}) ${soNgayNghi} ngày cho ${hoTen}, bàn giao cho [${nguoiBanGiao || 'Không có'}] và cập nhật an toàn!`);
-    }
-
-    function moModalPhiieuLuong(idx) {
-        modalCurrentNvIndex = idx;
-        let nv = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[idx];
-        document.getElementById("slipMonthSub").innerText = `${currentThangKey}/${currentNamKey} - Văn phòng Tổng công ty`;
-        document.getElementById("slipName").innerText = nv.hoTen;
-        document.getElementById("slipHslCb").innerText = nv.hsl_cb;
-        document.getElementById("slipPcCb").innerText = nv.pc_cb || 0;
-        document.getElementById("slipHslCv").innerText = nv.hsl_cv;
-        document.getElementById("slipPcCv").innerText = nv.pc_cv || 0;
-        document.getElementById("slipNcTg").innerText = nv.nc_tg + ' ngày';
-        document.getElementById("slipKht").innerText = nv.k_ht || 1.0;
-        document.getElementById("slipLCB").innerText = nv.thucLinhLCB.toLocaleString();
-        document.getElementById("slipLCV").innerText = nv.thucLinhCV.toLocaleString();
-        document.getElementById("slipBHXH").innerText = '-' + nv.bhxh.toLocaleString();
-        document.getElementById("slipBHTN").innerText = '-' + nv.bhtn.toLocaleString();
-        document.getElementById("slipTamUng").innerText = '-' + (nv.tam_ung||0).toLocaleString();
-        document.getElementById("slipThucLinh").innerText = nv.thucLinhCuoiCung.toLocaleString() + ' VNĐ';
-        document.getElementById("previewModal").classList.remove('hidden');
     }
 
     function taiAnhPhieuLuongZalo() {

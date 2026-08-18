@@ -636,7 +636,7 @@
                         <option value="Router / Router Gateway chuyên dụng">Router / Gateway mạng chuyên dụng</option>
                         <option value="Switch chia mạng (Managed / Unmanaged)">Switch chia mạng (Switch Core / Access)</option>
                         <option value="Bộ phát WiFi doanh nghiệp (Access Point)">Bộ phát WiFi doanh nghiệp (Access Point)</option>
-                        <option value="Tường lửa phần cứng (Firewall Hardware)">Tường lửa phần cứng (Fortinet/Sophos/Cisco)</option>
+                        <option value="Tường lửa phần cứng (Fortinet/Sophos/Cisco)">Tường lửa phần cứng (Fortinet/Sophos/Cisco)</option>
                         <option value="Đầu ghi & Camera giám sát (NVR/DVR Camera)">Đầu ghi & Camera giám sát (NVR/DVR Camera)</option>
                         <option value="Bộ lưu điện UPS (Văn phòng / Server)">Bộ lưu điện UPS (Văn phòng / Phòng Server)</option>
                     </optgroup>
@@ -993,22 +993,30 @@
         return dateString;
     }
 
+    // TẢI DỮ LIỆU THÔNG MINH: CHỈ GHI ĐÈ CƯỚC NẾU TRÊN DRIVE THỰC SỰ CÓ DỮ LIỆU
     async function tuDongTaiDuLieuTuDrive() {
         try {
             let res = await fetch(gasWebhookUrl + "?nocache=" + new Date().getTime());
             let result = await res.json();
-            if (result) {
+            
+            if (result && typeof result === 'object') {
                 if (result.coSoDuLieuNamThang) coSoDuLieuNamThang = result.coSoDuLieuNamThang;
                 if (result.dsThanhToanVanPhongProByMonth) dsThanhToanVanPhongProByMonth = result.dsThanhToanVanPhongProByMonth;
-                if (result.dsKhoMucIn) dsKhoMucIn = result.dsKhoMucIn;
                 
                 if (result.dsThanhToanTelecombyMonth && Object.keys(result.dsThanhToanTelecombyMonth).length > 0) {
-                    dsThanhToanTelecombyMonth = result.dsThanhToanTelecombyMonth;
-                } else {
-                    let localTelecom = localStorage.getItem('bapaco_telecom_map_data');
-                    if (localTelecom) dsThanhToanTelecombyMonth = JSON.parse(localTelecom);
+                    let hasData = false;
+                    for (let k in result.dsThanhToanTelecombyMonth) {
+                        if (result.dsThanhToanTelecombyMonth[k] && result.dsThanhToanTelecombyMonth[k].length > 0) {
+                            hasData = true;
+                            break;
+                        }
+                    }
+                    if (hasData) {
+                        dsThanhToanTelecombyMonth = result.dsThanhToanTelecombyMonth;
+                    }
                 }
-
+                
+                if (result.dsKhoMucIn) dsKhoMucIn = result.dsKhoMucIn;
                 if (result.dsKhaoSatChuyenSau) dsKhaoSatChuyenSau = result.dsKhaoSatChuyenSau;
                 if (result.danhSachCongViec) danhSachCongViec = result.danhSachCongViec;
                 if (result.dsPhieuGiaoNhan) dsPhieuGiaoNhan = result.dsPhieuGiaoNhan;
@@ -1017,7 +1025,7 @@
                 luuTruVaoLocalStorage();
             }
         } catch (e) {
-            console.error("Lỗi tải từ Drive:", e);
+            console.error("Lỗi kết nối Google Drive, sử dụng dữ liệu trên máy:", e);
         }
     }
 
@@ -1054,6 +1062,18 @@
     window.addEventListener('DOMContentLoaded', async () => {
         let inputUrlSetting = document.getElementById('inputGasUrlSetting');
         if(inputUrlSetting) inputUrlSetting.value = gasWebhookUrl;
+
+        // Ưu tiên đọc dữ liệu LocalStorage trên máy trước
+        try {
+            let savedDb = localStorage.getItem('bapaco_db_data');
+            if (savedDb) coSoDuLieuNamThang = JSON.parse(savedDb);
+
+            let savedTelecom = localStorage.getItem('bapaco_telecom_map_data');
+            if (savedTelecom) dsThanhToanTelecombyMonth = JSON.parse(savedTelecom);
+
+            let savedVpp = localStorage.getItem('bapaco_vpp_map_data');
+            if (savedVpp) dsThanhToanVanPhongProByMonth = JSON.parse(savedVpp);
+        } catch (e) {}
 
         await tuDongTaiDuLieuTuDrive();
         khoiTaoDanhSachNamTuSinh();
@@ -2055,6 +2075,7 @@
         }
     }
 
+    // HÀM LƯU TỐI ƯU: LƯU TỨC THÌ LÊN LOCALSTORAGE & DRIVE KỂ CẢ KHÔNG CÓ TỆP ĐÍNH KÈM
     function luuHoacCapNhatTelecom() {
         let type = document.getElementById('inputTelecomType').value.trim();
         let tongStr = document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g, '');
@@ -2062,7 +2083,7 @@
         let kyCuocVal = document.getElementById('inputTelecomKyCuoc').value.trim();
 
         if (!type || tong <= 0) {
-            alert("⚠️ Nhập đầy đủ loại cước và số tiền cước hợp lệ!");
+            alert("⚠️ Vui lòng nhập đầy đủ Loại Cước và Tổng Cước hợp lệ!");
             return;
         }
 
@@ -2077,7 +2098,7 @@
         let filesToUpload = window.tempTelecomFilesPayload || [];
         let filesArr = filesToUpload.map(f => ({
             name: f.name,
-            size: f.base64Data.length,
+            size: f.base64Data ? f.base64Data.length : 0,
             folder: `VINAPACO_Drive/${currentNamKey}/${currentThangKey}/Cuoc_Vien_Thong`
         }));
 
@@ -2108,10 +2129,14 @@
             dsThanhToanTelecombyMonth[newMonthKey].push(newItem);
         }
 
+        // 1. LƯU LẬP TỨC VÀO BỘ NHỚ TRÌNH DUYỆT TRÊN MÁY
         luuTruVaoLocalStorage();
+
+        // 2. ĐẨY LẬP TỨC LÊN GOOGLE DRIVE (KỂ CẢ KHÔNG CÓ FILE ĐÍNH KÈM)
         tuDongDayDuLieuLenDrive(filesToUpload);
         window.tempTelecomFilesPayload = [];
 
+        // Reset Form nhập liệu
         document.getElementById('editTelecomIndex').value = -1;
         document.getElementById('inputTelecomType').value = '';
         document.getElementById('inputTelecomTongVat').value = '';

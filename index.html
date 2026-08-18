@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Quản Lý VINAPACO - Full Sync</title>
+    <title>Hệ Thống Quản Lý VINAPACO - Full Sync Fixed</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -40,7 +40,6 @@
         .btn-yellow { background-color: #d97706; color: white; }
         .btn-purple { background-color: #8b5cf6; color: white; }
 
-        /* THANH CẤU HÌNH CHIA ĐỀU 4 CỘT CÂN ĐỐI TUYỆT ĐỐI */
         .config-bar { background: white; padding: 16px 20px; border-radius: 10px; border: 1px solid var(--border-color); display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: center; }
         .config-item { display: flex; flex-direction: column; gap: 6px; }
         .config-item label { font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
@@ -1444,7 +1443,7 @@
         let email = document.getElementById('accEmail').value.trim();
         let password = document.getElementById('accPassword').value.trim();
         let fullName = document.getElementById('accFullName').value.trim();
-        if (!email || !fullName) { alert("Vui lòng nhập đủ email và họ tên!"); return; }
+        if (!email || !fullName) { alert("Vui lòng điền đủ email và họ tên!"); return; }
         let role = document.getElementById('accRole').value;
         let status = document.getElementById('accStatus').value;
         let notifyEmail = document.getElementById('accNotifyEmail').value.trim();

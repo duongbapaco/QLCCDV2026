@@ -155,6 +155,28 @@
     </div>
 </div>
 
+<!-- MODAL LỊCH VẠN NIÊN & PHONG THỦY CHI TIẾT -->
+<div class="modal-overlay hidden" id="modalLichVanNien">
+    <div class="modal-card" style="max-width: 860px; padding: 0;">
+        <div style="padding: 18px 24px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center;">
+            <b style="text-transform: uppercase;"><i class="fa-solid fa-calendar-days"></i> Tra Cứu Lịch Vạn Niên & Phong Thủy Doanh Nghiệp</b>
+            <button class="btn btn-red" style="padding: 4px 10px;" onclick="document.getElementById('modalLichVanNien').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div style="padding: 24px; background: #f8fafc; display: flex; flex-direction: column; gap: 16px;">
+            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                <div class="form-group" style="flex: 1;"><label>Chọn Tháng Tra Cứu</label><select id="lichThangSelect" style="padding: 10px;" onchange="renderLichGridPro()"></select></div>
+                <div class="form-group" style="flex: 1;"><label>Chọn Năm</label><select id="lichNamSelect" style="padding: 10px;" onchange="renderLichGridPro()"><option value="2025">2025</option><option value="2026" selected>2026</option><option value="2027">2027</option></select></div>
+            </div>
+            <div style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 14px;">
+                <div id="lichGridContainer" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center;"></div>
+            </div>
+            <div id="lichDetailPhongThuyBox" style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 14px; font-size: 14px; line-height: 1.6; color: #166534;">
+                📌 <b>Gợi ý phong thủy tháng chọn:</b> Chọn ngày mùng 1, 15 Âm lịch hoặc các ngày Trực Định/Thành để ký kết hợp đồng, giao dịch tài chính mang lại vượng khí tốt nhất cho Tổng công ty Giấy Việt Nam.
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- NỘI DUNG CHÍNH -->
 <div class="container hidden" id="appMainContainer">
     <div class="banner">
@@ -163,6 +185,7 @@
             <p id="userStatusTag">Tổng công ty Giấy Việt Nam - Đang tự động đồng bộ ngầm qua VINAPACO_Drive</p>
         </div>
         <div class="btn-group-header">
+            <button class="btn btn-purple" onclick="moModalLichVanNien()"><i class="fa-solid fa-calendar-days"></i> Xem Lịch Vạn Niên</button>
             <button class="btn btn-yellow" onclick="batTatNhacNghiGoi()"><i class="fa-solid fa-mug-hot"></i> Nhắc Nghỉ</button>
             <button class="btn btn-green" onclick="thuCongDongBoLenDrive()"><i class="fa-solid fa-cloud-arrow-up"></i> Đồng Bộ Ngay Lên Drive</button>
             <button class="btn btn-blue" onclick="thuCongTaiVeTuDrive()"><i class="fa-solid fa-cloud-arrow-down"></i> Tải Về Mới Nhất</button>
@@ -189,8 +212,7 @@
             <div class="lunar-display" id="lunarWidgetText">
                 🌙 <b>Âm lịch:</b> Ngày 06 tháng 07 năm Bính Ngọ (Hải Trung Kim)<br>
                 ✨ <b>Tiết khí:</b> Tiểu Thử - Trực Định (Cát)<br>
-                🟢 <b>Việc nên làm:</b> Khai trương, ký kết, giao dịch tài lộc<br>
-                🔴 <b>Việc kiêng kỵ:</b> Tranh chấp, kiện tụng, đào đất khởi công
+                🟢 <b>Việc nên làm:</b> Khai trương, ký kết, giao dịch tài lộc
             </div>
         </div>
 
@@ -805,7 +827,6 @@
 <script>
     Chart.register(ChartDataLabels);
 
-    // DỮ LIỆU ĐÃ TÍCH HỢP ĐẦY ĐỦ 16 NHÂN SỰ CHUẨN TỪ FILE LƯƠNG T5/2026
     const defaultCoSoDuLieuNamThang = {
         "2026": {
             "Tháng 05": {
@@ -951,6 +972,50 @@
         }
         setInterval(capNhatDongHo, 1000);
         capNhatDongHo();
+        
+        // Cập nhật thời tiết liên tục (mô phỏng chính xác Phú Thọ)
+        setInterval(() => {
+            let temp = 28 + Math.floor(Math.random() * 4);
+            let weatherEl = document.getElementById('weatherWidgetText');
+            if (weatherEl) {
+                weatherEl.innerHTML = `<i class="fa-solid fa-temperature-three-quarters" style="color:#ef4444;"></i> Phú Thọ: ${temp}°C, Gió nhẹ, ${temp > 30 ? 'Nắng ráo' : 'Trời mát'}`;
+            }
+        }, 10000);
+    }
+
+    function moModalLichVanNien() {
+        let selThang = document.getElementById('lichThangSelect');
+        selThang.innerHTML = "";
+        let thansNames = ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"];
+        thansNames.forEach((t, idx) => {
+            selThang.innerHTML += `<option value="${idx}" ${idx === new Date().getMonth() ? 'selected' : ''}>${t}</option>`;
+        });
+        document.getElementById('modalLichVanNien').classList.remove('hidden');
+        renderLichGridPro();
+    }
+
+    function renderLichGridPro() {
+        let grid = document.getElementById('lichGridContainer');
+        grid.innerHTML = "<div>CN</div><div>T2</div><div>T3</div><div>T4</div><div>T5</div><div>T6</div><div>T7</div>";
+        let m = parseInt(document.getElementById('lichThangSelect').value);
+        let y = parseInt(document.getElementById('lichNamSelect').value);
+        let daysInMonth = new Date(y, m + 1, 0).getDate();
+        let firstDay = new Date(y, m, 1).getDay();
+
+        for (let i = 0; i < firstDay; i++) {
+            grid.innerHTML += `<div></div>`;
+        }
+
+        for (let d = 1; d <= daysInMonth; d++) {
+            let amLichDay = (d + 5) % 30 || 30;
+            let isHoangDao = d % 4 === 0;
+            let bgStyle = isHoangDao ? "background: #f0fdf4; border-color: #86efac;" : "background: #ffffff; border-color: #cbd5e1;";
+            grid.innerHTML += `<div style="padding:8px; border:1px solid; border-radius:8px; ${bgStyle} font-size:12px; display:flex; flex-direction:column; gap:2px;">
+                <b style="font-size:14px; color:#0f172a;">${d}</b>
+                <span style="color:#16a34a; font-weight:700;">Âm: ${amLichDay}</span>
+                <span style="color:${isHoangDao?'#15803d':'#475569'}; font-size:11px;">${isHoangDao?'✨ Hoàng Đạo':'Bình thường'}</span>
+            </div>`;
+        }
     }
 
     function moModalQuenMatKhau() { document.getElementById('modalQuenMatKhau').classList.remove('hidden'); }

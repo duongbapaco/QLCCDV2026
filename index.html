@@ -1017,7 +1017,6 @@
             console.warn("Lỗi kết nối trực tiếp từ mây, sử dụng dữ liệu dự phòng cục bộ.");
         }
 
-        // TỰ PHỤC HỒI AN TOÀN TUYỆT ĐỐI NẾU THIẾU NHÁNH NĂM/THÁNG
         if (!coSoDuLieuNamThang[currentNamKey]) {
             coSoDuLieuNamThang[currentNamKey] = {};
         }
@@ -1075,6 +1074,24 @@
         }
     }
 
+    // TỰ ĐỘNG ĐỒNG BỘ NGẦM (POLLING TỰ ĐỘNG MỖI 30 GIÂY)
+    function khoiTaoTuDongDongBoNgam() {
+        setInterval(async () => {
+            try {
+                let res = await fetch(gasWebhookUrl + "?nocache=" + new Date().getTime());
+                let result = await res.json();
+                if (result && result.coSoDuLieuNamThang) {
+                    // Tự động cập nhật ngầm nếu dữ liệu trên mây có thay đổi
+                    coSoDuLieuNamThang = result.coSoDuLieuNamThang;
+                    if (result.dsThanhToanVanPhongProByMonth) dsThanhToanVanPhongProByMonth = result.dsThanhToanVanPhongProByMonth;
+                    if (result.dsThanhToanTelecombyMonth) dsThanhToanTelecombyMonth = result.dsThanhToanTelecombyMonth;
+                    luuTruVaoLocalStorage();
+                    capNhat();
+                }
+            } catch (e) {}
+        }, 30000); // 30 giây kiểm tra một lần
+    }
+
     window.addEventListener('DOMContentLoaded', async () => {
         let inputUrlSetting = document.getElementById('inputGasUrlSetting');
         if(inputUrlSetting) inputUrlSetting.value = gasWebhookUrl;
@@ -1094,6 +1111,7 @@
         doiThangHoSoLuong();
         await tuDongTaiDuLieuTuDrive();
         renderAccountTable();
+        khoiTaoTuDongDongBoNgam();
     });
 
     function khoiTaoDonghoVaThoiGianThuc() {
@@ -1271,7 +1289,7 @@
             i.thucLinhCuoiCung = i.thucLinhLCB + i.thucLinhCV;
         });
         luuTruVaoLocalStorage();
-        tuDongDayDuLieuLenDrive();
+        tuDongDayDuLieuLenDrive(); // Tự động đẩy ngầm lên Drive mỗi khi thay đổi
 
         renderTimekeepingDetailTable();
         renderTableCB();

@@ -1344,6 +1344,14 @@
                 });
             }
         }
+        
+        // Sắp xếp lại thứ tự từ Tháng 01 đến Tháng 12 một cách chuẩn xác
+        allTelecom.sort((a, b) => {
+            let m1 = parseInt(a.thangHachToan.replace(/[^0-9]/g, '')) || 0;
+            let m2 = parseInt(b.thangHachToan.replace(/[^0-9]/g, '')) || 0;
+            return m1 - m2;
+        });
+
         return allTelecom;
     }
 
@@ -1557,6 +1565,7 @@
         khoiTaoDanhSachNhanSuModalSelect();
         let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         if (ds.length > 0) moModalPhiieuLuongTheoTen(ds[0].hoTen);
+        document.getElementById('previewModal').classList.remove('hidden');
     }
 
     function chuyenNhanSuModal(step) {
@@ -2134,9 +2143,16 @@
     }
 
     function tinhTienTelecomTuTong() {
-        let tong = parseFloat(document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g,'')) || 0;
+        let rawVal = document.getElementById('inputTelecomTongVat').value;
+        let tong = parseFloat(rawVal.replace(/[^0-9]/g, '')) || 0;
+        
+        if (tong > 0 && !rawVal.includes('.')) {
+            document.getElementById('inputTelecomTongVat').value = tong.toLocaleString('vi-VN');
+        }
+
         let truocThue = Math.round(tong / 1.1);
         let vat = tong - truocThue;
+        
         document.getElementById('inputTelecomTruocThueInput').value = truocThue.toLocaleString('vi-VN');
         document.getElementById('inputTelecomVatInput').value = vat.toLocaleString('vi-VN');
     }

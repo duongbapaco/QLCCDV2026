@@ -40,10 +40,17 @@
         .btn-yellow { background-color: #d97706; color: white; }
         .btn-purple { background-color: #8b5cf6; color: white; }
 
-        .config-bar { background: white; padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border-color); display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; align-items: center; }
+        /* THANH CẤU HÌNH CHIA ĐỀU 4 CỘT CÂN ĐỐI TUYỆT ĐỐI */
+        .config-bar { background: white; padding: 16px 20px; border-radius: 10px; border: 1px solid var(--border-color); display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: center; }
         .config-item { display: flex; flex-direction: column; gap: 6px; }
         .config-item label { font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
-        .config-item input, .config-item select { padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border-color); font-weight: 800; font-size: 15px; color: #0f172a; outline: none; background: #fff; }
+        .config-item input, .config-item select { padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border-color); font-weight: 800; font-size: 15px; color: #0f172a; outline: none; background: #fff; width: 100%; }
+        .config-item.drive-path-box { grid-column: span 2; }
+
+        @media (max-width: 1200px) {
+            .config-bar { grid-template-columns: repeat(2, 1fr); }
+            .config-item.drive-path-box { grid-column: span 2; }
+        }
 
         .form-card { background: #f8fafc; border: 2px dashed var(--primary); padding: 16px; border-radius: 10px; margin-bottom: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; align-items: flex-end; }
         .form-group { display: flex; flex-direction: column; gap: 6px; }
@@ -219,18 +226,21 @@
         </div>
     </div>
 
+    <!-- THANH CẤU HÌNH ĐÃ ĐƯỢC CHIA ĐỀU 4 CỘT CÂN ĐỐI TUYỆT ĐỐI -->
     <div class="config-bar">
         <div class="config-item"><label>Năm Lưu Trữ</label><select id="cfgNamChon" onchange="doiThangHoSoLuong()"></select></div>
         <div class="config-item"><label>Tháng Nhập / Lưu Trữ</label><select id="cfgThangChon" onchange="doiThangHoSoLuong()">
             <option value="Tháng 01">Tháng 01</option><option value="Tháng 02">Tháng 02</option><option value="Tháng 03">Tháng 03</option><option value="Tháng 04">Tháng 04</option><option value="Tháng 05">Tháng 05</option><option value="Tháng 06" selected>Tháng 06</option><option value="Tháng 07">Tháng 07</option><option value="Tháng 08">Tháng 08</option><option value="Tháng 09">Tháng 09</option><option value="Tháng 10">Tháng 10</option><option value="Tháng 11">Tháng 11</option><option value="Tháng 12">Tháng 12</option>
         </select></div>
-        <div class="config-item" style="grid-column: span 2;">
+        
+        <div class="config-item drive-path-box">
             <label>Đường Dẫn VINAPACO_Drive (Tự động sinh theo Năm & Tháng chọn)</label>
             <div style="display: flex; gap: 8px;">
                 <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold; flex: 1;" value="VINAPACO_Drive / 2026 / Tháng 06">
                 <button class="btn btn-blue" style="padding: 6px 12px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Mở Thư Mục</button>
             </div>
         </div>
+
         <div class="config-item"><label>Ngày Công Chế Độ</label><input type="number" id="cfgNCD" onchange="luuCauHinhHienTai()"></div>
         <div class="config-item"><label>Mức Lương Cơ Bản</label><input type="number" id="cfgMucLCB" onchange="luuCauHinhHienTai()"></div>
         <div class="config-item"><label>Mức Tối Thiểu Vùng</label><input type="number" id="cfgMucTTV" onchange="luuCauHinhHienTai()"></div>
@@ -454,7 +464,7 @@
             <div class="form-group"><label>Tổng Thanh Toán</label><input type="text" id="previewOfficeTotal" placeholder="0" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;"></div>
             <div class="form-group"><label>Ngày Chứng Từ (DD/MM/YYYY)</label><input type="date" id="inputOfficeDate"></div>
             <div class="form-group" style="grid-column: span 2;">
-                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Đẩy thẳng lên Google Drive để chống tràn dung lượng Database)</label>
+                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Đẩy thẳng lên đúng thư mục tháng/năm trên Google Drive)</label>
                 <input type="file" id="inputOfficeFiles" multiple style="padding: 7px; background: white; font-size: 13px;" onchange="xuLyChonTepVPP(this)">
                 <div class="progress-box" id="officeProgressBarBox"><div class="progress-bar-fill" id="officeProgressBarFill"></div></div>
                 <small id="officeProgressText" style="color:#0284c7; font-weight:bold; display:none; margin-top:3px;"></small>
@@ -556,7 +566,7 @@
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group" style="grid-column: span 2;">
-                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Đẩy thẳng lên Google Drive để chống tràn dung lượng Database)</label>
+                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Đẩy thẳng lên đúng thư mục tháng/năm trên Google Drive)</label>
                 <input type="file" id="inputTelecomFiles" multiple style="padding: 7px; background: white; font-size: 13px;" onchange="xuLyChonTepTelecom(this)">
                 <div class="progress-box" id="telecomProgressBarBox"><div class="progress-bar-fill" id="telecomProgressBarFill"></div></div>
                 <small id="telecomProgressText" style="color:#0284c7; font-weight:bold; display:none; margin-top:3px;"></small>
@@ -1707,7 +1717,7 @@
             box.style.display = 'block';
             txt.style.display = 'block';
             fill.style.width = '50%';
-            txt.innerText = `Đang xử lý và đẩy tệp trực tiếp lên Google Drive (Tránh tràn Database)...`;
+            txt.innerText = `Đang xử lý và đẩy tệp trực tiếp lên Google Drive...`;
 
             let noiDungThanhToan = document.getElementById('inputOfficeContent').value.trim() || "Chung_tu_thanh_toan";
             let cleanNamePrefix = noiDungThanhToan.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]/g, '_');
@@ -1834,7 +1844,7 @@
         document.getElementById('officeProgressBarBox').style.display = 'none';
         document.getElementById('officeProgressText').style.display = 'none';
         capNhat();
-        alert("✅ Đã lưu chứng từ; file nặng được đẩy lên Drive, giữ Database siêu nhẹ và an toàn tuyệt đối!");
+        alert("✅ Đã lưu chứng từ và đẩy file đính kèm lên đúng thư mục Drive thành công!");
     }
 
     function suaVPP(originalKey, originalIndex) {

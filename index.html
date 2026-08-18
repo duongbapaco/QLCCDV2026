@@ -541,7 +541,7 @@
         <table><thead><tr><th>Số Phiếu</th><th>Bên Giao</th><th>Bên Nhận</th><th>Bộ Phận</th><th>Tên Thiết Bị</th><th>Tình Trạng</th><th>Ngày Giao</th><th style="text-align: center;">Thao Tác</th></tr></thead><tbody id="deliveryTableBody"></tbody></table>
     </div>
 
-    <!-- TAB CƯỚC VIỄN THÔNG (ĐÃ ĐƯỢC SỬA TẬN GỐC KHÔNG BỊ ĐÈ TỪ THÁNG 9) -->
+    <!-- TAB CƯỚC VIỄN THÔNG (ĐÃ SỬA TRIỆT ĐỂ LỖI ĐÈ TỪ THÁNG 9 & NHẢY CÓC) -->
     <div id="telecomPaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-wifi"></i> QUẢN LÝ CƯỚC MẠNG & INTERNET TRẢ SAU (<span class="thangHienTaiTitle">Tháng 06/2026</span>)</div>
@@ -2214,7 +2214,6 @@
         document.getElementById('inputTelecomVatInput').value = vat.toLocaleString('vi-VN');
     }
 
-    // [ĐÃ SỬA TẬN GỐC TẠI ĐÂY]: Dùng khóa kết hợp Năm_Tháng để từ tháng 9 trở đi không bao giờ đè dữ liệu
     function suaTelecom(originalKey, originalIndex) {
         let item = dsThanhToanTelecombyMonth[originalKey][originalIndex];
         if (!item) return;
@@ -2252,7 +2251,7 @@
         let truocThue = Math.round(tong / 1.1);
         let vat = tong - truocThue;
         
-        // Khóa lưu trữ riêng biệt tuyệt đối cho từng tháng (Tháng 01 đến Tháng 12)
+        // Khóa lưu trữ riêng biệt tuyệt đối cho từng tháng không bị đè hay nhảy cóc
         let monthKey = `${namChonHienTai}_${thangChonHienTai}`;
 
         if (!dsThanhToanTelecombyMonth[monthKey]) {

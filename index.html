@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Quản Lý VINAPACO - Realtime Render & Full Bug Fix</title>
+    <title>Hệ Thống Quản Lý VINAPACO - Realtime Render & Telecom Fix 2025/2026</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -1338,6 +1338,8 @@
             let parts = key.split('_');
             let yearVal = parts[0];
             let monthVal = parts[1];
+            
+            // Lọc đúng năm đang chọn trên giao diện (hỗ trợ tuyệt đối 2025, 2026...)
             if (yearVal === currentNamKey) {
                 dsThanhToanTelecombyMonth[key].forEach((item, index) => {
                     allTelecom.push({ ...item, namHachToan: yearVal, thangHachToan: monthVal, originalKey: key, originalIndex: index });
@@ -1347,8 +1349,8 @@
         
         // Sắp xếp lại thứ tự từ Tháng 01 đến Tháng 12 một cách chuẩn xác
         allTelecom.sort((a, b) => {
-            let m1 = parseInt(a.thangHachToan.replace(/[^0-9]/g, '')) || 0;
-            let m2 = parseInt(b.thangHachToan.replace(/[^0-9]/g, '')) || 0;
+            let m1 = parseInt((a.thangHachToan || "").replace(/[^0-9]/g, '')) || 0;
+            let m2 = parseInt((b.thangHachToan || "").replace(/[^0-9]/g, '')) || 0;
             return m1 - m2;
         });
 
@@ -1801,6 +1803,7 @@
 
             let loaiCuoc = document.getElementById('inputTelecomType').value.trim() || "Cuoc_vien_thong";
             let cleanNamePrefix = loaiCuoc.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]/g, '_');
+            let namChonHienTai = document.getElementById('cfgNamChon') ? document.getElementById('cfgNamChon').value : currentNamKey;
 
             let filesPayload = [];
             for (let i = 0; i < input.files.length; i++) {
@@ -1814,7 +1817,7 @@
                     name: newFileName,
                     mimeType: file.type || "application/octet-stream",
                     base64Data: base64Data,
-                    nam: currentNamKey,
+                    nam: namChonHienTai,
                     thang: currentThangKey,
                     category: "Cuoc_Vien_Thong"
                 });
@@ -2178,11 +2181,14 @@
         }
     }
 
+    // ĐÃ SỬA TRIỆT ĐỂ: BÁM SÁT NĂM VÀ THÁNG CHỌN ĐỂ TẠO KHÓA ĐỘC LẬP CHO TỪNG NĂM (2025, 2026...) KHÔNG BAO GIỜ GHI ĐÈ
     function luuHoacCapNhatTelecom() {
         let type = document.getElementById('inputTelecomType').value.trim();
         let tongStr = document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g, '');
         let tong = parseFloat(tongStr) || 0;
+        
         let thangChonHienTai = document.getElementById('cfgThangChon').value;
+        let namChonHienTai = document.getElementById('cfgNamChon') ? document.getElementById('cfgNamChon').value : currentNamKey;
 
         if (!type || tong <= 0) {
             alert("⚠️ Vui lòng nhập đầy đủ Loại Cước và Tổng Cước hợp lệ!");
@@ -2191,7 +2197,9 @@
 
         let truocThue = Math.round(tong / 1.1);
         let vat = tong - truocThue;
-        let monthKey = `${currentNamKey}_${thangChonHienTai}`;
+        
+        // KHÓA ĐỘC LẬP CHUẨN XÁC THEO NĂM VÀ THÁNG (VD: "2025_Tháng 09", "2025_Tháng 10")
+        let monthKey = `${namChonHienTai}_${thangChonHienTai}`;
 
         if (!dsThanhToanTelecombyMonth[monthKey]) {
             dsThanhToanTelecombyMonth[monthKey] = [];
@@ -2201,7 +2209,7 @@
         let filesArr = filesToUpload.map(f => ({
             name: f.name,
             size: f.base64Data ? f.base64Data.length : 0,
-            folder: `VINAPACO_Drive/${currentNamKey}/${thangChonHienTai}/Cuoc_Vien_Thong`
+            folder: `VINAPACO_Drive/${namChonHienTai}/${thangChonHienTai}/Cuoc_Vien_Thong`
         }));
 
         let editIdx = parseInt(document.getElementById('editTelecomIndex').value);
@@ -2217,8 +2225,9 @@
             maHs: document.getElementById('inputTelecomMaHs').value || "VT-01",
             supplier: document.getElementById('inputTelecomSupplier').value,
             type: type,
-            kyCuoc: `${thangChonHienTai}/${currentNamKey}`,
+            kyCuoc: `${thangChonHienTai}/${namChonHienTai}`,
             thangHachToan: thangChonHienTai,
+            namHachToan: namChonHienTai,
             tong: tong,
             truocThue: truocThue,
             vat: vat,
@@ -2258,7 +2267,7 @@
 
         renderTelecomPaymentTable();
         capNhat();
-        alert("✅ Đã lưu thành công dữ liệu cho " + thangChonHienTai + " mà không ảnh hưởng đến các tháng khác!");
+        alert(`✅ Đã lưu thành công dữ liệu cho ${thangChonHienTai} năm ${namChonHienTai} mà không ảnh hưởng đến các tháng khác!`);
     }
 
     function xoaTelecom(originalKey, originalIndex) {
@@ -2276,7 +2285,7 @@
         yearTelecom.forEach((item) => {
             let fileListStr = '<span style="color:#94a3b8; font-size:13px;">Không có tệp</span>';
             if (item.files && item.files.length > 0) {
-                let folderName = `VINAPACO_Drive / ${currentNamKey} / ${item.thangHachToan} / Cuoc_Vien_Thong`;
+                let folderName = `VINAPACO_Drive / ${item.namHachToan || currentNamKey} / ${item.thangHachToan} / Cuoc_Vien_Thong`;
                 let listNames = item.files.map(f => f.name).join(', ');
                 fileListStr = `<a href="https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m" target="_blank" title="Mở thư mục trên Google Drive" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> ${folderName} (${item.files.length} tệp)<br><small style="color:#475569; font-weight:normal;">${listNames}</small></a>`;
             }

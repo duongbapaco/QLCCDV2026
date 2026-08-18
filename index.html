@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Quản Lý Đa Dashboard & Lịch Vạn Niên - VINAPACO</title>
+    <title>Hệ Thống Quản Lý VINAPACO - Full Sync</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -1092,6 +1092,11 @@
                     coSoDuLieuNamThang = result.coSoDuLieuNamThang;
                     if (result.dsThanhToanVanPhongProByMonth) dsThanhToanVanPhongProByMonth = result.dsThanhToanVanPhongProByMonth;
                     if (result.dsThanhToanTelecombyMonth) dsThanhToanTelecombyMonth = result.dsThanhToanTelecombyMonth;
+                    if (result.danhSachCongViec) danhSachCongViec = result.danhSachCongViec;
+                    if (result.dsKhoMucIn) dsKhoMucIn = result.dsKhoMucIn;
+                    if (result.dsKhaoSatChuyenSau) dsKhaoSatChuyenSau = result.dsKhaoSatChuyenSau;
+                    if (result.dsPhieuGiaoNhan) dsPhieuGiaoNhan = result.dsPhieuGiaoNhan;
+                    if (result.danhSachTaiKhoanHeThong) danhSachTaiKhoanHeThong = result.danhSachTaiKhoanHeThong;
                     luuTruVaoLocalStorage();
                     capNhat();
                 }

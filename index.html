@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Quản Lý VINAPACO - Realtime Render Fixed</title>
+    <title>Hệ Thống Quản Lý VINAPACO - Realtime Render & Month Fix</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -1847,7 +1847,6 @@
         document.getElementById('officeProgressBarBox').style.display = 'none';
         document.getElementById('officeProgressText').style.display = 'none';
         
-        // Render ngay lập tức không cần refresh
         renderOfficePaymentTable();
         capNhat();
         alert("✅ Đã lưu chứng từ và hiển thị ngay lập tức!");
@@ -2210,7 +2209,6 @@
             btnSave.className = "btn btn-green";
         }
 
-        // RENDER NGAY LẬP TỨC KHÔNG CẦN REFRESH
         renderTelecomPaymentTable();
         capNhat();
         alert("✅ Đã thêm và hiển thị cước viễn thông ngay lập tức!");

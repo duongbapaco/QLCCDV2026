@@ -2182,7 +2182,7 @@
         let type = document.getElementById('inputTelecomType').value.trim();
         let tongStr = document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g, '');
         let tong = parseFloat(tongStr) || 0;
-        let kyCuocVal = document.getElementById('inputTelecomKyCuoc').value.trim();
+        let thangChonHienTai = document.getElementById('cfgThangChon').value;
 
         if (!type || tong <= 0) {
             alert("⚠️ Vui lòng nhập đầy đủ Loại Cước và Tổng Cước hợp lệ!");
@@ -2191,34 +2191,34 @@
 
         let truocThue = Math.round(tong / 1.1);
         let vat = tong - truocThue;
-        let newMonthKey = `${currentNamKey}_${currentThangKey}`;
+        let monthKey = `${currentNamKey}_${thangChonHienTai}`;
 
-        if (!dsThanhToanTelecombyMonth[newMonthKey]) {
-            dsThanhToanTelecombyMonth[newMonthKey] = [];
+        if (!dsThanhToanTelecombyMonth[monthKey]) {
+            dsThanhToanTelecombyMonth[monthKey] = [];
         }
 
         let filesToUpload = window.tempTelecomFilesPayload || [];
         let filesArr = filesToUpload.map(f => ({
             name: f.name,
             size: f.base64Data ? f.base64Data.length : 0,
-            folder: `VINAPACO_Drive/${currentNamKey}/${currentThangKey}/Cuoc_Vien_Thong`
+            folder: `VINAPACO_Drive/${currentNamKey}/${thangChonHienTai}/Cuoc_Vien_Thong`
         }));
 
         let editIdx = parseInt(document.getElementById('editTelecomIndex').value);
-        let existingFiles = (editIdx >= 0 && dsThanhToanTelecombyMonth[newMonthKey][editIdx] && dsThanhToanTelecombyMonth[newMonthKey][editIdx].files)
-            ? dsThanhToanTelecombyMonth[newMonthKey][editIdx].files
+        let existingFiles = (editIdx >= 0 && dsThanhToanTelecombyMonth[monthKey][editIdx] && dsThanhToanTelecombyMonth[monthKey][editIdx].files)
+            ? dsThanhToanTelecombyMonth[monthKey][editIdx].files
             : [];
         let finalFiles = filesArr.length > 0 ? filesArr : existingFiles;
 
         let newItem = {
-            id: (editIdx >= 0 && dsThanhToanTelecombyMonth[newMonthKey][editIdx])
-                ? dsThanhToanTelecombyMonth[newMonthKey][editIdx].id
-                : "VT-0" + (dsThanhToanTelecombyMonth[newMonthKey].length + 1),
+            id: (editIdx >= 0 && dsThanhToanTelecombyMonth[monthKey][editIdx])
+                ? dsThanhToanTelecombyMonth[monthKey][editIdx].id
+                : "VT-0" + (dsThanhToanTelecombyMonth[monthKey].length + 1),
             maHs: document.getElementById('inputTelecomMaHs').value || "VT-01",
             supplier: document.getElementById('inputTelecomSupplier').value,
             type: type,
-            kyCuoc: kyCuocVal,
-            thangHachToan: currentThangKey,
+            kyCuoc: `${thangChonHienTai}/${currentNamKey}`,
+            thangHachToan: thangChonHienTai,
             tong: tong,
             truocThue: truocThue,
             vat: vat,
@@ -2226,9 +2226,9 @@
         };
 
         if (editIdx >= 0) {
-            dsThanhToanTelecombyMonth[newMonthKey][editIdx] = newItem;
+            dsThanhToanTelecombyMonth[monthKey][editIdx] = newItem;
         } else {
-            dsThanhToanTelecombyMonth[newMonthKey].push(newItem);
+            dsThanhToanTelecombyMonth[monthKey].push(newItem);
         }
 
         luuTruVaoLocalStorage();
@@ -2258,7 +2258,7 @@
 
         renderTelecomPaymentTable();
         capNhat();
-        alert("✅ Đã thêm và hiển thị cước viễn thông ngay lập tức!");
+        alert("✅ Đã lưu thành công dữ liệu cho " + thangChonHienTai + " mà không ảnh hưởng đến các tháng khác!");
     }
 
     function xoaTelecom(originalKey, originalIndex) {

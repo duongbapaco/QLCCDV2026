@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Quản Lý VINAPACO - Fixed Telecom & All Features</title>
+    <title>Hệ Thống Quản Lý VINAPACO - Fixed Telecom & Drive Sync Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -928,8 +928,6 @@
     }
 
     let dsThanhToanVanPhongProByMonth = JSON.parse(localStorage.getItem('bapaco_vpp_map_data') || '{}');
-    
-    // KHO LƯU TRỮ CƯỚC VIỄN THÔNG ĐỘC LẬP TƯƠNG ỨNG TỪNG NĂM - THÁNG (FIXED 100%)
     let dsThanhToanTelecombyMonth = JSON.parse(localStorage.getItem('bapaco_telecom_map_data') || '{}');
 
     let dsKhoMucIn = JSON.parse(localStorage.getItem('bapaco_ink_data') || '[{"code":"MUC001","name":"Hộp mực Canon 337","printer":"Canon LBP 151dw","action":"Cấp phát sử dụng","qty":1,"receiver":"Phòng Kế toán","price":450000,"total":450000}]');
@@ -1104,7 +1102,7 @@
         luuTruVaoLocalStorage();
     }
 
-    async function tuDongDayDuLieuLenDrive(filesToUpload = []) {
+    async function tuDongDayDuLieuLenDrive(filesToUpload = [], folderPath = "") {
         let payload = { 
             coSoDuLieuNamThang, 
             dsThanhToanVanPhongProByMonth, 
@@ -1113,7 +1111,8 @@
             dsKhaoSatChuyenSau, 
             danhSachCongViec, 
             dsPhieuGiaoNhan, 
-            danhSachTaiKhoanHeThong 
+            danhSachTaiKhoanHeThong,
+            folderPath: folderPath
         };
         try { 
             await fetch(gasWebhookUrl, { 
@@ -1392,7 +1391,6 @@
         return allVpp;
     }
 
-    // HÀM LẤY TOÀN BỘ CƯỚC VIỄN THÔNG CỦA NĂM ĐANG CHỌN (FIXED 100% KHÔNG LỆCH KEY)
     function layTatCaDanhSachTelecomTheoNam() {
         let allTelecom = [];
         for (let key in dsThanhToanTelecombyMonth) {
@@ -1948,7 +1946,8 @@
         }
 
         luuTruVaoLocalStorage();
-        tuDongDayDuLieuLenDrive(filesToUpload);
+        let exactVppFolder = `VINAPACO_Drive/${currentNamKey}/${currentThangKey}/Thanh_Toan_VPP`;
+        tuDongDayDuLieuLenDrive(filesToUpload, exactVppFolder);
         window.tempVppFilesPayload = [];
 
         document.getElementById('inputOfficeContent').value = '';
@@ -1962,7 +1961,7 @@
         
         renderOfficePaymentTable();
         capNhat();
-        alert("✅ Đã lưu chứng từ và hiển thị ngay lập tức!");
+        alert("✅ Đã lưu chứng từ và đẩy đúng thư mục Drive thành công!");
     }
 
     function suaVPP(originalKey, originalIndex) {
@@ -2252,7 +2251,7 @@
         }
     }
 
-    // HÀM LƯU / CẬP NHẬT CƯỚC VIỄN THÔNG (ĐẢM BẢO KHỚP TUYỆT ĐỐI KHÔNG BỊ ĐÈ THÁNG)
+    // HÀM LƯU / CẬP NHẬT CƯỚC VIỄN THÔNG (ĐÃ FIX ĐỘC LẬP THÁNG & ĐÚNG PATH DRIVE)
     function luuHoacCapNhatTelecom() {
         let type = document.getElementById('inputTelecomType').value.trim();
         let tongStr = document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g, '');
@@ -2269,7 +2268,7 @@
         let truocThue = Math.round(tong / 1.1);
         let vat = tong - truocThue;
         
-        // Khóa lưu trữ duy nhất theo chuẩn: Năm_Tháng (Ví dụ: 2026_Tháng 06)
+        // Khóa lưu trữ độc lập theo chuẩn: Năm_Tháng
         let exactMonthKey = `${namChonHienTai}_${thangChonHienTai}`;
 
         if (!dsThanhToanTelecombyMonth[exactMonthKey]) {
@@ -2309,7 +2308,6 @@
         };
 
         if (editIdx >= 0) {
-            // Nếu đổi tháng hạch toán khi sửa, xóa bản ghi cũ ở tháng cũ và đẩy vào đúng kho của tháng mới
             if (oldMonthKey && dsThanhToanTelecombyMonth[oldMonthKey]) {
                 dsThanhToanTelecombyMonth[oldMonthKey].splice(editIdx, 1);
             }
@@ -2320,7 +2318,11 @@
         }
 
         luuTruVaoLocalStorage();
-        tuDongDayDuLieuLenDrive(filesToUpload);
+        
+        // ĐẨY LÊN DRIVE VỚI ĐƯỜNG DẪN ĐỘNG CHÍNH XÁC ĐẾN THƯ MỤC NĂM > THÁNG > CƯỚC VIỄN THÔNG
+        let exactFolderPath = `VINAPACO_Drive/${namChonHienTai}/${thangChonHienTai}/Cuoc_Vien_Thong`;
+        tuDongDayDuLieuLenDrive(filesToUpload, exactFolderPath);
+        
         window.tempTelecomFilesPayload = [];
 
         document.getElementById('editTelecomIndex').value = -1;
@@ -2347,7 +2349,7 @@
 
         renderTelecomPaymentTable();
         capNhat();
-        alert(`✅ Đã lưu thành công dữ liệu cước viễn thông cho ${thangChonHienTai} năm ${namChonHienTai}!`);
+        alert(`✅ Đã lưu cước viễn thông cho ${thangChonHienTai} năm ${namChonHienTai} và đẩy tệp đúng thư mục Drive!`);
     }
 
     function xoaTelecom(monthKey, index) {

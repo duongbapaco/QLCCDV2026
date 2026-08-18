@@ -993,7 +993,6 @@
         return dateString;
     }
 
-    // TẢI DỮ LIỆU THÔNG MINH: CHỈ GHI ĐÈ CƯỚC NẾU TRÊN DRIVE THỰC SỰ CÓ DỮ LIỆU
     async function tuDongTaiDuLieuTuDrive() {
         try {
             let res = await fetch(gasWebhookUrl + "?nocache=" + new Date().getTime());
@@ -1063,7 +1062,6 @@
         let inputUrlSetting = document.getElementById('inputGasUrlSetting');
         if(inputUrlSetting) inputUrlSetting.value = gasWebhookUrl;
 
-        // Ưu tiên đọc dữ liệu LocalStorage trên máy trước
         try {
             let savedDb = localStorage.getItem('bapaco_db_data');
             if (savedDb) coSoDuLieuNamThang = JSON.parse(savedDb);
@@ -1248,6 +1246,8 @@
             i.bhtn = Math.round(i.luongHDLD * 0.01);
             i.bhxh = Math.round(i.luongHDLD * 0.095);
             i.thucLinhLCB = i.tongLCB - i.bhtn - i.bhxh;
+            
+            // Cập nhật tính toán với PC.CV động
             i.luongCVGoc = Math.round(((i.hsl_cv||0) + (i.pc_cv||0)) * cfg.mucLCV);
             i.luongCVTT = Math.round(i.luongCVGoc / cfg.ncd * (i.nc_tg||0) * (i.k_ht||1.0));
             i.thucLinhCV = i.luongCVTT - (i.tam_ung||0);
@@ -1463,7 +1463,11 @@
                 <td style="text-align:center;">${idx+1}</td>
                 <td><b>${item.hoTen}</b></td>
                 <td style="text-align:center;">${item.hsl_cv}</td>
-                <td style="text-align:center;">${item.pc_cv||0}</td>
+                <td style="text-align:center;">
+                    <input class="cell-input num-center" type="number" step="0.05" value="${item.pc_cv || 0}" 
+                    onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].pc_cv = parseFloat(this.value) || 0; capNhat();" 
+                    title="Sửa trực tiếp Phụ cấp công việc">
+                </td>
                 <td style="text-align:right;">${item.luongCVGoc.toLocaleString()}</td>
                 <td style="text-align:center;">${item.nc_tg}</td>
                 <td style="text-align:center;">${item.nc_p||0}</td>
@@ -2075,7 +2079,6 @@
         }
     }
 
-    // HÀM LƯU TỐI ƯU: LƯU TỨC THÌ LÊN LOCALSTORAGE & DRIVE KỂ CẢ KHÔNG CÓ TỆP ĐÍNH KÈM
     function luuHoacCapNhatTelecom() {
         let type = document.getElementById('inputTelecomType').value.trim();
         let tongStr = document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g, '');
@@ -2129,14 +2132,10 @@
             dsThanhToanTelecombyMonth[newMonthKey].push(newItem);
         }
 
-        // 1. LƯU LẬP TỨC VÀO BỘ NHỚ TRÌNH DUYỆT TRÊN MÁY
         luuTruVaoLocalStorage();
-
-        // 2. ĐẨY LẬP TỨC LÊN GOOGLE DRIVE (KỂ CẢ KHÔNG CÓ FILE ĐÍNH KÈM)
         tuDongDayDuLieuLenDrive(filesToUpload);
         window.tempTelecomFilesPayload = [];
 
-        // Reset Form nhập liệu
         document.getElementById('editTelecomIndex').value = -1;
         document.getElementById('inputTelecomType').value = '';
         document.getElementById('inputTelecomTongVat').value = '';

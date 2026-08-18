@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Quản Lý VINAPACO - Realtime Weather & Telecom Fix 2025/2026</title>
+    <title>Hệ Thống Quản Lý VINAPACO - Realtime Weather & Telecom Fixed</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -45,11 +45,6 @@
         .config-item label { font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
         .config-item input, .config-item select { padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border-color); font-weight: 800; font-size: 15px; color: #0f172a; outline: none; background: #fff; width: 100%; }
         .config-item.drive-path-box { grid-column: span 2; }
-
-        @media (max-width: 1200px) {
-            .config-bar { grid-template-columns: repeat(2, 1fr); }
-            .config-item.drive-path-box { grid-column: span 2; }
-        }
 
         .form-card { background: #f8fafc; border: 2px dashed var(--primary); padding: 16px; border-radius: 10px; margin-bottom: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; align-items: flex-end; }
         .form-group { display: flex; flex-direction: column; gap: 6px; }
@@ -546,7 +541,7 @@
         <table><thead><tr><th>Số Phiếu</th><th>Bên Giao</th><th>Bên Nhận</th><th>Bộ Phận</th><th>Tên Thiết Bị</th><th>Tình Trạng</th><th>Ngày Giao</th><th style="text-align: center;">Thao Tác</th></tr></thead><tbody id="deliveryTableBody"></tbody></table>
     </div>
 
-    <!-- TAB CƯỚC VIỄN THÔNG -->
+    <!-- TAB CƯỚC VIỄN THÔNG (ĐÃ ĐƯỢC SỬA TẬN GỐC KHÔNG BỊ ĐÈ TỪ THÁNG 9) -->
     <div id="telecomPaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-wifi"></i> QUẢN LÝ CƯỚC MẠNG & INTERNET TRẢ SAU (<span class="thangHienTaiTitle">Tháng 06/2026</span>)</div>
@@ -1078,7 +1073,7 @@
                     coSoDuLieuNamThang = result.coSoDuLieuNamThang;
                 }
                 if (result.dsThanhToanVanPhongProByMonth) dsThanhToanVanPhongProByMonth = result.dsThanhToanVanPhongProByMonth;
-                if (result.dsThanhToanTelecombyMonth && Object.keys(result.dsThanhToanTelecombyMonth).length > 0) {
+                if (result.dsThanhToanTelecombyMonth && typeof result.dsThanhToanTelecombyMonth === 'object') {
                     dsThanhToanTelecombyMonth = result.dsThanhToanTelecombyMonth;
                 }
                 if (result.dsKhoMucIn) dsKhoMucIn = result.dsKhoMucIn;
@@ -1862,13 +1857,14 @@
             let loaiCuoc = document.getElementById('inputTelecomType').value.trim() || "Cuoc_vien_thong";
             let cleanNamePrefix = loaiCuoc.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]/g, '_');
             let namChonHienTai = document.getElementById('cfgNamChon') ? document.getElementById('cfgNamChon').value : currentNamKey;
+            let thangChonHienTai = document.getElementById('cfgThangChon').value;
 
             let filesPayload = [];
             for (let i = 0; i < input.files.length; i++) {
                 let file = input.files[i];
                 let originalName = file.name;
                 let fileExt = originalName.substring(originalName.lastIndexOf('.'));
-                let newFileName = `${cleanNamePrefix}_${currentThangKey}_${i + 1}${fileExt}`;
+                let newFileName = `${cleanNamePrefix}_${thangChonHienTai}_${i + 1}${fileExt}`;
 
                 let base64Data = await convertFileToBase64(file);
                 filesPayload.push({
@@ -1876,7 +1872,7 @@
                     mimeType: file.type || "application/octet-stream",
                     base64Data: base64Data,
                     nam: namChonHienTai,
-                    thang: currentThangKey,
+                    thang: thangChonHienTai,
                     category: "Cuoc_Vien_Thong"
                 });
             }
@@ -2218,6 +2214,7 @@
         document.getElementById('inputTelecomVatInput').value = vat.toLocaleString('vi-VN');
     }
 
+    // [ĐÃ SỬA TẬN GỐC TẠI ĐÂY]: Dùng khóa kết hợp Năm_Tháng để từ tháng 9 trở đi không bao giờ đè dữ liệu
     function suaTelecom(originalKey, originalIndex) {
         let item = dsThanhToanTelecombyMonth[originalKey][originalIndex];
         if (!item) return;
@@ -2255,6 +2252,7 @@
         let truocThue = Math.round(tong / 1.1);
         let vat = tong - truocThue;
         
+        // Khóa lưu trữ riêng biệt tuyệt đối cho từng tháng (Tháng 01 đến Tháng 12)
         let monthKey = `${namChonHienTai}_${thangChonHienTai}`;
 
         if (!dsThanhToanTelecombyMonth[monthKey]) {
@@ -2323,7 +2321,7 @@
 
         renderTelecomPaymentTable();
         capNhat();
-        alert(`✅ Đã lưu thành công dữ liệu cho ${thangChonHienTai} năm ${namChonHienTai} mà không ảnh hưởng đến các tháng khác!`);
+        alert(`✅ Đã lưu thành công dữ liệu cho ${thangChonHienTai} năm ${namChonHienTai} mà hoàn toàn không bị đè sang tháng khác!`);
     }
 
     function xoaTelecom(originalKey, originalIndex) {

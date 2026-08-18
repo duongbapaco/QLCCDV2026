@@ -414,7 +414,7 @@
         <div class="table-card" style="margin-bottom: 16px;">
             <div class="table-title" style="font-size: 14px; margin-bottom: 10px;"><i class="fa-solid fa-table"></i> Bảng Tổng Kết Quản Lý Phép Năm</div>
             <table>
-                <thead><tr><th>Chỉ Số Phép Năm</th><th>Tổng Số Ngày</th><th>Tỷ Trọng (%)</th><th>Đánh Giá Chấp Hành</th></tr></thead>
+                <thead><tr><th>Chỉ SỐ Phép Năm</th><th>Tổng Số Ngày</th><th>Tỷ Trọng (%)</th><th>Đánh Giá Chấp Hành</th></tr></thead>
                 <tbody id="leaveSummaryTableBody"></tbody>
             </table>
         </div>
@@ -1247,7 +1247,6 @@
             i.bhxh = Math.round(i.luongHDLD * 0.095);
             i.thucLinhLCB = i.tongLCB - i.bhtn - i.bhxh;
             
-            // Cập nhật tính toán với PC.CV động
             i.luongCVGoc = Math.round(((i.hsl_cv||0) + (i.pc_cv||0)) * cfg.mucLCV);
             i.luongCVTT = Math.round(i.luongCVGoc / cfg.ncd * (i.nc_tg||0) * (i.k_ht||1.0));
             i.thucLinhCV = i.luongCVTT - (i.tam_ung||0);

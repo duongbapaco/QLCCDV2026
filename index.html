@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Quản Lý Đa Dashboard & Lịch Vạn Niên Phong Thủy - VINAPACO</title>
+    <title>Hệ Thống Quản Lý Đa Dashboard & Lịch Vạn Niên - VINAPACO</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -1025,6 +1025,7 @@
             }
         } catch (e) {
             console.error("Lỗi kết nối Google Drive, sử dụng dữ liệu trên máy:", e);
+            throw e;
         }
     }
 
@@ -1053,9 +1054,21 @@
     }
 
     async function thuCongTaiVeTuDrive() { 
-        await tuDongTaiDuLieuTuDrive(); 
-        capNhat(); 
-        alert("✅ Đã tải về dữ liệu mới nhất từ Google Drive!"); 
+        try {
+            let btn = event ? event.target : null;
+            if(btn) btn.innerText = "⏳ Đang tải về...";
+            
+            await tuDongTaiDuLieuTuDrive(); 
+            capNhat(); 
+            
+            if(btn) btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> Tải Về Mới Nhất`;
+            alert("✅ Đã kết nối và tải về toàn bộ dữ liệu mới nhất từ Google Drive thành công trên thiết bị của anh!"); 
+        } catch (error) {
+            console.error("Lỗi tải về:", error);
+            let btn = event ? event.target : null;
+            if(btn) btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> Tải Về Mới Nhất`;
+            alert("❌ Không thể tải về từ Drive. Lỗi chi tiết: " + error.message);
+        }
     }
 
     window.addEventListener('DOMContentLoaded', async () => {
@@ -1076,7 +1089,6 @@
         await tuDongTaiDuLieuTuDrive();
         khoiTaoDanhSachNamTuSinh();
         doiThangHoSoLuong();
-        khoiTaoDonghoVaThoiGianThuc();
         renderAccountTable();
     });
 
@@ -1193,6 +1205,7 @@
         doiThangHoSoLuong();
         renderTaskTable();
         renderAccountTable();
+        khoiTaoDonghoVaThoiGianThuc();
         setTimeout(() => { veTatCaBieuDoDashboard(); }, 200);
     }
 

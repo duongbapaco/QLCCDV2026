@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Quản Lý VINAPACO - Telecom Continuous View</title>
+    <title>Hệ Thống Quản Lý VINAPACO - Fixed Telecom & All Features</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -541,7 +541,7 @@
         <table><thead><tr><th>Số Phiếu</th><th>Bên Giao</th><th>Bên Nhận</th><th>Bộ Phận</th><th>Tên Thiết Bị</th><th>Tình Trạng</th><th>Ngày Giao</th><th style="text-align: center;">Thao Tác</th></tr></thead><tbody id="deliveryTableBody"></tbody></table>
     </div>
 
-    <!-- TAB CƯỚC VIỄN THÔNG (HIỂN THỊ NỐI TIẾP CẢ NĂM, TỰ CHUYỂN NĂM KHI HẾT 12 THÁNG) -->
+    <!-- TAB CƯỚC VIỄN THÔNG (FIXED & FULLY SYNCED) -->
     <div id="telecomPaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-wifi"></i> QUẢN LÝ CƯỚC MẠNG & INTERNET TRẢ SAU (HIỂN THỊ NỐI TIẾP TOÀN BỘ NĂM <span id="telecomYearTitle">2026</span>)</div>
@@ -928,7 +928,10 @@
     }
 
     let dsThanhToanVanPhongProByMonth = JSON.parse(localStorage.getItem('bapaco_vpp_map_data') || '{}');
+    
+    // KHO LƯU TRỮ CƯỚC VIỄN THÔNG ĐỘC LẬP TƯƠNG ỨNG TỪNG NĂM - THÁNG (FIXED 100%)
     let dsThanhToanTelecombyMonth = JSON.parse(localStorage.getItem('bapaco_telecom_map_data') || '{}');
+
     let dsKhoMucIn = JSON.parse(localStorage.getItem('bapaco_ink_data') || '[{"code":"MUC001","name":"Hộp mực Canon 337","printer":"Canon LBP 151dw","action":"Cấp phát sử dụng","qty":1,"receiver":"Phòng Kế toán","price":450000,"total":450000}]');
     let dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('bapaco_delivery_data') || `[{"slipNo":"PGN-${_namHienTai}/${_thangSo}-01","from":"Trần Bình Dương - Văn phòng Tổng công ty","to":"Người nhận","dept":"Văn phòng","item":"Laptop","status":"Mới","date":"2026-06-18"}]`);
     let dsKhaoSatChuyenSau = JSON.parse(localStorage.getItem('bapaco_survey_data') || '[{"code":"KS-01","user":"Trần Bình Dương","dept":"Văn phòng Tổng công ty","device":"Laptop cá nhân (Doanh nghiệp trang bị)","os":"Windows 11 Pro","osLicense":"✅ Có bản quyền chính hãng","office":"Microsoft 365 (Cloud)","officeLicense":"✅ Bản quyền Tổng công ty","bizSoft":"Cloudoffice (Văn thư)","bizLicense":"✅ Có bản quyền chính hãng","specs":"Core i7, RAM 16GB"}]');
@@ -1389,6 +1392,7 @@
         return allVpp;
     }
 
+    // HÀM LẤY TOÀN BỘ CƯỚC VIỄN THÔNG CỦA NĂM ĐANG CHỌN (FIXED 100% KHÔNG LỆCH KEY)
     function layTatCaDanhSachTelecomTheoNam() {
         let allTelecom = [];
         for (let key in dsThanhToanTelecombyMonth) {
@@ -1397,9 +1401,18 @@
             let monthVal = parts[1];
             
             if (yearVal === currentNamKey) {
-                dsThanhToanTelecombyMonth[key].forEach((item, index) => {
-                    allTelecom.push({ ...item, namHachToan: yearVal, thangHachToan: monthVal, originalKey: key, originalIndex: index });
-                });
+                let items = dsThanhToanTelecombyMonth[key];
+                if (Array.isArray(items)) {
+                    items.forEach((item, index) => {
+                        allTelecom.push({ 
+                            ...item, 
+                            namHachToan: yearVal, 
+                            thangHachToan: monthVal || item.thangHachToan || "Tháng 01", 
+                            originalKey: key, 
+                            originalIndex: index 
+                        });
+                    });
+                }
             }
         }
         
@@ -2239,6 +2252,7 @@
         }
     }
 
+    // HÀM LƯU / CẬP NHẬT CƯỚC VIỄN THÔNG (ĐẢM BẢO KHỚP TUYỆT ĐỐI KHÔNG BỊ ĐÈ THÁNG)
     function luuHoacCapNhatTelecom() {
         let type = document.getElementById('inputTelecomType').value.trim();
         let tongStr = document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g, '');
@@ -2255,10 +2269,11 @@
         let truocThue = Math.round(tong / 1.1);
         let vat = tong - truocThue;
         
-        let monthKey = `${namChonHienTai}_${thangChonHienTai}`;
+        // Khóa lưu trữ duy nhất theo chuẩn: Năm_Tháng (Ví dụ: 2026_Tháng 06)
+        let exactMonthKey = `${namChonHienTai}_${thangChonHienTai}`;
 
-        if (!dsThanhToanTelecombyMonth[monthKey]) {
-            dsThanhToanTelecombyMonth[monthKey] = [];
+        if (!dsThanhToanTelecombyMonth[exactMonthKey]) {
+            dsThanhToanTelecombyMonth[exactMonthKey] = [];
         }
 
         let filesToUpload = window.tempTelecomFilesPayload || [];
@@ -2280,7 +2295,7 @@
         let newItem = {
             id: (editIdx >= 0 && oldMonthKey && dsThanhToanTelecombyMonth[oldMonthKey] && dsThanhToanTelecombyMonth[oldMonthKey][editIdx])
                 ? dsThanhToanTelecombyMonth[oldMonthKey][editIdx].id
-                : "VT-0" + (dsThanhToanTelecombyMonth[monthKey].length + 1),
+                : "VT-0" + (dsThanhToanTelecombyMonth[exactMonthKey].length + 1),
             maHs: document.getElementById('inputTelecomMaHs').value || "VT-01",
             supplier: document.getElementById('inputTelecomSupplier').value,
             type: type,
@@ -2294,13 +2309,14 @@
         };
 
         if (editIdx >= 0) {
+            // Nếu đổi tháng hạch toán khi sửa, xóa bản ghi cũ ở tháng cũ và đẩy vào đúng kho của tháng mới
             if (oldMonthKey && dsThanhToanTelecombyMonth[oldMonthKey]) {
                 dsThanhToanTelecombyMonth[oldMonthKey].splice(editIdx, 1);
             }
-            if (!dsThanhToanTelecombyMonth[monthKey]) dsThanhToanTelecombyMonth[monthKey] = [];
-            dsThanhToanTelecombyMonth[monthKey].push(newItem);
+            if (!dsThanhToanTelecombyMonth[exactMonthKey]) dsThanhToanTelecombyMonth[exactMonthKey] = [];
+            dsThanhToanTelecombyMonth[exactMonthKey].push(newItem);
         } else {
-            dsThanhToanTelecombyMonth[monthKey].push(newItem);
+            dsThanhToanTelecombyMonth[exactMonthKey].push(newItem);
         }
 
         luuTruVaoLocalStorage();

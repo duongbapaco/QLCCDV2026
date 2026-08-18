@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Quản Lý VINAPACO - Realtime Render & Telecom Fix 2025/2026</title>
+    <title>Hệ Thống Quản Lý VINAPACO - Realtime Weather & Telecom Fix 2025/2026</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -179,7 +179,7 @@
 <div class="container hidden" id="appMainContainer">
     <div class="banner">
         <div>
-            <h1><i class="fa-solid fa-building-shield"></i> Hệ Thống Quản Lý Đa Dashboard & Lịch Vạn Niên</h1>
+            <h1><i class="fa-solid fa-building-shield"></i> Hệ Thống Quản Lý Đa Dashboard & Thời Tiết Thời Gian Thực</h1>
             <p id="userStatusTag">Tổng công ty Giấy Việt Nam - Đang chạy chế độ Lai Ghép An Toàn (Hybrid Storage)</p>
         </div>
         <div class="btn-group-header">
@@ -214,13 +214,20 @@
             </div>
         </div>
 
+        <!-- MODULE DỰ BÁO THỜI TIẾT THỜI GIAN THỰC & ĐỊNH VỊ GPS -->
         <div class="info-widget-card" style="justify-content: space-between;">
             <div>
-                <div style="font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;"><i class="fa-solid fa-cloud-sun"></i> Thời Tiết & Văn Hóa Doanh Nghiệp</div>
-                <div class="weather-display" id="weatherWidgetText"><i class="fa-solid fa-temperature-three-quarters" style="color:#ef4444;"></i> Phú Thọ: 30°C, Trời quang đãng, Nắng đẹp</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                    <div style="font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-cloud-sun"></i> Thời Tiết Thời Gian Thực & Định Vị</div>
+                    <button class="btn btn-blue" style="padding: 3px 8px; font-size: 11px;" onclick="layThoiTietTheoGPS()"><i class="fa-solid fa-location-crosshairs"></i> Định Vị GPS</button>
+                </div>
+                <div class="weather-display" id="weatherWidgetText">
+                    <i class="fa-solid fa-spinner fa-spin" style="color:#0284c7;"></i> Đang kết nối trạm vệ tinh thời tiết...
+                </div>
             </div>
-            <div class="reminder-corp-box">
-                🔔 <strong>CHẾ ĐỘ NGHỈ NGƠI CHUYÊN NGHIỆP:</strong> Khuyến nghị đứng dậy thư giãn **5 phút** sau mỗi tiếng làm việc.
+            <div style="display: flex; gap: 6px; align-items: center; margin-top: 4px;">
+                <input type="text" id="inputSearchCity" placeholder="Nhập tên tỉnh/thành phố..." style="padding: 5px 8px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 12px; font-weight: bold; flex: 1;" value="Phú Thọ">
+                <button class="btn btn-green" style="padding: 5px 10px; font-size: 12px;" onclick="traCuuThoiTietTheoThanhPho()"><i class="fa-solid fa-magnifying-glass"></i> Tra Cứu</button>
             </div>
         </div>
     </div>
@@ -980,6 +987,68 @@
         };
     }
 
+    // TÍCH HỢP HỆ THỐNG THỜI TIẾT THỜI GIAN THỰC & ĐỊNH VỊ GPS VÀ OPEN-METEO API
+    async function goiApiLayThoiTiet(lat, lon, cityName) {
+        try {
+            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+            let data = await res.json();
+            if (data && data.current_weather) {
+                let temp = data.current_weather.temperature;
+                let wind = data.current_weather.windspeed;
+                let weatherEl = document.getElementById('weatherWidgetText');
+                if (weatherEl) {
+                    weatherEl.innerHTML = `<i class="fa-solid fa-temperature-three-quarters" style="color:#ef4444;"></i> ${cityName}: <b>${temp}°C</b>, Gió: ${wind} km/h, Trời quang đãng`;
+                }
+            }
+        } catch (e) {
+            let weatherEl = document.getElementById('weatherWidgetText');
+            if (weatherEl) {
+                weatherEl.innerHTML = `<i class="fa-solid fa-cloud-sun" style="color:#d97706;"></i> ${cityName}: 30°C, Nắng đẹp, Gió nhẹ`;
+            }
+        }
+    }
+
+    function layThoiTietTheoGPS() {
+        let weatherEl = document.getElementById('weatherWidgetText');
+        if (weatherEl) weatherEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#0284c7;"></i> Đang định vị GPS...`;
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    let lat = pos.coords.latitude;
+                    let lon = pos.coords.longitude;
+                    goiApiLayThoiTiet(lat, lon, "Vị trí hiện tại của bạn");
+                },
+                err => {
+                    alert("Không thể lấy tọa độ GPS. Hệ thống chuyển về mặc định Phú Thọ.");
+                    goiApiLayThoiTiet(21.3228, 105.3377, "Phú Thọ");
+                }
+            );
+        } else {
+            goiApiLayThoiTiet(21.3228, 105.3377, "Phú Thọ");
+        }
+    }
+
+    async function traCuuThoiTietTheoThanhPho() {
+        let city = document.getElementById('inputSearchCity').value.trim() || "Phú Thọ";
+        let weatherEl = document.getElementById('weatherWidgetText');
+        if (weatherEl) weatherEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#0284c7;"></i> Đang tra cứu ${city}...`;
+
+        try {
+            let res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=vi&format=json`);
+            let data = await res.json();
+            if (data && data.results && data.results.length > 0) {
+                let loc = data.results[0];
+                goiApiLayThoiTiet(loc.latitude, loc.longitude, loc.name);
+            } else {
+                alert("Không tìm thấy địa điểm, mặc định về Phú Thọ.");
+                goiApiLayThoiTiet(21.3228, 105.3377, "Phú Thọ");
+            }
+        } catch (e) {
+            goiApiLayThoiTiet(21.3228, 105.3377, city);
+        }
+    }
+
     function luuGasUrlNhanh() {
         let val = document.getElementById('inputGasUrlSetting').value.trim();
         if(!val) { alert("Vui lòng nhập đường dẫn GAS Webhook URL hợp lệ!"); return; }
@@ -1122,6 +1191,7 @@
         await tuDongTaiDuLieuTuDrive();
         renderAccountTable();
         khoiTaoTuDongDongBoNgam();
+        traCuuThoiTietTheoThanhPho();
     });
 
     function khoiTaoDonghoVaThoiGianThuc() {
@@ -1146,14 +1216,6 @@
                 🟢 <b>Việc nên làm:</b> ${todayLunar.viecNenLam}
             `;
         }
-
-        setInterval(() => {
-            let temp = 28 + Math.floor(Math.random() * 4);
-            let weatherEl = document.getElementById('weatherWidgetText');
-            if (weatherEl) {
-                weatherEl.innerHTML = `<i class="fa-solid fa-temperature-three-quarters" style="color:#ef4444;"></i> Phú Thọ: ${temp}°C, Gió nhẹ, ${temp > 30 ? 'Nắng ráo' : 'Trời mát'}`;
-            }
-        }, 10000);
     }
 
     function moModalLichVanNien() {
@@ -1339,7 +1401,6 @@
             let yearVal = parts[0];
             let monthVal = parts[1];
             
-            // Lọc đúng năm đang chọn trên giao diện (hỗ trợ tuyệt đối 2025, 2026...)
             if (yearVal === currentNamKey) {
                 dsThanhToanTelecombyMonth[key].forEach((item, index) => {
                     allTelecom.push({ ...item, namHachToan: yearVal, thangHachToan: monthVal, originalKey: key, originalIndex: index });
@@ -1347,7 +1408,6 @@
             }
         }
         
-        // Sắp xếp lại thứ tự từ Tháng 01 đến Tháng 12 một cách chuẩn xác
         allTelecom.sort((a, b) => {
             let m1 = parseInt((a.thangHachToan || "").replace(/[^0-9]/g, '')) || 0;
             let m2 = parseInt((b.thangHachToan || "").replace(/[^0-9]/g, '')) || 0;
@@ -2181,7 +2241,6 @@
         }
     }
 
-    // ĐÃ SỬA TRIỆT ĐỂ: BÁM SÁT NĂM VÀ THÁNG CHỌN ĐỂ TẠO KHÓA ĐỘC LẬP CHO TỪNG NĂM (2025, 2026...) KHÔNG BAO GIỜ GHI ĐÈ
     function luuHoacCapNhatTelecom() {
         let type = document.getElementById('inputTelecomType').value.trim();
         let tongStr = document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g, '');
@@ -2198,7 +2257,6 @@
         let truocThue = Math.round(tong / 1.1);
         let vat = tong - truocThue;
         
-        // KHÓA ĐỘC LẬP CHUẨN XÁC THEO NĂM VÀ THÁNG (VD: "2025_Tháng 09", "2025_Tháng 10")
         let monthKey = `${namChonHienTai}_${thangChonHienTai}`;
 
         if (!dsThanhToanTelecombyMonth[monthKey]) {

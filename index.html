@@ -1321,7 +1321,8 @@
 
         if (!coSoDuLieuNamThang[currentNamKey]) coSoDuLieuNamThang[currentNamKey] = {};
         if (!coSoDuLieuNamThang[currentNamKey][currentThangKey]) {
-            let template = coSoDuLieuNamThang[currentNamKey]["Tháng 05"] || defaultCoSoDuLieuNamThang["2026"]["Tháng 05"];
+            let existingMonths = Object.keys(coSoDuLieuNamThang[currentNamKey]);
+            let template = (existingMonths.length > 0) ? coSoDuLieuNamThang[currentNamKey][existingMonths[0]] : (defaultCoSoDuLieuNamThang["2026"]["Tháng 05"]);
             coSoDuLieuNamThang[currentNamKey][currentThangKey] = JSON.parse(JSON.stringify(template));
         }
 

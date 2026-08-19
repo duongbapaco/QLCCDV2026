@@ -361,7 +361,10 @@
             <div class="form-group"><label>Người Thực Hiện</label><input type="text" id="inputTaskAssignee" value="Trần Bình Dương"></div>
             <div class="form-group"><label>Hạn Hoàn Thành (DD/MM/YYYY)</label><input type="date" id="inputTaskDueDate"></div>
             <div class="form-group"><label>Trạng Thái</label><select id="inputTaskStatus"><option value="Chưa làm">⏳ Chưa làm</option><option value="Đang làm">🔄 Đang làm</option><option value="Hoàn thành">✅ Hoàn thành</option></select></div>
-            <div class="form-group" style="display: flex; gap: 8px;"><button class="btn btn-blue" id="btnSaveTask" onclick="luuHoacCapNhatCongViec()"><i class="fas fa-plus-circle"></i> Thêm Công Việc</button></div>
+            <div class="form-group" style="display: flex; gap: 8px;">
+                <button class="btn btn-blue" id="btnSaveTask" onclick="luuHoacCapNhatCongViec()"><i class="fas fa-plus-circle"></i> Thêm Công Việc</button>
+                <button class="btn btn-red hidden" id="btnCancelTask" onclick="huySuaCongViec()"><i class="fas fa-xmark"></i> Hủy</button>
+            </div>
         </div>
         <table><thead><tr><th>STT</th><th>Nội Dung Công Việc</th><th>Người Thực Hiện</th><th>Hạn Hoàn Thành</th><th>Trạng Thái</th><th>Thao Tác</th></tr></thead><tbody id="taskTableBody"></tbody></table>
     </div>
@@ -467,7 +470,10 @@
                 <div class="progress-box" id="officeProgressBarBox"><div class="progress-bar-fill" id="officeProgressBarFill"></div></div>
                 <small id="officeProgressText" style="color:#0284c7; font-weight:bold; display:none; margin-top:3px;"></small>
             </div>
-            <div class="form-group"><button class="btn btn-green" id="btnSaveVpp" onclick="luuHoacCapNhatVPP()"><i class="fas fa-save"></i> Lưu Chứng Từ</button></div>
+            <div class="form-group" style="display: flex; gap: 8px;">
+                <button class="btn btn-green" id="btnSaveVpp" onclick="luuHoacCapNhatVPP()"><i class="fas fa-save"></i> Lưu Chứng Từ</button>
+                <button class="btn btn-red hidden" id="btnCancelVpp" onclick="huySuaVPP()"><i class="fas fa-xmark"></i> Hủy</button>
+            </div>
         </div>
 
         <div style="overflow-x: auto;">
@@ -515,7 +521,10 @@
             <div class="form-group"><label>Số Lượng</label><input type="number" id="inputInkQty" value="1" min="1"></div>
             <div class="form-group"><label>Người Nhận / Kho</label><input type="text" id="inputInkReceiver" placeholder="Phòng ban / Người nhận..."></div>
             <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputInkPrice" placeholder="450.000"></div>
-            <div class="form-group"><button class="btn btn-green" id="btnSaveInk" onclick="luuHoacCapNhatKhoMuc()"><i class="fas fa-warehouse"></i> Ghi Sổ Kho</button></div>
+            <div class="form-group" style="display: flex; gap: 8px;">
+                <button class="btn btn-green" id="btnSaveInk" onclick="luuHoacCapNhatKhoMuc()"><i class="fas fa-warehouse"></i> Ghi Sổ Kho</button>
+                <button class="btn btn-red hidden" id="btnCancelInk" onclick="huySuaKhoMuc()"><i class="fas fa-xmark"></i> Hủy</button>
+            </div>
         </div>
         <table><thead><tr><th>Mã VT</th><th>Tên Mực</th><th>Máy In</th><th>Nghiệp Vụ</th><th>SL</th><th>Người Nhận</th><th>Đơn Giá</th><th>Thành Tiền</th><th style="text-align: center;">Thao Tác</th></tr></thead><tbody id="inkInventoryTableBody"></tbody></table>
     </div>
@@ -536,6 +545,7 @@
             <div class="form-group"><label>Ngày Giao (DD/MM/YYYY)</label><input type="date" id="inputSlipDate"></div>
             <div class="form-group" style="display: flex; gap: 8px;">
                 <button class="btn btn-green" id="btnSaveSlip" onclick="luuHoacCapNhatPhieuGiao()"><i class="fas fa-plus-circle"></i> Thêm Phiếu</button>
+                <button class="btn btn-red hidden" id="btnCancelSlip" onclick="huySuaPhieuGiao()"><i class="fas fa-xmark"></i> Hủy</button>
             </div>
         </div>
         <table><thead><tr><th>Số Phiếu</th><th>Bên Giao</th><th>Bên Nhận</th><th>Bộ Phận</th><th>Tên Thiết Bị</th><th>Tình Trạng</th><th>Ngày Giao</th><th style="text-align: center;">Thao Tác</th></tr></thead><tbody id="deliveryTableBody"></tbody></table>
@@ -572,7 +582,10 @@
                 <div class="progress-box" id="telecomProgressBarBox"><div class="progress-bar-fill" id="telecomProgressBarFill"></div></div>
                 <small id="telecomProgressText" style="color:#0284c7; font-weight:bold; display:none; margin-top:3px;"></small>
             </div>
-            <div class="form-group"><button class="btn btn-green" id="btnSaveTelecom" onclick="luuHoacCapNhatTelecom()"><i class="fas fa-plus-circle"></i> Thêm Cước</button></div>
+            <div class="form-group" style="display: flex; gap: 8px;">
+                <button class="btn btn-green" id="btnSaveTelecom" onclick="luuHoacCapNhatTelecom()"><i class="fas fa-plus-circle"></i> Thêm Cước</button>
+                <button class="btn btn-red hidden" id="btnCancelTelecom" onclick="huySuaTelecom()"><i class="fas fa-xmark"></i> Hủy</button>
+            </div>
         </div>
 
         <div style="overflow-x: auto;">
@@ -693,7 +706,10 @@
             </select></div>
 
             <div class="form-group"><label>Cấu Hình Phần Cứng</label><input type="text" id="inputSurveySpecs" placeholder="Core i7, RAM 16GB, SSD 512GB"></div>
-            <div class="form-group"><button class="btn btn-purple" id="btnSaveSurvey" onclick="luuHoacCapNhatKhaoSat()"><i class="fas fa-plus-circle"></i> Lưu Khảo Sát</button></div>
+            <div class="form-group" style="display: flex; gap: 8px;">
+                <button class="btn btn-purple" id="btnSaveSurvey" onclick="luuHoacCapNhatKhaoSat()"><i class="fas fa-plus-circle"></i> Lưu Khảo Sát</button>
+                <button class="btn btn-red hidden" id="btnCancelSurvey" onclick="huySuaKhaoSat()"><i class="fas fa-xmark"></i> Hủy</button>
+            </div>
         </div>
 
         <div style="overflow-x: auto;">
@@ -884,7 +900,6 @@
         if (!val) return 0;
         if (typeof val === 'number') return val;
         let s = String(val).trim();
-        // Thay thế dấu chấm phân cách hàng nghìn và dấu phẩy phân cách thập phân
         s = s.replace(/\./g, '').replace(',', '.');
         let num = parseFloat(s);
         return isNaN(num) ? 0 : Math.round(num);
@@ -1830,6 +1845,17 @@
         document.getElementById('inputTaskStatus').value = item.status;
         document.getElementById('editTaskIndex').value = idx;
         document.getElementById('btnSaveTask').innerHTML = `<i class="fas fa-save"></i> Cập Nhật Công Việc`;
+        document.getElementById('btnCancelTask').classList.remove('hidden');
+    }
+
+    function huySuaCongViec() {
+        document.getElementById('editTaskIndex').value = -1;
+        document.getElementById('inputTaskName').value = '';
+        document.getElementById('inputTaskAssignee').value = 'Trần Bình Dương';
+        document.getElementById('inputTaskDueDate').value = '';
+        document.getElementById('inputTaskStatus').value = 'Chưa làm';
+        document.getElementById('btnSaveTask').innerHTML = `<i class="fas fa-plus-circle"></i> Thêm Công Việc`;
+        document.getElementById('btnCancelTask').classList.add('hidden');
     }
 
     function luuHoacCapNhatCongViec() {
@@ -1844,6 +1870,7 @@
             danhSachCongViec[editIdx] = { ...danhSachCongViec[editIdx], name, assignee, dueDate, status };
             document.getElementById('editTaskIndex').value = -1;
             document.getElementById('btnSaveTask').innerHTML = `<i class="fas fa-plus-circle"></i> Thêm Công Việc`;
+            document.getElementById('btnCancelTask').classList.add('hidden');
         } else {
             danhSachCongViec.push({ id: danhSachCongViec.length + 1, name, assignee, dueDate, status });
         }
@@ -1997,6 +2024,7 @@
             dsThanhToanVanPhongProByMonth[key][editIdx] = newItem;
             document.getElementById('editOfficeIndex').value = -1;
             document.getElementById('btnSaveVpp').innerHTML = `<i class="fas fa-save"></i> Lưu Chứng Từ`;
+            document.getElementById('btnCancelVpp').classList.add('hidden');
         } else {
             dsThanhToanVanPhongProByMonth[key].push(newItem);
         }
@@ -2035,6 +2063,23 @@
         document.getElementById('inputOfficeDate').value = item.date || '';
         document.getElementById('editOfficeIndex').value = originalIndex;
         document.getElementById('btnSaveVpp').innerHTML = `<i class="fas fa-save"></i> Cập Nhật Chứng Từ`;
+        document.getElementById('btnCancelVpp').classList.remove('hidden');
+    }
+
+    function huySuaVPP() {
+        document.getElementById('editOfficeIndex').value = -1;
+        document.getElementById('inputOfficeBeneficiary').value = '';
+        document.getElementById('inputOfficeBankName').value = '';
+        document.getElementById('inputOfficeBankAccount').value = '';
+        document.getElementById('inputOfficeContent').value = '';
+        document.getElementById('inputOfficeQty').value = '1';
+        document.getElementById('inputOfficePrice').value = '';
+        document.getElementById('inputOfficeTruocThue').value = '';
+        document.getElementById('inputOfficeVAT').value = '';
+        document.getElementById('previewOfficeTotal').value = '';
+        document.getElementById('inputOfficeDate').value = '';
+        document.getElementById('btnSaveVpp').innerHTML = `<i class="fas fa-save"></i> Lưu Chứng Từ`;
+        document.getElementById('btnCancelVpp').classList.add('hidden');
     }
 
     function xoaVPP(originalKey, originalIndex) {
@@ -2097,6 +2142,7 @@
             dsKhoMucIn[editIdx] = newItem;
             document.getElementById('editInkIndex').value = -1;
             document.getElementById('btnSaveInk').innerHTML = `<i class="fas fa-warehouse"></i> Ghi Sổ Kho`;
+            document.getElementById('btnCancelInk').classList.add('hidden');
         } else {
             dsKhoMucIn.push(newItem);
         }
@@ -2115,6 +2161,18 @@
         document.getElementById('inputInkPrice').value = item.price.toLocaleString();
         document.getElementById('editInkIndex').value = idx;
         document.getElementById('btnSaveInk').innerHTML = `<i class="fas fa-save"></i> Cập Nhật Kho`;
+        document.getElementById('btnCancelInk').classList.remove('hidden');
+    }
+
+    function huySuaKhoMuc() {
+        document.getElementById('editInkIndex').value = -1;
+        document.getElementById('inputInkName').value = '';
+        document.getElementById('inputInkPrinter').value = '';
+        document.getElementById('inputInkQty').value = '1';
+        document.getElementById('inputInkReceiver').value = '';
+        document.getElementById('inputInkPrice').value = '';
+        document.getElementById('btnSaveInk').innerHTML = `<i class="fas fa-warehouse"></i> Ghi Sổ Kho`;
+        document.getElementById('btnCancelInk').classList.add('hidden');
     }
 
     function xoaKhoMuc(idx) {
@@ -2195,6 +2253,7 @@
             dsPhieuGiaoNhan[editIdx] = newSlip;
             document.getElementById('editSlipIndex').value = -1;
             document.getElementById('btnSaveSlip').innerHTML = `<i class="fas fa-plus-circle"></i> Thêm Phiếu`;
+            document.getElementById('btnCancelSlip').classList.add('hidden');
         } else {
             dsPhieuGiaoNhan.push(newSlip);
         }
@@ -2213,6 +2272,16 @@
         document.getElementById('inputSlipDate').value = s.date;
         document.getElementById('editSlipIndex').value = idx;
         document.getElementById('btnSaveSlip').innerHTML = `<i class="fas fa-save"></i> Cập Nhật Phiếu`;
+        document.getElementById('btnCancelSlip').classList.remove('hidden');
+    }
+
+    function huySuaPhieuGiao() {
+        document.getElementById('editSlipIndex').value = -1;
+        document.getElementById('inputSlipTo').value = '';
+        document.getElementById('inputSlipDept').value = '';
+        document.getElementById('inputSlipItem').value = '';
+        document.getElementById('btnSaveSlip').innerHTML = `<i class="fas fa-plus-circle"></i> Thêm Phiếu`;
+        document.getElementById('btnCancelSlip').classList.add('hidden');
     }
 
     function xoaPhieuGiao(idx) {
@@ -2305,6 +2374,22 @@
             btnSave.innerHTML = `<i class="fas fa-save"></i> Cập Nhật Cước`;
             btnSave.className = "btn btn-yellow";
         }
+        document.getElementById('btnCancelTelecom').classList.remove('hidden');
+    }
+
+    function huySuaTelecom() {
+        document.getElementById('editTelecomIndex').value = -1;
+        document.getElementById('editTelecomMonthKey').value = '';
+        document.getElementById('inputTelecomType').value = '';
+        document.getElementById('inputTelecomTongVat').value = '';
+        document.getElementById('inputTelecomTruocThueInput').value = '';
+        document.getElementById('inputTelecomVatInput').value = '';
+        let btnSave = document.getElementById('btnSaveTelecom');
+        if (btnSave) {
+            btnSave.innerHTML = `<i class="fas fa-plus-circle"></i> Thêm Cước`;
+            btnSave.className = "btn btn-green";
+        }
+        document.getElementById('btnCancelTelecom').classList.add('hidden');
     }
 
     function luuHoacCapNhatTelecom() {
@@ -2398,6 +2483,7 @@
             btnSave.innerHTML = `<i class="fas fa-plus-circle"></i> Thêm Cước`;
             btnSave.className = "btn btn-green";
         }
+        document.getElementById('btnCancelTelecom').classList.add('hidden');
 
         renderTelecomPaymentTable();
         capNhat();
@@ -2475,10 +2561,13 @@
             dsKhaoSatChuyenSau[editIdx] = newItem;
             document.getElementById('editSurveyIndex').value = -1;
             document.getElementById('btnSaveSurvey').innerHTML = `<i class="fas fa-plus-circle"></i> Lưu Khảo Sát`;
+            document.getElementById('btnCancelSurvey').classList.add('hidden');
         } else {
             dsKhaoSatChuyenSau.push(newItem);
         }
         document.getElementById('inputSurveyUser').value = '';
+        document.getElementById('inputSurveyDept').value = '';
+        document.getElementById('inputSurveySpecs').value = '';
         renderSurveyTable();
         capNhat();
     }
@@ -2497,6 +2586,16 @@
         document.getElementById('inputSurveySpecs').value = item.specs;
         document.getElementById('editSurveyIndex').value = idx;
         document.getElementById('btnSaveSurvey').innerHTML = `<i class="fas fa-save"></i> Cập Nhật Khảo Sát`;
+        document.getElementById('btnCancelSurvey').classList.remove('hidden');
+    }
+
+    function huySuaKhaoSat() {
+        document.getElementById('editSurveyIndex').value = -1;
+        document.getElementById('inputSurveyUser').value = '';
+        document.getElementById('inputSurveyDept').value = '';
+        document.getElementById('inputSurveySpecs').value = '';
+        document.getElementById('btnSaveSurvey').innerHTML = `<i class="fas fa-plus-circle"></i> Lưu Khảo Sát`;
+        document.getElementById('btnCancelSurvey').classList.add('hidden');
     }
 
     function xoaKhaoSat(idx) {
@@ -2592,66 +2691,124 @@
         });
     }
 
-    function xuatExcelCB() { let ws = XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu); let wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "LuongCB"); XLSX.writeFile(wb, "Bang_Luong_Co_Ban.xlsx"); }
-    function xuatExcelCV() { let ws = XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu); let wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "LuongNet"); XLSX.writeFile(wb, "Bang_Luong_NET.xlsx"); }
-    function xuatExcelCongChiTiet() { let ws = XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu); let wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "ChamCong"); XLSX.writeFile(wb, "Bang_Cham_Cong.xlsx"); }
-    function batTatNhacNghiGoi() { alert("🔔 Đã bật chế độ nhắc nhở nghỉ ngơi chuyên nghiệp doanh nghiệp!"); }
+    function xuatExcelCB() { 
+        let ws = XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu); 
+        let wb = XLSX.utils.book_new(); 
+        XLSX.utils.book_append_sheet(wb, ws, "LuongCB"); 
+        XLSX.writeFile(wb, "Bang_Luong_Co_Ban.xlsx"); 
+    }
 
-    function veTatCaBieuDoDashboard() {
-        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
-        let yearTelecom = layTatCaDanhSachTelecomTheoNam(); 
-        let yearVpp = layTatCaDanhSachVPPTheoNam();
-        
-        const percentagePluginConfig = {
-            plugins: {
-                datalabels: {
-                    formatter: (value, ctx) => {
-                        if (!value || value === 0) return '';
-                        let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-                        if (sum === 0) return '';
-                        let percentage = (value * 100 / sum).toFixed(1) + "%";
-                        return percentage;
-                    },
-                    color: '#fff',
-                    font: { weight: 'bold', size: 13 }
-                }
-            }
-        };
+    function xuatExcelCV() { 
+        let ws = XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu); 
+        let wb = XLSX.utils.book_new(); 
+        XLSX.utils.book_append_sheet(wb, ws, "LuongCV"); 
+        XLSX.writeFile(wb, "Bang_Luong_Cong_Viec.xlsx"); 
+    }
 
-        let ctxSalPie = document.getElementById('salaryPieChart');
-        if (ctxSalPie) { if(window.mySalaryPie) window.mySalaryPie.destroy(); window.mySalaryPie = new Chart(ctxSalPie, { type: 'doughnut', data: { labels: ['Quỹ Lương NET', 'Thanh Toán VP', 'Viễn Thông'], datasets: [{ data: [ds.reduce((s,i)=>s+(i.thucLinhCuoiCung||0),0), yearVpp.reduce((s,i)=>s+(i.total||0),0), yearTelecom.reduce((s,i)=>s+(i.tong||0),0)], backgroundColor: ['#0284c7', '#16a34a', '#d97706'] }] }, options: { responsive: true, maintainAspectRatio: false, ...percentagePluginConfig } }); }
-
-        let ctxOvBar = document.getElementById('overviewBarChart');
-        if (ctxOvBar) { if(window.myOverviewBar) window.myOverviewBar.destroy(); window.myOverviewBar = new Chart(ctxOvBar, { type: 'bar', data: { labels: ['Thanh Toán VP', 'Viễn Thông', 'Lương NET'], datasets: [{ data: [yearVpp.reduce((s,i)=>s+(i.total||0),0), yearTelecom.reduce((s,i)=>s+(i.tong||0),0), ds.reduce((s,i)=>s+(i.thucLinhCuoiCung||0),0)], backgroundColor: ['#16a34a', '#d97706', '#0284c7'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } } } }); }
-
-        let ctxOvTask = document.getElementById('overviewTaskPieChart');
-        if (ctxOvTask) { if(window.myOverviewTask) window.myOverviewTask.destroy(); window.myOverviewTask = new Chart(ctxOvTask, { type: 'pie', data: { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: [danhSachCongViec.filter(t=>t.status==='Hoàn thành').length, danhSachCongViec.filter(t=>t.status==='Đang làm').length, danhSachCongViec.filter(t=>t.status==='Chưa làm').length], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] }, options: { responsive: true, maintainAspectRatio: false, ...percentagePluginConfig } }); }
-
-        let ctxOvLeave = document.getElementById('overviewLeaveBarChart');
-        if (ctxOvLeave) { if(window.myOverviewLeave) window.myOverviewLeave.destroy(); window.myOverviewLeave = new Chart(ctxOvLeave, { type: 'bar', data: { labels: ds.slice(0, 8).map(i => i.hoTen.split(' ').pop()), datasets: [{ data: ds.slice(0, 8).map(i => layTongLuyKePhepDaNghi(i.hoTen).totalP), backgroundColor: '#8b5cf6' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } } } }); }
-
-        let ctxTPie = document.getElementById('taskPieChart');
-        if (ctxTPie) { if(window.myTaskPie) window.myTaskPie.destroy(); window.myTaskPie = new Chart(ctxTPie, { type: 'doughnut', data: { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: [danhSachCongViec.filter(t=>t.status==='Hoàn thành').length, danhSachCongViec.filter(t=>t.status==='Đang làm').length, danhSachCongViec.filter(t=>t.status==='Chưa làm').length], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] }, options: { responsive: true, maintainAspectRatio: false, ...percentagePluginConfig } }); }
-
-        let ctxTBar = document.getElementById('taskBarChart');
-        if (ctxTBar) { if(window.myTaskBar) window.myTaskBar.destroy(); window.myTaskBar = new Chart(ctxTBar, { type: 'bar', data: { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: [danhSachCongViec.filter(t=>t.status==='Hoàn thành').length, danhSachCongViec.filter(t=>t.status==='Đang làm').length, danhSachCongViec.filter(t=>t.status==='Chưa làm').length], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } } } }); }
-
-        let ctxLPie = document.getElementById('leavePieChart');
-        if (ctxLPie) { if(window.myLeavePie) window.myLeavePie.destroy(); window.myLeavePie = new Chart(ctxLPie, { type: 'doughnut', data: { labels: ['Đã dùng Lũy Kế', 'Còn lại'], datasets: [{ data: [ds.reduce((s,i)=>s+layTongLuyKePhepDaNghi(i.hoTen).totalP,0), ds.reduce((s,i)=>s+((i.phep_cap||12)-layTongLuyKePhepDaNghi(i.hoTen).totalP),0)], backgroundColor: ['#ef4444', '#16a34a'] }] }, options: { responsive: true, maintainAspectRatio: false, ...percentagePluginConfig } }); }
-
-        let ctxLBar = document.getElementById('leaveBarChart');
-        if (ctxLBar) { if(window.myLeaveBar) window.myLeaveBar.destroy(); window.myLeaveBar = new Chart(ctxLBar, { type: 'bar', data: { labels: ds.slice(0, 8).map(i => i.hoTen.split(' ').pop()), datasets: [{ data: ds.slice(0, 8).map(i => layTongLuyKePhepDaNghi(i.hoTen).totalP), backgroundColor: '#0284c7' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } } } }); }
+    function xuatExcelCongChiTiet() {
+        let ws = XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu);
+        let wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "ChamCongChiTiet");
+        XLSX.writeFile(wb, "Bang_Cham_Cong_Chi_Tiet.xlsx");
     }
 
     function luuTruVaoLocalStorage() {
-        localStorage.setItem('bapaco_db_data', JSON.stringify(coSoDuLieuNamThang));
-        localStorage.setItem('bapaco_vpp_map_data', JSON.stringify(dsThanhToanVanPhongProByMonth));
-        localStorage.setItem('bapaco_ink_data', JSON.stringify(dsKhoMucIn));
-        localStorage.setItem('bapaco_delivery_data', JSON.stringify(dsPhieuGiaoNhan));
-        localStorage.setItem('bapaco_telecom_map_data', JSON.stringify(dsThanhToanTelecombyMonth));
-        localStorage.setItem('bapaco_survey_data', JSON.stringify(dsKhaoSatChuyenSau));
-        localStorage.setItem('bapaco_task_data', JSON.stringify(danhSachCongViec));
-        localStorage.setItem('bapaco_accounts_data', JSON.stringify(danhSachTaiKhoanHeThong));
+        try {
+            localStorage.setItem('bapaco_db_data', JSON.stringify(coSoDuLieuNamThang));
+            localStorage.setItem('bapaco_vpp_map_data', JSON.stringify(dsThanhToanVanPhongProByMonth));
+            localStorage.setItem('bapaco_telecom_map_data', JSON.stringify(dsThanhToanTelecombyMonth));
+            localStorage.setItem('bapaco_ink_data', JSON.stringify(dsKhoMucIn));
+            localStorage.setItem('bapaco_delivery_data', JSON.stringify(dsPhieuGiaoNhan));
+            localStorage.setItem('bapaco_survey_data', JSON.stringify(dsKhaoSatChuyenSau));
+            localStorage.setItem('bapaco_task_data', JSON.stringify(danhSachCongViec));
+            localStorage.setItem('bapaco_accounts_data', JSON.stringify(danhSachTaiKhoanHeThong));
+        } catch (e) {}
+    }
+
+    let globalChartsInstances = {};
+    function veTatCaBieuDoDashboard() {
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
+        let totalNet = ds.reduce((sum, i) => sum + (i.thucLinhCuoiCung || 0), 0);
+        let yearVpp = layTatCaDanhSachVPPTheoNam();
+        let totalOfficeYear = yearVpp.reduce((sum, i) => sum + (i.total || 0), 0);
+        let yearTelecom = layTatCaDanhSachTelecomTheoNam();
+        let totalTelecomYear = yearTelecom.reduce((s, i) => s + (i.tong || 0), 0);
+
+        // 1. Pie Chart Tài Chính
+        let ctxPie = document.getElementById('salaryPieChart');
+        if (ctxPie) {
+            if (globalChartsInstances.salaryPie) globalChartsInstances.salaryPie.destroy();
+            globalChartsInstances.salaryPie = new Chart(ctxPie, {
+                type: 'pie',
+                data: {
+                    labels: ['Quỹ Lương NET', 'Thanh Toán VPP', 'Cước Viễn Thông'],
+                    datasets: [{
+                        data: [totalNet, totalOfficeYear || 1000000, totalTelecomYear || 1000000],
+                        backgroundColor: ['#16a34a', '#d97706', '#0284c7']
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        // 2. Bar Chart Tổng Quan
+        let ctxBar = document.getElementById('overviewBarChart');
+        if (ctxBar) {
+            if (globalChartsInstances.overviewBar) globalChartsInstances.overviewBar.destroy();
+            globalChartsInstances.overviewBar = new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: ['Lương NET', 'Thanh Toán VPP', 'Viễn Thông'],
+                    datasets: [{
+                        label: 'Giá trị (VNĐ)',
+                        data: [totalNet, totalOfficeYear, totalTelecomYear],
+                        backgroundColor: ['#16a34a', '#d97706', '#0284c7']
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        // 3. Task Pie Chart
+        let countDone = danhSachCongViec.filter(t => t.status === 'Hoàn thành').length;
+        let countDoing = danhSachCongViec.filter(t => t.status === 'Đang làm').length;
+        let countTodo = danhSachCongViec.filter(t => t.status === 'Chưa làm').length;
+
+        let ctxTaskPie = document.getElementById('overviewTaskPieChart');
+        if (ctxTaskPie) {
+            if (globalChartsInstances.taskPie) globalChartsInstances.taskPie.destroy();
+            globalChartsInstances.taskPie = new Chart(ctxTaskPie, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'],
+                    datasets: [{
+                        data: [countDone || 1, countDoing || 1, countTodo || 1],
+                        backgroundColor: ['#15803d', '#d97706', '#dc2626']
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        // 4. Leave Bar Chart
+        let leaveNames = ds.slice(0, 8).map(i => i.hoTen.split(' ').pop());
+        let leaveVals = ds.slice(0, 8).map(i => i.nc_p || 0);
+        let ctxLeaveBar = document.getElementById('overviewLeaveBarChart');
+        if (ctxLeaveBar) {
+            if (globalChartsInstances.leaveBar) globalChartsInstances.leaveBar.destroy();
+            globalChartsInstances.leaveBar = new Chart(ctxLeaveBar, {
+                type: 'bar',
+                data: {
+                    labels: leaveNames,
+                    datasets: [{
+                        label: 'Ngày phép đã nghỉ',
+                        data: leaveVals,
+                        backgroundColor: '#8b5cf6'
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
     }
 </script>
 </body>

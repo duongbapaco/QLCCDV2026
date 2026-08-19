@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Quản Lý VINAPACO - Fixed Leave Bar Chart & Telecom Sync Pro</title>
+    <title>Hệ Thống Quản Lý VINAPACO - Annual Net Salary & Expense Comparison Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -172,7 +172,7 @@
 <div class="container hidden" id="appMainContainer">
     <div class="banner">
         <div>
-            <h1><i class="fa-solid fa-building-shield"></i> Hệ Thống Quản Lý Đa Dashboard & Thời Tiết Thời Gian Thực</h1>
+            <h1><i class="fa-solid fa-building-shield"></i> Hệ Thống Quản Lý Đa Dashboard & So Sánh Chi Phí Cả Năm</h1>
             <p id="userStatusTag">Tổng công ty Giấy Việt Nam - Đang chạy chế độ Lai Ghép An Toàn (Hybrid Storage)</p>
         </div>
         <div class="btn-group-header">
@@ -246,8 +246,8 @@
     </div>
 
     <div class="kpi-grid">
-        <div class="kpi-card"><div class="kpi-title">Tổng Quỹ Lương Cuối Cùng (NET)</div><div class="kpi-value" style="color: #15803d;" id="kpiTotalNet">0</div><div class="kpi-sub">Chuẩn hạch toán Tổng công ty Giấy Việt Nam</div></div>
-        <div class="kpi-card"><div class="kpi-title">Tổng Thanh Toán VP (Tháng Này)</div><div class="kpi-value" style="color: #d97706;" id="kpiTotalPayment">0</div><div class="kpi-sub">Chỉ tính trong tháng đang chọn</div></div>
+        <div class="kpi-card"><div class="kpi-title">Tổng Quỹ Lương NET (Cả Năm)</div><div class="kpi-value" style="color: #15803d;" id="kpiTotalNet">0</div><div class="kpi-sub">Lũy kế toàn bộ các tháng trong năm</div></div>
+        <div class="kpi-card"><div class="kpi-title">Tổng Thanh Toán VP (Cả Năm)</div><div class="kpi-value" style="color: #d97706;" id="kpiTotalPayment">0</div><div class="kpi-sub">Lũy kế toàn bộ các tháng trong năm</div></div>
         <div class="kpi-card"><div class="kpi-title">Tồn Kho Mực In Hiện Tại</div><div class="kpi-value" style="color: #0284c7;" id="kpiTotalInkStock">0 Hộp</div><div class="kpi-sub">Quản lý nhập xuất tồn</div></div>
         <div class="kpi-card"><div class="kpi-title">Tổng Thiết Bị Khảo Sát</div><div class="kpi-value" style="color: #8b5cf6;" id="kpiTotalSurvey">0 Thiết bị</div><div class="kpi-sub">Kiểm tra bản quyền phần mềm</div></div>
         <div class="kpi-card"><div class="kpi-title">Tổng Tạm Ứng Đã Trừ</div><div class="kpi-value" style="color: #dc2626;" id="kpiTotalTamUng">0</div><div class="kpi-sub">Hạch toán giữa tháng</div></div>
@@ -272,11 +272,11 @@
     <div id="dashboardTab" class="tab-pane table-card" style="background: transparent; border: none; padding: 0;">
         <div class="charts-multi-grid">
             <div class="chart-card">
-                <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #0284c7;"></i> Tỷ Trọng Tài Chính Tháng Này (%)</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #0284c7;"></i> Tỷ Trọng Tài Chính Cả Năm (%)</div>
                 <div style="position: relative; height: 260px;"><canvas id="salaryPieChart"></canvas></div>
             </div>
             <div class="chart-card">
-                <div class="chart-title"><i class="fa-solid fa-chart-column" style="color: #16a34a;"></i> Biểu Đồ Cột: Thanh Toán & Lương Tháng Này (VNĐ)</div>
+                <div class="chart-title"><i class="fa-solid fa-chart-column" style="color: #16a34a;"></i> Biểu Đồ Cột: So Sánh Chi Phí Lương NET, VPP & Viễn Thông (Cả Năm)</div>
                 <div style="position: relative; height: 260px;"><canvas id="overviewBarChart"></canvas></div>
             </div>
             <div class="chart-card">
@@ -291,16 +291,16 @@
 
         <div class="table-card" style="margin-top: 16px;">
             <div class="table-header-bar">
-                <div class="table-title"><i class="fa-solid fa-table"></i> BẢNG TỔNG KẾT SỐ LIỆU ĐỐI SOÁT THÁNG NÀY</div>
+                <div class="table-title"><i class="fa-solid fa-table"></i> BẢNG TỔNG KẾT ĐỐI SOÁT TÀI CHÍNH QUY MÔ CẢ NĂM</div>
             </div>
             <table>
                 <thead>
-                    <tr><th>STT</th><th>Hạng Mục Quản Trị</th><th>Chỉ Số Tài Chính / Giá Trị</th><th>Đơn Vị Tính</th><th>Trạng Thái Định Mức</th></tr>
+                    <tr><th>STT</th><th>Hạng Mục Quản Trị (Cả Năm)</th><th>Chỉ Số Tài Chính / Giá Trị</th><th>Đơn Vị Tính</th><th>Trạng Thái Định Mức</th></tr>
                 </thead>
                 <tbody id="dashboardSummaryTableBody">
-                    <tr><td style="text-align:center;">1</td><td><b>Quỹ Lương NET Nhân Sự</b></td><td id="sumNetVal" style="color:#15803d; font-weight:bold;">0</td><td>VNĐ</td><td><span class="badge-net">Ổn định</span></td></tr>
-                    <tr><td style="text-align:center;">2</td><td><b>Thanh Toán Văn Phòng Phẩm & Dịch Vụ</b></td><td id="sumVppVal" style="color:#d97706; font-weight:bold;">0</td><td>VNĐ</td><td><span class="badge-warning">Theo tháng chọn</span></td></tr>
-                    <tr><td style="text-align:center;">3</td><td><b>Cước Viễn Thông & Internet Trả Sau</b></td><td id="sumTelecomVal" style="color:#0284c7; font-weight:bold;">0</td><td>VNĐ</td><td><span class="badge-net">Đã thanh toán</span></td></tr>
+                    <tr><td style="text-align:center;">1</td><td><b>Quỹ Lương NET Nhân Sự (Lũy kế cả năm)</b></td><td id="sumNetVal" style="color:#15803d; font-weight:bold;">0</td><td>VNĐ</td><td><span class="badge-net">Ổn định năm</span></td></tr>
+                    <tr><td style="text-align:center;">2</td><td><b>Thanh Toán Văn Phòng Phẩm & Dịch Vụ (Cả năm)</b></td><td id="sumVppVal" style="color:#d97706; font-weight:bold;">0</td><td>VNĐ</td><td><span class="badge-warning">Toàn niên</span></td></tr>
+                    <tr><td style="text-align:center;">3</td><td><b>Cước Viễn Thông & Internet Trả Sau (Cả năm)</b></td><td id="sumTelecomVal" style="color:#0284c7; font-weight:bold;">0</td><td>VNĐ</td><td><span class="badge-net">Đã quyết toán</span></td></tr>
                     <tr><td style="text-align:center;">4</td><td><b>Tổng Số Công Việc Hoàn Thành</b></td><td id="sumTaskVal" style="font-weight:bold;">0</td><td>Công việc</td><td><span class="badge-net">Đúng hạn</span></td></tr>
                 </tbody>
             </table>
@@ -947,27 +947,6 @@
                     {"stt": 15, "hoTen": "Đặng Trần Trung", "hsl_cb": 1.53, "pc_cb": 0.25, "hsl_cv": 1.62, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
                     {"stt": 16, "hoTen": "Phạm Huy Chiến", "hsl_cb": 2.26, "pc_cb": 0.25, "hsl_cv": 2.40, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12}
                 ]
-            },
-            "Tháng 07": {
-                config: { ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 },
-                nhansu: [
-                    {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 5000000, "phep_cap": 12},
-                    {"stt": 2, "hoTen": "Nguyễn Văn Nam", "hsl_cb": 1.48, "pc_cb": 0.25, "hsl_cv": 2.24, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
-                    {"stt": 3, "hoTen": "Nguyễn Thị Tuyết Nhung", "hsl_cb": 1.79, "pc_cb": 0.25, "hsl_cv": 1.74, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 4, "hoTen": "Vũ Thị Thu", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 1.86, "pc_cv": 0.5, "nc_tg": 21, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 5, "hoTen": "Đào Thị Liên", "hsl_cb": 1.79, "pc_cb": 0.25, "hsl_cv": 1.74, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
-                    {"stt": 6, "hoTen": "Võ Thị Thanh Tuyền", "hsl_cb": 1.71, "pc_cb": 0.25, "hsl_cv": 1.74, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 7, "hoTen": "Trần Thị Thanh", "hsl_cb": 1.67, "pc_cb": 0.25, "hsl_cv": 1.48, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
-                    {"stt": 8, "hoTen": "Trần Đức Chiến", "hsl_cb": 1.83, "pc_cb": 0.25, "hsl_cv": 1.66, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 9, "hoTen": "Phạm Tiến Long", "hsl_cb": 1.80, "pc_cb": 0.25, "hsl_cv": 1.62, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
-                    {"stt": 10, "hoTen": "Đinh Hữu Vinh", "hsl_cb": 1.83, "pc_cb": 0.25, "hsl_cv": 1.66, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 11, "hoTen": "Bùi Đình Điệp", "hsl_cb": 1.53, "pc_cb": 0.25, "hsl_cv": 1.62, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 12, "hoTen": "Hoàng Mạnh Hùng", "hsl_cb": 1.53, "pc_cb": 0.25, "hsl_cv": 1.62, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 13, "hoTen": "Ma Trọng Luận", "hsl_cb": 1.35, "pc_cb": 0.25, "hsl_cv": 1.63, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.1, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 14, "hoTen": "Trần Bình Dương", "hsl_cb": 1.79, "pc_cb": 0.25, "hsl_cv": 2.40, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 15, "hoTen": "Đặng Trần Trung", "hsl_cb": 1.53, "pc_cb": 0.25, "hsl_cv": 1.62, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 16, "hoTen": "Phạm Huy Chiến", "hsl_cb": 2.26, "pc_cb": 0.25, "hsl_cv": 2.40, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12}
-                ]
             }
         }
     };
@@ -1132,6 +1111,21 @@
             return `${parts[2]}/${parts[1]}/${parts[0]}`;
         }
         return dateString;
+    }
+
+    // Hàm tính tổng Quỹ Lương NET lũy kế cộng dồn cả năm hiện tại
+    function layTongLuongNetCaNam() {
+        let yearData = coSoDuLieuNamThang[currentNamKey];
+        let totalYearNet = 0;
+        if (yearData) {
+            for (let mKey in yearData) {
+                let monthData = yearData[mKey];
+                if (monthData && monthData.nhansu) {
+                    totalYearNet += monthData.nhansu.reduce((sum, i) => sum + (i.thucLinhCuoiCung || 0), 0);
+                }
+            }
+        }
+        return totalYearNet;
     }
 
     async function tuDongTaiDuLieuTuDrive() {
@@ -1509,23 +1503,24 @@
     }
 
     function capNhatKPI() {
-        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
-        let totalNet = ds.reduce((sum, i) => sum + (i.thucLinhCuoiCung || 0), 0);
+        let totalYearNet = layTongLuongNetCaNam();
         let yearVpp = layTatCaDanhSachVPPTheoNam();
         let totalOfficeYear = yearVpp.reduce((sum, i) => sum + (i.total || 0), 0);
+        let yearTelecom = layTatCaDanhSachTelecomTheoNam();
+        let totalTelecomYear = yearTelecom.reduce((s, i) => s + (i.tong || 0), 0);
+
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         let totalStockInk = dsKhoMucIn.reduce((sum, i) => i.action.includes('Nhập') ? sum + i.qty : sum - i.qty, 0);
         let totalTamUng = ds.reduce((sum, i) => sum + (i.tam_ung || 0), 0);
         
-        document.getElementById("kpiTotalNet").innerText = totalNet.toLocaleString('vi-VN');
+        document.getElementById("kpiTotalNet").innerText = totalYearNet.toLocaleString('vi-VN');
         document.getElementById("kpiTotalPayment").innerText = totalOfficeYear.toLocaleString('vi-VN');
         document.getElementById("kpiTotalInkStock").innerText = totalStockInk + " Hộp";
         document.getElementById("kpiTotalSurvey").innerText = dsKhaoSatChuyenSau.length + " Thiết bị";
         document.getElementById("kpiTotalTamUng").innerText = totalTamUng.toLocaleString('vi-VN');
 
-        let yearTelecom = layTatCaDanhSachTelecomTheoNam();
-        let totalTelecomYear = yearTelecom.reduce((s,i)=>s+(i.tong||0),0);
         let totalTasksDone = danhSachCongViec.filter(t=>t.status==='Hoàn thành').length;
-        document.getElementById("sumNetVal").innerText = totalNet.toLocaleString('vi-VN');
+        document.getElementById("sumNetVal").innerText = totalYearNet.toLocaleString('vi-VN');
         document.getElementById("sumVppVal").innerText = totalOfficeYear.toLocaleString('vi-VN');
         document.getElementById("sumTelecomVal").innerText = totalTelecomYear.toLocaleString('vi-VN');
         document.getElementById("sumTaskVal").innerText = totalTasksDone + " / " + danhSachCongViec.length;
@@ -2726,23 +2721,22 @@
 
     let globalChartsInstances = {};
     function veTatCaBieuDoDashboard() {
-        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
-        let totalNet = ds.reduce((sum, i) => sum + (i.thucLinhCuoiCung || 0), 0);
+        let totalYearNet = layTongLuongNetCaNam();
         let yearVpp = layTatCaDanhSachVPPTheoNam();
         let totalOfficeYear = yearVpp.reduce((sum, i) => sum + (i.total || 0), 0);
         let yearTelecom = layTatCaDanhSachTelecomTheoNam();
         let totalTelecomYear = yearTelecom.reduce((s, i) => s + (i.tong || 0), 0);
 
-        // 1. Pie Chart Tài Chính
+        // 1. Pie Chart Tài Chính Cả Năm
         let ctxPie = document.getElementById('salaryPieChart');
         if (ctxPie) {
             if (globalChartsInstances.salaryPie) globalChartsInstances.salaryPie.destroy();
             globalChartsInstances.salaryPie = new Chart(ctxPie, {
                 type: 'pie',
                 data: {
-                    labels: ['Quỹ Lương NET', 'Thanh Toán VPP', 'Cước Viễn Thông'],
+                    labels: ['Quỹ Lương NET (Cả Năm)', 'Thanh Toán VPP (Cả Năm)', 'Cước Viễn Thông (Cả Năm)'],
                     datasets: [{
-                        data: [totalNet, totalOfficeYear || 1000000, totalTelecomYear || 1000000],
+                        data: [totalYearNet || 1000000, totalOfficeYear || 1000000, totalTelecomYear || 1000000],
                         backgroundColor: ['#16a34a', '#d97706', '#0284c7']
                     }]
                 },
@@ -2764,17 +2758,17 @@
             });
         }
 
-        // 2. Bar Chart Tổng Quan
+        // 2. Bar Chart Tổng Quan Cả Năm
         let ctxBar = document.getElementById('overviewBarChart');
         if (ctxBar) {
             if (globalChartsInstances.overviewBar) globalChartsInstances.overviewBar.destroy();
             globalChartsInstances.overviewBar = new Chart(ctxBar, {
                 type: 'bar',
                 data: {
-                    labels: ['Lương NET', 'Thanh Toán VPP', 'Viễn Thông'],
+                    labels: ['Lương NET (Cả Năm)', 'Thanh Toán VPP (Cả Năm)', 'Viễn Thông (Cả Năm)'],
                     datasets: [{
                         label: 'Giá trị (VNĐ)',
-                        data: [totalNet, totalOfficeYear, totalTelecomYear],
+                        data: [totalYearNet, totalOfficeYear, totalTelecomYear],
                         backgroundColor: ['#16a34a', '#d97706', '#0284c7']
                     }]
                 },
@@ -2841,7 +2835,8 @@
             });
         }
 
-        // 4. Leave Bar Chart (FIXED: Đã thêm padding.top và grace để số liệu không bị chạm viền trên)
+        // 4. Leave Bar Chart
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         let leaveNames = ds.map(i => i.hoTen.split(' ').pop());
         let leaveVals = ds.map(i => i.nc_p || 0);
         let ctxLeaveBar = document.getElementById('overviewLeaveBarChart');
@@ -2861,7 +2856,7 @@
                     responsive: true, 
                     maintainAspectRatio: false,
                     layout: {
-                        padding: { top: 25 } // Đảm bảo khoảng trống phía trên cho các cột cao như Nam (3 ngày)
+                        padding: { top: 25 }
                     },
                     plugins: {
                         legend: { display: false },
@@ -2875,7 +2870,7 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            grace: '20%', // Mở rộng không gian phía trên trục Y để số liệu không bị khuất
+                            grace: '20%',
                             ticks: { stepSize: 1 }
                         }
                     }

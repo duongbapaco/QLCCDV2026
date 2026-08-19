@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Quản Lý VINAPACO - Fixed Telecom, Drive Sync Pro & Leave Accumulation</title>
+    <title>Hệ Thống Quản Lý VINAPACO - Fixed Leave Bar Chart & Telecom Sync Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -895,7 +895,6 @@
 <script>
     Chart.register(ChartDataLabels);
 
-    // HÀM HỖ TRỢ PHÂN TÍCH TIỀN TỆ THÔNG MINH (HỖ TRỢ ĐỊNH DẠNG VN: 263.888,9)
     function parseVNDMoney(val) {
         if (!val) return 0;
         if (typeof val === 'number') return val;
@@ -932,12 +931,12 @@
                 config: { ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 },
                 nhansu: [
                     {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 5000000, "phep_cap": 12},
-                    {"stt": 2, "hoTen": "Nguyễn Văn Nam", "hsl_cb": 1.48, "pc_cb": 0.25, "hsl_cv": 2.24, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 5, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
-                    {"stt": 3, "hoTen": "Nguyễn Thị Tuyết Nhung", "hsl_cb": 1.79, "pc_cb": 0.25, "hsl_cv": 1.74, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 1, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 2, "hoTen": "Nguyễn Văn Nam", "hsl_cb": 1.48, "pc_cb": 0.25, "hsl_cv": 2.24, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 3, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
+                    {"stt": 3, "hoTen": "Nguyễn Thị Tuyết Nhung", "hsl_cb": 1.79, "pc_cb": 0.25, "hsl_cv": 1.74, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 2, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
                     {"stt": 4, "hoTen": "Vũ Thị Thu", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 1.86, "pc_cv": 0.5, "nc_tg": 21, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
                     {"stt": 5, "hoTen": "Đào Thị Liên", "hsl_cb": 1.79, "pc_cb": 0.25, "hsl_cv": 1.74, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
-                    {"stt": 6, "hoTen": "Võ Thị Thanh Tuyền", "hsl_cb": 1.71, "pc_cb": 0.25, "hsl_cv": 1.74, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 7, "hoTen": "Trần Thị Thanh", "hsl_cb": 1.67, "pc_cb": 0.25, "hsl_cv": 1.48, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
+                    {"stt": 6, "hoTen": "Võ Thị Thanh Tuyền", "hsl_cb": 1.71, "pc_cb": 0.25, "hsl_cv": 1.74, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 1, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 7, "hoTen": "Trần Thị Thanh", "hsl_cb": 1.67, "pc_cb": 0.25, "hsl_cv": 1.48, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 2, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
                     {"stt": 8, "hoTen": "Trần Đức Chiến", "hsl_cb": 1.83, "pc_cb": 0.25, "hsl_cv": 1.66, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
                     {"stt": 9, "hoTen": "Phạm Tiến Long", "hsl_cb": 1.80, "pc_cb": 0.25, "hsl_cv": 1.62, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
                     {"stt": 10, "hoTen": "Đinh Hữu Vinh", "hsl_cb": 1.83, "pc_cb": 0.25, "hsl_cv": 1.66, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
@@ -2734,7 +2733,7 @@
         let yearTelecom = layTatCaDanhSachTelecomTheoNam();
         let totalTelecomYear = yearTelecom.reduce((s, i) => s + (i.tong || 0), 0);
 
-        // 1. Pie Chart Tài Chính (Chỉ hiển thị % rõ ràng bên trong)
+        // 1. Pie Chart Tài Chính
         let ctxPie = document.getElementById('salaryPieChart');
         if (ctxPie) {
             if (globalChartsInstances.salaryPie) globalChartsInstances.salaryPie.destroy();
@@ -2765,7 +2764,7 @@
             });
         }
 
-        // 2. Bar Chart Tổng Quan (Đã thêm khoảng đệm top & grace để hiển thị trọn vẹn số liệu các cột cao)
+        // 2. Bar Chart Tổng Quan
         let ctxBar = document.getElementById('overviewBarChart');
         if (ctxBar) {
             if (globalChartsInstances.overviewBar) globalChartsInstances.overviewBar.destroy();
@@ -2783,7 +2782,7 @@
                     responsive: true, 
                     maintainAspectRatio: false,
                     layout: {
-                        padding: { top: 25 } // Đảm bảo không gian hiển thị nhãn số liệu không bị cắt khuất ở đỉnh
+                        padding: { top: 25 }
                     },
                     plugins: {
                         legend: { display: false },
@@ -2800,7 +2799,7 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            grace: '15%', // Tự động nới rộng trục Y thêm 15% để luôn có đủ khoảng trống cho số liệu cột cao nhất
+                            grace: '15%',
                             ticks: {
                                 callback: function(value) {
                                     return value.toLocaleString('vi-VN');
@@ -2842,9 +2841,9 @@
             });
         }
 
-        // 4. Leave Bar Chart
-        let leaveNames = ds.slice(0, 8).map(i => i.hoTen.split(' ').pop());
-        let leaveVals = ds.slice(0, 8).map(i => i.nc_p || 0);
+        // 4. Leave Bar Chart (FIXED: Đã thêm padding.top và grace để số liệu không bị chạm viền trên)
+        let leaveNames = ds.map(i => i.hoTen.split(' ').pop());
+        let leaveVals = ds.map(i => i.nc_p || 0);
         let ctxLeaveBar = document.getElementById('overviewLeaveBarChart');
         if (ctxLeaveBar) {
             if (globalChartsInstances.leaveBar) globalChartsInstances.leaveBar.destroy();
@@ -2861,6 +2860,9 @@
                 options: { 
                     responsive: true, 
                     maintainAspectRatio: false,
+                    layout: {
+                        padding: { top: 25 } // Đảm bảo khoảng trống phía trên cho các cột cao như Nam (3 ngày)
+                    },
                     plugins: {
                         legend: { display: false },
                         datalabels: {
@@ -2873,6 +2875,7 @@
                     scales: {
                         y: {
                             beginAtZero: true,
+                            grace: '20%', // Mở rộng không gian phía trên trục Y để số liệu không bị khuất
                             ticks: { stepSize: 1 }
                         }
                     }

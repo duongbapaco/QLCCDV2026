@@ -2586,7 +2586,7 @@
         document.getElementById('inputSurveySpecs').value = item.specs;
         document.getElementById('editSurveyIndex').value = idx;
         document.getElementById('btnSaveSurvey').innerHTML = `<i class="fas fa-save"></i> Cập Nhật Khảo Sát`;
-        document.getElementById('btnCancelSurvey').classList.remove('hidden');
+        document.getElementById('btnCancelSurvey').classList.add('hidden');
     }
 
     function huySuaKhaoSat() {
@@ -2765,7 +2765,7 @@
             });
         }
 
-        // 2. Bar Chart Tổng Quan (Hiển thị giá trị rõ nét phía trên cột)
+        // 2. Bar Chart Tổng Quan (Đã thêm khoảng đệm top & grace để hiển thị trọn vẹn số liệu các cột cao)
         let ctxBar = document.getElementById('overviewBarChart');
         if (ctxBar) {
             if (globalChartsInstances.overviewBar) globalChartsInstances.overviewBar.destroy();
@@ -2782,6 +2782,9 @@
                 options: { 
                     responsive: true, 
                     maintainAspectRatio: false,
+                    layout: {
+                        padding: { top: 25 } // Đảm bảo không gian hiển thị nhãn số liệu không bị cắt khuất ở đỉnh
+                    },
                     plugins: {
                         legend: { display: false },
                         datalabels: {
@@ -2797,6 +2800,7 @@
                     scales: {
                         y: {
                             beginAtZero: true,
+                            grace: '15%', // Tự động nới rộng trục Y thêm 15% để luôn có đủ khoảng trống cho số liệu cột cao nhất
                             ticks: {
                                 callback: function(value) {
                                     return value.toLocaleString('vi-VN');

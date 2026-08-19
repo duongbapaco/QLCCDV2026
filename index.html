@@ -879,6 +879,17 @@
 <script>
     Chart.register(ChartDataLabels);
 
+    // HÀM HỖ TRỢ PHÂN TÍCH TIỀN TỆ THÔNG MINH (HỖ TRỢ ĐỊNH DẠNG VN: 263.888,9)
+    function parseVNDMoney(val) {
+        if (!val) return 0;
+        if (typeof val === 'number') return val;
+        let s = String(val).trim();
+        // Thay thế dấu chấm phân cách hàng nghìn và dấu phẩy phân cách thập phân
+        s = s.replace(/\./g, '').replace(',', '.');
+        let num = parseFloat(s);
+        return isNaN(num) ? 0 : Math.round(num);
+    }
+
     const defaultCoSoDuLieuNamThang = {
         "2026": {
             "Tháng 05": {
@@ -1465,7 +1476,6 @@
         return allTelecom;
     }
 
-    // HÀM FIX: CỘNG DỒN LŨY KẾ PHÉP DỰA TRÊN NGÀY NGHỈ THỰC TẾ (nc_p) CỦA TOÀN BỘ CÁC THÁNG TRONG NĂM
     function layTongLuyKePhepDaNghi(tenNhanSu) {
         let totalP = 0, totalL = 0;
         let yearData = coSoDuLieuNamThang[currentNamKey];
@@ -1642,7 +1652,7 @@
                 <td style="text-align:center;">${item.nc_l||0}</td>
                 <td style="text-align:center;">${item.k_ht||1.0}</td>
                 <td style="text-align:right; font-weight:bold;">${item.luongCVTT.toLocaleString()}</td>
-                <td><input class="cell-input money-input" type="text" value="${(item.tam_ung||0).toLocaleString()}" onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].tam_ung=parseFloat(this.value.replace(/[^0-9]/g,''))||0;capNhat();"></td>
+                <td><input class="cell-input money-input" type="text" value="${(item.tam_ung||0).toLocaleString()}" onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].tam_ung=parseVNDMoney(this.value);capNhat();"></td>
                 <td style="text-align:right; font-weight:bold;">${item.thucLinhCV.toLocaleString()}</td>
                 <td style="text-align:right;"><span class="badge-net">${item.thucLinhCuoiCung.toLocaleString()}</span></td>
                 <td style="text-align:center;"><button class="btn btn-blue" style="padding:4px 10px;" onclick="moModalPhiieuLuongTheoTen('${item.hoTen}')"><i class="fa-solid fa-paper-plane"></i></button></td>
@@ -1850,7 +1860,7 @@
 
     function tinhToanTienVPP() {
         let q = parseFloat(document.getElementById('inputOfficeQty').value) || 1;
-        let p = parseFloat(document.getElementById('inputOfficePrice').value.replace(/[^0-9]/g,'')) || 0;
+        let p = parseVNDMoney(document.getElementById('inputOfficePrice').value);
         let vatRate = parseFloat(document.getElementById('inputOfficeVatRate').value) || 0.1;
         let truocThue = Math.round(q * p);
         let vat = Math.round(truocThue * vatRate);
@@ -1861,8 +1871,8 @@
     }
 
     function tinhToanVatTuTong() {
-        let truocThue = parseFloat(document.getElementById('inputOfficeTruocThue').value.replace(/[^0-9]/g,'')) || 0;
-        let vat = parseFloat(document.getElementById('inputOfficeVAT').value.replace(/[^0-9]/g,'')) || 0;
+        let truocThue = parseVNDMoney(document.getElementById('inputOfficeTruocThue').value);
+        let vat = parseVNDMoney(document.getElementById('inputOfficeVAT').value);
         let total = Math.round(truocThue + vat);
         document.getElementById('previewOfficeTotal').value = total.toLocaleString('vi-VN');
     }
@@ -1959,9 +1969,9 @@
         let content = document.getElementById('inputOfficeContent').value.trim();
         let beneficiary = document.getElementById('inputOfficeBeneficiary').value.trim();
         if (!content || !beneficiary) { alert("Nhập đủ nội dung thanh toán và đơn vị thụ hưởng!"); return; }
-        let total = parseFloat(document.getElementById('previewOfficeTotal').value.replace(/[^0-9]/g,'')) || 0;
-        let truocThue = parseFloat(document.getElementById('inputOfficeTruocThue').value.replace(/[^0-9]/g,'')) || 0;
-        let vat = parseFloat(document.getElementById('inputOfficeVAT').value.replace(/[^0-9]/g,'')) || 0;
+        let total = parseVNDMoney(document.getElementById('previewOfficeTotal').value);
+        let truocThue = parseVNDMoney(document.getElementById('inputOfficeTruocThue').value);
+        let vat = parseVNDMoney(document.getElementById('inputOfficeVAT').value);
         let key = `${currentNamKey}_${currentThangKey}`;
         if (!dsThanhToanVanPhongProByMonth[key]) dsThanhToanVanPhongProByMonth[key] = [];
 
@@ -1979,7 +1989,7 @@
             bankAccount: document.getElementById('inputOfficeBankAccount').value.trim(),
             unit: document.getElementById('inputOfficeUnit').value,
             qty: parseFloat(document.getElementById('inputOfficeQty').value)||1,
-            price: parseFloat(document.getElementById('inputOfficePrice').value.replace(/[^0-9]/g,''))||0,
+            price: parseVNDMoney(document.getElementById('inputOfficePrice').value),
             truocThue, vat, total, date: document.getElementById('inputOfficeDate').value || `${currentNamKey}-06-18`, files: finalFiles
         };
 
@@ -2074,7 +2084,7 @@
         let name = document.getElementById('inputInkName').value.trim();
         if (!name) { alert("Nhập tên mực in!"); return; }
         let qty = parseInt(document.getElementById('inputInkQty').value) || 1;
-        let price = parseFloat(document.getElementById('inputInkPrice').value.replace(/[^0-9]/g,'')) || 0;
+        let price = parseVNDMoney(document.getElementById('inputInkPrice').value);
         let editIdx = parseInt(document.getElementById('editInkIndex').value);
         let newItem = {
             code: editIdx >= 0 ? dsKhoMucIn[editIdx].code : "MUC0" + (dsKhoMucIn.length+1),
@@ -2262,7 +2272,7 @@
 
     function tinhTienTelecomTuTong() {
         let rawVal = document.getElementById('inputTelecomTongVat').value;
-        let tong = parseFloat(rawVal.replace(/[^0-9]/g, '')) || 0;
+        let tong = parseVNDMoney(rawVal);
         
         if (tong > 0 && !rawVal.includes('.')) {
             document.getElementById('inputTelecomTongVat').value = tong.toLocaleString('vi-VN');
@@ -2297,11 +2307,9 @@
         }
     }
 
-    // HÀM LƯU / CẬP NHẬT CƯỚC VIỄN THÔNG (ĐÃ FIX ĐỘC LẬP THÁNG & ĐÚNG PATH DRIVE)
     function luuHoacCapNhatTelecom() {
         let type = document.getElementById('inputTelecomType').value.trim();
-        let tongStr = document.getElementById('inputTelecomTongVat').value.replace(/[^0-9]/g, '');
-        let tong = parseFloat(tongStr) || 0;
+        let tong = parseVNDMoney(document.getElementById('inputTelecomTongVat').value);
         
         let thangChonHienTai = document.getElementById('inputTelecomThangChon').value;
         let namChonHienTai = document.getElementById('cfgNamChon') ? document.getElementById('cfgNamChon').value : currentNamKey;
@@ -2314,7 +2322,6 @@
         let truocThue = Math.round(tong / 1.1);
         let vat = tong - truocThue;
         
-        // Khóa lưu trữ độc lập theo chuẩn: Năm_Tháng để tránh đè tháng
         let exactMonthKey = `${namChonHienTai}_${thangChonHienTai}`;
 
         if (!dsThanhToanTelecombyMonth[exactMonthKey]) {
@@ -2365,7 +2372,6 @@
 
         luuTruVaoLocalStorage();
         
-        // ĐẨY LÊN DRIVE VỚI ĐƯỜNG DẪN ĐỘNG CHÍNH XÁC ĐẾN THƯ MỤC NĂM > THÁNG > CƯỚC VIỄN THÔNG
         let exactFolderPath = `VINAPACO_Drive/${namChonHienTai}/${thangChonHienTai}/Cuoc_Vien_Thong`;
         tuDongDayDuLieuLenDrive(filesToUpload, exactFolderPath);
         

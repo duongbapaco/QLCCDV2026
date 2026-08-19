@@ -2161,7 +2161,7 @@
         document.getElementById('inputInkPrice').value = item.price.toLocaleString();
         document.getElementById('editInkIndex').value = idx;
         document.getElementById('btnSaveInk').innerHTML = `<i class="fas fa-save"></i> Cập Nhật Kho`;
-        document.getElementById('btnCancelInk').classList.remove('hidden');
+        document.getElementById('btnCancelInk').classList.add('hidden');
     }
 
     function huySuaKhoMuc() {
@@ -2272,7 +2272,7 @@
         document.getElementById('inputSlipDate').value = s.date;
         document.getElementById('editSlipIndex').value = idx;
         document.getElementById('btnSaveSlip').innerHTML = `<i class="fas fa-save"></i> Cập Nhật Phiếu`;
-        document.getElementById('btnCancelSlip').classList.remove('hidden');
+        document.getElementById('btnCancelSlip').classList.add('hidden');
     }
 
     function huySuaPhieuGiao() {
@@ -2734,7 +2734,7 @@
         let yearTelecom = layTatCaDanhSachTelecomTheoNam();
         let totalTelecomYear = yearTelecom.reduce((s, i) => s + (i.tong || 0), 0);
 
-        // 1. Pie Chart Tài Chính
+        // 1. Pie Chart Tài Chính (Chỉ hiển thị % rõ ràng bên trong)
         let ctxPie = document.getElementById('salaryPieChart');
         if (ctxPie) {
             if (globalChartsInstances.salaryPie) globalChartsInstances.salaryPie.destroy();
@@ -2747,11 +2747,25 @@
                         backgroundColor: ['#16a34a', '#d97706', '#0284c7']
                     }]
                 },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                let percentage = (value * 100 / sum).toFixed(1) + "%";
+                                return percentage;
+                            },
+                            color: '#ffffff',
+                            font: { weight: 'bold', size: 14 }
+                        }
+                    }
+                }
             });
         }
 
-        // 2. Bar Chart Tổng Quan
+        // 2. Bar Chart Tổng Quan (Hiển thị giá trị rõ nét phía trên cột)
         let ctxBar = document.getElementById('overviewBarChart');
         if (ctxBar) {
             if (globalChartsInstances.overviewBar) globalChartsInstances.overviewBar.destroy();
@@ -2765,7 +2779,32 @@
                         backgroundColor: ['#16a34a', '#d97706', '#0284c7']
                     }]
                 },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'top',
+                            formatter: (value) => {
+                                return value > 0 ? value.toLocaleString('vi-VN') + ' VNĐ' : '';
+                            },
+                            color: '#0f172a',
+                            font: { weight: 'bold', size: 11 }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString('vi-VN');
+                                }
+                            }
+                        }
+                    }
+                }
             });
         }
 
@@ -2786,7 +2825,16 @@
                         backgroundColor: ['#15803d', '#d97706', '#dc2626']
                     }]
                 },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            color: '#ffffff',
+                            font: { weight: 'bold', size: 13 }
+                        }
+                    }
+                }
             });
         }
 
@@ -2806,7 +2854,25 @@
                         backgroundColor: '#8b5cf6'
                     }]
                 },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'top',
+                            color: '#475569',
+                            font: { weight: 'bold', size: 11 }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 }
+                        }
+                    }
+                }
             });
         }
     }

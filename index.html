@@ -353,7 +353,7 @@
                 <label>Tài khoản / Email công vụ</label>
                 <div class="login-field">
                     <i class="fa-solid fa-user"></i>
-                    <input type="text" id="loginUser" placeholder="Nhập tài khoản hoặc email công vụ" autocomplete="username">
+                    <input type="text" id="loginUser" placeholder="Nhập tài khoản hoặc email công vụ" autocomplete="off">
                 </div>
             </div>
 
@@ -361,7 +361,7 @@
                 <label>Mật khẩu</label>
                 <div class="login-field">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="loginPass" placeholder="Nhập mật khẩu" autocomplete="current-password" onkeydown="handleLoginKeydown(event)">
+                    <input type="password" id="loginPass" placeholder="Nhập mật khẩu" autocomplete="off" onkeydown="handleLoginKeydown(event)">
                 </div>
             </div>
 
@@ -382,6 +382,10 @@
                     <i class="fa-solid fa-key"></i> Quên mật khẩu?
                 </span>
             </div>
+
+            <button id="firstRunCreateBtn" type="button" onclick="moManHinhKhoiTaoHeThong()" style="display:none;width:100%;min-height:42px;border:1px solid #9bd8bd;border-radius:10px;background:#f0fdf4;color:#08734e;font-weight:850;cursor:pointer;font-size:12px;">
+                <i class="fa-solid fa-user-plus"></i> TẠO TÀI KHOẢN BAN ĐẦU
+            </button>
         </div>
 
         <div class="login-footer">
@@ -397,6 +401,7 @@
             <img id="firstRunVinapacoLogo" src="" alt="VINAPACO" style="width:62px;height:62px;object-fit:contain;background:#fff;border-radius:50%;padding:4px;box-shadow:0 5px 15px rgba(0,0,0,.18);">
             <div>
                 <div style="font-size:17px;font-weight:950;text-transform:uppercase;letter-spacing:.2px;">Khởi tạo hệ thống VINAPACO</div>
+                <div style="font-size:11px;font-weight:650;opacity:.92;margin-top:4px;">Tạo tài khoản Quản trị viên đầu tiên để bắt đầu sử dụng hệ thống</div>
                 <div style="font-size:11px;opacity:.9;margin-top:5px;line-height:1.5;">Thiết lập tài khoản Quản trị viên đầu tiên — không sử dụng tài khoản hoặc mật khẩu mặc định.</div>
             </div>
         </div>
@@ -1964,9 +1969,17 @@
         doiThangHoSoLuong();
         await tuDongTaiDuLieuTuDrive();
         renderAccountTable();
-        if (!Array.isArray(danhSachTaiKhoanHeThong) || danhSachTaiKhoanHeThong.length === 0) {
-            const hint=document.getElementById('firstRunLoginHint'); if(hint) hint.style.display='block';
-            moManHinhKhoiTaoHeThong();
+        const hasAccounts = Array.isArray(danhSachTaiKhoanHeThong) && danhSachTaiKhoanHeThong.length > 0;
+        const hint = document.getElementById('firstRunLoginHint');
+        const createBtn = document.getElementById('firstRunCreateBtn');
+        if (!hasAccounts) {
+            if(hint) hint.style.display='block';
+            if(createBtn) createBtn.style.display='block';
+            // Lần chạy đầu tiên: mở thẳng biểu mẫu tạo tài khoản để người dùng biết phải làm gì.
+            setTimeout(() => moManHinhKhoiTaoHeThong(), 120);
+        } else {
+            if(hint) hint.style.display='none';
+            if(createBtn) createBtn.style.display='none';
         }
         renderQuyHoachTable();
         khoiTaoTuDongDongBoNgam();
@@ -2127,6 +2140,8 @@
                 serverSaved=res.ok;
             }catch(e){}
             document.getElementById('modalKhoiTaoHeThong').classList.add('hidden');
+            const hint=document.getElementById('firstRunLoginHint'); if(hint) hint.style.display='none';
+            const createBtn=document.getElementById('firstRunCreateBtn'); if(createBtn) createBtn.style.display='none';
             renderAccountTable();
             const msg=serverSaved?'Đã khởi tạo tài khoản Quản trị viên đầu tiên và đồng bộ tới hệ thống.':'Đã khởi tạo tài khoản Quản trị viên đầu tiên trên thiết bị. Nếu dùng nhiều máy, cần cấu hình GAS để đồng bộ tài khoản tập trung.';
             hienThongBaoXuatFile(msg,true);

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="vinapaco-login-version" content="FINAL-TaoTaiKhoanBanDau-2026-08-20">
     <title>Hệ Thống Quản Lý VINAPACO - Annual Net Salary & Expense Comparison Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
@@ -374,13 +375,21 @@
                 Kết nối nội bộ • Bảo mật thông tin doanh nghiệp
             </div>
             <div id="firstRunLoginHint" style="display:none;text-align:center;background:#ecfdf5;border:1px solid #bbf7d0;border-radius:10px;padding:9px 10px;color:#166534;font-size:11px;font-weight:750;line-height:1.5;">
-                <i class="fa-solid fa-wand-magic-sparkles"></i> Lần chạy đầu tiên: hệ thống sẽ yêu cầu tạo tài khoản Quản trị viên riêng, không có mật khẩu mặc định.
+                <i class="fa-solid fa-wand-magic-sparkles"></i> LẦN ĐẦU SỬ DỤNG: Hãy bấm “TẠO TÀI KHOẢN BAN ĐẦU” để tạo tài khoản Quản trị viên. Không có mật khẩu mặc định.
             </div>
 
             <div style="text-align:center; font-size:12px; margin-top:2px; font-weight:750;">
                 <span style="color:#08734e; cursor:pointer;" onclick="moModalQuenMatKhau()">
                     <i class="fa-solid fa-key"></i> Quên mật khẩu?
                 </span>
+            </div>
+            <div id="initialAccountEntry" style="margin-top:12px;padding-top:14px;border-top:1px solid #d7e8df;">
+                <button type="button" onclick="moManHinhKhoiTaoHeThong()" style="width:100%;min-height:46px;border:1.5px solid #0b9868;border-radius:11px;background:#ffffff;color:#08734e;font-weight:900;cursor:pointer;font-size:13px;letter-spacing:.1px;box-shadow:0 3px 10px rgba(8,115,78,.08);">
+                    <i class="fa-solid fa-user-plus"></i>&nbsp; TẠO TÀI KHOẢN BAN ĐẦU
+                </button>
+                <div style="text-align:center;color:#64748b;font-size:10.5px;font-weight:650;margin-top:7px;">
+                    Lần đầu sử dụng hệ thống? Bấm nút này để tạo tài khoản Quản trị viên.
+                </div>
             </div>
 
             <button id="firstRunCreateBtn" type="button" onclick="moManHinhKhoiTaoHeThong()" style="display:none;width:100%;min-height:42px;border:1px solid #9bd8bd;border-radius:10px;background:#f0fdf4;color:#08734e;font-weight:850;cursor:pointer;font-size:12px;">
@@ -1949,6 +1958,11 @@
     }
 
     window.addEventListener('DOMContentLoaded', async () => {
+        capNhatNutTaoTaiKhoanBanDau();
+        // Nếu chưa có tài khoản trên trình duyệt, mở luôn màn hình tạo tài khoản ban đầu.
+        if(!Array.isArray(danhSachTaiKhoanHeThong) || danhSachTaiKhoanHeThong.length===0){
+            setTimeout(()=>moManHinhKhoiTaoHeThong(),350);
+        }
         let inputUrlSetting = document.getElementById('inputGasUrlSetting');
         if(inputUrlSetting) inputUrlSetting.value = gasWebhookUrl;
         const reportDateEl = document.getElementById('surveyReportDate');
@@ -2089,6 +2103,13 @@
     }
     
     function emailHopLeKhoiTao(email){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email||'').trim()); }
+    function capNhatNutTaoTaiKhoanBanDau(){
+        const btn=document.getElementById('initialAccountEntry');
+        if(!btn) return;
+        const hasAccount=Array.isArray(danhSachTaiKhoanHeThong) && danhSachTaiKhoanHeThong.length>0;
+        btn.style.display=hasAccount?'none':'block';
+    }
+
     function moManHinhKhoiTaoHeThong(){
         const logo=document.getElementById('loginVinapacoLogo');
         const firstLogo=document.getElementById('firstRunVinapacoLogo');
@@ -2140,6 +2161,7 @@
                 serverSaved=res.ok;
             }catch(e){}
             document.getElementById('modalKhoiTaoHeThong').classList.add('hidden');
+            capNhatNutTaoTaiKhoanBanDau();
             const hint=document.getElementById('firstRunLoginHint'); if(hint) hint.style.display='none';
             const createBtn=document.getElementById('firstRunCreateBtn'); if(createBtn) createBtn.style.display='none';
             renderAccountTable();

@@ -99,7 +99,6 @@
         .progress-box { width: 100%; background: #e2e8f0; border-radius: 6px; height: 10px; overflow: hidden; margin-top: 6px; display: none; }
         .progress-bar-fill { width: 0%; height: 100%; background: #16a34a; transition: width 0.3s ease; }
 
-        /* Khối chân chữ ký chuẩn doanh nghiệp */
         .salary-signature-footer {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -125,6 +124,91 @@
             font-weight: 800;
             font-size: 15px;
             color: #0f172a;
+        }
+
+        /* MOBILE RESPONSIVE CSS */
+        @media (max-width: 768px) {
+            :root { font-size: 15px; }
+            body { padding: 8px; }
+            .container { gap: 12px; }
+
+            .config-bar,
+            .kpi-grid,
+            .charts-multi-grid,
+            .top-info-bar,
+            .form-card {
+                grid-template-columns: 1fr !important;
+            }
+
+            .config-item.drive-path-box { grid-column: span 1 !important; }
+
+            input, select, textarea, .cell-input, input.money-input {
+                font-size: 16px !important;
+                padding: 10px 12px !important;
+            }
+
+            table {
+                min-width: 800px;
+                font-size: 14px !important;
+            }
+
+            th, td {
+                padding: 10px 8px !important;
+                white-space: nowrap;
+            }
+
+            .tab-pane, .table-card {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .banner {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 14px;
+                gap: 12px;
+            }
+
+            .btn-group-header {
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+                padding: 10px 12px !important;
+                font-size: 13px !important;
+            }
+
+            .tab-nav {
+                overflow-x: auto;
+                white-space: nowrap;
+                flex-wrap: nowrap;
+                padding-bottom: 6px;
+            }
+
+            .tab-btn-nav {
+                flex: 0 0 auto;
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+
+            .modal-card {
+                width: 96% !important;
+                max-height: 94vh !important;
+            }
+
+            #payslip-capture, #slip-capture-area {
+                padding: 16px !important;
+            }
+
+            .salary-signature-footer {
+                grid-template-columns: 1fr !important;
+                gap: 18px;
+            }
         }
     </style>
 </head>
@@ -235,7 +319,6 @@
             </div>
         </div>
 
-        <!-- MODULE DỰ BÁO THỜI TIẾT THỜI GIAN THỰC & ĐỊNH VỊ GPS -->
         <div class="info-widget-card" style="justify-content: space-between;">
             <div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
@@ -336,10 +419,10 @@
         </div>
     </div>
 
-    <!-- TAB MỚI: DASHBOARD LƯƠNG TỪNG THÁNG TRONG NĂM -->
+    <!-- TAB DASHBOARD LƯƠNG TỪNG THÁNG TRONG NĂM -->
     <div id="monthlySalaryDashboardTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-money-bill-trend-up"></i> DASHBOARD THEO DÕI & SO SÁNH QUỸ LƯƠNG HÀNG THÁNG (NĂM <span id="monthlySalaryYearTitle">2026</span>)</div>
+            <div class="table-title"><i class="fa-solid fa-money-bill-trend-up"></i> DASHBOARD THEO DÕI & SO SÁNH QUỶ LƯƠNG HÀNG THÁNG (NĂM <span id="monthlySalaryYearTitle">2026</span>)</div>
             <button class="btn btn-green" onclick="xuatBaoCaoLuongCacThangExcel()"><i class="fa-solid fa-file-excel"></i> Xuất Báo Cáo Tổng Hợp Lương</button>
         </div>
 
@@ -374,7 +457,7 @@
         </div>
 
         <div class="table-card">
-            <div class="table-title" style="font-size: 15px; margin-bottom: 12px;"><i class="fa-solid fa-list-ol"></i> BẢNG CHI TIẾT BIẾN ĐỘNG QUỸ LƯƠNG CHI TRẢ QUA CÁC THÁNG</div>
+            <div class="table-title" style="font-size: 15px; margin-bottom: 12px;"><i class="fa-solid fa-list-ol"></i> BẢNG CHI TIẾT BIẾN ĐỘNG QUỶ LƯƠNG CHI TRẢ QUA CÁC THÁNG</div>
             <table>
                 <thead>
                     <tr>
@@ -530,7 +613,7 @@
         </div>
     </div>
 
-    <!-- TAB PHÉP N NĂM -->
+    <!-- TAB PHÉP NĂM -->
     <div id="leaveTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-calendar-days"></i> QUẢN LÝ PHÉP NĂM THEO THÁNG & CỘNG DỒN LŨY KẾ (<span class="thangHienTaiTitle">Tháng 06/2026</span>)</div>
@@ -544,7 +627,7 @@
         <div class="table-card" style="margin-bottom: 16px;">
             <div class="table-title" style="font-size: 14px; margin-bottom: 10px;"><i class="fa-solid fa-table"></i> Bảng Tổng Kết Quản Lý Phép Năm</div>
             <table>
-                <thead><tr><th>Chỉ SỐ Phép Năm</th><th>Tổng Số Ngày</th><th>Tỷ Trọng (%)</th><th>Đánh Giá Chấp Hành</th></tr></thead>
+                <thead><tr><th>Chỉ Số Phép Năm</th><th>Tổng Số Ngày</th><th>Tỷ Trọng (%)</th><th>Đánh Giá Chấp Hành</th></tr></thead>
                 <tbody id="leaveSummaryTableBody"></tbody>
             </table>
         </div>
@@ -872,7 +955,7 @@
     </div>
 </div>
 
-<!-- MODAL XEM VÀ IN PHIẾU GIAO NHẬN XUẤT KHO MỰC / THIẾT BỊ NÂNG CẤP CHUYÊN NGHIỆP -->
+<!-- MODAL XEM VÀ IN PHIẾU GIAO NHẬN XUẤT KHO MỰC / THIẾT BỊ -->
 <div class="modal-overlay hidden" id="previewSlipModal">
     <div class="modal-card" style="max-width: 720px; padding: 0;">
         <div style="padding: 16px 24px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center;">
@@ -881,8 +964,6 @@
         </div>
         <div style="padding: 24px; background: #e2e8f0; max-height: 78vh; overflow-y: auto;">
             <div id="slip-capture-area" style="background: white; padding: 36px; border-radius: 12px; border: 1px solid #cbd5e1; font-size: 14px; color: #0f172a;">
-                
-                <!-- TIÊU ĐỀ DOANH NGHIỆP -->
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0284c7; padding-bottom: 12px; margin-bottom: 18px;">
                     <div>
                         <div style="font-size: 13px; font-weight: 900; text-transform: uppercase; color: #0369a1;">TỔNG CÔNG TY GIẤY VIỆT NAM</div>
@@ -933,7 +1014,6 @@
                     * Phiếu xuất kho / bàn giao này là chứng từ gốc xác nhận việc giao nhận vật tư, thiết bị phục vụ hoạt động vận hành tại VINAPACO.
                 </div>
 
-                <!-- KHỐI CHỮ KÝ CHUẨN DOANH NGHIỆP -->
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; margin-top: 10px; font-size: 13px; font-weight: bold; color: #0f172a; text-transform: uppercase;">
                     <div>
                         <div>NGƯỜI LẬP PHIẾU</div>
@@ -951,7 +1031,6 @@
                         <div style="text-transform: none; font-weight: 800; color: #0f172a;">Trần Bình Dương</div>
                     </div>
                 </div>
-
             </div>
         </div>
         <div class="modal-actions">
@@ -989,7 +1068,7 @@
     </div>
 </div>
 
-<!-- MODAL PHIẾU LƯƠNG CHUẨN DOANH NGHIỆP CÓ BỔ SUNG TỔNG LƯƠNG CB & CV VÀ CHÂN CHỮ KÝ THEO MẪU -->
+<!-- MODAL PHIẾU LƯƠNG CHUẨN DOANH NGHIỆP -->
 <div class="modal-overlay hidden" id="previewModal">
     <div class="modal-card" style="max-width: 720px; padding: 0; border-radius: 16px; overflow: hidden;">
         <div style="padding: 14px 20px; background: #f8fafc; border-bottom: 1px solid #cbd5e1; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;">
@@ -1042,7 +1121,6 @@
                         <span style="font-size: 20px; font-weight: 900; color: #15803d;" id="slipThucLinh">0 VNĐ</span>
                     </div>
 
-                    <!-- Phần Chân Chữ Ký Chuẩn Hình Ảnh Yêu Cầu -->
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; margin-top: 20px; font-size: 13px; font-weight: bold; color: #0f172a; text-transform: uppercase;">
                         <div>
                             <div>PHÒNG NHÂN SỰ</div>
@@ -1609,7 +1687,6 @@
             i.thucLinhCV = i.luongCVTT - (i.tam_ung||0);
             i.thucLinhCuoiCung = i.thucLinhLCB + i.thucLinhCV;
             
-            // Tính toán tổng lương cơ bản và công việc thực tế
             i.tongCbCv = i.tongLCB + i.luongCVTT;
         });
         luuTruVaoLocalStorage();
@@ -1721,7 +1798,6 @@
         document.getElementById("sumTaskVal").innerText = totalTasksDone + " / " + danhSachCongViec.length;
     }
 
-    /* RENDER VÀ CẬP NHẬT DASHBOARD LƯƠNG TỪNG THÁNG */
     function renderMonthlySalaryDashboard() {
         let yearData = coSoDuLieuNamThang[currentNamKey] || {};
         let monthsList = ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"];
@@ -2455,7 +2531,6 @@
         }
     }
 
-    /* PHIẾU XUẤT KHO MỰC IN CHUYÊN NGHIỆP */
     function xemVaInPhieuKho(idx) {
         let item = dsKhoMucIn[idx];
         document.getElementById('modalSlipTitle').innerText = "PHIẾU XUẤT KHO VẬT TƯ MỰC IN";
@@ -2569,7 +2644,6 @@
         }
     }
 
-    /* PHIẾU BÀN GIAO THIẾT BỊ CHUYÊN NGHIỆP */
     function xemVaInPhieuGiaoNhanTab(idx) {
         let s = dsPhieuGiaoNhan[idx];
         document.getElementById('modalSlipTitle').innerText = "PHIẾU BÀN GIAO THIẾT BỊ VĂN PHÒNG";
@@ -2973,27 +3047,83 @@
         });
     }
 
-    function xuatExcelCB() { 
-        let ws = XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu); 
-        let wb = XLSX.utils.book_new(); 
-        XLSX.utils.book_append_sheet(wb, ws, "LuongCB"); 
-        XLSX.writeFile(wb, "Bang_Luong_Co_Ban.xlsx"); 
+    // XUẤT BẢNG LƯƠNG CƠ BẢN SANG EXCEL
+    function xuatExcelCB() {
+        let nhansuData = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
+        let exportData = nhansuData.map((item, index) => ({
+            "STT": index + 1,
+            "Họ và Tên": item.hoTen,
+            "HSL CB": item.hsl_cb,
+            "PC CB": item.pc_cb || 0,
+            "Lương HĐLĐ": item.luongHDLD,
+            "Lương CB Tháng": item.luongCBThang,
+            "NC TG": item.nc_tg,
+            "NC Phép": item.nc_p || 0,
+            "NC Lễ": item.nc_l || 0,
+            "Hệ Số Ki": item.k_ht || 1.0,
+            "Lương CB Theo Thời Gian": item.luongCBTG,
+            "Lương CB Lễ/Phép": item.luongCBLP,
+            "Tổng Lương CB": item.tongLCB,
+            "Khấu Trừ BHTN (1%)": item.bhtn,
+            "Khấu Trừ BHXH (9.5%)": item.bhxh,
+            "THỰC LĨNH LƯƠNG CƠ BẢN": item.thucLinhLCB
+        }));
+
+        let ws = XLSX.utils.json_to_sheet(exportData);
+        let wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "LuongCoBan");
+        XLSX.writeFile(wb, `Bang_Luong_Co_Ban_${currentThangKey}_${currentNamKey}.xlsx`);
     }
 
-    function xuatExcelCV() { 
-        let ws = XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu); 
-        let wb = XLSX.utils.book_new(); 
-        XLSX.utils.book_append_sheet(wb, ws, "LuongCV"); 
-        XLSX.writeFile(wb, "Bang_Luong_Cong_Viec.xlsx"); 
+    // XUẤT BẢNG LƯƠNG CÔNG VIỆC SANG EXCEL
+    function xuatExcelCV() {
+        let nhansuData = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
+        let exportData = nhansuData.map((item, index) => ({
+            "STT": index + 1,
+            "Họ và Tên": item.hoTen,
+            "HSL CV": item.hsl_cv,
+            "PC CV": item.pc_cv || 0,
+            "Lương CV Gốc": item.luongCVGoc,
+            "NC TG": item.nc_tg,
+            "NC Phép": item.nc_p || 0,
+            "NC Lễ": item.nc_l || 0,
+            "Hệ Số K": item.k_ht || 1.0,
+            "Lương CV Thực Tế": item.luongCVTT,
+            "Tổng LCB + LCV": item.tongCbCv || (item.tongLCB + item.luongCVTT),
+            "Tạm Ứng Giữa Tháng": item.tam_ung || 0,
+            "Thực Lĩnh Lương CV": item.thucLinhCV,
+            "TỔNG THỰC LĨNH NET": item.thucLinhCuoiCung
+        }));
+
+        let ws = XLSX.utils.json_to_sheet(exportData);
+        let wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "LuongCongViec");
+        XLSX.writeFile(wb, `Bang_Luong_Cong_Viec_${currentThangKey}_${currentNamKey}.xlsx`);
     }
 
+    // XUẤT BẢNG CHẤM CÔNG CHI TIẾT SANG EXCEL
     function xuatExcelCongChiTiet() {
-        let ws = XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu);
+        let cfg = coSoDuLieuNamThang[currentNamKey][currentThangKey].config;
+        let nhansuData = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
+        let exportData = nhansuData.map((item, index) => ({
+            "STT": index + 1,
+            "Họ và Tên": item.hoTen,
+            "Ngày Công Chế Độ": cfg.ncd,
+            "Ngày Công Thực Tế": item.nc_tg,
+            "Nghỉ Phép (P)": item.nc_p || 0,
+            "Nghỉ Lễ (L)": item.nc_l || 0,
+            "Hệ Số Hoàn Thành (K)": item.k_ht || 1.0,
+            "Ghi Chú": "Đã chốt công"
+        }));
+
+        let ws = XLSX.utils.json_to_sheet(exportData);
         let wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "ChamCongChiTiet");
-        XLSX.writeFile(wb, "Bang_Cham_Cong_Chi_Tiet.xlsx");
+        XLSX.writeFile(wb, `Bang_Cham_Cong_${currentThangKey}_${currentNamKey}.xlsx`);
     }
-function luuTruVaoLocalStorage() {
+
+    // HÀM LƯU TOÀN BỘ DỮ LIỆU VÀO LOCALSTORAGE
+    function luuTruVaoLocalStorage() {
         try {
             localStorage.setItem('bapaco_db_data', JSON.stringify(coSoDuLieuNamThang));
             localStorage.setItem('bapaco_vpp_map_data', JSON.stringify(dsThanhToanVanPhongProByMonth));
@@ -3006,116 +3136,6 @@ function luuTruVaoLocalStorage() {
         } catch (e) {
             console.error("Lỗi khi lưu dữ liệu vào LocalStorage:", e);
         }
-    }
-
-    // KHỐI QUẢN LÝ VÀ VẼ BIỂU ĐỒ DASHBOARD
-    let chartInstances = {};
-
-    function createOrUpdateChart(canvasId, type, data, options) {
-        let ctx = document.getElementById(canvasId);
-        if (!ctx) return;
-        if (chartInstances[canvasId]) {
-            chartInstances[canvasId].destroy();
-        }
-        chartInstances[canvasId] = new Chart(ctx, { type, data, options });
-    }
-
-    function veTatCaBieuDoDashboard() {
-        let totalNetYear = layTongLuongNetCaNam();
-        let yearVppTotal = layTatCaDanhSachVPPTheoNam().reduce((s, i) => s + (i.total || 0), 0);
-        let yearTelecomTotal = layTatCaDanhSachTelecomTheoNam().reduce((s, i) => s + (i.tong || 0), 0);
-
-        // 1. Tỷ trọng tài chính cả năm
-        createOrUpdateChart('salaryPieChart', 'pie', {
-            labels: ['Lương NET', 'Thanh Toán VP', 'Cước Viễn Thông'],
-            datasets: [{
-                data: [totalNetYear, yearVppTotal, yearTelecomTotal],
-                backgroundColor: ['#16a34a', '#d97706', '#0284c7']
-            }]
-        }, {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { position: 'bottom' } }
-        });
-
-        // 2. Biểu đồ cột so sánh chi phí tổng quan
-        createOrUpdateChart('overviewBarChart', 'bar', {
-            labels: ['Lương NET', 'VPP & Dịch Vụ', 'Viễn Thông'],
-            datasets: [{
-                label: 'Giá Trị Chi Phí (VNĐ)',
-                data: [totalNetYear, yearVppTotal, yearTelecomTotal],
-                backgroundColor: ['#16a34a', '#d97706', '#0284c7']
-            }]
-        }, {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } }
-        });
-
-        // Tính toán trạng thái công việc
-        let doneTasks = danhSachCongViec.filter(t => t.status === 'Hoàn thành').length;
-        let doingTasks = danhSachCongViec.filter(t => t.status === 'Đang làm').length;
-        let todoTasks = danhSachCongViec.filter(t => t.status === 'Chưa làm').length;
-
-        let taskData = {
-            labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'],
-            datasets: [{
-                data: [doneTasks, doingTasks, todoTasks],
-                backgroundColor: ['#16a34a', '#d97706', '#ef4444']
-            }]
-        };
-
-        // 3. Biểu đồ tỷ trọng công việc
-        createOrUpdateChart('overviewTaskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false });
-        createOrUpdateChart('taskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false });
-        createOrUpdateChart('taskBarChart', 'bar', taskData, { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } });
-
-        // Dữ liệu nghỉ phép
-        let currentStaff = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey]) ? coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu : [];
-        let leaveLabels = currentStaff.map(i => i.hoTen);
-        let leaveUsed = currentStaff.map(i => layTongLuyKePhepDaNghi(i.hoTen).totalP);
-        let leaveRemain = currentStaff.map(i => (i.phep_cap || 12) - layTongLuyKePhepDaNghi(i.hoTen).totalP);
-
-        // 4. Biểu đồ phép năm
-        createOrUpdateChart('overviewLeaveBarChart', 'bar', {
-            labels: leaveLabels,
-            datasets: [
-                { label: 'Đã Sử Dụng', data: leaveUsed, backgroundColor: '#d97706' },
-                { label: 'Còn Lại', data: leaveRemain, backgroundColor: '#16a34a' }
-            ]
-        }, { responsive: true, maintainAspectRatio: false });
-
-        createOrUpdateChart('leaveBarChart', 'bar', {
-            labels: leaveLabels,
-            datasets: [{ label: 'Đã Sử Dụng (Ngày)', data: leaveUsed, backgroundColor: '#d97706' }]
-        }, { responsive: true, maintainAspectRatio: false });
-
-        let totalCap = currentStaff.reduce((s, i) => s + (i.phep_cap || 12), 0);
-        let totalDung = leaveUsed.reduce((s, v) => s + v, 0);
-
-        createOrUpdateChart('leavePieChart', 'pie', {
-            labels: ['Đã Nghỉ', 'Còn Lại'],
-            datasets: [{
-                data: [totalDung, Math.max(0, totalCap - totalDung)],
-                backgroundColor: ['#d97706', '#16a34a']
-            }]
-        }, { responsive: true, maintainAspectRatio: false });
-
-        // 5. Biểu đồ biến động lương 12 tháng
-        let months = ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"];
-        let monthlyNetList = months.map(m => {
-            let mData = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][m]) ? coSoDuLieuNamThang[currentNamKey][m].nhansu : [];
-            return mData.reduce((s, i) => s + (i.thucLinhCuoiCung || 0), 0);
-        });
-
-        createOrUpdateChart('monthlySalaryBarChart', 'bar', {
-            labels: months,
-            datasets: [{
-                label: 'Quỹ Lương NET Chi Trả (VNĐ)',
-                data: monthlyNetList,
-                backgroundColor: '#0284c7'
-            }]
-        }, { responsive: true, maintainAspectRatio: false });
     }
 </script>
 </body>

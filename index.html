@@ -674,6 +674,16 @@
                 <button class="btn btn-blue" style="padding: 6px 12px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Mở Drive</button>
             </div>
         </div>
+        <div class="config-item" style="grid-column: span 2; min-width: 320px;">
+            <label>LƯU TRỮ BỀN VỮNG – KHÔNG MẤT DỮ LIỆU KHI THAY CODE</label>
+            <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center;">
+                <button class="btn btn-green" style="padding:6px 10px;" onclick="xuatBanSaoDuLieuVINAPACO()"><i class="fa-solid fa-download"></i> Sao lưu JSON</button>
+                <button class="btn btn-blue" style="padding:6px 10px;" onclick="document.getElementById('vinapacoRestoreFile').click()"><i class="fa-solid fa-upload"></i> Phục hồi JSON</button>
+                <button class="btn" style="padding:6px 10px;background:#f1f5f9;color:#334155;" onclick="taoBanSaoNoiBoNgay()"><i class="fa-solid fa-shield-halved"></i> Tạo snapshot</button>
+                <input id="vinapacoRestoreFile" type="file" accept="application/json,.json" style="display:none" onchange="nhapBanSaoDuLieuVINAPACO(this.files[0])">
+                <span id="storageHealthStatus" style="font-size:11px;font-weight:800;color:#166534;">Đang kiểm tra kho dữ liệu…</span>
+            </div>
+        </div>
 
         <div class="config-item"><label>Ngày Công Chế Độ</label><input type="number" id="cfgNCD" onchange="luuCauHinhHienTai()"></div>
         <div class="config-item"><label>Mức Lương Cơ Bản</label><input type="number" id="cfgMucLCB" onchange="luuCauHinhHienTai()"></div>
@@ -911,7 +921,7 @@
             <div class="table-title"><i class="fa-solid fa-file-invoice-dollar"></i> BẢNG LƯƠNG CƠ BẢN (<span class="thangHienTaiTitle">Tháng 06/2026</span>)</div>
             <button class="btn btn-green" onclick="xuatExcelCB()"><i class="fa-solid fa-file-excel"></i> Xuất Excel Lương Cơ Bản</button>
         </div>
-        <div style="overflow-x: auto;"><table><thead><tr><th>STT</th><th>Họ và Tên</th><th>HSL.CB</th><th>PC.CB</th><th>L.HĐLĐ</th><th>L.CB</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>Ki</th><th>L.TG</th><th>L.Lễ/Phép</th><th>Tổng Tiền</th><th>BHTN(1%)</th><th>BHXH</th><th>Thực Lĩnh LCB</th></tr></thead><tbody id="tableBodyCB"></tbody></table></div>
+        <div style="overflow-x: auto;"><table><thead><tr><th>STT</th><th>Họ và Tên</th><th>HSL.CB</th><th>PC.CB</th><th>L.HĐLĐ</th><th>L.CB</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>Ki</th><th>L.TG</th><th>L.Lễ/Phép</th><th>Tổng Tiền</th><th>BHTN</th><th>BHXH</th><th>NPT</th><th>Thực Lĩnh LCB</th></tr></thead><tbody id="tableBodyCB"></tbody></table></div>
         
         <div class="salary-signature-footer">
             <div class="sign-col">
@@ -949,9 +959,13 @@
             </div>
         </div>
 
+        <div style="margin:0 0 12px;padding:10px 12px;border:1px solid #bfdbfe;background:#eff6ff;border-radius:10px;font-size:11px;line-height:1.5;color:#1e3a8a;">
+            <b>THUẾ TNCN 2026:</b> hệ thống áp dụng biểu thuế lũy tiến 5 bậc cho cá nhân cư trú; giảm trừ bản thân 15,5 triệu/tháng, người phụ thuộc 6,2 triệu/người/tháng, cùng các khoản bảo hiểm và giảm trừ hợp lệ. Chi y tế tối đa 23 triệu/năm, giáo dục tối đa 24 triệu/năm; người dùng phải có hồ sơ/chứng từ hợp lệ. Khoản giảm trừ bảo hiểm hưu trí bổ sung/hưu trí tự nguyện/bảo hiểm nhân thọ tổng tối đa 3 triệu/tháng.
+        </div>
+
         <div style="overflow-x: auto;">
             <table>
-                <thead><tr><th>STT</th><th>Họ và Tên</th><th>HSL.CV</th><th>PC.CV</th><th>L.CV Gốc</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>Ki</th><th>L.CV TT</th><th>Tổng LCB + LCV</th><th>Tạm Ứng</th><th>Thực Lĩnh CV</th><th>THỰC LĨNH NET</th><th>Zalo</th></tr></thead>
+                <thead><tr><th>STT</th><th>Họ và Tên</th><th>HSL.CV</th><th>PC.CV</th><th>L.CV Gốc</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>Ki</th><th>L.CV TT</th><th>Tổng LCB + LCV</th><th>Tạm Ứng</th><th>Thực Lĩnh CV</th><th>NPT</th><th>TNTT</th><th>THUẾ TNCN</th><th>THỰC LĨNH NET</th><th>Zalo</th></tr></thead>
                 <tbody id="tableBodyCV"></tbody>
             </table>
         </div>
@@ -2144,6 +2158,67 @@
         return totalYearNet;
     }
 
+    // KHO DỮ LIỆU BỀN VỮNG: giữ khóa cũ để tương thích + IndexedDB để không phụ thuộc code mới.
+    const VINAPACO_STORAGE_VERSION = 3;
+    const VINAPACO_IDB_NAME = 'VINAPACO_PERSISTENT_DATA';
+    const VINAPACO_IDB_STORE = 'snapshots';
+    let __vinapacoSaveTimer = null;
+
+    function getVinapacoSnapshot() {
+        return {
+            schemaVersion: VINAPACO_STORAGE_VERSION, savedAt: new Date().toISOString(),
+            coSoDuLieuNamThang, dsThanhToanVanPhongProByMonth, dsThanhToanTelecombyMonth,
+            dsKhoMucIn, dsPhieuGiaoNhan, dsKhaoSatChuyenSau, dsDanhMucChucDanhQuyHoach,
+            danhSachCongViec, danhSachTaiKhoanHeThong, gasWebhookUrl
+        };
+    }
+    function moKhoDuLieuBenVung() {
+        return new Promise((resolve,reject)=>{
+            if(!('indexedDB' in window)) return resolve(null);
+            const req=indexedDB.open(VINAPACO_IDB_NAME,1);
+            req.onupgradeneeded=()=>{ const db=req.result; if(!db.objectStoreNames.contains(VINAPACO_IDB_STORE)) db.createObjectStore(VINAPACO_IDB_STORE,{keyPath:'id'}); };
+            req.onsuccess=()=>resolve(req.result); req.onerror=()=>reject(req.error);
+        });
+    }
+    async function ghiSnapshotIndexedDB(snapshot, id='latest') {
+        try { const db=await moKhoDuLieuBenVung(); if(!db)return false; await new Promise((res,rej)=>{const tx=db.transaction(VINAPACO_IDB_STORE,'readwrite');tx.objectStore(VINAPACO_IDB_STORE).put({id,...snapshot});tx.oncomplete=res;tx.onerror=()=>rej(tx.error);}); db.close(); return true; } catch(e){ console.warn('VINAPACO IndexedDB save',e); return false; }
+    }
+    async function docSnapshotIndexedDB(id='latest') {
+        try { const db=await moKhoDuLieuBenVung(); if(!db)return null; const v=await new Promise((res,rej)=>{const tx=db.transaction(VINAPACO_IDB_STORE,'readonly');const r=tx.objectStore(VINAPACO_IDB_STORE).get(id);r.onsuccess=()=>res(r.result||null);r.onerror=()=>rej(r.error);}); db.close(); return v; } catch(e){ return null; }
+    }
+    function apDungSnapshot(snapshot) {
+        if(!snapshot || typeof snapshot!=='object') return false;
+        if(snapshot.coSoDuLieuNamThang && typeof snapshot.coSoDuLieuNamThang==='object') coSoDuLieuNamThang=snapshot.coSoDuLieuNamThang;
+        if(snapshot.dsThanhToanVanPhongProByMonth) dsThanhToanVanPhongProByMonth=snapshot.dsThanhToanVanPhongProByMonth;
+        if(snapshot.dsThanhToanTelecombyMonth) dsThanhToanTelecombyMonth=snapshot.dsThanhToanTelecombyMonth;
+        if(snapshot.dsKhoMucIn) dsKhoMucIn=snapshot.dsKhoMucIn; if(snapshot.dsPhieuGiaoNhan) dsPhieuGiaoNhan=snapshot.dsPhieuGiaoNhan;
+        if(snapshot.dsKhaoSatChuyenSau) dsKhaoSatChuyenSau=snapshot.dsKhaoSatChuyenSau; if(snapshot.dsDanhMucChucDanhQuyHoach) dsDanhMucChucDanhQuyHoach=snapshot.dsDanhMucChucDanhQuyHoach;
+        if(snapshot.danhSachCongViec) danhSachCongViec=snapshot.danhSachCongViec; if(snapshot.danhSachTaiKhoanHeThong) danhSachTaiKhoanHeThong=snapshot.danhSachTaiKhoanHeThong;
+        if(snapshot.gasWebhookUrl) gasWebhookUrl=snapshot.gasWebhookUrl; return true;
+    }
+    async function napKhoDuLieuBenVung() {
+        const idb=await docSnapshotIndexedDB('latest');
+        let legacy=null; try { const x=localStorage.getItem('bapaco_db_data'); if(x) legacy={coSoDuLieuNamThang:JSON.parse(x)}; } catch(e){}
+        if(idb && idb.savedAt) { apDungSnapshot(idb); return 'IndexedDB'; }
+        if(legacy) { apDungSnapshot(legacy); await ghiSnapshotIndexedDB(getVinapacoSnapshot()); return 'localStorage'; }
+        return 'default';
+    }
+    async function luuKhoDuLieuBenVung() {
+        const snapshot=getVinapacoSnapshot();
+        try { localStorage.setItem('bapaco_persistent_snapshot_v3',JSON.stringify(snapshot)); } catch(e){}
+        clearTimeout(__vinapacoSaveTimer);
+        __vinapacoSaveTimer=setTimeout(()=>ghiSnapshotIndexedDB(snapshot),250);
+        const status=document.getElementById('storageHealthStatus'); if(status) status.textContent='✓ Đã lưu tự động: '+new Date().toLocaleTimeString('vi-VN');
+    }
+    function xuatBanSaoDuLieuVINAPACO(){
+        const blob=new Blob([JSON.stringify(getVinapacoSnapshot(),null,2)],{type:'application/json;charset=utf-8'});
+        const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`VINAPACO_Backup_${new Date().toISOString().replace(/[:.]/g,'-')}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+    }
+    async function taoBanSaoNoiBoNgay(){ const snap=getVinapacoSnapshot(); await ghiSnapshotIndexedDB(snap,'snapshot_'+new Date().toISOString().replace(/[:.]/g,'-')); hienThongBaoXuatFile('Đã tạo snapshot dữ liệu nội bộ, giữ lại để phục hồi khi cần.',true); }
+    async function nhapBanSaoDuLieuVINAPACO(file){
+        if(!file)return; try { const text=await file.text(), snap=JSON.parse(text); if(!snap || !snap.coSoDuLieuNamThang) throw new Error('File backup không đúng định dạng VINAPACO.'); if(!confirm('Phục hồi backup sẽ thay dữ liệu hiện tại bằng bản sao lưu. Bạn có chắc chắn?')) return; apDungSnapshot(snap); luuTruVaoLocalStorage(); await ghiSnapshotIndexedDB(getVinapacoSnapshot()); capNhat(); alert('Đã phục hồi dữ liệu thành công.'); } catch(e){ alert('Không thể phục hồi backup: '+(e.message||e)); }
+    }
+
     function luuTruVaoLocalStorage() {
         try {
             localStorage.setItem('bapaco_db_data', JSON.stringify(coSoDuLieuNamThang));
@@ -2155,7 +2230,8 @@
             localStorage.setItem('bapaco_quyhoach_chucdanh', JSON.stringify(dsDanhMucChucDanhQuyHoach));
             localStorage.setItem('bapaco_task_data', JSON.stringify(danhSachCongViec));
             localStorage.setItem('bapaco_accounts_data', JSON.stringify(danhSachTaiKhoanHeThong));
-        } catch (e) {}
+            luuKhoDuLieuBenVung();
+        } catch (e) { try { luuKhoDuLieuBenVung(); } catch (_) {} }
     }
 
     async function tuDongTaiDuLieuTuDrive() {
@@ -2163,19 +2239,21 @@
             let result = await gasReadJson(gasWebhookUrl + "?nocache=" + new Date().getTime());
             
             if (result && typeof result === 'object') {
-                if (result.coSoDuLieuNamThang && typeof result.coSoDuLieuNamThang === 'object') {
+                // Luôn giữ snapshot cục bộ trước khi nhận dữ liệu từ GAS để có đường lui khi server trả dữ liệu cũ/rỗng.
+                await ghiSnapshotIndexedDB(getVinapacoSnapshot(),'pre_gas_sync_'+new Date().toISOString().replace(/[:.]/g,'-'));
+                if (result.coSoDuLieuNamThang && typeof result.coSoDuLieuNamThang === 'object' && Object.keys(result.coSoDuLieuNamThang).length) {
                     coSoDuLieuNamThang = result.coSoDuLieuNamThang;
                 }
-                if (result.dsThanhToanVanPhongProByMonth) dsThanhToanVanPhongProByMonth = result.dsThanhToanVanPhongProByMonth;
-                if (result.dsThanhToanTelecombyMonth && typeof result.dsThanhToanTelecombyMonth === 'object') {
+                if (result.dsThanhToanVanPhongProByMonth && (Object.keys(result.dsThanhToanVanPhongProByMonth).length || !Object.keys(dsThanhToanVanPhongProByMonth||{}).length)) dsThanhToanVanPhongProByMonth = result.dsThanhToanVanPhongProByMonth;
+                if (result.dsThanhToanTelecombyMonth && typeof result.dsThanhToanTelecombyMonth === 'object' && (Object.keys(result.dsThanhToanTelecombyMonth).length || !Object.keys(dsThanhToanTelecombyMonth||{}).length)) {
                     dsThanhToanTelecombyMonth = result.dsThanhToanTelecombyMonth;
                 }
-                if (result.dsKhoMucIn) dsKhoMucIn = result.dsKhoMucIn;
-                if (result.dsKhaoSatChuyenSau) dsKhaoSatChuyenSau = result.dsKhaoSatChuyenSau;
+                if (Array.isArray(result.dsKhoMucIn) && (result.dsKhoMucIn.length || !dsKhoMucIn.length)) dsKhoMucIn = result.dsKhoMucIn;
+                if (Array.isArray(result.dsKhaoSatChuyenSau) && (result.dsKhaoSatChuyenSau.length || !dsKhaoSatChuyenSau.length)) dsKhaoSatChuyenSau = result.dsKhaoSatChuyenSau;
                     if (result.dsDanhMucChucDanhQuyHoach) dsDanhMucChucDanhQuyHoach = result.dsDanhMucChucDanhQuyHoach;
                 if (result.danhSachCongViec) danhSachCongViec = result.danhSachCongViec;
-                if (result.dsPhieuGiaoNhan) dsPhieuGiaoNhan = result.dsPhieuGiaoNhan;
-                if (result.danhSachTaiKhoanHeThong) danhSachTaiKhoanHeThong = result.danhSachTaiKhoanHeThong;
+                if (Array.isArray(result.dsPhieuGiaoNhan) && (result.dsPhieuGiaoNhan.length || !dsPhieuGiaoNhan.length)) dsPhieuGiaoNhan = result.dsPhieuGiaoNhan;
+                if (Array.isArray(result.danhSachTaiKhoanHeThong) && (result.danhSachTaiKhoanHeThong.length || !danhSachTaiKhoanHeThong.length)) danhSachTaiKhoanHeThong = result.danhSachTaiKhoanHeThong;
             }
         } catch (e) {}
         chuanHoaHeSoPhuCap();
@@ -2318,9 +2396,8 @@
         if(reportDateEl && !reportDateEl.value) reportDateEl.value = new Date().toISOString().slice(0,10);
 
         try {
-            let savedDb = localStorage.getItem('bapaco_db_data');
-            if (savedDb) coSoDuLieuNamThang = JSON.parse(savedDb);
-
+            await napKhoDuLieuBenVung();
+            // Dữ liệu chính đã được nạp qua kho bền vững IndexedDB/localStorage.
             let savedTelecom = localStorage.getItem('bapaco_telecom_map_data');
             if (savedTelecom) dsThanhToanTelecombyMonth = JSON.parse(savedTelecom);
 
@@ -2983,11 +3060,36 @@
         capNhat();
     }
 
+    function layGiamTruYteGiaoDucDaDungTrongNam(hoTen, field) {
+        const yearData=coSoDuLieuNamThang[currentNamKey]||{}; let total=0;
+        Object.values(yearData).forEach(md=>{ (md?.nhansu||[]).forEach(nv=>{ if(nv.hoTen===hoTen) total += Math.max(0,Number(nv[field]||0)); }); });
+        return total;
+    }
+
+    // Tính thuế TNCN cá nhân cư trú theo biểu thuế 5 bậc áp dụng kỳ tính thuế 2026.
+    // Bậc: đến 10tr 5%; >10-30tr 10%; >30-60tr 20%; >60-100tr 30%; >100tr 35%.
+    function tinhThueTNCN2026(tntt) {
+        const x = Math.max(0, Number(tntt) || 0);
+        if (x <= 10000000) return Math.round(x * 0.05);
+        if (x <= 30000000) return Math.round(x * 0.10 - 500000);
+        if (x <= 60000000) return Math.round(x * 0.20 - 3500000);
+        if (x <= 100000000) return Math.round(x * 0.30 - 9500000);
+        return Math.round(x * 0.35 - 14500000);
+    }
+
     function capNhat() {
         chuanHoaHeSoPhuCap();
         let cfg = coSoDuLieuNamThang[currentNamKey][currentThangKey].config;
         let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         ds.forEach(i => {
+            // Chuẩn hóa các trường thuế mới để dữ liệu cũ tự nâng cấp, không mất dữ liệu.
+            i.soNguoiPhuThuoc = Math.max(0, parseInt(i.soNguoiPhuThuoc ?? i.npt ?? 0, 10) || 0);
+            i.khauTruBaoHiemHuuTri = Math.max(0, Number(i.khauTruBaoHiemHuuTri ?? 0) || 0);
+            i.giamTruYTe = Math.max(0, Number(i.giamTruYTe ?? 0) || 0);
+            i.giamTruGiaoDuc = Math.max(0, Number(i.giamTruGiaoDuc ?? 0) || 0);
+            i.giamTruTuThien = Math.max(0, Number(i.giamTruTuThien ?? 0) || 0);
+            i.thuNhapMienThue = Math.max(0, Number(i.thuNhapMienThue ?? 0) || 0);
+
             i.luongHDLD = Math.round(((i.hsl_cb||0) + (i.pc_cb||0)) * cfg.mucTTV);
             i.luongCBThang = Math.round(((i.hsl_cb||0) + (i.pc_cb||0)) * cfg.mucLCB);
             i.luongCBTG = Math.round(i.luongCBThang / cfg.ncd * (i.nc_tg||0));
@@ -3000,9 +3102,24 @@
             i.luongCVGoc = Math.round(((i.hsl_cv||0) + (i.pc_cv||0)) * cfg.mucLCV);
             i.luongCVTT = Math.round(i.luongCVGoc / cfg.ncd * (i.nc_tg||0) * (i.k_ht||1.0));
             i.thucLinhCV = i.luongCVTT - (i.tam_ung||0);
-            i.thucLinhCuoiCung = i.thucLinhLCB + i.thucLinhCV;
-            
             i.tongCbCv = i.tongLCB + i.luongCVTT;
+            i.thuNhapChiuThue = Math.max(0, i.tongCbCv - i.thuNhapMienThue);
+
+            // Luật TNCN 2026: cá nhân cư trú, giảm trừ bản thân 15,5 triệu/tháng,
+            // người phụ thuộc 6,2 triệu/tháng; BH bắt buộc và các khoản giảm trừ hợp lệ.
+            const giamTruGiaCanh = 15500000 + i.soNguoiPhuThuoc * 6200000;
+            const khauTruBaoHiemTuNguyen = Math.min(3000000, i.khauTruBaoHiemHuuTri);
+            const daDungYTeKhacThang = Math.max(0, layGiamTruYteGiaoDucDaDungTrongNam(i.hoTen, 'giamTruYTe') - i.giamTruYTe);
+            const daDungGiaoDucKhacThang = Math.max(0, layGiamTruYteGiaoDucDaDungTrongNam(i.hoTen, 'giamTruGiaoDuc') - i.giamTruGiaoDuc);
+            const giamTruYTeHopLe = Math.min(Math.max(0,23000000-daDungYTeKhacThang), i.giamTruYTe);
+            const giamTruGiaoDucHopLe = Math.min(Math.max(0,24000000-daDungGiaoDucKhacThang), i.giamTruGiaoDuc);
+            // Chi y tế/giáo dục là mức theo năm; chỉ đưa vào khấu trừ khi người dùng nhập hồ sơ hợp lệ.
+            // Hệ thống bảo vệ trần năm ở hàm tính TNCN bên dưới.
+            const tongGiamTru = giamTruGiaCanh + i.bhtn + i.bhxh + khauTruBaoHiemTuNguyen + giamTruYTeHopLe + giamTruGiaoDucHopLe + i.giamTruTuThien;
+            i.thuNhapTinhThue = Math.max(0, i.thuNhapChiuThue - tongGiamTru);
+            i.thueTNCN = tinhThueTNCN2026(i.thuNhapTinhThue);
+            i.thucLinhTruocThue = i.thucLinhLCB + i.thucLinhCV;
+            i.thucLinhCuoiCung = Math.max(0, i.thucLinhTruocThue - i.thueTNCN);
         });
         luuTruVaoLocalStorage();
         tuDongDayDuLieuLenDrive();
@@ -3328,9 +3445,35 @@
                 <td style="text-align:right; font-weight:bold;">${item.tongLCB.toLocaleString()}</td>
                 <td style="text-align:right; color:#dc2626;">${item.bhtn.toLocaleString()}</td>
                 <td style="text-align:right; color:#dc2626;">${item.bhxh.toLocaleString()}</td>
+                <td style="text-align:center;"><input class="cell-input num-center" type="number" min="0" step="1" value="${item.soNguoiPhuThuoc||0}" onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].soNguoiPhuThuoc=Math.max(0,parseInt(this.value)||0);capNhat();" title="Số người phụ thuộc đã đăng ký giảm trừ gia cảnh"></td>
                 <td style="text-align:right; color:#0284c7; font-weight:bold;">${item.thucLinhLCB.toLocaleString()}</td>
             </tr>`;
         });
+    }
+
+    let __tncnEditIndex = -1;
+    function moCauHinhTNCN(idx){
+        const ds=coSoDuLieuNamThang[currentNamKey]?.[currentThangKey]?.nhansu||[], nv=ds[idx]; if(!nv)return;
+        __tncnEditIndex=idx;
+        document.getElementById('tncnModalName').textContent=nv.hoTen||'Nhân sự';
+        document.getElementById('tncnNPT').value=nv.soNguoiPhuThuoc||0;
+        document.getElementById('tncnHuuTri').value=nv.khauTruBaoHiemHuuTri||0;
+        document.getElementById('tncnYTe').value=nv.giamTruYTe||0;
+        document.getElementById('tncnGiaoDuc').value=nv.giamTruGiaoDuc||0;
+        document.getElementById('tncnTuThien').value=nv.giamTruTuThien||0;
+        document.getElementById('tncnMienThue').value=nv.thuNhapMienThue||0;
+        document.getElementById('modalTNCN').classList.remove('hidden');
+    }
+    function dongModalTNCN(){ document.getElementById('modalTNCN')?.classList.add('hidden'); __tncnEditIndex=-1; }
+    function luuCauHinhTNCN(){
+        const ds=coSoDuLieuNamThang[currentNamKey]?.[currentThangKey]?.nhansu||[], nv=ds[__tncnEditIndex]; if(!nv)return;
+        nv.soNguoiPhuThuoc=Math.max(0,parseInt(document.getElementById('tncnNPT').value)||0);
+        nv.khauTruBaoHiemHuuTri=Math.max(0,Number(document.getElementById('tncnHuuTri').value)||0);
+        nv.giamTruYTe=Math.max(0,Number(document.getElementById('tncnYTe').value)||0);
+        nv.giamTruGiaoDuc=Math.max(0,Number(document.getElementById('tncnGiaoDuc').value)||0);
+        nv.giamTruTuThien=Math.max(0,Number(document.getElementById('tncnTuThien').value)||0);
+        nv.thuNhapMienThue=Math.max(0,Number(document.getElementById('tncnMienThue').value)||0);
+        dongModalTNCN(); capNhat();
     }
 
     function renderTableCV() {
@@ -3355,8 +3498,11 @@
                 <td style="text-align:right; font-weight:bold; color:#0369a1; background:#f0f9ff;">${(item.tongCbCv || (item.tongLCB + item.luongCVTT)).toLocaleString()}</td>
                 <td><input class="cell-input money-input" type="text" value="${(item.tam_ung||0).toLocaleString()}" onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].tam_ung=parseVNDMoney(this.value);capNhat();"></td>
                 <td style="text-align:right; font-weight:bold;">${item.thucLinhCV.toLocaleString()}</td>
+                <td style="text-align:center;">${item.soNguoiPhuThuoc||0}</td>
+                <td style="text-align:right;">${(item.thuNhapTinhThue||0).toLocaleString()}</td>
+                <td style="text-align:right;color:#b91c1c;font-weight:900;">${(item.thueTNCN||0).toLocaleString()}</td>
                 <td style="text-align:right;"><span class="badge-net">${item.thucLinhCuoiCung.toLocaleString()}</span></td>
-                <td style="text-align:center;"><div style="display:inline-flex;gap:5px;align-items:center;"><button class="btn btn-blue" style="padding:4px 8px;" onclick="moModalPhiieuLuongTheoTen('${item.hoTen}')" title="Mở phiếu lương"><i class="fa-solid fa-file-invoice-dollar"></i></button><button class="btn zalo-action" style="padding:4px 8px;" onclick="moVaGuiPhieuLuongZalo('${item.hoTen}')" title="Gửi phiếu lương qua Zalo"><i class="fa-solid fa-paper-plane"></i></button></div></td>
+                <td style="text-align:center;"><div style="display:inline-flex;gap:5px;align-items:center;"><button class="btn btn-blue" style="padding:4px 8px;" onclick="moModalPhiieuLuongTheoTen('${item.hoTen}')" title="Mở phiếu lương"><i class="fa-solid fa-file-invoice-dollar"></i></button><button class="btn" style="padding:4px 8px;background:#eef2ff;color:#4338ca;" onclick="moCauHinhTNCN(${idx})" title="Cấu hình giảm trừ TNCN"><i class="fa-solid fa-scale-balanced"></i></button><button class="btn zalo-action" style="padding:4px 8px;" onclick="moVaGuiPhieuLuongZalo('${item.hoTen}')" title="Gửi phiếu lương qua Zalo"><i class="fa-solid fa-paper-plane"></i></button></div></td>
             </tr>`;
         });
     }
@@ -4396,21 +4542,21 @@
             [`Kỳ lương: ${ky}`],
             [`Ngày công chế độ: ${cfg.ncd || 22}     |     Mức lương cơ bản: ${(cfg.mucLCB||0).toLocaleString('vi-VN')}     |     Mức lương công việc: ${(cfg.mucLCV||0).toLocaleString('vi-VN')}`],
             ['Đơn vị tính: đồng'],
-            ['STT','Mã NS','Họ và tên','HSL.CB','PC.CB','L.HĐLĐ','L.CB','NC(TG)','Phép','Lễ','Hệ số K','L.TG','L.Lễ/Phép','Tổng LCB','BHXH theo hệ thống','BHTN theo hệ thống','L.CV Gốc','L.CV thực tế','Tạm ứng','Thực lĩnh CV','THỰC LĨNH NET']
+            ['STT','Mã NS','Họ và tên','HSL.CB','PC.CB','L.HĐLĐ','L.CB','NC(TG)','Phép','Lễ','Hệ số K','L.TG','L.Lễ/Phép','Tổng LCB','BHXH theo hệ thống','BHTN theo hệ thống','L.CV Gốc','L.CV thực tế','Tạm ứng','Thực lĩnh CV','NPT','Thu nhập tính thuế','THUẾ TNCN','THỰC LĨNH NET']
         ];
         ds.forEach((i,idx)=>rows.push([
             idx+1,i.maNS||i.ma||'',i.hoTen||'',i.hsl_cb||0,i.pc_cb||0,i.luongHDLD||0,i.luongCBThang||0,
             i.nc_tg||0,i.nc_p||0,i.nc_l||0,i.k_ht||1,i.luongCBTG||0,i.luongCBLP||0,i.tongLCB||0,
-            i.bhxh||0,i.bhtn||0,i.luongCVGoc||0,i.luongCVTT||0,i.tam_ung||0,i.thucLinhCV||0,i.thucLinhCuoiCung||0
+            i.bhxh||0,i.bhtn||0,i.luongCVGoc||0,i.luongCVTT||0,i.tam_ung||0,i.thucLinhCV||0,i.soNguoiPhuThuoc||0,i.thuNhapTinhThue||0,i.thueTNCN||0,i.thucLinhCuoiCung||0
         ]));
 
         // Tổng cộng: chỉ cộng các trường tiền/số phù hợp; giữ HSL/Hệ số/Ngày công theo dạng số tổng để thuận tiện đối chiếu.
-        const totalRow = new Array(21).fill('');
+        const totalRow = new Array(24).fill('');
         totalRow[0] = 'TỔNG CỘNG';
-        for (let c=3;c<21;c++) {
+        for (let c=3;c<24;c++) {
             const map = {
                 3:'hsl_cb',4:'pc_cb',5:'luongHDLD',6:'luongCBThang',7:'nc_tg',8:'nc_p',9:'nc_l',10:'k_ht',
-                11:'luongCBTG',12:'luongCBLP',13:'tongLCB',14:'bhxh',15:'bhtn',16:'luongCVGoc',17:'luongCVTT',18:'tam_ung',19:'thucLinhCV',20:'thucLinhCuoiCung'
+                11:'luongCBTG',12:'luongCBLP',13:'tongLCB',14:'bhxh',15:'bhtn',16:'luongCVGoc',17:'luongCVTT',18:'tam_ung',19:'thucLinhCV',20:'soNguoiPhuThuoc',21:'thuNhapTinhThue',22:'thueTNCN',23:'thucLinhCuoiCung'
             };
             totalRow[c] = ds.reduce((sum,i)=>sum + Number(i[map[c]]||0),0);
         }
@@ -4488,7 +4634,7 @@
 
         setExcelColumnWidths(ws,[6,12,25,9,9,14,14,9,8,8,9,14,15,15,18,18,15,16,14,16,18]);
         ws['!freeze']={xSplit:3,ySplit:6};
-        ws['!autofilter']={ref:`A6:U${5+ds.length}`};
+        ws['!autofilter']={ref:`A6:X${5+ds.length}`};
         ws['!pageSetup']={orientation:'landscape',paperSize:9,fitToWidth:1,fitToHeight:0,scale:80};
         ws['!margins']={left:0.25,right:0.25,top:0.5,bottom:0.5,header:0.2,footer:0.2};
         ws['!printOptions']={gridLines:false};
@@ -4510,11 +4656,27 @@
     function taoHTMLBangLuongFallback() {
         const ds=coSoDuLieuNamThang[currentNamKey]?.[currentThangKey]?.nhansu||[];
         const cfg=coSoDuLieuNamThang[currentNamKey]?.[currentThangKey]?.config||{};
-        const cols=['STT','Mã NS','Họ và tên','HSL.CB','PC.CB','L.HĐLĐ','L.CB','NC(TG)','Phép','Lễ','Hệ số K','L.TG','L.Lễ/Phép','Tổng LCB','BHXH','BHTN','L.CV Gốc','L.CV thực tế','Tạm ứng','Thực lĩnh CV','THỰC LĨNH NET'];
-        const money=new Set([5,6,11,12,13,14,15,16,17,18,19,20]);
+        const cols=['STT','Mã NS','Họ và tên','HSL.CB','PC.CB','L.HĐLĐ','L.CB','NC(TG)','Phép','Lễ','Hệ số K','L.TG','L.Lễ/Phép','Tổng LCB','BHXH','BHTN','L.CV Gốc','L.CV thực tế','Tạm ứng','Thực lĩnh CV','NPT','Thu nhập tính thuế','THUẾ TNCN','THỰC LĨNH NET'];
+        const money=new Set([5,6,11,12,13,14,15,16,17,18,19,21,22,23]);
         const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-        let body=ds.map((i,idx)=>{const a=[idx+1,i.maNS||i.ma||'',i.hoTen||'',i.hsl_cb||0,i.pc_cb||0,i.luongHDLD||0,i.luongCBThang||0,i.nc_tg||0,i.nc_p||0,i.nc_l||0,i.k_ht||1,i.luongCBTG||0,i.luongCBLP||0,i.tongLCB||0,i.bhxh||0,i.bhtn||0,i.luongCVGoc||0,i.luongCVTT||0,i.tam_ung||0,i.thucLinhCV||0,i.thucLinhCuoiCung||0]; return '<tr>'+a.map((v,c)=>`<td class="${money.has(c)?'money':''}">${esc(typeof v==='number'&&money.has(c)?Math.round(v).toLocaleString('vi-VN'):v)}</td>`).join('')+'</tr>';}).join('');
-        return `<html><head><meta charset="utf-8"><style>body{font-family:Arial;font-size:10pt}table{border-collapse:collapse;width:100%}th,td{border:1px solid #808080;padding:5px}th{background:#1f4e78;color:#fff;text-align:center;font-weight:bold}td.money{text-align:right;mso-number-format:"#,##0"}.title{text-align:center;font-weight:bold;font-size:16pt}.sub{text-align:center;font-weight:bold;font-size:13pt}.info{background:#eaf2f8;font-weight:bold}.total{background:#d9eaf7;font-weight:bold}</style></head><body><div class="title">TỔNG CÔNG TY GIẤY VIỆT NAM - VINAPACO</div><div class="sub">BẢNG THANH TOÁN TIỀN LƯƠNG</div><p style="text-align:center">Kỳ lương: ${esc(currentThangKey)}/${esc(currentNamKey)} | Ngày công chế độ: ${cfg.ncd||22} | Đơn vị tính: đồng</p><table><tr>${cols.map(c=>`<th>${esc(c)}</th>`).join('')}</tr>${body}</table><br><table><tr class="total"><td colspan="21">BẢNG LƯƠNG XUẤT THEO CHẾ ĐỘ TƯƠNG THÍCH EXCEL - DÙNG KHI MÁY KHÔNG TẢI ĐƯỢC THƯ VIỆN XLSX</td></tr></table></body></html>`;
+        let body=ds.map((i,idx)=>{const a=[idx+1,i.maNS||i.ma||'',i.hoTen||'',i.hsl_cb||0,i.pc_cb||0,i.luongHDLD||0,i.luongCBThang||0,i.nc_tg||0,i.nc_p||0,i.nc_l||0,i.k_ht||1,i.luongCBTG||0,i.luongCBLP||0,i.tongLCB||0,i.bhxh||0,i.bhtn||0,i.luongCVGoc||0,i.luongCVTT||0,i.tam_ung||0,i.thucLinhCV||0,i.soNguoiPhuThuoc||0,i.thuNhapTinhThue||0,i.thueTNCN||0,i.thucLinhCuoiCung||0]; return '<tr>'+a.map((v,c)=>`<td class="${money.has(c)?'money':''}">${esc(typeof v==='number'&&money.has(c)?Math.round(v).toLocaleString('vi-VN'):v)}</td>`).join('')+'</tr>';}).join('');
+        return `<html><head><meta charset="utf-8"><style>body{font-family:Arial;font-size:10pt}table{border-collapse:collapse;width:100%}th,td{border:1px solid #808080;padding:5px}th{background:#1f4e78;color:#fff;text-align:center;font-weight:bold}td.money{text-align:right;mso-number-format:"#,##0"}.title{text-align:center;font-weight:bold;font-size:16pt}.sub{text-align:center;font-weight:bold;font-size:13pt}.info{background:#eaf2f8;font-weight:bold}.total{background:#d9eaf7;font-weight:bold}</style></head><body><div class="title">TỔNG CÔNG TY GIẤY VIỆT NAM - VINAPACO</div><div class="sub">BẢNG THANH TOÁN TIỀN LƯƠNG</div><p style="text-align:center">Kỳ lương: ${esc(currentThangKey)}/${esc(currentNamKey)} | Ngày công chế độ: ${cfg.ncd||22} | Đơn vị tính: đồng</p><table><tr>${cols.map(c=>`<th>${esc(c)}</th>`).join('')}</tr>${body}</table><br><table><tr class="total"><td colspan="24">BẢNG LƯƠNG XUẤT THEO CHẾ ĐỘ TƯƠNG THÍCH EXCEL - DÙNG KHI MÁY KHÔNG TẢI ĐƯỢC THƯ VIỆN XLSX</td></tr></table>
+<div id="modalTNCN" class="modal hidden">
+  <div class="modal-content" style="max-width:760px;">
+    <div class="modal-header"><h3><i class="fa-solid fa-scale-balanced"></i> CẤU HÌNH THUẾ TNCN 2026 – <span id="tncnModalName">Nhân sự</span></h3><button class="modal-close" onclick="dongModalTNCN()">×</button></div>
+    <div style="padding:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;">
+      <div class="form-group"><label>Số người phụ thuộc</label><input id="tncnNPT" type="number" min="0" step="1"></div>
+      <div class="form-group"><label>BH hưu trí / BH nhân thọ / hưu trí bổ sung (được trừ)</label><input id="tncnHuuTri" type="number" min="0" step="1000"></div>
+      <div class="form-group"><label>Chi y tế hợp lệ trong năm</label><input id="tncnYTe" type="number" min="0" step="1000"><small>Tối đa 23.000.000đ/năm.</small></div>
+      <div class="form-group"><label>Chi giáo dục hợp lệ trong năm</label><input id="tncnGiaoDuc" type="number" min="0" step="1000"><small>Tối đa 24.000.000đ/năm.</small></div>
+      <div class="form-group"><label>Đóng góp từ thiện/nhân đạo hợp lệ</label><input id="tncnTuThien" type="number" min="0" step="1000"></div>
+      <div class="form-group"><label>Thu nhập miễn thuế trong kỳ</label><input id="tncnMienThue" type="number" min="0" step="1000"><small>Ví dụ khoản làm thêm/ban đêm/ngày phép đủ điều kiện miễn theo hồ sơ.</small></div>
+    </div>
+    <div style="padding:0 16px 12px;color:#475569;font-size:11px;line-height:1.5;">Thuế được tính theo Luật TNCN 2026 cho cá nhân cư trú. Các khoản y tế/giáo dục chỉ được giảm trừ khi có hồ sơ, chứng từ hợp lệ và được giới hạn theo năm; bảo hiểm hưu trí bổ sung/hưu trí tự nguyện/bảo hiểm nhân thọ tổng tối đa 3 triệu đồng/tháng.</div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;padding:0 16px 16px;"><button class="btn btn-red" onclick="dongModalTNCN()">Hủy</button><button class="btn btn-green" onclick="luuCauHinhTNCN()"><i class="fa-solid fa-save"></i> Lưu & Tính lại</button></div>
+  </div>
+</div>
+</body></html>`;
     }
     function xuatExcelBangLuongDoanhNghiep() {
         const btns=[...document.querySelectorAll('[onclick*="xuatExcelBangLuongDoanhNghiep"]')]; const oldText=btns[0]?.innerHTML;
@@ -4528,8 +4690,8 @@
             }
             const wb=XLSX.utils.book_new();
             const ws=taoSheetBangLuongChuyenNghiep(); XLSX.utils.book_append_sheet(wb,ws,'Bảng Lương');
-            const sumNet=ds.reduce((s,i)=>s+Number(i.thucLinhCuoiCung||0),0), sumLCB=ds.reduce((s,i)=>s+Number(i.tongLCB||0),0), sumCV=ds.reduce((s,i)=>s+Number(i.luongCVTT||0),0), sumBH=ds.reduce((s,i)=>s+Number(i.bhxh||0)+Number(i.bhtn||0),0), sumTU=ds.reduce((s,i)=>s+Number(i.tam_ung||0),0);
-            const summary=[['TỔNG CÔNG TY GIẤY VIỆT NAM - VINAPACO'],['TỔNG HỢP KỲ LƯƠNG'],[`Kỳ: ${currentThangKey}/${currentNamKey}`],[],['Chỉ tiêu','Giá trị'],['Số người hưởng lương',ds.length],['Tổng Lương Cơ Bản',sumLCB],['Tổng Lương Công Việc',sumCV],['Tổng BH theo hệ thống',sumBH],['Tổng Tạm ứng',sumTU],['TỔNG THỰC LĨNH NET',sumNet],[],['Ghi chú','Bảng tổng hợp phục vụ kiểm tra, đối chiếu, trình ký và lưu hồ sơ nội bộ.']];
+            const sumNet=ds.reduce((s,i)=>s+Number(i.thucLinhCuoiCung||0),0), sumTax=ds.reduce((s,i)=>s+Number(i.thueTNCN||0),0), sumLCB=ds.reduce((s,i)=>s+Number(i.tongLCB||0),0), sumCV=ds.reduce((s,i)=>s+Number(i.luongCVTT||0),0), sumBH=ds.reduce((s,i)=>s+Number(i.bhxh||0)+Number(i.bhtn||0),0), sumTU=ds.reduce((s,i)=>s+Number(i.tam_ung||0),0);
+            const summary=[['TỔNG CÔNG TY GIẤY VIỆT NAM - VINAPACO'],['TỔNG HỢP KỲ LƯƠNG'],[`Kỳ: ${currentThangKey}/${currentNamKey}`],[],['Chỉ tiêu','Giá trị'],['Số người hưởng lương',ds.length],['Tổng Lương Cơ Bản',sumLCB],['Tổng Lương Công Việc',sumCV],['Tổng BH theo hệ thống',sumBH],['Tổng Tạm ứng',sumTU],['TỔNG THUẾ TNCN KHẤU TRỪ',sumTax],['TỔNG THỰC LĨNH NET',sumNet],[],['Ghi chú','Bảng tổng hợp phục vụ kiểm tra, đối chiếu, trình ký và lưu hồ sơ nội bộ.']];
             const ws2=XLSX.utils.aoa_to_sheet(summary); ws2['!merges']=[{s:{r:0,c:0},e:{r:0,c:1}},{s:{r:1,c:0},e:{r:1,c:1}},{s:{r:2,c:0},e:{r:2,c:1}}];
             for(let c=0;c<2;c++){ws2[XLSX.utils.encode_cell({r:0,c})].s=excelTitleStyle();ws2[XLSX.utils.encode_cell({r:1,c})].s={...excelTitleStyle(),font:{name:'Arial',sz:13,bold:true,color:{rgb:'FFFFFF'}}};ws2[XLSX.utils.encode_cell({r:4,c})].s=excelHeaderStyle();}
             for(let r=5;r<11;r++){ws2[XLSX.utils.encode_cell({r,c:0})].s=excelBodyStyle();ws2[XLSX.utils.encode_cell({r,c:1})].s=excelBodyStyle('right');}

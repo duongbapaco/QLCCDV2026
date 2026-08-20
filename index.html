@@ -398,6 +398,48 @@
 @media(max-width:1050px){ .vanlich-main{grid-template-columns:1fr}.vanlich-toolbar{grid-template-columns:1fr 1fr}.vanlich-detail-card{min-width:0} }
 @media(max-width:650px){ .vanlich-toolbar{grid-template-columns:1fr}.vanlich-day{min-height:66px}.vanlich-info-grid,.vanlich-hours{grid-template-columns:1fr}.vanlich-head-title{font-size:12px}.vanlich-main{padding:8px}.vanlich-calendar-card{padding:7px} }
 
+
+/* ===== NÂNG CẤP LỊCH VẠN NIÊN: TOÀN MÀN HÌNH + THU GỌN ===== */
+#modalLichVanNien { padding:0 !important; align-items:stretch !important; justify-content:stretch !important; }
+.vanlich-pro {
+    width:100vw !important; max-width:none !important; height:100vh !important; max-height:none !important;
+    margin:0 !important; border-radius:0 !important; overflow:hidden !important;
+}
+.vanlich-head { min-height:72px; flex:0 0 auto; }
+.vanlich-head-actions { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.vanlich-head-actions .btn { min-height:36px; }
+.vanlich-toolbar { flex:0 0 auto; grid-template-columns:minmax(180px,1fr) minmax(150px,.8fr) minmax(250px,1.4fr) auto; padding:12px 20px; }
+.vanlich-main {
+    height:calc(100vh - 72px - 72px); min-height:0;
+    grid-template-columns:minmax(0,1.6fr) minmax(430px,.95fr);
+    gap:18px; padding:18px; overflow:hidden;
+}
+.vanlich-calendar-card,.vanlich-detail-card { min-height:0; overflow:auto; }
+.vanlich-calendar-card { padding:16px; }
+.vanlich-detail-body { padding:18px; }
+.vanlich-day { min-height:88px; padding:8px; }
+.vanlich-grid { gap:7px; }
+.vanlich-week { gap:7px; }
+.vanlich-week > div { padding:8px 3px; }
+.vanlich-collapse .vanlich-main, .vanlich-collapse .vanlich-toolbar { display:none !important; }
+.vanlich-collapse.vanlich-pro { width:min(520px,calc(100vw - 24px)) !important; height:auto !important; max-height:none !important; border-radius:16px !important; margin:auto !important; }
+.vanlich-collapse .vanlich-head { border-radius:16px; }
+.vanlich-collapse .vanlich-head-subtitle { display:none; }
+.vanlich-weather-meta { display:flex; gap:8px; flex-wrap:wrap; margin-top:7px; font-size:10px; color:#64748b; font-weight:700; }
+.vanlich-weather-meta span { background:#f8fafc; border:1px solid #e2e8f0; border-radius:999px; padding:4px 7px; }
+.clock-display { font-variant-numeric:tabular-nums; letter-spacing:.8px; }
+@media(max-width:1050px){
+    .vanlich-main { height:calc(100vh - 72px - 126px); grid-template-columns:1fr; overflow:auto; }
+    .vanlich-calendar-card,.vanlich-detail-card { overflow:visible; }
+}
+@media(max-width:650px){
+    .vanlich-head { padding:12px 14px; }
+    .vanlich-head-actions .btn .btn-label { display:none; }
+    .vanlich-toolbar { grid-template-columns:1fr 1fr; }
+    .vanlich-main { height:calc(100vh - 72px - 180px); padding:9px; gap:9px; }
+    .vanlich-day { min-height:70px; padding:6px; }
+}
+
 </style>
 </head>
 <body>
@@ -517,9 +559,12 @@
     <div class="vanlich-head">
       <div>
         <div class="vanlich-head-title"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên & Phong Thủy Doanh Nghiệp</div>
-        <div style="font-size:10px;opacity:.88;margin-top:4px;font-weight:700;">Âm Dương lịch Việt Nam • múi giờ UTC+7 • Can Chi • Trực • Hoàng/Hắc đạo • Giờ tốt/xấu</div>
+        <div class="vanlich-head-subtitle" style="font-size:10px;opacity:.88;margin-top:4px;font-weight:700;">Âm Dương lịch Việt Nam • múi giờ UTC+7 • Can Chi • Trực • Hoàng/Hắc đạo • Giờ tốt/xấu</div>
       </div>
-      <button class="btn btn-red" style="padding:5px 10px;" onclick="document.getElementById('modalLichVanNien').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
+      <div class="vanlich-head-actions">
+        <button class="btn btn-blue" title="Thu nhỏ cửa sổ lịch" onclick="thuNhoLichVanNien()"><i class="fa-solid fa-window-minimize"></i><span class="btn-label"> Thu nhỏ</span></button>
+        <button class="btn btn-red" title="Đóng lịch" style="padding:5px 10px;" onclick="dongLichVanNien()"><i class="fa-solid fa-xmark"></i><span class="btn-label"> Đóng</span></button>
+      </div>
     </div>
 
     <div class="vanlich-toolbar">
@@ -602,11 +647,15 @@
                     <button class="btn btn-blue" style="padding: 2px 6px; font-size: 11px;" onclick="layThoiTietTheoGPS()"><i class="fa-solid fa-location-crosshairs"></i> GPS</button>
                 </div>
                 <div class="weather-display" id="weatherWidgetText">
-                    <i class="fa-solid fa-spinner fa-spin" style="color:#0284c7;"></i> Đang kết nối trạm vệ tinh thời tiết...
+                    <i class="fa-solid fa-spinner fa-spin" style="color:#0284c7;"></i> Đang xác định vị trí và tải thời tiết...
+                </div>
+                <div class="vanlich-weather-meta">
+                    <span id="weatherLocationText">📍 Đang định vị...</span>
+                    <span id="weatherUpdatedText">🕒 Chưa cập nhật</span>
                 </div>
             </div>
             <div style="display: flex; gap: 6px; align-items: center; margin-top: 4px;">
-                <input type="text" id="inputSearchCity" placeholder="Nhập tên tỉnh/thành phố..." style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 12px; font-weight: bold; flex: 1;" value="Phú Thọ">
+                <input type="text" id="inputSearchCity" placeholder="Nhập tỉnh/thành phố rồi Enter..." style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 12px; font-weight: bold; flex: 1;" value="Phú Thọ">
                 <button class="btn btn-green" style="padding: 4px 8px; font-size: 12px;" onclick="traCuuThoiTietTheoThanhPho()"><i class="fa-solid fa-magnifying-glass"></i> Tra Cứu</button>
             </div>
         </div>
@@ -1743,64 +1792,148 @@
         return {day:1,month:1,year:yy,canChiNam:"",canChiNgay:"",truc:"",sao:"",isHoangDao:false,huongXuatHanh:"",viecNenLam:"",viecKienKy:""};
     }
 
-    async function goiApiLayThoiTiet(lat, lon, cityName) {
+    let __vinapacoWeatherTimer = null;
+    let __vinapacoGeoWatchId = null;
+    let __vinapacoLastWeatherCoords = null;
+
+    function capNhatTrangThaiThoiTiet(msg, type='info') {
+        const el=document.getElementById('weatherWidgetText');
+        if(!el) return;
+        const icon = type==='error' ? 'fa-triangle-exclamation' : type==='loading' ? 'fa-spinner fa-spin' : 'fa-cloud-sun';
+        el.innerHTML=`<i class="fa-solid ${icon}" style="color:${type==='error'?'#dc2626':'#0284c7'};"></i> ${escapeHtml(msg)}`;
+    }
+
+    function moTaMaThoiTiet(code) {
+        const map = {
+            0:'Trời quang',1:'Quang mây nhẹ',2:'Mây rải rác',3:'Nhiều mây',
+            45:'Sương mù',48:'Sương muối',
+            51:'Mưa phùn nhẹ',53:'Mưa phùn',55:'Mưa phùn mạnh',
+            56:'Mưa phùn lạnh nhẹ',57:'Mưa phùn lạnh mạnh',
+            61:'Mưa nhẹ',63:'Mưa vừa',65:'Mưa to',
+            66:'Mưa lạnh nhẹ',67:'Mưa lạnh mạnh',
+            71:'Tuyết nhẹ',73:'Tuyết vừa',75:'Tuyết to',77:'Hạt tuyết',
+            80:'Mưa rào nhẹ',81:'Mưa rào vừa',82:'Mưa rào mạnh',
+            85:'Tuyết rào nhẹ',86:'Tuyết rào mạnh',
+            95:'Dông',96:'Dông có mưa đá nhẹ',99:'Dông có mưa đá mạnh'
+        };
+        return map[code] || 'Thời tiết đang cập nhật';
+    }
+
+    async function layTenDiaDiemTheoToaDo(lat, lon) {
         try {
-            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
-            let data = await res.json();
-            if (data && data.current_weather) {
-                let temp = data.current_weather.temperature;
-                let wind = data.current_weather.windspeed;
-                let weatherEl = document.getElementById('weatherWidgetText');
-                if (weatherEl) {
-                    weatherEl.innerHTML = `<i class="fa-solid fa-temperature-three-quarters" style="color:#ef4444;"></i> ${cityName}: <b>${temp}°C</b>, Gió: ${wind} km/h, Trời quang đãng`;
-                }
-            }
-        } catch (e) {
-            let weatherEl = document.getElementById('weatherWidgetText');
-            if (weatherEl) {
-                weatherEl.innerHTML = `<i class="fa-solid fa-cloud-sun" style="color:#d97706;"></i> ${cityName}: 30°C, Nắng đẹp, Gió nhẹ`;
-            }
+            const url=`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&zoom=10&addressdetails=1&accept-language=vi`;
+            const res=await fetch(url,{headers:{'Accept':'application/json'}});
+            if(!res.ok) throw new Error('reverse geocode');
+            const data=await res.json();
+            const a=data.address||{};
+            return a.city || a.town || a.municipality || a.county || a.state || data.display_name || '';
+        } catch(e) {
+            return '';
+        }
+    }
+
+    async function goiApiLayThoiTiet(lat, lon, cityName='Vị trí hiện tại', source='GPS') {
+        try {
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m&timezone=Asia%2FHo_Chi_Minh`;
+            const res = await fetch(url,{cache:'no-store'});
+            if(!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data=await res.json();
+            const c=data.current;
+            if(!c) throw new Error('Không có dữ liệu hiện tại');
+
+            const weatherEl=document.getElementById('weatherWidgetText');
+            const locationEl=document.getElementById('weatherLocationText');
+            const updatedEl=document.getElementById('weatherUpdatedText');
+            const label=cityName || 'Vị trí hiện tại';
+            if(weatherEl) weatherEl.innerHTML =
+                `<i class="fa-solid fa-temperature-half" style="color:#ef4444;"></i> `+
+                `<b>${Number(c.temperature_2m).toFixed(1)}°C</b> • Cảm nhận ${Number(c.apparent_temperature).toFixed(1)}°C • `+
+                `${moTaMaThoiTiet(c.weather_code)} • Ẩm ${Math.round(c.relative_humidity_2m)}% • `+
+                `Mưa ${Number(c.precipitation).toFixed(1)} mm • Gió ${Number(c.wind_speed_10m).toFixed(1)} km/h`;
+
+            if(locationEl) locationEl.textContent=`📍 ${label} • ${Number(lat).toFixed(5)}, ${Number(lon).toFixed(5)} • ${source}`;
+            if(updatedEl) updatedEl.textContent=`🕒 ${new Intl.DateTimeFormat('vi-VN',{timeZone:'Asia/Ho_Chi_Minh',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date())} • kiểm tra mỗi phút`;
+
+            __vinapacoLastWeatherCoords={lat,lon,cityName:label,source};
+            clearTimeout(__vinapacoWeatherTimer);
+            __vinapacoWeatherTimer=setTimeout(()=>goiApiLayThoiTiet(lat,lon,label,source),60000);
+        } catch(e) {
+            const el=document.getElementById('weatherWidgetText');
+            if(el) el.innerHTML=`<i class="fa-solid fa-triangle-exclamation" style="color:#dc2626;"></i> Không tải được dữ liệu thời tiết. Sẽ tự thử lại sau 60 giây.`;
+            clearTimeout(__vinapacoWeatherTimer);
+            __vinapacoWeatherTimer=setTimeout(()=>goiApiLayThoiTiet(lat,lon,cityName,source),60000);
+        }
+    }
+
+    async function capNhatThoiTietTuToaDo(lat,lon,source='GPS') {
+        const city = await layTenDiaDiemTheoToaDo(lat,lon);
+        await goiApiLayThoiTiet(lat,lon,city || 'Vị trí hiện tại',source);
+    }
+
+    function khoiTaoThoiTietTuDong() {
+        capNhatTrangThaiThoiTiet('Đang xin quyền định vị chính xác từ thiết bị...', 'loading');
+        if(!navigator.geolocation) {
+            fallbackDinhViBangIP();
+            return;
+        }
+
+        const onSuccess = pos => {
+            const lat=pos.coords.latitude, lon=pos.coords.longitude;
+            const acc=Number(pos.coords.accuracy||0);
+            const locationEl=document.getElementById('weatherLocationText');
+            if(locationEl) locationEl.textContent=`📍 GPS • độ chính xác khoảng ${acc ? Math.round(acc) : '—'} m`;
+            capNhatThoiTietTuToaDo(lat,lon,'GPS');
+        };
+        const onError = () => fallbackDinhViBangIP();
+
+        try {
+            __vinapacoGeoWatchId=navigator.geolocation.watchPosition(onSuccess,onError,{
+                enableHighAccuracy:true, maximumAge:0, timeout:15000
+            });
+        } catch(e) {
+            navigator.geolocation.getCurrentPosition(onSuccess,onError,{
+                enableHighAccuracy:true, maximumAge:0, timeout:15000
+            });
+        }
+    }
+
+    async function fallbackDinhViBangIP() {
+        capNhatTrangThaiThoiTiet('GPS chưa được cấp quyền; đang dùng vị trí IP gần đúng...', 'loading');
+        try {
+            const res=await fetch('https://ipapi.co/json/',{cache:'no-store'});
+            const data=await res.json();
+            if(!data || !data.latitude || !data.longitude) throw new Error('IP location unavailable');
+            await goiApiLayThoiTiet(data.latitude,data.longitude,data.city || data.region || 'Vị trí theo IP','IP (ước lượng)');
+        } catch(e) {
+            const el=document.getElementById('weatherWidgetText');
+            if(el) el.innerHTML=`<i class="fa-solid fa-location-dot" style="color:#d97706;"></i> Chưa xác định được vị trí. Hãy bấm GPS và cho phép trình duyệt truy cập vị trí.`;
         }
     }
 
     function layThoiTietTheoGPS() {
-        let weatherEl = document.getElementById('weatherWidgetText');
-        if (weatherEl) weatherEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#0284c7;"></i> Đang định vị GPS...`;
-
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                pos => {
-                    let lat = pos.coords.latitude;
-                    let lon = pos.coords.longitude;
-                    goiApiLayThoiTiet(lat, lon, "Vị trí hiện tại của bạn");
-                },
-                err => {
-                    alert("Không thể lấy tọa độ GPS. Hệ thống chuyển về mặc định Phú Thọ.");
-                    goiApiLayThoiTiet(21.3228, 105.3377, "Phú Thọ");
-                }
-            );
-        } else {
-            goiApiLayThoiTiet(21.3228, 105.3377, "Phú Thọ");
-        }
+        capNhatTrangThaiThoiTiet('Đang định vị GPS độ chính xác cao...', 'loading');
+        if(!navigator.geolocation) { fallbackDinhViBangIP(); return; }
+        navigator.geolocation.getCurrentPosition(
+            pos=>capNhatThoiTietTuToaDo(pos.coords.latitude,pos.coords.longitude,'GPS thủ công'),
+            ()=>fallbackDinhViBangIP(),
+            {enableHighAccuracy:true,maximumAge:0,timeout:15000}
+        );
     }
 
     async function traCuuThoiTietTheoThanhPho() {
-        let city = document.getElementById('inputSearchCity').value.trim() || "Phú Thọ";
-        let weatherEl = document.getElementById('weatherWidgetText');
-        if (weatherEl) weatherEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#0284c7;"></i> Đang tra cứu ${city}...`;
-
+        const city=(document.getElementById('inputSearchCity')?.value||'').trim() || 'Phú Thọ';
+        capNhatTrangThaiThoiTiet(`Đang tra cứu ${city}...`,'loading');
         try {
-            let res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=vi&format=json`);
-            let data = await res.json();
-            if (data && data.results && data.results.length > 0) {
-                let loc = data.results[0];
-                goiApiLayThoiTiet(loc.latitude, loc.longitude, loc.name);
+            const res=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=vi&format=json`,{cache:'no-store'});
+            const data=await res.json();
+            if(data?.results?.length) {
+                const loc=data.results[0];
+                await goiApiLayThoiTiet(loc.latitude,loc.longitude,loc.name,'Tra cứu');
             } else {
-                alert("Không tìm thấy địa điểm, mặc định về Phú Thọ.");
-                goiApiLayThoiTiet(21.3228, 105.3377, "Phú Thọ");
+                capNhatTrangThaiThoiTiet(`Không tìm thấy địa điểm “${city}”.`,'error');
             }
-        } catch (e) {
-            goiApiLayThoiTiet(21.3228, 105.3377, city);
+        } catch(e) {
+            capNhatTrangThaiThoiTiet('Không kết nối được dịch vụ định vị/thời tiết.','error');
         }
     }
 
@@ -1816,6 +1949,83 @@
         let dynamicDriveUrl = `https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m`; 
         window.open(dynamicDriveUrl, '_blank');
     }
+
+    function thuNhoLichVanNien() {
+        const modal=document.getElementById('modalLichVanNien');
+        const card=modal?.querySelector('.vanlich-pro');
+        if(!modal || !card) return;
+        card.classList.toggle('vanlich-collapse');
+    }
+    function dongLichVanNien() {
+        const modal=document.getElementById('modalLichVanNien');
+        const card=modal?.querySelector('.vanlich-pro');
+        if(card) card.classList.remove('vanlich-collapse');
+        if(modal) modal.classList.add('hidden');
+    }
+
+    function khoiTaoEnterToComplete() {
+        if(window.__vinapacoEnterReady) return;
+        window.__vinapacoEnterReady=true;
+
+        document.addEventListener('keydown', function(e) {
+            if(e.key !== 'Enter' || e.shiftKey || e.ctrlKey || e.altKey) return;
+            const el=e.target;
+            if(!el || !['INPUT','SELECT'].includes(el.tagName)) return;
+            if(el.readOnly || el.disabled) return;
+
+            // Các ô tra cứu nhanh.
+            if(el.id==='loginUser') {
+                e.preventDefault();
+                document.getElementById('loginPass')?.focus();
+                return;
+            }
+            if(el.id==='loginPass') {
+                e.preventDefault(); thucHienDangNhap(); return;
+            }
+            if(el.id==='inputSearchCity') {
+                e.preventDefault(); traCuuThoiTietTheoThanhPho(); return;
+            }
+            if(el.id==='inputGasUrlSetting') {
+                e.preventDefault(); luuGasUrlNhanh(); return;
+            }
+
+            // Ô cấu hình lương: Enter = lưu ngay.
+            if(/^cfg(NCD|MucLCB|MucTTV|MucLCV)$/.test(el.id)) {
+                e.preventDefault();
+                el.blur();
+                luuCauHinhHienTai();
+                return;
+            }
+
+            // Ô nhập trong biểu mẫu: Enter ưu tiên nút hành động chính, bỏ qua Hủy/Đóng.
+            const scope=el.closest('.form-card, .account-modal-body, .modal-card, .table-card, .enterprise-report');
+            if(scope) {
+                const buttons=[...scope.querySelectorAll('button:not([disabled])')].filter(b=>{
+                    const t=(b.innerText||'').trim().toLowerCase();
+                    return !/hủy|huỷ|đóng|xóa|xoá|reset|thoát|cancel|close/.test(t);
+                });
+                const primary=buttons.find(b=>/thêm|lưu|cập nhật|ghi|tạo|xác nhận|gửi|tra cứu|tính|tìm|save|update|create|submit/i.test(b.innerText||''));
+                if(primary) {
+                    e.preventDefault();
+                    primary.click();
+                    return;
+                }
+            }
+
+            // Nếu không có nút hành động: ghi nhận giá trị và chuyển sang trạng thái hoàn tất.
+            e.preventDefault();
+            el.dispatchEvent(new Event('change',{bubbles:true}));
+            el.blur();
+        });
+    }
+
+    // ESC đóng lịch, lần nữa mở lại sẽ trở về trạng thái toàn màn hình.
+    document.addEventListener('keydown',e=>{
+        if(e.key==='Escape'){
+            const modal=document.getElementById('modalLichVanNien');
+            if(modal && !modal.classList.contains('hidden')) dongLichVanNien();
+        }
+    });
 
     function formatVNDate(dateString) {
         if (!dateString) return '--';
@@ -2035,24 +2245,44 @@
         capNhatTrangThaiKhoiTaoTaiKhoan(true);
         renderQuyHoachTable();
         khoiTaoTuDongDongBoNgam();
-        traCuuThoiTietTheoThanhPho();
+        khoiTaoThoiTietTuDong();
+        khoiTaoEnterToComplete();
     });
 
+    let __vinapacoClockTimer = null;
     function khoiTaoDonghoVaThoiGianThuc() {
+        const clockEl = document.getElementById('liveClockDisplay');
+        const dateEl = document.getElementById('liveDateDisplay');
+        const tz = 'Asia/Ho_Chi_Minh';
+
         function capNhatDongHo() {
-            let now = new Date();
-            let timeStr = now.toLocaleTimeString('vi-VN');
-            let dateStr = now.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            let clockEl = document.getElementById('liveClockDisplay');
-            let dateEl = document.getElementById('liveDateDisplay');
-            if (clockEl) clockEl.innerText = timeStr;
-            if (dateEl) dateEl.innerText = dateStr;
+            const now = new Date();
+            const timeStr = new Intl.DateTimeFormat('vi-VN', {
+                timeZone: tz, hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false
+            }).format(now);
+            const dateStr = new Intl.DateTimeFormat('vi-VN', {
+                timeZone: tz, weekday:'long', year:'numeric', month:'long', day:'numeric'
+            }).format(now);
+            if (clockEl) clockEl.textContent = timeStr;
+            if (dateEl) dateEl.textContent = `${dateStr} • UTC+7`;
+
+            // Canh đúng biên giây để đồng hồ không bị trôi do setInterval.
+            const delay = 1000 - (Date.now() % 1000) + 8;
+            clearTimeout(__vinapacoClockTimer);
+            __vinapacoClockTimer = setTimeout(capNhatDongHo, delay);
         }
-        setInterval(capNhatDongHo, 1000);
+
         capNhatDongHo();
-        
-        let todayLunar = convertSolar2Lunar(_now.getDate(), _now.getMonth() + 1, _now.getFullYear());
-        let lunarEl = document.getElementById('lunarWidgetText');
+
+        // Cập nhật ô âm lịch theo đúng ngày Việt Nam, không phụ thuộc múi giờ máy.
+        const parts = new Intl.DateTimeFormat('en-CA', {
+            timeZone: tz, year:'numeric', month:'2-digit', day:'2-digit'
+        }).formatToParts(new Date());
+        const y = Number(parts.find(x=>x.type==='year').value);
+        const m = Number(parts.find(x=>x.type==='month').value);
+        const d = Number(parts.find(x=>x.type==='day').value);
+        const todayLunar = convertSolar2Lunar(d, m, y);
+        const lunarEl = document.getElementById('lunarWidgetText');
         if (lunarEl) {
             lunarEl.innerHTML = `
                 🌙 <b>Âm lịch:</b> Ngày ${todayLunar.day} tháng ${todayLunar.month} (${todayLunar.canChiNam})<br>
@@ -2061,7 +2291,6 @@
             `;
         }
     }
-
 
     /* ============================================================
        LỊCH VẠN NIÊN VINAPACO - THUẬT TOÁN ÂM LỊCH VIỆT NAM UTC+7
@@ -2320,7 +2549,10 @@
         for(let y=now.getFullYear()-5;y<=now.getFullYear()+5;y++) ys.insertAdjacentHTML('beforeend',`<option value="${y}">${y}</option>`);
         ys.value=String(now.getFullYear());
         ms.value=String(now.getMonth());
-        document.getElementById('modalLichVanNien').classList.remove('hidden');
+        const modal=document.getElementById('modalLichVanNien');
+        const card=modal?.querySelector('.vanlich-pro');
+        if(card) card.classList.remove('vanlich-collapse');
+        modal.classList.remove('hidden');
         renderLichGridPro(now.getDate());
     }
 

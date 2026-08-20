@@ -215,7 +215,7 @@
             <button class="btn btn-purple" onclick="moModalLichVanNien()"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên</button>
             <button class="btn btn-yellow" onclick="batTatNhacNghiGoi()"><i class="fa-solid fa-mug-hot"></i> Nhắc Nghỉ</button>
             <button class="btn btn-green" onclick="thuCongDongBoLenDrive()"><i class="fa-solid fa-cloud-arrow-up"></i> Đồng Bộ Drive</button>
-            <button class="btn btn-blue" onclick="thuCongTaiVeTuDrive()"><i class="fa-solid fa-cloud-arrow-down"></i> Tải Về Mới Nhất</button>
+            <button class="btn btn-blue" onclick="thuCongTaiVeTuDrive(event)"><i class="fa-solid fa-cloud-arrow-down"></i> Tải Về Mới Nhất</button>
             <button class="btn btn-red" onclick="dangXuatHeThong()"><i class="fa-solid fa-right-from-bracket"></i> Thoát</button>
         </div>
     </div>
@@ -646,7 +646,7 @@
             <div class="form-group"><label>Máy In</label><input type="text" id="inputInkPrinter" placeholder="VD: Canon 151dw"></div>
             <div class="form-group"><label>Nghiệp Vụ</label><select id="inputInkAction"><option value="Nhập mới kho">📥 Nhập kho</option><option value="Cấp phát sử dụng">📤 Cấp phát</option></select></div>
             <div class="form-group"><label>Số Lượng</label><input type="number" id="inputInkQty" value="1" min="1"></div>
-            <div class="form-group"><label>Người Nhận / Kho</label><input type="text" id="inputInkReceiver" placeholder="Phòng ban / Người nhận..."></div>
+            <div class="form-group"><label>Người Nhận / Kho</label><input type="text" id="inputInkReceiver" placeholder="Nhập người nhận / phòng ban / kho..."></div>
             <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputInkPrice" placeholder="450.000"></div>
             <div class="form-group" style="display: flex; gap: 8px;">
                 <button class="btn btn-green" id="btnSaveInk" onclick="luuHoacCapNhatKhoMuc()"><i class="fas fa-warehouse"></i> Ghi Sổ Kho</button>
@@ -664,7 +664,7 @@
         <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
             <input type="hidden" id="editSlipIndex" value="-1">
             <div class="form-group"><label>Số Phiếu</label><input type="text" id="inputSlipNo" value="PGN-2026/06-01"></div>
-            <div class="form-group"><label>Bên Giao</label><input type="text" id="inputSlipFrom" value="Trần Bình Dương - Văn phòng Tổng công ty"></div>
+            <div class="form-group"><label>Bên Giao</label><input type="text" id="inputSlipFrom" placeholder="Họ tên / đơn vị giao..."></div>
             <div class="form-group"><label>Bên Nhận</label><input type="text" id="inputSlipTo" placeholder="Họ tên cán bộ nhận..."></div>
             <div class="form-group"><label>Bộ Phận</label><input type="text" id="inputSlipDept" placeholder="Phòng ban..."></div>
             <div class="form-group"><label>Tên Thiết Bị</label><input type="text" id="inputSlipItem" placeholder="Laptop Dell Latitude..."></div>
@@ -944,21 +944,26 @@
                     <div>
                         <div>NGƯỜI LẬP PHIẾU</div>
                         <div style="height: 50px;"></div>
-                        <div style="text-transform: none; font-weight: 800; color: #0f172a;" id="modalSlipSignMaker">Nguyễn Thị Tuyết Nhung</div>
+                        <div style="text-transform: none; font-weight: 800; color: #0f172a;" id="modalSlipSignMaker"></div>
                     </div>
                     <div>
                         <div>NGƯỜI NHẬN HÀNG</div>
                         <div style="height: 50px;"></div>
-                        <div style="text-transform: none; font-weight: 800; color: #0f172a;" id="modalSlipSignReceiver">Bên Nhận</div>
+                        <div style="text-transform: none; font-weight: 800; color: #0f172a;" id="modalSlipSignReceiver"></div>
                     </div>
                     <div>
                         <div>THỦ TRƯỞNG / TRƯỞNG PHÒNG</div>
                         <div style="height: 50px;"></div>
-                        <div style="text-transform: none; font-weight: 800; color: #0f172a;">Trần Bình Dương</div>
+                        <div style="text-transform: none; font-weight: 800; color: #0f172a;" id="modalSlipSignLeader"></div>
                     </div>
                 </div>
 
             </div>
+        </div>
+        <div style="background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:10px;margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:left;">
+            <div class="form-group"><label>Người lập/giao</label><input id="editSlipSignMaker" type="text" placeholder="Nhập tên người lập/giao" oninput="capNhatNguoiKyPhieuGiao()"></div>
+            <div class="form-group"><label>Người nhận</label><input id="editSlipSignReceiver" type="text" placeholder="Nhập tên người nhận" oninput="capNhatNguoiKyPhieuGiao()"></div>
+            <div class="form-group"><label>Thủ trưởng / Trưởng phòng</label><input id="editSlipSignLeader" type="text" placeholder="Nhập tên người ký" oninput="capNhatNguoiKyPhieuGiao()"></div>
         </div>
         <div class="modal-actions">
             <button class="btn btn-green" onclick="taiAnhPhieuGiao()"><i class="fa-solid fa-download"></i> Tải Ảnh Phiếu</button>
@@ -1052,19 +1057,26 @@
                         <div>
                             <div>PHÒNG NHÂN SỰ</div>
                             <div style="height: 45px;"></div>
+                            <div style="text-transform:none;font-weight:800;font-size:13px;color:#0f172a;" id="slipSignHR"></div>
                         </div>
                         <div>
                             <div>THỦ TRƯỞNG ĐƠN VỊ</div>
                             <div style="height: 45px;"></div>
+                            <div style="text-transform:none;font-weight:800;font-size:13px;color:#0f172a;" id="slipSignLeader"></div>
                         </div>
                         <div>
                             <div>NGƯỜI LẬP BIỂU</div>
                             <div style="height: 45px;"></div>
-                            <div style="text-transform: none; font-weight: 800; font-size: 13px; color: #0f172a;" id="slipSignMaker">Nguyễn Thị Tuyết Nhung</div>
+                            <div style="text-transform: none; font-weight: 800; font-size: 13px; color: #0f172a;" id="slipSignMaker"></div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div style="background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:10px;margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:left;">
+            <div class="form-group"><label>Người lập biểu</label><input id="editSlipPayrollMaker" type="text" placeholder="Nhập tên người lập biểu" oninput="capNhatNguoiKyPhieuLuong()"></div>
+            <div class="form-group"><label>Thủ trưởng đơn vị</label><input id="editSlipPayrollLeader" type="text" placeholder="Nhập tên người ký" oninput="capNhatNguoiKyPhieuLuong()"></div>
+            <div class="form-group"><label>Phòng Nhân sự</label><input id="editSlipPayrollHR" type="text" placeholder="Nhập tên người ký" oninput="capNhatNguoiKyPhieuLuong()"></div>
         </div>
         <div class="modal-actions">
             <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-green" onclick="taiAnhPhieuLuongZalo()"><i class="fa-solid fa-download"></i> Tải Ảnh Phiếu Lương</button><button class="btn zalo-action" onclick="guiPhieuLuongQuaZalo()"><i class="fa-brands fa-telegram"></i> Mở Zalo PC & Gửi phiếu</button></div>
@@ -1176,7 +1188,7 @@
     let dsThanhToanTelecombyMonth = JSON.parse(localStorage.getItem('bapaco_telecom_map_data') || '{}');
 
     let dsKhoMucIn = JSON.parse(localStorage.getItem('bapaco_ink_data') || '[{"code":"MUC001","name":"Hộp mực Canon 337","printer":"Canon LBP 151dw","action":"Cấp phát sử dụng","qty":1,"receiver":"Phòng Kế toán","price":450000,"total":450000}]');
-    let dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('bapaco_delivery_data') || `[{"slipNo":"PGN-${_namHienTai}/${_thangSo}-01","from":"Trần Bình Dương - Văn phòng Tổng công ty","to":"Người nhận","dept":"Văn phòng","item":"Laptop Dell Latitude","status":"Mới 100%","date":"2026-06-18"}]`);
+    let dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('bapaco_delivery_data') || `[]`);
     let dsKhaoSatChuyenSau = JSON.parse(localStorage.getItem('bapaco_survey_data') || '[{"code":"KS-01","user":"Trần Bình Dương","dept":"Văn phòng Tổng công ty","device":"Laptop cá nhân (Doanh nghiệp trang bị)","os":"Windows 11 Pro","osLicense":"✅ Có bản quyền chính hãng","office":"Microsoft 365 (Cloud)","officeLicense":"✅ Bản quyền Tổng công ty","bizSoft":"Cloudoffice (Văn thư)","bizLicense":"✅ Có bản quyền chính hãng","specs":"Core i7, RAM 16GB"}]');
     let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data') || `[{"id":1,"name":"Hoàn thiện báo cáo điều hành Tháng 06","assignee":"Trần Bình Dương","dueDate":"2026-06-30","status":"Đang làm"}]`);
     let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('bapaco_accounts_data') || '[{"email":"admin@vinapaco.com.vn","password":"123","fullName":"Trần Bình Dương","role":"Admin","status":"Active","notifyEmail":"duongtb@vinapaco.com.vn"},{"email":"ketoan@vinapaco.com.vn","password":"123","fullName":"Nguyễn Minh Ngọc","role":"Editor","status":"Active","notifyEmail":"nguyenminhngoc@vinapaco.com.vn"}]');
@@ -1397,23 +1409,68 @@
         alert("✅ Đã đồng bộ toàn bộ dữ liệu lên Google Drive thành công!"); 
     }
 
-    async function thuCongTaiVeTuDrive() { 
-        let btn = event ? event.target : null;
-        if(btn) btn.innerText = "⏳ Đang tải về...";
-        
+    async function thuCongTaiVeTuDrive(event) {
+        const btn = event && event.currentTarget ? event.currentTarget : document.querySelector('button[onclick*="thuCongTaiVeTuDrive"]');
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang tải dữ liệu...`;
+        }
+
         try {
-            await tuDongTaiDuLieuTuDrive(); 
-            capNhat(); 
-            if(btn) btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> Tải Về Mới Nhất`;
-            alert("✅ Đã kết nối và đồng bộ dữ liệu " + currentThangKey + " thành công trên thiết bị!"); 
-        } catch (error) {
+            const res = await fetch(gasWebhookUrl + "?nocache=" + Date.now(), { method: "GET", cache: "no-store" });
+            if (!res.ok) throw new Error("HTTP " + res.status);
+            const result = await res.json();
+            if (!result || typeof result !== "object") throw new Error("Dữ liệu trả về từ Google Drive/GAS không hợp lệ.");
+
+            if (result.coSoDuLieuNamThang && typeof result.coSoDuLieuNamThang === "object") {
+                coSoDuLieuNamThang = result.coSoDuLieuNamThang;
+            }
+
+            // Nạp độc lập 2 nhóm dữ liệu: Thanh toán văn phòng và Cước viễn thông.
+            // Kể cả khi dữ liệu trả về là {} thì vẫn phải cập nhật để phản ánh đúng Drive.
+            let daTaiVpp = false, daTaiTelecom = false;
+            if (Object.prototype.hasOwnProperty.call(result, "dsThanhToanVanPhongProByMonth")) {
+                dsThanhToanVanPhongProByMonth = (result.dsThanhToanVanPhongProByMonth && typeof result.dsThanhToanVanPhongProByMonth === "object") ? result.dsThanhToanVanPhongProByMonth : {};
+                daTaiVpp = true;
+            }
+            if (Object.prototype.hasOwnProperty.call(result, "dsThanhToanTelecombyMonth")) {
+                dsThanhToanTelecombyMonth = (result.dsThanhToanTelecombyMonth && typeof result.dsThanhToanTelecombyMonth === "object") ? result.dsThanhToanTelecombyMonth : {};
+                daTaiTelecom = true;
+            }
+
+            if (Object.prototype.hasOwnProperty.call(result, "dsKhoMucIn")) dsKhoMucIn = Array.isArray(result.dsKhoMucIn) ? result.dsKhoMucIn : [];
+            if (Object.prototype.hasOwnProperty.call(result, "dsKhaoSatChuyenSau")) dsKhaoSatChuyenSau = Array.isArray(result.dsKhaoSatChuyenSau) ? result.dsKhaoSatChuyenSau : [];
+            if (Object.prototype.hasOwnProperty.call(result, "danhSachCongViec")) danhSachCongViec = Array.isArray(result.danhSachCongViec) ? result.danhSachCongViec : [];
+            if (Object.prototype.hasOwnProperty.call(result, "dsPhieuGiaoNhan")) dsPhieuGiaoNhan = Array.isArray(result.dsPhieuGiaoNhan) ? result.dsPhieuGiaoNhan : [];
+            if (Object.prototype.hasOwnProperty.call(result, "danhSachTaiKhoanHeThong")) danhSachTaiKhoanHeThong = Array.isArray(result.danhSachTaiKhoanHeThong) ? result.danhSachTaiKhoanHeThong : [];
+
             if (!coSoDuLieuNamThang[currentNamKey]) coSoDuLieuNamThang[currentNamKey] = {};
             if (!coSoDuLieuNamThang[currentNamKey][currentThangKey]) {
-                coSoDuLieuNamThang[currentNamKey][currentThangKey] = JSON.parse(JSON.stringify(defaultCoSoDuLieuNamThang["2026"]["Tháng 05"]));
+                const existingMonths = Object.keys(coSoDuLieuNamThang[currentNamKey]);
+                const templateMonth = existingMonths.length > 0 ? coSoDuLieuNamThang[currentNamKey][existingMonths[0]] : defaultCoSoDuLieuNamThang["2026"]["Tháng 05"];
+                coSoDuLieuNamThang[currentNamKey][currentThangKey] = JSON.parse(JSON.stringify(templateMonth));
             }
+
+            luuTruVaoLocalStorage();
             capNhat();
-            if(btn) btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> Tải Về Mới Nhất`;
-            alert("⚠️ Đã kích hoạt chế độ phục hồi dữ liệu an toàn cho " + currentThangKey + ".");
+            renderOfficePaymentTable();
+            renderTelecomPaymentTable();
+
+            const vppCount = Object.values(dsThanhToanVanPhongProByMonth || {}).reduce((n, a) => n + (Array.isArray(a) ? a.length : 0), 0);
+            const telecomCount = Object.values(dsThanhToanTelecombyMonth || {}).reduce((n, a) => n + (Array.isArray(a) ? a.length : 0), 0);
+
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> Tải Về Mới Nhất`;
+            }
+            alert(`✅ Đã tải dữ liệu mới nhất từ Google Drive thành công!\n\n• Thanh toán văn phòng: ${daTaiVpp ? vppCount + " bản ghi" : "chưa có dữ liệu trả về"}\n• Cước viễn thông: ${daTaiTelecom ? telecomCount + " bản ghi" : "chưa có dữ liệu trả về"}\n• Tháng đang chọn: ${currentThangKey}/${currentNamKey}`);
+        } catch (error) {
+            console.error("Lỗi tải dữ liệu mới nhất từ Drive:", error);
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> Tải Về Mới Nhất`;
+            }
+            alert("❌ Không thể tải dữ liệu mới nhất từ Google Drive.\n\n" + (error && error.message ? error.message : "Vui lòng kiểm tra GAS Webhook URL và kết nối mạng."));
         }
     }
 
@@ -1424,8 +1481,12 @@
                 let result = await res.json();
                 if (result && result.coSoDuLieuNamThang) {
                     coSoDuLieuNamThang = result.coSoDuLieuNamThang;
-                    if (result.dsThanhToanVanPhongProByMonth) dsThanhToanVanPhongProByMonth = result.dsThanhToanVanPhongProByMonth;
-                    if (result.dsThanhToanTelecombyMonth) dsThanhToanTelecombyMonth = result.dsThanhToanTelecombyMonth;
+                    if (Object.prototype.hasOwnProperty.call(result, "dsThanhToanVanPhongProByMonth")) {
+                        dsThanhToanVanPhongProByMonth = (result.dsThanhToanVanPhongProByMonth && typeof result.dsThanhToanVanPhongProByMonth === "object") ? result.dsThanhToanVanPhongProByMonth : {};
+                    }
+                    if (Object.prototype.hasOwnProperty.call(result, "dsThanhToanTelecombyMonth")) {
+                        dsThanhToanTelecombyMonth = (result.dsThanhToanTelecombyMonth && typeof result.dsThanhToanTelecombyMonth === "object") ? result.dsThanhToanTelecombyMonth : {};
+                    }
                     if (result.danhSachCongViec) danhSachCongViec = result.danhSachCongViec;
                     if (result.dsKhoMucIn) dsKhoMucIn = result.dsKhoMucIn;
                     if (result.dsKhaoSatChuyenSau) dsKhaoSatChuyenSau = result.dsKhaoSatChuyenSau;
@@ -2471,6 +2532,30 @@
         }
     }
 
+    function capNhatNguoiKyPhieuGiao() {
+        const get = id => (document.getElementById(id)?.value || '').trim();
+        document.getElementById('modalSlipSignMaker').innerText = get('editSlipSignMaker');
+        document.getElementById('modalSlipSignReceiver').innerText = get('editSlipSignReceiver') || 'Người nhận hàng';
+        const leader = document.getElementById('modalSlipSignLeader');
+        if (leader) leader.innerText = get('editSlipSignLeader');
+    }
+
+    function moTruongKyPhieuGiao(maker, receiver, leader) {
+        const set=(id,v)=>{const e=document.getElementById(id); if(e)e.value=v||''};
+        set('editSlipSignMaker',maker); set('editSlipSignReceiver',receiver); set('editSlipSignLeader',leader); capNhatNguoiKyPhieuGiao();
+    }
+
+    function capNhatNguoiKyPhieuLuong() {
+        const get=id=>(document.getElementById(id)?.value||'').trim();
+        const set=(id,v)=>{const e=document.getElementById(id); if(e)e.innerText=v};
+        set('slipSignMaker',get('editSlipPayrollMaker')); set('slipSignLeader',get('editSlipPayrollLeader')); set('slipSignHR',get('editSlipPayrollHR'));
+    }
+
+    function moTruongKyPhieuLuong(maker='', leader='', hr='') {
+        const set=(id,v)=>{const e=document.getElementById(id); if(e)e.value=v||''};
+        set('editSlipPayrollMaker',maker); set('editSlipPayrollLeader',leader); set('editSlipPayrollHR',hr); capNhatNguoiKyPhieuLuong();
+    }
+
     function xemVaInPhieuKho(idx) {
         let item = dsKhoMucIn[idx];
         document.getElementById('modalSlipTitle').innerText = "PHIẾU XUẤT KHO VẬT TƯ MỰC IN";
@@ -2487,7 +2572,7 @@
         document.getElementById('modalItemPrice').innerText = item.price.toLocaleString('vi-VN') + " VNĐ";
         document.getElementById('modalItemTotal').innerText = item.total.toLocaleString('vi-VN') + " VNĐ";
         
-        document.getElementById('modalSlipSignReceiver').innerText = item.receiver || "Người nhận hàng";
+        moTruongKyPhieuGiao('', item.receiver || '', '');
         document.getElementById('previewSlipModal').classList.remove('hidden');
     }
 
@@ -2599,7 +2684,7 @@
         document.getElementById('modalItemPrice').innerText = "0 VNĐ";
         document.getElementById('modalItemTotal').innerText = "0 VNĐ";
 
-        document.getElementById('modalSlipSignReceiver').innerText = s.to || "Người nhận hàng";
+        moTruongKyPhieuGiao(s.from || '', s.to || '', '');
         document.getElementById('previewSlipModal').classList.remove('hidden');
     }
 
@@ -3205,6 +3290,7 @@
         set('slipBHTN',`-${fmtMoney(bhtn)}`);
         set('slipTamUng',`-${fmtMoney(tamUng)}`);
         set('slipThucLinh',`${fmtMoney(net)} VNĐ`);
+        moTruongKyPhieuLuong('', '', '');
         const sel=document.getElementById('selectModalNhanSu');
         if(sel) sel.value=nv.hoTen;
         document.getElementById('previewModal')?.classList.remove('hidden');

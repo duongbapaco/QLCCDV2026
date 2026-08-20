@@ -510,7 +510,7 @@
                 <i class="fa-solid fa-paper-plane"></i> XEM, IN HOẶC GỬI ZALO PHIẾU LƯƠNG CHI TIẾT NHÂN SỰ
             </div>
             <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-                <button class="btn btn-blue" onclick="moModalPhiieuLuongDauTien()"><i class="fa-solid fa-file-invoice-dollar"></i> Mở Phiếu Lương Tổng Hợp</button><button class="btn zalo-action" onclick="moVaGuiPhieuLuongZalo()"><i class="fa-solid fa-paper-plane"></i> Mở & Gửi qua Zalo</button>
+                <button class="btn btn-blue" onclick="moModalPhiieuLuongDauTien()"><i class="fa-solid fa-file-invoice-dollar"></i> Mở Phiếu Lương Tổng Hợp</button><button class="btn zalo-action" onclick="moVaGuiPhieuLuongZalo()"><i class="fa-solid fa-paper-plane"></i> Mở Zalo PC & Gửi phiếu</button>
             </div>
         </div>
 
@@ -1067,7 +1067,7 @@
             </div>
         </div>
         <div class="modal-actions">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-green" onclick="taiAnhPhieuLuongZalo()"><i class="fa-solid fa-download"></i> Tải Ảnh Phiếu Lương</button><button class="btn zalo-action" onclick="guiPhieuLuongQuaZalo()"><i class="fa-solid fa-paper-plane"></i> Gửi qua Zalo</button></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-green" onclick="taiAnhPhieuLuongZalo()"><i class="fa-solid fa-download"></i> Tải Ảnh Phiếu Lương</button><button class="btn zalo-action" onclick="guiPhieuLuongQuaZalo()"><i class="fa-brands fa-telegram"></i> Mở Zalo PC & Gửi phiếu</button></div>
             <div style="display: flex; gap: 8px;">
                 <button class="btn btn-blue" onclick="chuyenNhanSuModal(-1)"><i class="fa-solid fa-chevron-left"></i> Trước</button>
                 <button class="btn btn-blue" onclick="chuyenNhanSuModal(1)">Sau <i class="fa-solid fa-chevron-right"></i></button>
@@ -3255,6 +3255,97 @@
         } catch(e) {
             if(e?.name==='AbortError') return;
             alert('❌ Không thể chuẩn bị phiếu gửi Zalo: '+(e.message||e));
+        }
+    }
+
+    /* ===== ZALO PC DIRECT LAUNCHER =====
+       Không dùng navigator.share trên Windows.
+       Luồng: tạo ảnh -> tải ảnh -> gọi URI zalo:// -> mở Zalo PC.
+    */
+    function moZaloPCTrucTiep() {
+        // Không dùng Windows Share. Browser chỉ yêu cầu Windows mở
+        // ứng dụng đã đăng ký URI scheme zalo://.
+        try {
+            const link=document.createElement('a');
+            link.href='zalo://';
+            link.style.display='none';
+            document.body.appendChild(link);
+            link.click();
+            setTimeout(()=>link.remove(),1000);
+        } catch(e) {
+            hienThiHuongDanZaloPC();
+        }
+
+        // Nếu Zalo PC không được cài/không đăng ký protocol, hiện fallback.
+        setTimeout(()=>hienThiHuongDanZaloPC(),1800);
+    }
+
+    function hienThiHuongDanZaloPC() {
+        if(document.getElementById('zaloPcLauncherModal')) return;
+        const modal=document.createElement('div');
+        modal.id='zaloPcLauncherModal';
+        modal.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,.60);z-index:100000;display:flex;align-items:center;justify-content:center;padding:20px;';
+        modal.innerHTML=`
+        <div style="width:min(560px,100%);background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,.30);">
+          <div style="background:#0068ff;color:#fff;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:19px;font-weight:900;"><i class="fa-solid fa-desktop"></i> Mở Zalo PC</div>
+              <div style="font-size:12px;opacity:.92;margin-top:4px;">Mở ứng dụng Zalo trên máy tính — không mở màn hình Share</div>
+            </div>
+            <button onclick="this.closest('#zaloPcLauncherModal').remove()" style="border:0;background:transparent;color:#fff;font-size:24px;cursor:pointer;">×</button>
+          </div>
+          <div style="padding:20px;">
+            <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:14px;margin-bottom:14px;color:#1e3a8a;line-height:1.6;font-size:13px;">
+              <b>Phiếu lương đã được tạo và lưu trên máy.</b><br>
+              Nếu Zalo PC chưa tự mở, Windows chưa liên kết giao thức <b>zalo://</b> với ứng dụng Zalo.
+            </div>
+            <div style="display:grid;gap:10px;">
+              <button onclick="thuMoZaloPC()" style="width:100%;padding:13px 15px;border:1px solid #93c5fd;background:#dbeafe;color:#075985;border-radius:10px;font-weight:800;cursor:pointer;text-align:left;">
+                <i class="fa-solid fa-rotate-right"></i> Thử mở Zalo PC lại
+              </button>
+              <button onclick="window.open('https://zalo.me/pc','_blank');" style="width:100%;padding:13px 15px;border:1px solid #e2e8f0;background:#f8fafc;color:#334155;border-radius:10px;font-weight:800;cursor:pointer;text-align:left;">
+                <i class="fa-solid fa-download"></i> Tải / cài Zalo PC
+              </button>
+              <button onclick="window.open('https://chat.zalo.me/','_blank');" style="width:100%;padding:13px 15px;border:1px solid #e2e8f0;background:#f8fafc;color:#334155;border-radius:10px;font-weight:800;cursor:pointer;text-align:left;">
+                <i class="fa-solid fa-globe"></i> Mở Zalo Web
+              </button>
+            </div>
+            <div style="margin-top:15px;padding-top:13px;border-top:1px solid #e2e8f0;font-size:12px;color:#64748b;line-height:1.55;">
+              <b>Cách nhanh trên Windows:</b> nhấn phím Windows → gõ <b>Zalo</b> → mở <b>Zalo</b>. Sau đó kéo ảnh phiếu lương vừa tải vào cuộc trò chuyện cần gửi.
+            </div>
+          </div>
+        </div>`;
+        document.body.appendChild(modal);
+    }
+
+    function thuMoZaloPC() {
+        const m=document.getElementById('zaloPcLauncherModal');
+        if(m) m.remove();
+        setTimeout(moZaloPCTrucTiep,100);
+    }
+
+    async function guiPhieuLuongQuaZalo() {
+        try {
+            const blob=await taoAnhPhieuLuongBlob();
+            const name=(document.getElementById('slipName')?.innerText||'Nhan_Su').replace(/[\\/:*?"<>|]/g,'_');
+            const fileName=`Phieu_Luong_${name}_${currentThangKey}_${currentNamKey}.png`;
+
+            // Luôn lưu ảnh trước. Không gọi navigator.share => không xuất hiện
+            // màn hình Share của Windows như người dùng đã phản ánh.
+            const url=URL.createObjectURL(blob);
+            const a=document.createElement('a');
+            a.href=url;
+            a.download=fileName;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(()=>URL.revokeObjectURL(url),3000);
+
+            // Mở trực tiếp ứng dụng Zalo PC qua URI scheme.
+            moZaloPCTrucTiep();
+        } catch(e) {
+            if(e?.name==='AbortError') return;
+            alert('❌ Không thể tạo phiếu lương để gửi Zalo: '+(e.message||e));
         }
     }
 

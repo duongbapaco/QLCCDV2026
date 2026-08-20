@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="vinapaco-login-version" content="FINAL-TaoTaiKhoanBanDau-2026-08-20">
     <title>Hệ Thống Quản Lý VINAPACO - Annual Net Salary & Expense Comparison Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
@@ -334,7 +333,72 @@
         .holiday-banner.show { display:block; }
         @keyframes reminderIn { from { transform:translateY(12px); opacity:0; } to { transform:translateY(0); opacity:1; } }
 
-    </style>
+    
+/* ===== LỊCH VẠN NIÊN VINAPACO - BẢN CHUẨN ÂM DƯƠNG UTC+7 ===== */
+.vanlich-pro { width:min(100% - 24px, 1280px)!important; max-height:94vh; overflow:auto; }
+.vanlich-head {
+    background:linear-gradient(135deg,#075985,#0284c7 55%,#0ea5e9);
+    padding:16px 20px; color:#fff; display:flex; justify-content:space-between; align-items:center; gap:12px;
+    position:sticky; top:0; z-index:5;
+}
+.vanlich-head-title { font-size:15px; font-weight:950; text-transform:uppercase; letter-spacing:.2px; }
+.vanlich-toolbar {
+    display:grid; grid-template-columns:1.2fr 1fr 1fr auto; gap:10px; align-items:end;
+    background:#f1f5f9; padding:14px 18px; border-bottom:1px solid #dbeafe;
+}
+.vanlich-today {
+    display:flex; align-items:center; gap:7px; min-height:38px; padding:0 12px; border-radius:9px;
+    background:#fff; border:1px solid #bae6fd; color:#0369a1; font-weight:900; cursor:pointer;
+}
+.vanlich-main { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(380px,.9fr); gap:14px; padding:14px; background:#eaf2f8; }
+.vanlich-calendar-card,.vanlich-detail-card { background:#fff; border:1px solid #cbd5e1; border-radius:13px; box-shadow:0 5px 16px rgba(15,23,42,.06); }
+.vanlich-calendar-card { padding:12px; }
+.vanlich-month-caption { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
+.vanlich-month-caption b { font-size:15px; color:#0f172a; }
+.vanlich-month-caption span { font-size:11px; color:#64748b; font-weight:750; }
+.vanlich-week { display:grid; grid-template-columns:repeat(7,1fr); gap:5px; margin-bottom:5px; }
+.vanlich-week > div { text-align:center; padding:7px 3px; background:#075985; color:#fff; border-radius:7px; font-size:11px; font-weight:900; }
+.vanlich-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:5px; }
+.vanlich-day {
+    min-height:76px; border:1px solid #dbe3ea; border-radius:8px; background:#fff; padding:6px;
+    cursor:pointer; transition:.16s; position:relative; overflow:hidden;
+}
+.vanlich-day:hover { transform:translateY(-1px); box-shadow:0 5px 12px rgba(2,132,199,.14); border-color:#7dd3fc; }
+.vanlich-day.today { background:#e0f2fe; border:2px solid #0284c7; box-shadow:0 0 0 2px rgba(14,165,233,.12); }
+.vanlich-day.hoangdao { background:#f0fdf4; }
+.vanlich-day.hacdao { background:#fff7ed; }
+.vanlich-day .solar { font-size:16px; font-weight:950; color:#0f172a; line-height:1; }
+.vanlich-day .weekday { font-size:9px; color:#64748b; font-weight:800; margin-left:4px; }
+.vanlich-day .lunar { font-size:10px; color:#15803d; font-weight:850; margin-top:7px; }
+.vanlich-day .badge { font-size:9px; font-weight:900; margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.vanlich-day .today-tag { position:absolute; top:4px; right:4px; font-size:8px; background:#0284c7; color:#fff; padding:2px 5px; border-radius:999px; font-weight:950; }
+.vanlich-day .holiday { color:#c2410c; }
+.vanlich-detail-card { padding:0; overflow:hidden; }
+.vanlich-detail-head { background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:13px 15px; display:flex; justify-content:space-between; gap:10px; align-items:center; }
+.vanlich-detail-head b { color:#0369a1; font-size:14px; font-weight:950; }
+.vanlich-detail-body { padding:14px; }
+.vanlich-hero { border:1px solid #bae6fd; border-radius:11px; padding:12px; background:linear-gradient(135deg,#f0f9ff,#f8fafc); margin-bottom:10px; }
+.vanlich-hero .bigdate { font-size:28px; font-weight:950; color:#075985; line-height:1; }
+.vanlich-hero .subdate { margin-top:6px; font-size:12px; color:#475569; font-weight:750; }
+.vanlich-pills { display:flex; flex-wrap:wrap; gap:6px; margin-top:9px; }
+.vanlich-pill { padding:5px 8px; border-radius:999px; font-size:10px; font-weight:900; border:1px solid #dbeafe; background:#fff; color:#334155; }
+.vanlich-pill.good { background:#ecfdf5; border-color:#bbf7d0; color:#15803d; }
+.vanlich-pill.bad { background:#fff7ed; border-color:#fed7aa; color:#c2410c; }
+.vanlich-section { border-top:1px solid #e2e8f0; padding-top:10px; margin-top:10px; }
+.vanlich-section-title { font-size:11px; color:#0f172a; font-weight:950; text-transform:uppercase; margin-bottom:7px; }
+.vanlich-info-grid { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+.vanlich-info { background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:8px; font-size:10px; line-height:1.5; }
+.vanlich-info b { color:#0369a1; }
+.vanlich-hours { display:grid; grid-template-columns:1fr 1fr; gap:5px; }
+.vanlich-hour { padding:7px 8px; border-radius:7px; font-size:10px; font-weight:800; }
+.vanlich-hour.good { background:#ecfdf5; border:1px solid #bbf7d0; color:#166534; }
+.vanlich-hour.bad { background:#fff1f2; border:1px solid #fecdd3; color:#9f1239; }
+.vanlich-actions { display:flex; gap:7px; flex-wrap:wrap; }
+.vanlich-note { font-size:10px; line-height:1.55; color:#64748b; font-weight:650; }
+@media(max-width:1050px){ .vanlich-main{grid-template-columns:1fr}.vanlich-toolbar{grid-template-columns:1fr 1fr}.vanlich-detail-card{min-width:0} }
+@media(max-width:650px){ .vanlich-toolbar{grid-template-columns:1fr}.vanlich-day{min-height:66px}.vanlich-info-grid,.vanlich-hours{grid-template-columns:1fr}.vanlich-head-title{font-size:12px}.vanlich-main{padding:8px}.vanlich-calendar-card{padding:7px} }
+
+</style>
 </head>
 <body>
 
@@ -354,7 +418,7 @@
                 <label>Tài khoản / Email công vụ</label>
                 <div class="login-field">
                     <i class="fa-solid fa-user"></i>
-                    <input type="text" id="loginUser" placeholder="Nhập tài khoản hoặc email công vụ" autocomplete="off">
+                    <input type="text" id="loginUser" placeholder="Nhập tài khoản hoặc email công vụ" autocomplete="username">
                 </div>
             </div>
 
@@ -362,7 +426,7 @@
                 <label>Mật khẩu</label>
                 <div class="login-field">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="loginPass" placeholder="Nhập mật khẩu" autocomplete="off" onkeydown="handleLoginKeydown(event)">
+                    <input type="password" id="loginPass" placeholder="Nhập mật khẩu" autocomplete="current-password" onkeydown="handleLoginKeydown(event)">
                 </div>
             </div>
 
@@ -375,7 +439,7 @@
                 Kết nối nội bộ • Bảo mật thông tin doanh nghiệp
             </div>
             <div id="firstRunLoginHint" style="display:none;text-align:center;background:#ecfdf5;border:1px solid #bbf7d0;border-radius:10px;padding:9px 10px;color:#166534;font-size:11px;font-weight:750;line-height:1.5;">
-                <i class="fa-solid fa-wand-magic-sparkles"></i> LẦN ĐẦU SỬ DỤNG: Hãy bấm “TẠO TÀI KHOẢN BAN ĐẦU” để tạo tài khoản Quản trị viên. Không có mật khẩu mặc định.
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Lần chạy đầu tiên: hệ thống sẽ yêu cầu tạo tài khoản Quản trị viên riêng, không có mật khẩu mặc định.
             </div>
 
             <div style="text-align:center; font-size:12px; margin-top:2px; font-weight:750;">
@@ -383,18 +447,13 @@
                     <i class="fa-solid fa-key"></i> Quên mật khẩu?
                 </span>
             </div>
-            <div id="initialAccountEntry" style="margin-top:12px;padding-top:14px;border-top:1px solid #d7e8df;">
-                <button type="button" onclick="moManHinhKhoiTaoHeThong()" style="width:100%;min-height:46px;border:1.5px solid #0b9868;border-radius:11px;background:#ffffff;color:#08734e;font-weight:900;cursor:pointer;font-size:13px;letter-spacing:.1px;box-shadow:0 3px 10px rgba(8,115,78,.08);">
-                    <i class="fa-solid fa-user-plus"></i>&nbsp; TẠO TÀI KHOẢN BAN ĐẦU
-                </button>
-                <div style="text-align:center;color:#64748b;font-size:10.5px;font-weight:650;margin-top:7px;">
-                    Lần đầu sử dụng hệ thống? Bấm nút này để tạo tài khoản Quản trị viên.
-                </div>
-            </div>
 
-            <button id="firstRunCreateBtn" type="button" onclick="moManHinhKhoiTaoHeThong()" style="display:none;width:100%;min-height:42px;border:1px solid #9bd8bd;border-radius:10px;background:#f0fdf4;color:#08734e;font-weight:850;cursor:pointer;font-size:12px;">
-                <i class="fa-solid fa-user-plus"></i> TẠO TÀI KHOẢN BAN ĐẦU
-            </button>
+            <div id="firstRunCreateAccountBox" style="display:none;margin-top:12px;text-align:center;">
+                <button type="button" class="btn btn-green" style="width:100%;justify-content:center;padding:10px 12px;border-radius:9px;font-weight:900;" onclick="moManHinhKhoiTaoHeThong()">
+                    <i class="fa-solid fa-user-plus"></i> TẠO TÀI KHOẢN QUẢN TRỊ BAN ĐẦU
+                </button>
+                <div style="font-size:10px;color:#64748b;margin-top:6px;font-weight:650;">Chỉ hiển thị khi hệ thống chưa có tài khoản. Sau khi tạo xong, nút này tự động biến mất.</div>
+            </div>
         </div>
 
         <div class="login-footer">
@@ -410,7 +469,6 @@
             <img id="firstRunVinapacoLogo" src="" alt="VINAPACO" style="width:62px;height:62px;object-fit:contain;background:#fff;border-radius:50%;padding:4px;box-shadow:0 5px 15px rgba(0,0,0,.18);">
             <div>
                 <div style="font-size:17px;font-weight:950;text-transform:uppercase;letter-spacing:.2px;">Khởi tạo hệ thống VINAPACO</div>
-                <div style="font-size:11px;font-weight:650;opacity:.92;margin-top:4px;">Tạo tài khoản Quản trị viên đầu tiên để bắt đầu sử dụng hệ thống</div>
                 <div style="font-size:11px;opacity:.9;margin-top:5px;line-height:1.5;">Thiết lập tài khoản Quản trị viên đầu tiên — không sử dụng tài khoản hoặc mật khẩu mặc định.</div>
             </div>
         </div>
@@ -453,34 +511,47 @@
     </div>
 </div>
 
-<!-- MODAL LỊCH VẠN NIÊN & PHONG THỦY -->
+<!-- MODAL LỊCH VẠN NIÊN & PHONG THỦY - BẢN ĐẦY ĐỦ -->
 <div class="modal-overlay hidden" id="modalLichVanNien">
-    <div class="modal-card" style="max-width: 900px; padding: 0;">
-        <div style="padding: 16px 20px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center;">
-            <b style="text-transform: uppercase;"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên & Phong Thủy Doanh Nghiệp Chuẩn Xác</b>
-            <button class="btn btn-red" style="padding: 4px 10px;" onclick="document.getElementById('modalLichVanNien').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div style="padding: 20px; background: #f8fafc; display: flex; flex-direction: column; gap: 16px;">
-            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-                <div class="form-group" style="flex: 1;"><label>Chọn Tháng Tra Cứu</label><select id="lichThangSelect" style="padding: 8px;" onchange="renderLichGridPro()"></select></div>
-                <div class="form-group" style="flex: 1;"><label>Chọn Năm</label><select id="lichNamSelect" style="padding: 8px;" onchange="renderLichGridPro()"><option value="2025">2025</option><option value="2026" selected>2026</option><option value="2027">2027</option></select></div>
-            </div>
-            
-            <div style="display: grid; grid-template-columns: 1fr 340px; gap: 16px; align-items: start;">
-                <div style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px;">
-                    <div id="lichGridContainer" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center;"></div>
-                </div>
-                <div id="lichChiTietPhongThuyBox" style="background: white; border: 2px solid #0284c7; border-radius: 10px; padding: 16px; font-size: 13px; line-height: 1.6; color: #0f172a; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
-                    <div style="font-weight: 900; font-size: 14px; color: #0284c7; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
-                        <i class="fa-solid fa-compass"></i> Chi Tiết Phong Thủy Ngày
-                    </div>
-                    <div id="chiTietNgayNoiDung" style="display: flex; flex-direction: column; gap: 8px;">
-                        👉 <i>Click vào một ngày bất kỳ trên lịch để xem đầy đủ Can Chi, Trực, Sao tốt/xấu và Hướng xuất hành.</i>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="modal-card vanlich-pro">
+    <div class="vanlich-head">
+      <div>
+        <div class="vanlich-head-title"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên & Phong Thủy Doanh Nghiệp</div>
+        <div style="font-size:10px;opacity:.88;margin-top:4px;font-weight:700;">Âm Dương lịch Việt Nam • múi giờ UTC+7 • Can Chi • Trực • Hoàng/Hắc đạo • Giờ tốt/xấu</div>
+      </div>
+      <button class="btn btn-red" style="padding:5px 10px;" onclick="document.getElementById('modalLichVanNien').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
     </div>
+
+    <div class="vanlich-toolbar">
+      <div class="form-group"><label>Tháng tra cứu</label><select id="lichThangSelect" onchange="renderLichGridPro()"></select></div>
+      <div class="form-group"><label>Năm</label><select id="lichNamSelect" onchange="renderLichGridPro()"></select></div>
+      <div class="form-group"><label>Ngày đang xem</label><input id="lichSelectedDateText" readonly style="background:#fff;"></div>
+      <button class="vanlich-today" onclick="lichChonHomNay()"><i class="fa-solid fa-crosshairs"></i> Hôm nay</button>
+    </div>
+
+    <div class="vanlich-main">
+      <div class="vanlich-calendar-card">
+        <div class="vanlich-month-caption">
+          <b id="lichMonthCaption">Lịch tháng</b>
+          <span>🔵 Hôm nay • 🟢 Hoàng đạo • 🟠 Hắc đạo</span>
+        </div>
+        <div class="vanlich-week">
+          <div>CN</div><div>THỨ 2</div><div>THỨ 3</div><div>THỨ 4</div><div>THỨ 5</div><div>THỨ 6</div><div>THỨ 7</div>
+        </div>
+        <div id="lichGridContainer" class="vanlich-grid"></div>
+      </div>
+
+      <div class="vanlich-detail-card">
+        <div class="vanlich-detail-head">
+          <b><i class="fa-solid fa-compass"></i> TRA CỨU CHI TIẾT NGÀY</b>
+          <span id="lichDetailRating" class="vanlich-pill">Đang chọn ngày</span>
+        </div>
+        <div id="chiTietNgayNoiDung" class="vanlich-detail-body">
+          <div class="vanlich-note">Chọn một ngày trên lịch để xem đầy đủ thông tin.</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- NỘI DUNG CHÍNH -->
@@ -511,7 +582,7 @@
         <div class="info-widget-card">
             <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-clock"></i> Đồng Hồ Số Thời Gian Thực</div>
             <div class="clock-display" id="liveClockDisplay">00:00:00</div>
-            <div style="font-size: 12px; font-weight: 700; color: var(--text-muted);" id="liveDateDisplay">Thứ Ba, 18/08/2026</div>
+            <div style="font-size: 12px; font-weight: 700; color: var(--text-muted);" id="liveDateDisplay">Đang cập nhật...</div>
         </div>
 
         <div class="info-widget-card">
@@ -1651,42 +1722,25 @@
     const trucList = ["Trực Kiến", "Trực Trừ", "Trực Mãn", "Trực Bình", "Trực Định", "Trực Chấp", "Trực Phá", "Trực Nguy", "Trực Thành", "Trực Thu", "Trực Khai", "Trực Bế"];
     const saoList = ["Sao Thái Dương (Cát)", "Sao Thái Âm (Cát)", "Sao Mộc Đức (Cát)", "Sao Vân Hớn (Hung)", "Sao Kế Đô (Hung)", "Sao La Hầu (Hung)", "Sao Thủy Diệu (Bình)", "Sao Thổ Tú (Bình)"];
     
+    // API tương thích cho widget lịch ở thanh thông tin đầu trang.
+    // Hàm này dùng chung thuật toán Âm lịch chuẩn bên dưới, không còn cộng ngày giả lập.
     function convertSolar2Lunar(dd, mm, yy) {
-        let targetDate = new Date(yy, mm - 1, dd);
-        let baseRefDate = new Date(2026, 7, 18);
-        let diffDays = Math.round((targetDate - baseRefDate) / (1000 * 60 * 60 * 24));
-        
-        let baseLunarDay = 6;
-        let baseLunarMonth = 7;
-        let baseLunarYear = 2026;
-        
-        let totalLunarDays = (baseLunarMonth - 1) * 29.5 + baseLunarDay + diffDays;
-        let lunarMonth = Math.floor(totalLunarDays / 29.5) % 12 + 1;
-        let lunarDay = Math.round(totalLunarDays % 29.5);
-        if (lunarDay <= 0) lunarDay = 29 + lunarDay;
-        if (lunarDay > 30) lunarDay = 30;
-
-        let canYear = canList[(yy - 4) % 10];
-        let chiYear = chiList[(yy - 4) % 12];
-        let canDay = canList[(Math.abs(diffDays) + 1) % 10];
-        let chiDay = chiList[(Math.abs(diffDays) + 3) % 12];
-        let truc = trucList[Math.abs(diffDays) % 12];
-        let sao = saoList[(dd + mm + yy) % saoList.length];
-        let isHoangDao = (Math.abs(diffDays) % 3 === 0 || Math.abs(diffDays) % 5 === 0);
-
-        return {
-            day: lunarDay,
-            month: lunarMonth,
-            year: baseLunarYear,
-            canChiNam: `${canYear} ${chiYear}`,
-            canChiNgay: `${canDay} ${chiDay}`,
-            truc: truc,
-            sao: sao,
-            isHoangDao: isHoangDao,
-            huongXuatHanh: isHoangDao ? "Tài thần: Đông Nam | Hỷ thần: Tây Bắc" : "Tài thần: Chính Nam | Hỷ thần: Chính Đông",
-            viecNenLam: isHoangDao ? "Ký kết hợp đồng, giao dịch tài chính, khai trương, xuất hành, cất nóc." : "Cúng tế, dọn dẹp văn phòng, ký kết giấy tờ thông thường.",
-            viecKienKy: isHoangDao ? "Kiện tụng, mai táng." : "Động thổ lớn, khởi công xây dựng, kiện tụng."
-        };
+        const lunar = (typeof window !== 'undefined' && typeof window.__vinapacoLunarConvert === 'function')
+            ? window.__vinapacoLunarConvert(dd, mm, yy)
+            : null;
+        if (lunar) {
+            const ccDay = (typeof window !== 'undefined' && typeof window.__vinapacoCanChiDay === 'function')
+                ? window.__vinapacoCanChiDay(dd,mm,yy) : {text:""};
+            const ccYear = (typeof window !== 'undefined' && typeof window.__vinapacoCanChiYear === 'function')
+                ? window.__vinapacoCanChiYear(lunar.year) : "";
+            return {
+                day:lunar.day, month:lunar.month, year:lunar.year,
+                canChiNam:ccYear, canChiNgay:ccDay.text,
+                truc:"Đang cập nhật", sao:"Đang cập nhật",
+                isHoangDao:false, huongXuatHanh:"", viecNenLam:"", viecKienKy:""
+            };
+        }
+        return {day:1,month:1,year:yy,canChiNam:"",canChiNgay:"",truc:"",sao:"",isHoangDao:false,huongXuatHanh:"",viecNenLam:"",viecKienKy:""};
     }
 
     async function goiApiLayThoiTiet(lat, lon, cityName) {
@@ -1958,11 +2012,6 @@
     }
 
     window.addEventListener('DOMContentLoaded', async () => {
-        capNhatNutTaoTaiKhoanBanDau();
-        // Nếu chưa có tài khoản trên trình duyệt, mở luôn màn hình tạo tài khoản ban đầu.
-        if(!Array.isArray(danhSachTaiKhoanHeThong) || danhSachTaiKhoanHeThong.length===0){
-            setTimeout(()=>moManHinhKhoiTaoHeThong(),350);
-        }
         let inputUrlSetting = document.getElementById('inputGasUrlSetting');
         if(inputUrlSetting) inputUrlSetting.value = gasWebhookUrl;
         const reportDateEl = document.getElementById('surveyReportDate');
@@ -1983,18 +2032,7 @@
         doiThangHoSoLuong();
         await tuDongTaiDuLieuTuDrive();
         renderAccountTable();
-        const hasAccounts = Array.isArray(danhSachTaiKhoanHeThong) && danhSachTaiKhoanHeThong.length > 0;
-        const hint = document.getElementById('firstRunLoginHint');
-        const createBtn = document.getElementById('firstRunCreateBtn');
-        if (!hasAccounts) {
-            if(hint) hint.style.display='block';
-            if(createBtn) createBtn.style.display='block';
-            // Lần chạy đầu tiên: mở thẳng biểu mẫu tạo tài khoản để người dùng biết phải làm gì.
-            setTimeout(() => moManHinhKhoiTaoHeThong(), 120);
-        } else {
-            if(hint) hint.style.display='none';
-            if(createBtn) createBtn.style.display='none';
-        }
+        capNhatTrangThaiKhoiTaoTaiKhoan(true);
         renderQuyHoachTable();
         khoiTaoTuDongDongBoNgam();
         traCuuThoiTietTheoThanhPho();
@@ -2024,59 +2062,427 @@
         }
     }
 
-    function moModalLichVanNien() {
-        let selThang = document.getElementById('lichThangSelect');
-        selThang.innerHTML = "";
-        let thansNames = ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"];
-        thansNames.forEach((t, idx) => {
-            selThang.innerHTML += `<option value="${idx}" ${idx === 5 ? 'selected' : ''}>${t}</option>`;
-        });
+
+    /* ============================================================
+       LỊCH VẠN NIÊN VINAPACO - THUẬT TOÁN ÂM LỊCH VIỆT NAM UTC+7
+       Dựa trên phép tính lịch âm dương thiên văn (new moon + solar longitude).
+       Không dùng phép cộng ngày giả lập như bản cũ.
+       ============================================================ */
+
+    const LICH_CAN = ["Giáp","Ất","Bính","Đinh","Mậu","Kỷ","Canh","Tân","Nhâm","Quý"];
+    const LICH_CHI = ["Tý","Sửu","Dần","Mão","Thìn","Tỵ","Ngọ","Mùi","Thân","Dậu","Tuất","Hợi"];
+    const LICH_TRUC = ["Kiến","Trừ","Mãn","Bình","Định","Chấp","Phá","Nguy","Thành","Thu","Khai","Bế"];
+    const LICH_TIET_KHI = [
+        "Xuân phân","Thanh minh","Cốc vũ","Lập hạ","Tiểu mãn","Mang chủng",
+        "Hạ chí","Tiểu thử","Đại thử","Lập thu","Xử thử","Bạch lộ",
+        "Thu phân","Hàn lộ","Sương giáng","Lập đông","Tiểu tuyết","Đại tuyết",
+        "Đông chí","Tiểu hàn","Đại hàn","Lập xuân","Vũ thủy","Kinh trập"
+    ];
+    const LICH_NHI_THAP_BAT_TU = [
+        ["Giác","Mộc","Giao","Bình Tú"],
+        ["Cang","Kim","Long","Hung"],
+        ["Đê","Thổ","Lạc","Hung"],
+        ["Phòng","Nhật","Thố","Kiết"],
+        ["Tâm","Nguyệt","Hồ","Hung"],
+        ["Vĩ","Hỏa","Hổ","Kiết"],
+        ["Cơ","Thủy","Báo","Kiết"],
+        ["Đẩu","Mộc","Giải","Kiết"],
+        ["Ngưu","Kim","Ngưu","Hung"],
+        ["Nữ","Thổ","Bức","Hung"],
+        ["Hư","Nhật","Thử","Hung"],
+        ["Nguy","Nguyệt","Yến","Hung"],
+        ["Thất","Hỏa","Trư","Kiết"],
+        ["Bích","Thủy","Du","Kiết"],
+        ["Khuê","Mộc","Lang","Bình"],
+        ["Lâu","Kim","Cẩu","Kiết"],
+        ["Vị","Thổ","Trĩ","Kiết"],
+        ["Mão","Nhật","Kê","Hung"],
+        ["Tất","Nguyệt","Ô","Kiết"],
+        ["Chủy","Hỏa","Hầu","Hung"],
+        ["Sâm","Thủy","Viên","Hung"],
+        ["Tỉnh","Mộc","Ngạn","Hung"],
+        ["Quỷ","Kim","Dương","Hung"],
+        ["Liễu","Thổ","Chương","Hung"],
+        ["Tinh","Nhật","Mã","Hung"],
+        ["Trương","Nguyệt","Lộc","Kiết"],
+        ["Dực","Hỏa","Xà","Hung"],
+        ["Chẩn","Thủy","Dẫn","Kiết"]
+    ];
+    const LICH_LUC_DIEU = ["Đại An","Lưu Niên","Tốc Hỷ","Xích Khẩu","Tiểu Cát","Không Vong"];
+    const LICH_LUC_DIEU_YNGHIA = {
+        "Đại An":"Ổn định, bình an, thích hợp việc cần bền vững.",
+        "Lưu Niên":"Việc dễ kéo dài, chậm tiến độ; nên kiên nhẫn.",
+        "Tốc Hỷ":"Tin vui, thuận lợi nhanh; dân gian thường ưu tiên buổi sáng.",
+        "Xích Khẩu":"Dễ tranh luận, thị phi; thận trọng giao tiếp và ký kết.",
+        "Tiểu Cát":"Có quý nhân, thuận lợi vừa phải, thích hợp việc giao dịch.",
+        "Không Vong":"Dễ hụt, chậm hoặc khó thành; nên tránh việc đại sự."
+    };
+    const LICH_NAP_AM_60 = [
+        "Hải Trung Kim","Hải Trung Kim","Lô Trung Hỏa","Lô Trung Hỏa","Đại Lâm Mộc","Đại Lâm Mộc",
+        "Lộ Bàng Thổ","Lộ Bàng Thổ","Kiếm Phong Kim","Kiếm Phong Kim","Sơn Đầu Hỏa","Sơn Đầu Hỏa",
+        "Giản Hạ Thủy","Giản Hạ Thủy","Thành Đầu Thổ","Thành Đầu Thổ","Bạch Lạp Kim","Bạch Lạp Kim",
+        "Dương Liễu Mộc","Dương Liễu Mộc","Tuyền Trung Thủy","Tuyền Trung Thủy","Ốc Thượng Thổ","Ốc Thượng Thổ",
+        "Tích Lịch Hỏa","Tích Lịch Hỏa","Tùng Bách Mộc","Tùng Bách Mộc","Trường Lưu Thủy","Trường Lưu Thủy",
+        "Sa Trung Kim","Sa Trung Kim","Sơn Hạ Hỏa","Sơn Hạ Hỏa","Bình Địa Mộc","Bình Địa Mộc",
+        "Bích Thượng Thổ","Bích Thượng Thổ","Kim Bạch Kim","Kim Bạch Kim","Phúc Đăng Hỏa","Phúc Đăng Hỏa",
+        "Thiên Hà Thủy","Thiên Hà Thủy","Đại Dịch Thổ","Đại Dịch Thổ","Thoa Xuyến Kim","Thoa Xuyến Kim",
+        "Tang Đố Mộc","Tang Đố Mộc","Đại Khê Thủy","Đại Khê Thủy","Sa Trung Thổ","Sa Trung Thổ",
+        "Thiên Thượng Hỏa","Thiên Thượng Hỏa","Thạch Lựu Mộc","Thạch Lựu Mộc","Đại Hải Thủy","Đại Hải Thủy"
+    ];
+    const LICH_HOUR_NAMES = ["Tý","Sửu","Dần","Mão","Thìn","Tỵ","Ngọ","Mùi","Thân","Dậu","Tuất","Hợi"];
+    const LICH_HOUR_RANGES = ["23h–01h","01h–03h","03h–05h","05h–07h","07h–09h","09h–11h","11h–13h","13h–15h","15h–17h","17h–19h","19h–21h","21h–23h"];
+    const LICH_HOUR_GODS = {
+        0:["Kim Quỹ","Kim Đường","Thiên Hình","Chu Tước","Thiên Lao","Nguyên Vũ","Tư Mệnh","Câu Trận","Thanh Long","Minh Đường","Thiên Hình","Chu Tước"],
+        1:["Thiên Hình","Chu Tước","Kim Quỹ","Kim Đường","Bạch Hổ","Ngọc Đường","Thiên Lao","Nguyên Vũ","Tư Mệnh","Câu Trận","Thanh Long","Minh Đường"],
+        2:["Thanh Long","Minh Đường","Thiên Hình","Chu Tước","Kim Quỹ","Kim Đường","Bạch Hổ","Ngọc Đường","Thiên Lao","Nguyên Vũ","Tư Mệnh","Câu Trận"],
+        3:["Tư Mệnh","Câu Trận","Thanh Long","Minh Đường","Thiên Hình","Chu Tước","Kim Quỹ","Kim Đường","Bạch Hổ","Ngọc Đường","Thiên Lao","Nguyên Vũ"],
+        4:["Thiên Lao","Nguyên Vũ","Tư Mệnh","Câu Trận","Thanh Long","Minh Đường","Thiên Hình","Chu Tước","Kim Quỹ","Kim Đường","Bạch Hổ","Ngọc Đường"],
+        5:["Ngọc Đường","Thiên Lao","Nguyên Vũ","Tư Mệnh","Câu Trận","Thanh Long","Minh Đường","Thiên Hình","Chu Tước","Kim Quỹ","Kim Đường","Bạch Hổ"]
+    };
+    const LICH_GOOD_HOURS = {
+        0:[0,1,3,6,8,9],   // Tý/Ngọ
+        1:[2,3,5,8,10,11], // Sửu/Mùi
+        2:[0,1,4,5,7,10],  // Dần/Thân
+        3:[0,2,3,6,7,9],   // Mão/Dậu
+        4:[2,4,5,8,9,11],  // Thìn/Tuất
+        5:[1,4,6,7,10,11]  // Tỵ/Hợi
+    };
+
+    function lichJdFromDate(dd, mm, yy) {
+        const a = Math.floor((14-mm)/12), y = yy + 4800 - a, m = mm + 12*a - 3;
+        let jd = dd + Math.floor((153*m+2)/5) + 365*y + Math.floor(y/4) - Math.floor(y/100) + Math.floor(y/400) - 32045;
+        if (jd < 2299161) jd = dd + Math.floor((153*m+2)/5) + 365*y + Math.floor(y/4) - 32083;
+        return jd;
+    }
+    function lichNewMoon(k) {
+        const T = k/1236.85, T2=T*T, T3=T2*T, dr=Math.PI/180;
+        let Jd1=2415020.75933+29.53058868*k+0.0001178*T2-0.000000155*T3;
+        Jd1 += 0.00033*Math.sin((166.56+132.87*T-0.009173*T2)*dr);
+        const M=359.2242+29.10535608*k-0.0000333*T2-0.00000347*T3;
+        const Mpr=306.0253+385.81691806*k+0.0107306*T2+0.00001236*T3;
+        const F=21.2964+390.67050646*k-0.0016528*T2-0.00000239*T3;
+        let C1=(0.1734-0.000393*T)*Math.sin(M*dr)+0.0021*Math.sin(2*M*dr)-0.4068*Math.sin(Mpr*dr)+0.0161*Math.sin(2*Mpr*dr)-0.0004*Math.sin(3*Mpr*dr)+0.0104*Math.sin(2*F*dr)-0.0051*Math.sin((M+Mpr)*dr)-0.0074*Math.sin((M-Mpr)*dr)+0.0004*Math.sin((2*F+M)*dr)-0.0004*Math.sin((2*F-M)*dr)-0.0006*Math.sin((2*F+Mpr)*dr)+0.0010*Math.sin((2*F-Mpr)*dr)+0.0005*Math.sin((2*Mpr+M)*dr);
+        const deltat = T < -11 ? 0.001+0.000839*T+0.0002261*T2-0.00000845*T3-0.000000081*T*T3 : -0.000278+0.000265*T+0.000262*T2;
+        return Jd1+C1-deltat;
+    }
+    function lichSunLongitude(jdn) {
+        const T=(jdn-2451545.0)/36525, T2=T*T, dr=Math.PI/180;
+        const M=357.52910+35999.05030*T-0.0001559*T2-0.00000048*T*T2;
+        const L0=280.46645+36000.76983*T+0.0003032*T2;
+        const DL=(1.914600-0.004817*T-0.000014*T2)*Math.sin(dr*M)+(0.019993-0.000101*T)*Math.sin(2*dr*M)+0.000290*Math.sin(3*dr*M);
+        let L=(L0+DL)*dr;
+        L = L - 2*Math.PI*Math.floor(L/(2*Math.PI));
+        return L*180/Math.PI;
+    }
+    function lichNewMoonDay(k, tz) { return Math.floor(lichNewMoon(k)+0.5+tz/24); }
+    function lichGetLunarMonth11(yy, tz) {
+        const off=lichJdFromDate(31,12,yy)-2415021, k=Math.floor(off/29.530588853);
+        let nm=lichNewMoonDay(k,tz), sunLong=Math.floor(lichSunLongitude(nm)*6/180);
+        if(sunLong>=9) nm=lichNewMoonDay(k-1,tz);
+        return nm;
+    }
+    function lichGetLeapMonthOffset(a11,tz) {
+        const k=Math.floor(0.5+(a11-2415021)/29.530588853);
+        let last=0, i=1, arc=Math.floor(lichSunLongitude(lichNewMoonDay(k+i,tz))*6/180);
+        do { last=arc; i++; arc=Math.floor(lichSunLongitude(lichNewMoonDay(k+i,tz))*6/180); } while(arc!==last && i<14);
+        return i-1;
+    }
+    function convertSolar2Lunar(dd,mm,yy,tz=7) {
+        const dayNumber=lichJdFromDate(dd,mm,yy);
+        let k=Math.floor((dayNumber-2415021.076998695)/29.530588853);
+        let monthStart=lichNewMoonDay(k+1,tz);
+        if(monthStart>dayNumber) monthStart=lichNewMoonDay(k,tz);
+        let a11=lichGetLunarMonth11(yy,tz), b11=a11, lunarYear;
+        if(a11>=monthStart){ lunarYear=yy; a11=lichGetLunarMonth11(yy-1,tz); }
+        else { lunarYear=yy+1; b11=lichGetLunarMonth11(yy+1,tz); }
+        const lunarDay=dayNumber-monthStart+1;
+        let diff=Math.floor((monthStart-a11)/29);
+        let lunarLeap=0, lunarMonth=diff+11;
+        if(b11-a11>365){
+            const leapDiff=lichGetLeapMonthOffset(a11,tz);
+            if(diff>=leapDiff){ lunarMonth=diff+10; if(diff===leapDiff) lunarLeap=1; }
+        }
+        if(lunarMonth>12) lunarMonth-=12;
+        if(lunarMonth>=11 && diff<4) lunarYear--;
+        return {day:lunarDay,month:lunarMonth,year:lunarYear,leap:lunarLeap};
+    }
+    function lichCanChiYear(y){ return LICH_CAN[(y+6)%10]+" "+LICH_CHI[(y+8)%12]; }
+    function lichCanChiMonth(lunarYear,lunarMonth){
+        const canYear=(lunarYear+6)%10;
+        const canMonth=(canYear*2+lunarMonth+2)%10;
+        const chiMonth=(lunarMonth+1)%12;
+        return LICH_CAN[canMonth]+" "+LICH_CHI[chiMonth];
+    }
+    function lichCanChiDay(dd,mm,yy){
+        const jd=lichJdFromDate(dd,mm,yy);
+        return {can:(jd+9)%10, chi:(jd+1)%12, text:LICH_CAN[(jd+9)%10]+" "+LICH_CHI[(jd+1)%12]};
+    }
+    function lichNapAm(can,chi){
+        for(let i=0;i<60;i++) if(i%10===can && i%12===chi) return LICH_NAP_AM_60[i];
+        return "Đang cập nhật";
+    }
+    function lichTruc(lunarMonth, dayChi){
+        // Tháng âm nào thì ngày cùng địa chi với tháng là Trực Kiến.
+        const monthStartChi=(lunarMonth+1)%12;
+        return LICH_TRUC[(dayChi-monthStartChi+12)%12];
+    }
+    function lichHoangDaoTheoThang(lunarMonth, dayChi){
+        const groups={
+            1:[0,1,5,7], 2:[2,3,7,9], 3:[4,5,9,11],
+            4:[6,7,1,9], 5:[8,9,1,3], 6:[10,11,3,5]
+        };
+        const g=groups[((lunarMonth-1)%6)+1]||[];
+        return g.includes(dayChi);
+    }
+    function lichDayThan(lunarMonth,dayChi){
+        const starts=[0,2,4,6,8,10]; // tháng 1/7, 2/8...
+        const start=starts[(lunarMonth-1)%6];
+        const gods=["Thanh Long","Minh Đường","Thiên Hình","Chu Tước","Kim Quỹ","Kim Đường","Bạch Hổ","Ngọc Đường","Thiên Lao","Nguyên Vũ","Tư Mệnh","Câu Trận"];
+        return gods[(dayChi-start+12)%12];
+    }
+    function lichTietKhi(dd,mm,yy){
+        const jd=lichJdFromDate(dd,mm,yy);
+        const deg=lichSunLongitude(jd);
+        const idx=Math.floor(deg/15)%24;
+        return {name:LICH_TIET_KHI[idx], degree:Math.round(deg*10)/10};
+    }
+    function lichNhiThapBatTu(dd,mm,yy){
+        // Neo chu kỳ theo ngày 20/08/2026 = Giác, đã đối chiếu lịch vạn niên Việt Nam.
+        const anchor=lichJdFromDate(20,8,2026), jd=lichJdFromDate(dd,mm,yy);
+        return LICH_NHI_THAP_BAT_TU[((jd-anchor)%28+28)%28];
+    }
+    function lichLucDieu(lunarMonth,lunarDay){
+        // Tháng 1/7 Đại An, 2/8 Lưu Niên, 3/9 Tốc Hỷ, 4/10 Xích Khẩu, 5/11 Tiểu Cát, 6/12 Không Vong.
+        const start=(lunarMonth-1)%6;
+        return LICH_LUC_DIEU[(start+lunarDay-1)%6];
+    }
+    function lichGoodHours(dayChi){
+        return LICH_GOOD_HOURS[dayChi%6];
+    }
+    function lichHourCan(dayCan,hourChi){
+        return (dayCan*2+hourChi)%10;
+    }
+    function lichHourRows(dayCan,dayChi){
+        const good=lichGoodHours(dayChi);
+        return LICH_HOUR_NAMES.map((chi,i)=>({
+            chi, range:LICH_HOUR_RANGES[i], can:lichHourCan(dayCan,i),
+            canChi:LICH_CAN[lichHourCan(dayCan,i)]+" "+chi,
+            good:good.includes(i),
+            god:(LICH_HOUR_GODS[dayChi%6]||[])[i]||""
+        }));
+    }
+    function lichHuongXuatHanh(dayCan){
+        const hy={
+            0:"Đông Bắc",1:"Tây Bắc",2:"Tây Nam",3:"Chính Nam",4:"Đông Nam",
+            5:"Đông Bắc",6:"Tây Bắc",7:"Tây Nam",8:"Chính Nam",9:"Đông Nam"
+        };
+        const tai={
+            0:"Đông Nam",1:"Đông Nam",2:"Chính Đông",3:"Chính Đông",4:"Chính Bắc",
+            5:"Chính Nam",6:"Tây Nam",7:"Tây Nam",8:"Tây Bắc",9:"Chính Bắc"
+        };
+        return {hy:hy[dayCan],tai:tai[dayCan]};
+    }
+    function lichTuoiQuanHe(dayChi){
+        const xung=(dayChi+6)%12;
+        const lucHop=(dayChi+6)%12; // đối xứng 6 chi
+        const tamHop={
+            0:[4,8],1:[5,9],2:[6,10],3:[7,11],4:[8,0],5:[9,1],
+            6:[10,2],7:[11,3],8:[0,4],9:[1,5],10:[2,6],11:[3,7]
+        }[dayChi];
+        const hinh={
+            0:[3],1:[2,5],2:[5,8],3:[2],4:[5],5:[2,8],6:[3],7:[5],8:[2,5],9:[8],10:[5],11:[2,8]
+        }[dayChi]||[];
+        const hai={0:9,1:8,2:5,3:6,4:7,5:2,6:3,7:4,8:1,9:0,10:11,11:10}[dayChi];
+        const pha={0:9,1:8,2:11,3:10,4:9,5:8,6:3,7:2,8:1,9:0,10:11,11:2}[dayChi];
+        return {
+            xung:LICH_CHI[xung], lucHop:LICH_CHI[lucHop], tamHop:tamHop.map(x=>LICH_CHI[x]).join(" – "),
+            hinh:hinh.map(x=>LICH_CHI[x]).join(" – "), hai:LICH_CHI[hai], pha:LICH_CHI[pha]
+        };
+    }
+    function lichHoliday(y,m,d){
+        try { return typeof getHolidayInfo==="function" ? (getHolidayInfo(y,m,d)||"") : ""; } catch(e){ return ""; }
+    }
+
+    function lichChonHomNay(){
+        const now=new Date();
+        document.getElementById('lichNamSelect').value=String(now.getFullYear());
+        document.getElementById('lichThangSelect').value=String(now.getMonth());
+        renderLichGridPro(now.getDate());
+    }
+
+    function moModalLichVanNien(){
+        const now=new Date();
+        const ms=document.getElementById('lichThangSelect'), ys=document.getElementById('lichNamSelect');
+        ms.innerHTML="";
+        const names=["Tháng 01","Tháng 02","Tháng 03","Tháng 04","Tháng 05","Tháng 06","Tháng 07","Tháng 08","Tháng 09","Tháng 10","Tháng 11","Tháng 12"];
+        names.forEach((n,i)=>ms.insertAdjacentHTML('beforeend',`<option value="${i}">${n}</option>`));
+        ys.innerHTML="";
+        for(let y=now.getFullYear()-5;y<=now.getFullYear()+5;y++) ys.insertAdjacentHTML('beforeend',`<option value="${y}">${y}</option>`);
+        ys.value=String(now.getFullYear());
+        ms.value=String(now.getMonth());
         document.getElementById('modalLichVanNien').classList.remove('hidden');
-        renderLichGridPro();
+        renderLichGridPro(now.getDate());
     }
 
-    function renderLichGridPro() {
-        let grid = document.getElementById('lichGridContainer');
-        grid.innerHTML = "<div>CN</div><div>T2</div><div>T3</div><div>T4</div><div>T5</div><div>T6</div><div>T7</div>";
-        let m = parseInt(document.getElementById('lichThangSelect').value) + 1;
-        let y = parseInt(document.getElementById('lichNamSelect').value);
-        let daysInMonth = new Date(y, m, 0).getDate();
-        let firstDay = new Date(y, m - 1, 1).getDay();
-
-        for (let i = 0; i < firstDay; i++) {
-            grid.innerHTML += `<div></div>`;
+    function renderLichGridPro(selectedDay=null){
+        const grid=document.getElementById('lichGridContainer');
+        if(!grid) return;
+        const m=parseInt(document.getElementById('lichThangSelect').value)+1;
+        const y=parseInt(document.getElementById('lichNamSelect').value);
+        const daysInMonth=new Date(y,m,0).getDate();
+        const firstDay=new Date(y,m-1,1).getDay();
+        const now=new Date();
+        const isCurrentMonth=(y===now.getFullYear() && m===now.getMonth()+1);
+        const dayToSelect=selectedDay || (isCurrentMonth?now.getDate():1);
+        document.getElementById('lichMonthCaption').textContent=`Tháng ${String(m).padStart(2,'0')} năm ${y}`;
+        grid.innerHTML="";
+        for(let i=0;i<firstDay;i++) grid.insertAdjacentHTML('beforeend','<div></div>');
+        for(let d=1;d<=daysInMonth;d++){
+            const lunar=convertSolar2Lunar(d,m,y);
+            const ccDay=lichCanChiDay(d,m,y);
+            const hoang=lichHoangDaoTheoThang(lunar.month,ccDay.chi);
+            const holiday=lichHoliday(y,m,d);
+            const isToday=isCurrentMonth && d===now.getDate();
+            const isSelected=d===dayToSelect;
+            const cls=`vanlich-day ${isToday?'today':''} ${hoang?'hoangdao':'hacdao'}`;
+            grid.insertAdjacentHTML('beforeend',`
+                <div class="${cls}" onclick="hienThiPhongThuyNgay(${d},${m},${y})">
+                    ${isToday?'<span class="today-tag">HÔM NAY</span>':''}
+                    <div><span class="solar">${d}</span><span class="weekday">${['CN','T2','T3','T4','T5','T6','T7'][new Date(y,m-1,d).getDay()]}</span></div>
+                    <div class="lunar">Âm ${lunar.day}/${lunar.month}${lunar.leap?' Nhuận':''}</div>
+                    <div class="badge ${holiday?'holiday':(hoang?'':'')}">${holiday?'🎉 '+escapeHtml(holiday):hoang?'🟢 Hoàng đạo':'🟠 Hắc đạo'}</div>
+                </div>`);
         }
-
-        for (let d = 1; d <= daysInMonth; d++) {
-            let lunar = convertSolar2Lunar(d, m, y);
-            let isToday = (d === _now.getDate() && m === (_now.getMonth() + 1) && y === _now.getFullYear());
-            let bgStyle = isToday ? "background: #e0f2fe; border-color: #0284c7;" : (lunar.isHoangDao ? "background: #f0fdf4; border-color: #86efac;" : "background: #ffffff; border-color: #cbd5e1;");
-            
-            grid.innerHTML += `<div onclick="hienThiPhongThuyNgay(${d}, ${m}, ${y})" style="padding:6px; border:1px solid; border-radius:8px; ${bgStyle} font-size:11px; display:flex; flex-direction:column; gap:2px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
-                <b style="font-size:13px; color:#0f172a;">${d}</b>
-                <span style="color:#16a34a; font-weight:700;">Âm: ${lunar.day}/${lunar.month}</span>
-                <span style="color:${holidayName?'#c2410c':(lunar.isHoangDao?'#15803d':'#475569')}; font-size:10px; font-weight:bold;">${holidayName ? '🎉 '+holidayName : (lunar.isHoangDao?'✨ Hoàng Đạo':'Bình thường')}</span>
-            </div>`;
-        }
-
-        hienThiPhongThuyNgay(18, 8, y);
+        hienThiPhongThuyNgay(dayToSelect,m,y);
     }
 
-    function hienThiPhongThuyNgay(d, m, y) {
-        let lunar = convertSolar2Lunar(d, m, y);
-        let box = document.getElementById('chiTietNgayNoiDung');
-        const holidayName = getHolidayInfo(y,m,d);
-        box.innerHTML = `
-            <div>📅 <b>Dương lịch:</b> Ngày ${d}/${m}/${y}</div>
-            <div>🌙 <b>Âm lịch:</b> Ngày ${lunar.day} tháng ${lunar.month} năm ${lunar.year} (${lunar.canChiNam})</div>
-            <div>✨ <b>Can Chi ngày:</b> ${lunar.canChiNgay}</div>
-            <div>📜 <b>Trực ngày:</b> ${lunar.truc}</div>
-            <div>🌟 <b>Sao chiếu mệnh:</b> ${lunar.sao}</div>
-            <div>🧭 <b>Hướng xuất hành:</b> ${lunar.huongXuatHanh}</div>
-            ${holidayName ? `<div style="color:#c2410c; font-weight:900;">🎉 <b>Ngày nghỉ lễ:</b> ${holidayName}</div>` : ''}
-            <div style="color:#15803d; margin-top:2px;">🟢 <b>Việc nên làm:</b> ${lunar.viecNenLam}</div>
-            <div style="color:#dc2626;">🔴 <b>Việc kiêng kỵ:</b> ${lunar.viecKienKy}</div>
+    function hienThiPhongThuyNgay(d,m,y){
+        const lunar=convertSolar2Lunar(d,m,y);
+        const ccDay=lichCanChiDay(d,m,y);
+        const ccYear=lichCanChiYear(lunar.year);
+        const ccMonth=lichCanChiMonth(lunar.year,lunar.month);
+        const napYear=lichNapAm((lunar.year+6)%10,(lunar.year+8)%12);
+        const napMonth=lichNapAm(((((lunar.year+6)%10)*2+lunar.month+2)%10),((lunar.month+1)%12));
+        const napDay=lichNapAm(ccDay.can,ccDay.chi);
+        const truc=lichTruc(lunar.month,ccDay.chi);
+        const than=lichDayThan(lunar.month,ccDay.chi);
+        const hoang=lichHoangDaoTheoThang(lunar.month,ccDay.chi);
+        const tiet=lichTietKhi(d,m,y);
+        const star=lichNhiThapBatTu(d,m,y);
+        const luc=lichLucDieu(lunar.month,lunar.day);
+        const huong=lichHuongXuatHanh(ccDay.can);
+        const quanHe=lichTuoiQuanHe(ccDay.chi);
+        const hours=lichHourRows(ccDay.can,ccDay.chi);
+        const holiday=lichHoliday(y,m,d);
+        const dow=['Chủ nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy'][new Date(y,m-1,d).getDay()];
+        const detail=document.getElementById('chiTietNgayNoiDung');
+        const rating=document.getElementById('lichDetailRating');
+        const dateText=document.getElementById('lichSelectedDateText');
+        if(dateText) dateText.value=`${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}/${y} • ${dow}`;
+        if(rating) { rating.textContent=hoang?'HOÀNG ĐẠO':'HẮC ĐẠO'; rating.className='vanlich-pill '+(hoang?'good':'bad'); }
+
+        const goodHours=hours.filter(h=>h.good);
+        const badHours=hours.filter(h=>!h.good);
+        detail.innerHTML=`
+            <div class="vanlich-hero">
+                <div class="bigdate">${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}/${y}</div>
+                <div class="subdate">${dow} • Âm lịch ${String(lunar.day).padStart(2,'0')}/${String(lunar.month).padStart(2,'0')}/${lunar.year}${lunar.leap?' (tháng nhuận)':''}</div>
+                <div class="vanlich-pills">
+                    <span class="vanlich-pill ${hoang?'good':'bad'}">${hoang?'🟢 Hoàng Đạo':'🟠 Hắc Đạo'} • ${than}</span>
+                    <span class="vanlich-pill">📜 Trực ${truc}</span>
+                    <span class="vanlich-pill">🌟 ${star[0]} ${star[1]}</span>
+                    <span class="vanlich-pill">☯ ${luc}</span>
+                </div>
+            </div>
+
+            <div class="vanlich-section">
+                <div class="vanlich-section-title">Âm Dương • Can Chi • Ngũ Hành</div>
+                <div class="vanlich-info-grid">
+                    <div class="vanlich-info"><b>Dương lịch</b><br>${dow}, ${d}/${m}/${y}</div>
+                    <div class="vanlich-info"><b>Âm lịch</b><br>${lunar.day}/${lunar.month}/${lunar.year}${lunar.leap?' • tháng nhuận':''}</div>
+                    <div class="vanlich-info"><b>Năm</b><br>${ccYear}<br><small>Nạp âm: ${napYear}</small></div>
+                    <div class="vanlich-info"><b>Tháng</b><br>${ccMonth}<br><small>Nạp âm: ${napMonth}</small></div>
+                    <div class="vanlich-info"><b>Ngày</b><br>${ccDay.text}<br><small>Nạp âm: ${napDay}</small></div>
+                    <div class="vanlich-info"><b>Tiết khí</b><br>${tiet.name}<br><small>Kinh độ Mặt Trời khoảng ${tiet.degree}°</small></div>
+                </div>
+            </div>
+
+            <div class="vanlich-section">
+                <div class="vanlich-section-title">Tổng hợp phong thủy ngày</div>
+                <div class="vanlich-info-grid">
+                    <div class="vanlich-info"><b>Trực</b><br>Trực ${truc} — ${truc==='Phá'?'phù hợp phá dỡ, loại bỏ việc cũ; tránh việc cần khởi tạo lâu dài.':'xem chi tiết theo từng công việc.'}</div>
+                    <div class="vanlich-info"><b>Nhị Thập Bát Tú</b><br>${star[0]} ${star[1]} ${star[2]} • ${star[3]}</div>
+                    <div class="vanlich-info"><b>Khổng Minh Lục Diệu</b><br>${luc}<br><small>${LICH_LUC_DIEU_YNGHIA[luc]}</small></div>
+                    <div class="vanlich-info"><b>Ngày Hoàng/Hắc đạo</b><br>${hoang?'Hoàng đạo':'Hắc đạo'} • ${than}</div>
+                </div>
+            </div>
+
+            <div class="vanlich-section">
+                <div class="vanlich-section-title">Tuổi hợp – xung – hình – hại – phá</div>
+                <div class="vanlich-info-grid">
+                    <div class="vanlich-info"><b>Tam hợp</b><br>${quanHe.tamHop}</div>
+                    <div class="vanlich-info"><b>Lục hợp</b><br>${quanHe.lucHop}</div>
+                    <div class="vanlich-info"><b>Xung</b><br><span style="color:#b91c1c;font-weight:900;">${quanHe.xung}</span></div>
+                    <div class="vanlich-info"><b>Hình / Hại / Phá</b><br>${quanHe.hinh||'—'} / ${quanHe.hai} / ${quanHe.pha}</div>
+                </div>
+            </div>
+
+            <div class="vanlich-section">
+                <div class="vanlich-section-title">Hướng xuất hành</div>
+                <div class="vanlich-info-grid">
+                    <div class="vanlich-info"><b>Hỷ Thần</b><br>↗ ${huong.hy}<br><small>Tham khảo hướng đón tin vui.</small></div>
+                    <div class="vanlich-info"><b>Tài Thần</b><br>💰 ${huong.tai}<br><small>Tham khảo hướng cầu tài.</small></div>
+                </div>
+            </div>
+
+            <div class="vanlich-section">
+                <div class="vanlich-section-title">Giờ Hoàng Đạo</div>
+                <div class="vanlich-hours">
+                    ${goodHours.map(h=>`<div class="vanlich-hour good">🟢 ${h.canChi}<br><span>${h.range} • ${h.god}</span></div>`).join('')}
+                </div>
+            </div>
+
+            <div class="vanlich-section">
+                <div class="vanlich-section-title">Giờ Hắc Đạo</div>
+                <div class="vanlich-hours">
+                    ${badHours.map(h=>`<div class="vanlich-hour bad">🔴 ${h.canChi}<br><span>${h.range} • ${h.god}</span></div>`).join('')}
+                </div>
+            </div>
+
+            <div class="vanlich-section">
+                <div class="vanlich-section-title">Ngày lễ / sự kiện</div>
+                <div class="vanlich-note">${holiday?`🎉 <b>${escapeHtml(holiday)}</b>`:'Không có ngày lễ quốc gia được khai báo trong dữ liệu hệ thống cho ngày này.'}</div>
+            </div>
+
+            <div class="vanlich-section">
+                <div class="vanlich-actions">
+                    <button class="btn btn-blue" onclick="lichChonNgayTruoc(${d},${m},${y})"><i class="fa-solid fa-chevron-left"></i> Ngày trước</button>
+                    <button class="btn btn-green" onclick="lichChonHomNay()"><i class="fa-solid fa-crosshairs"></i> Hôm nay</button>
+                    <button class="btn btn-blue" onclick="lichChonNgaySau(${d},${m},${y})">Ngày sau <i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+                <div class="vanlich-note" style="margin-top:8px;">
+                    ⚠️ Các mục Hoàng/Hắc đạo, Trực, Lục Diệu, Nhị Thập Bát Tú và hướng xuất hành là nội dung lịch truyền thống/phong tục; giữa các trường phái có thể có cách luận khác nhau. Phần chuyển đổi Âm–Dương sử dụng thuật toán lịch thiên văn Việt Nam UTC+7.
+                </div>
+            </div>
         `;
+    }
+
+    // Expose core calculations for the existing top information widget.
+    window.__vinapacoLunarConvert = convertSolar2Lunar;
+    window.__vinapacoCanChiDay = lichCanChiDay;
+    window.__vinapacoCanChiYear = lichCanChiYear;
+
+    function lichChonNgayTruoc(d,m,y){
+        const dt=new Date(y,m-1,d-1);
+        document.getElementById('lichNamSelect').value=String(dt.getFullYear());
+        document.getElementById('lichThangSelect').value=String(dt.getMonth());
+        renderLichGridPro(dt.getDate());
+    }
+    function lichChonNgaySau(d,m,y){
+        const dt=new Date(y,m-1,d+1);
+        document.getElementById('lichNamSelect').value=String(dt.getFullYear());
+        document.getElementById('lichThangSelect').value=String(dt.getMonth());
+        renderLichGridPro(dt.getDate());
     }
 
     function moModalQuenMatKhau() {
@@ -2102,15 +2508,27 @@
         try{await tuDongDayDuLieuLenDrive();}catch(e){}
     }
     
-    function emailHopLeKhoiTao(email){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email||'').trim()); }
-    function capNhatNutTaoTaiKhoanBanDau(){
-        const btn=document.getElementById('initialAccountEntry');
-        if(!btn) return;
+    function capNhatTrangThaiKhoiTaoTaiKhoan(tuDongMo=false){
         const hasAccount=Array.isArray(danhSachTaiKhoanHeThong) && danhSachTaiKhoanHeThong.length>0;
-        btn.style.display=hasAccount?'none':'block';
+        const hint=document.getElementById('firstRunLoginHint');
+        const createBox=document.getElementById('firstRunCreateAccountBox');
+        const modal=document.getElementById('modalKhoiTaoHeThong');
+        if(hint) hint.style.display=hasAccount?'none':'block';
+        if(createBox) createBox.style.display=hasAccount?'none':'block';
+        if(hasAccount){
+            if(modal) modal.classList.add('hidden');
+            return false;
+        }
+        if(tuDongMo && modal) moManHinhKhoiTaoHeThong();
+        return true;
     }
 
+    function emailHopLeKhoiTao(email){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email||'').trim()); }
     function moManHinhKhoiTaoHeThong(){
+        if(Array.isArray(danhSachTaiKhoanHeThong) && danhSachTaiKhoanHeThong.length>0){
+            capNhatTrangThaiKhoiTaoTaiKhoan(false);
+            return;
+        }
         const logo=document.getElementById('loginVinapacoLogo');
         const firstLogo=document.getElementById('firstRunVinapacoLogo');
         if(logo && firstLogo) firstLogo.src=logo.src;
@@ -2161,9 +2579,7 @@
                 serverSaved=res.ok;
             }catch(e){}
             document.getElementById('modalKhoiTaoHeThong').classList.add('hidden');
-            capNhatNutTaoTaiKhoanBanDau();
-            const hint=document.getElementById('firstRunLoginHint'); if(hint) hint.style.display='none';
-            const createBtn=document.getElementById('firstRunCreateBtn'); if(createBtn) createBtn.style.display='none';
+            capNhatTrangThaiKhoiTaoTaiKhoan(false);
             renderAccountTable();
             const msg=serverSaved?'Đã khởi tạo tài khoản Quản trị viên đầu tiên và đồng bộ tới hệ thống.':'Đã khởi tạo tài khoản Quản trị viên đầu tiên trên thiết bị. Nếu dùng nhiều máy, cần cấu hình GAS để đồng bộ tài khoản tập trung.';
             hienThongBaoXuatFile(msg,true);
@@ -2177,6 +2593,7 @@
         const u = document.getElementById('loginUser').value.trim().toLowerCase();
         const p = document.getElementById('loginPass').value;
         if (!Array.isArray(danhSachTaiKhoanHeThong) || danhSachTaiKhoanHeThong.length === 0) {
+            capNhatTrangThaiKhoiTaoTaiKhoan(false);
             moManHinhKhoiTaoHeThong();
             return;
         }
@@ -2758,6 +3175,9 @@
             renderSurveyTable(); capNhatBaoCaoKhaoSatPreview();
         } else if (tabId === 'quyHoachTab') {
             renderQuyHoachTable();
+        } else if (tabId === 'taskTab') {
+            renderTaskTable();
+            setTimeout(() => { veTatCaBieuDoDashboard(); }, 100);
         } else {
             setTimeout(() => { veTatCaBieuDoDashboard(); }, 100);
         }
@@ -2798,12 +3218,14 @@
         }
     }
 
-    function hoanDoiTrangThaiCongViec(idx) {
-        let currentStatus = danhSachCongViec[idx].status;
-        if (currentStatus === 'Chưa làm') danhSachCongViec[idx].status = 'Đang làm';
-        else if (currentStatus === 'Đang làm') danhSachCongViec[idx].status = 'Hoàn thành';
-        else danhSachCongViec[idx].status = 'Chưa làm';
-        capNhat();
+    async function hoanDoiTrangThaiCongViec(idx) {
+        if(!danhSachCongViec[idx]) return;
+        let s=danhSachCongViec[idx].status;
+        danhSachCongViec[idx].status=s==='Chưa làm'?'Đang làm':(s==='Đang làm'?'Hoàn thành':'Chưa làm');
+        renderTaskTable();
+        localStorage.setItem('bapaco_task_data',JSON.stringify(danhSachCongViec));
+        try{await tuDongDayDuLieuLenDrive();}catch(e){}
+        try{capNhatKPI();veTatCaBieuDoDashboard();}catch(e){}
     }
 
     function suaCongViec(idx) {
@@ -2827,30 +3249,33 @@
         document.getElementById('btnCancelTask').classList.add('hidden');
     }
 
-    function luuHoacCapNhatCongViec() {
-        let name = document.getElementById('inputTaskName').value.trim();
-        if (!name) { alert("Vui lòng nhập nội dung công việc!"); return; }
-        let editIdx = parseInt(document.getElementById('editTaskIndex').value);
-        let assignee = document.getElementById('inputTaskAssignee').value.trim();
-        let dueDate = document.getElementById('inputTaskDueDate').value;
-        let status = document.getElementById('inputTaskStatus').value;
-
-        if (editIdx >= 0) {
-            danhSachCongViec[editIdx] = { ...danhSachCongViec[editIdx], name, assignee, dueDate, status };
-            document.getElementById('editTaskIndex').value = -1;
-            document.getElementById('btnSaveTask').innerHTML = `<i class="fas fa-plus-circle"></i> Thêm Công Việc`;
-            document.getElementById('btnCancelTask').classList.add('hidden');
-        } else {
-            danhSachCongViec.push({ id: danhSachCongViec.length + 1, name, assignee, dueDate, status });
-        }
-        document.getElementById('inputTaskName').value = '';
-        capNhat();
+    async function luuHoacCapNhatCongViec() {
+        const btn=document.getElementById('btnSaveTask');
+        try {
+            const nameEl=document.getElementById('inputTaskName'), assigneeEl=document.getElementById('inputTaskAssignee'), dueEl=document.getElementById('inputTaskDueDate'), statusEl=document.getElementById('inputTaskStatus'), editEl=document.getElementById('editTaskIndex');
+            const name=(nameEl?.value||'').trim();
+            if(!name){ alert('Vui lòng nhập nội dung công việc!'); nameEl?.focus(); return; }
+            if(!Array.isArray(danhSachCongViec)) danhSachCongViec=[];
+            const editIdx=parseInt(editEl?.value||'-1',10);
+            const item={name,assignee:(assigneeEl?.value||'').trim(),dueDate:dueEl?.value||'',status:statusEl?.value||'Chưa làm'};
+            if(editIdx>=0 && editIdx<danhSachCongViec.length) danhSachCongViec[editIdx]={...danhSachCongViec[editIdx],...item,updatedAt:new Date().toISOString()};
+            else danhSachCongViec.push({id:'CV-'+Date.now(),...item,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()});
+            renderTaskTable();
+            localStorage.setItem('bapaco_task_data',JSON.stringify(danhSachCongViec));
+            if(nameEl) nameEl.value=''; if(editEl) editEl.value='-1'; if(assigneeEl) assigneeEl.value='Trần Bình Dương'; if(dueEl) dueEl.value=''; if(statusEl) statusEl.value='Chưa làm';
+            document.getElementById('btnCancelTask')?.classList.add('hidden');
+            if(btn) btn.innerHTML='<i class="fas fa-plus-circle"></i> Thêm Công Việc';
+            try{ await tuDongDayDuLieuLenDrive(); }catch(e){ console.warn('Đồng bộ công việc thất bại:',e); }
+            try{ capNhatKPI(); veTatCaBieuDoDashboard(); }catch(e){}
+        }catch(e){ console.error('LUU_CONG_VIEC',e); alert('Không thể thêm/cập nhật công việc: '+(e.message||e)); }
     }
 
-    function xoaCongViec(idx) {
-        if (confirm("Bạn có chắc chắn muốn xóa công việc này không?")) {
-            danhSachCongViec.splice(idx, 1);
-            capNhat();
+    async function xoaCongViec(idx) {
+        if(confirm('Bạn có chắc chắn muốn xóa công việc này không?')) {
+            danhSachCongViec.splice(idx,1); renderTaskTable();
+            localStorage.setItem('bapaco_task_data',JSON.stringify(danhSachCongViec));
+            try{await tuDongDayDuLieuLenDrive();}catch(e){}
+            try{capNhatKPI();veTatCaBieuDoDashboard();}catch(e){}
         }
     }
 

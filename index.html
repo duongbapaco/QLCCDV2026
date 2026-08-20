@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+<link rel="icon" href="data:,">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hệ Thống Quản Lý VINAPACO - Annual Net Salary & Expense Comparison Pro</title>
@@ -965,7 +966,7 @@
 
         <div style="overflow-x: auto;">
             <table>
-                <thead><tr><th>STT</th><th>Họ và Tên</th><th>HSL.CV</th><th>PC.CV</th><th>L.CV Gốc</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>Ki</th><th>L.CV TT</th><th>Tổng LCB + LCV</th><th>Tạm Ứng</th><th>Thực Lĩnh CV</th><th>NPT</th><th>TNTT</th><th>THUẾ TNCN</th><th>THỰC LĨNH NET</th><th>Zalo</th></tr></thead>
+                <thead><tr><th>STT</th><th>Họ và Tên</th><th>HSL.CV</th><th>PC.CV</th><th>L.CV Gốc</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>Ki</th><th>L.CV TT</th><th>Tổng LCB + LCV</th><th>Tạm Ứng</th><th>Thực Lĩnh CV</th><th>NPT</th><th>TNTT</th><th>THUẾ TNCN</th><th>THỰC LĨNH NET</th><th>THỰC LĨNH + THUẾ TNCN</th><th>Zalo</th></tr></thead>
                 <tbody id="tableBodyCV"></tbody>
             </table>
         </div>
@@ -1562,12 +1563,16 @@
                                 <tr><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 700;">4. Khấu Trừ BHXH + BHYT (9.5%)</td><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 700; text-align: right; color: #dc2626;" id="slipBHXH">0</td></tr>
                                 <tr><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 700;">5. Khấu Trừ BHTN (1%)</td><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 700; text-align: right; color: #dc2626;" id="slipBHTN">0</td></tr>
                                 <tr><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 700;">6. Tạm Ứng Giữa Tháng</td><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 700; text-align: right; color: #dc2626;" id="slipTamUng">0</td></tr>
+                                <tr><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 700;">7. Thuế Thu Nhập Cá Nhân (TNCN)</td><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 800; text-align: right; color: #b91c1c;" id="slipTNCN">0</td></tr>
                             </tbody>
                         </table>
                     </div>
                     <div style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1.5px solid #bbf7d0; border-radius: 10px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
                         <span style="font-weight: 900; font-size: 14px; text-transform: uppercase; color: #166534;">Thực Lĩnh Net Nhận Về:</span>
-                        <span style="font-size: 18px; font-weight: 900; color: #15803d;" id="slipThucLinh">0 VNĐ</span>
+                        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
+                            <span style="font-size: 18px; font-weight: 900; color: #15803d;" id="slipThucLinh">0 VNĐ</span>
+                            <span style="font-size: 12px; font-weight: 900; color: #7c3aed;" id="slipThucLinhCongThue">0 VNĐ</span>
+                        </div>
                     </div>
 
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; margin-top: 16px; font-size: 12px; font-weight: bold; color: #0f172a; text-transform: uppercase;">
@@ -3166,6 +3171,7 @@
             i.thueTNCN = tinhThueTNCN2026(i.thuNhapTinhThue);
             i.thucLinhTruocThue = i.thucLinhLCB + i.thucLinhCV;
             i.thucLinhCuoiCung = Math.max(0, i.thucLinhTruocThue - i.thueTNCN);
+            i.thucLinhCuoiCungCongThueTNCN = Math.max(0, i.thucLinhCuoiCung + i.thueTNCN);
         });
         luuTruVaoLocalStorage();
         tuDongDayDuLieuLenDrive();
@@ -3467,7 +3473,7 @@
         if(!tbody) return; tbody.innerHTML = "";
         let cfg = coSoDuLieuNamThang[currentNamKey][currentThangKey].config;
         coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.forEach((item, idx) => {
-            tbody.innerHTML += `<tr><td style="text-align:center;">${idx+1}</td><td><b>${item.hoTen}</b></td><td style="text-align:center;">${cfg.ncd}</td><td><input class="cell-input num-center" type="number" value="${item.nc_tg}" onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].nc_tg=parseFloat(this.value)||0;capNhat();"></td><td><input class="cell-input num-center" type="number" value="${item.nc_p||0}" onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].nc_p=parseFloat(this.value)||0;capNhat();"></td><td><input class="cell-input num-center" type="number" value="${item.nc_l||0}" onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].nc_l=parseFloat(this.value)||0;capNhat();"></td><td><input class="cell-input num-center" type="number" step="0.05" value="${item.k_ht||1.0}" onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].k_ht=parseFloat(this.value)||1.0;capNhat();"></td><td>Đã chốt công</td></tr>`;
+            tbody.innerHTML += `<tr><td style="text-align:center;">${idx+1}</td><td><b>${item.hoTen}</b></td><td style="text-align:center;">${cfg.ncd}</td><td><input class="cell-input num-center" type="number" value="${item.nc_tg}" onchange="damBaoKhoLuong().nhansu[${idx}].nc_tg=parseFloat(this.value)||0;capNhat();"></td><td><input class="cell-input num-center" type="number" value="${item.nc_p||0}" onchange="damBaoKhoLuong().nhansu[${idx}].nc_p=parseFloat(this.value)||0;capNhat();"></td><td><input class="cell-input num-center" type="number" value="${item.nc_l||0}" onchange="damBaoKhoLuong().nhansu[${idx}].nc_l=parseFloat(this.value)||0;capNhat();"></td><td><input class="cell-input num-center" type="number" step="0.05" value="${item.k_ht||1.0}" onchange="damBaoKhoLuong().nhansu[${idx}].k_ht=parseFloat(this.value)||1.0;capNhat();"></td><td>Đã chốt công</td></tr>`;
         });
     }
 
@@ -3478,8 +3484,8 @@
             tbody.innerHTML += `<tr>
                 <td style="text-align:center;">${idx+1}</td>
                 <td><b>${item.hoTen}</b></td>
-                <td style="text-align:center;"><input class="cell-input num-center" type="number" step="0.01" value="${item.hsl_cb}" onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].hsl_cb=parseFloat(this.value)||0;capNhat();"></td>
-                <td style="text-align:center;"><input class="cell-input num-center" type="number" step="0.05" value="${item.pc_cb||0}" onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].pc_cb=parseFloat(this.value)||0;capNhat();"></td>
+                <td style="text-align:center;"><input class="cell-input num-center" type="number" step="0.01" value="${item.hsl_cb}" onchange="damBaoKhoLuong().nhansu[${idx}].hsl_cb=parseFloat(this.value)||0;capNhat();"></td>
+                <td style="text-align:center;"><input class="cell-input num-center" type="number" step="0.05" value="${item.pc_cb||0}" onchange="damBaoKhoLuong().nhansu[${idx}].pc_cb=parseFloat(this.value)||0;capNhat();"></td>
                 <td style="text-align:right;">${item.luongHDLD.toLocaleString()}</td>
                 <td style="text-align:right;">${item.luongCBThang.toLocaleString()}</td>
                 <td style="text-align:center;">${item.nc_tg}</td>
@@ -3491,24 +3497,30 @@
                 <td style="text-align:right; font-weight:bold;">${item.tongLCB.toLocaleString()}</td>
                 <td style="text-align:right; color:#dc2626;">${item.bhtn.toLocaleString()}</td>
                 <td style="text-align:right; color:#dc2626;">${item.bhxh.toLocaleString()}</td>
-                <td style="text-align:center;"><input class="cell-input num-center" type="number" min="0" step="1" value="${item.soNguoiPhuThuoc||0}" onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].soNguoiPhuThuoc=Math.max(0,parseInt(this.value)||0);capNhat();" title="Số người phụ thuộc đã đăng ký giảm trừ gia cảnh"></td>
+                <td style="text-align:center;"><input class="cell-input num-center" type="number" min="0" step="1" value="${item.soNguoiPhuThuoc||0}" onchange="damBaoKhoLuong().nhansu[${idx}].soNguoiPhuThuoc=Math.max(0,parseInt(this.value)||0);capNhat();" title="Số người phụ thuộc đã đăng ký giảm trừ gia cảnh"></td>
                 <td style="text-align:right; color:#0284c7; font-weight:bold;">${item.thucLinhLCB.toLocaleString()}</td>
             </tr>`;
         });
     }
 
-    let __tncnEditIndex = -1;
+    function damBaoKhoLuong(){
+    if(!window.coSoDuLieuNamThang || typeof coSoDuLieuNamThang!=='object') window.coSoDuLieuNamThang={};
+    const y=currentNamKey || String(new Date().getFullYear()), m=currentThangKey || ('Tháng '+String(new Date().getMonth()+1).padStart(2,'0'));
+    if(!coSoDuLieuNamThang[y]) coSoDuLieuNamThang[y]={};
+    if(!coSoDuLieuNamThang[y][m]) coSoDuLieuNamThang[y][m]={nhansu:[],config:{}};
+    if(!Array.isArray(coSoDuLieuNamThang[y][m].nhansu)) coSoDuLieuNamThang[y][m].nhansu=[];
+    return coSoDuLieuNamThang[y][m];
+}
+let __tncnEditIndex = -1;
     function moCauHinhTNCN(idx){
-        const ds=coSoDuLieuNamThang[currentNamKey]?.[currentThangKey]?.nhansu||[], nv=ds[idx]; if(!nv)return;
+        const bucket=damBaoKhoLuong(), ds=bucket.nhansu, nv=ds[idx]; if(!nv)return;
         __tncnEditIndex=idx;
-        document.getElementById('tncnModalName').textContent=nv.hoTen||'Nhân sự';
-        document.getElementById('tncnNPT').value=nv.soNguoiPhuThuoc||0;
-        document.getElementById('tncnHuuTri').value=nv.khauTruBaoHiemHuuTri||0;
-        document.getElementById('tncnYTe').value=nv.giamTruYTe||0;
-        document.getElementById('tncnGiaoDuc').value=nv.giamTruGiaoDuc||0;
-        document.getElementById('tncnTuThien').value=nv.giamTruTuThien||0;
-        document.getElementById('tncnMienThue').value=nv.thuNhapMienThue||0;
-        document.getElementById('modalTNCN').classList.remove('hidden');
+        const set=(id,val,prop='value')=>{const e=document.getElementById(id);if(e)e[prop]=val;};
+        set('tncnModalName',nv.hoTen||'Nhân sự','textContent');
+        set('tncnNPT',nv.soNguoiPhuThuoc||0); set('tncnHuuTri',nv.khauTruBaoHiemHuuTri||0);
+        set('tncnYTe',nv.giamTruYTe||0); set('tncnGiaoDuc',nv.giamTruGiaoDuc||0);
+        set('tncnTuThien',nv.giamTruTuThien||0); set('tncnMienThue',nv.thuNhapMienThue||0);
+        const modal=document.getElementById('modalTNCN'); if(modal) modal.classList.remove('hidden');
     }
     function dongModalTNCN(){ document.getElementById('modalTNCN')?.classList.add('hidden'); __tncnEditIndex=-1; }
     function luuCauHinhTNCN(){
@@ -3532,7 +3544,7 @@
                 <td style="text-align:center;">${item.hsl_cv}</td>
                 <td style="text-align:center;">
                     <input class="cell-input num-center" type="number" step="0.05" value="${item.pc_cv || 0}" 
-                    onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].pc_cv = parseFloat(this.value) || 0; capNhat();" 
+                    onchange="damBaoKhoLuong().nhansu[${idx}].pc_cv = parseFloat(this.value) || 0; capNhat();" 
                     title="Sửa trực tiếp Phụ cấp công việc">
                 </td>
                 <td style="text-align:right;">${item.luongCVGoc.toLocaleString()}</td>
@@ -3542,12 +3554,13 @@
                 <td style="text-align:center;">${item.k_ht||1.0}</td>
                 <td style="text-align:right; font-weight:bold;">${item.luongCVTT.toLocaleString()}</td>
                 <td style="text-align:right; font-weight:bold; color:#0369a1; background:#f0f9ff;">${(item.tongCbCv || (item.tongLCB + item.luongCVTT)).toLocaleString()}</td>
-                <td><input class="cell-input money-input" type="text" value="${(item.tam_ung||0).toLocaleString()}" onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].tam_ung=parseVNDMoney(this.value);capNhat();"></td>
+                <td><input class="cell-input money-input" type="text" value="${(item.tam_ung||0).toLocaleString()}" onchange="damBaoKhoLuong().nhansu[${idx}].tam_ung=parseVNDMoney(this.value);capNhat();"></td>
                 <td style="text-align:right; font-weight:bold;">${item.thucLinhCV.toLocaleString()}</td>
                 <td style="text-align:center;">${item.soNguoiPhuThuoc||0}</td>
                 <td style="text-align:right;">${(item.thuNhapTinhThue||0).toLocaleString()}</td>
-                <td style="text-align:right;color:#b91c1c;font-weight:900;">${(item.thueTNCN||0).toLocaleString()}</td>
-                <td style="text-align:right;"><span class="badge-net">${item.thucLinhCuoiCung.toLocaleString()}</span></td>
+                <td style="text-align:right;color:#b91c1c;font-weight:900;">${(item.thueTNCN||0).toLocaleString('vi-VN')}</td>
+                <td style="text-align:right;"><span class="badge-net">${item.thucLinhCuoiCung.toLocaleString('vi-VN')}</span></td>
+                <td style="text-align:right;font-weight:900;color:#7c3aed;background:#faf5ff;">${((item.thucLinhCuoiCung||0)+(item.thueTNCN||0)).toLocaleString('vi-VN')}</td>
                 <td style="text-align:center;"><div style="display:inline-flex;gap:5px;align-items:center;"><button class="btn btn-blue" style="padding:4px 8px;" onclick="moModalPhiieuLuongTheoTen('${item.hoTen}')" title="Mở phiếu lương"><i class="fa-solid fa-file-invoice-dollar"></i></button><button class="btn" style="padding:4px 8px;background:#eef2ff;color:#4338ca;" onclick="moCauHinhTNCN(${idx})" title="Cấu hình giảm trừ TNCN"><i class="fa-solid fa-scale-balanced"></i></button><button class="btn zalo-action" style="padding:4px 8px;" onclick="moVaGuiPhieuLuongZalo('${item.hoTen}')" title="Gửi phiếu lương qua Zalo"><i class="fa-solid fa-paper-plane"></i></button></div></td>
             </tr>`;
         });
@@ -3645,7 +3658,7 @@
             tbody.innerHTML += `<tr>
                 <td style="text-align:center;">${idx+1}</td>
                 <td><b>${item.hoTen}</b></td>
-                <td style="text-align:center;"><input class="cell-input num-center" type="number" value="${phepCap}" onchange="coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu[${idx}].phep_cap=parseFloat(this.value)||12;capNhat();"></td>
+                <td style="text-align:center;"><input class="cell-input num-center" type="number" value="${phepCap}" onchange="damBaoKhoLuong().nhansu[${idx}].phep_cap=parseFloat(this.value)||12;capNhat();"></td>
                 <td style="text-align:center; font-weight:bold; color:#0284c7;">${nghiThangNay} ngày</td>
                 <td style="text-align:center; color:#475569;">${leThangNay} ngày</td>
                 <td style="text-align:center; font-weight:bold; color:#d97706;">${luyKe.totalP} ngày</td>
@@ -4588,23 +4601,23 @@
             [`Kỳ lương: ${ky}`],
             [`Ngày công chế độ: ${cfg.ncd || 22}     |     Mức lương cơ bản: ${(cfg.mucLCB||0).toLocaleString('vi-VN')}     |     Mức lương công việc: ${(cfg.mucLCV||0).toLocaleString('vi-VN')}`],
             ['Đơn vị tính: đồng'],
-            ['STT','Mã NS','Họ và tên','HSL.CB','PC.CB','L.HĐLĐ','L.CB','NC(TG)','Phép','Lễ','Hệ số K','L.TG','L.Lễ/Phép','Tổng LCB','BHXH theo hệ thống','BHTN theo hệ thống','L.CV Gốc','L.CV thực tế','Tạm ứng','Thực lĩnh CV','NPT','Thu nhập tính thuế','THUẾ TNCN','THỰC LĨNH NET']
+            ['STT','Mã NS','Họ và tên','HSL.CB','PC.CB','L.HĐLĐ','L.CB','NC(TG)','Phép','Lễ','Hệ số K','L.TG','L.Lễ/Phép','Tổng LCB','BHXH theo hệ thống','BHTN theo hệ thống','L.CV Gốc','L.CV thực tế','Tạm ứng','Thực lĩnh CV','NPT','Thu nhập tính thuế','THUẾ TNCN','THỰC LĨNH NET','THỰC LĨNH + THUẾ TNCN']
         ];
         ds.forEach((i,idx)=>rows.push([
             idx+1,i.maNS||i.ma||'',i.hoTen||'',i.hsl_cb||0,i.pc_cb||0,i.luongHDLD||0,i.luongCBThang||0,
             i.nc_tg||0,i.nc_p||0,i.nc_l||0,i.k_ht||1,i.luongCBTG||0,i.luongCBLP||0,i.tongLCB||0,
-            i.bhxh||0,i.bhtn||0,i.luongCVGoc||0,i.luongCVTT||0,i.tam_ung||0,i.thucLinhCV||0,i.soNguoiPhuThuoc||0,i.thuNhapTinhThue||0,i.thueTNCN||0,i.thucLinhCuoiCung||0
+            i.bhxh||0,i.bhtn||0,i.luongCVGoc||0,i.luongCVTT||0,i.tam_ung||0,i.thucLinhCV||0,i.soNguoiPhuThuoc||0,i.thuNhapTinhThue||0,i.thueTNCN||0,i.thucLinhCuoiCung||0,(i.thucLinhCuoiCung||0)+(i.thueTNCN||0)
         ]));
 
         // Tổng cộng: chỉ cộng các trường tiền/số phù hợp; giữ HSL/Hệ số/Ngày công theo dạng số tổng để thuận tiện đối chiếu.
-        const totalRow = new Array(24).fill('');
+        const totalRow = new Array(25).fill('');
         totalRow[0] = 'TỔNG CỘNG';
         for (let c=3;c<24;c++) {
             const map = {
                 3:'hsl_cb',4:'pc_cb',5:'luongHDLD',6:'luongCBThang',7:'nc_tg',8:'nc_p',9:'nc_l',10:'k_ht',
-                11:'luongCBTG',12:'luongCBLP',13:'tongLCB',14:'bhxh',15:'bhtn',16:'luongCVGoc',17:'luongCVTT',18:'tam_ung',19:'thucLinhCV',20:'soNguoiPhuThuoc',21:'thuNhapTinhThue',22:'thueTNCN',23:'thucLinhCuoiCung'
+                11:'luongCBTG',12:'luongCBLP',13:'tongLCB',14:'bhxh',15:'bhtn',16:'luongCVGoc',17:'luongCVTT',18:'tam_ung',19:'thucLinhCV',20:'soNguoiPhuThuoc',21:'thuNhapTinhThue',22:'thueTNCN',23:'thucLinhCuoiCung',24:'thucLinhCuoiCungCongThueTNCN'
             };
-            totalRow[c] = ds.reduce((sum,i)=>sum + Number(i[map[c]]||0),0);
+            totalRow[c] = c===24 ? ds.reduce((sum,i)=>sum + Number(i.thucLinhCuoiCung||0) + Number(i.thueTNCN||0),0) : ds.reduce((sum,i)=>sum + Number(i[map[c]]||0),0);
         }
         rows.push(totalRow);
         const noteRow = rows.length;
@@ -4702,10 +4715,10 @@
     function taoHTMLBangLuongFallback() {
         const ds=coSoDuLieuNamThang[currentNamKey]?.[currentThangKey]?.nhansu||[];
         const cfg=coSoDuLieuNamThang[currentNamKey]?.[currentThangKey]?.config||{};
-        const cols=['STT','Mã NS','Họ và tên','HSL.CB','PC.CB','L.HĐLĐ','L.CB','NC(TG)','Phép','Lễ','Hệ số K','L.TG','L.Lễ/Phép','Tổng LCB','BHXH','BHTN','L.CV Gốc','L.CV thực tế','Tạm ứng','Thực lĩnh CV','NPT','Thu nhập tính thuế','THUẾ TNCN','THỰC LĨNH NET'];
+        const cols=['STT','Mã NS','Họ và tên','HSL.CB','PC.CB','L.HĐLĐ','L.CB','NC(TG)','Phép','Lễ','Hệ số K','L.TG','L.Lễ/Phép','Tổng LCB','BHXH','BHTN','L.CV Gốc','L.CV thực tế','Tạm ứng','Thực lĩnh CV','NPT','Thu nhập tính thuế','THUẾ TNCN','THỰC LĨNH NET','THỰC LĨNH + THUẾ TNCN'];
         const money=new Set([5,6,11,12,13,14,15,16,17,18,19,21,22,23]);
         const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-        let body=ds.map((i,idx)=>{const a=[idx+1,i.maNS||i.ma||'',i.hoTen||'',i.hsl_cb||0,i.pc_cb||0,i.luongHDLD||0,i.luongCBThang||0,i.nc_tg||0,i.nc_p||0,i.nc_l||0,i.k_ht||1,i.luongCBTG||0,i.luongCBLP||0,i.tongLCB||0,i.bhxh||0,i.bhtn||0,i.luongCVGoc||0,i.luongCVTT||0,i.tam_ung||0,i.thucLinhCV||0,i.soNguoiPhuThuoc||0,i.thuNhapTinhThue||0,i.thueTNCN||0,i.thucLinhCuoiCung||0]; return '<tr>'+a.map((v,c)=>`<td class="${money.has(c)?'money':''}">${esc(typeof v==='number'&&money.has(c)?Math.round(v).toLocaleString('vi-VN'):v)}</td>`).join('')+'</tr>';}).join('');
+        let body=ds.map((i,idx)=>{const a=[idx+1,i.maNS||i.ma||'',i.hoTen||'',i.hsl_cb||0,i.pc_cb||0,i.luongHDLD||0,i.luongCBThang||0,i.nc_tg||0,i.nc_p||0,i.nc_l||0,i.k_ht||1,i.luongCBTG||0,i.luongCBLP||0,i.tongLCB||0,i.bhxh||0,i.bhtn||0,i.luongCVGoc||0,i.luongCVTT||0,i.tam_ung||0,i.thucLinhCV||0,i.soNguoiPhuThuoc||0,i.thuNhapTinhThue||0,i.thueTNCN||0,i.thucLinhCuoiCung||0,(i.thucLinhCuoiCung||0)+(i.thueTNCN||0)]; return '<tr>'+a.map((v,c)=>`<td class="${money.has(c)?'money':''}">${esc(typeof v==='number'&&money.has(c)?Math.round(v).toLocaleString('vi-VN'):v)}</td>`).join('')+'</tr>';}).join('');
         return `<html><head><meta charset="utf-8"><style>body{font-family:Arial;font-size:10pt}table{border-collapse:collapse;width:100%}th,td{border:1px solid #808080;padding:5px}th{background:#1f4e78;color:#fff;text-align:center;font-weight:bold}td.money{text-align:right;mso-number-format:"#,##0"}.title{text-align:center;font-weight:bold;font-size:16pt}.sub{text-align:center;font-weight:bold;font-size:13pt}.info{background:#eaf2f8;font-weight:bold}.total{background:#d9eaf7;font-weight:bold}</style></head><body><div class="title">TỔNG CÔNG TY GIẤY VIỆT NAM - VINAPACO</div><div class="sub">BẢNG THANH TOÁN TIỀN LƯƠNG</div><p style="text-align:center">Kỳ lương: ${esc(currentThangKey)}/${esc(currentNamKey)} | Ngày công chế độ: ${cfg.ncd||22} | Đơn vị tính: đồng</p><table><tr>${cols.map(c=>`<th>${esc(c)}</th>`).join('')}</tr>${body}</table><br><table><tr class="total"><td colspan="24">BẢNG LƯƠNG XUẤT THEO CHẾ ĐỘ TƯƠNG THÍCH EXCEL - DÙNG KHI MÁY KHÔNG TẢI ĐƯỢC THƯ VIỆN XLSX</td></tr></table>
 <div id="modalTNCN" class="modal hidden">
   <div class="modal-content" style="max-width:760px;">
@@ -4742,7 +4755,7 @@
             const wb=XLSX.utils.book_new();
             const ws=taoSheetBangLuongChuyenNghiep(); XLSX.utils.book_append_sheet(wb,ws,'Bảng Lương');
             const sumNet=ds.reduce((s,i)=>s+Number(i.thucLinhCuoiCung||0),0), sumTax=ds.reduce((s,i)=>s+Number(i.thueTNCN||0),0), sumLCB=ds.reduce((s,i)=>s+Number(i.tongLCB||0),0), sumCV=ds.reduce((s,i)=>s+Number(i.luongCVTT||0),0), sumBH=ds.reduce((s,i)=>s+Number(i.bhxh||0)+Number(i.bhtn||0),0), sumTU=ds.reduce((s,i)=>s+Number(i.tam_ung||0),0);
-            const summary=[['TỔNG CÔNG TY GIẤY VIỆT NAM - VINAPACO'],['TỔNG HỢP KỲ LƯƠNG'],[`Kỳ: ${currentThangKey}/${currentNamKey}`],[],['Chỉ tiêu','Giá trị'],['Số người hưởng lương',ds.length],['Tổng Lương Cơ Bản',sumLCB],['Tổng Lương Công Việc',sumCV],['Tổng BH theo hệ thống',sumBH],['Tổng Tạm ứng',sumTU],['TỔNG THUẾ TNCN KHẤU TRỪ',sumTax],['TỔNG THỰC LĨNH NET',sumNet],[],['Ghi chú','Bảng tổng hợp phục vụ kiểm tra, đối chiếu, trình ký và lưu hồ sơ nội bộ.']];
+            const summary=[['TỔNG CÔNG TY GIẤY VIỆT NAM - VINAPACO'],['TỔNG HỢP KỲ LƯƠNG'],[`Kỳ: ${currentThangKey}/${currentNamKey}`],[],['Chỉ tiêu','Giá trị'],['Số người hưởng lương',ds.length],['Tổng Lương Cơ Bản',sumLCB],['Tổng Lương Công Việc',sumCV],['Tổng BH theo hệ thống',sumBH],['Tổng Tạm ứng',sumTU],['TỔNG THUẾ TNCN KHẤU TRỪ',sumTax],['TỔNG THỰC LĨNH NET',sumNet],['TỔNG THỰC LĨNH + THUẾ TNCN',sumNet+sumTax],[],['Ghi chú','Bảng tổng hợp phục vụ kiểm tra, đối chiếu, trình ký và lưu hồ sơ nội bộ.']];
             const ws2=XLSX.utils.aoa_to_sheet(summary); ws2['!merges']=[{s:{r:0,c:0},e:{r:0,c:1}},{s:{r:1,c:0},e:{r:1,c:1}},{s:{r:2,c:0},e:{r:2,c:1}}];
             for(let c=0;c<2;c++){ws2[XLSX.utils.encode_cell({r:0,c})].s=excelTitleStyle();ws2[XLSX.utils.encode_cell({r:1,c})].s={...excelTitleStyle(),font:{name:'Arial',sz:13,bold:true,color:{rgb:'FFFFFF'}}};ws2[XLSX.utils.encode_cell({r:4,c})].s=excelHeaderStyle();}
             for(let r=5;r<11;r++){ws2[XLSX.utils.encode_cell({r,c:0})].s=excelBodyStyle();ws2[XLSX.utils.encode_cell({r,c:1})].s=excelBodyStyle('right');}
@@ -5204,7 +5217,11 @@
         set('slipBHXH',`-${fmtMoney(bhxh)}`);
         set('slipBHTN',`-${fmtMoney(bhtn)}`);
         set('slipTamUng',`-${fmtMoney(tamUng)}`);
+        const thueTNCN=safeMoney(nv.thueTNCN);
+        const thucLinhCongThue=safeMoney(net+thueTNCN);
+        set('slipTNCN',`-${fmtMoney(thueTNCN)}`);
         set('slipThucLinh',`${fmtMoney(net)} VNĐ`);
+        set('slipThucLinhCongThue',`Thực lĩnh + TNCN: ${fmtMoney(thucLinhCongThue)} VNĐ`);
         moTruongKyPhieuLuong('', '', '');
         const sel=document.getElementById('selectModalNhanSu');
         if(sel) sel.value=nv.hoTen;

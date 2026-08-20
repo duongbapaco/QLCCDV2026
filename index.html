@@ -686,9 +686,9 @@
         </div>
 
         <div class="config-item"><label>Ngày Công Chế Độ</label><input type="number" id="cfgNCD" onchange="luuCauHinhHienTai()"></div>
-        <div class="config-item"><label>Mức Lương Cơ Bản</label><input type="number" id="cfgMucLCB" onchange="luuCauHinhHienTai()"></div>
-        <div class="config-item"><label>Mức Tối Thiểu Vùng</label><input type="number" id="cfgMucTTV" onchange="luuCauHinhHienTai()"></div>
-        <div class="config-item"><label>Mức Lương Công Việc</label><input type="number" id="cfgMucLCV" onchange="luuCauHinhHienTai()"></div>
+        <div class="config-item"><label>Mức Lương Cơ Bản <small>(VNĐ/tháng)</small></label><input type="text" inputmode="numeric" autocomplete="off" id="cfgMucLCB" data-currency="vnd" onfocus="boDinhDangTien(this)" onblur="dinhDangTienVaLuu(this)" onkeydown="xuLyEnterTien(event,this)"></div>
+        <div class="config-item"><label>Mức Tối Thiểu Vùng <small>(VNĐ/tháng)</small></label><input type="text" inputmode="numeric" autocomplete="off" id="cfgMucTTV" data-currency="vnd" onfocus="boDinhDangTien(this)" onblur="dinhDangTienVaLuu(this)" onkeydown="xuLyEnterTien(event,this)"></div>
+        <div class="config-item"><label>Mức Lương Công Việc <small>(VNĐ/tháng)</small></label><input type="text" inputmode="numeric" autocomplete="off" id="cfgMucLCV" data-currency="vnd" onfocus="boDinhDangTien(this)" onblur="dinhDangTienVaLuu(this)" onkeydown="xuLyEnterTien(event,this)"></div>
     </div>
 
     <div class="kpi-grid">
@@ -2197,11 +2197,19 @@
         if(snapshot.gasWebhookUrl) gasWebhookUrl=snapshot.gasWebhookUrl; return true;
     }
     async function napKhoDuLieuBenVung() {
-        const idb=await docSnapshotIndexedDB('latest');
-        let legacy=null; try { const x=localStorage.getItem('bapaco_db_data'); if(x) legacy={coSoDuLieuNamThang:JSON.parse(x)}; } catch(e){}
-        if(idb && idb.savedAt) { apDungSnapshot(idb); return 'IndexedDB'; }
-        if(legacy) { apDungSnapshot(legacy); await ghiSnapshotIndexedDB(getVinapacoSnapshot()); return 'localStorage'; }
-        return 'default';
+        // Chọn bản lưu MỚI NHẤT giữa IndexedDB và localStorage để tránh bản IDB cũ
+        // ghi đè dữ liệu vừa tạo (đặc biệt tài khoản Admin sau lần khởi tạo đầu tiên).
+        let idb=null, persisted=null, legacy=null;
+        try { idb=await docSnapshotIndexedDB('latest'); } catch(e) {}
+        try { const x=localStorage.getItem('bapaco_persistent_snapshot_v3'); if(x) persisted=JSON.parse(x); } catch(e) {}
+        try { const x=localStorage.getItem('bapaco_db_data'); if(x) legacy={coSoDuLieuNamThang:JSON.parse(x),savedAt:'1970-01-01T00:00:00.000Z'}; } catch(e) {}
+        const candidates=[idb,persisted,legacy].filter(x=>x && typeof x==='object');
+        if(!candidates.length) return 'default';
+        candidates.sort((a,b)=>new Date(b.savedAt||0)-new Date(a.savedAt||0));
+        const newest=candidates[0];
+        apDungSnapshot(newest);
+        if(newest===persisted || newest===legacy) { try { await ghiSnapshotIndexedDB(getVinapacoSnapshot()); } catch(e) {} }
+        return newest===idb?'IndexedDB':(newest===persisted?'localStorage-persistent':'localStorage-legacy');
     }
     async function luuKhoDuLieuBenVung() {
         const snapshot=getVinapacoSnapshot();
@@ -2407,7 +2415,8 @@
 
         khoiTaoDanhSachNamTuSinh();
         doiThangHoSoLuong();
-        await tuDongTaiDuLieuTuDrive();
+        // Không để GAS chặn quá trình khởi tạo giao diện/đăng nhập. Dữ liệu cục bộ đã sẵn sàng trước đó.
+        tuDongTaiDuLieuTuDrive().catch(()=>{});
         renderAccountTable();
         capNhatTrangThaiKhoiTaoTaiKhoan(true);
         renderQuyHoachTable();
@@ -2973,6 +2982,8 @@
             const acc={email,fullName,role:'Admin',status:'Active',notifyEmail,passwordHash,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),lastPasswordResetAt:null};
             danhSachTaiKhoanHeThong=[acc];
             luuTruVaoLocalStorage();
+            // Ghi snapshot ngay lập tức, không chờ debounce 250ms.
+            try{ await ghiSnapshotIndexedDB(getVinapacoSnapshot()); }catch(e){}
             let serverSaved=false;
             try{
                 serverSaved=await gasSendNoCors({type:'CREATE_INITIAL_ADMIN_ACCOUNT',payload:{account:acc}});
@@ -2985,9 +2996,11 @@
             document.getElementById('loginUser').value=email;
             document.getElementById('loginPass').value='';
             document.getElementById('loginPass').focus();
+            capNhatTrangThaiKhoiTaoTaiKhoan(false);
         }finally{ btn.disabled=false; btn.innerHTML=old; }
     }
 
+    let __vinapacoAppInitialized=false;
     async function thucHienDangNhap() {
         const u = document.getElementById('loginUser').value.trim().toLowerCase();
         const p = document.getElementById('loginPass').value;
@@ -3005,12 +3018,15 @@
         else if (acc.password) { ok = p === acc.password; if(ok){ acc.passwordHash=await hashPassword(p); delete acc.password; luuTruVaoLocalStorage(); } }
         if (!ok) { alert('Sai tài khoản hoặc mật khẩu. Nếu quên mật khẩu, hãy sử dụng email khôi phục đã đăng ký.'); return; }
         acc.lastLoginAt=new Date().toISOString(); luuTruVaoLocalStorage();
-        document.getElementById('loginModal').classList.add('hidden'); document.getElementById('appMainContainer').classList.remove('hidden'); khoiTaoHeThongSauDangNhap();
+        document.getElementById('loginModal').classList.add('hidden'); document.getElementById('appMainContainer').classList.remove('hidden');
+        if(!__vinapacoAppInitialized){ __vinapacoAppInitialized=true; await khoiTaoHeThongSauDangNhap(); }
     }
     function handleLoginKeydown(e) { if (e.key === 'Enter') thucHienDangNhap(); }
     function dangXuatHeThong() { document.getElementById('appMainContainer').classList.add('hidden'); document.getElementById('loginModal').classList.remove('hidden'); }
 
-    function khoiTaoHeThongSauDangNhap() {
+    async function khoiTaoHeThongSauDangNhap() {
+        if(window.__vinapacoAppInitPromise) return window.__vinapacoAppInitPromise;
+        window.__vinapacoAppInitPromise=(async()=>{
         khoiTaoDanhSachNamTuSinh();
         doiThangHoSoLuong();
         renderTaskTable();
@@ -3019,10 +3035,39 @@
         capNhatNhacNghiLeTheoNgay();
         setInterval(capNhatNhacNghiLeTheoNgay, 60 * 1000);
         setTimeout(() => { veTatCaBieuDoDashboard(); }, 200);
+        })();
+        try{ await window.__vinapacoAppInitPromise; }finally{}
+        return window.__vinapacoAppInitPromise;
     }
 
     function khoiTaoDanhSachNamTuSinh() {
         document.getElementById('cfgNamChon').innerHTML = '<option value="2025">2025</option><option value="2026" selected>2026</option><option value="2027">2027</option>';
+    }
+
+    function chuyenSoTienVN(v){
+        const raw=String(v??'').replace(/[^0-9-]/g,'');
+        if(!raw || raw==='-') return 0;
+        return Number(raw)||0;
+    }
+    function dinhDangTienVN(v){
+        const n=chuyenSoTienVN(v);
+        return n.toLocaleString('vi-VN');
+    }
+    function boDinhDangTien(el){
+        if(!el) return;
+        el.value=String(chuyenSoTienVN(el.value)||'');
+        requestAnimationFrame(()=>{try{el.select();}catch(e){}});
+    }
+    function dinhDangTienVaLuu(el){
+        if(!el) return;
+        el.value=dinhDangTienVN(el.value);
+        luuCauHinhHienTai();
+    }
+    function xuLyEnterTien(e,el){
+        if(e.key==='Enter'){ e.preventDefault(); el.blur(); }
+    }
+    function dinhDangTatCaTruongTien(){
+        ['cfgMucLCB','cfgMucTTV','cfgMucLCV'].forEach(id=>{const el=document.getElementById(id); if(el) el.value=dinhDangTienVN(el.value);});
     }
 
     function doiThangHoSoLuong() {
@@ -3045,18 +3090,19 @@
 
         let cfg = coSoDuLieuNamThang[currentNamKey][currentThangKey].config;
         document.getElementById('cfgNCD').value = cfg.ncd;
-        document.getElementById('cfgMucLCB').value = cfg.mucLCB;
-        document.getElementById('cfgMucTTV').value = cfg.mucTTV;
-        document.getElementById('cfgMucLCV').value = cfg.mucLCV;
+        document.getElementById('cfgMucLCB').value = dinhDangTienVN(cfg.mucLCB);
+        document.getElementById('cfgMucTTV').value = dinhDangTienVN(cfg.mucTTV);
+        document.getElementById('cfgMucLCV').value = dinhDangTienVN(cfg.mucLCV);
         capNhat();
     }
 
     function luuCauHinhHienTai() {
         let cfg = coSoDuLieuNamThang[currentNamKey][currentThangKey].config;
         cfg.ncd = parseFloat(document.getElementById('cfgNCD').value) || 22;
-        cfg.mucLCB = parseFloat(document.getElementById('cfgMucLCB').value) || 2530000;
-        cfg.mucTTV = parseFloat(document.getElementById('cfgMucTTV').value) || 4140000;
-        cfg.mucLCV = parseFloat(document.getElementById('cfgMucLCV').value) || 2087970;
+        cfg.mucLCB = chuyenSoTienVN(document.getElementById('cfgMucLCB').value) || 2530000;
+        cfg.mucTTV = chuyenSoTienVN(document.getElementById('cfgMucTTV').value) || 4140000;
+        cfg.mucLCV = chuyenSoTienVN(document.getElementById('cfgMucLCV').value) || 2087970;
+        dinhDangTatCaTruongTien();
         capNhat();
     }
 
@@ -4676,6 +4722,11 @@
     <div style="display:flex;justify-content:flex-end;gap:8px;padding:0 16px 16px;"><button class="btn btn-red" onclick="dongModalTNCN()">Hủy</button><button class="btn btn-green" onclick="luuCauHinhTNCN()"><i class="fa-solid fa-save"></i> Lưu & Tính lại</button></div>
   </div>
 </div>
+
+<style>
+[data-currency="vnd"]{font-variant-numeric:tabular-nums;text-align:right;font-weight:800;letter-spacing:.2px;}
+[data-currency="vnd"]:focus{background:#fffdf2;border-color:#0284c7;outline:2px solid rgba(2,132,199,.12);}
+</style>
 </body></html>`;
     }
     function xuatExcelBangLuongDoanhNghiep() {

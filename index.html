@@ -134,6 +134,27 @@
             .payslip-pro { max-width:100% !important; }
         }
 
+
+        /* ===== NHẮC NGHỈ CHUYÊN NGHIỆP ===== */
+        .professional-reminder {
+            position: fixed; right: 22px; bottom: 22px; z-index: 120000;
+            width: min(430px, calc(100vw - 32px)); background: #ffffff;
+            border: 1px solid #bae6fd; border-left: 6px solid #0284c7;
+            border-radius: 14px; box-shadow: 0 18px 45px rgba(15,23,42,.18);
+            padding: 15px 17px; display: none; animation: reminderIn .25s ease-out;
+        }
+        .professional-reminder.show { display:block; }
+        .professional-reminder .reminder-title { font-weight: 900; color:#0f172a; font-size:14px; }
+        .professional-reminder .reminder-body { color:#475569; font-size:13px; line-height:1.55; margin-top:5px; }
+        .professional-reminder .reminder-actions { display:flex; justify-content:flex-end; gap:7px; margin-top:10px; }
+        .holiday-banner {
+            display:none; margin-bottom:14px; background:linear-gradient(135deg,#eff6ff,#f0fdf4);
+            border:1px solid #bae6fd; border-radius:12px; padding:12px 15px;
+            color:#0f172a; box-shadow:0 5px 15px rgba(15,23,42,.06);
+        }
+        .holiday-banner.show { display:block; }
+        @keyframes reminderIn { from { transform:translateY(12px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+
     </style>
 </head>
 <body>
@@ -206,6 +227,7 @@
 
 <!-- NỘI DUNG CHÍNH -->
 <div class="container hidden" id="appMainContainer">
+    <div id="holidayReminderBanner" class="holiday-banner"></div>
     <div class="banner">
         <div>
             <h1><i class="fa-solid fa-building-shield"></i> Hệ Thống Quản Lý Đa Dashboard & So Sánh Chi Phí Cả Năm</h1>
@@ -1089,20 +1111,69 @@
     </div>
 </div>
 
+
+<div id="professionalReminder" class="professional-reminder" role="status" aria-live="polite">
+    <div class="reminder-title" id="professionalReminderTitle">☕ Nhắc nghỉ chuyên nghiệp</div>
+    <div class="reminder-body" id="professionalReminderBody"></div>
+    <div class="reminder-actions">
+        <button class="btn btn-blue" style="padding:6px 10px;" onclick="anDongNhacNghi()">Đã xem</button>
+    </div>
+</div>
+
 <script>
     Chart.register(ChartDataLabels);
 
     let nhacNghiTimer = null;
+    function hienThiNhacNghi(tieuDe, noiDung, type="break") {
+        const box = document.getElementById("professionalReminder");
+        const title = document.getElementById("professionalReminderTitle");
+        const body = document.getElementById("professionalReminderBody");
+        if (!box || !title || !body) return;
+        title.textContent = tieuDe || "☕ Nhắc nghỉ chuyên nghiệp";
+        body.textContent = noiDung || "Bạn đã làm việc liên tục. Hãy dành ít phút nghỉ ngơi để bảo vệ sức khỏe và duy trì hiệu suất.";
+        box.style.borderLeftColor = type === "holiday" ? "#16a34a" : "#0284c7";
+        box.classList.add("show");
+    }
+    function anDongNhacNghi() {
+        const box = document.getElementById("professionalReminder");
+        if (box) box.classList.remove("show");
+    }
     function batTatNhacNghiGoi() {
         if (nhacNghiTimer) {
             clearInterval(nhacNghiTimer);
             nhacNghiTimer = null;
-            alert("☕ Đã TẮT tính năng nhắc nghỉ ngơi định kỳ.");
+            hienThiNhacNghi("☕ Đã tắt nhắc nghỉ", "Tính năng nhắc nghỉ định kỳ đã được tắt.", "break");
+            return;
+        }
+        hienThiNhacNghi("☕ Nhắc nghỉ đã bật", "Hệ thống sẽ nhắc bạn sau mỗi 45 phút làm việc. Bạn có thể đóng thông báo trên màn hình bất cứ lúc nào.");
+        nhacNghiTimer = setInterval(() => {
+            hienThiNhacNghi("☕ [VINAPACO] Đến giờ nghỉ", "Bạn đã làm việc liên tục 45 phút. Hãy dành 5 phút thư giãn mắt, đứng lên vận động nhẹ và uống nước.");
+        }, 45 * 60 * 1000);
+    }
+
+    // Chỉ khai báo ngày nghỉ lễ được yêu cầu cho tháng 04 và tháng 05.
+    // Lịch 2026: 27/04 nghỉ bù Giỗ Tổ; 30/04 Ngày Giải phóng; 01/05 Quốc tế Lao động.
+    const NGAY_NGHI_LE_THANG_4_5 = {
+        "2026-04-27": "Nghỉ bù Giỗ Tổ Hùng Vương",
+        "2026-04-30": "Ngày Giải phóng miền Nam, thống nhất đất nước",
+        "2026-05-01": "Ngày Quốc tế Lao động"
+    };
+    function getHolidayInfo(y,m,d) {
+        const key = `${y}-${String(m).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+        return NGAY_NGHI_LE_THANG_4_5[key] || "";
+    }
+    function capNhatNhacNghiLeTheoNgay() {
+        const now = new Date();
+        const key = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
+        const holiday = NGAY_NGHI_LE_THANG_4_5[key];
+        const banner = document.getElementById("holidayReminderBanner");
+        if (!banner) return;
+        if (holiday) {
+            banner.classList.add("show");
+            banner.innerHTML = `<b>🎉 Thông báo nghỉ lễ:</b> Hôm nay ${holiday}. Vui lòng hoàn tất bàn giao công việc, kiểm tra lịch trực và hạn chế phát sinh hồ sơ không cần thiết.`;
         } else {
-            alert("☕ Đã BẬT tính năng nhắc nghỉ ngơi! Hệ thống sẽ nhắc bạn nghỉ ngơi thư giãn sau mỗi 45 phút làm việc.");
-            nhacNghiTimer = setInterval(() => {
-                alert("☕ [VINAPACO REMINDER] Bạn đã làm việc liên tục 45 phút. Hãy dành 5 phút nghỉ ngơi, thư giãn mắt và uống nước nhé!");
-            }, 45 * 60 * 1000);
+            banner.classList.remove("show");
+            banner.innerHTML = "";
         }
     }
 
@@ -1121,42 +1192,42 @@
                 config: { ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 },
                 nhansu: [
                     {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 5000000, "phep_cap": 12},
-                    {"stt": 2, "hoTen": "Nguyễn Văn Nam", "hsl_cb": 1.48, "pc_cb": 0.25, "hsl_cv": 2.24, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 5, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
-                    {"stt": 3, "hoTen": "Nguyễn Thị Tuyết Nhung", "hsl_cb": 1.79, "pc_cb": 0.25, "hsl_cv": 1.74, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 1, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 4, "hoTen": "Vũ Thị Thu", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 1.86, "pc_cv": 0.5, "nc_tg": 21, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 5, "hoTen": "Đào Thị Liên", "hsl_cb": 1.79, "pc_cb": 0.25, "hsl_cv": 1.74, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
-                    {"stt": 6, "hoTen": "Võ Thị Thanh Tuyền", "hsl_cb": 1.71, "pc_cb": 0.25, "hsl_cv": 1.74, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 7, "hoTen": "Trần Thị Thanh", "hsl_cb": 1.67, "pc_cb": 0.25, "hsl_cv": 1.48, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
-                    {"stt": 8, "hoTen": "Trần Đức Chiến", "hsl_cb": 1.83, "pc_cb": 0.25, "hsl_cv": 1.66, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 9, "hoTen": "Phạm Tiến Long", "hsl_cb": 1.80, "pc_cb": 0.25, "hsl_cv": 1.62, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
-                    {"stt": 10, "hoTen": "Đinh Hữu Vinh", "hsl_cb": 1.83, "pc_cb": 0.25, "hsl_cv": 1.66, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 11, "hoTen": "Bùi Đình Điệp", "hsl_cb": 1.53, "pc_cb": 0.25, "hsl_cv": 1.62, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 12, "hoTen": "Hoàng Mạnh Hùng", "hsl_cb": 1.53, "pc_cb": 0.25, "hsl_cv": 1.62, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 13, "hoTen": "Ma Trọng Luận", "hsl_cb": 1.35, "pc_cb": 0.25, "hsl_cv": 1.63, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.1, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 14, "hoTen": "Trần Bình Dương", "hsl_cb": 1.79, "pc_cb": 0.25, "hsl_cv": 2.40, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 15, "hoTen": "Đặng Trần Trung", "hsl_cb": 1.53, "pc_cb": 0.25, "hsl_cv": 1.62, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 16, "hoTen": "Phạm Huy Chiến", "hsl_cb": 2.26, "pc_cb": 0.25, "hsl_cv": 2.40, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12}
+                    {"stt": 2, "hoTen": "Nguyễn Văn Nam", "hsl_cb": 1.48, "pc_cb": 0, "hsl_cv": 2.24, "pc_cv": 0, "nc_tg": 20, "nc_p": 5, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
+                    {"stt": 3, "hoTen": "Nguyễn Thị Tuyết Nhung", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 20, "nc_p": 1, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 4, "hoTen": "Vũ Thị Thu", "hsl_cb": 1.94, "pc_cb": 0, "hsl_cv": 1.86, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 5, "hoTen": "Đào Thị Liên", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
+                    {"stt": 6, "hoTen": "Võ Thị Thanh Tuyền", "hsl_cb": 1.71, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 7, "hoTen": "Trần Thị Thanh", "hsl_cb": 1.67, "pc_cb": 0, "hsl_cv": 1.48, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
+                    {"stt": 8, "hoTen": "Trần Đức Chiến", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 9, "hoTen": "Phạm Tiến Long", "hsl_cb": 1.80, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
+                    {"stt": 10, "hoTen": "Đinh Hữu Vinh", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 11, "hoTen": "Bùi Đình Điệp", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 12, "hoTen": "Hoàng Mạnh Hùng", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 13, "hoTen": "Ma Trọng Luận", "hsl_cb": 1.35, "pc_cb": 0, "hsl_cv": 1.63, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.1, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 14, "hoTen": "Trần Bình Dương", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 15, "hoTen": "Đặng Trần Trung", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 16, "hoTen": "Phạm Huy Chiến", "hsl_cb": 2.26, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12}
                 ]
             },
             "Tháng 06": {
                 config: { ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 },
                 nhansu: [
                     {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 5000000, "phep_cap": 12},
-                    {"stt": 2, "hoTen": "Nguyễn Văn Nam", "hsl_cb": 1.48, "pc_cb": 0.25, "hsl_cv": 2.24, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 3, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
-                    {"stt": 3, "hoTen": "Nguyễn Thị Tuyết Nhung", "hsl_cb": 1.79, "pc_cb": 0.25, "hsl_cv": 1.74, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 2, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 4, "hoTen": "Vũ Thị Thu", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 1.86, "pc_cv": 0.5, "nc_tg": 21, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 5, "hoTen": "Đào Thị Liên", "hsl_cb": 1.79, "pc_cb": 0.25, "hsl_cv": 1.74, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
-                    {"stt": 6, "hoTen": "Võ Thị Thanh Tuyền", "hsl_cb": 1.71, "pc_cb": 0.25, "hsl_cv": 1.74, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 1, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 7, "hoTen": "Trần Thị Thanh", "hsl_cb": 1.67, "pc_cb": 0.25, "hsl_cv": 1.48, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 2, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
-                    {"stt": 8, "hoTen": "Trần Đức Chiến", "hsl_cb": 1.83, "pc_cb": 0.25, "hsl_cv": 1.66, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 9, "hoTen": "Phạm Tiến Long", "hsl_cb": 1.80, "pc_cb": 0.25, "hsl_cv": 1.62, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
-                    {"stt": 10, "hoTen": "Đinh Hữu Vinh", "hsl_cb": 1.83, "pc_cb": 0.25, "hsl_cv": 1.66, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 11, "hoTen": "Bùi Đình Điệp", "hsl_cb": 1.53, "pc_cb": 0.25, "hsl_cv": 1.62, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 12, "hoTen": "Hoàng Mạnh Hùng", "hsl_cb": 1.53, "pc_cb": 0.25, "hsl_cv": 1.62, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 13, "hoTen": "Ma Trọng Luận", "hsl_cb": 1.35, "pc_cb": 0.25, "hsl_cv": 1.63, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.1, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 14, "hoTen": "Trần Bình Dương", "hsl_cb": 1.79, "pc_cb": 0.25, "hsl_cv": 2.40, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 15, "hoTen": "Đặng Trần Trung", "hsl_cb": 1.53, "pc_cb": 0.25, "hsl_cv": 1.62, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 16, "hoTen": "Phạm Huy Chiến", "hsl_cb": 2.26, "pc_cb": 0.25, "hsl_cv": 2.40, "pc_cv": 0.5, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12}
+                    {"stt": 2, "hoTen": "Nguyễn Văn Nam", "hsl_cb": 1.48, "pc_cb": 0, "hsl_cv": 2.24, "pc_cv": 0, "nc_tg": 20, "nc_p": 3, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
+                    {"stt": 3, "hoTen": "Nguyễn Thị Tuyết Nhung", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 20, "nc_p": 2, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 4, "hoTen": "Vũ Thị Thu", "hsl_cb": 1.94, "pc_cb": 0, "hsl_cv": 1.86, "pc_cv": 0, "nc_tg": 21, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 5, "hoTen": "Đào Thị Liên", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
+                    {"stt": 6, "hoTen": "Võ Thị Thanh Tuyền", "hsl_cb": 1.71, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 20, "nc_p": 1, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 7, "hoTen": "Trần Thị Thanh", "hsl_cb": 1.67, "pc_cb": 0, "hsl_cv": 1.48, "pc_cv": 0, "nc_tg": 20, "nc_p": 2, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
+                    {"stt": 8, "hoTen": "Trần Đức Chiến", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 9, "hoTen": "Phạm Tiến Long", "hsl_cb": 1.80, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
+                    {"stt": 10, "hoTen": "Đinh Hữu Vinh", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 11, "hoTen": "Bùi Đình Điệp", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 12, "hoTen": "Hoàng Mạnh Hùng", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 13, "hoTen": "Ma Trọng Luận", "hsl_cb": 1.35, "pc_cb": 0, "hsl_cv": 1.63, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.1, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 14, "hoTen": "Trần Bình Dương", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 15, "hoTen": "Đặng Trần Trung", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 16, "hoTen": "Phạm Huy Chiến", "hsl_cb": 2.26, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 20, "nc_p": 0, "nc_l": 1, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12}
                 ]
             }
         }
@@ -1177,6 +1248,21 @@
     } catch (e) {
         coSoDuLieuNamThang = defaultCoSoDuLieuNamThang;
     }
+
+    // Chuẩn hóa hệ số phụ cấp: tất cả về 0, riêng Nguyễn Minh Ngọc giữ nguyên.
+    function chuanHoaHeSoPhuCap() {
+        Object.values(coSoDuLieuNamThang || {}).forEach(yearData => {
+            Object.values(yearData || {}).forEach(monthData => {
+                (monthData?.nhansu || []).forEach(nv => {
+                    if (nv.hoTen !== "Nguyễn Minh Ngọc") {
+                        nv.pc_cb = 0;
+                        nv.pc_cv = 0;
+                    }
+                });
+            });
+        });
+    }
+    chuanHoaHeSoPhuCap();
 
     if (!coSoDuLieuNamThang[_namHienTai]) coSoDuLieuNamThang[_namHienTai] = {};
     if (!coSoDuLieuNamThang[_namHienTai][_thangHienTai]) {
@@ -1371,6 +1457,7 @@
                 if (result.danhSachTaiKhoanHeThong) danhSachTaiKhoanHeThong = result.danhSachTaiKhoanHeThong;
             }
         } catch (e) {}
+        chuanHoaHeSoPhuCap();
 
         if (!coSoDuLieuNamThang[currentNamKey]) {
             coSoDuLieuNamThang[currentNamKey] = {};
@@ -1385,6 +1472,7 @@
     }
 
     async function tuDongDayDuLieuLenDrive(filesToUpload = [], folderPath = "") {
+        chuanHoaHeSoPhuCap();
         let payload = { 
             coSoDuLieuNamThang, 
             dsThanhToanVanPhongProByMonth, 
@@ -1394,7 +1482,11 @@
             danhSachCongViec, 
             dsPhieuGiaoNhan, 
             danhSachTaiKhoanHeThong,
-            folderPath: folderPath
+            folderPath: folderPath,
+            autoDriveLink: true,
+            driveRoot: "VINAPACO_Drive",
+            driveLinkRule: "Năm/Tháng/Loại hồ sơ",
+            reuseExistingAttachments: true
         };
         try { 
             await fetch(gasWebhookUrl, { 
@@ -1443,6 +1535,7 @@
             if (Object.prototype.hasOwnProperty.call(result, "danhSachCongViec")) danhSachCongViec = Array.isArray(result.danhSachCongViec) ? result.danhSachCongViec : [];
             if (Object.prototype.hasOwnProperty.call(result, "dsPhieuGiaoNhan")) dsPhieuGiaoNhan = Array.isArray(result.dsPhieuGiaoNhan) ? result.dsPhieuGiaoNhan : [];
             if (Object.prototype.hasOwnProperty.call(result, "danhSachTaiKhoanHeThong")) danhSachTaiKhoanHeThong = Array.isArray(result.danhSachTaiKhoanHeThong) ? result.danhSachTaiKhoanHeThong : [];
+            chuanHoaHeSoPhuCap();
 
             if (!coSoDuLieuNamThang[currentNamKey]) coSoDuLieuNamThang[currentNamKey] = {};
             if (!coSoDuLieuNamThang[currentNamKey][currentThangKey]) {
@@ -1577,7 +1670,7 @@
             grid.innerHTML += `<div onclick="hienThiPhongThuyNgay(${d}, ${m}, ${y})" style="padding:6px; border:1px solid; border-radius:8px; ${bgStyle} font-size:11px; display:flex; flex-direction:column; gap:2px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
                 <b style="font-size:13px; color:#0f172a;">${d}</b>
                 <span style="color:#16a34a; font-weight:700;">Âm: ${lunar.day}/${lunar.month}</span>
-                <span style="color:${lunar.isHoangDao?'#15803d':'#475569'}; font-size:10px; font-weight:bold;">${lunar.isHoangDao?'✨ Hoàng Đạo':'Bình thường'}</span>
+                <span style="color:${holidayName?'#c2410c':(lunar.isHoangDao?'#15803d':'#475569')}; font-size:10px; font-weight:bold;">${holidayName ? '🎉 '+holidayName : (lunar.isHoangDao?'✨ Hoàng Đạo':'Bình thường')}</span>
             </div>`;
         }
 
@@ -1587,6 +1680,7 @@
     function hienThiPhongThuyNgay(d, m, y) {
         let lunar = convertSolar2Lunar(d, m, y);
         let box = document.getElementById('chiTietNgayNoiDung');
+        const holidayName = getHolidayInfo(y,m,d);
         box.innerHTML = `
             <div>📅 <b>Dương lịch:</b> Ngày ${d}/${m}/${y}</div>
             <div>🌙 <b>Âm lịch:</b> Ngày ${lunar.day} tháng ${lunar.month} năm ${lunar.year} (${lunar.canChiNam})</div>
@@ -1594,6 +1688,7 @@
             <div>📜 <b>Trực ngày:</b> ${lunar.truc}</div>
             <div>🌟 <b>Sao chiếu mệnh:</b> ${lunar.sao}</div>
             <div>🧭 <b>Hướng xuất hành:</b> ${lunar.huongXuatHanh}</div>
+            ${holidayName ? `<div style="color:#c2410c; font-weight:900;">🎉 <b>Ngày nghỉ lễ:</b> ${holidayName}</div>` : ''}
             <div style="color:#15803d; margin-top:2px;">🟢 <b>Việc nên làm:</b> ${lunar.viecNenLam}</div>
             <div style="color:#dc2626;">🔴 <b>Việc kiêng kỵ:</b> ${lunar.viecKienKy}</div>
         `;
@@ -1628,6 +1723,8 @@
         renderTaskTable();
         renderAccountTable();
         khoiTaoDonghoVaThoiGianThuc();
+        capNhatNhacNghiLeTheoNgay();
+        setInterval(capNhatNhacNghiLeTheoNgay, 60 * 1000);
         setTimeout(() => { veTatCaBieuDoDashboard(); }, 200);
     }
 
@@ -1671,6 +1768,7 @@
     }
 
     function capNhat() {
+        chuanHoaHeSoPhuCap();
         let cfg = coSoDuLieuNamThang[currentNamKey][currentThangKey].config;
         let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         ds.forEach(i => {
@@ -2335,6 +2433,20 @@
         });
     }
 
+    function timTepDaLuuTru(loai, criteria) {
+        const ketQua = [];
+        const source = loai === "vpp" ? dsThanhToanVanPhongProByMonth : dsThanhToanTelecombyMonth;
+        Object.entries(source || {}).forEach(([key, list]) => {
+            (Array.isArray(list) ? list : []).forEach(item => {
+                const match = loai === "vpp"
+                    ? ((criteria.content && item.content === criteria.content) || (criteria.beneficiary && item.beneficiary === criteria.beneficiary && criteria.content && item.content === criteria.content))
+                    : ((criteria.type && item.type === criteria.type) || (criteria.supplier && item.supplier === criteria.supplier && criteria.type && item.type === criteria.type));
+                if (match && Array.isArray(item.files) && item.files.length) ketQua.push(...item.files);
+            });
+        });
+        return ketQua.filter((f,i,a)=>f && f.name && a.findIndex(x=>x.name===f.name && x.folder===f.folder)===i);
+    }
+
     function luuHoacCapNhatVPP() {
         let content = document.getElementById('inputOfficeContent').value.trim();
         let beneficiary = document.getElementById('inputOfficeBeneficiary').value.trim();
@@ -2350,7 +2462,8 @@
 
         let editIdx = parseInt(document.getElementById('editOfficeIndex').value);
         let existingFiles = editIdx >= 0 && dsThanhToanVanPhongProByMonth[key][editIdx].files ? dsThanhToanVanPhongProByMonth[key][editIdx].files : [];
-        let finalFiles = filesArr.length > 0 ? filesArr : existingFiles;
+        let reusedFiles = existingFiles.length ? existingFiles : timTepDaLuuTru("vpp", {content, beneficiary});
+        let finalFiles = filesArr.length > 0 ? filesArr : reusedFiles;
 
         let newItem = {
             id: editIdx >= 0 ? dsThanhToanVanPhongProByMonth[key][editIdx].id : "VP-0" + (dsThanhToanVanPhongProByMonth[key].length + 1),
@@ -2360,7 +2473,9 @@
             unit: document.getElementById('inputOfficeUnit').value,
             qty: parseFloat(document.getElementById('inputOfficeQty').value)||1,
             price: parseVNDMoney(document.getElementById('inputOfficePrice').value),
-            truocThue, vat, total, date: document.getElementById('inputOfficeDate').value || `${currentNamKey}-06-18`, files: finalFiles
+            truocThue, vat, total, date: document.getElementById('inputOfficeDate').value || `${currentNamKey}-${String(new Date().getMonth()+1).padStart(2,"0")}-01`,
+            files: finalFiles, driveFolderPath: `VINAPACO_Drive/${currentNamKey}/${currentThangKey}/Thanh_Toan_VPP`,
+            attachmentLinkedAutomatically: filesToUpload.length === 0 && finalFiles.length > 0
         };
 
         if (editIdx >= 0) {
@@ -2808,7 +2923,8 @@
         if (editIdx >= 0 && oldMonthKey && dsThanhToanTelecombyMonth[oldMonthKey] && dsThanhToanTelecombyMonth[oldMonthKey][editIdx]) {
             existingFiles = dsThanhToanTelecombyMonth[oldMonthKey][editIdx].files || [];
         }
-        let finalFiles = filesArr.length > 0 ? filesArr : existingFiles;
+        let reusedFiles = existingFiles.length ? existingFiles : timTepDaLuuTru("telecom", {type, supplier: document.getElementById('inputTelecomSupplier').value});
+        let finalFiles = filesArr.length > 0 ? filesArr : reusedFiles;
 
         let generatedId = "VT-0" + (dsThanhToanTelecombyMonth[exactMonthKey].length + 1);
 
@@ -2823,7 +2939,9 @@
             truocThue: truocThue,
             vat: vat,
             tong: tong,
-            files: finalFiles
+            files: finalFiles,
+            driveFolderPath: `VINAPACO_Drive/${namChonHienTai}/${thangChonHienTai}/Cuoc_Vien_Thong`,
+            attachmentLinkedAutomatically: filesToUpload.length === 0 && finalFiles.length > 0
         };
 
         if (editIdx >= 0 && oldMonthKey && dsThanhToanTelecombyMonth[oldMonthKey]) {

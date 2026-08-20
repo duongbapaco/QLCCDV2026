@@ -508,7 +508,7 @@
 <div class="modal-overlay hidden" id="modalKhoiTaoHeThong" style="z-index:1000001;background:rgba(3,63,45,.82);backdrop-filter:blur(6px);">
     <div class="account-modal-card" style="max-width:620px;overflow:hidden;">
         <div style="padding:20px 24px;background:linear-gradient(135deg,#075c3f,#0b9868);color:#fff;display:flex;align-items:center;gap:14px;">
-            <img id="firstRunVinapacoLogo" src="" alt="VINAPACO" style="width:62px;height:62px;object-fit:contain;background:#fff;border-radius:50%;padding:4px;box-shadow:0 5px 15px rgba(0,0,0,.18);">
+            <img id="firstRunVinapacoLogo" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="VINAPACO" style="width:62px;height:62px;object-fit:contain;background:#fff;border-radius:50%;padding:4px;box-shadow:0 5px 15px rgba(0,0,0,.18);">
             <div>
                 <div style="font-size:17px;font-weight:950;text-transform:uppercase;letter-spacing:.2px;">Khởi tạo hệ thống VINAPACO</div>
                 <div style="font-size:11px;opacity:.9;margin-top:5px;line-height:1.5;">Thiết lập tài khoản Quản trị viên đầu tiên — không sử dụng tài khoản hoặc mật khẩu mặc định.</div>
@@ -1792,131 +1792,226 @@
         return {day:1,month:1,year:yy,canChiNam:"",canChiNgay:"",truc:"",sao:"",isHoangDao:false,huongXuatHanh:"",viecNenLam:"",viecKienKy:""};
     }
 
+    // ===== TIỆN ÍCH AN TOÀN CHẠY TRÌNH DUYỆT =====
+    // Tránh ReferenceError khi dữ liệu/API bên ngoài chưa sẵn sàng.
+    function escapeHtml(value) {
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    // Google Apps Script ở domain khác có thể không trả CORS header.
+    // Không tự động đọc GAS cross-origin khi chưa được cấu hình CORS,
+    // vì nếu cố đọc sẽ tạo lỗi đỏ trong F12 và làm chậm khởi tạo hệ thống.
+    const VINAPACO_GAS_READ_ENABLED = (() => {
+        try {
+            // GET thường không cần preflight. Cho phép đọc GAS bình thường;
+            // chỉ tắt bằng localStorage nếu máy chủ GAS thực sự không trả CORS.
+            return localStorage.getItem("bapaco_gas_browser_read") !== "0";
+        } catch (_) { return true; }
+    })();
+
+    async function gasReadJson(url, timeoutMs = 9000) {
+        if (!VINAPACO_GAS_READ_ENABLED) return null;
+        const res = await fetchWithTimeout(url, { method: "GET", cache: "no-store" }, timeoutMs);
+        if (!res.ok) throw new Error("GAS HTTP " + res.status);
+        return await res.json();
+    }
+
+    // Gửi dữ liệu dạng no-cors + text/plain để tránh preflight.
+    // Với thao tác ghi, hệ thống không cần đọc response nên không phát sinh lỗi CORS.
+    async function gasSendNoCors(payload, timeoutMs = 10000) {
+        if (!gasWebhookUrl) return false;
+        try {
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), timeoutMs);
+            await fetch(gasWebhookUrl, {
+                method: "POST",
+                mode: "no-cors",
+                cache: "no-store",
+                headers: { "Content-Type": "text/plain;charset=UTF-8" },
+                body: JSON.stringify(payload),
+                keepalive: true,
+                signal: controller.signal
+            });
+            clearTimeout(timer);
+            return true;
+        } catch (_) { return false; }
+    }
+
+    /* ============================================================
+       THỜI TIẾT + ĐỊNH VỊ: ưu tiên GPS, không để giao diện bị treo
+       - Mọi request mạng đều có timeout và tự thử lại.
+       - Hiển thị dữ liệu thời tiết trước, reverse-geocode chạy nền.
+       - Nếu GPS/API lỗi: tự chuyển sang IP -> vị trí mặc định, không spinner vô hạn.
+       ============================================================ */
     let __vinapacoWeatherTimer = null;
     let __vinapacoGeoWatchId = null;
     let __vinapacoLastWeatherCoords = null;
+    let __vinapacoWeatherBusy = false;
+    let __vinapacoWeatherRetry = 0;
+
+    function fetchWithTimeout(url, options={}, timeoutMs=8000) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeoutMs);
+        return fetch(url, {...options, signal: controller.signal})
+            .finally(() => clearTimeout(timer));
+    }
 
     function capNhatTrangThaiThoiTiet(msg, type='info') {
         const el=document.getElementById('weatherWidgetText');
         if(!el) return;
-        const icon = type==='error' ? 'fa-triangle-exclamation' : type==='loading' ? 'fa-spinner fa-spin' : 'fa-cloud-sun';
-        el.innerHTML=`<i class="fa-solid ${icon}" style="color:${type==='error'?'#dc2626':'#0284c7'};"></i> ${escapeHtml(msg)}`;
+        const icon = type==='error' ? 'fa-triangle-exclamation' : type==='loading' ? 'fa-cloud-sun' : 'fa-cloud-sun';
+        const color = type==='error' ? '#dc2626' : '#0284c7';
+        el.innerHTML=`<i class="fa-solid ${icon}" style="color:${color};"></i> ${escapeHtml(msg)}`;
     }
 
     function moTaMaThoiTiet(code) {
         const map = {
             0:'Trời quang',1:'Quang mây nhẹ',2:'Mây rải rác',3:'Nhiều mây',
-            45:'Sương mù',48:'Sương muối',
-            51:'Mưa phùn nhẹ',53:'Mưa phùn',55:'Mưa phùn mạnh',
-            56:'Mưa phùn lạnh nhẹ',57:'Mưa phùn lạnh mạnh',
-            61:'Mưa nhẹ',63:'Mưa vừa',65:'Mưa to',
-            66:'Mưa lạnh nhẹ',67:'Mưa lạnh mạnh',
-            71:'Tuyết nhẹ',73:'Tuyết vừa',75:'Tuyết to',77:'Hạt tuyết',
-            80:'Mưa rào nhẹ',81:'Mưa rào vừa',82:'Mưa rào mạnh',
-            85:'Tuyết rào nhẹ',86:'Tuyết rào mạnh',
+            45:'Sương mù',48:'Sương muối',51:'Mưa phùn nhẹ',53:'Mưa phùn',55:'Mưa phùn mạnh',
+            56:'Mưa phùn lạnh nhẹ',57:'Mưa phùn lạnh mạnh',61:'Mưa nhẹ',63:'Mưa vừa',65:'Mưa to',
+            66:'Mưa lạnh nhẹ',67:'Mưa lạnh mạnh',71:'Tuyết nhẹ',73:'Tuyết vừa',75:'Tuyết to',77:'Hạt tuyết',
+            80:'Mưa rào nhẹ',81:'Mưa rào vừa',82:'Mưa rào mạnh',85:'Tuyết rào nhẹ',86:'Tuyết rào mạnh',
             95:'Dông',96:'Dông có mưa đá nhẹ',99:'Dông có mưa đá mạnh'
         };
-        return map[code] || 'Thời tiết đang cập nhật';
+        return map[code] || 'Đang cập nhật';
     }
 
     async function layTenDiaDiemTheoToaDo(lat, lon) {
         try {
             const url=`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&zoom=10&addressdetails=1&accept-language=vi`;
-            const res=await fetch(url,{headers:{'Accept':'application/json'}});
+            const res=await fetchWithTimeout(url,{headers:{'Accept':'application/json'}},5000);
             if(!res.ok) throw new Error('reverse geocode');
             const data=await res.json();
             const a=data.address||{};
-            return a.city || a.town || a.municipality || a.county || a.state || data.display_name || '';
-        } catch(e) {
-            return '';
-        }
+            return a.city || a.town || a.municipality || a.county || a.state || '';
+        } catch(e) { return ''; }
     }
 
-    async function goiApiLayThoiTiet(lat, lon, cityName='Vị trí hiện tại', source='GPS') {
+    function hienThiThoiTiet(c, lat, lon, cityName, source, apiTime) {
+        const weatherEl=document.getElementById('weatherWidgetText');
+        const locationEl=document.getElementById('weatherLocationText');
+        const updatedEl=document.getElementById('weatherUpdatedText');
+        const label=cityName || 'Vị trí hiện tại';
+        const temp=Number(c.temperature_2m), feel=Number(c.apparent_temperature);
+        const hum=Number(c.relative_humidity_2m), rain=Number(c.precipitation);
+        const wind=Number(c.wind_speed_10m), dir=Number(c.wind_direction_10m);
+        const cloud=Number(c.cloud_cover);
+        if(weatherEl) weatherEl.innerHTML =
+            `<i class="fa-solid fa-temperature-half" style="color:#ef4444;"></i> `+
+            `<b>${Number.isFinite(temp)?temp.toFixed(1):'—'}°C</b> • Cảm nhận ${Number.isFinite(feel)?feel.toFixed(1):'—'}°C • `+
+            `${moTaMaThoiTiet(c.weather_code)} • Ẩm ${Number.isFinite(hum)?Math.round(hum):'—'}% • `+
+            `Mưa ${Number.isFinite(rain)?rain.toFixed(1):'—'} mm • Gió ${Number.isFinite(wind)?wind.toFixed(1):'—'} km/h • Mây ${Number.isFinite(cloud)?Math.round(cloud):'—'}%`;
+        if(locationEl) locationEl.textContent=`📍 ${label} • ${Number(lat).toFixed(5)}, ${Number(lon).toFixed(5)} • ${source}`;
+        const nowText=new Intl.DateTimeFormat('vi-VN',{timeZone:'Asia/Ho_Chi_Minh',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date());
+        if(updatedEl) updatedEl.textContent=`🕒 ${nowText} • tự cập nhật 60 giây`;
+        __vinapacoLastWeatherCoords={lat,lon,cityName:label,source,apiTime};
+    }
+
+    async function goiApiLayThoiTiet(lat, lon, cityName='Vị trí hiện tại', source='GPS', options={}) {
+        const force = !!options.force;
+        if(__vinapacoWeatherBusy && !force) return false;
+        __vinapacoWeatherBusy=true;
         try {
             const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m&timezone=Asia%2FHo_Chi_Minh`;
-            const res = await fetch(url,{cache:'no-store'});
+            const res=await fetchWithTimeout(url,{cache:'no-store'},9000);
             if(!res.ok) throw new Error(`HTTP ${res.status}`);
             const data=await res.json();
-            const c=data.current;
-            if(!c) throw new Error('Không có dữ liệu hiện tại');
-
-            const weatherEl=document.getElementById('weatherWidgetText');
-            const locationEl=document.getElementById('weatherLocationText');
-            const updatedEl=document.getElementById('weatherUpdatedText');
-            const label=cityName || 'Vị trí hiện tại';
-            if(weatherEl) weatherEl.innerHTML =
-                `<i class="fa-solid fa-temperature-half" style="color:#ef4444;"></i> `+
-                `<b>${Number(c.temperature_2m).toFixed(1)}°C</b> • Cảm nhận ${Number(c.apparent_temperature).toFixed(1)}°C • `+
-                `${moTaMaThoiTiet(c.weather_code)} • Ẩm ${Math.round(c.relative_humidity_2m)}% • `+
-                `Mưa ${Number(c.precipitation).toFixed(1)} mm • Gió ${Number(c.wind_speed_10m).toFixed(1)} km/h`;
-
-            if(locationEl) locationEl.textContent=`📍 ${label} • ${Number(lat).toFixed(5)}, ${Number(lon).toFixed(5)} • ${source}`;
-            if(updatedEl) updatedEl.textContent=`🕒 ${new Intl.DateTimeFormat('vi-VN',{timeZone:'Asia/Ho_Chi_Minh',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date())} • kiểm tra mỗi phút`;
-
-            __vinapacoLastWeatherCoords={lat,lon,cityName:label,source};
+            if(!data?.current) throw new Error('Không có dữ liệu hiện tại');
+            hienThiThoiTiet(data.current,lat,lon,cityName,source,data.current.time||'');
+            __vinapacoWeatherRetry=0;
             clearTimeout(__vinapacoWeatherTimer);
-            __vinapacoWeatherTimer=setTimeout(()=>goiApiLayThoiTiet(lat,lon,label,source),60000);
+            __vinapacoWeatherTimer=setTimeout(()=>goiApiLayThoiTiet(lat,lon,cityName,source,{force:true}),60000);
+            return true;
         } catch(e) {
+            __vinapacoWeatherRetry++;
             const el=document.getElementById('weatherWidgetText');
-            if(el) el.innerHTML=`<i class="fa-solid fa-triangle-exclamation" style="color:#dc2626;"></i> Không tải được dữ liệu thời tiết. Sẽ tự thử lại sau 60 giây.`;
+            if(el) el.innerHTML=`<i class="fa-solid fa-cloud-arrow-down" style="color:#d97706;"></i> Dữ liệu thời tiết tạm thời chưa kết nối được — sẽ tự thử lại.`;
             clearTimeout(__vinapacoWeatherTimer);
-            __vinapacoWeatherTimer=setTimeout(()=>goiApiLayThoiTiet(lat,lon,cityName,source),60000);
-        }
+            const retryMs=Math.min(60000,5000*Math.pow(2,Math.min(__vinapacoWeatherRetry-1,3)));
+            __vinapacoWeatherTimer=setTimeout(()=>goiApiLayThoiTiet(lat,lon,cityName,source,{force:true}),retryMs);
+            return false;
+        } finally { __vinapacoWeatherBusy=false; }
     }
 
     async function capNhatThoiTietTuToaDo(lat,lon,source='GPS') {
-        const city = await layTenDiaDiemTheoToaDo(lat,lon);
-        await goiApiLayThoiTiet(lat,lon,city || 'Vị trí hiện tại',source);
+        // Không chờ reverse geocode: thời tiết phải xuất hiện ngay.
+        await goiApiLayThoiTiet(lat,lon,'Vị trí hiện tại',source,{force:true});
+        layTenDiaDiemTheoToaDo(lat,lon).then(city=>{
+            if(city && __vinapacoLastWeatherCoords && Math.abs(__vinapacoLastWeatherCoords.lat-lat)<0.0001 && Math.abs(__vinapacoLastWeatherCoords.lon-lon)<0.0001) {
+                const current=__vinapacoLastWeatherCoords;
+                const loc=document.getElementById('weatherLocationText');
+                if(loc) loc.textContent=`📍 ${city} • ${Number(lat).toFixed(5)}, ${Number(lon).toFixed(5)} • ${source}`;
+                current.cityName=city;
+            }
+        });
+    }
+
+    async function fallbackDinhViBangIP() {
+        capNhatTrangThaiThoiTiet('Đang lấy vị trí gần đúng từ mạng...', 'loading');
+        try {
+            const res=await fetchWithTimeout('https://ipapi.co/json/',{cache:'no-store'},5000);
+            if(!res.ok) throw new Error('IP HTTP');
+            const data=await res.json();
+            if(!data || !Number.isFinite(Number(data.latitude)) || !Number.isFinite(Number(data.longitude))) throw new Error('IP location unavailable');
+            await goiApiLayThoiTiet(Number(data.latitude),Number(data.longitude),data.city || data.region || 'Vị trí theo IP','IP (ước lượng)',{force:true});
+            return true;
+        } catch(e) {
+            // Không để spinner vô hạn: dùng thành phố đang có trong ô tra cứu làm phương án cuối.
+            const city=(document.getElementById('inputSearchCity')?.value||'Phú Thọ').trim() || 'Phú Thọ';
+            try {
+                const res=await fetchWithTimeout(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=vi&format=json`,{cache:'no-store'},6000);
+                const data=await res.json();
+                const loc=data?.results?.[0];
+                if(loc) {
+                    await goiApiLayThoiTiet(loc.latitude,loc.longitude,loc.name,'Dự phòng theo thành phố',{force:true});
+                    return true;
+                }
+            } catch(err) {}
+            const el=document.getElementById('weatherWidgetText');
+            if(el) el.innerHTML=`<i class="fa-solid fa-location-dot" style="color:#d97706;"></i> Chưa lấy được dữ liệu mạng. Bấm <b>GPS</b> để thử lại.`;
+            const loc=document.getElementById('weatherLocationText'); if(loc) loc.textContent='📍 Chưa xác định vị trí';
+            const upd=document.getElementById('weatherUpdatedText'); if(upd) upd.textContent='🕒 Chưa có dữ liệu';
+            return false;
+        }
     }
 
     function khoiTaoThoiTietTuDong() {
-        capNhatTrangThaiThoiTiet('Đang xin quyền định vị chính xác từ thiết bị...', 'loading');
-        if(!navigator.geolocation) {
-            fallbackDinhViBangIP();
-            return;
-        }
+        clearTimeout(__vinapacoWeatherTimer);
+        capNhatTrangThaiThoiTiet('Đang xác định vị trí...', 'loading');
+        if(!navigator.geolocation) { fallbackDinhViBangIP(); return; }
 
+        let settled=false;
         const onSuccess = pos => {
-            const lat=pos.coords.latitude, lon=pos.coords.longitude;
+            if(settled) return;
+            settled=true;
+            const lat=Number(pos.coords.latitude), lon=Number(pos.coords.longitude);
             const acc=Number(pos.coords.accuracy||0);
             const locationEl=document.getElementById('weatherLocationText');
             if(locationEl) locationEl.textContent=`📍 GPS • độ chính xác khoảng ${acc ? Math.round(acc) : '—'} m`;
             capNhatThoiTietTuToaDo(lat,lon,'GPS');
         };
-        const onError = () => fallbackDinhViBangIP();
+        const onError = () => { if(!settled){ settled=true; fallbackDinhViBangIP(); } };
 
         try {
-            __vinapacoGeoWatchId=navigator.geolocation.watchPosition(onSuccess,onError,{
-                enableHighAccuracy:true, maximumAge:0, timeout:15000
-            });
-        } catch(e) {
-            navigator.geolocation.getCurrentPosition(onSuccess,onError,{
-                enableHighAccuracy:true, maximumAge:0, timeout:15000
-            });
-        }
-    }
-
-    async function fallbackDinhViBangIP() {
-        capNhatTrangThaiThoiTiet('GPS chưa được cấp quyền; đang dùng vị trí IP gần đúng...', 'loading');
-        try {
-            const res=await fetch('https://ipapi.co/json/',{cache:'no-store'});
-            const data=await res.json();
-            if(!data || !data.latitude || !data.longitude) throw new Error('IP location unavailable');
-            await goiApiLayThoiTiet(data.latitude,data.longitude,data.city || data.region || 'Vị trí theo IP','IP (ước lượng)');
-        } catch(e) {
-            const el=document.getElementById('weatherWidgetText');
-            if(el) el.innerHTML=`<i class="fa-solid fa-location-dot" style="color:#d97706;"></i> Chưa xác định được vị trí. Hãy bấm GPS và cho phép trình duyệt truy cập vị trí.`;
-        }
+            if(__vinapacoGeoWatchId!==null) navigator.geolocation.clearWatch(__vinapacoGeoWatchId);
+            __vinapacoGeoWatchId=navigator.geolocation.watchPosition(onSuccess,onError,{enableHighAccuracy:true,maximumAge:30000,timeout:7000});
+            // Nếu GPS không trả lời trong 8 giây, chuyển phương án dự phòng; watch vẫn có thể cập nhật GPS sau đó.
+            setTimeout(()=>{ if(!settled) onError(); },8500);
+        } catch(e) { onError(); }
     }
 
     function layThoiTietTheoGPS() {
-        capNhatTrangThaiThoiTiet('Đang định vị GPS độ chính xác cao...', 'loading');
+        capNhatTrangThaiThoiTiet('Đang định vị GPS...', 'loading');
         if(!navigator.geolocation) { fallbackDinhViBangIP(); return; }
         navigator.geolocation.getCurrentPosition(
             pos=>capNhatThoiTietTuToaDo(pos.coords.latitude,pos.coords.longitude,'GPS thủ công'),
             ()=>fallbackDinhViBangIP(),
-            {enableHighAccuracy:true,maximumAge:0,timeout:15000}
+            {enableHighAccuracy:true,maximumAge:0,timeout:8000}
         );
     }
 
@@ -1924,16 +2019,15 @@
         const city=(document.getElementById('inputSearchCity')?.value||'').trim() || 'Phú Thọ';
         capNhatTrangThaiThoiTiet(`Đang tra cứu ${city}...`,'loading');
         try {
-            const res=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=vi&format=json`,{cache:'no-store'});
+            const res=await fetchWithTimeout(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=vi&format=json`,{cache:'no-store'},7000);
+            if(!res.ok) throw new Error('geocode HTTP');
             const data=await res.json();
             if(data?.results?.length) {
                 const loc=data.results[0];
-                await goiApiLayThoiTiet(loc.latitude,loc.longitude,loc.name,'Tra cứu');
-            } else {
-                capNhatTrangThaiThoiTiet(`Không tìm thấy địa điểm “${city}”.`,'error');
-            }
+                await goiApiLayThoiTiet(loc.latitude,loc.longitude,loc.name,'Tra cứu',{force:true});
+            } else capNhatTrangThaiThoiTiet(`Không tìm thấy địa điểm “${city}”.`,'error');
         } catch(e) {
-            capNhatTrangThaiThoiTiet('Không kết nối được dịch vụ định vị/thời tiết.','error');
+            capNhatTrangThaiThoiTiet('Mạng đang chậm hoặc dịch vụ chưa phản hồi. Hãy thử lại.', 'error');
         }
     }
 
@@ -2066,8 +2160,7 @@
 
     async function tuDongTaiDuLieuTuDrive() {
         try {
-            let res = await fetch(gasWebhookUrl + "?nocache=" + new Date().getTime());
-            let result = await res.json();
+            let result = await gasReadJson(gasWebhookUrl + "?nocache=" + new Date().getTime());
             
             if (result && typeof result === 'object') {
                 if (result.coSoDuLieuNamThang && typeof result.coSoDuLieuNamThang === 'object') {
@@ -2118,10 +2211,7 @@
             reuseExistingAttachments: true
         };
         try { 
-            await fetch(gasWebhookUrl, { 
-                method: 'POST', 
-                body: JSON.stringify({ type: "SYNC_MASTER_DB", payload: payload, filesToUpload: filesToUpload }) 
-            }); 
+            await gasSendNoCors({ type: "SYNC_MASTER_DB", payload: payload, filesToUpload: filesToUpload }); 
         } catch (e) {}
     }
 
@@ -2138,9 +2228,8 @@
         }
 
         try {
-            const res = await fetch(gasWebhookUrl + "?nocache=" + Date.now(), { method: "GET", cache: "no-store" });
-            if (!res.ok) throw new Error("HTTP " + res.status);
-            const result = await res.json();
+            const result = await gasReadJson(gasWebhookUrl + "?nocache=" + Date.now());
+            if (!result) throw new Error("GAS đọc dữ liệu đang tắt để tránh lỗi CORS trên trình duyệt.");
             if (!result || typeof result !== "object") throw new Error("Dữ liệu trả về từ Google Drive/GAS không hợp lệ.");
 
             if (result.coSoDuLieuNamThang && typeof result.coSoDuLieuNamThang === "object") {
@@ -2197,10 +2286,11 @@
     }
 
     function khoiTaoTuDongDongBoNgam() {
+        // Chỉ tự động đọc GAS khi browser đã có CORS hợp lệ; nếu không, dùng localStorage.
+        if (!VINAPACO_GAS_READ_ENABLED) return;
         setInterval(async () => {
             try {
-                let res = await fetch(gasWebhookUrl + "?nocache=" + new Date().getTime());
-                let result = await res.json();
+                let result = await gasReadJson(gasWebhookUrl + "?nocache=" + new Date().getTime());
                 if (result && result.coSoDuLieuNamThang) {
                     coSoDuLieuNamThang = result.coSoDuLieuNamThang;
                     if (Object.prototype.hasOwnProperty.call(result, "dsThanhToanVanPhongProByMonth")) {
@@ -2245,6 +2335,7 @@
         capNhatTrangThaiKhoiTaoTaiKhoan(true);
         renderQuyHoachTable();
         khoiTaoTuDongDongBoNgam();
+        khoiTaoDonghoVaThoiGianThuc();
         khoiTaoThoiTietTuDong();
         khoiTaoEnterToComplete();
     });
@@ -2734,7 +2825,7 @@
         const masked=acc.notifyEmail.replace(/^(.{2})(.*)(@.*)$/,(m,a,b,c)=>a+'••••'+c);
         preview.style.display='block'; preview.innerHTML='<b style="color:#0f172a;">Email khôi phục:</b> <span style="color:#08734e;font-weight:850;">'+escapeHtmlAccount(masked)+'</span><br><span style="color:#64748b;">Mật khẩu tạm thời sẽ không hiển thị trên màn hình.</span>';
         const temp=taoMatKhauTamThoi(); acc.passwordHash=await hashPassword(temp); delete acc.password; acc.lastPasswordResetAt=new Date().toISOString(); acc.status='Active';
-        let sent=false; try{ const res=await fetch(gasWebhookUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'SEND_PASSWORD_RESET_EMAIL',payload:{to:acc.notifyEmail,account:acc.email,fullName:acc.fullName,tempPassword:temp,subject:'VINAPACO - Khôi phục mật khẩu tài khoản'}})}); sent=res.ok; }catch(e){}
+        let sent=await gasSendNoCors({type:'SEND_PASSWORD_RESET_EMAIL',payload:{to:acc.notifyEmail,account:acc.email,fullName:acc.fullName,tempPassword:temp,subject:'VINAPACO - Khôi phục mật khẩu tài khoản'}});
         luuTruVaoLocalStorage(); renderAccountTable();
         status.innerHTML=sent?'<span style="color:#08734e;font-weight:850;"><i class="fa-solid fa-circle-check"></i> Yêu cầu đã được chuyển tới hệ thống gửi email. Hãy kiểm tra hộp thư và thư rác.</span>':'<span style="color:#b45309;font-weight:750;"><i class="fa-solid fa-triangle-exclamation"></i> Chưa xác nhận được việc gửi email. Cần cấu hình GAS Webhook để xử lý <b>SEND_PASSWORD_RESET_EMAIL</b>. Mật khẩu đã được cập nhật, không hiển thị trên màn hình.</span>';
         try{await tuDongDayDuLieuLenDrive();}catch(e){}
@@ -2807,8 +2898,7 @@
             luuTruVaoLocalStorage();
             let serverSaved=false;
             try{
-                const res=await fetch(gasWebhookUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'CREATE_INITIAL_ADMIN_ACCOUNT',payload:{account:acc}})});
-                serverSaved=res.ok;
+                serverSaved=await gasSendNoCors({type:'CREATE_INITIAL_ADMIN_ACCOUNT',payload:{account:acc}});
             }catch(e){}
             document.getElementById('modalKhoiTaoHeThong').classList.add('hidden');
             capNhatTrangThaiKhoiTaoTaiKhoan(false);
@@ -3197,7 +3287,7 @@
         const idx=parseInt(document.getElementById('resetAccountIndex').value), acc=danhSachTaiKhoanHeThong[idx]; if(!acc)return;
         const temp=taoMatKhauTamThoi(); acc.passwordHash=await hashPassword(temp); delete acc.password; acc.lastPasswordResetAt=new Date().toISOString(); acc.status='Active';
         const payload={type:'SEND_PASSWORD_RESET_EMAIL',payload:{to:acc.notifyEmail,account:acc.email,fullName:acc.fullName,tempPassword:temp,subject:'VINAPACO - Thông báo đặt lại mật khẩu'}};
-        let sent=false; try{ const res=await fetch(gasWebhookUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); sent=res.ok; }catch(e){}
+        let sent=await gasSendNoCors(payload);
         luuTruVaoLocalStorage(); renderAccountTable();
         document.getElementById('resetStatusBox').innerHTML=sent?'<span style="color:#08734e;font-weight:850;"><i class="fa-solid fa-circle-check"></i> Đã gửi yêu cầu tới email khôi phục. Vui lòng kiểm tra hộp thư.</span>':'<span style="color:#b45309;font-weight:750;"><i class="fa-solid fa-triangle-exclamation"></i> Chưa xác nhận được việc gửi email. Cần cấu hình GAS Webhook để xử lý <b>SEND_PASSWORD_RESET_EMAIL</b>. Mật khẩu đã được thay đổi trên dữ liệu cục bộ.</span>';
         try{await tuDongDayDuLieuLenDrive();}catch(e){}
@@ -4566,12 +4656,26 @@
     }
 
 
+    function capNhatBaoCaoKhaoSatPreview() {
+        // Bản giao diện hiện tại có thể không có vùng preview riêng.
+        // Hàm tồn tại độc lập để mọi luồng render không còn ReferenceError.
+        const el = document.getElementById('surveyReportPreview') || document.getElementById('baoCaoKhaoSatPreview');
+        if (!el) return;
+        const data = layDuLieuBaoCaoKhaoSat();
+        if (!data.length) {
+            el.innerHTML = '<span style="color:#64748b;">Chưa có dữ liệu khảo sát.</span>';
+            return;
+        }
+        const rows = data.slice(0, 8).map(i => `<tr><td>${i.stt}</td><td>${escapeHtml(i.user)}</td><td>${escapeHtml(i.device)}</td><td>${escapeHtml(i.os)}</td><td>${escapeHtml(i.office)}</td></tr>`).join('');
+        el.innerHTML = `<div style="overflow:auto"><table style="width:100%;border-collapse:collapse;font-size:11px"><thead><tr><th>STT</th><th>Người dùng</th><th>Thiết bị</th><th>HĐH</th><th>Office</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    }
+
     function renderSurveyTable() {
         let tbody = document.getElementById('surveyTableBody');
         if(!tbody) return; tbody.innerHTML = '';
         let unlic = 0;
         dsKhaoSatChuyenSau.forEach((item, idx) => {
-            if(item.osLicense.includes('⚠️') || item.officeLicense.includes('⚠️')) unlic++;
+            if(String(item.osLicense||'').includes('⚠️') || String(item.officeLicense||'').includes('⚠️')) unlic++;
             tbody.innerHTML += `<tr>
                 <td style="text-align:center;">${item.code}</td>
                 <td><b>${item.user}</b></td>

@@ -2907,8 +2907,62 @@
             });
         }
 
-        let ctxTBar = document.getElementById('taskBarChart');
+       let ctxTBar = document.getElementById('taskBarChart');
         if (ctxTBar) {
             if (taskBarChartInstance) taskBarChartInstance.destroy();
             taskBarChartInstance = new Chart(ctxTBar, {
-                type: 'barSorry, something went wrong. Please try your request again.
+                type: 'bar',
+                data: {
+                    labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'],
+                    datasets: [{
+                        label: 'Số lượng công việc',
+                        data: [countDone, countDoing, countTodo],
+                        backgroundColor: ['#16a34a', '#d97706', '#dc2626']
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        // Biểu đồ cột: Ngày nghỉ phép từng nhân sự
+        let ctxLBar = document.getElementById('leaveBarChart');
+        if (ctxLBar) {
+            if (leaveBarChartInstance) leaveBarChartInstance.destroy();
+            let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
+            leaveBarChartInstance = new Chart(ctxLBar, {
+                type: 'bar',
+                data: {
+                    labels: ds.map(i => i.hoTen.split(' ').pop()),
+                    datasets: [{
+                        label: 'Số ngày phép đã dùng',
+                        data: ds.map(i => layTongLuyKePhepDaNghi(i.hoTen).totalP),
+                        backgroundColor: '#8b5cf6'
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        // Biểu đồ tròn: Tỷ trọng phép đã dùng / tổng phép
+        let ctxLPie = document.getElementById('leavePieChart');
+        if (ctxLPie) {
+            if (leavePieChartInstance) leavePieChartInstance.destroy();
+            let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
+            let totalCap = ds.reduce((sum, i) => sum + (i.phep_cap || 12), 0);
+            let totalDung = ds.reduce((sum, i) => sum + layTongLuyKePhepDaNghi(i.hoTen).totalP, 0);
+            leavePieChartInstance = new Chart(ctxLPie, {
+                type: 'pie',
+                data: {
+                    labels: ['Đã dùng', 'Còn lại'],
+                    datasets: [{
+                        data: [totalDung, Math.max(0, totalCap - totalDung)],
+                        backgroundColor: ['#d97706', '#16a34a']
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+    }
+</script>
+</body>
+</html>

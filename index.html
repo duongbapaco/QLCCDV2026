@@ -971,6 +971,20 @@
 <script>
     Chart.register(ChartDataLabels);
 
+    let nhacNghiTimer = null;
+    function batTatNhacNghiGoi() {
+        if (nhacNghiTimer) {
+            clearInterval(nhacNghiTimer);
+            nhacNghiTimer = null;
+            alert("☕ Đã TẮT tính năng nhắc nghỉ ngơi định kỳ.");
+        } else {
+            alert("☕ Đã BẬT tính năng nhắc nghỉ ngơi! Hệ thống sẽ nhắc bạn nghỉ ngơi thư giãn sau mỗi 45 phút làm việc.");
+            nhacNghiTimer = setInterval(() => {
+                alert("☕ [VINAPACO REMINDER] Bạn đã làm việc liên tục 45 phút. Hãy dành 5 phút nghỉ ngơi, thư giãn mắt và uống nước nhé!");
+            }, 45 * 60 * 1000);
+        }
+    }
+
     function parseVNDMoney(val) {
         if (!val) return 0;
         if (typeof val === 'number') return val;
@@ -2897,42 +2911,4 @@
         if (ctxTBar) {
             if (taskBarChartInstance) taskBarChartInstance.destroy();
             taskBarChartInstance = new Chart(ctxTBar, {
-                type: 'bar',
-                data: {
-                    labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'],
-                    datasets: [{ label: 'Số Lượng', data: [countDone, countDoing, countTodo], backgroundColor: ['#16a34a', '#d97706', '#dc2626'] }]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
-        }
-
-        let ctxLBar = document.getElementById('leaveBarChart');
-        if (ctxLBar) {
-            if (leaveBarChartInstance) leaveBarChartInstance.destroy();
-            leaveBarChartInstance = new Chart(ctxLBar, {
-                type: 'bar',
-                data: {
-                    labels: coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.slice(0, 8).map(i => i.hoTen.split(' ').pop()),
-                    datasets: [{ label: 'Phép Đã Nghỉ', data: coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.slice(0, 8).map(i => i.nc_p || 0), backgroundColor: '#0284c7' }]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
-        }
-
-        let ctxLPie = document.getElementById('leavePieChart');
-        if (ctxLPie) {
-            if (leavePieChartInstance) leavePieChartInstance.destroy();
-            leavePieChartInstance = new Chart(ctxLPie, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Đã dùng', 'Còn lại'],
-                    datasets: [{ data: [15, 81], backgroundColor: ['#d97706', '#16a34a'] }]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
-        }
-    }
-</script>
-
-</body>
-</html>
+                type: 'barSorry, something went wrong. Please try your request again.

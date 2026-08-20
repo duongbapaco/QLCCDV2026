@@ -17,7 +17,7 @@
             --green-badge: #dcfce7; --green-text: #15803d;
             --yellow-badge: #fef9c3; --yellow-text: #854d0e;
             --red-badge: #fee2e2; --red-text: #991b1b;
-            font-size: 17px;
+            font-size: 15px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -30,39 +30,44 @@
 
         .banner { background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 18px 24px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; }
         .banner h1 { font-size: 20px; font-weight: 800; text-transform: uppercase; }
-        .banner p { font-size: 15px; opacity: 0.95; margin-top: 4px; font-weight: 500; }
+        .banner p { font-size: 14px; opacity: 0.95; margin-top: 4px; font-weight: 500; }
 
         .btn-group-header { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-        .btn { padding: 10px 16px; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; border: none; transition: all 0.2s; }
+        .btn { padding: 9px 15px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; border: none; transition: all 0.2s; }
         .btn-green { background-color: #16a34a; color: white; }
+        .btn-green:hover { background-color: #15803d; }
         .btn-blue { background-color: #0284c7; color: white; }
+        .btn-blue:hover { background-color: #0369a1; }
         .btn-red { background-color: #ef4444; color: white; }
+        .btn-red:hover { background-color: #dc2626; }
         .btn-yellow { background-color: #d97706; color: white; }
+        .btn-yellow:hover { background-color: #b45309; }
         .btn-purple { background-color: #8b5cf6; color: white; }
+        .btn-purple:hover { background-color: #7c3aed; }
 
-        .config-bar { background: white; padding: 16px 20px; border-radius: 10px; border: 1px solid var(--border-color); display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: center; }
+        .config-bar { background: white; padding: 16px 20px; border-radius: 10px; border: 1px solid var(--border-color); display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; align-items: center; }
         .config-item { display: flex; flex-direction: column; gap: 6px; }
-        .config-item label { font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
-        .config-item input, .config-item select { padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border-color); font-weight: 800; font-size: 15px; color: #0f172a; outline: none; background: #fff; width: 100%; }
+        .config-item label { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
+        .config-item input, .config-item select { padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); font-weight: 700; font-size: 14px; color: #0f172a; outline: none; background: #fff; width: 100%; }
         .config-item.drive-path-box { grid-column: span 2; }
 
         .form-card { background: #f8fafc; border: 2px dashed var(--primary); padding: 16px; border-radius: 10px; margin-bottom: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; align-items: flex-end; }
         .form-group { display: flex; flex-direction: column; gap: 6px; }
-        .form-group label { font-size: 14px; font-weight: 800; color: var(--text-muted); }
-        .form-group input, .form-group select, .form-group textarea { padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 15px; font-weight: 700; outline: none; background: white; }
+        .form-group label { font-size: 13px; font-weight: 800; color: var(--text-muted); }
+        .form-group input, .form-group select, .form-group textarea { padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 14px; font-weight: 600; outline: none; background: white; }
 
         .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
         .kpi-card { background: var(--card-bg); padding: 16px; border-radius: 10px; border: 1px solid var(--border-color); }
-        .kpi-title { font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
-        .kpi-value { font-size: 24px; font-weight: 900; color: var(--text-main); margin: 6px 0 4px 0; }
-        .kpi-sub { font-size: 13px; color: var(--text-muted); font-weight: 600; }
+        .kpi-title { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
+        .kpi-value { font-size: 22px; font-weight: 900; color: var(--text-main); margin: 6px 0 4px 0; }
+        .kpi-sub { font-size: 12px; color: var(--text-muted); font-weight: 600; }
 
         .charts-multi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); gap: 16px; margin-top: 10px; }
         .chart-card { background: white; padding: 16px; border-radius: 10px; border: 1px solid var(--border-color); }
         .chart-title { font-size: 14px; font-weight: 800; color: var(--text-main); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
 
-        .tab-nav { display: flex; gap: 8px; border-bottom: 3px solid var(--border-color); padding-bottom: 10px; margin-top: 8px; flex-wrap: wrap; }
-        .tab-btn-nav { padding: 10px 16px; border-radius: 8px 8px 0 0; background: #e2e8f0; border: none; font-weight: 800; font-size: 14px; cursor: pointer; color: var(--text-muted); }
+        .tab-nav { display: flex; gap: 6px; border-bottom: 3px solid var(--border-color); padding-bottom: 10px; margin-top: 8px; flex-wrap: wrap; }
+        .tab-btn-nav { padding: 9px 14px; border-radius: 8px 8px 0 0; background: #e2e8f0; border: none; font-weight: 800; font-size: 13px; cursor: pointer; color: var(--text-muted); transition: all 0.2s; }
         .tab-btn-nav.active { background: var(--primary); color: white; }
 
         .tab-pane { display: none; }
@@ -70,21 +75,21 @@
 
         .table-card { background: var(--card-bg); border-radius: 10px; border: 1px solid var(--border-color); padding: 16px; }
         .table-header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 12px; }
-        .table-title { font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .table-title { font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
 
-        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 15px; }
-        th, td { padding: 10px 12px; border: 1px solid var(--border-color); vertical-align: middle; }
-        th { background-color: #f1f5f9; color: var(--text-muted); font-weight: 900; font-size: 13px; text-transform: uppercase; text-align: center; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+        th, td { padding: 9px 11px; border: 1px solid var(--border-color); vertical-align: middle; }
+        th { background-color: #f1f5f9; color: var(--text-muted); font-weight: 800; font-size: 12px; text-transform: uppercase; text-align: center; }
         
-        input.cell-input { width: 100%; padding: 7px 9px; border: 1px solid transparent; border-radius: 6px; font-size: 15px; font-weight: 700; outline: none; background: transparent; }
+        input.cell-input { width: 100%; padding: 6px 8px; border: 1px solid transparent; border-radius: 6px; font-size: 14px; font-weight: 700; outline: none; background: transparent; }
         input.cell-input:hover { border-color: #cbd5e1; background: #f8fafc; }
         input.cell-input:focus { border-color: #0284c7; background: #ffffff; box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2); }
         input.num-center { text-align: center; }
         input.money-input { text-align: right; color: #dc2626; font-weight: 800; }
 
-        .badge-net { background: var(--green-badge); color: var(--green-text); padding: 4px 10px; border-radius: 6px; font-weight: 900; font-size: 13px; display: inline-block; }
-        .badge-danger { background: var(--red-badge); color: var(--red-text); padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 13px; display: inline-block; }
-        .badge-warning { background: #fef9c3; color: #854d0e; padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 13px; display: inline-block; }
+        .badge-net { background: var(--green-badge); color: var(--green-text); padding: 4px 8px; border-radius: 6px; font-weight: 800; font-size: 12px; display: inline-block; }
+        .badge-danger { background: var(--red-badge); color: var(--red-text); padding: 4px 8px; border-radius: 6px; font-weight: 800; font-size: 12px; display: inline-block; }
+        .badge-warning { background: #fef9c3; color: #854d0e; padding: 4px 8px; border-radius: 6px; font-weight: 800; font-size: 12px; display: inline-block; }
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.75); display: flex; justify-content: center; align-items: center; z-index: 10000; backdrop-filter: blur(6px); }
         .modal-card { background: white; width: 100%; max-width: 760px; border-radius: 16px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); max-height: 90vh; display: flex; flex-direction: column; }
@@ -92,9 +97,9 @@
 
         .top-info-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 14px; }
         .info-widget-card { background: white; padding: 16px; border-radius: 10px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 8px; }
-        .clock-display { font-size: 26px; font-weight: 900; color: #0284c7; font-family: monospace; }
-        .lunar-display { font-size: 14px; font-weight: 700; color: #16a34a; line-height: 1.5; }
-        .weather-display { font-size: 14px; font-weight: 700; color: #d97706; display: flex; align-items: center; gap: 8px; }
+        .clock-display { font-size: 24px; font-weight: 900; color: #0284c7; font-family: monospace; }
+        .lunar-display { font-size: 13px; font-weight: 600; color: #16a34a; line-height: 1.5; }
+        .weather-display { font-size: 13px; font-weight: 600; color: #d97706; display: flex; align-items: center; gap: 8px; }
 
         .progress-box { width: 100%; background: #e2e8f0; border-radius: 6px; height: 10px; overflow: hidden; margin-top: 6px; display: none; }
         .progress-bar-fill { width: 0%; height: 100%; background: #16a34a; transition: width 0.3s ease; }
@@ -105,7 +110,7 @@
             text-align: center;
             margin-top: 28px;
             padding: 16px 0 10px 0;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 800;
             color: #0f172a;
             text-transform: uppercase;
@@ -116,100 +121,8 @@
             align-items: center;
             justify-content: space-between;
         }
-        .salary-signature-footer .sign-space {
-            height: 65px;
-        }
-        .salary-signature-footer .sign-name {
-            text-transform: none;
-            font-weight: 800;
-            font-size: 15px;
-            color: #0f172a;
-        }
-
-        /* MOBILE RESPONSIVE CSS */
-        @media (max-width: 768px) {
-            :root { font-size: 15px; }
-            body { padding: 8px; }
-            .container { gap: 12px; }
-
-            .config-bar,
-            .kpi-grid,
-            .charts-multi-grid,
-            .top-info-bar,
-            .form-card {
-                grid-template-columns: 1fr !important;
-            }
-
-            .config-item.drive-path-box { grid-column: span 1 !important; }
-
-            input, select, textarea, .cell-input, input.money-input {
-                font-size: 16px !important;
-                padding: 10px 12px !important;
-            }
-
-            table {
-                min-width: 800px;
-                font-size: 14px !important;
-            }
-
-            th, td {
-                padding: 10px 8px !important;
-                white-space: nowrap;
-            }
-
-            .tab-pane, .table-card {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            .banner {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 14px;
-                gap: 12px;
-            }
-
-            .btn-group-header {
-                width: 100%;
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
-            }
-
-            .btn {
-                width: 100%;
-                justify-content: center;
-                padding: 10px 12px !important;
-                font-size: 13px !important;
-            }
-
-            .tab-nav {
-                overflow-x: auto;
-                white-space: nowrap;
-                flex-wrap: nowrap;
-                padding-bottom: 6px;
-            }
-
-            .tab-btn-nav {
-                flex: 0 0 auto;
-                padding: 10px 14px;
-                font-size: 13px;
-            }
-
-            .modal-card {
-                width: 96% !important;
-                max-height: 94vh !important;
-            }
-
-            #payslip-capture, #slip-capture-area {
-                padding: 16px !important;
-            }
-
-            .salary-signature-footer {
-                grid-template-columns: 1fr !important;
-                gap: 18px;
-            }
-        }
+        .salary-signature-footer .sign-space { height: 60px; }
+        .salary-signature-footer .sign-name { text-transform: none; font-weight: 800; font-size: 14px; color: #0f172a; }
     </style>
 </head>
 <body>
@@ -220,13 +133,13 @@
         <div style="text-align: center; margin-bottom: 22px;">
             <i class="fa-solid fa-building-shield" style="font-size: 48px; color: var(--primary); margin-bottom: 10px;"></i>
             <h2 style="font-size: 20px; font-weight: 900; text-transform: uppercase; color: var(--text-main);">Đăng Nhập Hệ Thống Quản Trị</h2>
-            <p style="font-size: 14px; color: var(--text-muted); font-weight: 600;">Tổng công ty Giấy Việt Nam - VINAPACO</p>
+            <p style="font-size: 13px; color: var(--text-muted); font-weight: 600;">Tổng công ty Giấy Việt Nam - VINAPACO</p>
         </div>
         <div id="loginFormBox" style="display: flex; flex-direction: column; gap: 14px;">
             <div class="form-group"><label>Tên Đăng Nhập / Email</label><input type="text" id="loginUser" placeholder="admin@vinapaco.com.vn" value="admin"></div>
             <div class="form-group"><label>Mật Khẩu</label><input type="password" id="loginPass" placeholder="123456" value="123456" onkeydown="handleLoginKeydown(event)"></div>
-            <button class="btn btn-blue" style="padding: 12px; justify-content: center; font-size: 15px; margin-top: 4px;" onclick="thucHienDangNhap()"><i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập Ngay</button>
-            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-top: 4px; font-weight: 700;">
+            <button class="btn btn-blue" style="padding: 11px; justify-content: center; font-size: 14px; margin-top: 4px;" onclick="thucHienDangNhap()"><i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập Ngay</button>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; margin-top: 4px; font-weight: 700;">
                 <span style="color: var(--primary); cursor: pointer;" onclick="moModalQuenMatKhau()"><i class="fa-solid fa-key"></i> Quên mật khẩu?</span>
                 <span style="color: var(--text-muted);">Mặc định: admin / 123456</span>
             </div>
@@ -237,15 +150,15 @@
 <!-- MODAL QUÊN MẬT KHẨU -->
 <div class="modal-overlay hidden" id="modalQuenMatKhau">
     <div class="modal-card" style="max-width: 480px;">
-        <div style="padding: 18px 24px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center;">
+        <div style="padding: 16px 20px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center;">
             <b style="text-transform: uppercase;"><i class="fa-solid fa-key"></i> Khôi Phục & Đổi Mật Khẩu Khi Quên</b>
             <button class="btn btn-red" style="padding: 4px 10px;" onclick="document.getElementById('modalQuenMatKhau').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div style="padding: 24px; display: flex; flex-direction: column; gap: 14px; background: #f8fafc;">
+        <div style="padding: 20px; display: flex; flex-direction: column; gap: 14px; background: #f8fafc;">
             <div class="form-group"><label>Email / Tên tài khoản cần khôi phục</label><input type="email" id="forgotUserEmail" placeholder="nhanvien@vinapaco.com.vn" value="admin@vinapaco.com.vn"></div>
             <div class="form-group"><label>Email nhận mật khẩu mới</label><input type="email" id="forgotTargetEmail" placeholder="nhanvien.thucte@gmail.com" value="duongtb@vinapaco.com.vn"></div>
             <div class="form-group"><label>Mật khẩu mới (Tự định nghĩa)</label><input type="password" id="forgotNewPass" placeholder="Nhập mật khẩu mới..." value="123456"></div>
-            <button class="btn btn-green" style="padding: 12px; justify-content: center;" onclick="xuLyYeuCauQuenMatKhau()"><i class="fa-solid fa-paper-plane"></i> Gửi Yêu Cầu & Cập Nhật Mật Khẩu</button>
+            <button class="btn btn-green" style="padding: 11px; justify-content: center;" onclick="xuLyYeuCauQuenMatKhau()"><i class="fa-solid fa-paper-plane"></i> Gửi Yêu Cầu & Cập Nhật Mật Khẩu</button>
         </div>
     </div>
 </div>
@@ -253,14 +166,14 @@
 <!-- MODAL LỊCH VẠN NIÊN & PHONG THỦY -->
 <div class="modal-overlay hidden" id="modalLichVanNien">
     <div class="modal-card" style="max-width: 900px; padding: 0;">
-        <div style="padding: 18px 24px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center;">
+        <div style="padding: 16px 20px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center;">
             <b style="text-transform: uppercase;"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên & Phong Thủy Doanh Nghiệp Chuẩn Xác</b>
             <button class="btn btn-red" style="padding: 4px 10px;" onclick="document.getElementById('modalLichVanNien').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div style="padding: 20px; background: #f8fafc; display: flex; flex-direction: column; gap: 16px;">
             <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-                <div class="form-group" style="flex: 1;"><label>Chọn Tháng Tra Cứu</label><select id="lichThangSelect" style="padding: 10px;" onchange="renderLichGridPro()"></select></div>
-                <div class="form-group" style="flex: 1;"><label>Chọn Năm</label><select id="lichNamSelect" style="padding: 10px;" onchange="renderLichGridPro()"><option value="2025">2025</option><option value="2026" selected>2026</option><option value="2027">2027</option></select></div>
+                <div class="form-group" style="flex: 1;"><label>Chọn Tháng Tra Cứu</label><select id="lichThangSelect" style="padding: 8px;" onchange="renderLichGridPro()"></select></div>
+                <div class="form-group" style="flex: 1;"><label>Chọn Năm</label><select id="lichNamSelect" style="padding: 8px;" onchange="renderLichGridPro()"><option value="2025">2025</option><option value="2026" selected>2026</option><option value="2027">2027</option></select></div>
             </div>
             
             <div style="display: grid; grid-template-columns: 1fr 340px; gap: 16px; align-items: start;">
@@ -268,7 +181,7 @@
                     <div id="lichGridContainer" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center;"></div>
                 </div>
                 <div id="lichChiTietPhongThuyBox" style="background: white; border: 2px solid #0284c7; border-radius: 10px; padding: 16px; font-size: 13px; line-height: 1.6; color: #0f172a; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
-                    <div style="font-weight: 900; font-size: 15px; color: #0284c7; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+                    <div style="font-weight: 900; font-size: 14px; color: #0284c7; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
                         <i class="fa-solid fa-compass"></i> Chi Tiết Phong Thủy Ngày
                     </div>
                     <div id="chiTietNgayNoiDung" style="display: flex; flex-direction: column; gap: 8px;">
@@ -288,9 +201,9 @@
             <p id="userStatusTag">Tổng công ty Giấy Việt Nam - Đang chạy chế độ Lai Ghép An Toàn (Hybrid Storage)</p>
         </div>
         <div class="btn-group-header">
-            <button class="btn btn-purple" onclick="moModalLichVanNien()"><i class="fa-solid fa-calendar-days"></i> Xem Lịch Vạn Niên</button>
+            <button class="btn btn-purple" onclick="moModalLichVanNien()"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên</button>
             <button class="btn btn-yellow" onclick="batTatNhacNghiGoi()"><i class="fa-solid fa-mug-hot"></i> Nhắc Nghỉ</button>
-            <button class="btn btn-green" onclick="thuCongDongBoLenDrive()"><i class="fa-solid fa-cloud-arrow-up"></i> Đồng Bộ Ngay Lên Drive</button>
+            <button class="btn btn-green" onclick="thuCongDongBoLenDrive()"><i class="fa-solid fa-cloud-arrow-up"></i> Đồng Bộ Drive</button>
             <button class="btn btn-blue" onclick="thuCongTaiVeTuDrive()"><i class="fa-solid fa-cloud-arrow-down"></i> Tải Về Mới Nhất</button>
             <button class="btn btn-red" onclick="dangXuatHeThong()"><i class="fa-solid fa-right-from-bracket"></i> Thoát</button>
         </div>
@@ -298,20 +211,20 @@
 
     <!-- CẤU HÌNH NHANH GAS WEBHOOK URL -->
     <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 12px 18px; border-radius: 10px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-        <span style="font-size: 13px; font-weight: 800; color: #0369a1; text-transform: uppercase;"><i class="fa-solid fa-link"></i> Cấu Hình GAS Webhook URL:</span>
+        <span style="font-size: 12px; font-weight: 800; color: #0369a1; text-transform: uppercase;"><i class="fa-solid fa-link"></i> Cấu Hình GAS Webhook URL:</span>
         <input type="text" id="inputGasUrlSetting" style="flex: 1; min-width: 320px; padding: 7px 10px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; font-weight: bold; background: #f8fafc;" value="https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec">
-        <button class="btn btn-blue" style="padding: 7px 12px; font-size: 13px;" onclick="luuGasUrlNhanh()"><i class="fa-solid fa-floppy-disk"></i> Lưu URL</button>
+        <button class="btn btn-blue" style="padding: 7px 12px; font-size: 12px;" onclick="luuGasUrlNhanh()"><i class="fa-solid fa-floppy-disk"></i> Lưu URL</button>
     </div>
 
     <div class="top-info-bar">
         <div class="info-widget-card">
-            <div style="font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-clock"></i> Đồng Hồ Số Thời Gian Thực</div>
+            <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-clock"></i> Đồng Hồ Số Thời Gian Thực</div>
             <div class="clock-display" id="liveClockDisplay">00:00:00</div>
-            <div style="font-size: 13px; font-weight: 700; color: var(--text-muted);" id="liveDateDisplay">Thứ Ba, 18/08/2026</div>
+            <div style="font-size: 12px; font-weight: 700; color: var(--text-muted);" id="liveDateDisplay">Thứ Ba, 18/08/2026</div>
         </div>
 
         <div class="info-widget-card">
-            <div style="font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên & Phong Thủy Hôm Nay</div>
+            <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên & Phong Thủy Hôm Nay</div>
             <div class="lunar-display" id="lunarWidgetText">
                 🌙 <b>Âm lịch:</b> Đang tính toán...<br>
                 ✨ <b>Can Chi & Trực:</b> Đang cập nhật...<br>
@@ -319,19 +232,20 @@
             </div>
         </div>
 
+        <!-- MODULE DỰ BÁO THỜI TIẾT THỜI GIAN THỰC & ĐỊNH VỊ GPS -->
         <div class="info-widget-card" style="justify-content: space-between;">
             <div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                    <div style="font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-cloud-sun"></i> Thời Tiết Thời Gian Thực & Định Vị</div>
-                    <button class="btn btn-blue" style="padding: 3px 8px; font-size: 11px;" onclick="layThoiTietTheoGPS()"><i class="fa-solid fa-location-crosshairs"></i> Định Vị GPS</button>
+                    <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-cloud-sun"></i> Thời Tiết Thời Gian Thực & Định Vị</div>
+                    <button class="btn btn-blue" style="padding: 2px 6px; font-size: 11px;" onclick="layThoiTietTheoGPS()"><i class="fa-solid fa-location-crosshairs"></i> GPS</button>
                 </div>
                 <div class="weather-display" id="weatherWidgetText">
                     <i class="fa-solid fa-spinner fa-spin" style="color:#0284c7;"></i> Đang kết nối trạm vệ tinh thời tiết...
                 </div>
             </div>
             <div style="display: flex; gap: 6px; align-items: center; margin-top: 4px;">
-                <input type="text" id="inputSearchCity" placeholder="Nhập tên tỉnh/thành phố..." style="padding: 5px 8px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 12px; font-weight: bold; flex: 1;" value="Phú Thọ">
-                <button class="btn btn-green" style="padding: 5px 10px; font-size: 12px;" onclick="traCuuThoiTietTheoThanhPho()"><i class="fa-solid fa-magnifying-glass"></i> Tra Cứu</button>
+                <input type="text" id="inputSearchCity" placeholder="Nhập tên tỉnh/thành phố..." style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 12px; font-weight: bold; flex: 1;" value="Phú Thọ">
+                <button class="btn btn-green" style="padding: 4px 8px; font-size: 12px;" onclick="traCuuThoiTietTheoThanhPho()"><i class="fa-solid fa-magnifying-glass"></i> Tra Cứu</button>
             </div>
         </div>
     </div>
@@ -346,7 +260,7 @@
             <label>Đường Dẫn VINAPACO_Drive (Tự động sinh theo Năm & Tháng chọn)</label>
             <div style="display: flex; gap: 8px;">
                 <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold; flex: 1;" value="VINAPACO_Drive / 2026 / Tháng 06">
-                <button class="btn btn-blue" style="padding: 6px 12px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Mở Thư Mục</button>
+                <button class="btn btn-blue" style="padding: 6px 12px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Mở Drive</button>
             </div>
         </div>
 
@@ -367,8 +281,8 @@
     <div class="tab-nav">
         <button class="tab-btn-nav active" onclick="switchTab('dashboardTab', this)"><i class="fa-solid fa-chart-pie"></i> DB Tổng Quan</button>
         <button class="tab-btn-nav" onclick="switchTab('monthlySalaryDashboardTab', this)"><i class="fa-solid fa-money-bill-trend-up"></i> DB Lương Tháng</button>
-        <button class="tab-btn-nav" onclick="switchTab('accountManagerTab', this)"><i class="fa-solid fa-users-gear"></i> Quản Lý Tài Khoản</button>
-        <button class="tab-btn-nav" onclick="switchTab('taskTab', this)"><i class="fa-solid fa-list-check"></i> Quản Lý Công Việc</button>
+        <button class="tab-btn-nav" onclick="switchTab('accountManagerTab', this)"><i class="fa-solid fa-users-gear"></i> Tài Khoản</button>
+        <button class="tab-btn-nav" onclick="switchTab('taskTab', this)"><i class="fa-solid fa-list-check"></i> Công Việc</button>
         <button class="tab-btn-nav" onclick="switchTab('timekeepingDetailTab', this)"><i class="fa-solid fa-business-time"></i> Chấm Công</button>
         <button class="tab-btn-nav" onclick="switchTab('salaryCBTab', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Lương Cơ Bản</button>
         <button class="tab-btn-nav" onclick="switchTab('salaryCVTab', this)"><i class="fa-solid fa-briefcase"></i> Lương CV & Phiếu Lương</button>
@@ -419,10 +333,10 @@
         </div>
     </div>
 
-    <!-- TAB DASHBOARD LƯƠNG TỪNG THÁNG TRONG NĂM -->
+    <!-- TAB MỚI: DASHBOARD LƯƠNG TỪNG THÁNG TRONG NĂM -->
     <div id="monthlySalaryDashboardTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-money-bill-trend-up"></i> DASHBOARD THEO DÕI & SO SÁNH QUỶ LƯƠNG HÀNG THÁNG (NĂM <span id="monthlySalaryYearTitle">2026</span>)</div>
+            <div class="table-title"><i class="fa-solid fa-money-bill-trend-up"></i> DASHBOARD THEO DÕI & SO SÁNH QUỸ LƯƠNG HÀNG THÁNG (NĂM <span id="monthlySalaryYearTitle">2026</span>)</div>
             <button class="btn btn-green" onclick="xuatBaoCaoLuongCacThangExcel()"><i class="fa-solid fa-file-excel"></i> Xuất Báo Cáo Tổng Hợp Lương</button>
         </div>
 
@@ -457,11 +371,11 @@
         </div>
 
         <div class="table-card">
-            <div class="table-title" style="font-size: 15px; margin-bottom: 12px;"><i class="fa-solid fa-list-ol"></i> BẢNG CHI TIẾT BIẾN ĐỘNG QUỶ LƯƠNG CHI TRẢ QUA CÁC THÁNG</div>
+            <div class="table-title" style="font-size: 14px; margin-bottom: 12px;"><i class="fa-solid fa-list-ol"></i> BẢNG CHI TIẾT BIẾN ĐỘNG QUỸ LƯƠNG CHI TRẢ QUA CÁC THÁNG</div>
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 60px;">STT</th>
+                        <th style="width: 50px;">STT</th>
                         <th>Tháng Hạch Toán</th>
                         <th style="text-align: center;">Số Nhân Sự</th>
                         <th style="text-align: right;">Tổng Lương CB</th>
@@ -484,9 +398,9 @@
             <button class="btn btn-green" onclick="moModalThemTaiKhoan()"><i class="fa-solid fa-user-plus"></i> Thêm Tài Khoản Mới</button>
         </div>
 
-        <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 16px; border-radius: 10px; margin-bottom: 16px; font-size: 14px; font-weight: 600; line-height: 1.6;">
+        <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 14px; border-radius: 10px; margin-bottom: 16px; font-size: 13px; font-weight: 600; line-height: 1.6;">
             🛡️ <b>Quy chế phân quyền:</b> 
-            <ul style="margin-left: 20px; margin-top: 6px;">
+            <ul style="margin-left: 20px; margin-top: 4px;">
                 <li><b>Admin:</b> Toàn quyền quản trị, chỉnh sửa dữ liệu tài chính, cấu hình hệ thống và quản lý tài khoản người dùng.</li>
                 <li><b>Editor:</b> Quyền nhập liệu, cập nhật chấm công, theo dõi kho và tiến độ công việc.</li>
                 <li><b>Viewer:</b> Chỉ xem báo cáo tổng hợp và tra cứu phiếu lương cá nhân.</li>
@@ -518,14 +432,14 @@
         </div>
         
         <div class="table-card" style="margin-bottom: 16px;">
-            <div class="table-title" style="font-size: 14px; margin-bottom: 10px;"><i class="fa-solid fa-table"></i> Bảng Tổng Kết Trạng Thái Công Việc</div>
+            <div class="table-title" style="font-size: 13px; margin-bottom: 10px;"><i class="fa-solid fa-table"></i> Bảng Tổng Kết Trạng Thái Công Việc</div>
             <table>
                 <thead><tr><th>Trạng Thái Công Việc</th><th>Số Lượng</th><th>Tỷ Trọng (%)</th><th>Đánh Giá Thực Hiện</th></tr></thead>
                 <tbody id="taskSummaryTableBody"></tbody>
             </table>
         </div>
 
-        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
             <input type="hidden" id="editTaskIndex" value="-1">
             <div class="form-group"><label>Nội Dung Công Việc</label><input type="text" id="inputTaskName" placeholder="VD: Lập báo cáo điều hành..."></div>
             <div class="form-group"><label>Người Thực Hiện</label><input type="text" id="inputTaskAssignee" value="Trần Bình Dương"></div>
@@ -551,7 +465,7 @@
     <!-- TAB LƯƠNG CƠ BẢN -->
     <div id="salaryCBTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-table-list"></i> BẢNG LƯƠNG CƠ BẢN (<span class="thangHienTaiTitle">Tháng 06/2026</span>)</div>
+            <div class="table-title"><i class="fa-solid fa-file-invoice-dollar"></i> BẢNG LƯƠNG CƠ BẢN (<span class="thangHienTaiTitle">Tháng 06/2026</span>)</div>
             <button class="btn btn-green" onclick="xuatExcelCB()"><i class="fa-solid fa-file-excel"></i> Xuất Excel Lương Cơ Bản</button>
         </div>
         <div style="overflow-x: auto;"><table><thead><tr><th>STT</th><th>Họ và Tên</th><th>HSL.CB</th><th>PC.CB</th><th>L.HĐLĐ</th><th>L.CB</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>Ki</th><th>L.TG</th><th>L.Lễ/Phép</th><th>Tổng Tiền</th><th>BHTN(1%)</th><th>BHXH</th><th>Thực Lĩnh LCB</th></tr></thead><tbody id="tableBodyCB"></tbody></table></div>
@@ -580,8 +494,8 @@
             <button class="btn btn-green" onclick="xuatExcelCV()"><i class="fa-solid fa-file-excel"></i> Xuất Excel Lương CV</button>
         </div>
 
-        <div style="background: #f8fafc; border: 2px solid var(--primary); padding: 18px; border-radius: 12px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px;">
-            <div style="font-weight: 900; font-size: 15px; color: var(--primary-dark); display: flex; align-items: center; gap: 8px;">
+        <div style="background: #f8fafc; border: 2px solid var(--primary); padding: 16px; border-radius: 12px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px;">
+            <div style="font-weight: 800; font-size: 14px; color: var(--primary-dark); display: flex; align-items: center; gap: 8px;">
                 <i class="fa-solid fa-paper-plane"></i> XEM, IN HOẶC GỬI ZALO PHIẾU LƯƠNG CHI TIẾT NHÂN SỰ
             </div>
             <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
@@ -625,9 +539,9 @@
         </div>
 
         <div class="table-card" style="margin-bottom: 16px;">
-            <div class="table-title" style="font-size: 14px; margin-bottom: 10px;"><i class="fa-solid fa-table"></i> Bảng Tổng Kết Quản Lý Phép Năm</div>
+            <div class="table-title" style="font-size: 13px; margin-bottom: 10px;"><i class="fa-solid fa-table"></i> Bảng Tổng Kết Quản Lý Phép Năm</div>
             <table>
-                <thead><tr><th>Chỉ Số Phép Năm</th><th>Tổng Số Ngày</th><th>Tỷ Trọng (%)</th><th>Đánh Giá Chấp Hành</th></tr></thead>
+                <thead><tr><th>Chỉ SỐ Phép Năm</th><th>Tổng Số Ngày</th><th>Tỷ Trọng (%)</th><th>Đánh Giá Chấp Hành</th></tr></thead>
                 <tbody id="leaveSummaryTableBody"></tbody>
             </table>
         </div>
@@ -649,7 +563,7 @@
             <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Thư Mục Gốc Drive Của Tháng Này</button>
         </div>
 
-        <div style="background: #f8fafc; border: 2px dashed var(--primary); padding: 16px; border-radius: 10px; margin-bottom: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; align-items: flex-end;">
+        <div style="background: #f8fafc; border: 2px dashed var(--primary); padding: 16px; border-radius: 10px; margin-bottom: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; align-items: flex-end;">
             <input type="hidden" id="editOfficeIndex" value="-1">
             <div class="form-group"><label>Mã Hồ Sơ</label><input type="text" id="autoOfficeId" readonly style="background: #e2e8f0; font-weight: bold;" value="VP-01"></div>
             <div class="form-group"><label>Đơn Vị Thụ Hưởng</label><input type="text" id="inputOfficeBeneficiary" placeholder="VD: Công ty TNHH..."></div>
@@ -667,8 +581,8 @@
             <div class="form-group"><label>Tổng Thanh Toán</label><input type="text" id="previewOfficeTotal" placeholder="0" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;"></div>
             <div class="form-group"><label>Ngày Chứng Từ (DD/MM/YYYY)</label><input type="date" id="inputOfficeDate"></div>
             <div class="form-group" style="grid-column: span 2;">
-                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Đẩy thẳng lên đúng thư mục tháng/năm trên Google Drive)</label>
-                <input type="file" id="inputOfficeFiles" multiple style="padding: 7px; background: white; font-size: 13px;" onchange="xuLyChonTepVPP(this)">
+                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Đẩy thẳng lên Drive)</label>
+                <input type="file" id="inputOfficeFiles" multiple style="padding: 6px; background: white; font-size: 13px;" onchange="xuLyChonTepVPP(this)">
                 <div class="progress-box" id="officeProgressBarBox"><div class="progress-bar-fill" id="officeProgressBarFill"></div></div>
                 <small id="officeProgressText" style="color:#0284c7; font-weight:bold; display:none; margin-top:3px;"></small>
             </div>
@@ -682,19 +596,19 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 70px;">Mã HS</th>
-                        <th style="width: 90px;">Tháng</th>
-                        <th style="width: 150px;">Thụ Hưởng</th>
-                        <th style="width: 130px;">Ngân Hàng / STK</th>
+                        <th style="width: 60px;">Mã HS</th>
+                        <th style="width: 80px;">Tháng</th>
+                        <th style="width: 140px;">Thụ Hưởng</th>
+                        <th style="width: 120px;">Ngân Hàng / STK</th>
                         <th>Nội Dung Thanh Toán</th>
-                        <th style="width: 70px; text-align: center;">ĐVT</th>
-                        <th style="width: 110px;">SL x Đơn Giá</th>
-                        <th style="width: 110px;">Trước Thuế</th>
-                        <th style="width: 90px;">Thuế VAT</th>
-                        <th style="width: 120px;">Tổng Cước TT</th>
-                        <th style="width: 100px;">Ngày CT</th>
-                        <th style="width: 200px;">Thư Mục Lưu Trữ Drive</th>
-                        <th style="width: 130px; text-align: center;">Thao Tác</th>
+                        <th style="width: 60px; text-align: center;">ĐVT</th>
+                        <th style="width: 100px;">SL x Đơn Giá</th>
+                        <th style="width: 100px;">Trước Thuế</th>
+                        <th style="width: 80px;">Thuế VAT</th>
+                        <th style="width: 110px;">Tổng Cước TT</th>
+                        <th style="width: 90px;">Ngày CT</th>
+                        <th style="width: 180px;">Thư Mục Lưu Trữ Drive</th>
+                        <th style="width: 120px; text-align: center;">Thao Tác</th>
                     </tr>
                 </thead>
                 <tbody id="officePaymentTableBody"></tbody>
@@ -710,11 +624,11 @@
                 <button class="btn btn-green" onclick="xuatBaoCaoXNTExcel()"><i class="fa-solid fa-file-excel"></i> Xuất Báo Cáo XNT Excel</button>
             </div>
         </div>
-        <div style="margin-bottom: 18px; background: #f8fafc; border: 1px solid var(--border-color); padding: 14px; border-radius: 8px;">
-            <div style="font-weight: 900; font-size: 14px; margin-bottom: 8px; color: #0369a1;"><i class="fa-solid fa-chart-line"></i> BẢNG TỔNG HỢP XUẤT - NHẬP - TỒN</div>
+        <div style="margin-bottom: 16px; background: #f8fafc; border: 1px solid var(--border-color); padding: 12px; border-radius: 8px;">
+            <div style="font-weight: 800; font-size: 13px; margin-bottom: 8px; color: #0369a1;"><i class="fa-solid fa-chart-line"></i> BẢNG TỔNG HỢP XUẤT - NHẬP - TỒN</div>
             <table><thead><tr><th>STT</th><th>Mã VT</th><th>Tên Vật Tư</th><th>Tồn Đầu Kỳ</th><th>Tổng Nhập</th><th>Tổng Xuất</th><th>Tồn Cuối Kỳ</th><th>Trạng Thái</th></tr></thead><tbody id="xntTableBody"></tbody></table>
         </div>
-        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
             <input type="hidden" id="editInkIndex" value="-1">
             <div class="form-group"><label>Mã VT</label><input type="text" id="autoInkCode" readonly style="background: #e2e8f0; font-weight: bold;" value="MUC002"></div>
             <div class="form-group"><label>Tên Mực In</label><input type="text" id="inputInkName" placeholder="VD: Canon 337"></div>
@@ -736,7 +650,7 @@
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-file-contract"></i> QUẢN LÝ & IN PHIẾU GIAO NHẬN THIẾT BỊ</div>
         </div>
-        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
             <input type="hidden" id="editSlipIndex" value="-1">
             <div class="form-group"><label>Số Phiếu</label><input type="text" id="inputSlipNo" value="PGN-2026/06-01"></div>
             <div class="form-group"><label>Bên Giao</label><input type="text" id="inputSlipFrom" value="Trần Bình Dương - Văn phòng Tổng công ty"></div>
@@ -779,8 +693,8 @@
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group" style="grid-column: span 2;">
-                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Đẩy thẳng lên đúng thư mục tháng/năm trên Google Drive)</label>
-                <input type="file" id="inputTelecomFiles" multiple style="padding: 7px; background: white; font-size: 13px;" onchange="xuLyChonTepTelecom(this)">
+                <label><i class="fa-solid fa-paperclip" style="color:#0284c7;"></i> Tệp Đính Kèm (Đẩy thẳng lên Drive)</label>
+                <input type="file" id="inputTelecomFiles" multiple style="padding: 6px; background: white; font-size: 13px;" onchange="xuLyChonTepTelecom(this)">
                 <div class="progress-box" id="telecomProgressBarBox"><div class="progress-bar-fill" id="telecomProgressBarFill"></div></div>
                 <small id="telecomProgressText" style="color:#0284c7; font-weight:bold; display:none; margin-top:3px;"></small>
             </div>
@@ -794,16 +708,16 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 70px;">Mã HS</th>
-                        <th style="width: 100px;">Tháng</th>
-                        <th style="width: 100px;">Nhà Mạng</th>
-                        <th style="width: 150px;">Loại Cước</th>
-                        <th style="width: 110px;">Kỳ Cước</th>
-                        <th style="width: 110px;">Trước Thuế</th>
-                        <th style="width: 90px;">Thuế VAT</th>
-                        <th style="width: 120px;">Tổng Cước TT</th>
-                        <th style="width: 200px;">Thư Mục Lưu Trữ Drive</th>
-                        <th style="width: 130px; text-align: center;">Thao Tác</th>
+                        <th style="width: 60px;">Mã HS</th>
+                        <th style="width: 90px;">Tháng</th>
+                        <th style="width: 90px;">Nhà Mạng</th>
+                        <th style="width: 140px;">Loại Cước</th>
+                        <th style="width: 100px;">Kỳ Cước</th>
+                        <th style="width: 100px;">Trước Thuế</th>
+                        <th style="width: 80px;">Thuế VAT</th>
+                        <th style="width: 110px;">Tổng Cước TT</th>
+                        <th style="width: 180px;">Thư Mục Lưu Trữ Drive</th>
+                        <th style="width: 120px; text-align: center;">Thao Tác</th>
                     </tr>
                 </thead>
                 <tbody id="telecomPaymentTableBody"></tbody>
@@ -820,13 +734,13 @@
             </div>
         </div>
 
-        <div style="margin-bottom: 16px; background: #f8fafc; border: 1px solid var(--border-color); padding: 14px; border-radius: 8px; font-size: 14px; font-weight: 700; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+        <div style="margin-bottom: 16px; background: #f8fafc; border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 700; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
             <div><b>💻 Tổng số thiết bị khảo sát:</b> <span id="statSurveyTotal" style="color: #0284c7; font-weight: 900;">0</span></div>
             <div><b>⚠️ Chưa có bản quyền OS/Office:</b> <span id="statSurveyUnlicensed" style="color: #dc2626; font-weight: 900;">0</span></div>
             <div><b>📊 Phần mềm nghiệp vụ tích hợp:</b> <span id="statOfficeSummary" style="color: #16a34a; font-weight: 900;">Asia, Quasoft, Cloudoffice, AutoCAD, SolidWorks, MISA</span></div>
         </div>
 
-        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));">
             <input type="hidden" id="editSurveyIndex" value="-1">
             <div class="form-group"><label>Mã KS</label><input type="text" id="autoSurveyCode" readonly style="background:#e2e8f0; font-weight:bold;" value="KS-02"></div>
             <div class="form-group"><label>Người Sử Dụng</label><input type="text" id="inputSurveyUser" placeholder="Họ tên cán bộ..."></div>
@@ -938,11 +852,11 @@
 <!-- MODAL THÊM / SỬA TÀI KHOẢN & ĐỔI MẬT KHẨU -->
 <div class="modal-overlay hidden" id="modalTaiKhoan">
     <div class="modal-card" style="max-width: 480px;">
-        <div style="padding: 18px 24px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center;">
+        <div style="padding: 16px 20px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center;">
             <b style="text-transform: uppercase;"><i class="fa-solid fa-user-gear"></i> Quản Lý Thông Tin & Mật Khẩu Tài Khoản</b>
             <button class="btn btn-red" style="padding: 4px 10px;" onclick="document.getElementById('modalTaiKhoan').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div style="padding: 24px; display: flex; flex-direction: column; gap: 14px; background: #f8fafc;">
+        <div style="padding: 20px; display: flex; flex-direction: column; gap: 14px; background: #f8fafc;">
             <input type="hidden" id="editAccountIndex" value="-1">
             <div class="form-group"><label>Tên Đăng Nhập / Email</label><input type="text" id="accEmail" placeholder="nhanvien@vinapaco.com.vn"></div>
             <div class="form-group"><label>Mật Khẩu Mới / Đổi Mật Khẩu</label><input type="password" id="accPassword" placeholder="Nhập mật khẩu mới..."></div>
@@ -950,7 +864,7 @@
             <div class="form-group"><label>Vai Trò (Role)</label><select id="accRole"><option value="Admin">Admin</option><option value="Editor">Editor</option><option value="Viewer">Viewer</option></select></div>
             <div class="form-group"><label>Trạng Thái</label><select id="accStatus"><option value="Active">Active (Hoạt động)</option><option value="Locked">Locked (Khóa)</option></select></div>
             <div class="form-group"><label>Email Nhận Thông Báo / Reset</label><input type="text" id="accNotifyEmail" placeholder="email.thuc.te@gmail.com"></div>
-            <button class="btn btn-green" style="padding: 12px; justify-content: center;" onclick="luuTaiKhoanHeThong()"><i class="fa-solid fa-floppy-disk"></i> Lưu Tài Khoản & Mật Khẩu</button>
+            <button class="btn btn-green" style="padding: 11px; justify-content: center;" onclick="luuTaiKhoanHeThong()"><i class="fa-solid fa-floppy-disk"></i> Lưu Tài Khoản & Mật Khẩu</button>
         </div>
     </div>
 </div>
@@ -958,44 +872,45 @@
 <!-- MODAL XEM VÀ IN PHIẾU GIAO NHẬN XUẤT KHO MỰC / THIẾT BỊ -->
 <div class="modal-overlay hidden" id="previewSlipModal">
     <div class="modal-card" style="max-width: 720px; padding: 0;">
-        <div style="padding: 16px 24px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center;">
-            <b style="text-transform: uppercase;"><i class="fa-solid fa-file-contract"></i> Xem Trước Phiếu Xuất Kho / Bàn Giao Chuẩn Doanh Nghiệp</b>
+        <div style="padding: 14px 20px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center;">
+            <b style="text-transform: uppercase;"><i class="fa-solid fa-file-contract"></i> Xem Trước Phiếu Xuất Kho / Bàn Giao</b>
             <button class="btn btn-red" style="padding: 4px 10px;" onclick="document.getElementById('previewSlipModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div style="padding: 24px; background: #e2e8f0; max-height: 78vh; overflow-y: auto;">
-            <div id="slip-capture-area" style="background: white; padding: 36px; border-radius: 12px; border: 1px solid #cbd5e1; font-size: 14px; color: #0f172a;">
+        <div style="padding: 20px; background: #e2e8f0; max-height: 78vh; overflow-y: auto;">
+            <div id="slip-capture-area" style="background: white; padding: 32px; border-radius: 12px; border: 1px solid #cbd5e1; font-size: 13px; color: #0f172a;">
+                
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0284c7; padding-bottom: 12px; margin-bottom: 18px;">
                     <div>
-                        <div style="font-size: 13px; font-weight: 900; text-transform: uppercase; color: #0369a1;">TỔNG CÔNG TY GIẤY VIỆT NAM</div>
-                        <div style="font-size: 12px; font-weight: 700; color: #475569;">VĂN PHÒNG TỔNG CÔNG TY</div>
+                        <div style="font-size: 12px; font-weight: 900; text-transform: uppercase; color: #0369a1;">TỔNG CÔNG TY GIẤY VIỆT NAM</div>
+                        <div style="font-size: 11px; font-weight: 700; color: #475569;">VĂN PHÒNG TỔNG CÔNG TY</div>
                     </div>
-                    <div style="text-align: right; font-size: 12px; color: #475569; font-weight: 600;">
+                    <div style="text-align: right; font-size: 11px; color: #475569; font-weight: 600;">
                         <div>Mẫu số: 02-VT/VINAPACO</div>
                         <div id="modalSlipCodeDate" style="font-weight: 800; color: #0284c7; margin-top: 2px;">Số: PGN-01 | Ngày: 18/08/2026</div>
                     </div>
                 </div>
 
                 <div style="text-align: center; margin-bottom: 20px;">
-                    <h2 style="font-size: 21px; font-weight: 900; text-transform: uppercase; color: #0f172a;" id="modalSlipTitle">PHIẾU XUẤT KHO VẬT TƯ / THIẾT BỊ</h2>
-                    <div id="modalSlipSubDate" style="font-size: 13px; font-style: italic; color: #475569; margin-top: 2px;">Thời gian lập: Tháng 06/2026</div>
+                    <h2 style="font-size: 19px; font-weight: 900; text-transform: uppercase; color: #0f172a;" id="modalSlipTitle">PHIẾU XUẤT KHO VẬT TƯ / THIẾT BỊ</h2>
+                    <div id="modalSlipSubDate" style="font-size: 12px; font-style: italic; color: #475569; margin-top: 2px;">Thời gian lập: Tháng 06/2026</div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #f8fafc; padding: 14px 18px; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 18px; font-size: 14px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #f8fafc; padding: 12px 16px; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 18px; font-size: 13px;">
                     <div><b>Bên Giao (Cấp Phát):</b> <span id="modalSlipFrom" style="color: #0369a1; font-weight: bold;">--</span></div>
                     <div><b>Bên Nhận (Sử Dụng):</b> <span id="modalSlipTo" style="color: #16a34a; font-weight: bold;">--</span></div>
                     <div><b>Đơn Vị / Bộ Phận:</b> <span id="modalSlipDept" style="font-weight: bold;">--</span></div>
                     <div><b>Trạng Thái / Mục Đích:</b> <span id="modalSlipStatus" style="color: #d97706; font-weight: bold;">--</span></div>
                 </div>
 
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
                     <thead>
                         <tr>
                             <th style="width: 40px;">STT</th>
                             <th>Tên Hàng Hóa / Thiết Bị Cấp Phát</th>
-                            <th style="width: 70px; text-align: center;">ĐVT</th>
-                            <th style="width: 80px; text-align: center;">Số Lượng</th>
-                            <th style="width: 110px; text-align: right;">Đơn Giá</th>
-                            <th style="width: 120px; text-align: right;">Thành Tiền</th>
+                            <th style="width: 60px; text-align: center;">ĐVT</th>
+                            <th style="width: 70px; text-align: center;">Số Lượng</th>
+                            <th style="width: 100px; text-align: right;">Đơn Giá</th>
+                            <th style="width: 110px; text-align: right;">Thành Tiền</th>
                         </tr>
                     </thead>
                     <tbody id="modalSlipTableBody">
@@ -1010,27 +925,28 @@
                     </tbody>
                 </table>
 
-                <div style="font-size: 13px; font-style: italic; color: #475569; margin-bottom: 24px;">
+                <div style="font-size: 12px; font-style: italic; color: #475569; margin-bottom: 20px;">
                     * Phiếu xuất kho / bàn giao này là chứng từ gốc xác nhận việc giao nhận vật tư, thiết bị phục vụ hoạt động vận hành tại VINAPACO.
                 </div>
 
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; margin-top: 10px; font-size: 13px; font-weight: bold; color: #0f172a; text-transform: uppercase;">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; margin-top: 10px; font-size: 12px; font-weight: bold; color: #0f172a; text-transform: uppercase;">
                     <div>
                         <div>NGƯỜI LẬP PHIẾU</div>
-                        <div style="height: 60px;"></div>
+                        <div style="height: 50px;"></div>
                         <div style="text-transform: none; font-weight: 800; color: #0f172a;" id="modalSlipSignMaker">Nguyễn Thị Tuyết Nhung</div>
                     </div>
                     <div>
                         <div>NGƯỜI NHẬN HÀNG</div>
-                        <div style="height: 60px;"></div>
+                        <div style="height: 50px;"></div>
                         <div style="text-transform: none; font-weight: 800; color: #0f172a;" id="modalSlipSignReceiver">Bên Nhận</div>
                     </div>
                     <div>
                         <div>THỦ TRƯỞNG / TRƯỞNG PHÒNG</div>
-                        <div style="height: 60px;"></div>
+                        <div style="height: 50px;"></div>
                         <div style="text-transform: none; font-weight: 800; color: #0f172a;">Trần Bình Dương</div>
                     </div>
                 </div>
+
             </div>
         </div>
         <div class="modal-actions">
@@ -1042,98 +958,98 @@
 
 <!-- MODAL ĐĂNG KÝ NGHỈ PHÉP & BÀN GIAO CÔNG VIỆC -->
 <div class="modal-overlay hidden" id="dangKyNghiPhepModal">
-    <div class="modal-card" style="max-width: 660px;">
-        <div style="padding: 20px 24px; background: linear-gradient(135deg, #0284c7, #0369a1); color: white; display: flex; justify-content: space-between; align-items: center;">
-            <div style="font-weight: 900; font-size: 16px; text-transform: uppercase;"><i class="fa-solid fa-file-pen"></i> ĐƠN ĐĂNG KÝ NGHỈ PHÉP & BÀN GIAO CÔNG VIỆC</div>
-            <button class="btn btn-red" style="padding: 6px 10px;" onclick="dongModalDangKyNghiPhep()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-card" style="max-width: 620px;">
+        <div style="padding: 16px 20px; background: linear-gradient(135deg, #0284c7, #0369a1); color: white; display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-weight: 900; font-size: 15px; text-transform: uppercase;"><i class="fa-solid fa-file-pen"></i> ĐƠN ĐĂNG KÝ NGHỈ PHÉP & BÀN GIAO CÔNG VIỆC</div>
+            <button class="btn btn-red" style="padding: 4px 8px;" onclick="dongModalDangKyNghiPhep()"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div style="padding: 28px; display: flex; flex-direction: column; gap: 16px; background: #f8fafc; font-size: 15px;">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-                <div class="form-group"><label>1. Chọn Nhân Sự</label><select id="popupLeaveNhanSu" style="padding: 10px; border-radius: 8px; font-weight: bold;"></select></div>
-                <div class="form-group"><label>2. Hình Thức / Lý Do Nghỉ</label><select id="popupLeaveType" style="padding: 10px; border-radius: 8px; font-weight: bold;">
+        <div style="padding: 22px; display: flex; flex-direction: column; gap: 14px; background: #f8fafc; font-size: 14px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="form-group"><label>1. Chọn Nhân Sự</label><select id="popupLeaveNhanSu" style="padding: 8px; border-radius: 8px; font-weight: bold;"></select></div>
+                <div class="form-group"><label>2. Hình Thức / Lý Do Nghỉ</label><select id="popupLeaveType" style="padding: 8px; border-radius: 8px; font-weight: bold;">
                     <option value="Phép năm">Nghỉ phép năm hưởng lương</option><option value="Việc riêng">Nghỉ việc riêng (Kết hôn, tang chế...)</option><option value="Ốm đau">Nghỉ ốm đau / Chế độ BHXH</option><option value="Thai sản">Nghỉ chế độ thai sản</option><option value="Không lương">Nghỉ không hưởng lương</option>
                 </select></div>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-                <div class="form-group"><label>3. Từ Ngày</label><input type="date" id="popupLeaveTuNgay" style="padding: 10px; border-radius: 8px;" onchange="tinhSoNgayPopup()"></div>
-                <div class="form-group"><label>4. Đến Ngày</label><input type="date" id="popupLeaveDenNgay" style="padding: 10px; border-radius: 8px;" onchange="tinhSoNgayPopup()"></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="form-group"><label>3. Từ Ngày</label><input type="date" id="popupLeaveTuNgay" style="padding: 8px; border-radius: 8px;" onchange="tinhSoNgayPopup()"></div>
+                <div class="form-group"><label>4. Đến Ngày</label><input type="date" id="popupLeaveDenNgay" style="padding: 8px; border-radius: 8px;" onchange="tinhSoNgayPopup()"></div>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                 <div class="form-group"><label>Tổng Số Ngày Nghỉ</label><input type="text" id="popupLeaveSoNgay" readonly value="1.0 Ngày" style="font-weight: bold; color: #0284c7; background: #e2e8f0;"></div>
-                <div class="form-group"><label>Người Nhận Bàn Giao Công Việc</label><input type="text" id="popupLeaveNguoiBanGiao" placeholder="Họ tên cán bộ nhận thay..." style="padding: 10px; border-radius: 8px;"></div>
+                <div class="form-group"><label>Người Nhận Bàn Giao Công Việc</label><input type="text" id="popupLeaveNguoiBanGiao" placeholder="Họ tên cán bộ nhận thay..." style="padding: 8px; border-radius: 8px;"></div>
             </div>
-            <div class="form-group"><label>Nội Dung Bàn Giao & Ghi Chú Chi Tiết</label><textarea id="popupLeaveGhiChu" rows="3" placeholder="Liệt kê các nhiệm vụ cần bàn giao trong thời gian nghỉ..." style="padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); font-family: inherit; font-size: 14px;"></textarea></div>
+            <div class="form-group"><label>Nội Dung Bàn Giao & Ghi Chú Chi Tiết</label><textarea id="popupLeaveGhiChu" rows="3" placeholder="Liệt kê các nhiệm vụ cần bàn giao trong thời gian nghỉ..." style="padding: 8px; border-radius: 8px; border: 1px solid var(--border-color); font-family: inherit; font-size: 13px;"></textarea></div>
         </div>
-        <div class="modal-actions"><button class="btn btn-green" style="padding: 12px 24px;" onclick="luuVaTruPhepTuPopup()"><i class="fa-solid fa-floppy-disk"></i> Xác Nhận & Trừ Phép</button></div>
+        <div class="modal-actions"><button class="btn btn-green" style="padding: 10px 20px;" onclick="luuVaTruPhepTuPopup()"><i class="fa-solid fa-floppy-disk"></i> Xác Nhận & Trừ Phép</button></div>
     </div>
 </div>
 
 <!-- MODAL PHIẾU LƯƠNG CHUẨN DOANH NGHIỆP -->
 <div class="modal-overlay hidden" id="previewModal">
-    <div class="modal-card" style="max-width: 720px; padding: 0; border-radius: 16px; overflow: hidden;">
-        <div style="padding: 14px 20px; background: #f8fafc; border-bottom: 1px solid #cbd5e1; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;">
+    <div class="modal-card" style="max-width: 680px; padding: 0; border-radius: 16px; overflow: hidden;">
+        <div style="padding: 12px 18px; background: #f8fafc; border-bottom: 1px solid #cbd5e1; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;">
             <div style="display: flex; align-items: center; gap: 10px;">
                 <b style="color: #0369a1; text-transform: uppercase;"><i class="fa-solid fa-file-invoice-dollar"></i> Phiếu Lương Nhân Sự</b>
-                <input type="text" id="inputTimKiemNhanSuModal" placeholder="🔍 Tìm kiếm nhân sự nhanh..." style="padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; font-weight: bold; width: 200px;" oninput="locDanhSachNhanSuModal(this.value)">
+                <input type="text" id="inputTimKiemNhanSuModal" placeholder="🔍 Tìm kiếm nhân sự nhanh..." style="padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 12px; font-weight: bold; width: 180px;" oninput="locDanhSachNhanSuModal(this.value)">
             </div>
             <div style="display: flex; gap: 6px; align-items: center;">
-                <select id="selectModalNhanSu" style="padding: 6px 10px; border-radius: 6px; font-weight: bold; font-size: 13px;" onchange="chonNhanSuXemPhieuLuong(this.value)"></select>
-                <button class="btn btn-red" style="padding: 6px 10px;" onclick="document.getElementById('previewModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
+                <select id="selectModalNhanSu" style="padding: 5px 8px; border-radius: 6px; font-weight: bold; font-size: 12px;" onchange="chonNhanSuXemPhieuLuong(this.value)"></select>
+                <button class="btn btn-red" style="padding: 5px 8px;" onclick="document.getElementById('previewModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
             </div>
         </div>
-        <div style="padding: 20px; background: #e2e8f0; max-height: 72vh; overflow-y: auto;">
-            <div id="payslip-capture" style="background: #ffffff; width: 100%; max-width: 650px; border-radius: 16px; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.15); overflow: hidden; border: 1.5px solid #cbd5e1; margin: 0 auto; font-size: 14px; color: #0f172a;">
-                <div style="background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 22px 28px; text-align: center;">
-                    <div style="font-size: 12px; text-transform: uppercase; font-weight: 800; letter-spacing: 1px;">Tổng công ty Giấy Việt Nam</div>
-                    <h2 style="font-size: 20px; font-weight: 900; text-transform: uppercase; margin: 6px 0;">Phiếu Thanh Toán Lương</h2>
-                    <div id="slipMonthSub" style="display:inline-block; background:rgba(255,255,255,0.25); padding:4px 16px; border-radius:20px; font-size:13px; font-weight: 700;">Tháng 06/2026</div>
+        <div style="padding: 18px; background: #e2e8f0; max-height: 72vh; overflow-y: auto;">
+            <div id="payslip-capture" style="background: #ffffff; width: 100%; max-width: 620px; border-radius: 16px; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.15); overflow: hidden; border: 1.5px solid #cbd5e1; margin: 0 auto; font-size: 13px; color: #0f172a;">
+                <div style="background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 20px 24px; text-align: center;">
+                    <div style="font-size: 11px; text-transform: uppercase; font-weight: 800; letter-spacing: 1px;">Tổng công ty Giấy Việt Nam</div>
+                    <h2 style="font-size: 18px; font-weight: 900; text-transform: uppercase; margin: 4px 0;">Phiếu Thanh Toán Lương</h2>
+                    <div id="slipMonthSub" style="display:inline-block; background:rgba(255,255,255,0.25); padding:3px 14px; border-radius:20px; font-size:12px; font-weight: 700;">Tháng 06/2026</div>
                 </div>
-                <div style="padding: 22px 28px; display: flex; flex-direction: column; gap: 14px;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #f8fafc; padding: 12px 16px; border-radius: 10px; border: 1px solid #e2e8f0;">
-                        <div style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 11px; text-transform: uppercase; color: #475569; font-weight: 800;">Họ và Tên Nhân Sự</span><span style="font-size: 15px; font-weight: 800; color: #0f172a;" id="slipName">--</span></div>
-                        <div style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 11px; text-transform: uppercase; color: #475569; font-weight: 800;">Bộ Phận / Đơn Vị</span><span style="font-size: 15px; font-weight: 800; color: #0f172a;">Văn phòng Tổng công ty</span></div>
+                <div style="padding: 20px 24px; display: flex; flex-direction: column; gap: 12px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #f8fafc; padding: 10px 14px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 10px; text-transform: uppercase; color: #475569; font-weight: 800;">Họ và Tên Nhân Sự</span><span style="font-size: 14px; font-weight: 800; color: #0f172a;" id="slipName">--</span></div>
+                        <div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 10px; text-transform: uppercase; color: #475569; font-weight: 800;">Bộ Phận / Đơn Vị</span><span style="font-size: 14px; font-weight: 800; color: #0f172a;">Văn phòng Tổng công ty</span></div>
                     </div>
-                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; background: #f1f5f9; padding: 10px; border-radius: 8px; font-size: 12px; text-align: center; font-weight: bold;">
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; background: #f1f5f9; padding: 8px; border-radius: 8px; font-size: 11px; text-align: center; font-weight: bold;">
                         <div>HSL.CB: <span id="slipHslCb" style="color:#0284c7;">--</span></div>
                         <div>PC.CB: <span id="slipPcCb" style="color:#d97706;">--</span></div>
                         <div>HSL.CV: <span id="slipHslCv" style="color:#0284c7;">--</span></div>
                         <div>PC.CV: <span id="slipPcCv" style="color:#d97706;">--</span></div>
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: #f8fafc; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: bold;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: #f8fafc; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: bold;">
                         <div>Ngày Công Thực Tế: <span id="slipNcTg" style="color:#16a34a;">--</span></div>
                         <div>Hệ Số Thực Hiện K: <span id="slipKht" style="color:#8b5cf6;">--</span></div>
                     </div>
                     <div>
-                        <table style="width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 2px;">
-                            <thead><tr><th style="background: #f1f5f9; color: #475569; font-size: 12px; text-transform: uppercase; padding: 9px 10px; border: 1px solid #cbd5e1; text-align: left; font-weight: 900;">Khoản Mục Thu Nhập & Khấu Trừ</th><th style="background: #f1f5f9; color: #475569; font-size: 12px; text-transform: uppercase; padding: 9px 10px; border: 1px solid #cbd5e1; text-align: right; font-weight: 900;">Số Tiền (VNĐ)</th></tr></thead>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 2px;">
+                            <thead><tr><th style="background: #f1f5f9; color: #475569; font-size: 11px; text-transform: uppercase; padding: 8px 10px; border: 1px solid #cbd5e1; text-align: left; font-weight: 900;">Khoản Mục Thu Nhập & Khấu Trừ</th><th style="background: #f1f5f9; color: #475569; font-size: 11px; text-transform: uppercase; padding: 8px 10px; border: 1px solid #cbd5e1; text-align: right; font-weight: 900;">Số Tiền (VNĐ)</th></tr></thead>
                             <tbody>
-                                <tr><td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700;">1. Lương Cơ Bản Thực Tế (L.CB)</td><td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; text-align: right;" id="slipLCB">0</td></tr>
-                                <tr><td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700;">2. Lương Công Việc Thực Tế (L.CV)</td><td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; text-align: right;" id="slipLCV">0</td></tr>
-                                <tr style="background-color: #f0f9ff;"><td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 800; color: #0284c7;">3. TỔNG LƯƠNG CƠ BẢN & CÔNG VIỆC THỰC TẾ</td><td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 900; text-align: right; color: #0284c7;" id="slipTongCbCv">0</td></tr>
-                                <tr><td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700;">4. Khấu Trừ BHXH + BHYT (9.5%)</td><td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; text-align: right; color: #dc2626;" id="slipBHXH">0</td></tr>
-                                <tr><td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700;">5. Khấu Trừ BHTN (1%)</td><td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; text-align: right; color: #dc2626;" id="slipBHTN">0</td></tr>
-                                <tr><td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700;">6. Tạm Ứng Giữa Tháng</td><td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; text-align: right; color: #dc2626;" id="slipTamUng">0</td></tr>
+                                <tr><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 700;">1. Lương Cơ Bản Thực Tế (L.CB)</td><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 700; text-align: right;" id="slipLCB">0</td></tr>
+                                <tr><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 700;">2. Lương Công Việc Thực Tế (L.CV)</td><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 700; text-align: right;" id="slipLCV">0</td></tr>
+                                <tr style="background-color: #f0f9ff;"><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 800; color: #0284c7;">3. TỔNG LƯƠNG CƠ BẢN & CÔNG VIỆC THỰC TẾ</td><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 900; text-align: right; color: #0284c7;" id="slipTongCbCv">0</td></tr>
+                                <tr><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 700;">4. Khấu Trừ BHXH + BHYT (9.5%)</td><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 700; text-align: right; color: #dc2626;" id="slipBHXH">0</td></tr>
+                                <tr><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 700;">5. Khấu Trừ BHTN (1%)</td><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 700; text-align: right; color: #dc2626;" id="slipBHTN">0</td></tr>
+                                <tr><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 700;">6. Tạm Ứng Giữa Tháng</td><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 700; text-align: right; color: #dc2626;" id="slipTamUng">0</td></tr>
                             </tbody>
                         </table>
                     </div>
-                    <div style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1.5px solid #bbf7d0; border-radius: 10px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-weight: 900; font-size: 15px; text-transform: uppercase; color: #166534;">Thực Lĩnh Net Nhận Về:</span>
-                        <span style="font-size: 20px; font-weight: 900; color: #15803d;" id="slipThucLinh">0 VNĐ</span>
+                    <div style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1.5px solid #bbf7d0; border-radius: 10px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-weight: 900; font-size: 14px; text-transform: uppercase; color: #166534;">Thực Lĩnh Net Nhận Về:</span>
+                        <span style="font-size: 18px; font-weight: 900; color: #15803d;" id="slipThucLinh">0 VNĐ</span>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; margin-top: 20px; font-size: 13px; font-weight: bold; color: #0f172a; text-transform: uppercase;">
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; margin-top: 16px; font-size: 12px; font-weight: bold; color: #0f172a; text-transform: uppercase;">
                         <div>
                             <div>PHÒNG NHÂN SỰ</div>
-                            <div style="height: 55px;"></div>
+                            <div style="height: 45px;"></div>
                         </div>
                         <div>
                             <div>THỦ TRƯỞNG ĐƠN VỊ</div>
-                            <div style="height: 55px;"></div>
+                            <div style="height: 45px;"></div>
                         </div>
                         <div>
                             <div>NGƯỜI LẬP BIỂU</div>
-                            <div style="height: 55px;"></div>
-                            <div style="text-transform: none; font-weight: 800; font-size: 14px; color: #0f172a;" id="slipSignMaker">Nguyễn Thị Tuyết Nhung</div>
+                            <div style="height: 45px;"></div>
+                            <div style="text-transform: none; font-weight: 800; font-size: 13px; color: #0f172a;" id="slipSignMaker">Nguyễn Thị Tuyết Nhung</div>
                         </div>
                     </div>
                 </div>
@@ -1399,6 +1315,19 @@
         return totalYearNet;
     }
 
+    function luuTruVaoLocalStorage() {
+        try {
+            localStorage.setItem('bapaco_db_data', JSON.stringify(coSoDuLieuNamThang));
+            localStorage.setItem('bapaco_vpp_map_data', JSON.stringify(dsThanhToanVanPhongProByMonth));
+            localStorage.setItem('bapaco_telecom_map_data', JSON.stringify(dsThanhToanTelecombyMonth));
+            localStorage.setItem('bapaco_ink_data', JSON.stringify(dsKhoMucIn));
+            localStorage.setItem('bapaco_delivery_data', JSON.stringify(dsPhieuGiaoNhan));
+            localStorage.setItem('bapaco_survey_data', JSON.stringify(dsKhaoSatChuyenSau));
+            localStorage.setItem('bapaco_task_data', JSON.stringify(danhSachCongViec));
+            localStorage.setItem('bapaco_accounts_data', JSON.stringify(danhSachTaiKhoanHeThong));
+        } catch (e) {}
+    }
+
     async function tuDongTaiDuLieuTuDrive() {
         try {
             let res = await fetch(gasWebhookUrl + "?nocache=" + new Date().getTime());
@@ -1573,8 +1502,8 @@
             let isToday = (d === _now.getDate() && m === (_now.getMonth() + 1) && y === _now.getFullYear());
             let bgStyle = isToday ? "background: #e0f2fe; border-color: #0284c7;" : (lunar.isHoangDao ? "background: #f0fdf4; border-color: #86efac;" : "background: #ffffff; border-color: #cbd5e1;");
             
-            grid.innerHTML += `<div onclick="hienThiPhongThuyNgay(${d}, ${m}, ${y})" style="padding:6px; border:1px solid; border-radius:8px; ${bgStyle} font-size:12px; display:flex; flex-direction:column; gap:2px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
-                <b style="font-size:14px; color:#0f172a;">${d}</b>
+            grid.innerHTML += `<div onclick="hienThiPhongThuyNgay(${d}, ${m}, ${y})" style="padding:6px; border:1px solid; border-radius:8px; ${bgStyle} font-size:11px; display:flex; flex-direction:column; gap:2px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+                <b style="font-size:13px; color:#0f172a;">${d}</b>
                 <span style="color:#16a34a; font-weight:700;">Âm: ${lunar.day}/${lunar.month}</span>
                 <span style="color:${lunar.isHoangDao?'#15803d':'#475569'}; font-size:10px; font-weight:bold;">${lunar.isHoangDao?'✨ Hoàng Đạo':'Bình thường'}</span>
             </div>`;
@@ -2444,7 +2373,7 @@
         let yearVpp = layTatCaDanhSachVPPTheoNam();
         yearVpp.forEach((item) => {
             let bankInfo = item.bankName ? `${item.bankName} - ${item.bankAccount || ''}` : (item.bankAccount || '--');
-            let fileListStr = '<span style="color:#94a3b8; font-size:13px;">Không có tệp</span>';
+            let fileListStr = '<span style="color:#94a3b8; font-size:12px;">Không có tệp</span>';
             if (item.files && item.files.length > 0) {
                 let folderName = `VINAPACO_Drive / ${item.namHachToan} / ${item.thangHachToan} / Thanh_Toan_VPP`;
                 let listNames = item.files.map(f => f.name).join(', ');
@@ -2465,8 +2394,8 @@
                 <td>${fileListStr}</td>
                 <td style="text-align:center; vertical-align:middle;">
                     <div style="display:inline-flex; gap:6px; align-items:center; justify-content:center;">
-                        <button class="btn btn-yellow" style="padding:6px 10px; font-size:12px;" onclick="suaVPP('${item.originalKey}', ${item.originalIndex})" title="Sửa chứng từ"><i class="fa-solid fa-pen"></i> Sửa</button>
-                        <button class="btn btn-red" style="padding:6px 10px; font-size:12px;" onclick="xoaVPP('${item.originalKey}', ${item.originalIndex})" title="Xóa chứng từ"><i class="fa-solid fa-trash"></i> Xóa</button>
+                        <button class="btn btn-yellow" style="padding:4px 8px; font-size:12px;" onclick="suaVPP('${item.originalKey}', ${item.originalIndex})" title="Sửa chứng từ"><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn btn-red" style="padding:4px 8px; font-size:12px;" onclick="xoaVPP('${item.originalKey}', ${item.originalIndex})" title="Xóa chứng từ"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </td>
             </tr>`;
@@ -2576,9 +2505,9 @@
                 <td style="text-align:right; font-weight:bold;">${item.total.toLocaleString()}</td>
                 <td style="text-align:center; vertical-align:middle;">
                     <div style="display:inline-flex; gap:6px; align-items:center; justify-content:center;">
-                        <button class="btn btn-purple" style="padding:5px 8px; font-size:12px;" onclick="xemVaInPhieuKho(${idx})" title="In Phiếu Xuất Kho"><i class="fa-solid fa-print"></i></button>
-                        <button class="btn btn-blue" style="padding:5px 8px; font-size:12px;" onclick="suaKhoMuc(${idx})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn btn-red" style="padding:5px 8px; font-size:12px;" onclick="xoaKhoMuc(${idx})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
+                        <button class="btn btn-purple" style="padding:4px 8px; font-size:12px;" onclick="xemVaInPhieuKho(${idx})" title="In Phiếu Xuất Kho"><i class="fa-solid fa-print"></i></button>
+                        <button class="btn btn-blue" style="padding:4px 8px; font-size:12px;" onclick="suaKhoMuc(${idx})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn btn-red" style="padding:4px 8px; font-size:12px;" onclick="xoaKhoMuc(${idx})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </td>
             </tr>`;
@@ -2677,9 +2606,9 @@
                 <td style="text-align:center;">${formatVNDate(s.date)}</td>
                 <td style="text-align:center; vertical-align:middle;">
                     <div style="display:inline-flex; gap:6px; align-items:center; justify-content:center;">
-                        <button class="btn btn-purple" style="padding:5px 8px; font-size:12px;" onclick="xemVaInPhieuGiaoNhanTab(${idx})" title="In Phiếu Bàn Giao"><i class="fa-solid fa-print"></i></button>
-                        <button class="btn btn-blue" style="padding:5px 8px; font-size:12px;" onclick="suaPhieuGiao(${idx})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn btn-red" style="padding:5px 8px; font-size:12px;" onclick="xoaPhieuGiao(${idx})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
+                        <button class="btn btn-purple" style="padding:4px 8px; font-size:12px;" onclick="xemVaInPhieuGiaoNhanTab(${idx})" title="In Phiếu Bàn Giao"><i class="fa-solid fa-print"></i></button>
+                        <button class="btn btn-blue" style="padding:4px 8px; font-size:12px;" onclick="suaPhieuGiao(${idx})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn btn-red" style="padding:4px 8px; font-size:12px;" onclick="xoaPhieuGiao(${idx})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </td>
             </tr>`;
@@ -2785,37 +2714,36 @@
         }
         let finalFiles = filesArr.length > 0 ? filesArr : existingFiles;
 
+        let generatedId = "VT-0" + (dsThanhToanTelecombyMonth[exactMonthKey].length + 1);
+
         let newItem = {
             id: (editIdx >= 0 && oldMonthKey && dsThanhToanTelecombyMonth[oldMonthKey] && dsThanhToanTelecombyMonth[oldMonthKey][editIdx])
                 ? dsThanhToanTelecombyMonth[oldMonthKey][editIdx].id
-                : "VT-0" + (dsThanhToanTelecombyMonth[exactMonthKey].length + 1),
-            maHs: document.getElementById('inputTelecomMaHs').value || "VT-01",
+                : generatedId,
+            maHs: document.getElementById('inputTelecomMaHs').value || 'VT-01',
             supplier: document.getElementById('inputTelecomSupplier').value,
             type: type,
-            kyCuoc: `${thangChonHienTai}/${namChonHienTai}`,
             thangHachToan: thangChonHienTai,
-            namHachToan: namChonHienTai,
-            tong: tong,
             truocThue: truocThue,
             vat: vat,
+            tong: tong,
             files: finalFiles
         };
 
-        if (editIdx >= 0) {
-            if (oldMonthKey && dsThanhToanTelecombyMonth[oldMonthKey]) {
+        if (editIdx >= 0 && oldMonthKey && dsThanhToanTelecombyMonth[oldMonthKey]) {
+            if (oldMonthKey !== exactMonthKey) {
                 dsThanhToanTelecombyMonth[oldMonthKey].splice(editIdx, 1);
+                dsThanhToanTelecombyMonth[exactMonthKey].push(newItem);
+            } else {
+                dsThanhToanTelecombyMonth[exactMonthKey][editIdx] = newItem;
             }
-            if (!dsThanhToanTelecombyMonth[exactMonthKey]) dsThanhToanTelecombyMonth[exactMonthKey] = [];
-            dsThanhToanTelecombyMonth[exactMonthKey].push(newItem);
         } else {
             dsThanhToanTelecombyMonth[exactMonthKey].push(newItem);
         }
 
         luuTruVaoLocalStorage();
-        
-        let exactFolderPath = `VINAPACO_Drive/${namChonHienTai}/${thangChonHienTai}/Cuoc_Vien_Thong`;
-        tuDongDayDuLieuLenDrive(filesToUpload, exactFolderPath);
-        
+        let exactTelecomFolder = `VINAPACO_Drive/${namChonHienTai}/${thangChonHienTai}/Cuoc_Vien_Thong`;
+        tuDongDayDuLieuLenDrive(filesToUpload, exactTelecomFolder);
         window.tempTelecomFilesPayload = [];
 
         document.getElementById('editTelecomIndex').value = -1;
@@ -2827,12 +2755,8 @@
         
         let fileInput = document.getElementById('inputTelecomFiles');
         if (fileInput) fileInput.value = '';
-        
-        let progressBox = document.getElementById('telecomProgressBarBox');
-        if (progressBox) progressBox.style.display = 'none';
-        
-        let progressTxt = document.getElementById('telecomProgressText');
-        if (progressTxt) progressTxt.style.display = 'none';
+        document.getElementById('telecomProgressBarBox').style.display = 'none';
+        document.getElementById('telecomProgressText').style.display = 'none';
 
         let btnSave = document.getElementById('btnSaveTelecom');
         if (btnSave) {
@@ -2843,16 +2767,16 @@
 
         renderTelecomPaymentTable();
         capNhat();
-        alert(`✅ Đã lưu cước viễn thông cho ${thangChonHienTai} năm ${namChonHienTai} và đẩy tệp đúng thư mục Drive!`);
+        alert(`✅ Đã lưu cước viễn thông cho ${thangChonHienTai}/${namChonHienTai} thành công!`);
     }
 
     function xoaTelecom(monthKey, index) {
-        if (confirm("Xóa cước viễn thông này?")) {
+        if (confirm("Xóa bản ghi cước viễn thông này?")) {
             if (dsThanhToanTelecombyMonth[monthKey]) {
                 dsThanhToanTelecombyMonth[monthKey].splice(index, 1);
+                renderTelecomPaymentTable();
+                capNhat();
             }
-            renderTelecomPaymentTable();
-            capNhat();
         }
     }
 
@@ -2860,50 +2784,55 @@
         let tbody = document.getElementById('telecomPaymentTableBody');
         if(!tbody) return; tbody.innerHTML = '';
         
-        let yearTelecom = layTatCaDanhSachTelecomTheoNam();
+        let allTelecom = layTatCaDanhSachTelecomTheoNam();
         
-        document.getElementById('telecomYearTitle').innerText = currentNamKey;
+        let sumTruocThue = 0, sumVat = 0, sumTong = 0;
 
-        yearTelecom.forEach((item) => {
-            let fileListStr = '<span style="color:#94a3b8; font-size:13px;">Không có tệp</span>';
+        allTelecom.forEach((item) => {
+            sumTruocThue += (item.truocThue || 0);
+            sumVat += (item.vat || 0);
+            sumTong += (item.tong || 0);
+
+            let fileListStr = '<span style="color:#94a3b8; font-size:12px;">Không có tệp</span>';
             if (item.files && item.files.length > 0) {
-                let folderName = `VINAPACO_Drive / ${item.namHachToan || currentNamKey} / ${item.thangHachToan} / Cuoc_Vien_Thong`;
+                let folderName = `VINAPACO_Drive / ${item.namHachToan} / ${item.thangHachToan} / Cuoc_Vien_Thong`;
                 let listNames = item.files.map(f => f.name).join(', ');
                 fileListStr = `<a href="https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m" target="_blank" title="Mở thư mục trên Google Drive" style="color:#0284c7; text-decoration:none; font-weight:bold;"><i class="fa-solid fa-folder-tree" style="color:#8b5cf6;"></i> ${folderName} (${item.files.length} tệp)<br><small style="color:#475569; font-weight:normal;">${listNames}</small></a>`;
             }
+
             tbody.innerHTML += `<tr>
-                <td style="text-align:center;"><b>${item.maHs || 'VT-01'}</b></td>
-                <td style="text-align:center;"><span class="badge-warning">${item.thangHachToan || '--'}</span></td>
-                <td style="text-align:center;"><span class="badge-net">${item.supplier || 'VNPT'}</span></td>
-                <td>${item.type || '--'}</td>
-                <td style="text-align:center;">${item.kyCuoc || '--'}</td>
-                <td style="text-align:right;">${(item.truocThue||0).toLocaleString()}</td>
-                <td style="text-align:right; color:#dc2626;">${(item.vat||0).toLocaleString()}</td>
-                <td style="text-align:right; font-weight:bold; color:#15803d;">${(item.tong||0).toLocaleString()}</td>
+                <td style="text-align:center;">${item.maHs || item.id || 'VT-01'}</td>
+                <td style="text-align:center;"><span class="badge-warning">${item.thangHachToan}</span></td>
+                <td><b>${item.supplier}</b></td>
+                <td>${item.type}</td>
+                <td style="text-align:center;">${item.thangHachToan}/${item.namHachToan}</td>
+                <td style="text-align:right;">${(item.truocThue||0).toLocaleString('vi-VN')}</td>
+                <td style="text-align:right; color:#dc2626;">${(item.vat||0).toLocaleString('vi-VN')}</td>
+                <td style="text-align:right; font-weight:bold; color:#15803d;">${(item.tong||0).toLocaleString('vi-VN')}</td>
                 <td>${fileListStr}</td>
                 <td style="text-align:center; vertical-align:middle;">
                     <div style="display:inline-flex; gap:6px; align-items:center; justify-content:center;">
-                        <button class="btn btn-yellow" style="padding:6px 10px; font-size:12px;" onclick="suaTelecom('${item.originalKey}', ${item.originalIndex})" title="Sửa cước"><i class="fa-solid fa-pen"></i> Sửa</button>
-                        <button class="btn btn-red" style="padding:6px 10px; font-size:12px;" onclick="xoaTelecom('${item.originalKey}', ${item.originalIndex})" title="Xóa cước"><i class="fa-solid fa-trash"></i> Xóa</button>
+                        <button class="btn btn-yellow" style="padding:4px 8px; font-size:12px;" onclick="suaTelecom('${item.originalKey}', ${item.originalIndex})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn btn-red" style="padding:4px 8px; font-size:12px;" onclick="xoaTelecom('${item.originalKey}', ${item.originalIndex})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </td>
             </tr>`;
         });
 
-        document.getElementById('telecomKpiTruocThue').innerText = yearTelecom.reduce((s, i) => s + (i.truocThue || 0), 0).toLocaleString('vi-VN');
-        document.getElementById('telecomKpiVAT').innerText = yearTelecom.reduce((s, i) => s + (i.vat || 0), 0).toLocaleString('vi-VN');
-        document.getElementById('telecomKpiTongThanhToan').innerText = yearTelecom.reduce((s, i) => s + (i.tong || 0), 0).toLocaleString('vi-VN');
+        document.getElementById('telecomKpiTruocThue').innerText = sumTruocThue.toLocaleString('vi-VN') + " VNĐ";
+        document.getElementById('telecomKpiVAT').innerText = sumVat.toLocaleString('vi-VN') + " VNĐ";
+        document.getElementById('telecomKpiTongThanhToan').innerText = sumTong.toLocaleString('vi-VN') + " VNĐ";
+        document.getElementById('telecomYearTitle').innerText = currentNamKey;
     }
 
     function luuHoacCapNhatKhaoSat() {
         let user = document.getElementById('inputSurveyUser').value.trim();
-        if (!user) { alert("Vui lòng nhập tên người sử dụng thiết bị!"); return; }
+        let dept = document.getElementById('inputSurveyDept').value.trim();
+        if(!user || !dept) { alert("Nhập đủ người sử dụng và bộ phận!"); return; }
         let editIdx = parseInt(document.getElementById('editSurveyIndex').value);
         let newItem = {
-            code: editIdx >= 0 ? dsKhaoSatChuyenSau[editIdx].code : "KS-0" + (dsKhaoSatChuyenSau.length + 1),
-            user, 
-            dept: document.getElementById('inputSurveyDept').value.trim() || "Văn phòng Tổng công ty",
-            device: document.getElementById('inputSurveyDeviceName').value,
+            code: editIdx >= 0 ? dsKhaoSatChuyenSau[editIdx].code : "KS-0" + (dsKhaoSatChuyenSau.length+1),
+            user, dept, device: document.getElementById('inputSurveyDeviceName').value,
             os: document.getElementById('inputSurveyOS').value,
             osLicense: document.getElementById('inputSurveyOSLicense').value,
             office: document.getElementById('inputSurveyOffice').value,
@@ -2921,9 +2850,6 @@
         } else {
             dsKhaoSatChuyenSau.push(newItem);
         }
-        document.getElementById('inputSurveyUser').value = '';
-        document.getElementById('inputSurveyDept').value = '';
-        document.getElementById('inputSurveySpecs').value = '';
         renderSurveyTable();
         capNhat();
     }
@@ -2933,16 +2859,16 @@
         document.getElementById('inputSurveyUser').value = item.user;
         document.getElementById('inputSurveyDept').value = item.dept;
         document.getElementById('inputSurveyDeviceName').value = item.device;
-        document.getElementById('inputSurveyOS').value = item.os || 'Windows 11 Pro';
-        document.getElementById('inputSurveyOSLicense').value = item.osLicense || '✅ Có bản quyền chính hãng';
-        document.getElementById('inputSurveyOffice').value = item.office || 'Microsoft 365 (Cloud)';
-        document.getElementById('inputSurveyOfficeLicense').value = item.officeLicense || '✅ Bản quyền Tổng công ty';
-        document.getElementById('inputSurveyBusinessSoftware').value = item.bizSoft || 'Cloudoffice (Văn thư)';
-        document.getElementById('inputSurveyBusinessLicense').value = item.bizLicense || '✅ Có bản quyền chính hãng';
+        document.getElementById('inputSurveyOS').value = item.os;
+        document.getElementById('inputSurveyOSLicense').value = item.osLicense;
+        document.getElementById('inputSurveyOffice').value = item.office;
+        document.getElementById('inputSurveyOfficeLicense').value = item.officeLicense;
+        document.getElementById('inputSurveyBusinessSoftware').value = item.bizSoft;
+        document.getElementById('inputSurveyBusinessLicense').value = item.bizLicense;
         document.getElementById('inputSurveySpecs').value = item.specs;
         document.getElementById('editSurveyIndex').value = idx;
         document.getElementById('btnSaveSurvey').innerHTML = `<i class="fas fa-save"></i> Cập Nhật Khảo Sát`;
-        document.getElementById('btnCancelSurvey').classList.add('hidden');
+        document.getElementById('btnCancelSurvey').classList.remove('hidden');
     }
 
     function huySuaKhaoSat() {
@@ -2955,186 +2881,262 @@
     }
 
     function xoaKhaoSat(idx) {
-        if (confirm("Bạn có chắc chắn muốn xóa bản ghi khảo sát này?")) {
+        if(confirm("Xóa bản ghi khảo sát này?")) {
             dsKhaoSatChuyenSau.splice(idx, 1);
             renderSurveyTable();
             capNhat();
         }
     }
 
+    function xuatExcelBaoCaoKhaoSat() {
+        let ws = XLSX.utils.json_to_sheet(dsKhaoSatChuyenSau);
+        let wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "KhaoSatThietBi");
+        XLSX.writeFile(wb, "Bao_Cao_Khao_Sat_Thiet_Bi.xlsx");
+    }
+
     function renderSurveyTable() {
         let tbody = document.getElementById('surveyTableBody');
         if(!tbody) return; tbody.innerHTML = '';
-        
-        let countUnlicensed = 0;
+        let unlic = 0;
         dsKhaoSatChuyenSau.forEach((item, idx) => {
-            let isUnlicensedOS = item.osLicense && item.osLicense.includes("Lậu");
-            let isUnlicensedOffice = item.officeLicense && item.officeLicense.includes("lậu");
-            if (isUnlicensedOS || isUnlicensedOffice) countUnlicensed++;
-
-            let osInfo = `${item.os || '--'} <br><small style="color:var(--text-muted);">${item.osLicense || '--'}</small>`;
-            let officeInfo = `${item.office || '--'} <br><small style="color:var(--text-muted);">${item.officeLicense || '--'}</small>`;
-            let bizInfo = `${item.bizSoft || '--'} <br><small style="color:var(--text-muted);">${item.bizLicense || '--'}</small>`;
-
+            if(item.osLicense.includes('⚠️') || item.officeLicense.includes('⚠️')) unlic++;
             tbody.innerHTML += `<tr>
-                <td style="text-align:center;"><b>${item.code}</b></td>
+                <td style="text-align:center;">${item.code}</td>
                 <td><b>${item.user}</b></td>
-                <td><span class="badge-warning">${item.dept}</span></td>
-                <td>${item.device}</td>
-                <td>${osInfo}</td>
-                <td>${officeInfo}</td>
-                <td><b>${bizInfo}</b></td>
-                <td>${item.specs || '--'}</td>
+                <td>${item.dept}</td>
+                <td><b>${item.device}</b></td>
+                <td>${item.os}<br><small style="font-weight:bold;">${item.osLicense}</small></td>
+                <td>${item.office}<br><small style="font-weight:bold;">${item.officeLicense}</small></td>
+                <td>${item.bizSoft}<br><small style="font-weight:bold;">${item.bizLicense}</small></td>
+                <td>${item.specs}</td>
                 <td style="text-align:center; vertical-align:middle;">
                     <div style="display:inline-flex; gap:6px; align-items:center; justify-content:center;">
-                        <button class="btn btn-blue" style="padding:5px 8px; font-size:12px;" onclick="suaKhaoSat(${idx})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn btn-red" style="padding:5px 8px; font-size:12px;" onclick="xoaKhaoSat(${idx})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
+                        <button class="btn btn-blue" style="padding:4px 8px; font-size:12px;" onclick="suaKhaoSat(${idx})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn btn-red" style="padding:4px 8px; font-size:12px;" onclick="xoaKhaoSat(${idx})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </td>
             </tr>`;
         });
-
-        document.getElementById('statSurveyTotal').innerText = dsKhaoSatChuyenSau.length + " Thiết bị";
-        document.getElementById('statSurveyUnlicensed').innerText = countUnlicensed + " Thiết bị cần bổ sung bản quyền";
-    }
-
-    function xuatExcelBaoCaoKhaoSat() {
-        let dataToExport = dsKhaoSatChuyenSau.map((i, index) => ({
-            "STT": index + 1, "Mã Khảo Sát": i.code, "Người Sử Dụng": i.user, "Bộ Phận / Phòng Ban": i.dept, "Loại Thiết Bị": i.device, "Hệ Điều Hành (OS)": i.os, "Bản Quyền OS": i.osLicense, "Microsoft Office": i.office, "Bản Quyền Office": i.officeLicense, "Phần Mềm Nghiệp Vụ": i.bizSoft, "Bản Quyền NV": i.bizLicense, "Cấu Hình Phần Cứng": i.specs
-        }));
-        let ws = XLSX.utils.json_to_sheet(dataToExport);
-        let wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "BaoCaoKhaoSatBanQuyen");
-        XLSX.writeFile(wb, "Bao_Cao_Khao_Sat_Ha_Tang_Va_Ban_Quyen.xlsx");
+        document.getElementById('statSurveyTotal').innerText = dsKhaoSatChuyenSau.length;
+        document.getElementById('statSurveyUnlicensed').innerText = unlic;
     }
 
     function moModalDangKyNghiPhep() {
         let sel = document.getElementById('popupLeaveNhanSu');
-        if(!sel) return; sel.innerHTML = '';
-        coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.forEach(i => { sel.innerHTML += `<option value="${i.hoTen}">${i.hoTen}</option>`; });
-        document.getElementById('popupLeaveTuNgay').value = new Date().toISOString().split('T')[0];
-        document.getElementById('popupLeaveDenNgay').value = new Date().toISOString().split('T')[0];
+        if (sel) {
+            sel.innerHTML = '';
+            coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.forEach(item => {
+                sel.innerHTML += `<option value="${item.hoTen}">${item.hoTen}</option>`;
+            });
+        }
         document.getElementById('dangKyNghiPhepModal').classList.remove('hidden');
     }
-    function dongModalDangKyNghiPhep() { document.getElementById('dangKyNghiPhepModal').classList.add('hidden'); }
+
+    function dongModalDangKyNghiPhep() {
+        document.getElementById('dangKyNghiPhepModal').classList.add('hidden');
+    }
+
     function tinhSoNgayPopup() {
-        let tuNgay = new Date(document.getElementById('popupLeaveTuNgay').value);
-        let denNgay = new Date(document.getElementById('popupLeaveDenNgay').value);
-        if (!isNaN(tuNgay) && !isNaN(denNgay) && denNgay >= tuNgay) {
-            let diffDays = Math.ceil(Math.abs(denNgay - tuNgay) / (1000 * 60 * 60 * 24)) + 1;
+        let d1 = new Date(document.getElementById('popupLeaveTuNgay').value);
+        let d2 = new Date(document.getElementById('popupLeaveDenNgay').value);
+        if (d1 && d2 && d2 >= d1) {
+            let diffDays = Math.round((d2 - d1) / (1000 * 60 * 60 * 24)) + 1;
             document.getElementById('popupLeaveSoNgay').value = diffDays.toFixed(1) + " Ngày";
         }
     }
+
     function luuVaTruPhepTuPopup() {
-        let hoTen = document.getElementById('popupLeaveNhanSu').value;
-        let soNgayNghi = parseFloat(document.getElementById('popupLeaveSoNgay').value) || 1;
-        let lyDo = document.getElementById('popupLeaveType').value;
-        let nguoiBanGiao = document.getElementById('popupLeaveNguoiBanGiao').value;
-        let nv = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.find(i => i.hoTen === hoTen);
-        if (nv) { nv.nc_p = (nv.nc_p || 0) + soNgayNghi; }
-        renderLeaveTable();
-        capNhat();
-        dongModalDangKyNghiPhep();
-        alert(`✅ Đã ghi nhận đơn nghỉ (${lyDo}) ${soNgayNghi} ngày cho ${hoTen}, bàn giao cho [${nguoiBanGiao || 'Không có'}] và cập nhật an toàn!`);
+        let name = document.getElementById('popupLeaveNhanSu').value;
+        let days = parseFloat(document.getElementById('popupLeaveSoNgay').value) || 1.0;
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
+        let nv = ds.find(i => i.hoTen === name);
+        if (nv) {
+            nv.nc_p = (nv.nc_p || 0) + days;
+            capNhat();
+            dongModalDangKyNghiPhep();
+            alert(`✅ Đã ghi nhận nghỉ phép (${days} ngày) và bàn giao cho ${name}!`);
+        }
     }
 
     function taiAnhPhieuLuongZalo() {
         html2canvas(document.getElementById("payslip-capture"), { scale: 2 }).then(canvas => {
             let link = document.createElement('a');
-            link.download = `Phieu_Luong_${currentThangKey}_${currentNamKey}.png`;
+            link.download = `Phieu_Luong_${document.getElementById("slipName").innerText}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
         });
     }
 
-    // XUẤT BẢNG LƯƠNG CƠ BẢN SANG EXCEL
-    function xuatExcelCB() {
-        let nhansuData = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
-        let exportData = nhansuData.map((item, index) => ({
-            "STT": index + 1,
-            "Họ và Tên": item.hoTen,
-            "HSL CB": item.hsl_cb,
-            "PC CB": item.pc_cb || 0,
-            "Lương HĐLĐ": item.luongHDLD,
-            "Lương CB Tháng": item.luongCBThang,
-            "NC TG": item.nc_tg,
-            "NC Phép": item.nc_p || 0,
-            "NC Lễ": item.nc_l || 0,
-            "Hệ Số Ki": item.k_ht || 1.0,
-            "Lương CB Theo Thời Gian": item.luongCBTG,
-            "Lương CB Lễ/Phép": item.luongCBLP,
-            "Tổng Lương CB": item.tongLCB,
-            "Khấu Trừ BHTN (1%)": item.bhtn,
-            "Khấu Trừ BHXH (9.5%)": item.bhxh,
-            "THỰC LĨNH LƯƠNG CƠ BẢN": item.thucLinhLCB
-        }));
+    function xuatExcelCongChiTiet() {
+        let ws = XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu);
+        let wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "BangChamCong");
+        XLSX.writeFile(wb, `Bang_Cham_Cong_${currentThangKey}_${currentNamKey}.xlsx`);
+    }
 
-        let ws = XLSX.utils.json_to_sheet(exportData);
+    function xuatExcelCB() {
+        let ws = XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu);
         let wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "LuongCoBan");
         XLSX.writeFile(wb, `Bang_Luong_Co_Ban_${currentThangKey}_${currentNamKey}.xlsx`);
     }
 
-    // XUẤT BẢNG LƯƠNG CÔNG VIỆC SANG EXCEL
     function xuatExcelCV() {
-        let nhansuData = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
-        let exportData = nhansuData.map((item, index) => ({
-            "STT": index + 1,
-            "Họ và Tên": item.hoTen,
-            "HSL CV": item.hsl_cv,
-            "PC CV": item.pc_cv || 0,
-            "Lương CV Gốc": item.luongCVGoc,
-            "NC TG": item.nc_tg,
-            "NC Phép": item.nc_p || 0,
-            "NC Lễ": item.nc_l || 0,
-            "Hệ Số K": item.k_ht || 1.0,
-            "Lương CV Thực Tế": item.luongCVTT,
-            "Tổng LCB + LCV": item.tongCbCv || (item.tongLCB + item.luongCVTT),
-            "Tạm Ứng Giữa Tháng": item.tam_ung || 0,
-            "Thực Lĩnh Lương CV": item.thucLinhCV,
-            "TỔNG THỰC LĨNH NET": item.thucLinhCuoiCung
-        }));
-
-        let ws = XLSX.utils.json_to_sheet(exportData);
+        let ws = XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu);
         let wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "LuongCongViec");
         XLSX.writeFile(wb, `Bang_Luong_Cong_Viec_${currentThangKey}_${currentNamKey}.xlsx`);
     }
 
-    // XUẤT BẢNG CHẤM CÔNG CHI TIẾT SANG EXCEL
-    function xuatExcelCongChiTiet() {
-        let cfg = coSoDuLieuNamThang[currentNamKey][currentThangKey].config;
-        let nhansuData = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
-        let exportData = nhansuData.map((item, index) => ({
-            "STT": index + 1,
-            "Họ và Tên": item.hoTen,
-            "Ngày Công Chế Độ": cfg.ncd,
-            "Ngày Công Thực Tế": item.nc_tg,
-            "Nghỉ Phép (P)": item.nc_p || 0,
-            "Nghỉ Lễ (L)": item.nc_l || 0,
-            "Hệ Số Hoàn Thành (K)": item.k_ht || 1.0,
-            "Ghi Chú": "Đã chốt công"
-        }));
+    let pie1Chart = null, bar1Chart = null, pieTaskChart = null, barLeaveChart = null, pieTaskTabChart = null, barTaskTabChart = null, leaveBarTabChart = null, leavePieTabChart = null, monthlySalaryBarChart = null;
 
-        let ws = XLSX.utils.json_to_sheet(exportData);
-        let wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "ChamCongChiTiet");
-        XLSX.writeFile(wb, `Bang_Cham_Cong_${currentThangKey}_${currentNamKey}.xlsx`);
-    }
+    function veTatCaBieuDoDashboard() {
+        let yearNet = layTongLuongNetCaNam();
+        let yearVpp = layTatCaDanhSachVPPTheoNam().reduce((s, i) => s + (i.total || 0), 0);
+        let yearTel = layTatCaDanhSachTelecomTheoNam().reduce((s, i) => s + (i.tong || 0), 0);
 
-    // HÀM LƯU TOÀN BỘ DỮ LIỆU VÀO LOCALSTORAGE
-    function luuTruVaoLocalStorage() {
-        try {
-            localStorage.setItem('bapaco_db_data', JSON.stringify(coSoDuLieuNamThang));
-            localStorage.setItem('bapaco_vpp_map_data', JSON.stringify(dsThanhToanVanPhongProByMonth));
-            localStorage.setItem('bapaco_telecom_map_data', JSON.stringify(dsThanhToanTelecombyMonth));
-            localStorage.setItem('bapaco_ink_data', JSON.stringify(dsKhoMucIn));
-            localStorage.setItem('bapaco_delivery_data', JSON.stringify(dsPhieuGiaoNhan));
-            localStorage.setItem('bapaco_survey_data', JSON.stringify(dsKhaoSatChuyenSau));
-            localStorage.setItem('bapaco_task_data', JSON.stringify(danhSachCongViec));
-            localStorage.setItem('bapaco_accounts_data', JSON.stringify(danhSachTaiKhoanHeThong));
-        } catch (e) {
-            console.error("Lỗi khi lưu dữ liệu vào LocalStorage:", e);
+        if (pie1Chart) pie1Chart.destroy();
+        let ctxP1 = document.getElementById('salaryPieChart');
+        if (ctxP1) {
+            pie1Chart = new Chart(ctxP1, {
+                type: 'pie',
+                data: {
+                    labels: ['Quỹ Lương NET', 'Thanh Toán VP', 'Cước Viễn Thông'],
+                    datasets: [{ data: [yearNet, yearVpp, yearTel], backgroundColor: ['#16a34a', '#d97706', '#0284c7'] }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { datalabels: { formatter: (v, ctx) => { let sum = ctx.dataset.data.reduce((a,b)=>a+b,0); return sum ? ((v/sum)*100).toFixed(1)+'%' : '0%'; }, color: '#fff', font: { weight: 'bold' } } } }
+            });
+        }
+
+        if (bar1Chart) bar1Chart.destroy();
+        let ctxB1 = document.getElementById('overviewBarChart');
+        if (ctxB1) {
+            bar1Chart = new Chart(ctxB1, {
+                type: 'bar',
+                data: {
+                    labels: ['Quỹ Lương NET', 'Thanh Toán VP', 'Cước Viễn Thông'],
+                    datasets: [{ label: 'Giá Trị Chi Phí (VNĐ)', data: [yearNet, yearVpp, yearTel], backgroundColor: ['#16a34a', '#d97706', '#0284c7'] }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        let done = danhSachCongViec.filter(t=>t.status==='Hoàn thành').length;
+        let doing = danhSachCongViec.filter(t=>t.status==='Đang làm').length;
+        let todo = danhSachCongViec.filter(t=>t.status==='Chưa làm').length;
+
+        if (pieTaskChart) pieTaskChart.destroy();
+        let ctxPT = document.getElementById('overviewTaskPieChart');
+        if (ctxPT) {
+            pieTaskChart = new Chart(ctxPT, {
+                type: 'pie',
+                data: {
+                    labels: ['Hoàn Thành', 'Đang Làm', 'Chưa Làm'],
+                    datasets: [{ data: [done, doing, todo], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
+        let names = ds.map(i => i.hoTen);
+        let leaves = ds.map(i => layTongLuyKePhepDaNghi(i.hoTen).totalP);
+
+        if (barLeaveChart) barLeaveChart.destroy();
+        let ctxBL = document.getElementById('overviewLeaveBarChart');
+        if (ctxBL) {
+            barLeaveChart = new Chart(ctxBL, {
+                type: 'bar',
+                data: {
+                    labels: names,
+                    datasets: [{ label: 'Số Ngày Phép Đã Dùng', data: leaves, backgroundColor: '#8b5cf6' }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        if (pieTaskTabChart) pieTaskTabChart.destroy();
+        let ctxPTT = document.getElementById('taskPieChart');
+        if (ctxPTT) {
+            pieTaskTabChart = new Chart(ctxPTT, {
+                type: 'pie',
+                data: { labels: ['Hoàn Thành', 'Đang Làm', 'Chưa Làm'], datasets: [{ data: [done, doing, todo], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        if (barTaskTabChart) barTaskTabChart.destroy();
+        let ctxBTT = document.getElementById('taskBarChart');
+        if (ctxBTT) {
+            barTaskTabChart = new Chart(ctxBTT, {
+                type: 'bar',
+                data: { labels: ['Hoàn Thành', 'Đang Làm', 'Chưa Làm'], datasets: [{ label: 'Số Công Việc', data: [done, doing, todo], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        if (leaveBarTabChart) leaveBarTabChart.destroy();
+        let ctxLBT = document.getElementById('leaveBarChart');
+        if (ctxLBT) {
+            leaveBarTabChart = new Chart(ctxLBT, {
+                type: 'bar',
+                data: { labels: names, datasets: [{ label: 'Phép Đã Dùng', data: leaves, backgroundColor: '#0284c7' }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        if (leavePieTabChart) leavePieTabChart.destroy();
+        let ctxLPT = document.getElementById('leavePieChart');
+        if (ctxLPT) {
+            let totalCap = ds.reduce((s,i)=>(s+(i.phep_cap||12)), 0);
+            let totalDung = leaves.reduce((s,i)=>s+i, 0);
+            leavePieTabChart = new Chart(ctxLPT, {
+                type: 'pie',
+                data: { labels: ['Đã Dùng', 'Còn Lại'], datasets: [{ data: [totalDung, Math.max(0, totalCap - totalDung)], backgroundColor: ['#d97706', '#16a34a'] }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        if (monthlySalaryBarChart) monthlySalaryBarChart.destroy();
+        let ctxMSB = document.getElementById('monthlySalaryBarChart');
+        if (ctxMSB) {
+            let monthsList = ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"];
+            let yearData = coSoDuLieuNamThang[currentNamKey] || {};
+            let monthlyNetData = monthsList.map(mName => {
+                let mData = yearData[mName] ? yearData[mName].nhansu : [];
+                return mData.reduce((sum, i) => sum + (i.thucLinhCuoiCung || 0), 0);
+            });
+
+            monthlySalaryBarChart = new Chart(ctxMSB, {
+                type: 'bar',
+                data: {
+                    labels: monthsList,
+                    datasets: [{
+                        label: 'Quỹ Lương NET Chi Trả (VNĐ)',
+                        data: monthlyNetData,
+                        backgroundColor: '#16a34a',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' },
+                        title: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    return (value / 1000000).toFixed(0) + ' Tr';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
         }
     }
 </script>

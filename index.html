@@ -4670,6 +4670,26 @@
         el.innerHTML = `<div style="overflow:auto"><table style="width:100%;border-collapse:collapse;font-size:11px"><thead><tr><th>STT</th><th>Người dùng</th><th>Thiết bị</th><th>HĐH</th><th>Office</th></tr></thead><tbody>${rows}</tbody></table></div>`;
     }
 
+    // Bảo đảm hàm preview khảo sát luôn nằm trên global scope.
+    // Một số trình duyệt/phiên bản build có thể làm thay đổi scope của function declaration;
+    // gán trực tiếp vào window giúp renderSurveyTable() luôn gọi được.
+    window.capNhatBaoCaoKhaoSatPreview = function capNhatBaoCaoKhaoSatPreviewGlobal() {
+        try {
+            const el = document.getElementById('surveyReportPreview') || document.getElementById('baoCaoKhaoSatPreview');
+            if (!el) return;
+            const data = (typeof layDuLieuBaoCaoKhaoSat === 'function') ? layDuLieuBaoCaoKhaoSat() : (Array.isArray(window.dsKhaoSatChuyenSau) ? window.dsKhaoSatChuyenSau : []);
+            if (!Array.isArray(data) || !data.length) {
+                el.innerHTML = '<span style="color:#64748b;">Chưa có dữ liệu khảo sát.</span>';
+                return;
+            }
+            const esc = (typeof escapeHtml === 'function') ? escapeHtml : (v => String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/\'/g,'&#39;'));
+            const rows = data.slice(0, 8).map(i => `<tr><td>${esc(i.stt ?? '')}</td><td>${esc(i.user ?? '')}</td><td>${esc(i.device ?? '')}</td><td>${esc(i.os ?? '')}</td><td>${esc(i.office ?? '')}</td></tr>`).join('');
+            el.innerHTML = `<div style="overflow:auto"><table style="width:100%;border-collapse:collapse;font-size:11px"><thead><tr><th>STT</th><th>Người dùng</th><th>Thiết bị</th><th>HĐH</th><th>Office</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+        } catch (err) {
+            console.warn('capNhatBaoCaoKhaoSatPreview:', err);
+        }
+    };
+
     function renderSurveyTable() {
         let tbody = document.getElementById('surveyTableBody');
         if(!tbody) return; tbody.innerHTML = '';
@@ -4695,7 +4715,9 @@
         });
         document.getElementById('statSurveyTotal').innerText = dsKhaoSatChuyenSau.length;
         document.getElementById('statSurveyUnlicensed').innerText = unlic;
-        capNhatBaoCaoKhaoSatPreview();
+        if (typeof window.capNhatBaoCaoKhaoSatPreview === 'function') {
+            window.capNhatBaoCaoKhaoSatPreview();
+        }
     }
 
     function moModalDangKyNghiPhep() {

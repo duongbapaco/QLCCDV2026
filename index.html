@@ -6,7 +6,7 @@
     <title>Hệ Thống Quản Lý VINAPACO - Annual Net Salary & Expense Comparison Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -24,6 +24,20 @@
         body { background-color: var(--bg-body); color: var(--text-main); padding: 16px; }
         .container { max-width: 1720px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
         .hidden { display: none !important; }
+        .enterprise-report { background:#fff; border:1px solid var(--border-color); border-radius:12px; padding:18px; box-shadow:0 4px 14px rgba(15,23,42,.05); }
+        .enterprise-report .report-title { text-align:center; font-weight:900; text-transform:uppercase; font-size:17px; letter-spacing:.2px; }
+        .enterprise-report .report-subtitle { text-align:center; color:var(--text-muted); font-size:12px; margin-top:5px; }
+        .report-meta-grid { display:grid; grid-template-columns:repeat(4,minmax(180px,1fr)); gap:12px; margin-top:16px; }
+        .report-meta-grid .form-group.full { grid-column:1/-1; }
+        .report-summary-grid { display:grid; grid-template-columns:repeat(4,minmax(150px,1fr)); gap:10px; margin:14px 0; }
+        .report-stat { border:1px solid var(--border-color); border-radius:10px; padding:12px; background:#f8fafc; }
+        .report-stat b { display:block; font-size:18px; margin-top:4px; }
+        .planning-note { background:#fffbeb; border:1px solid #fbbf24; color:#78350f; padding:11px 13px; border-radius:9px; font-size:12px; line-height:1.55; margin-bottom:14px; }
+        .signature-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; text-align:center; margin-top:26px; }
+        .signature-grid .space { height:65px; }
+        @media (max-width:1000px){ .report-meta-grid{grid-template-columns:repeat(2,1fr)} .report-summary-grid{grid-template-columns:repeat(2,1fr)} }
+        @media (max-width:600px){ .report-meta-grid{grid-template-columns:1fr} .report-summary-grid{grid-template-columns:1fr} .signature-grid{grid-template-columns:1fr} }
+        @media print { body{background:#fff;padding:0}.enterprise-report{box-shadow:none;border:none}.no-print{display:none!important} }
 
         .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.85); display: flex; justify-content: center; align-items: center; z-index: 999999; backdrop-filter: blur(8px); }
         .login-card { background: #ffffff; width: 100%; max-width: 440px; border-radius: 16px; padding: 32px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); border: 1px solid var(--border-color); }
@@ -45,11 +59,37 @@
         .btn-purple { background-color: #8b5cf6; color: white; }
         .btn-purple:hover { background-color: #7c3aed; }
 
-        .config-bar { background: white; padding: 16px 20px; border-radius: 10px; border: 1px solid var(--border-color); display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; align-items: center; }
-        .config-item { display: flex; flex-direction: column; gap: 6px; }
-        .config-item label { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
-        .config-item input, .config-item select { padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); font-weight: 700; font-size: 14px; color: #0f172a; outline: none; background: #fff; width: 100%; }
+        .config-bar {
+            background: white;
+            padding: 16px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            display: grid;
+            /* 7 nhóm hiển thị, trong đó đường dẫn Drive chiếm 2 cột để tất cả nằm cân đối trên cùng một hàng */
+            grid-template-columns: minmax(150px, 1fr) minmax(170px, 1fr) minmax(300px, 2fr) minmax(150px, 1fr) minmax(170px, 1fr) minmax(170px, 1fr) minmax(170px, 1fr);
+            gap: 14px;
+            align-items: stretch;
+        }
+        .config-item { display: flex; flex-direction: column; gap: 6px; min-width: 0; justify-content: flex-start; }
+        .config-item label { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; line-height: 1.25; min-height: 30px; display: flex; align-items: flex-start; }
+        .config-item input, .config-item select { box-sizing: border-box; height: 40px; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); font-weight: 700; font-size: 14px; color: #0f172a; outline: none; background: #fff; width: 100%; min-width: 0; }
         .config-item.drive-path-box { grid-column: span 2; }
+        .config-item.drive-path-box > div { display: flex; gap: 8px; height: 40px; min-width: 0; }
+        .config-item.drive-path-box > div input { flex: 1 1 auto !important; min-width: 0; height: 40px; }
+        .config-item.drive-path-box > div .btn { flex: 0 0 auto; height: 40px; padding: 6px 12px !important; white-space: nowrap; }
+
+        @media (max-width: 1350px) {
+            .config-bar { grid-template-columns: repeat(4, minmax(170px, 1fr)); }
+            .config-item.drive-path-box { grid-column: span 2; }
+        }
+        @media (max-width: 900px) {
+            .config-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .config-item.drive-path-box { grid-column: span 2; }
+        }
+        @media (max-width: 560px) {
+            .config-bar { grid-template-columns: 1fr; }
+            .config-item.drive-path-box { grid-column: span 1; }
+        }
 
         .form-card { background: #f8fafc; border: 2px dashed var(--primary); padding: 16px; border-radius: 10px; margin-bottom: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; align-items: flex-end; }
         .form-group { display: flex; flex-direction: column; gap: 6px; }
@@ -325,6 +365,7 @@
         <button class="tab-btn-nav" onclick="switchTab('deliverySlipTab', this)"><i class="fa-solid fa-file-contract"></i> Giao Nhận</button>
         <button class="tab-btn-nav" onclick="switchTab('telecomPaymentTab', this)"><i class="fa-solid fa-wifi"></i> Cước Viễn Thông</button>
         <button class="tab-btn-nav" onclick="switchTab('surveyTab', this)"><i class="fa-solid fa-clipboard-check"></i> Khảo Sát</button>
+        <button class="tab-btn-nav" onclick="switchTab('quyHoachTab', this)"><i class="fa-solid fa-sitemap"></i> Chức Danh Quy Hoạch</button>
     </div>
 
     <!-- TAB 0: DASHBOARD TỔNG QUAN -->
@@ -524,7 +565,10 @@
     <div id="salaryCVTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-briefcase"></i> BẢNG LƯƠNG CÔNG VIỆC & QUẢN LÝ PHIẾU LƯƠNG (<span class="thangHienTaiTitle">Tháng 06/2026</span>)</div>
-            <button class="btn btn-green" onclick="xuatExcelCV()"><i class="fa-solid fa-file-excel"></i> Xuất Excel Lương CV</button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
+                <button class="btn btn-green" onclick="xuatExcelBangLuongDoanhNghiep()"><i class="fa-solid fa-file-excel"></i> Xuất Bảng Lương Doanh Nghiệp</button>
+                <button class="btn btn-blue" onclick="xuatExcelCV()"><i class="fa-solid fa-file-excel"></i> Lương CV</button>
+            </div>
         </div>
 
         <div style="background: #f8fafc; border: 2px solid var(--primary); padding: 16px; border-radius: 12px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px;">
@@ -758,12 +802,55 @@
         </div>
     </div>
 
+
+    <!-- TAB DANH MỤC CHỨC DANH QUY HOẠCH -->
+    <div id="quyHoachTab" class="tab-pane table-card">
+        <div class="table-header-bar">
+            <div class="table-title"><i class="fa-solid fa-sitemap"></i> DANH MỤC CHỨC DANH ĐƯỢC QUY HOẠCH CỦA TỔNG CÔNG TY</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn btn-blue" onclick="napKhungChucDanhQuyHoach()"><i class="fa-solid fa-list"></i> Nạp Khung Tham Chiếu</button>
+                <button class="btn btn-green" onclick="xuatExcelDanhMucChucDanhQuyHoach()"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
+            </div>
+        </div>
+        <div class="planning-note"><b>Lưu ý quản trị:</b> đây là biểu mẫu quản lý quy hoạch nội bộ. Danh mục chức danh cụ thể phải được đối chiếu với Điều lệ, cơ cấu tổ chức, quyết định phân cấp/phê duyệt và quy định nhân sự hiện hành của TCT trước khi dùng làm hồ sơ chính thức.</div>
+        <div class="form-card" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr));">
+            <input type="hidden" id="editQuyHoachIndex" value="-1">
+            <div class="form-group"><label>Mã chức danh</label><input id="qhMa" placeholder="QH-001"></div>
+            <div class="form-group"><label>Tên chức danh quy hoạch</label><input id="qhTen" placeholder="Ví dụ: ..."></div>
+            <div class="form-group"><label>Nhóm chức danh</label><select id="qhNhom"><option>Hội đồng quản trị</option><option>Ban điều hành</option><option>Kế toán trưởng</option><option>Quản lý đơn vị thành viên</option><option>Trưởng/Phó ban, phòng</option><option>Chức danh quản lý khác</option></select></div>
+            <div class="form-group"><label>Cấp quản lý</label><select id="qhCap"><option>Cấp Tổng công ty</option><option>Cấp đơn vị thành viên</option><option>Cấp phòng/ban</option><option>Khác</option></select></div>
+            <div class="form-group"><label>Đơn vị / Ban / Phòng</label><input id="qhDonVi" placeholder="Đơn vị áp dụng"></div>
+            <div class="form-group"><label>Giai đoạn quy hoạch</label><input id="qhGiaiDoan" placeholder="2026-2031"></div>
+            <div class="form-group"><label>Nguồn quy hoạch</label><select id="qhNguon"><option>Nguồn tại chỗ</option><option>Nguồn khác</option><option>Kết hợp</option></select></div>
+            <div class="form-group"><label>Số lượng quy hoạch</label><input type="number" min="0" id="qhSoLuong" value="1"></div>
+            <div class="form-group"><label>Trạng thái</label><select id="qhTrangThai"><option>Dự kiến</option><option>Đã rà soát</option><option>Đề nghị phê duyệt</option><option>Đã phê duyệt</option></select></div>
+            <div class="form-group"><label>Trình độ / tiêu chuẩn chính</label><input id="qhTieuChuan" placeholder="Trình độ, năng lực, kinh nghiệm..."></div>
+            <div class="form-group"><label>Ghi chú</label><input id="qhGhiChu" placeholder="Ghi chú quản trị"></div>
+            <div class="form-group" style="display:flex;gap:8px;align-items:end;">
+                <button class="btn btn-purple" id="btnSaveQuyHoach" onclick="luuHoacCapNhatChucDanhQuyHoach()"><i class="fas fa-plus-circle"></i> Thêm chức danh</button>
+                <button class="btn btn-red hidden" id="btnCancelQuyHoach" onclick="huySuaChucDanhQuyHoach()"><i class="fas fa-xmark"></i> Hủy</button>
+            </div>
+        </div>
+        <div style="overflow-x:auto;margin-top:16px;">
+            <table><thead><tr><th>Mã</th><th>Chức danh</th><th>Nhóm</th><th>Cấp quản lý</th><th>Đơn vị</th><th>Giai đoạn</th><th>Nguồn</th><th>SL</th><th>Trạng thái</th><th>Tiêu chuẩn</th><th>Ghi chú</th><th>Thao tác</th></tr></thead><tbody id="quyHoachTableBody"></tbody></table>
+        </div>
+    </div>
+
     <!-- TAB KHẢO SÁT CHUYÊN SÂU -->
     <div id="surveyTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-clipboard-check"></i> KHẢO SÁT THIẾT BỊ, BẢN QUYỀN OS, OFFICE & PHẦN MỀM NGHIỆP VỤ</div>
             <div style="display: flex; gap: 10px;">
                 <button class="btn btn-green" onclick="xuatExcelBaoCaoKhaoSat()"><i class="fa-solid fa-file-excel"></i> Xuất Báo Cáo Gửi Lãnh Đạo</button>
+            </div>
+        </div>
+
+        <div class="enterprise-report" style="margin-bottom:16px; padding:12px 14px;">
+            <div class="report-title" style="margin-bottom:4px;">BÁO CÁO KIỂM KÊ TRANG THIẾT BỊ CNTT &amp; TÀI SẢN</div>
+            <div class="report-subtitle" style="margin-bottom:10px;">Xuất báo cáo đúng cấu trúc mẫu tham chiếu: STT – Người sử dụng – Phòng ban – Loại thiết bị – SL – Cấu hình – HĐH &amp; Bản quyền – Office</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn btn-green" onclick="xuatExcelBaoCaoKhaoSat()"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
+                <button class="btn btn-blue" onclick="inBaoCaoKhaoSat()"><i class="fa-solid fa-print"></i> In / Lưu PDF</button>
             </div>
         </div>
 
@@ -1276,6 +1363,7 @@
     let dsKhoMucIn = JSON.parse(localStorage.getItem('bapaco_ink_data') || '[{"code":"MUC001","name":"Hộp mực Canon 337","printer":"Canon LBP 151dw","action":"Cấp phát sử dụng","qty":1,"receiver":"Phòng Kế toán","price":450000,"total":450000}]');
     let dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('bapaco_delivery_data') || `[]`);
     let dsKhaoSatChuyenSau = JSON.parse(localStorage.getItem('bapaco_survey_data') || '[{"code":"KS-01","user":"Trần Bình Dương","dept":"Văn phòng Tổng công ty","device":"Laptop cá nhân (Doanh nghiệp trang bị)","os":"Windows 11 Pro","osLicense":"✅ Có bản quyền chính hãng","office":"Microsoft 365 (Cloud)","officeLicense":"✅ Bản quyền Tổng công ty","bizSoft":"Cloudoffice (Văn thư)","bizLicense":"✅ Có bản quyền chính hãng","specs":"Core i7, RAM 16GB"}]');
+    let dsDanhMucChucDanhQuyHoach = JSON.parse(localStorage.getItem('bapaco_quyhoach_chucdanh') || '[]');
     let danhSachCongViec = JSON.parse(localStorage.getItem('bapaco_task_data') || `[{"id":1,"name":"Hoàn thiện báo cáo điều hành Tháng 06","assignee":"Trần Bình Dương","dueDate":"2026-06-30","status":"Đang làm"}]`);
     let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('bapaco_accounts_data') || '[{"email":"admin@vinapaco.com.vn","password":"123","fullName":"Trần Bình Dương","role":"Admin","status":"Active","notifyEmail":"duongtb@vinapaco.com.vn"},{"email":"ketoan@vinapaco.com.vn","password":"123","fullName":"Nguyễn Minh Ngọc","role":"Editor","status":"Active","notifyEmail":"nguyenminhngoc@vinapaco.com.vn"}]');
 
@@ -1432,6 +1520,7 @@
             localStorage.setItem('bapaco_ink_data', JSON.stringify(dsKhoMucIn));
             localStorage.setItem('bapaco_delivery_data', JSON.stringify(dsPhieuGiaoNhan));
             localStorage.setItem('bapaco_survey_data', JSON.stringify(dsKhaoSatChuyenSau));
+            localStorage.setItem('bapaco_quyhoach_chucdanh', JSON.stringify(dsDanhMucChucDanhQuyHoach));
             localStorage.setItem('bapaco_task_data', JSON.stringify(danhSachCongViec));
             localStorage.setItem('bapaco_accounts_data', JSON.stringify(danhSachTaiKhoanHeThong));
         } catch (e) {}
@@ -1452,6 +1541,7 @@
                 }
                 if (result.dsKhoMucIn) dsKhoMucIn = result.dsKhoMucIn;
                 if (result.dsKhaoSatChuyenSau) dsKhaoSatChuyenSau = result.dsKhaoSatChuyenSau;
+                    if (result.dsDanhMucChucDanhQuyHoach) dsDanhMucChucDanhQuyHoach = result.dsDanhMucChucDanhQuyHoach;
                 if (result.danhSachCongViec) danhSachCongViec = result.danhSachCongViec;
                 if (result.dsPhieuGiaoNhan) dsPhieuGiaoNhan = result.dsPhieuGiaoNhan;
                 if (result.danhSachTaiKhoanHeThong) danhSachTaiKhoanHeThong = result.danhSachTaiKhoanHeThong;
@@ -1478,7 +1568,8 @@
             dsThanhToanVanPhongProByMonth, 
             dsKhoMucIn, 
             dsThanhToanTelecombyMonth, 
-            dsKhaoSatChuyenSau, 
+            dsKhaoSatChuyenSau,
+            dsDanhMucChucDanhQuyHoach,
             danhSachCongViec, 
             dsPhieuGiaoNhan, 
             danhSachTaiKhoanHeThong,
@@ -1595,6 +1686,8 @@
     window.addEventListener('DOMContentLoaded', async () => {
         let inputUrlSetting = document.getElementById('inputGasUrlSetting');
         if(inputUrlSetting) inputUrlSetting.value = gasWebhookUrl;
+        const reportDateEl = document.getElementById('surveyReportDate');
+        if(reportDateEl && !reportDateEl.value) reportDateEl.value = new Date().toISOString().slice(0,10);
 
         try {
             let savedDb = localStorage.getItem('bapaco_db_data');
@@ -1611,6 +1704,7 @@
         doiThangHoSoLuong();
         await tuDongTaiDuLieuTuDrive();
         renderAccountTable();
+        renderQuyHoachTable();
         khoiTaoTuDongDongBoNgam();
         traCuuThoiTietTheoThanhPho();
     });
@@ -1800,6 +1894,7 @@
         renderDeliveryTable();
         renderTelecomPaymentTable();
         renderSurveyTable();
+        renderQuyHoachTable();
         renderTaskTable();
         renderAccountTable();
         renderMonthlySalaryDashboard();
@@ -2222,6 +2317,19 @@
         }
     }
 
+
+    function renderQuyHoachTable(){
+        const tbody=document.getElementById('quyHoachTableBody'); if(!tbody)return; tbody.innerHTML='';
+        dsDanhMucChucDanhQuyHoach.forEach((i,idx)=>{tbody.innerHTML+=`<tr><td><b>${i.ma||''}</b></td><td><b>${i.ten||''}</b></td><td>${i.nhom||''}</td><td>${i.cap||''}</td><td>${i.donVi||''}</td><td>${i.giaiDoan||''}</td><td>${i.nguon||''}</td><td style="text-align:center">${i.soLuong||0}</td><td><span class="badge-warning">${i.trangThai||''}</span></td><td>${i.tieuChuan||''}</td><td>${i.ghiChu||''}</td><td style="text-align:center"><button class="btn btn-yellow" style="padding:4px 7px" onclick="suaChucDanhQuyHoach(${idx})"><i class="fa-solid fa-pen"></i></button> <button class="btn btn-red" style="padding:4px 7px" onclick="xoaChucDanhQuyHoach(${idx})"><i class="fa-solid fa-trash"></i></button></td></tr>`;});
+    }
+    function docFormQuyHoach(){return {ma:document.getElementById('qhMa').value.trim(),ten:document.getElementById('qhTen').value.trim(),nhom:document.getElementById('qhNhom').value,cap:document.getElementById('qhCap').value,donVi:document.getElementById('qhDonVi').value.trim(),giaiDoan:document.getElementById('qhGiaiDoan').value.trim(),nguon:document.getElementById('qhNguon').value,soLuong:Number(document.getElementById('qhSoLuong').value||0),trangThai:document.getElementById('qhTrangThai').value,tieuChuan:document.getElementById('qhTieuChuan').value.trim(),ghiChu:document.getElementById('qhGhiChu').value.trim()};}
+    function luuHoacCapNhatChucDanhQuyHoach(){const item=docFormQuyHoach(); if(!item.ten){alert('Vui lòng nhập tên chức danh quy hoạch.');return;} if(!item.ma)item.ma='QH-'+String(dsDanhMucChucDanhQuyHoach.length+1).padStart(3,'0'); const idx=Number(document.getElementById('editQuyHoachIndex').value); if(idx>=0)dsDanhMucChucDanhQuyHoach[idx]=item;else dsDanhMucChucDanhQuyHoach.push(item); luuTruVaoLocalStorage(); renderQuyHoachTable(); capNhat(); huySuaChucDanhQuyHoach();}
+    function suaChucDanhQuyHoach(idx){const i=dsDanhMucChucDanhQuyHoach[idx]; Object.entries({qhMa:i.ma,qhTen:i.ten,qhNhom:i.nhom,qhCap:i.cap,qhDonVi:i.donVi,qhGiaiDoan:i.giaiDoan,qhNguon:i.nguon,qhSoLuong:i.soLuong,qhTrangThai:i.trangThai,qhTieuChuan:i.tieuChuan,qhGhiChu:i.ghiChu}).forEach(([id,v])=>{const el=document.getElementById(id);if(el)el.value=v??'';}); document.getElementById('editQuyHoachIndex').value=idx; document.getElementById('btnSaveQuyHoach').innerHTML='<i class="fas fa-save"></i> Cập nhật chức danh'; document.getElementById('btnCancelQuyHoach').classList.remove('hidden');}
+    function huySuaChucDanhQuyHoach(){document.getElementById('editQuyHoachIndex').value=-1; ['qhMa','qhTen','qhDonVi','qhGiaiDoan','qhTieuChuan','qhGhiChu'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';}); document.getElementById('qhSoLuong').value=1; document.getElementById('btnSaveQuyHoach').innerHTML='<i class="fas fa-plus-circle"></i> Thêm chức danh'; document.getElementById('btnCancelQuyHoach').classList.add('hidden');}
+    function xoaChucDanhQuyHoach(idx){if(confirm('Xóa chức danh khỏi danh mục quy hoạch?')){dsDanhMucChucDanhQuyHoach.splice(idx,1);luuTruVaoLocalStorage();renderQuyHoachTable();capNhat();}}
+    function napKhungChucDanhQuyHoach(){if(dsDanhMucChucDanhQuyHoach.length&& !confirm('Danh mục hiện đã có dữ liệu. Nạp thêm khung tham chiếu?'))return; const base=[['QH-001','Chủ tịch Hội đồng quản trị','Hội đồng quản trị','Cấp Tổng công ty'],['QH-002','Thành viên Hội đồng quản trị','Hội đồng quản trị','Cấp Tổng công ty'],['QH-003','Tổng giám đốc','Ban điều hành','Cấp Tổng công ty'],['QH-004','Phó Tổng giám đốc','Ban điều hành','Cấp Tổng công ty'],['QH-005','Kế toán trưởng','Kế toán trưởng','Cấp Tổng công ty'],['QH-006','Giám đốc đơn vị thành viên','Quản lý đơn vị thành viên','Cấp đơn vị thành viên'],['QH-007','Phó Giám đốc đơn vị thành viên','Quản lý đơn vị thành viên','Cấp đơn vị thành viên'],['QH-008','Trưởng/Phó ban, phòng','Trưởng/Phó ban, phòng','Cấp phòng/ban']]; base.forEach(([ma,ten,nhom,cap])=>{if(!dsDanhMucChucDanhQuyHoach.some(x=>x.ma===ma))dsDanhMucChucDanhQuyHoach.push({ma,ten,nhom,cap,donVi:'',giaiDoan:'',nguon:'Nguồn tại chỗ',soLuong:1,trangThai:'Dự kiến',tieuChuan:'Bổ sung theo tiêu chuẩn chức danh của TCT',ghiChu:'Khung tham chiếu - cần đối chiếu văn bản nội bộ'});});luuTruVaoLocalStorage();renderQuyHoachTable();}
+    function xuatExcelDanhMucChucDanhQuyHoach(){const wb=XLSX.utils.book_new();const rows=[['TỔNG CÔNG TY GIẤY VIỆT NAM - VINAPACO'],['DANH MỤC CHỨC DANH ĐƯỢC QUY HOẠCH'],[],['Mã','Chức danh','Nhóm','Cấp quản lý','Đơn vị','Giai đoạn','Nguồn','Số lượng','Trạng thái','Tiêu chuẩn chính','Ghi chú'],...dsDanhMucChucDanhQuyHoach.map(i=>[i.ma,i.ten,i.nhom,i.cap,i.donVi,i.giaiDoan,i.nguon,i.soLuong,i.trangThai,i.tieuChuan,i.ghiChu]),[],['Lưu ý: Danh mục là biểu mẫu quản trị nội bộ; trước khi ban hành/phê duyệt phải đối chiếu Điều lệ, quyết định tổ chức, phân cấp và quy định nhân sự hiện hành của TCT.']];const ws=XLSX.utils.aoa_to_sheet(rows);ws['!merges']=[{s:{r:0,c:0},e:{r:0,c:10}},{s:{r:1,c:0},e:{r:1,c:10}},{s:{r:rows.length-1,c:0},e:{r:rows.length-1,c:10}}];for(let c=0;c<11;c++){ws[XLSX.utils.encode_cell({r:0,c})].s=excelTitleStyle();ws[XLSX.utils.encode_cell({r:1,c})].s={...excelTitleStyle(),font:{name:'Arial',sz:14,bold:true,color:{rgb:'FFFFFF'}}};ws[XLSX.utils.encode_cell({r:3,c})].s=excelHeaderStyle();}for(let r=4;r<4+dsDanhMucChucDanhQuyHoach.length;r++)for(let c=0;c<11;c++)ws[XLSX.utils.encode_cell({r,c})].s=excelBodyStyle();setExcelColumnWidths(ws,[12,30,26,22,25,14,18,12,18,40,40]);XLSX.utils.book_append_sheet(wb,ws,'Danh Mục Quy Hoạch');wb.Props={Title:'Danh mục chức danh được quy hoạch',Author:'VINAPACO'};XLSX.writeFile(wb,`Danh_Muc_Chuc_Danh_Quy_Hoach_${currentNamKey}.xlsx`);}
+
     function switchTab(tabId, btnEl) {
         document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.tab-btn-nav').forEach(b => b.classList.remove('active'));
@@ -2230,6 +2338,10 @@
         
         if (tabId === 'accountManagerTab') {
             renderAccountTable();
+        } else if (tabId === 'surveyTab') {
+            renderSurveyTable(); capNhatBaoCaoKhaoSatPreview();
+        } else if (tabId === 'quyHoachTab') {
+            renderQuyHoachTable();
         } else {
             setTimeout(() => { veTatCaBieuDoDashboard(); }, 100);
         }
@@ -3102,12 +3214,284 @@
         }
     }
 
-    function xuatExcelBaoCaoKhaoSat() {
-        let ws = XLSX.utils.json_to_sheet(dsKhaoSatChuyenSau);
-        let wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "KhaoSatThietBi");
-        XLSX.writeFile(wb, "Bao_Cao_Khao_Sat_Thiet_Bi.xlsx");
+    function excelCell(v, style) { return { v: v == null ? '' : v, t: typeof v === 'number' ? 'n' : 's', s: style || {} }; }
+    function excelBorder() { return { top:{style:'thin',color:{rgb:'D1D5DB'}}, bottom:{style:'thin',color:{rgb:'D1D5DB'}}, left:{style:'thin',color:{rgb:'D1D5DB'}}, right:{style:'thin',color:{rgb:'D1D5DB'}} }; }
+    function excelTitleStyle() { return { font:{name:'Arial',sz:16,bold:true,color:{rgb:'FFFFFF'}}, fill:{patternType:'solid',fgColor:{rgb:'0369A1'}}, alignment:{horizontal:'center',vertical:'center'} }; }
+    function excelHeaderStyle() { return { font:{name:'Arial',sz:10,bold:true,color:{rgb:'FFFFFF'}}, fill:{patternType:'solid',fgColor:{rgb:'0284C7'}}, alignment:{horizontal:'center',vertical:'center',wrapText:true}, border:excelBorder() }; }
+    function excelBodyStyle(align='left') { return { font:{name:'Arial',sz:10,color:{rgb:'111827'}}, alignment:{horizontal:align,vertical:'center',wrapText:true}, border:excelBorder() }; }
+    function excelTotalStyle() { return { font:{name:'Arial',sz:10,bold:true,color:{rgb:'0F172A'}}, fill:{patternType:'solid',fgColor:{rgb:'E0F2FE'}}, alignment:{horizontal:'right',vertical:'center'}, border:excelBorder() }; }
+    function setExcelColumnWidths(ws, widths) { ws['!cols'] = widths.map(w => ({wch:w})); }
+    function taoSheetBangLuongChuyenNghiep() {
+        const ds = coSoDuLieuNamThang[currentNamKey]?.[currentThangKey]?.nhansu || [];
+        const cfg = coSoDuLieuNamThang[currentNamKey]?.[currentThangKey]?.config || {};
+        const ky = `${currentThangKey}/${currentNamKey}`;
+        const moneyFmt = '#,##0;[Red]-#,##0;-';
+        const decimalFmt = '0.00';
+        const rows = [
+            ['TỔNG CÔNG TY GIẤY VIỆT NAM - VINAPACO'],
+            ['BẢNG THANH TOÁN TIỀN LƯƠNG'],
+            [`Kỳ lương: ${ky}`],
+            [`Ngày công chế độ: ${cfg.ncd || 22}     |     Mức lương cơ bản: ${(cfg.mucLCB||0).toLocaleString('vi-VN')}     |     Mức lương công việc: ${(cfg.mucLCV||0).toLocaleString('vi-VN')}`],
+            ['Đơn vị tính: đồng'],
+            ['STT','Mã NS','Họ và tên','HSL.CB','PC.CB','L.HĐLĐ','L.CB','NC(TG)','Phép','Lễ','Hệ số K','L.TG','L.Lễ/Phép','Tổng LCB','BHXH theo hệ thống','BHTN theo hệ thống','L.CV Gốc','L.CV thực tế','Tạm ứng','Thực lĩnh CV','THỰC LĨNH NET']
+        ];
+        ds.forEach((i,idx)=>rows.push([
+            idx+1,i.maNS||i.ma||'',i.hoTen||'',i.hsl_cb||0,i.pc_cb||0,i.luongHDLD||0,i.luongCBThang||0,
+            i.nc_tg||0,i.nc_p||0,i.nc_l||0,i.k_ht||1,i.luongCBTG||0,i.luongCBLP||0,i.tongLCB||0,
+            i.bhxh||0,i.bhtn||0,i.luongCVGoc||0,i.luongCVTT||0,i.tam_ung||0,i.thucLinhCV||0,i.thucLinhCuoiCung||0
+        ]));
+
+        // Tổng cộng: chỉ cộng các trường tiền/số phù hợp; giữ HSL/Hệ số/Ngày công theo dạng số tổng để thuận tiện đối chiếu.
+        const totalRow = new Array(21).fill('');
+        totalRow[0] = 'TỔNG CỘNG';
+        for (let c=3;c<21;c++) {
+            const map = {
+                3:'hsl_cb',4:'pc_cb',5:'luongHDLD',6:'luongCBThang',7:'nc_tg',8:'nc_p',9:'nc_l',10:'k_ht',
+                11:'luongCBTG',12:'luongCBLP',13:'tongLCB',14:'bhxh',15:'bhtn',16:'luongCVGoc',17:'luongCVTT',18:'tam_ung',19:'thucLinhCV',20:'thucLinhCuoiCung'
+            };
+            totalRow[c] = ds.reduce((sum,i)=>sum + Number(i[map[c]]||0),0);
+        }
+        rows.push(totalRow);
+        const noteRow = rows.length;
+        rows.push(['Ghi chú: Bảng được lập từ dữ liệu chấm công và tính lương trên hệ thống; trước khi ký duyệt, bộ phận có thẩm quyền đối chiếu hồ sơ nhân sự, quy chế tiền lương, các khoản bảo hiểm/khấu trừ và chứng từ liên quan.']);
+        const signRow = rows.length + 1;
+        rows.push([]);
+        rows.push(['PHÒNG NHÂN SỰ','KẾ TOÁN / TÀI CHÍNH','THỦ TRƯỞNG ĐƠN VỊ','NGƯỜI LẬP BIỂU']);
+        rows.push(['','','','']);
+        rows.push(['','','','']);
+        rows.push(['Ký, ghi rõ họ tên','Ký, ghi rõ họ tên','Ký, ghi rõ họ tên','Ký, ghi rõ họ tên']);
+
+        const ws = XLSX.utils.aoa_to_sheet(rows);
+        ws['!merges'] = [
+            {s:{r:0,c:0},e:{r:0,c:20}}, {s:{r:1,c:0},e:{r:1,c:20}},
+            {s:{r:2,c:0},e:{r:2,c:20}}, {s:{r:3,c:0},e:{r:3,c:20}}, {s:{r:4,c:0},e:{r:4,c:20}},
+            {s:{r:noteRow,c:0},e:{r:noteRow,c:20}}
+        ];
+
+        // Phần đầu văn bản: gọn, trang trọng, dùng khung ô rõ ràng.
+        const title = {font:{name:'Arial',sz:15,bold:true,color:{rgb:'FFFFFF'}},fill:{patternType:'solid',fgColor:{rgb:'1F4E78'}},alignment:{horizontal:'center',vertical:'center'}};
+        const subTitle = {font:{name:'Arial',sz:13,bold:true,color:{rgb:'FFFFFF'}},fill:{patternType:'solid',fgColor:{rgb:'1F4E78'}},alignment:{horizontal:'center',vertical:'center'}};
+        const info = {font:{name:'Arial',sz:10,bold:true,color:{rgb:'1F2937'}},fill:{patternType:'solid',fgColor:{rgb:'EAF2F8'}},alignment:{horizontal:'center',vertical:'center',wrapText:true},border:excelBorder()};
+        const header = {font:{name:'Arial',sz:9,bold:true,color:{rgb:'FFFFFF'}},fill:{patternType:'solid',fgColor:{rgb:'2F75B5'}},alignment:{horizontal:'center',vertical:'center',wrapText:true},border:excelBorder()};
+        const bodyBase = {font:{name:'Arial',sz:9,color:{rgb:'111827'}},alignment:{vertical:'center',wrapText:true},border:excelBorder()};
+        const bodyCenter = {...bodyBase,alignment:{horizontal:'center',vertical:'center',wrapText:true}};
+        const bodyRight = {...bodyBase,alignment:{horizontal:'right',vertical:'center',wrapText:true},numFmt:moneyFmt};
+        const bodyDecimal = {...bodyCenter,numFmt:decimalFmt};
+        const totalBase = {font:{name:'Arial',sz:9,bold:true,color:{rgb:'0F172A'}},fill:{patternType:'solid',fgColor:{rgb:'D9EAF7'}},alignment:{vertical:'center',wrapText:true},border:excelBorder()};
+        const totalRight = {...totalBase,alignment:{horizontal:'right',vertical:'center'},numFmt:moneyFmt};
+        const totalCenter = {...totalBase,alignment:{horizontal:'center',vertical:'center'}};
+
+        for(let c=0;c<=20;c++) { ws[XLSX.utils.encode_cell({r:0,c})].s=title; ws[XLSX.utils.encode_cell({r:1,c})].s=subTitle; }
+        ws['A2'].s=info; ws['A3'].s=info; ws['A4'].s={...info,font:{name:'Arial',sz:9,italic:true,color:{rgb:'475569'}}};
+        for(let c=0;c<21;c++) ws[XLSX.utils.encode_cell({r:5,c})].s=header;
+
+        const moneyCols = new Set([5,6,11,12,13,14,15,16,17,18,19,20]);
+        const decimalCols = new Set([3,4,10]);
+        const centerCols = new Set([0,1,7,8,9]);
+        for(let r=6;r<6+ds.length;r++) {
+            for(let c=0;c<21;c++) {
+                let st = centerCols.has(c) ? bodyCenter : bodyBase;
+                if (decimalCols.has(c)) st = bodyDecimal;
+                if (moneyCols.has(c)) st = bodyRight;
+                ws[XLSX.utils.encode_cell({r,c})].s=st;
+            }
+            if ((r-6)%2===1) {
+                for(let c=0;c<21;c++) {
+                    const cell=ws[XLSX.utils.encode_cell({r,c})];
+                    cell.s={...cell.s,fill:{patternType:'solid',fgColor:{rgb:'F7FAFC'}}};
+                }
+            }
+        }
+        const tr=6+ds.length;
+        for(let c=0;c<21;c++) ws[XLSX.utils.encode_cell({r:tr,c})].s = moneyCols.has(c) ? totalRight : (centerCols.has(c)||decimalCols.has(c) ? totalCenter : totalBase);
+        if (ws['A'+(noteRow+1)]) ws['A'+(noteRow+1)].s={font:{name:'Arial',sz:9,italic:true,color:{rgb:'475569'}},alignment:{horizontal:'left',vertical:'center',wrapText:true},border:excelBorder(),fill:{patternType:'solid',fgColor:{rgb:'F8FAFC'}}};
+
+        // Khu vực ký duyệt: 4 cột cân đối, có khung ô rõ ràng và khoảng trống để ký.
+        const signStart=signRow+1;
+        for(let c=0;c<4;c++) {
+            ws[XLSX.utils.encode_cell({r:signStart,c})].s=header;
+            ws[XLSX.utils.encode_cell({r:signStart+1,c})].s={...bodyCenter,fill:{patternType:'solid',fgColor:{rgb:'FFFFFF'}}};
+            ws[XLSX.utils.encode_cell({r:signStart+2,c})].s={...bodyCenter,fill:{patternType:'solid',fgColor:{rgb:'FFFFFF'}}};
+            ws[XLSX.utils.encode_cell({r:signStart+3,c})].s={...bodyCenter,font:{name:'Arial',sz:9,italic:true,color:{rgb:'64748B'}}};
+        }
+
+        ws['!rows'] = [
+            {hpt:26},{hpt:23},{hpt:20},{hpt:22},{hpt:20},{hpt:42}
+        ];
+        for(let r=6;r<6+ds.length;r++) ws['!rows'][r]={hpt:22};
+        ws['!rows'][tr]={hpt:24};
+        ws['!rows'][noteRow]={hpt:34};
+        ws['!rows'][signStart]={hpt:24}; ws['!rows'][signStart+1]={hpt:25}; ws['!rows'][signStart+2]={hpt:25}; ws['!rows'][signStart+3]={hpt:22};
+
+        setExcelColumnWidths(ws,[6,12,25,9,9,14,14,9,8,8,9,14,15,15,18,18,15,16,14,16,18]);
+        ws['!freeze']={xSplit:3,ySplit:6};
+        ws['!autofilter']={ref:`A6:U${5+ds.length}`};
+        ws['!pageSetup']={orientation:'landscape',paperSize:9,fitToWidth:1,fitToHeight:0,scale:80};
+        ws['!margins']={left:0.25,right:0.25,top:0.5,bottom:0.5,header:0.2,footer:0.2};
+        ws['!printOptions']={gridLines:false};
+        ws['!rows'][5].hpt=48;
+        return ws;
     }
+    function hienThongBaoXuatFile(msg, ok=true) {
+        let old=document.getElementById('exportStatusToast');
+        if(old) old.remove();
+        const d=document.createElement('div'); d.id='exportStatusToast';
+        d.style.cssText=`position:fixed;right:24px;bottom:24px;z-index:99999;min-width:320px;max-width:520px;padding:14px 18px;border-radius:10px;box-shadow:0 8px 28px rgba(15,23,42,.22);font-weight:700;font-size:13px;color:${ok?'#166534':'#991b1b'};background:${ok?'#dcfce7':'#fee2e2'};border:1px solid ${ok?'#86efac':'#fca5a5'};`;
+        d.innerHTML=`<i class="fa-solid ${ok?'fa-circle-check':'fa-circle-exclamation'}"></i> ${msg}`; document.body.appendChild(d);
+        setTimeout(()=>d.remove(),4200);
+    }
+    function taiFileExcelFallback(tenFile, htmlContent) {
+        const blob=new Blob([`\ufeff${htmlContent}`],{type:'application/vnd.ms-excel;charset=utf-8'});
+        const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=tenFile.replace(/\.xlsx$/i,'.xls'); document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1500);
+    }
+    function taoHTMLBangLuongFallback() {
+        const ds=coSoDuLieuNamThang[currentNamKey]?.[currentThangKey]?.nhansu||[];
+        const cfg=coSoDuLieuNamThang[currentNamKey]?.[currentThangKey]?.config||{};
+        const cols=['STT','Mã NS','Họ và tên','HSL.CB','PC.CB','L.HĐLĐ','L.CB','NC(TG)','Phép','Lễ','Hệ số K','L.TG','L.Lễ/Phép','Tổng LCB','BHXH','BHTN','L.CV Gốc','L.CV thực tế','Tạm ứng','Thực lĩnh CV','THỰC LĨNH NET'];
+        const money=new Set([5,6,11,12,13,14,15,16,17,18,19,20]);
+        const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        let body=ds.map((i,idx)=>{const a=[idx+1,i.maNS||i.ma||'',i.hoTen||'',i.hsl_cb||0,i.pc_cb||0,i.luongHDLD||0,i.luongCBThang||0,i.nc_tg||0,i.nc_p||0,i.nc_l||0,i.k_ht||1,i.luongCBTG||0,i.luongCBLP||0,i.tongLCB||0,i.bhxh||0,i.bhtn||0,i.luongCVGoc||0,i.luongCVTT||0,i.tam_ung||0,i.thucLinhCV||0,i.thucLinhCuoiCung||0]; return '<tr>'+a.map((v,c)=>`<td class="${money.has(c)?'money':''}">${esc(typeof v==='number'&&money.has(c)?Math.round(v).toLocaleString('vi-VN'):v)}</td>`).join('')+'</tr>';}).join('');
+        return `<html><head><meta charset="utf-8"><style>body{font-family:Arial;font-size:10pt}table{border-collapse:collapse;width:100%}th,td{border:1px solid #808080;padding:5px}th{background:#1f4e78;color:#fff;text-align:center;font-weight:bold}td.money{text-align:right;mso-number-format:"#,##0"}.title{text-align:center;font-weight:bold;font-size:16pt}.sub{text-align:center;font-weight:bold;font-size:13pt}.info{background:#eaf2f8;font-weight:bold}.total{background:#d9eaf7;font-weight:bold}</style></head><body><div class="title">TỔNG CÔNG TY GIẤY VIỆT NAM - VINAPACO</div><div class="sub">BẢNG THANH TOÁN TIỀN LƯƠNG</div><p style="text-align:center">Kỳ lương: ${esc(currentThangKey)}/${esc(currentNamKey)} | Ngày công chế độ: ${cfg.ncd||22} | Đơn vị tính: đồng</p><table><tr>${cols.map(c=>`<th>${esc(c)}</th>`).join('')}</tr>${body}</table><br><table><tr class="total"><td colspan="21">BẢNG LƯƠNG XUẤT THEO CHẾ ĐỘ TƯƠNG THÍCH EXCEL - DÙNG KHI MÁY KHÔNG TẢI ĐƯỢC THƯ VIỆN XLSX</td></tr></table></body></html>`;
+    }
+    function xuatExcelBangLuongDoanhNghiep() {
+        const btns=[...document.querySelectorAll('[onclick*="xuatExcelBangLuongDoanhNghiep"]')]; const oldText=btns[0]?.innerHTML;
+        try {
+            btns.forEach(b=>{b.disabled=true;b.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Đang tạo bảng lương...';});
+            const ds=coSoDuLieuNamThang[currentNamKey]?.[currentThangKey]?.nhansu||[];
+            if(!ds.length){hienThongBaoXuatFile(`Không có dữ liệu nhân sự/lương của ${currentThangKey}/${currentNamKey} để xuất.`,false);return;}
+            if(typeof XLSX==='undefined' || !XLSX.utils || !XLSX.writeFile){
+                const ten=`Bang_Luong_Doanh_Nghiep_${currentThangKey.replace(/\s/g,'_')}_${currentNamKey}.xlsx`;
+                taiFileExcelFallback(ten,taoHTMLBangLuongFallback()); hienThongBaoXuatFile('Thư viện XLSX chưa tải được. Hệ thống đã xuất bản Excel tương thích (.xls) để không mất dữ liệu.'); return;
+            }
+            const wb=XLSX.utils.book_new();
+            const ws=taoSheetBangLuongChuyenNghiep(); XLSX.utils.book_append_sheet(wb,ws,'Bảng Lương');
+            const sumNet=ds.reduce((s,i)=>s+Number(i.thucLinhCuoiCung||0),0), sumLCB=ds.reduce((s,i)=>s+Number(i.tongLCB||0),0), sumCV=ds.reduce((s,i)=>s+Number(i.luongCVTT||0),0), sumBH=ds.reduce((s,i)=>s+Number(i.bhxh||0)+Number(i.bhtn||0),0), sumTU=ds.reduce((s,i)=>s+Number(i.tam_ung||0),0);
+            const summary=[['TỔNG CÔNG TY GIẤY VIỆT NAM - VINAPACO'],['TỔNG HỢP KỲ LƯƠNG'],[`Kỳ: ${currentThangKey}/${currentNamKey}`],[],['Chỉ tiêu','Giá trị'],['Số người hưởng lương',ds.length],['Tổng Lương Cơ Bản',sumLCB],['Tổng Lương Công Việc',sumCV],['Tổng BH theo hệ thống',sumBH],['Tổng Tạm ứng',sumTU],['TỔNG THỰC LĨNH NET',sumNet],[],['Ghi chú','Bảng tổng hợp phục vụ kiểm tra, đối chiếu, trình ký và lưu hồ sơ nội bộ.']];
+            const ws2=XLSX.utils.aoa_to_sheet(summary); ws2['!merges']=[{s:{r:0,c:0},e:{r:0,c:1}},{s:{r:1,c:0},e:{r:1,c:1}},{s:{r:2,c:0},e:{r:2,c:1}}];
+            for(let c=0;c<2;c++){ws2[XLSX.utils.encode_cell({r:0,c})].s=excelTitleStyle();ws2[XLSX.utils.encode_cell({r:1,c})].s={...excelTitleStyle(),font:{name:'Arial',sz:13,bold:true,color:{rgb:'FFFFFF'}}};ws2[XLSX.utils.encode_cell({r:4,c})].s=excelHeaderStyle();}
+            for(let r=5;r<11;r++){ws2[XLSX.utils.encode_cell({r,c:0})].s=excelBodyStyle();ws2[XLSX.utils.encode_cell({r,c:1})].s=excelBodyStyle('right');}
+            ws2['A10'].s={...excelTotalStyle(),alignment:{horizontal:'left'}}; ws2['B10'].s={...excelTotalStyle(),font:{name:'Arial',sz:11,bold:true,color:{rgb:'15803D'}},alignment:{horizontal:'right'},numFmt:'#,##0'}; setExcelColumnWidths(ws2,[34,24]); XLSX.utils.book_append_sheet(wb,ws2,'Tổng Hợp');
+            const sign=XLSX.utils.aoa_to_sheet([['PHÒNG NHÂN SỰ','KẾ TOÁN / TÀI CHÍNH','THỦ TRƯỞNG ĐƠN VỊ','NGƯỜI LẬP BIỂU'],['','','',''],['','','',''],['','','',''],['Ký, ghi rõ họ tên','Ký, ghi rõ họ tên','Ký, ghi rõ họ tên','Ký, ghi rõ họ tên']]);
+            for(let r=0;r<5;r++) for(let c=0;c<4;c++) sign[XLSX.utils.encode_cell({r,c})].s=excelBodyStyle('center'); for(let c=0;c<4;c++) sign[XLSX.utils.encode_cell({r:0,c})].s=excelHeaderStyle(); setExcelColumnWidths(sign,[26,26,28,26]); XLSX.utils.book_append_sheet(wb,sign,'Ký Duyệt');
+            wb.Props={Title:`Bảng thanh toán tiền lương ${currentThangKey}/${currentNamKey}`,Subject:'Hồ sơ tiền lương doanh nghiệp',Author:'VINAPACO'};
+            const ten=`Bang_Luong_Doanh_Nghiep_${currentThangKey.replace(/\s/g,'_')}_${currentNamKey}.xlsx`;
+            XLSX.writeFile(wb,ten); hienThongBaoXuatFile(`Đã xuất thành công <b>${ten}</b>. Kiểm tra thư mục Tải xuống của trình duyệt.`);
+        } catch(e){ console.error('XUAT_BANG_LUONG',e); hienThongBaoXuatFile(`Không thể xuất XLSX: ${e.message||e}. Hệ thống chuyển sang bản Excel tương thích để đảm bảo dữ liệu được xuất.`,false); try{taiFileExcelFallback(`Bang_Luong_Doanh_Nghiep_${currentNamKey}.xlsx`,taoHTMLBangLuongFallback());}catch(_){ } }
+        finally{setTimeout(()=>btns.forEach(b=>{b.disabled=false;b.innerHTML=oldText||'<i class="fa-solid fa-file-excel"></i> Xuất Bảng Lương Doanh Nghiệp';}),900);}
+    }
+
+    // BÁO CÁO KHẢO SÁT/ KIỂM KÊ: giữ đúng cấu trúc 2 mẫu tham chiếu
+    // 8 cột: STT - Người sử dụng - Phòng ban - Loại thiết bị - SL - Cấu hình - HĐH & Bản quyền - Office
+    function layDuLieuBaoCaoKhaoSat() {
+        const data = Array.isArray(dsKhaoSatChuyenSau) ? dsKhaoSatChuyenSau : [];
+        return data.map((i, idx) => ({
+            stt: idx + 1,
+            user: i.user || '',
+            dept: i.dept || '',
+            device: i.device || '',
+            qty: 1,
+            specs: i.specs || '',
+            os: [i.os || '', i.osLicense || ''].filter(Boolean).join(' '),
+            office: [i.office || '', i.officeLicense || ''].filter(Boolean).join(' ')
+        }));
+    }
+
+    function xuatExcelBaoCaoKhaoSat() {
+        const data = layDuLieuBaoCaoKhaoSat();
+        if (!data.length) {
+            hienThongBaoXuatFile('Chưa có dữ liệu khảo sát để xuất báo cáo.', false);
+            return;
+        }
+        try {
+            const rows = [
+                ['TỔNG CÔNG TY GIẤY VIỆT NAM'],
+                [`BÁO CÁO KIỂM KÊ TRANG THIẾT BỊ CNTT & TÀI SẢN NĂM ${currentNamKey}`],
+                [],
+                ['STT','Người sử dụng','Phòng ban','Loại thiết bị','SL','Cấu hình','HĐH & Bản quyền','Office'],
+                ...data.map(i => [i.stt,i.user,i.dept,i.device,i.qty,i.specs,i.os,i.office])
+            ];
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(rows);
+            ws['!merges'] = [
+                {s:{r:0,c:0},e:{r:0,c:7}},
+                {s:{r:1,c:0},e:{r:1,c:7}}
+            ];
+            ws['!cols'] = [
+                {wch:6}, {wch:24}, {wch:16}, {wch:28},
+                {wch:6}, {wch:52}, {wch:28}, {wch:32}
+            ];
+            ws['!freeze'] = {xSplit:0,ySplit:4};
+            ws['!autofilter'] = {ref:`A4:H${rows.length}`};
+            const titleStyle = {
+                font:{name:'Times New Roman',sz:14,bold:true,color:{rgb:'000000'}},
+                alignment:{horizontal:'center',vertical:'center',wrapText:true}
+            };
+            const subTitleStyle = {
+                font:{name:'Times New Roman',sz:13,bold:true,color:{rgb:'000000'}},
+                alignment:{horizontal:'center',vertical:'center',wrapText:true}
+            };
+            const headerStyle = {
+                font:{name:'Times New Roman',sz:10,bold:true,color:{rgb:'000000'}},
+                fill:{patternType:'solid',fgColor:{rgb:'CCCCCC'}},
+                alignment:{horizontal:'center',vertical:'center',wrapText:true},
+                border:{top:{style:'thin',color:{rgb:'000000'}},bottom:{style:'thin',color:{rgb:'000000'}},left:{style:'thin',color:{rgb:'000000'}},right:{style:'thin',color:{rgb:'000000'}}}
+            };
+            const bodyStyle = {
+                font:{name:'Times New Roman',sz:10,color:{rgb:'000000'}},
+                alignment:{horizontal:'center',vertical:'center',wrapText:true},
+                border:{top:{style:'thin',color:{rgb:'000000'}},bottom:{style:'thin',color:{rgb:'000000'}},left:{style:'thin',color:{rgb:'000000'}},right:{style:'thin',color:{rgb:'000000'}}}
+            };
+            const leftStyle = {...bodyStyle,alignment:{horizontal:'left',vertical:'center',wrapText:true}};
+            ws['A1'].s=titleStyle; ws['A2'].s=subTitleStyle;
+            for(let c=0;c<8;c++) ws[XLSX.utils.encode_cell({r:3,c})].s=headerStyle;
+            for(let r=4;r<rows.length;r++) {
+                for(let c=0;c<8;c++) ws[XLSX.utils.encode_cell({r,c})].s = (c===1||c===2||c===3||c===5||c===6||c===7) ? leftStyle : bodyStyle;
+            }
+            ws['!rows'] = [{hpt:24},{hpt:22},{hpt:8},{hpt:34}];
+            wb.Props={Title:`Báo cáo kiểm kê trang thiết bị CNTT & tài sản năm ${currentNamKey}`,Subject:'Báo cáo khảo sát thiết bị CNTT',Author:'VINAPACO'};
+            const ten=`Bao_Cao_Kiem_Ke_CNTT_${currentNamKey}.xlsx`;
+            XLSX.utils.book_append_sheet(wb,ws,'Báo cáo kiểm kê');
+            XLSX.writeFile(wb,ten);
+            hienThongBaoXuatFile(`Đã xuất đúng mẫu báo cáo kiểm kê: <b>${ten}</b>.`);
+        } catch(e) {
+            console.error('XUAT_BAO_CAO_KHAO_SAT',e);
+            hienThongBaoXuatFile(`Không thể xuất báo cáo: ${e.message||e}`,false);
+        }
+    }
+
+    function inBaoCaoKhaoSat(){
+        const data = layDuLieuBaoCaoKhaoSat();
+        if (!data.length) {
+            hienThongBaoXuatFile('Chưa có dữ liệu khảo sát để in báo cáo.', false);
+            return;
+        }
+        const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        const rows=data.map(i=>`<tr><td>${i.stt}</td><td>${esc(i.user)}</td><td>${esc(i.dept)}</td><td>${esc(i.device)}</td><td>${i.qty}</td><td>${esc(i.specs)}</td><td>${esc(i.os)}</td><td>${esc(i.office)}</td></tr>`).join('');
+        const w=window.open('','_blank');
+        if(!w){ alert('Trình duyệt đang chặn cửa sổ in. Hãy cho phép popup để in báo cáo.'); return; }
+        w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Báo cáo kiểm kê CNTT ${currentNamKey}</title><style>
+            @page{size:A4 landscape;margin:20mm 15mm 18mm 15mm}
+            body{font-family:"Times New Roman",serif;color:#000;font-size:10pt;margin:0}
+            .title{text-align:center;font-size:14pt;font-weight:bold;margin:0 0 4px}
+            .subtitle{text-align:center;font-size:13pt;font-weight:bold;margin:0 0 14px}
+            table{width:100%;border-collapse:collapse;table-layout:fixed}
+            th,td{border:1px solid #000;padding:4px 5px;vertical-align:middle;line-height:1.25;word-wrap:break-word}
+            th{background:#ccc;text-align:center;font-weight:bold}
+            td{text-align:center}
+            td.left{text-align:center}
+            col.c1{width:4%} col.c2{width:16%} col.c3{width:7%} col.c4{width:11%} col.c5{width:4%} col.c6{width:26%} col.c7{width:12%} col.c8{width:20%}
+            tr{page-break-inside:avoid}
+        </style></head><body>
+            <div class="title">TỔNG CÔNG TY GIẤY VIỆT NAM</div>
+            <div class="subtitle">BÁO CÁO KIỂM KÊ TRANG THIẾT BỊ CNTT &amp; TÀI SẢN NĂM ${esc(currentNamKey)}</div>
+            <table><colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"><col class="c5"><col class="c6"><col class="c7"><col class="c8"></colgroup>
+            <thead><tr><th>STT</th><th>Người sử dụng</th><th>Phòng ban</th><th>Loại thiết bị</th><th>SL</th><th>Cấu hình</th><th>HĐH &amp; Bản quyền</th><th>Office</th></tr></thead>
+            <tbody>${rows}</tbody></table>
+        </body></html>`);
+        w.document.close();
+        setTimeout(()=>{w.focus();w.print();},400);
+    }
+
 
     function renderSurveyTable() {
         let tbody = document.getElementById('surveyTableBody');
@@ -3134,6 +3518,7 @@
         });
         document.getElementById('statSurveyTotal').innerText = dsKhaoSatChuyenSau.length;
         document.getElementById('statSurveyUnlicensed').innerText = unlic;
+        capNhatBaoCaoKhaoSatPreview();
     }
 
     function moModalDangKyNghiPhep() {

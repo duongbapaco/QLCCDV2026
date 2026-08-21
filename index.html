@@ -1073,33 +1073,70 @@
         </div>
     </div>
 
-    <!-- TAB KHO MỰC IN -->
+    <!-- TAB KHO MỰC IN - THIẾT KẾ NHẬP / XUẤT TÁCH RIÊNG -->
     <div id="inkInventoryTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-warehouse"></i> QUẢN LÝ KHO MỰC IN & XUẤT NHẬP TỒN (XNT)</div>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn btn-green" onclick="xuatBaoCaoXNTExcel()"><i class="fa-solid fa-file-excel"></i> Xuất Báo Cáo XNT Excel</button>
+            <div class="table-title"><i class="fa-solid fa-warehouse"></i> QUẢN LÝ KHO MỰC IN</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn btn-blue" onclick="moFormKhoMuc('nhap')"><i class="fa-solid fa-arrow-down"></i> NHẬP KHO</button>
+                <button class="btn btn-purple" onclick="moFormKhoMuc('xuat')"><i class="fa-solid fa-arrow-up"></i> XUẤT KHO</button>
+                <button class="btn btn-green" onclick="xuatBaoCaoXNTExcel()"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
             </div>
         </div>
-        <div style="margin-bottom: 16px; background: #f8fafc; border: 1px solid var(--border-color); padding: 12px; border-radius: 8px;">
-            <div style="font-weight: 800; font-size: 13px; margin-bottom: 8px; color: #0369a1;"><i class="fa-solid fa-chart-line"></i> BẢNG TỔNG HỢP XUẤT - NHẬP - TỒN</div>
-            <table><thead><tr><th>STT</th><th>Mã VT</th><th>Tên Vật Tư</th><th>Tồn Đầu Kỳ</th><th>Tổng Nhập</th><th>Tổng Xuất</th><th>Tồn Cuối Kỳ</th><th>Trạng Thái</th></tr></thead><tbody id="xntTableBody"></tbody></table>
+
+        <div id="inkMinAlertBox" style="display:none;margin:0 0 14px;padding:12px 14px;border-radius:10px;background:#fff7ed;border:1px solid #fdba74;color:#9a3412;font-size:12px;font-weight:800;"></div>
+
+        <div class="kpi-grid" style="margin-bottom:14px;">
+            <div class="kpi-card" style="border-left:5px solid #0284c7;"><div class="kpi-title">MẶT HÀNG TRONG KHO</div><div class="kpi-value" id="inkKpiItems">0</div><div class="kpi-sub">Danh mục mực đang quản lý</div></div>
+            <div class="kpi-card" style="border-left:5px solid #16a34a;"><div class="kpi-title">TỔNG TỒN KHO</div><div class="kpi-value" id="inkKpiStock">0</div><div class="kpi-sub">Tổng số hộp hiện có</div></div>
+            <div class="kpi-card" style="border-left:5px solid #dc2626;"><div class="kpi-title">SẮP ĐẠT / DƯỚI MIN</div><div class="kpi-value" id="inkKpiLow">0</div><div class="kpi-sub">Cần xem xét nhập bổ sung</div></div>
         </div>
-        <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
-            <input type="hidden" id="editInkIndex" value="-1">
-            <div class="form-group"><label>Mã VT</label><input type="text" id="autoInkCode" readonly style="background: #e2e8f0; font-weight: bold;" value="MUC002"></div>
-            <div class="form-group"><label>Tên Mực In</label><input type="text" id="inputInkName" placeholder="VD: Canon 337"></div>
-            <div class="form-group"><label>Máy In</label><input type="text" id="inputInkPrinter" placeholder="VD: Canon 151dw"></div>
-            <div class="form-group"><label>Nghiệp Vụ</label><select id="inputInkAction"><option value="Nhập mới kho">📥 Nhập kho</option><option value="Cấp phát sử dụng">📤 Cấp phát</option></select></div>
-            <div class="form-group"><label>Số Lượng</label><input type="number" id="inputInkQty" value="1" min="1"></div>
-            <div class="form-group"><label>Người Nhận / Kho</label><input type="text" id="inputInkReceiver" placeholder="Nhập người nhận / phòng ban / kho..."></div>
-            <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputInkPrice" placeholder="450.000"></div>
-            <div class="form-group" style="display: flex; gap: 8px;">
-                <button class="btn btn-green" id="btnSaveInk" onclick="luuHoacCapNhatKhoMuc()"><i class="fas fa-warehouse"></i> Ghi Sổ Kho</button>
+
+        <div style="margin-bottom:16px;background:#f8fafc;border:1px solid var(--border-color);padding:12px;border-radius:10px;">
+            <div style="font-weight:900;font-size:13px;margin-bottom:8px;color:#0369a1;"><i class="fa-solid fa-chart-line"></i> TỒN KHO THEO MẶT HÀNG</div>
+            <div style="overflow-x:auto;"><table><thead><tr><th>STT</th><th>Mã VT</th><th>Tên Mực</th><th>Máy In</th><th>ĐVT</th><th>Tồn Đầu</th><th>Nhập</th><th>Xuất</th><th>Tồn Cuối</th><th>Min</th><th>Trạng Thái</th><th>Thao Tác</th></tr></thead><tbody id="xntTableBody"></tbody></table></div>
+        </div>
+
+        <div id="inkTransactionForm" style="background:#fff;border:2px solid #dbeafe;border-radius:12px;padding:14px;margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;">
+                <div id="inkFormTitle" style="font-size:14px;font-weight:950;color:#0369a1;"><i class="fa-solid fa-arrow-down"></i> PHIẾU NHẬP KHO</div>
                 <button class="btn btn-red hidden" id="btnCancelInk" onclick="huySuaKhoMuc()"><i class="fas fa-xmark"></i> Hủy</button>
             </div>
+            <input type="hidden" id="editInkIndex" value="-1">
+            <input type="hidden" id="inkTransactionType" value="nhap">
+            <div class="form-card" style="padding:0;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));border:0;box-shadow:none;">
+                <div class="form-group"><label>Mã VT *</label><select id="inputInkCode" onchange="napThongTinMucKho()"></select></div>
+                <div class="form-group"><label>Tên Mực</label><input type="text" id="inputInkName" readonly style="background:#f1f5f9;"></div>
+                <div class="form-group"><label>Máy In</label><input type="text" id="inputInkPrinter" readonly style="background:#f1f5f9;"></div>
+                <div class="form-group"><label>Số Lượng *</label><input type="number" id="inputInkQty" value="1" min="1"></div>
+                <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputInkPrice" placeholder="450.000"></div>
+                <div class="form-group"><label>Số Phiếu</label><input type="text" id="inputInkSlipNo" placeholder="PNK-2026-001"></div>
+                <div class="form-group"><label>Ngày chứng từ</label><input type="date" id="inputInkDate"></div>
+                <div class="form-group"><label>Nhà cung cấp / Người nhận</label><input type="text" id="inputInkReceiver" placeholder="Nhập nhà cung cấp hoặc phòng ban nhận..."></div>
+                <div class="form-group" style="display:flex;align-items:end;"><button class="btn btn-green" id="btnSaveInk" onclick="luuGiaoDichKhoMuc()"><i class="fas fa-save"></i> Ghi Phiếu</button></div>
+            </div>
         </div>
-        <table><thead><tr><th>Mã VT</th><th>Tên Mực</th><th>Máy In</th><th>Nghiệp Vụ</th><th>SL</th><th>Người Nhận</th><th>Đơn Giá</th><th>Thành Tiền</th><th style="text-align: center;">Thao Tác</th></tr></thead><tbody id="inkInventoryTableBody"></tbody></table>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin:4px 0 8px;">
+            <div style="font-size:13px;font-weight:900;color:#334155;"><i class="fa-solid fa-list"></i> LỊCH SỬ NHẬP / XUẤT</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;"><button class="btn btn-blue" style="padding:5px 9px;" onclick="locLichSuKho('tatca')">Tất cả</button><button class="btn btn-green" style="padding:5px 9px;" onclick="locLichSuKho('nhap')">Nhập kho</button><button class="btn btn-purple" style="padding:5px 9px;" onclick="locLichSuKho('xuat')">Xuất kho</button></div>
+        </div>
+        <div style="overflow-x:auto;"><table><thead><tr><th>Ngày</th><th>Số Phiếu</th><th>Loại</th><th>Mã VT</th><th>Tên Mực</th><th>SL</th><th>Đơn Giá</th><th>Đối Tượng</th><th>Người Lập</th><th>Thao Tác</th></tr></thead><tbody id="inkHistoryTableBody"></tbody></table></div>
+
+        <div style="margin-top:16px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;padding:12px;">
+            <div style="font-weight:900;color:#475569;font-size:12px;margin-bottom:8px;"><i class="fa-solid fa-sliders"></i> DANH MỤC MỰC & ĐỊNH MỨC MIN</div>
+            <div class="form-card" style="padding:0;border:0;box-shadow:none;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">
+                <input type="hidden" id="editInkMasterIndex" value="-1">
+                <div class="form-group"><label>Mã VT *</label><input id="masterInkCode" placeholder="MUC001"></div>
+                <div class="form-group"><label>Tên Mực *</label><input id="masterInkName" placeholder="Canon 337"></div>
+                <div class="form-group"><label>Máy In</label><input id="masterInkPrinter" placeholder="Canon LBP 151dw"></div>
+                <div class="form-group"><label>Đơn Vị Tính</label><input id="masterInkUnit" value="Hộp"></div>
+                <div class="form-group"><label>Tồn Đầu Kỳ</label><input type="number" id="masterInkOpening" min="0" value="0"></div>
+                <div class="form-group"><label>Mức MIN *</label><input type="number" id="masterInkMin" min="0" value="2"></div>
+                <div class="form-group" style="display:flex;align-items:end;gap:7px;"><button class="btn btn-blue" onclick="luuDanhMucMuc()"><i class="fas fa-plus"></i> Lưu mặt hàng</button><button class="btn btn-red hidden" id="btnCancelInkMaster" onclick="huySuaDanhMucMuc()">Hủy</button></div>
+            </div>
+            <div style="overflow-x:auto;margin-top:10px;"><table><thead><tr><th>Mã VT</th><th>Tên Mực</th><th>Máy In</th><th>ĐVT</th><th>Tồn Đầu</th><th>Min</th><th>Thao Tác</th></tr></thead><tbody id="inkMasterTableBody"></tbody></table></div>
+        </div>
     </div>
 
     <!-- TAB GIAO NHẬN -->
@@ -1767,7 +1804,10 @@
     let dsThanhToanVanPhongProByMonth = JSON.parse(localStorage.getItem('bapaco_vpp_map_data') || '{}');
     let dsThanhToanTelecombyMonth = JSON.parse(localStorage.getItem('bapaco_telecom_map_data') || '{}');
 
-    let dsKhoMucIn = JSON.parse(localStorage.getItem('bapaco_ink_data') || '[{"code":"MUC001","name":"Hộp mực Canon 337","printer":"Canon LBP 151dw","action":"Cấp phát sử dụng","qty":1,"receiver":"Phòng Kế toán","price":450000,"total":450000}]');
+    let dsKhoMucIn = JSON.parse(localStorage.getItem('bapaco_ink_data') || '[]');
+    let dsKhoMucDanhMuc = JSON.parse(localStorage.getItem('bapaco_ink_master_data') || '[]');
+    let dsKhoMucGiaoDich = JSON.parse(localStorage.getItem('bapaco_ink_transactions') || '[]');
+    let boLocLichSuKhoMuc = 'tatca';
     let dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('bapaco_delivery_data') || `[]`);
     let dsKhaoSatChuyenSau = JSON.parse(localStorage.getItem('bapaco_survey_data') || '[{"code":"KS-01","user":"Trần Bình Dương","dept":"Văn phòng Tổng công ty","device":"Laptop cá nhân (Doanh nghiệp trang bị)","os":"Windows 11 Pro","osLicense":"✅ Có bản quyền chính hãng","office":"Microsoft 365 (Cloud)","officeLicense":"✅ Bản quyền Tổng công ty","bizSoft":"Cloudoffice (Văn thư)","bizLicense":"✅ Có bản quyền chính hãng","specs":"Core i7, RAM 16GB"}]');
     let dsDanhMucChucDanhQuyHoach = JSON.parse(localStorage.getItem('bapaco_quyhoach_chucdanh') || '[]');
@@ -2167,7 +2207,7 @@
         return {
             schemaVersion: VINAPACO_STORAGE_VERSION, savedAt: new Date().toISOString(),
             coSoDuLieuNamThang, dsThanhToanVanPhongProByMonth, dsThanhToanTelecombyMonth,
-            dsKhoMucIn, dsPhieuGiaoNhan, dsKhaoSatChuyenSau, dsDanhMucChucDanhQuyHoach,
+            dsKhoMucIn, dsKhoMucDanhMuc, dsKhoMucGiaoDich, dsPhieuGiaoNhan, dsKhaoSatChuyenSau, dsDanhMucChucDanhQuyHoach,
             danhSachCongViec, danhSachTaiKhoanHeThong, gasWebhookUrl
         };
     }
@@ -2190,7 +2230,7 @@
         if(snapshot.coSoDuLieuNamThang && typeof snapshot.coSoDuLieuNamThang==='object') coSoDuLieuNamThang=snapshot.coSoDuLieuNamThang;
         if(snapshot.dsThanhToanVanPhongProByMonth) dsThanhToanVanPhongProByMonth=snapshot.dsThanhToanVanPhongProByMonth;
         if(snapshot.dsThanhToanTelecombyMonth) dsThanhToanTelecombyMonth=snapshot.dsThanhToanTelecombyMonth;
-        if(snapshot.dsKhoMucIn) dsKhoMucIn=snapshot.dsKhoMucIn; if(snapshot.dsPhieuGiaoNhan) dsPhieuGiaoNhan=snapshot.dsPhieuGiaoNhan;
+        if(snapshot.dsKhoMucIn) dsKhoMucIn=snapshot.dsKhoMucIn; if(Array.isArray(snapshot.dsKhoMucDanhMuc)) dsKhoMucDanhMuc=snapshot.dsKhoMucDanhMuc; if(Array.isArray(snapshot.dsKhoMucGiaoDich)) dsKhoMucGiaoDich=snapshot.dsKhoMucGiaoDich; if(snapshot.dsPhieuGiaoNhan) dsPhieuGiaoNhan=snapshot.dsPhieuGiaoNhan;
         if(snapshot.dsKhaoSatChuyenSau) dsKhaoSatChuyenSau=snapshot.dsKhaoSatChuyenSau; if(snapshot.dsDanhMucChucDanhQuyHoach) dsDanhMucChucDanhQuyHoach=snapshot.dsDanhMucChucDanhQuyHoach;
         if(snapshot.danhSachCongViec) danhSachCongViec=snapshot.danhSachCongViec; if(snapshot.danhSachTaiKhoanHeThong) danhSachTaiKhoanHeThong=snapshot.danhSachTaiKhoanHeThong;
         if(snapshot.gasWebhookUrl) gasWebhookUrl=snapshot.gasWebhookUrl; return true;
@@ -2232,6 +2272,8 @@
             localStorage.setItem('bapaco_vpp_map_data', JSON.stringify(dsThanhToanVanPhongProByMonth));
             localStorage.setItem('bapaco_telecom_map_data', JSON.stringify(dsThanhToanTelecombyMonth));
             localStorage.setItem('bapaco_ink_data', JSON.stringify(dsKhoMucIn));
+            localStorage.setItem('bapaco_ink_master_data', JSON.stringify(dsKhoMucDanhMuc));
+            localStorage.setItem('bapaco_ink_transactions', JSON.stringify(dsKhoMucGiaoDich));
             localStorage.setItem('bapaco_delivery_data', JSON.stringify(dsPhieuGiaoNhan));
             localStorage.setItem('bapaco_survey_data', JSON.stringify(dsKhaoSatChuyenSau));
             localStorage.setItem('bapaco_quyhoach_chucdanh', JSON.stringify(dsDanhMucChucDanhQuyHoach));
@@ -2282,7 +2324,7 @@
         let payload = { 
             coSoDuLieuNamThang, 
             dsThanhToanVanPhongProByMonth, 
-            dsKhoMucIn, 
+            dsKhoMucIn, dsKhoMucDanhMuc, dsKhoMucGiaoDich, 
             dsThanhToanTelecombyMonth, 
             dsKhaoSatChuyenSau,
             dsDanhMucChucDanhQuyHoach,
@@ -2386,6 +2428,8 @@
                     }
                     if (result.danhSachCongViec) danhSachCongViec = result.danhSachCongViec;
                     if (result.dsKhoMucIn) dsKhoMucIn = result.dsKhoMucIn;
+                    if (Array.isArray(result.dsKhoMucDanhMuc)) dsKhoMucDanhMuc = result.dsKhoMucDanhMuc;
+                    if (Array.isArray(result.dsKhoMucGiaoDich)) dsKhoMucGiaoDich = result.dsKhoMucGiaoDich;
                     if (result.dsKhaoSatChuyenSau) dsKhaoSatChuyenSau = result.dsKhaoSatChuyenSau;
                     if (result.dsPhieuGiaoNhan) dsPhieuGiaoNhan = result.dsPhieuGiaoNhan;
                     if (result.danhSachTaiKhoanHeThong) danhSachTaiKhoanHeThong = result.danhSachTaiKhoanHeThong;
@@ -2419,6 +2463,7 @@
         renderAccountTable();
         capNhatTrangThaiKhoiTaoTaiKhoan(true);
         renderQuyHoachTable();
+        khoiTaoKhoMucMoi();
         khoiTaoTuDongDongBoNgam();
         khoiTaoDonghoVaThoiGianThuc();
         khoiTaoThoiTietTuDong();
@@ -3227,7 +3272,7 @@
         let totalTelecomYear = yearTelecom.reduce((s, i) => s + (i.tong || 0), 0);
 
         let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
-        let totalStockInk = dsKhoMucIn.reduce((sum, i) => i.action.includes('Nhập') ? sum + i.qty : sum - i.qty, 0);
+        let totalStockInk = tinhTongTonKhoMuc();
         let totalTamUng = ds.reduce((sum, i) => sum + (i.tam_ung || 0), 0);
         
         document.getElementById("kpiTotalNet").innerText = totalYearNet.toLocaleString('vi-VN');
@@ -4002,63 +4047,64 @@
         });
     }
 
-    function luuHoacCapNhatKhoMuc() {
-        let name = document.getElementById('inputInkName').value.trim();
-        if (!name) { alert("Nhập tên mực in!"); return; }
-        let qty = parseInt(document.getElementById('inputInkQty').value) || 1;
-        let price = parseVNDMoney(document.getElementById('inputInkPrice').value);
-        let editIdx = parseInt(document.getElementById('editInkIndex').value);
-        let newItem = {
-            code: editIdx >= 0 ? dsKhoMucIn[editIdx].code : "MUC0" + (dsKhoMucIn.length+1),
-            name, printer: document.getElementById('inputInkPrinter').value,
-            action: document.getElementById('inputInkAction').value, qty,
-            receiver: document.getElementById('inputInkReceiver').value, price, total: Math.round(qty * price)
-        };
-
-        if (editIdx >= 0) {
-            dsKhoMucIn[editIdx] = newItem;
-            document.getElementById('editInkIndex').value = -1;
-            document.getElementById('btnSaveInk').innerHTML = `<i class="fas fa-warehouse"></i> Ghi Sổ Kho`;
-            document.getElementById('btnCancelInk').classList.add('hidden');
-        } else {
-            dsKhoMucIn.push(newItem);
+    function khoiTaoKhoMucMoi() {
+        // Chuyển dữ liệu kho cũ sang mô hình mới một lần, không làm mất dữ liệu lịch sử.
+        if ((!Array.isArray(dsKhoMucDanhMuc) || !dsKhoMucDanhMuc.length) && Array.isArray(dsKhoMucIn) && dsKhoMucIn.length) {
+            const byCode = {};
+            dsKhoMucIn.forEach(i => {
+                const code = i.code || ('MUC' + String(Object.keys(byCode).length + 1).padStart(3,'0'));
+                if (!byCode[code]) byCode[code] = {code, name:i.name||'', printer:i.printer||'', unit:'Hộp', opening:0, minQty:Number(i.minQty||2)};
+            });
+            dsKhoMucDanhMuc = Object.values(byCode);
         }
-        document.getElementById('inputInkName').value = '';
-        renderInkInventoryTable();
-        capNhat();
-    }
-
-    function suaKhoMuc(idx) {
-        let item = dsKhoMucIn[idx];
-        document.getElementById('inputInkName').value = item.name;
-        document.getElementById('inputInkPrinter').value = item.printer;
-        document.getElementById('inputInkAction').value = item.action;
-        document.getElementById('inputInkQty').value = item.qty;
-        document.getElementById('inputInkReceiver').value = item.receiver;
-        document.getElementById('inputInkPrice').value = item.price.toLocaleString();
-        document.getElementById('editInkIndex').value = idx;
-        document.getElementById('btnSaveInk').innerHTML = `<i class="fas fa-save"></i> Cập Nhật Kho`;
-        document.getElementById('btnCancelInk').classList.add('hidden');
-    }
-
-    function huySuaKhoMuc() {
-        document.getElementById('editInkIndex').value = -1;
-        document.getElementById('inputInkName').value = '';
-        document.getElementById('inputInkPrinter').value = '';
-        document.getElementById('inputInkQty').value = '1';
-        document.getElementById('inputInkReceiver').value = '';
-        document.getElementById('inputInkPrice').value = '';
-        document.getElementById('btnSaveInk').innerHTML = `<i class="fas fa-warehouse"></i> Ghi Sổ Kho`;
-        document.getElementById('btnCancelInk').classList.add('hidden');
-    }
-
-    function xoaKhoMuc(idx) {
-        if (confirm("Xóa bản ghi kho này?")) {
-            dsKhoMucIn.splice(idx, 1);
-            renderInkInventoryTable();
-            capNhat();
+        if (!Array.isArray(dsKhoMucGiaoDich) || !dsKhoMucGiaoDich.length) {
+            dsKhoMucGiaoDich = (Array.isArray(dsKhoMucIn)?dsKhoMucIn:[]).map((i,n)=>({
+                id:i.id||('OLD-'+Date.now()+'-'+n), date:i.date||new Date().toISOString().slice(0,10), slipNo:i.slipNo||('LEGACY-'+(n+1)), type:(String(i.action||'').includes('Nhập')?'nhap':'xuat'), code:i.code, name:i.name, qty:Number(i.qty||0), price:Number(i.price||0), receiver:i.receiver||'', createdBy:i.createdBy||''
+            }));
         }
+        if (!dsKhoMucDanhMuc.length) dsKhoMucDanhMuc=[{code:'MUC001',name:'Hộp mực Canon 337',printer:'Canon LBP 151dw',unit:'Hộp',opening:0,minQty:2}];
+        dsKhoMucDanhMuc.forEach(i=>{i.minQty=Number(i.minQty||0);i.opening=Number(i.opening||0);i.unit=i.unit||'Hộp';});
+        capNhatDanhSachMaMuc();
+        renderInkWarehouse();
     }
+
+    function capNhatDanhSachMaMuc() {
+        const sel=document.getElementById('inputInkCode'); if(!sel)return;
+        const old=sel.value; sel.innerHTML=dsKhoMucDanhMuc.map(i=>`<option value="${escHtmlKho(i.code)}">${escHtmlKho(i.code)} — ${escHtmlKho(i.name)}</option>`).join('');
+        if(old && dsKhoMucDanhMuc.some(i=>i.code===old)) sel.value=old;
+        napThongTinMucKho();
+    }
+    function escHtmlKho(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+    function timMucKho(code){return dsKhoMucDanhMuc.find(i=>i.code===code);}
+    function tinhTonMuc(code){const m=timMucKho(code);let t=Number(m?.opening||0);dsKhoMucGiaoDich.filter(g=>g.code===code).forEach(g=>t+=(g.type==='nhap'?1:-1)*Number(g.qty||0));return t;}
+    function tinhNhapMuc(code){return dsKhoMucGiaoDich.filter(g=>g.code===code&&g.type==='nhap').reduce((s,g)=>s+Number(g.qty||0),0);}
+    function tinhXuatMuc(code){return dsKhoMucGiaoDich.filter(g=>g.code===code&&g.type==='xuat').reduce((s,g)=>s+Number(g.qty||0),0);}
+    function tinhTongTonKhoMuc(){return dsKhoMucDanhMuc.reduce((s,m)=>s+Math.max(0,tinhTonMuc(m.code)),0);}
+    function moFormKhoMuc(type){document.getElementById('inkTransactionType').value=type;document.getElementById('inkFormTitle').innerHTML=type==='nhap'?'<i class="fa-solid fa-arrow-down"></i> PHIẾU NHẬP KHO':'<i class="fa-solid fa-arrow-up"></i> PHIẾU XUẤT KHO';document.getElementById('btnSaveInk').innerHTML=type==='nhap'?'<i class="fas fa-arrow-down"></i> Ghi Phiếu Nhập':'<i class="fas fa-arrow-up"></i> Ghi Phiếu Xuất';document.getElementById('inkTransactionForm').scrollIntoView({behavior:'smooth',block:'start'});napThongTinMucKho();}
+    function napThongTinMucKho(){const m=timMucKho(document.getElementById('inputInkCode')?.value);if(!m)return;document.getElementById('inputInkName').value=m.name||'';document.getElementById('inputInkPrinter').value=m.printer||'';document.getElementById('inputInkPrice').value='';}
+    function luuGiaoDichKhoMuc(){
+        const type=document.getElementById('inkTransactionType').value==='xuat'?'xuat':'nhap', code=document.getElementById('inputInkCode').value, m=timMucKho(code), qty=Number(document.getElementById('inputInkQty').value||0), price=parseVNDMoney(document.getElementById('inputInkPrice').value), current=tinhTonMuc(code);
+        if(!m||!qty||qty<1){alert('Vui lòng chọn mặt hàng và nhập số lượng hợp lệ.');return;}
+        if(type==='xuat' && qty>current){alert(`Không đủ tồn kho. Tồn hiện tại của ${m.name}: ${current} ${m.unit||'Hộp'}.`);return;}
+        const editIdx=Number(document.getElementById('editInkIndex').value);
+        const g={id:editIdx>=0?dsKhoMucGiaoDich[editIdx].id:('INK-'+Date.now()),date:document.getElementById('inputInkDate').value||new Date().toISOString().slice(0,10),slipNo:document.getElementById('inputInkSlipNo').value.trim()||((type==='nhap'?'PNK-':'PXK-')+Date.now()),type,code,name:m.name,qty,price,receiver:document.getElementById('inputInkReceiver').value.trim(),createdBy:(window.currentUserName||'')};
+        if(editIdx>=0) dsKhoMucGiaoDich[editIdx]=g; else dsKhoMucGiaoDich.unshift(g);
+        dsKhoMucIn=dsKhoMucGiaoDich.map(x=>({...x,action:x.type==='nhap'?'Nhập kho':'Xuất kho',total:Number(x.qty||0)*Number(x.price||0),printer:timMucKho(x.code)?.printer||''}));
+        luuTruVaoLocalStorage();huySuaKhoMuc();renderInkWarehouse();capNhat();
+    }
+    function suaGiaoDichKho(idx){const g=dsKhoMucGiaoDich[idx];if(!g)return;document.getElementById('editInkIndex').value=idx;document.getElementById('inkTransactionType').value=g.type;capNhatDanhSachMaMuc();document.getElementById('inputInkCode').value=g.code;napThongTinMucKho();document.getElementById('inputInkQty').value=g.qty;document.getElementById('inputInkPrice').value=Number(g.price||0).toLocaleString('vi-VN');document.getElementById('inputInkSlipNo').value=g.slipNo||'';document.getElementById('inputInkDate').value=g.date||'';document.getElementById('inputInkReceiver').value=g.receiver||'';moFormKhoMuc(g.type);document.getElementById('btnCancelInk').classList.remove('hidden');}
+    function huySuaKhoMuc(){document.getElementById('editInkIndex').value=-1;document.getElementById('inputInkQty').value=1;document.getElementById('inputInkPrice').value='';document.getElementById('inputInkSlipNo').value='';document.getElementById('inputInkReceiver').value='';document.getElementById('inputInkDate').value=new Date().toISOString().slice(0,10);document.getElementById('btnCancelInk').classList.add('hidden');moFormKhoMuc(document.getElementById('inkTransactionType').value||'nhap');}
+    function xoaGiaoDichKho(idx){if(!confirm('Xóa phiếu nhập/xuất này? Tồn kho sẽ được tính lại.'))return;dsKhoMucGiaoDich.splice(idx,1);dsKhoMucIn=dsKhoMucGiaoDich.map(x=>({...x,action:x.type==='nhap'?'Nhập kho':'Xuất kho',total:Number(x.qty||0)*Number(x.price||0)}));luuTruVaoLocalStorage();renderInkWarehouse();capNhat();}
+    function luuDanhMucMuc(){const code=document.getElementById('masterInkCode').value.trim().toUpperCase(),name=document.getElementById('masterInkName').value.trim();if(!code||!name){alert('Nhập Mã VT và Tên Mực.');return;}const item={code,name,printer:document.getElementById('masterInkPrinter').value.trim(),unit:document.getElementById('masterInkUnit').value.trim()||'Hộp',opening:Number(document.getElementById('masterInkOpening').value||0),minQty:Number(document.getElementById('masterInkMin').value||0)};const idx=Number(document.getElementById('editInkMasterIndex').value);if(idx>=0)dsKhoMucDanhMuc[idx]=item;else{if(dsKhoMucDanhMuc.some(x=>x.code===code)){alert('Mã VT đã tồn tại.');return;}dsKhoMucDanhMuc.push(item);}luuTruVaoLocalStorage();huySuaDanhMucMuc();capNhatDanhSachMaMuc();renderInkWarehouse();capNhat();}
+    function suaDanhMucMuc(idx){const m=dsKhoMucDanhMuc[idx];document.getElementById('editInkMasterIndex').value=idx;document.getElementById('masterInkCode').value=m.code;document.getElementById('masterInkName').value=m.name;document.getElementById('masterInkPrinter').value=m.printer||'';document.getElementById('masterInkUnit').value=m.unit||'Hộp';document.getElementById('masterInkOpening').value=m.opening||0;document.getElementById('masterInkMin').value=m.minQty||0;document.getElementById('btnCancelInkMaster').classList.remove('hidden');}
+    function huySuaDanhMucMuc(){document.getElementById('editInkMasterIndex').value=-1;['masterInkCode','masterInkName','masterInkPrinter'].forEach(id=>document.getElementById(id).value='');document.getElementById('masterInkUnit').value='Hộp';document.getElementById('masterInkOpening').value=0;document.getElementById('masterInkMin').value=2;document.getElementById('btnCancelInkMaster').classList.add('hidden');}
+    function xoaDanhMucMuc(idx){const m=dsKhoMucDanhMuc[idx];if(dsKhoMucGiaoDich.some(g=>g.code===m.code)){alert('Mặt hàng đã có giao dịch, không xóa để tránh mất lịch sử. Hãy sửa hoặc đặt Min = 0.');return;}if(confirm('Xóa mặt hàng khỏi danh mục?')){dsKhoMucDanhMuc.splice(idx,1);luuTruVaoLocalStorage();capNhatDanhSachMaMuc();renderInkWarehouse();capNhat();}}
+    function locLichSuKho(type){boLocLichSuKhoMuc=type;renderInkHistory();}
+    function renderInkWarehouse(){renderInkSummary();renderInkHistory();renderInkMasterTable();capNhatDanhSachMaMuc();}
+    function renderInkSummary(){const tbody=document.getElementById('xntTableBody');if(!tbody)return;let low=[];tbody.innerHTML=dsKhoMucDanhMuc.map((m,i)=>{const ton=tinhTonMuc(m.code),nhap=tinhNhapMuc(m.code),xuat=tinhXuatMuc(m.code),min=Number(m.minQty||0),isLow=ton<=min; if(isLow)low.push(`${m.name} (${ton}/${min})`);const badge=isLow?`<span style="background:#fee2e2;color:#b91c1c;padding:4px 8px;border-radius:999px;font-weight:900;">⚠ ${ton<=0?'HẾT HÀNG':'DƯỚI/ĐẠT MIN'}</span>`:`<span class="badge-net">Ổn định</span>`;return `<tr><td>${i+1}</td><td><b>${escHtmlKho(m.code)}</b></td><td>${escHtmlKho(m.name)}</td><td>${escHtmlKho(m.printer||'')}</td><td>${escHtmlKho(m.unit||'Hộp')}</td><td style="text-align:right">${m.opening||0}</td><td style="text-align:right">${nhap}</td><td style="text-align:right">${xuat}</td><td style="text-align:right;font-weight:950;color:${isLow?'#b91c1c':'#0369a1'}">${ton}</td><td style="text-align:right">${min}</td><td>${badge}</td><td><button class="btn btn-blue" style="padding:4px 7px" onclick="moFormKhoMuc('nhap');document.getElementById('inputInkCode').value='${escHtmlKho(m.code)}';napThongTinMucKho()">Nhập</button> <button class="btn btn-purple" style="padding:4px 7px" onclick="moFormKhoMuc('xuat');document.getElementById('inputInkCode').value='${escHtmlKho(m.code)}';napThongTinMucKho()">Xuất</button></td></tr>`;}).join('');document.getElementById('inkKpiItems').innerText=dsKhoMucDanhMuc.length;document.getElementById('inkKpiStock').innerText=tinhTongTonKhoMuc();document.getElementById('inkKpiLow').innerText=low.length;const alertBox=document.getElementById('inkMinAlertBox');if(low.length){alertBox.style.display='block';alertBox.innerHTML='<i class="fa-solid fa-triangle-exclamation"></i> CẢNH BÁO TỒN THẤP: '+low.join(' • ');}else{alertBox.style.display='none';alertBox.innerHTML='';}}
+    function renderInkHistory(){const tbody=document.getElementById('inkHistoryTableBody');if(!tbody)return;const arr=dsKhoMucGiaoDich.filter(g=>boLocLichSuKhoMuc==='tatca'||g.type===boLocLichSuKhoMuc);tbody.innerHTML=arr.map(g=>{const real=dsKhoMucGiaoDich.indexOf(g),isIn=g.type==='nhap';return `<tr><td>${g.date||''}</td><td><b>${escHtmlKho(g.slipNo||'')}</b></td><td style="font-weight:900;color:${isIn?'#15803d':'#7c3aed'}">${isIn?'📥 NHẬP':'📤 XUẤT'}</td><td>${escHtmlKho(g.code)}</td><td>${escHtmlKho(g.name)}</td><td style="text-align:right;font-weight:900">${g.qty}</td><td style="text-align:right">${Number(g.price||0).toLocaleString('vi-VN')}</td><td>${escHtmlKho(g.receiver||'')}</td><td>${escHtmlKho(g.createdBy||'')}</td><td><button class="btn btn-blue" style="padding:4px 7px" onclick="suaGiaoDichKho(${real})"><i class="fa-solid fa-pen"></i></button> <button class="btn btn-red" style="padding:4px 7px" onclick="xoaGiaoDichKho(${real})"><i class="fa-solid fa-trash"></i></button></td></tr>`;}).join('')||'<tr><td colspan="10" style="text-align:center;color:#64748b;padding:16px">Chưa có giao dịch.</td></tr>';}
+    function renderInkMasterTable(){const tbody=document.getElementById('inkMasterTableBody');if(!tbody)return;tbody.innerHTML=dsKhoMucDanhMuc.map((m,i)=>`<tr><td>${escHtmlKho(m.code)}</td><td><b>${escHtmlKho(m.name)}</b></td><td>${escHtmlKho(m.printer||'')}</td><td>${escHtmlKho(m.unit||'Hộp')}</td><td>${m.opening||0}</td><td style="font-weight:900">${m.minQty||0}</td><td><button class="btn btn-blue" style="padding:4px 7px" onclick="suaDanhMucMuc(${i})"><i class="fa-solid fa-pen"></i></button> <button class="btn btn-red" style="padding:4px 7px" onclick="xoaDanhMucMuc(${i})"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');}
+    function xuatBaoCaoXNTExcel(){const summary=dsKhoMucDanhMuc.map((m,i)=>({'STT':i+1,'Mã VT':m.code,'Tên Mực':m.name,'Máy In':m.printer||'','ĐVT':m.unit||'Hộp','Tồn Đầu':m.opening||0,'Tổng Nhập':tinhNhapMuc(m.code),'Tổng Xuất':tinhXuatMuc(m.code),'Tồn Cuối':tinhTonMuc(m.code),'Mức MIN':m.minQty||0,'Trạng Thái':tinhTonMuc(m.code)<=Number(m.minQty||0)?'CẢNH BÁO':'Ổn định'}));const hist=dsKhoMucGiaoDich.map((g,i)=>({'STT':i+1,'Ngày':g.date,'Số Phiếu':g.slipNo,'Loại':g.type==='nhap'?'Nhập kho':'Xuất kho','Mã VT':g.code,'Tên Mực':g.name,'Số Lượng':g.qty,'Đơn Giá':g.price,'Đối Tượng':g.receiver}));const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(summary),'Tồn Kho');XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(hist),'Lịch Sử Nhập Xuất');XLSX.writeFile(wb,'Bao_Cao_Kho_Muc_Nhap_Xuat_Ton.xlsx');}
 
     function capNhatNguoiKyPhieuGiao() {
         const get = id => (document.getElementById(id)?.value || '').trim();

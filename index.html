@@ -363,6 +363,95 @@
     .vanlich-day { min-height:70px; padding:6px; }
 }
 
+
+/* =========================================================
+   VINAPACO MOBILE PRO - tối ưu điện thoại, không tràn ngang
+   ========================================================= */
+html,body{max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;}
+body{padding:10px;}
+.container{width:100%;min-width:0;}
+.container>*{min-width:0;max-width:100%;}
+.banner{padding:13px 14px;border-radius:11px;gap:10px;}
+.banner h1{font-size:17px;line-height:1.25;}
+.banner p{font-size:11px;line-height:1.4;}
+.btn-group-header{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;}
+.btn-group-header .btn{width:100%;justify-content:center;min-width:0;padding:8px 9px;font-size:11px;}
+.config-bar{width:100%;min-width:0;}
+.config-item,.config-item.drive-path-box{min-width:0!important;grid-column:auto!important;}
+.config-item.drive-path-box>div{min-width:0;max-width:100%;}
+.config-item.drive-path-box>div input{min-width:0!important;}
+.config-item input,.config-item select{font-size:13px;min-width:0!important;}
+.top-info-bar{min-width:0;grid-template-columns:repeat(3,minmax(0,1fr));}
+.info-widget-card{min-width:0;padding:12px;overflow:hidden;}
+.clock-display{font-size:20px;}
+.weather-display,.lunar-display{font-size:11px;line-height:1.45;overflow-wrap:anywhere;}
+.kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+.kpi-card{padding:11px;min-width:0;}
+.kpi-title{font-size:10px;line-height:1.3;}
+.kpi-value{font-size:18px;line-height:1.15;overflow-wrap:anywhere;}
+.kpi-sub{font-size:10px;line-height:1.35;}
+.charts-multi-grid{grid-template-columns:1fr;min-width:0;}
+.chart-card{min-width:0;overflow:hidden;padding:10px;}
+.chart-card canvas{max-width:100%!important;}
+.table-card{padding:10px;min-width:0;overflow:hidden;}
+.table-header-bar{align-items:flex-start;}
+.table-title{font-size:13px;line-height:1.35;}
+.form-card{grid-template-columns:repeat(2,minmax(0,1fr));min-width:0;}
+.form-card>*{min-width:0!important;max-width:100%;}
+.form-card input,.form-card select,.form-card textarea{width:100%;min-width:0!important;max-width:100%;}
+.table-card>div[style*="overflow-x"]{max-width:100%;overflow-x:auto!important;-webkit-overflow-scrolling:touch;}
+.table-card table{min-width:760px;}
+.table-card table th,.table-card table td{padding:7px 8px;font-size:11px;white-space:nowrap;}
+.table-card table td{white-space:normal;overflow-wrap:anywhere;}
+.table-card table td .btn{padding:6px 8px;font-size:10px;}
+.account-kpis{grid-template-columns:repeat(2,minmax(0,1fr));}
+.account-toolbar{grid-template-columns:1fr;min-width:0;}
+.account-table-wrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.account-table-wrap table{min-width:860px;}
+.modal-overlay{padding:6px;}
+.modal-card,.account-modal-card{width:100%!important;max-width:100%!important;max-height:96vh!important;min-width:0!important;}
+.modal-card>*,.account-modal-card>*{min-width:0;max-width:100%;}
+.payslip-pro{width:100%!important;max-width:100%!important;}
+
+/* Các bảng tài chính quan trọng: trên điện thoại hiển thị dạng thẻ, không cần kéo ngang */
+@media(max-width:600px){
+  body{padding:7px;}
+  .container{gap:9px;}
+  .banner{display:block;}
+  .banner .btn-group-header{margin-top:10px;}
+  .top-info-bar{grid-template-columns:1fr;}
+  .top-info-bar .info-widget-card{min-height:0;}
+  .kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .form-card{grid-template-columns:1fr;gap:9px;padding:10px;}
+  .form-card>[style*="grid-column"]{grid-column:auto!important;}
+  .salary-signature-footer{grid-template-columns:1fr;font-size:11px;gap:15px;}
+  .charts-multi-grid{gap:9px;}
+  .tab-nav{overflow-x:auto;flex-wrap:nowrap;padding-bottom:7px;-webkit-overflow-scrolling:touch;}
+  .tab-btn-nav{flex:0 0 auto;padding:8px 10px;font-size:11px;}
+  .table-header-bar>div:last-child{width:100%;}
+  .table-header-bar .btn{padding:7px 9px;font-size:10px;}
+
+  /* VPP + Cước viễn thông */
+  #officePaymentTableBody tr,#telecomPaymentTableBody tr{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid #dbe3ec;border-radius:10px;margin-bottom:8px;background:#fff;overflow:hidden;}
+  #officePaymentTableBody td,#telecomPaymentTableBody td{display:block;border:0;border-bottom:1px solid #eef2f7;padding:7px 8px;min-width:0;font-size:10px;white-space:normal!important;overflow-wrap:anywhere;}
+  #officePaymentTableBody td:last-child,#telecomPaymentTableBody td:last-child{grid-column:1/-1;border-bottom:0;}
+  #officePaymentTableBody td:before,#telecomPaymentTableBody td:before{content:attr(data-label);display:block;font-size:9px;font-weight:900;text-transform:uppercase;color:#64748b;margin-bottom:2px;}
+  #officePaymentTableBody .btn,#telecomPaymentTableBody .btn{font-size:10px;padding:6px 8px;}
+  #officePaymentTableBody td:first-child,#telecomPaymentTableBody td:first-child{font-weight:900;color:#0369a1;}
+  #officePaymentTableBody tr:has(td[colspan]),#telecomPaymentTableBody tr:has(td[colspan]){display:block;}
+  #officePaymentTableBody tr:has(td[colspan]) td,#telecomPaymentTableBody tr:has(td[colspan]) td{grid-column:auto;}
+
+  /* Kho mực / khảo sát / bảng nhân sự vẫn có thể kéo ngang trong vùng bảng, không làm vỡ toàn trang */
+  .table-card>div[style*="overflow-x"]{border-radius:8px;}
+  .table-card>div[style*="overflow-x"] table{min-width:720px;}
+  #xntTableBody tr td,#inkHistoryTableBody tr td{font-size:10px;}
+  .professional-reminder{right:8px!important;bottom:8px!important;width:calc(100vw - 16px)!important;}
+}
+@media(min-width:601px) and (max-width:900px){
+  .top-info-bar{grid-template-columns:1fr 1fr;}
+  .top-info-bar .info-widget-card:last-child{grid-column:1/-1;}
+}
+
 </style>
 </head>
 <body>
@@ -2169,11 +2258,17 @@
     }
 
     // KHO DỮ LIỆU BỀN VỮNG: giữ khóa cũ để tương thích + IndexedDB để không phụ thuộc code mới.
-    const VINAPACO_STORAGE_VERSION = 5; // v5: no-login + local-first + remote-newer-only safety
+    const VINAPACO_STORAGE_VERSION = 6; // v6: mobile + record-level sync + tombstones + local-first safety
     const VINAPACO_IDB_NAME = 'VINAPACO_PERSISTENT_DATA';
     const VINAPACO_IDB_STORE = 'snapshots';
     let __vinapacoSaveTimer = null;
     let __vinapacoDataSavedAt = null;
+    const VINAPACO_DEVICE_ID_KEY='vinapaco_device_id_v1';
+    let __vinapacoDeviceId = localStorage.getItem(VINAPACO_DEVICE_ID_KEY);
+    if(!__vinapacoDeviceId){ __vinapacoDeviceId='DEV-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9); try{localStorage.setItem(VINAPACO_DEVICE_ID_KEY,__vinapacoDeviceId);}catch(e){} }
+    let __vinapacoTombstones = {};
+    try { __vinapacoTombstones = JSON.parse(localStorage.getItem('bapaco_sync_tombstones_v1')||'{}') || {}; } catch(e) { __vinapacoTombstones={}; }
+    let __vinapacoSyncBaseline = null;
     try {
         const __seedRaw = localStorage.getItem('bapaco_persistent_snapshot_v3');
         const __seed = __seedRaw ? JSON.parse(__seedRaw) : null;
@@ -2184,6 +2279,8 @@
     function getVinapacoSnapshot() {
         return {
             schemaVersion: VINAPACO_STORAGE_VERSION, savedAt: __vinapacoDataSavedAt, clientSavedAt: __vinapacoDataSavedAt,
+            deviceId: __vinapacoDeviceId,
+            syncTombstones: __vinapacoTombstones,
             coSoDuLieuNamThang, dsThanhToanVanPhongProByMonth, dsThanhToanTelecombyMonth,
             dsKhoMucIn, dsKhoMucDanhMuc, dsKhoMucGiaoDich, dsPhieuGiaoNhan, dsKhaoSatChuyenSau, dsDanhMucChucDanhQuyHoach,
             danhSachCongViec, danhSachTaiKhoanHeThong, gasWebhookUrl
@@ -2217,8 +2314,7 @@
         } catch(e) { return []; }
     }
     // ===== HỢP NHẤT DỮ LIỆU AN TOÀN - KHÔNG GHI ĐÈ MÙ =====
-    // Khi đồng bộ nhiều thiết bị, cùng một tháng có thể tồn tại ở máy A, máy B
-    // hoặc Drive. Mọi bản ghi đều được hợp nhất; bản rỗng/cũ không thể xóa bản có dữ liệu.
+    // v6: bản ghi có _syncUpdatedAt sẽ dùng LAST-WRITE-WINS; xóa dùng tombstone.
     function __vinapacoRecordKey(item) {
         if (item === null || item === undefined) return 'null';
         if (typeof item !== 'object') return String(item);
@@ -2228,37 +2324,111 @@
         const type = item.type ?? item.action ?? item.loai ?? '';
         const name = item.name ?? item.content ?? item.supplier ?? item.beneficiary ?? item.hoTen ?? '';
         const qty = item.qty ?? item.amount ?? item.tong ?? item.total ?? '';
-        return 'ROW:' + [date,type,name,qty].map(x=>String(x??'')).join('|') + '|' + JSON.stringify(item);
+        return 'ROW:' + [date,type,name,qty].map(x=>String(x??'')).join('|');
     }
-    function __vinapacoMergeValue(oldValue, newValue) {
-        if (newValue === undefined || newValue === null) return oldValue;
-        if (oldValue === undefined || oldValue === null) return newValue;
-        if (Array.isArray(oldValue) && Array.isArray(newValue)) {
-            const out = oldValue.map(x=>x);
-            const index = new Map();
-            out.forEach((x,i)=>index.set(__vinapacoRecordKey(x),i));
-            newValue.forEach(item=>{
-                const k=__vinapacoRecordKey(item);
-                if(index.has(k) && item && typeof item==='object' && out[index.get(k)] && typeof out[index.get(k)]==='object') {
-                    out[index.get(k)] = __vinapacoMergeValue(out[index.get(k)], item);
-                } else if(!index.has(k)) { index.set(k,out.length); out.push(item); }
-            });
-            return out;
+    function __vinapacoJsonStable(v){
+        try{return JSON.stringify(v,(k,val)=>k==='_syncUpdatedAt'||k==='_syncDeviceId'?undefined:val);}catch(e){return String(v);}
+    }
+    function __vinapacoMergeRecord(oldItem,newItem){
+        if(!oldItem || typeof oldItem!=='object') return newItem;
+        if(!newItem || typeof newItem!=='object') return oldItem;
+        const ot=Number(oldItem._syncUpdatedAt||0), nt=Number(newItem._syncUpdatedAt||0);
+        if(nt>0 || ot>0){
+            if(nt>ot) return newItem;
+            if(ot>nt) return oldItem;
+            // Cùng thời điểm: ưu tiên bản có dấu thiết bị khác và đầy đủ hơn.
+            const ol=Object.keys(oldItem).length, nl=Object.keys(newItem).length;
+            return nl>=ol?newItem:oldItem;
         }
-        if (typeof oldValue === 'object' && typeof newValue === 'object' && !Array.isArray(oldValue) && !Array.isArray(newValue)) {
-            const out = {...oldValue};
-            Object.keys(newValue).forEach(k=>{ out[k]=Object.prototype.hasOwnProperty.call(out,k) ? __vinapacoMergeValue(out[k],newValue[k]) : newValue[k]; });
+        const out={...oldItem};
+        Object.keys(newItem).forEach(k=>{
+            if(k==='_syncUpdatedAt'||k==='_syncDeviceId') return;
+            if(!Object.prototype.hasOwnProperty.call(out,k) || out[k]===null || out[k]===undefined || out[k]==='') out[k]=newItem[k];
+        });
+        return out;
+    }
+    function __vinapacoMergeArray(oldArr,newArr){
+        const out=Array.isArray(oldArr)?oldArr.map(x=>x):[];
+        const index=new Map(); out.forEach((x,i)=>index.set(__vinapacoRecordKey(x),i));
+        (Array.isArray(newArr)?newArr:[]).forEach(item=>{
+            const k=__vinapacoRecordKey(item);
+            if(index.has(k)) out[index.get(k)]=__vinapacoMergeRecord(out[index.get(k)],item);
+            else {index.set(k,out.length);out.push(item);}
+        });
+        return out;
+    }
+    function __vinapacoMergeValue(oldValue,newValue){
+        if(newValue===undefined||newValue===null)return oldValue;
+        if(oldValue===undefined||oldValue===null)return newValue;
+        if(Array.isArray(oldValue)&&Array.isArray(newValue))return __vinapacoMergeArray(oldValue,newValue);
+        if(typeof oldValue==='object'&&typeof newValue==='object'&&!Array.isArray(oldValue)&&!Array.isArray(newValue)){
+            const out={...oldValue};
+            Object.keys(newValue).forEach(k=>{
+                if(Array.isArray(out[k])&&Array.isArray(newValue[k])) out[k]=__vinapacoMergeArray(out[k],newValue[k]);
+                else if(out[k]&&newValue[k]&&typeof out[k]==='object'&&typeof newValue[k]==='object'&&!Array.isArray(out[k])&&!Array.isArray(newValue[k])) out[k]=__vinapacoMergeValue(out[k],newValue[k]);
+                else if(out[k]===undefined||out[k]===null||out[k]==='') out[k]=newValue[k];
+                else if(typeof newValue[k]==='string'&&newValue[k]!==out[k] && /_syncUpdatedAt|_syncDeviceId/.test(k)) out[k]=newValue[k];
+            });
             return out;
         }
         return newValue;
     }
-    function __vinapacoMergeMap(oldMap,newMap) {
-        if (!newMap || typeof newMap!=='object' || Array.isArray(newMap)) return oldMap || {};
-        return __vinapacoMergeValue(oldMap && typeof oldMap==='object' ? oldMap : {}, newMap);
+    function __vinapacoMergeMap(oldMap,newMap){
+        if(!newMap||typeof newMap!=='object'||Array.isArray(newMap))return oldMap||{};
+        const out=(oldMap&&typeof oldMap==='object'&&!Array.isArray(oldMap))?oldMap:{};
+        Object.keys(newMap).forEach(k=>{out[k]=__vinapacoMergeArray(out[k],newMap[k]);});
+        return out;
+    }
+    function __vinapacoApplyTombstones(){
+        const apply=(map,prefix)=>{
+            if(!map||typeof map!=='object')return;
+            Object.keys(map).forEach(month=>{
+                if(!Array.isArray(map[month]))return;
+                map[month]=map[month].filter(item=>{
+                    const key=prefix+'|'+month+'|'+__vinapacoRecordKey(item);
+                    const t=Number(__vinapacoTombstones[key]||0), u=Number(item&&item._syncUpdatedAt||0);
+                    return !(t>0 && t>=u);
+                });
+            });
+        };
+        apply(dsThanhToanVanPhongProByMonth,'vpp');
+        apply(dsThanhToanTelecombyMonth,'telecom');
+    }
+    function __vinapacoCaptureSyncBaseline(){
+        try{__vinapacoSyncBaseline={vpp:JSON.parse(JSON.stringify(dsThanhToanVanPhongProByMonth||{})),telecom:JSON.parse(JSON.stringify(dsThanhToanTelecombyMonth||{}))};}catch(e){__vinapacoSyncBaseline=null;}
+    }
+    function __vinapacoStampChangedMap(map,baseline,prefix,now){
+        const b=baseline||{};
+        Object.keys(map||{}).forEach(month=>{
+            const arr=Array.isArray(map[month])?map[month]:[]; const old=Array.isArray(b[month])?b[month]:[];
+            const oldIndex=new Map(old.map(x=>[__vinapacoRecordKey(x),x]));
+            arr.forEach(item=>{
+                if(!item||typeof item!=='object')return;
+                const k=__vinapacoRecordKey(item), prev=oldIndex.get(k);
+                const cleanA=__vinapacoJsonStable(item), cleanB=prev?__vinapacoJsonStable(prev):null;
+                if(!prev || cleanA!==cleanB){item._syncUpdatedAt=now;item._syncDeviceId=__vinapacoDeviceId;}
+                delete __vinapacoTombstones[prefix+'|'+month+'|'+k];
+            });
+            const curKeys=new Set(arr.map(x=>__vinapacoRecordKey(x)));
+            old.forEach(item=>{const k=__vinapacoRecordKey(item);if(!curKeys.has(k))__vinapacoTombstones[prefix+'|'+month+'|'+k]=now;});
+        });
+    }
+    function __vinapacoPrepareSyncChanges(markChanged=true){
+        if(!markChanged)return;
+        const now=Date.now();
+        if(__vinapacoSyncBaseline){
+            __vinapacoStampChangedMap(dsThanhToanVanPhongProByMonth,__vinapacoSyncBaseline.vpp,'vpp',now);
+            __vinapacoStampChangedMap(dsThanhToanTelecombyMonth,__vinapacoSyncBaseline.telecom,'telecom',now);
+        }
+        localStorage.setItem('bapaco_sync_tombstones_v1',JSON.stringify(__vinapacoTombstones));
+        __vinapacoCaptureSyncBaseline();
     }
 
     function apDungSnapshot(snapshot, replace=false) {
         if(!snapshot || typeof snapshot!=='object') return false;
+        if(snapshot.syncTombstones && typeof snapshot.syncTombstones==='object') {
+            Object.keys(snapshot.syncTombstones).forEach(k=>{ const v=Number(snapshot.syncTombstones[k]||0); if(v>Number(__vinapacoTombstones[k]||0)) __vinapacoTombstones[k]=v; });
+        }
         if(replace) {
             if(snapshot.coSoDuLieuNamThang && typeof snapshot.coSoDuLieuNamThang==='object') coSoDuLieuNamThang=snapshot.coSoDuLieuNamThang;
             if(snapshot.dsThanhToanVanPhongProByMonth && typeof snapshot.dsThanhToanVanPhongProByMonth==='object') dsThanhToanVanPhongProByMonth=snapshot.dsThanhToanVanPhongProByMonth;
@@ -2284,6 +2454,8 @@
             if(Array.isArray(snapshot.danhSachCongViec)) danhSachCongViec=__vinapacoMergeValue(danhSachCongViec,snapshot.danhSachCongViec);
             if(Array.isArray(snapshot.danhSachTaiKhoanHeThong)) danhSachTaiKhoanHeThong=__vinapacoMergeValue(danhSachTaiKhoanHeThong,snapshot.danhSachTaiKhoanHeThong);
         }
+        __vinapacoApplyTombstones();
+        try{localStorage.setItem('bapaco_sync_tombstones_v1',JSON.stringify(__vinapacoTombstones));}catch(e){}
         if(snapshot.gasWebhookUrl) gasWebhookUrl=snapshot.gasWebhookUrl;
         return true;
     }
@@ -2354,7 +2526,7 @@
 
     function luuTruVaoLocalStorage(markChanged=true) {
         try {
-            if(markChanged) __vinapacoDataSavedAt=new Date().toISOString();
+            if(markChanged){ __vinapacoPrepareSyncChanges(true); __vinapacoDataSavedAt=new Date().toISOString(); }
             localStorage.setItem('bapaco_db_data', JSON.stringify(coSoDuLieuNamThang));
             localStorage.setItem('bapaco_vpp_map_data', JSON.stringify(dsThanhToanVanPhongProByMonth));
             localStorage.setItem('bapaco_telecom_map_data', JSON.stringify(dsThanhToanTelecombyMonth));
@@ -2414,9 +2586,25 @@
 
         // Ghi lại toàn bộ kho sau khi merge để lần mở sau không mất dữ liệu.
         luuTruVaoLocalStorage(false);
+        __vinapacoCaptureSyncBaseline();
         if (daNhanDuLieuTuRemote) {
             try { await ghiSnapshotIndexedDB(getVinapacoSnapshot(),'remote_merged_'+new Date().toISOString().replace(/[:.]/g,'-')); } catch(e) {}
+            // Ghi lại BẢN HỢP NHẤT lên Drive để thiết bị còn lại nhận đủ dữ liệu.
+            await __vinapacoDayBanHopNhatLenDrive();
         }
+    }
+
+    async function __vinapacoDayBanHopNhatLenDrive(){
+        try{
+            __vinapacoApplyTombstones();
+            __vinapacoDataSavedAt=new Date().toISOString();
+            const payload=getVinapacoSnapshot();
+            payload.syncVersion='2026-08-23-mobile-sync-v6';
+            payload.syncTombstones=__vinapacoTombstones;
+            const ok=await gasSendNoCors({type:'SYNC_MASTER_DB',payload,filesToUpload:[]});
+            if(ok) __vinapacoCaptureSyncBaseline();
+            return !!ok;
+        }catch(e){console.warn('VINAPACO merged push',e);return false;}
     }
 
     async function tuDongDayDuLieuLenDrive(filesToUpload = [], folderPath = "") {
@@ -2473,7 +2661,9 @@
                 coSoDuLieuNamThang[currentNamKey][currentThangKey]=JSON.parse(JSON.stringify(tpl));
             }
             luuTruVaoLocalStorage(false);
+            __vinapacoCaptureSyncBaseline();
             try { await ghiSnapshotIndexedDB(getVinapacoSnapshot(),'manual_download_merged_'+new Date().toISOString().replace(/[:.]/g,'-')); } catch(e) {}
+            const mergedPushed=await __vinapacoDayBanHopNhatLenDrive();
             capNhat(); renderOfficePaymentTable(); renderTelecomPaymentTable();
             const vppCount=Object.values(dsThanhToanVanPhongProByMonth||{}).reduce((n,a)=>n+(Array.isArray(a)?a.length:0),0);
             const telecomCount=Object.values(dsThanhToanTelecombyMonth||{}).reduce((n,a)=>n+(Array.isArray(a)?a.length:0),0);
@@ -2486,6 +2676,22 @@
             alert('⚠️ Chưa thể hoàn tất đồng bộ với Drive.\n\nDữ liệu trên máy KHÔNG bị ghi đè và vẫn được giữ an toàn.');
         }
     }
+
+
+    function __vinapacoGanNhanBangThanhToan(){
+        ['officePaymentTableBody','telecomPaymentTableBody'].forEach(id=>{
+            const body=document.getElementById(id); if(!body)return;
+            const table=body.closest('table'); if(!table)return;
+            const heads=[...table.querySelectorAll('thead th')].map(th=>th.textContent.trim());
+            [...body.querySelectorAll('tr')].forEach(tr=>{
+                const cells=[...tr.children]; cells.forEach((td,i)=>{if(!td.hasAttribute('data-label')&&heads[i])td.setAttribute('data-label',heads[i]);});
+            });
+        });
+    }
+    const __renderOfficePaymentTableGoc=renderOfficePaymentTable;
+    renderOfficePaymentTable=function(){const r=__renderOfficePaymentTableGoc.apply(this,arguments);__vinapacoGanNhanBangThanhToan();return r;};
+    const __renderTelecomPaymentTableGoc=renderTelecomPaymentTable;
+    renderTelecomPaymentTable=function(){const r=__renderTelecomPaymentTableGoc.apply(this,arguments);__vinapacoGanNhanBangThanhToan();return r;};
 
     function khoiTaoTuDongDongBoNgam() {
         // Đồng bộ nền theo kiểu MERGE: không bao giờ thay toàn bộ kho bằng snapshot remote.
@@ -2505,6 +2711,8 @@
                 apDungSnapshot(result,false);
                 if (remoteTime > localTime && remoteSavedAt) __vinapacoDataSavedAt = remoteSavedAt;
                 luuTruVaoLocalStorage(false);
+                __vinapacoCaptureSyncBaseline();
+                await __vinapacoDayBanHopNhatLenDrive();
                 renderInkWarehouse();
                 capNhat();
                 if(remoteTime<localTime) console.info('VINAPACO: remote cũ, đã giữ local và merge.');
@@ -2530,6 +2738,7 @@
         } catch (e) {}
 
         khoiTaoDanhSachNamTuSinh();
+        __vinapacoCaptureSyncBaseline();
         doiThangHoSoLuong();
         // Không để GAS chặn quá trình khởi tạo giao diện/đăng nhập. Dữ liệu cục bộ đã sẵn sàng trước đó.
         tuDongTaiDuLieuTuDrive().catch(()=>{});
@@ -5794,7 +6003,8 @@
         const snap=getVinapacoSnapshot();
         snap.savedAt=new Date().toISOString();
         snap.clientSavedAt=snap.savedAt;
-        snap.syncVersion='2026-08-21-kho-muc-v2';
+        snap.syncVersion='2026-08-23-mobile-sync-v6';
+        snap.syncTombstones=__vinapacoTombstones;
         return snap;
     }
 

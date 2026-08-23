@@ -1816,27 +1816,6 @@
     const trucList = ["Trực Kiến", "Trực Trừ", "Trực Mãn", "Trực Bình", "Trực Định", "Trực Chấp", "Trực Phá", "Trực Nguy", "Trực Thành", "Trực Thu", "Trực Khai", "Trực Bế"];
     const saoList = ["Sao Thái Dương (Cát)", "Sao Thái Âm (Cát)", "Sao Mộc Đức (Cát)", "Sao Vân Hớn (Hung)", "Sao Kế Đô (Hung)", "Sao La Hầu (Hung)", "Sao Thủy Diệu (Bình)", "Sao Thổ Tú (Bình)"];
     
-    // API tương thích cho widget lịch ở thanh thông tin đầu trang.
-    // Hàm này dùng chung thuật toán Âm lịch chuẩn bên dưới, không còn cộng ngày giả lập.
-    function convertSolar2Lunar(dd, mm, yy) {
-        const lunar = (typeof window !== 'undefined' && typeof window.__vinapacoLunarConvert === 'function')
-            ? window.__vinapacoLunarConvert(dd, mm, yy)
-            : null;
-        if (lunar) {
-            const ccDay = (typeof window !== 'undefined' && typeof window.__vinapacoCanChiDay === 'function')
-                ? window.__vinapacoCanChiDay(dd,mm,yy) : {text:""};
-            const ccYear = (typeof window !== 'undefined' && typeof window.__vinapacoCanChiYear === 'function')
-                ? window.__vinapacoCanChiYear(lunar.year) : "";
-            return {
-                day:lunar.day, month:lunar.month, year:lunar.year,
-                canChiNam:ccYear, canChiNgay:ccDay.text,
-                truc:"Đang cập nhật", sao:"Đang cập nhật",
-                isHoangDao:false, huongXuatHanh:"", viecNenLam:"", viecKienKy:""
-            };
-        }
-        return {day:1,month:1,year:yy,canChiNam:"",canChiNgay:"",truc:"",sao:"",isHoangDao:false,huongXuatHanh:"",viecNenLam:"",viecKienKy:""};
-    }
-
     // ===== TIỆN ÍCH AN TOÀN CHẠY TRÌNH DUYỆT =====
     // Tránh ReferenceError khi dữ liệu/API bên ngoài chưa sẵn sàng.
     function escapeHtml(value) {
@@ -2189,134 +2168,27 @@
         return totalYearNet;
     }
 
-    // KHO DỮ LIỆU BỀN VỮNG + ĐỒNG BỘ ĐA THIẾT BỊ V6
-    // V6 sửa lỗi "Drive/GAS cũ hơn dữ liệu trên máy":
-    // - savedAt không còn tự thay đổi mỗi lần đọc snapshot.
-    // - Mỗi thiết bị có deviceId + revision + modifiedAt ổn định.
-    // - Bản local mới hơn không bị báo lỗi; hệ thống tự giữ local và xếp hàng đẩy lại Drive.
-    // - Khi Drive mới hơn thì tự nhận; khi bằng nhau thì xác nhận đã đồng bộ.
-    // - Remote áp dụng không làm local bị đánh dấu là dữ liệu mới.
-    const VINAPACO_STORAGE_VERSION = 6;
+    // KHO DỮ LIỆU BỀN VỮNG: giữ khóa cũ để tương thích + IndexedDB để không phụ thuộc code mới.
+    const VINAPACO_STORAGE_VERSION = 5; // v5: no-login + local-first + remote-newer-only safety
     const VINAPACO_IDB_NAME = 'VINAPACO_PERSISTENT_DATA';
     const VINAPACO_IDB_STORE = 'snapshots';
-    const VINAPACO_SYNC_META_KEY = 'vinapaco_sync_meta_v1';
-    const VINAPACO_DEVICE_KEY = 'vinapaco_device_id_v1';
     let __vinapacoSaveTimer = null;
-    let __vinapacoSyncMeta = null;
-    let __vinapacoSyncPushBusy = false;
-    let __vinapacoLastPushAt = 0;
-
-    function taoIdThietBiVINAPACO() {
-        try {
-            if (window.crypto && typeof crypto.randomUUID === 'function') return crypto.randomUUID();
-        } catch (_) {}
-        return 'DEV-' + Date.now() + '-' + Math.random().toString(36).slice(2,10);
-    }
-
-    function docSyncMetaVINAPACO() {
-        if (__vinapacoSyncMeta) return __vinapacoSyncMeta;
-        let meta = null;
-        try {
-            const raw = localStorage.getItem(VINAPACO_SYNC_META_KEY);
-            if (raw) meta = JSON.parse(raw);
-        } catch (_) {}
-        if (!meta || typeof meta !== 'object') meta = {};
-        let deviceId = '';
-        try { deviceId = localStorage.getItem(VINAPACO_DEVICE_KEY) || ''; } catch (_) {}
-        if (!deviceId) {
-            deviceId = meta.deviceId || taoIdThietBiVINAPACO();
-            try { localStorage.setItem(VINAPACO_DEVICE_KEY, deviceId); } catch (_) {}
-        }
-
-        let legacySavedAt = '';
-        try {
-            const raw = localStorage.getItem('bapaco_persistent_snapshot_v3');
-            if (raw) {
-                const s = JSON.parse(raw);
-                legacySavedAt = s?.savedAt || s?.clientSavedAt || '';
-            }
-        } catch (_) {}
-
-        const validLegacy = Number.isFinite(new Date(legacySavedAt).getTime());
-        __vinapacoSyncMeta = {
-            deviceId,
-            revision: Math.max(0, Number(meta.revision || 0)),
-            modifiedAt: meta.modifiedAt || (validLegacy ? legacySavedAt : new Date().toISOString()),
-            dirty: !!meta.dirty,
-            lastRemoteSavedAt: meta.lastRemoteSavedAt || '',
-            lastSyncAt: meta.lastSyncAt || '',
-            lastSyncMessage: meta.lastSyncMessage || ''
-        };
-        return __vinapacoSyncMeta;
-    }
-
-    function luuSyncMetaVINAPACO() {
-        try { localStorage.setItem(VINAPACO_SYNC_META_KEY, JSON.stringify(docSyncMetaVINAPACO())); } catch (_) {}
-    }
-
-    function danhDauDuLieuLocalThayDoi() {
-        const meta = docSyncMetaVINAPACO();
-        meta.revision = Math.max(0, Number(meta.revision || 0)) + 1;
-        meta.modifiedAt = new Date().toISOString();
-        meta.dirty = true;
-        meta.lastSyncMessage = 'Đã lưu thay đổi trên thiết bị, đang chờ xác nhận với Drive.';
-        luuSyncMetaVINAPACO();
-        return meta;
-    }
-
-    function danhDauRemoteDaApDung(snapshot) {
-        const meta = docSyncMetaVINAPACO();
-        const remoteSavedAt = snapshot?.savedAt || snapshot?.updatedAt || snapshot?.serverSavedAt || snapshot?.clientSavedAt || '';
-        const remoteTime = new Date(remoteSavedAt || 0).getTime();
-        const localTime = new Date(meta.modifiedAt || 0).getTime();
-        if (Number.isFinite(remoteTime) && remoteTime > 0) {
-            meta.modifiedAt = remoteSavedAt;
-            meta.lastRemoteSavedAt = remoteSavedAt;
-        } else if (!Number.isFinite(localTime) || localTime <= 0) {
-            meta.modifiedAt = new Date().toISOString();
-        }
-        meta.revision = Math.max(Number(meta.revision || 0), Number(snapshot?.syncRevision || 0));
-        meta.dirty = false;
-        meta.lastSyncAt = new Date().toISOString();
-        meta.lastSyncMessage = 'Đã nhận phiên bản mới từ Drive.';
-        if (snapshot?.deviceId && snapshot.deviceId !== meta.deviceId) {
-            // Giữ deviceId của thiết bị hiện tại; chỉ ghi nhận nguồn dữ liệu.
-            meta.lastRemoteDeviceId = String(snapshot.deviceId);
-        }
-        luuSyncMetaVINAPACO();
-    }
-
-    function xacNhanDaGuiLenDriveVINAPACO() {
-        const meta = docSyncMetaVINAPACO();
-        meta.lastSyncAt = new Date().toISOString();
-        meta.lastSyncMessage = 'Đã gửi phiên bản hiện tại lên Drive; đang chờ máy chủ xác nhận.';
-        luuSyncMetaVINAPACO();
-    }
-
-    function capNhatTrangThaiDongBoVINAPACO(message, type='info') {
-        const el = document.getElementById('userStatusTag');
-        if (!el) return;
-        const icon = type === 'ok' ? '✓' : (type === 'warn' ? '•' : '↻');
-        el.textContent = `${icon} ${message}`;
-        el.style.opacity = '1';
-    }
+    let __vinapacoDataSavedAt = null;
+    try {
+        const __seedRaw = localStorage.getItem('bapaco_persistent_snapshot_v3');
+        const __seed = __seedRaw ? JSON.parse(__seedRaw) : null;
+        __vinapacoDataSavedAt = __seed?.savedAt || __seed?.clientSavedAt || null;
+    } catch (_) {}
+    if (!__vinapacoDataSavedAt) __vinapacoDataSavedAt = new Date().toISOString();
 
     function getVinapacoSnapshot() {
-        const meta = docSyncMetaVINAPACO();
         return {
-            schemaVersion: VINAPACO_STORAGE_VERSION,
-            savedAt: meta.modifiedAt,
-            clientSavedAt: meta.modifiedAt,
-            syncRevision: Number(meta.revision || 0),
-            deviceId: meta.deviceId,
-            syncDirty: !!meta.dirty,
-            lastRemoteSavedAt: meta.lastRemoteSavedAt || '',
+            schemaVersion: VINAPACO_STORAGE_VERSION, savedAt: __vinapacoDataSavedAt, clientSavedAt: __vinapacoDataSavedAt,
             coSoDuLieuNamThang, dsThanhToanVanPhongProByMonth, dsThanhToanTelecombyMonth,
             dsKhoMucIn, dsKhoMucDanhMuc, dsKhoMucGiaoDich, dsPhieuGiaoNhan, dsKhaoSatChuyenSau, dsDanhMucChucDanhQuyHoach,
             danhSachCongViec, danhSachTaiKhoanHeThong, gasWebhookUrl
         };
     }
-
     function moKhoDuLieuBenVung() {
         return new Promise((resolve,reject)=>{
             if(!('indexedDB' in window)) return resolve(null);
@@ -2331,36 +2203,139 @@
     async function docSnapshotIndexedDB(id='latest') {
         try { const db=await moKhoDuLieuBenVung(); if(!db)return null; const v=await new Promise((res,rej)=>{const tx=db.transaction(VINAPACO_IDB_STORE,'readonly');const r=tx.objectStore(VINAPACO_IDB_STORE).get(id);r.onsuccess=()=>res(r.result||null);r.onerror=()=>rej(r.error);}); db.close(); return v; } catch(e){ return null; }
     }
-    function apDungSnapshot(snapshot) {
-        if(!snapshot || typeof snapshot!=='object') return false;
-        if(snapshot.coSoDuLieuNamThang && typeof snapshot.coSoDuLieuNamThang==='object') coSoDuLieuNamThang=snapshot.coSoDuLieuNamThang;
-        if(snapshot.dsThanhToanVanPhongProByMonth) dsThanhToanVanPhongProByMonth=snapshot.dsThanhToanVanPhongProByMonth;
-        if(snapshot.dsThanhToanTelecombyMonth) dsThanhToanTelecombyMonth=snapshot.dsThanhToanTelecombyMonth;
-        if(snapshot.dsKhoMucIn) dsKhoMucIn=snapshot.dsKhoMucIn; if(Array.isArray(snapshot.dsKhoMucDanhMuc)) dsKhoMucDanhMuc=snapshot.dsKhoMucDanhMuc; if(Array.isArray(snapshot.dsKhoMucGiaoDich)) dsKhoMucGiaoDich=snapshot.dsKhoMucGiaoDich; if(snapshot.dsPhieuGiaoNhan) dsPhieuGiaoNhan=snapshot.dsPhieuGiaoNhan;
-        if(snapshot.dsKhaoSatChuyenSau) dsKhaoSatChuyenSau=snapshot.dsKhaoSatChuyenSau; if(snapshot.dsDanhMucChucDanhQuyHoach) dsDanhMucChucDanhQuyHoach=snapshot.dsDanhMucChucDanhQuyHoach;
-        if(snapshot.danhSachCongViec) danhSachCongViec=snapshot.danhSachCongViec; if(snapshot.danhSachTaiKhoanHeThong) danhSachTaiKhoanHeThong=snapshot.danhSachTaiKhoanHeThong;
-        if(snapshot.gasWebhookUrl) gasWebhookUrl=snapshot.gasWebhookUrl; return true;
+    async function docTatCaSnapshotIndexedDB() {
+        try {
+            const db=await moKhoDuLieuBenVung(); if(!db) return [];
+            const values=await new Promise((res,rej)=>{
+                const tx=db.transaction(VINAPACO_IDB_STORE,'readonly');
+                const r=tx.objectStore(VINAPACO_IDB_STORE).getAll();
+                r.onsuccess=()=>res(Array.isArray(r.result)?r.result:[]);
+                r.onerror=()=>rej(r.error);
+            });
+            db.close();
+            return values;
+        } catch(e) { return []; }
     }
+    // ===== HỢP NHẤT DỮ LIỆU AN TOÀN - KHÔNG GHI ĐÈ MÙ =====
+    // Khi đồng bộ nhiều thiết bị, cùng một tháng có thể tồn tại ở máy A, máy B
+    // hoặc Drive. Mọi bản ghi đều được hợp nhất; bản rỗng/cũ không thể xóa bản có dữ liệu.
+    function __vinapacoRecordKey(item) {
+        if (item === null || item === undefined) return 'null';
+        if (typeof item !== 'object') return String(item);
+        const id = item.id ?? item.uid ?? item.code ?? item.ma ?? item.email;
+        if (id !== undefined && id !== null && String(id) !== '') return 'ID:' + String(id);
+        const date = item.date ?? item.ngay ?? item.createdAt ?? item.thoiGian ?? '';
+        const type = item.type ?? item.action ?? item.loai ?? '';
+        const name = item.name ?? item.content ?? item.supplier ?? item.beneficiary ?? item.hoTen ?? '';
+        const qty = item.qty ?? item.amount ?? item.tong ?? item.total ?? '';
+        return 'ROW:' + [date,type,name,qty].map(x=>String(x??'')).join('|') + '|' + JSON.stringify(item);
+    }
+    function __vinapacoMergeValue(oldValue, newValue) {
+        if (newValue === undefined || newValue === null) return oldValue;
+        if (oldValue === undefined || oldValue === null) return newValue;
+        if (Array.isArray(oldValue) && Array.isArray(newValue)) {
+            const out = oldValue.map(x=>x);
+            const index = new Map();
+            out.forEach((x,i)=>index.set(__vinapacoRecordKey(x),i));
+            newValue.forEach(item=>{
+                const k=__vinapacoRecordKey(item);
+                if(index.has(k) && item && typeof item==='object' && out[index.get(k)] && typeof out[index.get(k)]==='object') {
+                    out[index.get(k)] = __vinapacoMergeValue(out[index.get(k)], item);
+                } else if(!index.has(k)) { index.set(k,out.length); out.push(item); }
+            });
+            return out;
+        }
+        if (typeof oldValue === 'object' && typeof newValue === 'object' && !Array.isArray(oldValue) && !Array.isArray(newValue)) {
+            const out = {...oldValue};
+            Object.keys(newValue).forEach(k=>{ out[k]=Object.prototype.hasOwnProperty.call(out,k) ? __vinapacoMergeValue(out[k],newValue[k]) : newValue[k]; });
+            return out;
+        }
+        return newValue;
+    }
+    function __vinapacoMergeMap(oldMap,newMap) {
+        if (!newMap || typeof newMap!=='object' || Array.isArray(newMap)) return oldMap || {};
+        return __vinapacoMergeValue(oldMap && typeof oldMap==='object' ? oldMap : {}, newMap);
+    }
+
+    function apDungSnapshot(snapshot, replace=false) {
+        if(!snapshot || typeof snapshot!=='object') return false;
+        if(replace) {
+            if(snapshot.coSoDuLieuNamThang && typeof snapshot.coSoDuLieuNamThang==='object') coSoDuLieuNamThang=snapshot.coSoDuLieuNamThang;
+            if(snapshot.dsThanhToanVanPhongProByMonth && typeof snapshot.dsThanhToanVanPhongProByMonth==='object') dsThanhToanVanPhongProByMonth=snapshot.dsThanhToanVanPhongProByMonth;
+            if(snapshot.dsThanhToanTelecombyMonth && typeof snapshot.dsThanhToanTelecombyMonth==='object') dsThanhToanTelecombyMonth=snapshot.dsThanhToanTelecombyMonth;
+            if(Array.isArray(snapshot.dsKhoMucIn)) dsKhoMucIn=snapshot.dsKhoMucIn;
+            if(Array.isArray(snapshot.dsKhoMucDanhMuc)) dsKhoMucDanhMuc=snapshot.dsKhoMucDanhMuc;
+            if(Array.isArray(snapshot.dsKhoMucGiaoDich)) dsKhoMucGiaoDich=snapshot.dsKhoMucGiaoDich;
+            if(Array.isArray(snapshot.dsPhieuGiaoNhan)) dsPhieuGiaoNhan=snapshot.dsPhieuGiaoNhan;
+            if(Array.isArray(snapshot.dsKhaoSatChuyenSau)) dsKhaoSatChuyenSau=snapshot.dsKhaoSatChuyenSau;
+            if(Array.isArray(snapshot.dsDanhMucChucDanhQuyHoach)) dsDanhMucChucDanhQuyHoach=snapshot.dsDanhMucChucDanhQuyHoach;
+            if(Array.isArray(snapshot.danhSachCongViec)) danhSachCongViec=snapshot.danhSachCongViec;
+            if(Array.isArray(snapshot.danhSachTaiKhoanHeThong)) danhSachTaiKhoanHeThong=snapshot.danhSachTaiKhoanHeThong;
+        } else {
+            if(snapshot.coSoDuLieuNamThang && typeof snapshot.coSoDuLieuNamThang==='object') coSoDuLieuNamThang=__vinapacoMergeMap(coSoDuLieuNamThang,snapshot.coSoDuLieuNamThang);
+            if(snapshot.dsThanhToanVanPhongProByMonth && typeof snapshot.dsThanhToanVanPhongProByMonth==='object') dsThanhToanVanPhongProByMonth=__vinapacoMergeMap(dsThanhToanVanPhongProByMonth,snapshot.dsThanhToanVanPhongProByMonth);
+            if(snapshot.dsThanhToanTelecombyMonth && typeof snapshot.dsThanhToanTelecombyMonth==='object') dsThanhToanTelecombyMonth=__vinapacoMergeMap(dsThanhToanTelecombyMonth,snapshot.dsThanhToanTelecombyMonth);
+            if(Array.isArray(snapshot.dsKhoMucIn)) dsKhoMucIn=__vinapacoMergeValue(dsKhoMucIn,snapshot.dsKhoMucIn);
+            if(Array.isArray(snapshot.dsKhoMucDanhMuc)) dsKhoMucDanhMuc=__vinapacoMergeValue(dsKhoMucDanhMuc,snapshot.dsKhoMucDanhMuc);
+            if(Array.isArray(snapshot.dsKhoMucGiaoDich)) dsKhoMucGiaoDich=__vinapacoMergeValue(dsKhoMucGiaoDich,snapshot.dsKhoMucGiaoDich);
+            if(Array.isArray(snapshot.dsPhieuGiaoNhan)) dsPhieuGiaoNhan=__vinapacoMergeValue(dsPhieuGiaoNhan,snapshot.dsPhieuGiaoNhan);
+            if(Array.isArray(snapshot.dsKhaoSatChuyenSau)) dsKhaoSatChuyenSau=__vinapacoMergeValue(dsKhaoSatChuyenSau,snapshot.dsKhaoSatChuyenSau);
+            if(Array.isArray(snapshot.dsDanhMucChucDanhQuyHoach)) dsDanhMucChucDanhQuyHoach=__vinapacoMergeValue(dsDanhMucChucDanhQuyHoach,snapshot.dsDanhMucChucDanhQuyHoach);
+            if(Array.isArray(snapshot.danhSachCongViec)) danhSachCongViec=__vinapacoMergeValue(danhSachCongViec,snapshot.danhSachCongViec);
+            if(Array.isArray(snapshot.danhSachTaiKhoanHeThong)) danhSachTaiKhoanHeThong=__vinapacoMergeValue(danhSachTaiKhoanHeThong,snapshot.danhSachTaiKhoanHeThong);
+        }
+        if(snapshot.gasWebhookUrl) gasWebhookUrl=snapshot.gasWebhookUrl;
+        return true;
+    }
+
+    function __vinapacoRestoreMissingMap(localMap, historyMap) {
+        const out=(localMap && typeof localMap==='object' && !Array.isArray(localMap)) ? localMap : {};
+        if(!historyMap || typeof historyMap!=='object' || Array.isArray(historyMap)) return out;
+        Object.keys(historyMap).forEach(k=>{
+            const oldList=Array.isArray(out[k])?out[k]:[];
+            const histList=Array.isArray(historyMap[k])?historyMap[k]:[];
+            if(!oldList.length && histList.length) out[k]=histList;
+        });
+        return out;
+    }
+    function __vinapacoRestoreMissingObject(localObj, historyObj) {
+        const out=(localObj && typeof localObj==='object')?localObj:{};
+        if(!historyObj || typeof historyObj!=='object') return out;
+        Object.keys(historyObj).forEach(k=>{
+            if(out[k]===undefined || out[k]===null) out[k]=historyObj[k];
+            else if(typeof out[k]==='object' && typeof historyObj[k]==='object' && !Array.isArray(out[k]) && !Array.isArray(historyObj[k])) out[k]=__vinapacoRestoreMissingObject(out[k],historyObj[k]);
+        });
+        return out;
+    }
+
     async function napKhoDuLieuBenVung() {
-        // Chọn bản lưu MỚI NHẤT giữa IndexedDB và localStorage; không reset dữ liệu khi đổi phiên bản HTML.
-        let idb=null, persisted=null, legacy=null;
+        // KHÔNG chọn duy nhất một snapshot. Hợp nhất IndexedDB + persistent snapshot +
+        // các khóa localStorage cũ để dữ liệu VPP/viễn thông 2025-2026 không bị mất khi đổi code.
+        let idb=null, persisted=null, legacy=null, idbHistory=[];
         try { idb=await docSnapshotIndexedDB('latest'); } catch(e) {}
+        try { idbHistory=await docTatCaSnapshotIndexedDB(); } catch(e) {}
         try { const x=localStorage.getItem('bapaco_persistent_snapshot_v3'); if(x) persisted=JSON.parse(x); } catch(e) {}
         try { const x=localStorage.getItem('bapaco_db_data'); if(x) legacy={coSoDuLieuNamThang:JSON.parse(x),savedAt:'1970-01-01T00:00:00.000Z'}; } catch(e) {}
         const candidates=[idb,persisted,legacy].filter(x=>x && typeof x==='object');
-        if(!candidates.length) return 'default';
-        candidates.sort((a,b)=>new Date(b.savedAt||b.clientSavedAt||0)-new Date(a.savedAt||a.clientSavedAt||0));
-        const newest=candidates[0];
-        apDungSnapshot(newest);
-        const meta=docSyncMetaVINAPACO();
-        if (newest.deviceId) meta.lastRemoteDeviceId=String(newest.deviceId);
-        if (newest.savedAt || newest.clientSavedAt) meta.modifiedAt=newest.savedAt || newest.clientSavedAt;
-        if (newest.syncRevision != null) meta.revision=Math.max(Number(meta.revision||0),Number(newest.syncRevision||0));
-        if (newest.syncDirty != null) meta.dirty=!!newest.syncDirty;
-        luuSyncMetaVINAPACO();
-        if(newest===persisted || newest===legacy) { try { await ghiSnapshotIndexedDB(getVinapacoSnapshot()); } catch(e) {} }
-        return newest===idb?'IndexedDB':(newest===persisted?'localStorage-persistent':'localStorage-legacy');
+        candidates.sort((a,b)=>new Date(a.savedAt||a.clientSavedAt||0)-new Date(b.savedAt||b.clientSavedAt||0));
+        candidates.forEach(s=>apDungSnapshot(s,false));
+        // Chỉ dùng lịch sử IndexedDB để lấp phần THIẾU, không khôi phục các bản ghi đã bị người dùng xóa.
+        idbHistory.sort((a,b)=>new Date(a.savedAt||a.clientSavedAt||0)-new Date(b.savedAt||b.clientSavedAt||0));
+        idbHistory.forEach(s=>{
+            if(s.coSoDuLieuNamThang) coSoDuLieuNamThang=__vinapacoRestoreMissingObject(coSoDuLieuNamThang,s.coSoDuLieuNamThang);
+            if(s.dsThanhToanVanPhongProByMonth) dsThanhToanVanPhongProByMonth=__vinapacoRestoreMissingMap(dsThanhToanVanPhongProByMonth,s.dsThanhToanVanPhongProByMonth);
+            if(s.dsThanhToanTelecombyMonth) dsThanhToanTelecombyMonth=__vinapacoRestoreMissingMap(dsThanhToanTelecombyMonth,s.dsThanhToanTelecombyMonth);
+        });
+        // Các kho độc lập luôn được ưu tiên khôi phục từ localStorage nếu snapshot tổng hợp bị thiếu.
+        try { const x=localStorage.getItem('bapaco_vpp_map_data'); if(x) dsThanhToanVanPhongProByMonth=__vinapacoMergeMap(dsThanhToanVanPhongProByMonth,JSON.parse(x)); } catch(e) {}
+        try { const x=localStorage.getItem('bapaco_telecom_map_data'); if(x) dsThanhToanTelecombyMonth=__vinapacoMergeMap(dsThanhToanTelecombyMonth,JSON.parse(x)); } catch(e) {}
+        try { const x=localStorage.getItem('bapaco_ink_data'); if(x) dsKhoMucIn=__vinapacoMergeValue(dsKhoMucIn,JSON.parse(x)); } catch(e) {}
+        try { const x=localStorage.getItem('bapaco_ink_master_data'); if(x) dsKhoMucDanhMuc=__vinapacoMergeValue(dsKhoMucDanhMuc,JSON.parse(x)); } catch(e) {}
+        try { const x=localStorage.getItem('bapaco_ink_transactions'); if(x) dsKhoMucGiaoDich=__vinapacoMergeValue(dsKhoMucGiaoDich,JSON.parse(x)); } catch(e) {}
+        if(candidates.length) { try { await ghiSnapshotIndexedDB(getVinapacoSnapshot()); } catch(e) {} }
+        return candidates.length ? 'merged' : 'default';
     }
+
     async function luuKhoDuLieuBenVung() {
         const snapshot=getVinapacoSnapshot();
         try { localStorage.setItem('bapaco_persistent_snapshot_v3',JSON.stringify(snapshot)); } catch(e){}
@@ -2374,12 +2349,12 @@
     }
     async function taoBanSaoNoiBoNgay(){ const snap=getVinapacoSnapshot(); await ghiSnapshotIndexedDB(snap,'snapshot_'+new Date().toISOString().replace(/[:.]/g,'-')); hienThongBaoXuatFile('Đã tạo snapshot dữ liệu nội bộ, giữ lại để phục hồi khi cần.',true); }
     async function nhapBanSaoDuLieuVINAPACO(file){
-        if(!file)return; try { const text=await file.text(), snap=JSON.parse(text); if(!snap || !snap.coSoDuLieuNamThang) throw new Error('File backup không đúng định dạng VINAPACO.'); if(!confirm('Phục hồi backup sẽ thay dữ liệu hiện tại bằng bản sao lưu. Bạn có chắc chắn?')) return; apDungSnapshot(snap); luuTruVaoLocalStorage(true); await ghiSnapshotIndexedDB(getVinapacoSnapshot()); capNhat(); alert('Đã phục hồi dữ liệu thành công.'); } catch(e){ alert('Không thể phục hồi backup: '+(e.message||e)); }
+        if(!file)return; try { const text=await file.text(), snap=JSON.parse(text); if(!snap || !snap.coSoDuLieuNamThang) throw new Error('File backup không đúng định dạng VINAPACO.'); if(!confirm('Phục hồi backup sẽ thay dữ liệu hiện tại bằng bản sao lưu. Bạn có chắc chắn?')) return; apDungSnapshot(snap,true); luuTruVaoLocalStorage(); await ghiSnapshotIndexedDB(getVinapacoSnapshot()); capNhat(); alert('Đã phục hồi dữ liệu thành công.'); } catch(e){ alert('Không thể phục hồi backup: '+(e.message||e)); }
     }
 
-    function luuTruVaoLocalStorage(markDirty=true) {
+    function luuTruVaoLocalStorage(markChanged=true) {
         try {
-            if (markDirty) danhDauDuLieuLocalThayDoi();
+            if(markChanged) __vinapacoDataSavedAt=new Date().toISOString();
             localStorage.setItem('bapaco_db_data', JSON.stringify(coSoDuLieuNamThang));
             localStorage.setItem('bapaco_vpp_map_data', JSON.stringify(dsThanhToanVanPhongProByMonth));
             localStorage.setItem('bapaco_telecom_map_data', JSON.stringify(dsThanhToanTelecombyMonth));
@@ -2398,265 +2373,143 @@
     async function tuDongTaiDuLieuTuDrive() {
         let daNhanDuLieuTuRemote = false;
         try {
-            const result = await gasReadJson(gasWebhookUrl + "?nocache=" + Date.now());
+            // Lấy phiên bản local đã lưu THỰC TẾ trước khi tạo snapshot tạm.
+            let persistedLocalSnapshot = null;
+            try { const raw=localStorage.getItem('bapaco_persistent_snapshot_v3'); if(raw) persistedLocalSnapshot=JSON.parse(raw); } catch(_) {}
+            if(!persistedLocalSnapshot) { try { persistedLocalSnapshot=await docSnapshotIndexedDB('latest'); } catch(_) {} }
+            const localTime = new Date(persistedLocalSnapshot?.savedAt || persistedLocalSnapshot?.clientSavedAt || 0).getTime();
+            const localSnapshot = getVinapacoSnapshot();
+            await ghiSnapshotIndexedDB(localSnapshot,'pre_gas_sync_'+new Date().toISOString().replace(/[:.]/g,'-'));
 
+            const result = await gasReadJson(gasWebhookUrl + '?nocache=' + Date.now());
             if (result && typeof result === 'object') {
-                const localSnapshot = getVinapacoSnapshot();
-                await ghiSnapshotIndexedDB(localSnapshot,'pre_gas_sync_'+new Date().toISOString().replace(/[:.]/g,'-'));
-
-                const localTime = new Date(localSnapshot.savedAt || 0).getTime();
                 const remoteSavedAt = result.savedAt || result.updatedAt || result.serverSavedAt || result.clientSavedAt || '';
                 const remoteTime = new Date(remoteSavedAt || 0).getTime();
-                const localMeta = docSyncMetaVINAPACO();
-
-                if (!Number.isFinite(remoteTime) || remoteTime <= 0) {
-                    // Không có timestamp: giữ dữ liệu local và không ghi đè mù.
-                    capNhatTrangThaiDongBoVINAPACO('Drive chưa cung cấp phiên bản hợp lệ; dữ liệu trên thiết bị vẫn được giữ an toàn.', 'warn');
-                } else if (localTime > 0 && remoteTime > localTime) {
-                    // Drive mới hơn -> nhận remote.
-                    apDungSnapshot(result);
-                    danhDauRemoteDaApDung(result);
+                if (Number.isFinite(remoteTime) && remoteTime > 0) {
+                    // Luôn MERGE dữ liệu remote vào local. Bản remote rỗng/cũ không thể xóa
+                    // các tháng hoặc bản ghi đang có trên thiết bị. Nếu remote mới hơn,
+                    // các trường mới vẫn được nhận đầy đủ.
+                    apDungSnapshot(result,false);
+                    if (remoteTime > localTime) __vinapacoDataSavedAt = remoteSavedAt;
                     daNhanDuLieuTuRemote = true;
-                    capNhatTrangThaiDongBoVINAPACO('Đã nhận bản dữ liệu mới nhất từ Drive.', 'ok');
-                } else if (localTime > 0 && remoteTime === localTime) {
-                    // Hai bên cùng phiên bản -> xác nhận đồng bộ.
-                    localMeta.dirty = false;
-                    localMeta.lastRemoteSavedAt = remoteSavedAt;
-                    localMeta.lastSyncAt = new Date().toISOString();
-                    localMeta.lastSyncMessage = 'Thiết bị và Drive đang cùng phiên bản.';
-                    luuSyncMetaVINAPACO();
-                    capNhatTrangThaiDongBoVINAPACO('Thiết bị và Drive đang cùng phiên bản.', 'ok');
-                } else if (localTime > 0 && remoteTime < localTime) {
-                    // Drive cũ hơn -> KHÔNG báo lỗi, KHÔNG ghi đè local.
-                    // Nếu local còn dirty thì tự gửi lại; nếu không dirty thì chỉ giữ local.
-                    capNhatTrangThaiDongBoVINAPACO(
-                        localMeta.dirty
-                            ? 'Drive đang cũ hơn dữ liệu trên máy; hệ thống đang giữ bản mới và tự đồng bộ lại.'
-                            : 'Drive đang cũ hơn; dữ liệu mới nhất trên máy được giữ nguyên.',
-                        'warn'
-                    );
-                    if (localMeta.dirty) {
-                        try { await tuDongDayDuLieuLenDrive([], '', { retryOnly:true }); } catch (_) {}
+                    if (remoteTime < localTime) {
+                        // Remote cũ: giữ local và để cơ chế push gửi lại bản hợp nhất.
+                        console.info('VINAPACO: Drive cũ hơn local, giữ local + merge dữ liệu để phục hồi.');
                     }
-                }
-
-                if (result.coSoDuLieuNamThang && remoteTime > localTime) {
-                    // Chỉ đánh dấu remote đã nhận ở trên; phần này giữ cấu trúc tương thích.
+                } else {
+                    console.warn('VINAPACO: Drive không có savedAt hợp lệ; chỉ giữ dữ liệu local.');
                 }
             }
         } catch (e) {
             console.warn('VINAPACO auto sync read', e);
-            capNhatTrangThaiDongBoVINAPACO('Chưa kết nối được Drive; dữ liệu trên thiết bị vẫn được giữ nguyên.', 'warn');
         }
 
         chuanHoaHeSoPhuCap();
-
-        if (!coSoDuLieuNamThang[currentNamKey]) {
-            coSoDuLieuNamThang[currentNamKey] = {};
-        }
+        if (!coSoDuLieuNamThang[currentNamKey]) coSoDuLieuNamThang[currentNamKey] = {};
         if (!coSoDuLieuNamThang[currentNamKey][currentThangKey]) {
             const existingMonths = Object.keys(coSoDuLieuNamThang[currentNamKey]);
-            const templateMonth = existingMonths.length > 0
-                ? coSoDuLieuNamThang[currentNamKey][existingMonths[0]]
-                : defaultCoSoDuLieuNamThang["2026"]["Tháng 05"];
+            const templateMonth = existingMonths.length > 0 ? coSoDuLieuNamThang[currentNamKey][existingMonths[0]] : defaultCoSoDuLieuNamThang['2026']['Tháng 05'];
             coSoDuLieuNamThang[currentNamKey][currentThangKey] = JSON.parse(JSON.stringify(templateMonth));
         }
 
-        // Lưu lại trạng thái hiện tại nhưng KHÔNG đánh dấu đây là thay đổi mới.
+        // Ghi lại toàn bộ kho sau khi merge để lần mở sau không mất dữ liệu.
         luuTruVaoLocalStorage(false);
         if (daNhanDuLieuTuRemote) {
-            try { await ghiSnapshotIndexedDB(getVinapacoSnapshot(),'remote_applied_'+new Date().toISOString().replace(/[:.]/g,'-')); } catch(e) {}
+            try { await ghiSnapshotIndexedDB(getVinapacoSnapshot(),'remote_merged_'+new Date().toISOString().replace(/[:.]/g,'-')); } catch(e) {}
         }
     }
 
-    async function tuDongDayDuLieuLenDrive(filesToUpload = [], folderPath = "", options = {}) {
+    async function tuDongDayDuLieuLenDrive(filesToUpload = [], folderPath = "") {
         chuanHoaHeSoPhuCap();
-        const snapshot = getVinapacoSnapshot();
-        const now = Date.now();
-
-        // Chặn nhiều request ghi toàn bộ DB cùng lúc.
-        if (__vinapacoSyncPushBusy) return false;
-        if (!options.retryOnly && now - __vinapacoLastPushAt < 1200) return true;
-
-        __vinapacoSyncPushBusy = true;
-        try {
-            const payload = {
-                ...snapshot,
-                schemaVersion: VINAPACO_STORAGE_VERSION,
-                syncRevision: snapshot.syncRevision,
-                deviceId: snapshot.deviceId,
-                savedAt: snapshot.savedAt,
-                folderPath: folderPath,
-                autoDriveLink: true,
-                driveRoot: "VINAPACO_Drive",
-                driveLinkRule: "Năm/Tháng/Loại hồ sơ",
-                reuseExistingAttachments: true
-            };
-            const sent = await gasSendNoCors({ type: "SYNC_MASTER_DB", payload: payload, filesToUpload: filesToUpload });
-            __vinapacoLastPushAt = Date.now();
-
-            if (sent) {
-                xacNhanDaGuiLenDriveVINAPACO();
-                capNhatTrangThaiDongBoVINAPACO(
-                    options.retryOnly
-                        ? 'Đã tự gửi lại bản dữ liệu mới hơn lên Drive.'
-                        : 'Đã gửi dữ liệu lên Drive; đang xác nhận phiên bản.',
-                    'info'
-                );
-            } else {
-                capNhatTrangThaiDongBoVINAPACO('Mạng/GAS chưa phản hồi; dữ liệu vẫn nằm an toàn trên thiết bị và sẽ tự thử lại.', 'warn');
-            }
-            return !!sent;
-        } catch (e) {
-            console.warn('VINAPACO push sync', e);
-            capNhatTrangThaiDongBoVINAPACO('Chưa gửi được Drive; dữ liệu trên thiết bị vẫn được giữ nguyên.', 'warn');
-            return false;
-        } finally {
-            __vinapacoSyncPushBusy = false;
-        }
+        let payload = { 
+            schemaVersion: VINAPACO_STORAGE_VERSION,
+            savedAt: new Date().toISOString(),
+            coSoDuLieuNamThang, 
+            dsThanhToanVanPhongProByMonth, 
+            dsKhoMucIn, dsKhoMucDanhMuc, dsKhoMucGiaoDich, 
+            dsThanhToanTelecombyMonth, 
+            dsKhaoSatChuyenSau,
+            dsDanhMucChucDanhQuyHoach,
+            danhSachCongViec, 
+            dsPhieuGiaoNhan, 
+            danhSachTaiKhoanHeThong,
+            folderPath: folderPath,
+            autoDriveLink: true,
+            driveRoot: "VINAPACO_Drive",
+            driveLinkRule: "Năm/Tháng/Loại hồ sơ",
+            reuseExistingAttachments: true
+        };
+        try { 
+            await gasSendNoCors({ type: "SYNC_MASTER_DB", payload: payload, filesToUpload: filesToUpload }); 
+        } catch (e) {}
     }
 
-    async function thuCongDongBoLenDrive() {
-        // Nút này chỉ gửi bản local hiện tại; không xóa/ghi đè dữ liệu local.
-        try {
-            const ok = await tuDongDayDuLieuLenDrive([], '', { manual:true });
-            if (ok) {
-                alert("✅ Đã gửi phiên bản hiện tại lên Google Drive.\n\nHệ thống sẽ tự kiểm tra lại để xác nhận hai thiết bị cùng phiên bản.");
-            } else {
-                alert("⚠️ Chưa gửi được lên Drive.\n\nDữ liệu trên máy vẫn được giữ nguyên và hệ thống sẽ tự thử lại khi có mạng.");
-            }
-        } catch (e) {
-            alert("⚠️ Không thể gửi ngay lên Drive. Dữ liệu trên máy vẫn được giữ nguyên.");
-        }
+    async function thuCongDongBoLenDrive() { 
+        await tuDongDayDuLieuLenDrive(); 
+        alert("✅ Đã đồng bộ toàn bộ dữ liệu lên Google Drive thành công!"); 
     }
 
     async function thuCongTaiVeTuDrive(event) {
         const btn = event && event.currentTarget ? event.currentTarget : document.querySelector('button[onclick*="thuCongTaiVeTuDrive"]');
-        if (btn) {
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang đồng bộ...`;
-        }
-
+        if (btn) { btn.disabled=true; btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Đang đồng bộ an toàn...'; }
         try {
-            const localSnapshot = getVinapacoSnapshot();
+            const localSnapshot=getVinapacoSnapshot();
             await ghiSnapshotIndexedDB(localSnapshot,'pre_manual_download_'+new Date().toISOString().replace(/[:.]/g,'-'));
+            const result=await gasReadJson(gasWebhookUrl+'?nocache='+Date.now()+'&source=mobile_latest');
+            if(!result || typeof result!=='object') throw new Error('Dữ liệu trả về từ Google Drive/GAS không hợp lệ.');
+            const remoteSavedAt=result.savedAt || result.updatedAt || result.serverSavedAt || result.clientSavedAt || '';
+            const remoteTime=new Date(remoteSavedAt||0).getTime();
+            const localTime=new Date(localSnapshot.savedAt||0).getTime();
 
-            const result = await gasReadJson(gasWebhookUrl + "?nocache=" + Date.now() + "&source=mobile_latest");
-            if (!result || typeof result !== "object") {
-                throw new Error("Dữ liệu trả về từ Google Drive/GAS không hợp lệ.");
+            // Không còn chế độ "ghi đè toàn bộ". Dù Drive cũ, bằng hay mới, dữ liệu
+            // vẫn được MERGE theo tháng/bản ghi để không mất cước viễn thông và thanh toán VP.
+            apDungSnapshot(result,false);
+            if (Number.isFinite(remoteTime) && remoteTime > localTime && remoteSavedAt) __vinapacoDataSavedAt = remoteSavedAt;
+            chuanHoaHeSoPhuCap();
+            if(!coSoDuLieuNamThang[currentNamKey]) coSoDuLieuNamThang[currentNamKey]={};
+            if(!coSoDuLieuNamThang[currentNamKey][currentThangKey]) {
+                const months=Object.keys(coSoDuLieuNamThang[currentNamKey]);
+                const tpl=months.length?coSoDuLieuNamThang[currentNamKey][months[0]]:defaultCoSoDuLieuNamThang['2026']['Tháng 05'];
+                coSoDuLieuNamThang[currentNamKey][currentThangKey]=JSON.parse(JSON.stringify(tpl));
             }
-
-            const persistedLocalSnapshot = localSnapshot;
-            const localTime = new Date(
-                persistedLocalSnapshot?.savedAt ||
-                persistedLocalSnapshot?.clientSavedAt ||
-                0
-            ).getTime();
-
-            const remoteSavedAt = result.savedAt || result.updatedAt || result.serverSavedAt || result.clientSavedAt || '';
-            const remoteTime = new Date(remoteSavedAt || 0).getTime();
-            const localMeta = docSyncMetaVINAPACO();
-
-            if (!Number.isFinite(remoteTime) || remoteTime <= 0) {
-                // Không còn hiện lỗi "Không tải/ghi dữ liệu" chỉ vì GAS thiếu timestamp.
-                capNhatTrangThaiDongBoVINAPACO('Drive chưa trả về phiên bản hợp lệ; dữ liệu trên máy được giữ nguyên.', 'warn');
-                if (localMeta.dirty) await tuDongDayDuLieuLenDrive([], '', { retryOnly:true });
-                alert("ℹ️ Chưa thể xác nhận phiên bản trên Drive.\n\nDữ liệu trên máy không bị thay đổi.");
-            } else if (localTime > 0 && remoteTime < localTime) {
-                // Đây chính là trường hợp trong ảnh: không báo lỗi, tự giữ local và đẩy lại.
-                capNhatTrangThaiDongBoVINAPACO('Drive đang cũ hơn dữ liệu trên máy; đã giữ bản mới và gửi lại Drive.', 'warn');
-                await tuDongDayDuLieuLenDrive([], '', { retryOnly:true });
-                alert("ℹ️ Drive đang có bản cũ hơn dữ liệu trên máy.\n\nHệ thống đã giữ nguyên dữ liệu mới trên máy và tự gửi lại phiên bản mới lên Drive. Không ghi đè dữ liệu.");
-            } else if (localTime > 0 && remoteTime === localTime) {
-                localMeta.dirty = false;
-                localMeta.lastRemoteSavedAt = remoteSavedAt;
-                localMeta.lastSyncAt = new Date().toISOString();
-                localMeta.lastSyncMessage = 'Thiết bị và Drive đang cùng phiên bản.';
-                luuSyncMetaVINAPACO();
-                capNhatTrangThaiDongBoVINAPACO('Thiết bị và Drive đang cùng phiên bản.', 'ok');
-                alert("ℹ️ Dữ liệu trên máy và Drive đã cùng phiên bản. Không cần tải lại.");
-            } else {
-                // Remote mới hơn -> nhận remote. Nếu local còn dirty, giữ một bản xung đột
-                // trong IndexedDB trước khi áp dụng để không mất dữ liệu cục bộ do sửa đồng thời.
-                if (docSyncMetaVINAPACO().dirty) {
-                    try { await ghiSnapshotIndexedDB(localSnapshot,'conflict_before_remote_'+Date.now()); } catch (_) {}
-                }
-                apDungSnapshot(result);
-                danhDauRemoteDaApDung(result);
-                luuTruVaoLocalStorage(false);
-                try { await ghiSnapshotIndexedDB(getVinapacoSnapshot(),'manual_download_applied_'+new Date().toISOString().replace(/[:.]/g,'-')); } catch(e) {}
-                capNhatTrangThaiDongBoVINAPACO('Đã nhận bản dữ liệu mới nhất từ điện thoại/Drive.', 'ok');
-                capNhat();
-                renderOfficePaymentTable();
-                renderTelecomPaymentTable();
-
-                const vppCount = Object.values(dsThanhToanVanPhongProByMonth || {}).reduce((n, a) => n + (Array.isArray(a) ? a.length : 0), 0);
-                const telecomCount = Object.values(dsThanhToanTelecombyMonth || {}).reduce((n, a) => n + (Array.isArray(a) ? a.length : 0), 0);
-
-                alert(`✅ Đã nhận bản dữ liệu MỚI NHẤT từ điện thoại/Google Drive.\n\n• Thanh toán văn phòng: ${vppCount} bản ghi\n• Cước viễn thông: ${telecomCount} bản ghi\n• Tháng đang chọn: ${currentThangKey}/${currentNamKey}\n• Thời điểm dữ liệu từ xa: ${new Date(remoteTime).toLocaleString("vi-VN")}`);
-            }
-        } catch (error) {
-            console.error("Lỗi đồng bộ dữ liệu từ Drive:", error);
-            capNhatTrangThaiDongBoVINAPACO('Kết nối Drive đang gặp sự cố; dữ liệu trên máy vẫn được giữ nguyên.', 'warn');
-            alert("⚠️ Chưa thể hoàn tất đồng bộ với Drive.\n\nDữ liệu trên máy KHÔNG bị ghi đè và hệ thống sẽ tự thử lại.");
-        } finally {
-            if (btn) {
-                btn.disabled = false;
-                btn.innerHTML = `<i class="fa-solid fa-mobile-screen-button"></i> Tải Dữ Liệu Mới Nhất`;
-            }
+            luuTruVaoLocalStorage(false);
+            try { await ghiSnapshotIndexedDB(getVinapacoSnapshot(),'manual_download_merged_'+new Date().toISOString().replace(/[:.]/g,'-')); } catch(e) {}
+            capNhat(); renderOfficePaymentTable(); renderTelecomPaymentTable();
+            const vppCount=Object.values(dsThanhToanVanPhongProByMonth||{}).reduce((n,a)=>n+(Array.isArray(a)?a.length:0),0);
+            const telecomCount=Object.values(dsThanhToanTelecombyMonth||{}).reduce((n,a)=>n+(Array.isArray(a)?a.length:0),0);
+            if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-mobile-screen-button"></i> Tải Dữ Liệu Mới Nhất';}
+            const status=!Number.isFinite(remoteTime)||remoteTime<=0?'Không có phiên bản Drive hợp lệ — giữ nguyên dữ liệu máy.':remoteTime<localTime?'Drive cũ hơn — đã giữ bản máy và hợp nhất dữ liệu.':remoteTime===localTime?'Hai bản cùng phiên bản — đã kiểm tra và hợp nhất an toàn.':'Drive mới hơn — đã nhận và hợp nhất, không xóa dữ liệu máy.';
+            alert('✅ Đồng bộ an toàn hoàn tất.\n\n• Thanh toán VP: '+vppCount+' bản ghi\n• Cước viễn thông: '+telecomCount+' bản ghi\n• '+status);
+        } catch(error) {
+            console.error('Lỗi đồng bộ dữ liệu từ Drive:',error);
+            if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-mobile-screen-button"></i> Tải Dữ Liệu Mới Nhất';}
+            alert('⚠️ Chưa thể hoàn tất đồng bộ với Drive.\n\nDữ liệu trên máy KHÔNG bị ghi đè và vẫn được giữ an toàn.');
         }
     }
 
     function khoiTaoTuDongDongBoNgam() {
+        // Đồng bộ nền theo kiểu MERGE: không bao giờ thay toàn bộ kho bằng snapshot remote.
         if (!VINAPACO_GAS_READ_ENABLED) return;
-        setInterval(async () => {
-            if (__vinapacoSyncPushBusy) return;
-            try {
-                const result = await gasReadJson(gasWebhookUrl + "?nocache=" + Date.now());
-                if (!result || typeof result !== 'object') return;
+        setInterval(async()=>{
+            try{
+                if(__vinapacoSyncBusy) return;
+                const result=await gasReadJson(gasWebhookUrl+'?nocache='+Date.now());
+                if(!result || typeof result!=='object') return;
+                const local=getVinapacoSnapshot();
+                const remoteSavedAt=result.savedAt || result.updatedAt || result.serverSavedAt || result.clientSavedAt || '';
+                const remoteTime=new Date(remoteSavedAt||0).getTime();
+                const localTime=new Date(local.savedAt||0).getTime();
+                if(!Number.isFinite(remoteTime)||remoteTime<=0) return;
 
-                const local = getVinapacoSnapshot();
-                const localMeta = docSyncMetaVINAPACO();
-                const localTime = new Date(local.savedAt || 0).getTime();
-                const remoteSavedAt = result.savedAt || result.updatedAt || result.serverSavedAt || result.clientSavedAt || '';
-                const remoteTime = new Date(remoteSavedAt || 0).getTime();
-
-                if (!Number.isFinite(remoteTime) || remoteTime <= 0) return;
-
-                if (remoteTime > localTime) {
-                    if (localMeta.dirty) {
-                        try { await ghiSnapshotIndexedDB(local,'conflict_background_'+Date.now()); } catch (_) {}
-                    }
-                    apDungSnapshot(result);
-                    danhDauRemoteDaApDung(result);
-                    luuTruVaoLocalStorage(false);
-                    renderInkWarehouse();
-                    capNhat();
-                    capNhatTrangThaiDongBoVINAPACO('Đã tự động nhận dữ liệu mới từ Drive.', 'ok');
-                    return;
-                }
-
-                if (remoteTime === localTime) {
-                    if (localMeta.dirty) {
-                        localMeta.dirty = false;
-                        localMeta.lastRemoteSavedAt = remoteSavedAt;
-                        localMeta.lastSyncAt = new Date().toISOString();
-                        localMeta.lastSyncMessage = 'Drive đã xác nhận phiên bản local.';
-                        luuSyncMetaVINAPACO();
-                        capNhatTrangThaiDongBoVINAPACO('Đã xác nhận đồng bộ thành công giữa các thiết bị.', 'ok');
-                    }
-                    return;
-                }
-
-                // Drive cũ hơn local: không ghi đè. Nếu còn dirty thì tự gửi lại.
-                if (localMeta.dirty) {
-                    await tuDongDayDuLieuLenDrive([], '', { retryOnly:true });
-                }
-            } catch (e) {
-                // Đồng bộ nền không được làm gián đoạn giao diện.
-                console.warn('VINAPACO background sync', e);
-            }
-        }, 30000);
+                // Chỉ nhận phần dữ liệu remote còn thiếu/thay đổi; các bản ghi local vẫn giữ nguyên.
+                apDungSnapshot(result,false);
+                if (remoteTime > localTime && remoteSavedAt) __vinapacoDataSavedAt = remoteSavedAt;
+                luuTruVaoLocalStorage(false);
+                renderInkWarehouse();
+                capNhat();
+                if(remoteTime<localTime) console.info('VINAPACO: remote cũ, đã giữ local và merge.');
+            }catch(e){ console.warn('VINAPACO background sync',e); }
+        },30000);
     }
 
     window.addEventListener('DOMContentLoaded', async () => {
@@ -2722,13 +2575,19 @@
         const y = Number(parts.find(x=>x.type==='year').value);
         const m = Number(parts.find(x=>x.type==='month').value);
         const d = Number(parts.find(x=>x.type==='day').value);
-        const todayLunar = convertSolar2Lunar(d, m, y);
+        let todayLunar;
+        try { todayLunar = convertSolar2Lunar(d,m,y) || {}; } catch(e) { todayLunar={day:1,month:1,year:y,leap:0}; }
+        const lunarYear=Number.isFinite(Number(todayLunar.year))?Number(todayLunar.year):y;
+        const ccDay=lichCanChiDay(d,m,y);
+        const canChiNam=lichCanChiYear(lunarYear)||String(lunarYear);
+        const canChiNgay=ccDay?.text||'';
+        const lunarDay=Number(todayLunar.day)||1, lunarMonth=Number(todayLunar.month)||1;
         const lunarEl = document.getElementById('lunarWidgetText');
         if (lunarEl) {
             lunarEl.innerHTML = `
-                🌙 <b>Âm lịch:</b> Ngày ${todayLunar.day} tháng ${todayLunar.month} (${todayLunar.canChiNam})<br>
-                ✨ <b>Can Chi & Trực:</b> Ngày ${todayLunar.canChiNgay} - ${todayLunar.truc}<br>
-                🟢 <b>Việc nên làm:</b> ${todayLunar.viecNenLam}
+                🌙 <b>Âm lịch:</b> Ngày ${lunarDay} tháng ${lunarMonth} (${escapeHtml(canChiNam)})<br>
+                ✨ <b>Can Chi & Trực:</b> Ngày ${escapeHtml(canChiNgay)}<br>
+                🟢 <b>Việc nên làm:</b> Theo lịch vạn niên
             `;
         }
     }
@@ -2874,9 +2733,12 @@
         }
         if(lunarMonth>12) lunarMonth-=12;
         if(lunarMonth>=11 && diff<4) lunarYear--;
-        return {day:lunarDay,month:lunarMonth,year:lunarYear,leap:lunarLeap};
+        const safeYear=Number.isFinite(Number(lunarYear))?Number(lunarYear):yy;
+        const safeMonth=Number.isFinite(Number(lunarMonth))?Number(lunarMonth):1;
+        const safeDay=Number.isFinite(Number(lunarDay))?Number(lunarDay):1;
+        return {day:safeDay,month:safeMonth,year:safeYear,leap:Number(lunarLeap)||0};
     }
-    function lichCanChiYear(y){ return LICH_CAN[(y+6)%10]+" "+LICH_CHI[(y+8)%12]; }
+    function lichCanChiYear(y){ const n=Number(y); if(!Number.isFinite(n)) return ""; return LICH_CAN[((n+6)%10+10)%10]+" "+LICH_CHI[((n+8)%12+12)%12]; }
     function lichCanChiMonth(lunarYear,lunarMonth){
         const canYear=(lunarYear+6)%10;
         const canMonth=(canYear*2+lunarMonth+2)%10;
@@ -3906,7 +3768,7 @@
         let s=danhSachCongViec[idx].status;
         danhSachCongViec[idx].status=s==='Chưa làm'?'Đang làm':(s==='Đang làm'?'Hoàn thành':'Chưa làm');
         renderTaskTable();
-        luuTruVaoLocalStorage();
+        localStorage.setItem('bapaco_task_data',JSON.stringify(danhSachCongViec));
         try{await tuDongDayDuLieuLenDrive();}catch(e){}
         try{capNhatKPI();veTatCaBieuDoDashboard();}catch(e){}
     }
@@ -3944,7 +3806,7 @@
             if(editIdx>=0 && editIdx<danhSachCongViec.length) danhSachCongViec[editIdx]={...danhSachCongViec[editIdx],...item,updatedAt:new Date().toISOString()};
             else danhSachCongViec.push({id:'CV-'+Date.now(),...item,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()});
             renderTaskTable();
-            luuTruVaoLocalStorage();
+            localStorage.setItem('bapaco_task_data',JSON.stringify(danhSachCongViec));
             if(nameEl) nameEl.value=''; if(editEl) editEl.value='-1'; if(assigneeEl) assigneeEl.value='Trần Bình Dương'; if(dueEl) dueEl.value=''; if(statusEl) statusEl.value='Chưa làm';
             document.getElementById('btnCancelTask')?.classList.add('hidden');
             if(btn) btn.innerHTML='<i class="fas fa-plus-circle"></i> Thêm Công Việc';
@@ -3956,7 +3818,7 @@
     async function xoaCongViec(idx) {
         if(confirm('Bạn có chắc chắn muốn xóa công việc này không?')) {
             danhSachCongViec.splice(idx,1); renderTaskTable();
-            luuTruVaoLocalStorage();
+            localStorage.setItem('bapaco_task_data',JSON.stringify(danhSachCongViec));
             try{await tuDongDayDuLieuLenDrive();}catch(e){}
             try{capNhatKPI();veTatCaBieuDoDashboard();}catch(e){}
         }
@@ -5954,9 +5816,9 @@
 
     // Ghi đè hàm lưu để mọi thay đổi đều được lưu bền vững và đồng bộ ngay.
     const __vinapacoLuuTruGoc = luuTruVaoLocalStorage;
-    luuTruVaoLocalStorage = function(){
-        try{ __vinapacoLuuTruGoc(); }catch(e){ console.warn('Lưu dữ liệu VINAPACO',e); }
-        yeuCauDongBoNgay();
+    luuTruVaoLocalStorage = function(markChanged=true){
+        try{ __vinapacoLuuTruGoc(markChanged); }catch(e){ console.warn('Lưu dữ liệu VINAPACO',e); }
+        if(markChanged) yeuCauDongBoNgay();
     };
 
     function khoiTaoKhoMucBaoToanDuLieu(){

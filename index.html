@@ -453,6 +453,75 @@ body{padding:10px;}
 }
 
 </style>
+<style>
+
+/* ============================================================
+   VINAPACO 2026.08 MOBILE + DATA-SAFE PATCH
+   - Desktop: giữ bảng đầy đủ.
+   - Mobile: chuyển các bảng kho mực thành thẻ, hiển thị toàn bộ trường.
+   - Không tạo dữ liệu giả lập.
+   ============================================================ */
+html { overflow-x:hidden; }
+body { min-width:0; }
+button,input,select,textarea { max-width:100%; }
+.table-card { min-width:0; }
+.ink-mobile-only { display:none; }
+.ink-desktop-only { display:block; }
+
+.ink-sync-safety-bar{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  flex-wrap:wrap;margin:0 0 12px;padding:10px 12px;border:1px solid #bfdbfe;
+  border-radius:10px;background:linear-gradient(135deg,#eff6ff,#f8fafc);
+  color:#334155;font-size:11px;font-weight:750;
+}
+.ink-sync-safety-bar .safe-main{display:flex;align-items:center;gap:7px;min-width:0}
+.ink-sync-safety-bar .safe-main span{overflow-wrap:anywhere}
+.ink-sync-safety-bar .safe-actions{display:flex;gap:6px;flex-wrap:wrap}
+.ink-sync-safety-bar .safe-actions button{padding:6px 9px;font-size:10px}
+
+.ink-mobile-card{
+  background:#fff;border:1px solid #dbe3ea;border-radius:12px;
+  padding:12px;margin-bottom:9px;box-shadow:0 2px 8px rgba(15,23,42,.04);
+}
+.ink-mobile-card .imc-head{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:8px;
+  border-bottom:1px solid #eef2f7;padding-bottom:8px;margin-bottom:8px;
+}
+.ink-mobile-card .imc-title{font-size:13px;font-weight:950;color:#0f172a;line-height:1.35}
+.ink-mobile-card .imc-sub{font-size:10px;color:#64748b;margin-top:2px;line-height:1.45}
+.ink-mobile-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.ink-mobile-field{background:#f8fafc;border:1px solid #eef2f7;border-radius:8px;padding:7px;min-width:0}
+.ink-mobile-field.full{grid-column:1/-1}
+.ink-mobile-field b{display:block;font-size:9px;color:#64748b;text-transform:uppercase;margin-bottom:2px}
+.ink-mobile-field span{display:block;font-size:11px;font-weight:750;color:#0f172a;overflow-wrap:anywhere}
+.ink-mobile-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.ink-mobile-empty{padding:18px;text-align:center;color:#64748b;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;font-size:11px}
+.ink-mobile-kpi-note{font-size:10px;color:#64748b;margin-top:4px}
+
+@media(max-width:600px){
+  .ink-desktop-only{display:none!important;}
+  .ink-mobile-only{display:block;}
+  .ink-sync-safety-bar{align-items:flex-start;}
+  .ink-sync-safety-bar .safe-actions{width:100%;}
+  .ink-sync-safety-bar .safe-actions button{flex:1 1 auto;min-width:120px;justify-content:center;}
+  #inkInventoryTab .table-header-bar{gap:8px;}
+  #inkInventoryTab .table-header-bar>div:last-child{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%;}
+  #inkInventoryTab .table-header-bar>div:last-child .btn{width:100%;justify-content:center;}
+  #inkInventoryTab #inkMinAlertBox{font-size:11px;line-height:1.5;}
+  #inkInventoryTab #inkTransactionForm{padding:10px!important;}
+  #inkInventoryTab #inkTransactionForm .form-card{grid-template-columns:1fr!important;}
+  #inkInventoryTab #inkTransactionForm .form-group[style*="grid-column"]{grid-column:auto!important;}
+  #inkInventoryTab #inputInkCode + button{font-size:10px!important;padding:7px 8px!important;}
+  #inkInventoryTab .ink-mobile-grid{grid-template-columns:1fr 1fr;}
+  #inkInventoryTab details{padding:9px!important;}
+}
+@media(max-width:380px){
+  .ink-mobile-grid{grid-template-columns:1fr;}
+  .ink-mobile-field.full{grid-column:auto;}
+  #inkInventoryTab .table-header-bar>div:last-child{grid-template-columns:1fr;}
+}
+
+</style>
 </head>
 <body>
 
@@ -1026,6 +1095,15 @@ body{padding:10px;}
 
     <!-- TAB KHO MỰC IN - THIẾT KẾ NHẬP / XUẤT TÁCH RIÊNG -->
     <div id="inkInventoryTab" class="tab-pane table-card">
+        <div id="inkDataSafetyBar" class="ink-sync-safety-bar">
+  <div class="safe-main"><i class="fa-solid fa-shield-halved" style="color:#0369a1;"></i>
+    <span><b>Dữ liệu kho mực an toàn:</b> lưu cục bộ + IndexedDB trước khi đồng bộ; thiết bị chỉ hợp nhất bản ghi, không ghi đè mù.</span>
+  </div>
+  <div class="safe-actions">
+    <button type="button" class="btn btn-blue" onclick="vinapacoBackupKhoMucThuCong()"><i class="fa-solid fa-download"></i> Sao lưu kho</button>
+    <button type="button" class="btn btn-green" onclick="vinapacoDongBoKhoMucThuCong()"><i class="fa-solid fa-cloud-arrow-up"></i> Đồng bộ ngay</button>
+  </div>
+</div>
         <div class="table-header-bar">
             <div>
                 <div class="table-title"><i class="fa-solid fa-warehouse"></i> KHO MỰC IN — NHẬP / XUẤT / TỒN</div>
@@ -1049,7 +1127,7 @@ body{padding:10px;}
 
         <div style="margin-bottom:16px;background:#f8fafc;border:1px solid var(--border-color);padding:12px;border-radius:10px;">
             <div style="font-weight:900;font-size:13px;margin-bottom:8px;color:#0369a1;"><i class="fa-solid fa-chart-line"></i> TỒN KHO THEO MẶT HÀNG</div>
-            <div style="overflow-x:auto;"><table><thead><tr><th>STT</th><th>Mã VT</th><th>Tên Mực</th><th>Máy In</th><th>ĐVT</th><th>Tồn Đầu</th><th>Nhập</th><th>Xuất</th><th>Tồn Cuối</th><th>Min</th><th>Trạng Thái</th><th>Thao Tác</th></tr></thead><tbody id="xntTableBody"></tbody></table></div>
+            <div style="overflow-x:auto;"><table><thead><tr><th>STT</th><th>Mã VT</th><th>Tên Mực</th><th>Máy In</th><th>ĐVT</th><th>Tồn Đầu</th><th>Nhập</th><th>Xuất</th><th>Tồn Cuối</th><th>Min</th><th>Trạng Thái</th><th>Thao Tác</th></tr></thead><tbody id="xntTableBody"></tbody></table></div><div id="xntMobileCards" class="ink-mobile-only"></div>
         </div>
 
         <div id="inkTransactionForm" style="background:#fff;border:2px solid #bfdbfe;border-radius:14px;padding:16px;margin-bottom:16px;box-shadow:0 6px 18px rgba(15,23,42,.06);">
@@ -1090,7 +1168,7 @@ body{padding:10px;}
             <div style="font-size:13px;font-weight:900;color:#334155;"><i class="fa-solid fa-list"></i> LỊCH SỬ NHẬP / XUẤT</div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;"><button class="btn btn-blue" style="padding:5px 9px;" onclick="locLichSuKho('tatca')">Tất cả</button><button class="btn btn-green" style="padding:5px 9px;" onclick="locLichSuKho('nhap')">Nhập kho</button><button class="btn btn-purple" style="padding:5px 9px;" onclick="locLichSuKho('xuat')">Xuất kho</button></div>
         </div>
-        <div style="overflow-x:auto;"><table><thead><tr><th>Ngày</th><th>Số Phiếu</th><th>Loại</th><th>Mã VT</th><th>Tên Mực</th><th>SL</th><th>Đơn Giá</th><th>Đối Tượng</th><th>Người Lập</th><th>Thao Tác</th></tr></thead><tbody id="inkHistoryTableBody"></tbody></table></div>
+        <div style="overflow-x:auto;"><table><thead><tr><th>Ngày</th><th>Số Phiếu</th><th>Loại</th><th>Mã VT</th><th>Tên Mực</th><th>SL</th><th>Đơn Giá</th><th>Đối Tượng</th><th>Người Lập</th><th>Thao Tác</th></tr></thead><tbody id="inkHistoryTableBody"></tbody></table></div><div id="inkHistoryMobileCards" class="ink-mobile-only"></div>
 
         <details style="margin-top:16px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;padding:12px;">
             <summary id="inkMasterSummary" style="font-weight:900;color:#475569;font-size:12px;cursor:pointer;"><i class="fa-solid fa-sliders"></i> DANH MỤC MỰC & ĐỊNH MỨC MIN <span style="color:#0284c7;font-weight:900;">— nơi thêm các loại mực chưa có</span></summary>
@@ -1104,7 +1182,7 @@ body{padding:10px;}
                 <div class="form-group"><label>Mức MIN *</label><input type="number" id="masterInkMin" min="0" value="2"></div>
                 <div class="form-group" style="display:flex;align-items:end;gap:7px;"><button class="btn btn-blue" onclick="luuDanhMucMuc()"><i class="fas fa-plus"></i> Lưu mặt hàng</button><button class="btn btn-red hidden" id="btnCancelInkMaster" onclick="huySuaDanhMucMuc()">Hủy</button></div>
             </div>
-            <div style="overflow-x:auto;margin-top:10px;"><table><thead><tr><th>Mã VT</th><th>Tên Mực</th><th>Máy In</th><th>ĐVT</th><th>Tồn Đầu</th><th>Min</th><th>Thao Tác</th></tr></thead><tbody id="inkMasterTableBody"></tbody></table></div>
+            <div style="overflow-x:auto;margin-top:10px;"><table><thead><tr><th>Mã VT</th><th>Tên Mực</th><th>Máy In</th><th>ĐVT</th><th>Tồn Đầu</th><th>Min</th><th>Thao Tác</th></tr></thead><tbody id="inkMasterTableBody"></tbody></table></div><div id="inkMasterMobileCards" class="ink-mobile-only" style="margin-top:10px;"></div>
         </details>
     </div>
 
@@ -5376,7 +5454,112 @@ body{padding:10px;}
             td.left{text-align:center}
             col.c1{width:4%} col.c2{width:16%} col.c3{width:7%} col.c4{width:11%} col.c5{width:4%} col.c6{width:26%} col.c7{width:12%} col.c8{width:20%}
             tr{page-break-inside:avoid}
-        </style></head><body>
+        </style>
+<style id="vinapaco-responsive-final">
+/* ============================================================
+   VINAPACO RESPONSIVE FINAL
+   PC = giao diện đầy đủ, cân đối theo chiều ngang.
+   MOBILE = một cột, không tràn ngang, các bảng kho mực dùng thẻ.
+   Chỉ thay đổi trình bày; KHÔNG đụng vào dữ liệu nghiệp vụ.
+   ============================================================ */
+
+/* Desktop / laptop: trả header về bố cục ngang, tránh 2x2 không cần thiết */
+@media (min-width: 901px){
+  body{padding:16px;}
+  .container{width:100%;max-width:1720px;margin:0 auto;}
+  .banner{display:flex;align-items:center;justify-content:space-between;gap:16px;}
+  .banner > div:first-child{flex:1 1 360px;min-width:280px;}
+  .btn-group-header{width:auto;display:flex;flex:0 1 auto;gap:8px;align-items:center;justify-content:flex-end;}
+  .btn-group-header .btn{width:auto;min-width:150px;justify-content:center;white-space:nowrap;}
+
+  /* Khối cấu hình trên PC luôn nằm cân đối, không đẩy "Mức lương công việc" xuống dòng */
+  .config-bar{
+    grid-template-columns:120px 135px minmax(300px,2.2fr) 125px 165px 165px 155px;
+    gap:12px;
+  }
+  .config-item.drive-path-box{grid-column:span 1;}
+}
+
+/* Tablet: chia 2 hàng hợp lý */
+@media (min-width:601px) and (max-width:1100px){
+  body{padding:10px;}
+  .banner{display:block;}
+  .banner .btn-group-header{width:100%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:10px;}
+  .banner .btn-group-header .btn{width:100%;min-width:0;}
+  .config-bar{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .config-item.drive-path-box{grid-column:1/-1;}
+}
+
+/* Mobile: không có giao diện desktop bị thu nhỏ */
+@media (max-width:600px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden;}
+  body{padding:7px;}
+  .container{width:100%;max-width:none;gap:9px;}
+
+  .banner{display:block;width:100%;padding:12px;border-radius:11px;}
+  .banner h1{font-size:16px;line-height:1.3;}
+  .banner p{font-size:10px;line-height:1.45;}
+  .banner .btn-group-header{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:10px;}
+  .banner .btn-group-header .btn{width:100%;min-width:0;padding:9px 7px;font-size:10px;justify-content:center;white-space:normal;line-height:1.2;}
+
+  .config-bar{display:grid;grid-template-columns:1fr!important;gap:9px;padding:11px;}
+  .config-item,.config-item.drive-path-box{grid-column:auto!important;width:100%;min-width:0!important;}
+  .config-item label{font-size:10px;min-height:auto;}
+  .config-item input,.config-item select{height:40px;font-size:13px;}
+  .config-item.drive-path-box>div{width:100%;}
+  .config-item.drive-path-box>div .btn{padding:6px 9px!important;font-size:11px;}
+
+  .top-info-bar{grid-template-columns:1fr!important;gap:8px;}
+  .info-widget-card{width:100%;}
+  .kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;}
+  .kpi-card{padding:9px;}
+  .kpi-title{font-size:9px;}
+  .kpi-value{font-size:17px;}
+  .kpi-sub{font-size:9px;}
+
+  /* Không để các bảng kho mực desktop chiếm chiều rộng trên điện thoại.
+     Các thẻ mobile đã được render sẵn trong HTML/JS. */
+  #inkInventoryTab #xntMobileCards,
+  #inkInventoryTab #inkHistoryMobileCards,
+  #inkInventoryTab #inkMasterMobileCards{display:block!important;}
+  #inkInventoryTab #xntMobileCards~*,
+  #inkInventoryTab #inkHistoryMobileCards~*{max-width:100%;}
+  #inkInventoryTab table{min-width:0!important;width:100%;}
+  #inkInventoryTab > div[style*="overflow-x:auto"] table,
+  #inkInventoryTab .table-card table{min-width:0!important;}
+  #inkInventoryTab > div[style*="overflow-x:auto"]:has(#inkHistoryTableBody),
+  #inkInventoryTab > div[style*="overflow-x:auto"]:has(#inkMasterTableBody){display:none!important;}
+  #inkInventoryTab > div[style*="margin-bottom:16px"] > div[style*="overflow-x:auto"]{display:none!important;}
+
+  #inkInventoryTab .table-header-bar{display:block;}
+  #inkInventoryTab .table-header-bar .table-title{font-size:13px;line-height:1.35;margin-bottom:8px;}
+  #inkInventoryTab .table-header-bar>div:last-child{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%;}
+  #inkInventoryTab .table-header-bar>div:last-child .btn{width:100%;justify-content:center;}
+  #inkInventoryTab #inkTransactionForm{width:100%;padding:10px!important;}
+  #inkInventoryTab #inkTransactionForm .form-card{display:grid;grid-template-columns:1fr!important;gap:9px;}
+  #inkInventoryTab #inkTransactionForm .form-group[style*="grid-column"]{grid-column:auto!important;}
+  #inkInventoryTab #inkTransactionForm .btn{max-width:100%;white-space:normal;}
+
+  /* Các form/table khác: không mất trường, chỉ cho phép cuộn trong vùng cục bộ khi bảng quá rộng. */
+  .table-card{width:100%;min-width:0;overflow:hidden;}
+  .table-card>div[style*="overflow-x:auto"]{max-width:100%;overflow-x:auto!important;-webkit-overflow-scrolling:touch;}
+  .table-card>table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .table-card table th,.table-card table td{font-size:10px;padding:7px 8px;}
+  .form-card{width:100%;grid-template-columns:1fr!important;}
+  .modal-card,.account-modal-card{width:calc(100vw - 14px)!important;max-width:calc(100vw - 14px)!important;}
+}
+
+/* Điện thoại rất nhỏ */
+@media (max-width:380px){
+  .banner h1{font-size:14px;}
+  .banner .btn-group-header{grid-template-columns:1fr 1fr;}
+  .kpi-grid{grid-template-columns:1fr 1fr;}
+  #inkInventoryTab .table-header-bar>div:last-child{grid-template-columns:1fr;}
+  .ink-mobile-grid{grid-template-columns:1fr;}
+  .ink-mobile-field.full{grid-column:auto;}
+}
+</style>
+</head><body>
             <div class="title">TỔNG CÔNG TY GIẤY VIỆT NAM</div>
             <div class="subtitle">BÁO CÁO KIỂM KÊ TRANG THIẾT BỊ CNTT &amp; TÀI SẢN NĂM ${esc(currentNamKey)}</div>
             <table><colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"><col class="c5"><col class="c6"><col class="c7"><col class="c8"></colgroup>
@@ -6127,5 +6310,239 @@ body{padding:10px;}
     try{khoiTaoKhoMucBaoToanDuLieu();}catch(e){console.warn('Khởi tạo kho mực',e);}
 
 </script>
+
+<script>
+/* ============================================================
+   VINAPACO DATA-SAFE + MOBILE WAREHOUSE PATCH
+   This block is intentionally additive: it does not clear existing data.
+   ============================================================ */
+(function(){
+  const DEVICE_KEY='vinapaco_device_id_v1';
+  const PATCH_VERSION='2026-08-23-data-safe-mobile-v2';
+  const deviceId=(()=>{try{return localStorage.getItem(DEVICE_KEY)||'UNKNOWN';}catch(e){return 'UNKNOWN';}})();
+  let inkBaseline=null;
+
+  const stable=v=>{try{return JSON.stringify(v,(k,val)=>(k==='_syncUpdatedAt'||k==='_syncDeviceId')?undefined:val);}catch(e){return String(v);}};
+  const clone=v=>{try{return JSON.parse(JSON.stringify(v));}catch(e){return v;}};
+
+  function snapshotInk(){
+    return {master:clone(Array.isArray(window.dsKhoMucDanhMuc)?dsKhoMucDanhMuc:[]),
+            tx:clone(Array.isArray(window.dsKhoMucGiaoDich)?dsKhoMucGiaoDich:[]),
+            legacy:clone(Array.isArray(window.dsKhoMucIn)?dsKhoMucIn:[])};
+  }
+  function captureBaseline(){ inkBaseline=snapshotInk(); }
+
+  function stampChanged(arr, oldArr){
+    const oldMap=new Map((Array.isArray(oldArr)?oldArr:[]).map(x=>[String(x?.id??x?.code??''),x]));
+    const now=Date.now();
+    (Array.isArray(arr)?arr:[]).forEach(item=>{
+      if(!item || typeof item!=='object') return;
+      const key=String(item.id??item.code??'');
+      const prev=oldMap.get(key);
+      if(!prev || stable(prev)!==stable(item)){
+        item._syncUpdatedAt=now;
+        item._syncDeviceId=deviceId;
+      } else if(!item._syncUpdatedAt){
+        item._syncUpdatedAt=Number(prev._syncUpdatedAt||now);
+        item._syncDeviceId=prev._syncDeviceId||deviceId;
+      }
+    });
+  }
+
+  function stampInkChanges(){
+    const old=inkBaseline||{master:[],tx:[],legacy:[]};
+    stampChanged(dsKhoMucDanhMuc,old.master);
+    stampChanged(dsKhoMucGiaoDich,old.tx);
+    stampChanged(dsKhoMucIn,old.legacy);
+    captureBaseline();
+  }
+
+  // Make every normal save also protect warehouse records.
+  if(typeof window.luuTruVaoLocalStorage==='function'){
+    const originalSave=window.luuTruVaoLocalStorage;
+    window.luuTruVaoLocalStorage=function(markChanged=true){
+      try{ if(markChanged!==false) stampInkChanges(); }catch(e){}
+      return originalSave.apply(this,arguments);
+    };
+  }
+
+  // Prevent remote empty arrays from ever deleting local warehouse data.
+  if(typeof window.apDungSnapshot==='function'){
+    const originalApply=window.apDungSnapshot;
+    window.apDungSnapshot=function(snapshot,replace=false){
+      if(!snapshot || typeof snapshot!=='object') return false;
+      if(replace) return originalApply.apply(this,arguments);
+      const before=snapshotInk();
+      const result=originalApply.apply(this,arguments);
+      try{
+        // If a malformed/empty remote snapshot caused a local loss, immediately restore
+        // the pre-merge local warehouse and keep the remote records as additions.
+        if(Array.isArray(before.master) && before.master.length &&
+           Array.isArray(window.dsKhoMucDanhMuc) && window.dsKhoMucDanhMuc.length===0){
+          dsKhoMucDanhMuc=before.master;
+        }
+        if(Array.isArray(before.tx) && before.tx.length &&
+           Array.isArray(window.dsKhoMucGiaoDich) && window.dsKhoMucGiaoDich.length===0){
+          dsKhoMucGiaoDich=before.tx;
+        }
+        if(Array.isArray(before.legacy) && before.legacy.length &&
+           Array.isArray(window.dsKhoMucIn) && window.dsKhoMucIn.length===0){
+          dsKhoMucIn=before.legacy;
+        }
+      }catch(e){}
+      captureBaseline();
+      return result;
+    };
+  }
+
+  function esc(v){return typeof escHtmlKho==='function'?escHtmlKho(v):String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+  function money(v){return Number(v||0).toLocaleString('vi-VN');}
+  function actionButtonsForCode(code){
+    const c=esc(code);
+    return `<div class="ink-mobile-actions">
+      <button class="btn btn-blue" style="padding:7px 10px;" onclick="moFormKhoMuc('nhap');document.getElementById('inputInkCode').value='${c}';napThongTinMucKho()"><i class="fa-solid fa-arrow-down"></i> Nhập</button>
+      <button class="btn btn-purple" style="padding:7px 10px;" onclick="moFormKhoMuc('xuat');document.getElementById('inputInkCode').value='${c}';napThongTinMucKho()"><i class="fa-solid fa-arrow-up"></i> Xuất</button>
+    </div>`;
+  }
+
+  function renderSummaryMobile(){
+    const box=document.getElementById('xntMobileCards'); if(!box)return;
+    const arr=Array.isArray(dsKhoMucDanhMuc)?dsKhoMucDanhMuc:[];
+    if(!arr.length){box.innerHTML='<div class="ink-mobile-empty"><i class="fa-solid fa-box-open"></i><br>Kho mực chưa có danh mục thực tế.<br>Hãy khai báo mặt hàng trước khi nhập kho.</div>';return;}
+    box.innerHTML=arr.map((m,i)=>{
+      const ton=tinhTonMuc(m.code),nhap=tinhNhapMuc(m.code),xuat=tinhXuatMuc(m.code),min=Number(m.minQty||0),low=ton<=min;
+      const status=ton<=0?'⛔ HẾT HÀNG':low?'⚠ ĐẠT / DƯỚI MIN':'✓ Ổn định';
+      return `<article class="ink-mobile-card">
+        <div class="imc-head"><div><div class="imc-title">${i+1}. ${esc(m.code)} — ${esc(m.name)}</div><div class="imc-sub">${esc(m.printer||'Chưa khai báo máy in')}</div></div>
+          <span class="${ton<=0?'badge-danger':low?'badge-warning':'badge-net'}">${status}</span></div>
+        <div class="ink-mobile-grid">
+          <div class="ink-mobile-field"><b>Đơn vị tính</b><span>${esc(m.unit||'Hộp')}</span></div>
+          <div class="ink-mobile-field"><b>Tồn cuối</b><span style="font-size:14px;">${ton}</span></div>
+          <div class="ink-mobile-field"><b>Tồn đầu kỳ</b><span>${Number(m.opening||0)}</span></div>
+          <div class="ink-mobile-field"><b>Mức MIN</b><span>${min}</span></div>
+          <div class="ink-mobile-field"><b>Tổng nhập</b><span>${nhap}</span></div>
+          <div class="ink-mobile-field"><b>Tổng xuất</b><span>${xuat}</span></div>
+        </div>${actionButtonsForCode(m.code)}
+      </article>`;
+    }).join('');
+  }
+
+  function renderHistoryMobile(){
+    const box=document.getElementById('inkHistoryMobileCards'); if(!box)return;
+    const all=Array.isArray(dsKhoMucGiaoDich)?dsKhoMucGiaoDich:[];
+    const arr=all.filter(g=>boLocLichSuKhoMuc==='tatca'||g.type===boLocLichSuKhoMuc);
+    if(!arr.length){box.innerHTML='<div class="ink-mobile-empty"><i class="fa-solid fa-clock-rotate-left"></i><br>Chưa có phiếu nhập / xuất thực tế.</div>';return;}
+    box.innerHTML=arr.map(g=>{
+      const real=all.indexOf(g), isIn=g.type==='nhap';
+      return `<article class="ink-mobile-card">
+        <div class="imc-head"><div><div class="imc-title">${isIn?'📥 PHIẾU NHẬP':'📤 PHIẾU XUẤT'} — ${esc(g.slipNo||'')}</div><div class="imc-sub">Ngày chứng từ: ${esc(g.date||'')}</div></div>
+          <span class="${isIn?'badge-net':'badge-warning'}">${isIn?'NHẬP KHO':'XUẤT KHO'}</span></div>
+        <div class="ink-mobile-grid">
+          <div class="ink-mobile-field"><b>Mã VT</b><span>${esc(g.code)}</span></div>
+          <div class="ink-mobile-field"><b>Tên mực</b><span>${esc(g.name)}</span></div>
+          <div class="ink-mobile-field"><b>Số lượng</b><span>${Number(g.qty||0)}</span></div>
+          <div class="ink-mobile-field"><b>Đơn giá</b><span>${money(g.price)} VNĐ</span></div>
+          <div class="ink-mobile-field full"><b>Nhà cung cấp / Người nhận</b><span>${esc(g.receiver||'—')}</span></div>
+          <div class="ink-mobile-field full"><b>Người lập</b><span>${esc(g.createdBy||'—')}</span></div>
+        </div>
+        <div class="ink-mobile-actions">
+          <button class="btn btn-blue" style="padding:7px 10px;" onclick="suaGiaoDichKho(${real})"><i class="fa-solid fa-pen"></i> Sửa</button>
+          <button class="btn btn-red" style="padding:7px 10px;" onclick="xoaGiaoDichKho(${real})"><i class="fa-solid fa-trash"></i> Xóa</button>
+        </div>
+      </article>`;
+    }).join('');
+  }
+
+  function renderMasterMobile(){
+    const box=document.getElementById('inkMasterMobileCards'); if(!box)return;
+    const arr=Array.isArray(dsKhoMucDanhMuc)?dsKhoMucDanhMuc:[];
+    if(!arr.length){box.innerHTML='<div class="ink-mobile-empty">Chưa có danh mục mực thực tế.</div>';return;}
+    box.innerHTML=arr.map((m,i)=>`<article class="ink-mobile-card">
+      <div class="imc-head"><div><div class="imc-title">${esc(m.code)} — ${esc(m.name)}</div><div class="imc-sub">${esc(m.printer||'Chưa khai báo máy in')}</div></div></div>
+      <div class="ink-mobile-grid">
+        <div class="ink-mobile-field"><b>ĐVT</b><span>${esc(m.unit||'Hộp')}</span></div>
+        <div class="ink-mobile-field"><b>Tồn đầu</b><span>${Number(m.opening||0)}</span></div>
+        <div class="ink-mobile-field"><b>MIN</b><span>${Number(m.minQty||0)}</span></div>
+        <div class="ink-mobile-field"><b>Tồn hiện tại</b><span>${tinhTonMuc(m.code)}</span></div>
+      </div>
+      <div class="ink-mobile-actions">
+        <button class="btn btn-blue" style="padding:7px 10px;" onclick="suaDanhMucMuc(${i})"><i class="fa-solid fa-pen"></i> Sửa</button>
+        <button class="btn btn-red" style="padding:7px 10px;" onclick="xoaDanhMucMuc(${i})"><i class="fa-solid fa-trash"></i> Xóa</button>
+      </div>
+    </article>`).join('');
+  }
+
+  // Wrap current renderers so desktop output remains unchanged and mobile gets a complete view.
+  if(typeof window.renderInkSummary==='function'){
+    const r=window.renderInkSummary;
+    window.renderInkSummary=function(){r.apply(this,arguments);renderSummaryMobile();};
+  }
+  if(typeof window.renderInkHistory==='function'){
+    const r=window.renderInkHistory;
+    window.renderInkHistory=function(){r.apply(this,arguments);renderHistoryMobile();};
+  }
+  if(typeof window.renderInkMasterTable==='function'){
+    const r=window.renderInkMasterTable;
+    window.renderInkMasterTable=function(){r.apply(this,arguments);renderMasterMobile();};
+  }
+
+  // Backup is a JSON file, so it can be restored even after the HTML is replaced.
+  window.vinapacoBackupKhoMucThuCong=async function(){
+    try{
+      if(typeof luuTruVaoLocalStorage==='function')luuTruVaoLocalStorage(false);
+      const snap=getVinapacoSnapshot();
+      snap.backupType='VINAPACO_KHO_MUC_IN_ONLY';
+      snap.backupVersion=PATCH_VERSION;
+      snap.backupCreatedAt=new Date().toISOString();
+      const blob=new Blob([JSON.stringify(snap,null,2)],{type:'application/json;charset=utf-8'});
+      const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+      a.download='VINAPACO_BACKUP_KHO_MUC_'+new Date().toISOString().replace(/[:.]/g,'-')+'.json';
+      document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+      capNhatTrangThaiDongBoMuc('Đã tạo bản sao lưu kho mực',true,false);
+    }catch(e){alert('Không thể sao lưu kho mực: '+(e.message||e));}
+  };
+
+  window.vinapacoDongBoKhoMucThuCong=async function(){
+    try{
+      stampInkChanges();
+      if(typeof luuTruVaoLocalStorage==='function')luuTruVaoLocalStorage(true);
+      try{await ghiSnapshotIndexedDB(getVinapacoSnapshot(),'ink_manual_'+Date.now());}catch(e){}
+      const ok=await tuDongDayDuLieuLenDrive();
+      capNhatTrangThaiDongBoMuc(ok?'Kho mực đã đồng bộ lên hệ thống':'Kho mực đã lưu trên thiết bị; chờ mạng để đồng bộ',ok,false);
+    }catch(e){capNhatTrangThaiDongBoMuc('Đã lưu máy; chưa đồng bộ được',false,false);}
+  };
+
+  // Upgrade transaction save: explicit timestamp + unique ID, then persist immediately.
+  if(typeof window.luuGiaoDichKhoMuc==='function'){
+    const oldSave=window.luuGiaoDichKhoMuc;
+    window.luuGiaoDichKhoMuc=async function(){
+      const beforeCount=Array.isArray(dsKhoMucGiaoDich)?dsKhoMucGiaoDich.length:0;
+      const result=await oldSave.apply(this,arguments);
+      try{
+        const now=Date.now();
+        (dsKhoMucGiaoDich||[]).forEach(g=>{if(!g._syncUpdatedAt){g._syncUpdatedAt=now;g._syncDeviceId=deviceId;}});
+        dsKhoMucIn=(dsKhoMucGiaoDich||[]).map(x=>({...x,action:x.type==='nhap'?'Nhập kho':'Xuất kho',total:Number(x.qty||0)*Number(x.price||0),printer:timMucKho(x.code)?.printer||''}));
+        if(typeof luuTruVaoLocalStorage==='function')luuTruVaoLocalStorage(true);
+        if(beforeCount!==dsKhoMucGiaoDich.length) capNhatTrangThaiDongBoMuc('Phiếu kho đã lưu an toàn',true,false);
+      }catch(e){}
+      return result;
+    };
+  }
+
+  // Final load: establish baseline and render mobile cards without altering records.
+  setTimeout(()=>{
+    try{
+      captureBaseline();
+      if(typeof renderInkWarehouse==='function')renderInkWarehouse();
+      const note=document.querySelector('#inkDataSafetyBar .safe-main span');
+      if(note) note.innerHTML='<b>Dữ liệu kho mực an toàn:</b> không có dữ liệu giả lập; nhập/xuất/tồn được tính từ danh mục và sổ giao dịch thực tế.';
+    }catch(e){}
+  },250);
+
+  // Re-render cards after orientation/viewport changes.
+  window.addEventListener('resize',()=>{if(window.innerWidth<=600){renderSummaryMobile();renderHistoryMobile();renderMasterMobile();}});
+})();
+</script>
+
 </body>
 </html>

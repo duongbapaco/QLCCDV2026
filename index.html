@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -922,7 +923,7 @@
             <div class="table-title"><i class="fa-solid fa-file-invoice-dollar"></i> BẢNG LƯƠNG CƠ BẢN (<span class="thangHienTaiTitle">Tháng 06/2026</span>)</div>
             <button class="btn btn-green" onclick="xuatExcelCB()"><i class="fa-solid fa-file-excel"></i> Xuất Excel Lương Cơ Bản</button>
         </div>
-        <div style="overflow-x: auto;"><table><thead><tr><th>STT</th><th>Họ và Tên</th><th>HSL.CB</th><th>PC.CB</th><th>L.HĐLĐ</th><th>L.CB</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>Ki</th><th>L.TG</th><th>L.Lễ/Phép</th><th>Tổng Tiền</th><th>BHTN</th><th>BHXH</th><th>NPT</th><th>Thực Lĩnh LCB</th></tr></thead><tbody id="tableBodyCB"></tbody></table></div>
+        <div style="overflow-x: auto;"><table><thead><tr><th>STT</th><th>Họ và Tên</th><th>HSL.CB</th><th>PC.CB</th><th>L.HĐLĐ</th><th>L.CB</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>Ki</th><th>L.TG</th><th>L.Lễ/Phép</th><th>Tổng Tiền</th><th>BHTN</th><th>BHXH</th><th>Thực Lĩnh LCB</th></tr></thead><tbody id="tableBodyCB"></tbody></table></div>
         
         <div class="salary-signature-footer">
             <div class="sign-col">
@@ -1275,8 +1276,11 @@
     <div id="surveyTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-clipboard-check"></i> KHẢO SÁT THIẾT BỊ, BẢN QUYỀN OS, OFFICE & PHẦN MỀM NGHIỆP VỤ</div>
-            <div style="display: flex; gap: 10px;">
+            <div style="display: flex; gap: 8px; flex-wrap:wrap;">
+                <button class="btn btn-purple" onclick="moNhapHangLoatKhaoSat()"><i class="fa-solid fa-file-import"></i> Nhập hàng loạt Word / Excel</button>
+                <button class="btn btn-blue" onclick="taiMauNhapHangLoatKhaoSat()"><i class="fa-solid fa-download"></i> Tải mẫu Excel</button>
                 <button class="btn btn-green" onclick="xuatExcelBaoCaoKhaoSat()"><i class="fa-solid fa-file-excel"></i> Xuất Báo Cáo Gửi Lãnh Đạo</button>
+                <input type="file" id="surveyBulkFileInput" accept=".xlsx,.xls,.csv,.docx,.doc" style="display:none" onchange="nhapHangLoatKhaoSatTuFile(this.files[0])">
             </div>
         </div>
 
@@ -1293,6 +1297,14 @@
             <div><b>💻 Tổng số thiết bị khảo sát:</b> <span id="statSurveyTotal" style="color: #0284c7; font-weight: 900;">0</span></div>
             <div><b>⚠️ Chưa có bản quyền OS/Office:</b> <span id="statSurveyUnlicensed" style="color: #dc2626; font-weight: 900;">0</span></div>
             <div><b>📊 Phần mềm nghiệp vụ tích hợp:</b> <span id="statOfficeSummary" style="color: #16a34a; font-weight: 900;">Asia, Quasoft, Cloudoffice, AutoCAD, SolidWorks, MISA</span></div>
+        </div>
+
+        <div style="margin-bottom:16px;background:#f0f9ff;border:1px solid #93c5fd;padding:12px 14px;border-radius:10px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;">
+            <div style="font-size:12px;color:#075985;line-height:1.55;">
+                <b>Nhập hàng loạt khảo sát:</b> chọn file <b>Excel (.xlsx/.xls/.csv)</b> hoặc <b>Word (.docx)</b>. Hệ thống <b>chỉ bổ sung thêm bản ghi</b>, không xóa hay ghi đè dữ liệu khảo sát đã có.
+                Có thể dùng các cột: Người sử dụng, Bộ phận, Thiết bị, SL, Cấu hình, HĐH, Bản quyền OS, Office, Bản quyền Office, Phần mềm NV, Bản quyền NV.
+            </div>
+            <button class="btn btn-purple" onclick="moNhapHangLoatKhaoSat()"><i class="fa-solid fa-upload"></i> Chọn file nhập</button>
         </div>
 
         <div class="form-card" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));">
@@ -3512,7 +3524,6 @@
                 <td style="text-align:right; font-weight:bold;">${item.tongLCB.toLocaleString()}</td>
                 <td style="text-align:right; color:#dc2626;">${item.bhtn.toLocaleString()}</td>
                 <td style="text-align:right; color:#dc2626;">${item.bhxh.toLocaleString()}</td>
-                <td style="text-align:center;"><input class="cell-input num-center" type="number" min="0" step="1" value="${item.soNguoiPhuThuoc||0}" onchange="damBaoKhoLuong().nhansu[${idx}].soNguoiPhuThuoc=Math.max(0,parseInt(this.value)||0);capNhat();" title="Số người phụ thuộc đã đăng ký giảm trừ gia cảnh"></td>
                 <td style="text-align:right; color:#0284c7; font-weight:bold;">${item.thucLinhLCB.toLocaleString()}</td>
             </tr>`;
         });
@@ -4498,6 +4509,119 @@
         document.getElementById('telecomYearTitle').innerText = currentNamKey;
     }
 
+    // ==================== NHẬP HÀNG LOẠT KHẢO SÁT ====================
+    function chuanHoaTieuDeNhapKhaoSat(v) {
+        return String(v ?? '').trim().toLowerCase()
+            .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+            .replace(/đ/g,'d').replace(/[^a-z0-9]+/g,' ').trim();
+    }
+    function layGiaTriTheoCotKhaoSat(row, aliases) {
+        const keys = Object.keys(row || {});
+        const map = {};
+        keys.forEach(k => map[chuanHoaTieuDeNhapKhaoSat(k)] = row[k]);
+        for (const a of aliases) {
+            const n = chuanHoaTieuDeNhapKhaoSat(a);
+            if (Object.prototype.hasOwnProperty.call(map,n) && String(map[n] ?? '').trim() !== '') return map[n];
+        }
+        // Cho phép tên cột có thêm phần mô tả, ví dụ "HĐH & Bản quyền"
+        for (const k of keys) {
+            const nk=chuanHoaTieuDeNhapKhaoSat(k);
+            for (const a of aliases) {
+                const na=chuanHoaTieuDeNhapKhaoSat(a);
+                if (na && (nk.includes(na) || na.includes(nk))) {
+                    if (String(row[k] ?? '').trim() !== '') return row[k];
+                }
+            }
+        }
+        return '';
+    }
+    function tachGiaTriVaBanQuyenKhaoSat(v) {
+        const text=String(v ?? '').trim();
+        if (!text) return {value:'',license:''};
+        const parts=text.split(/\s*[-–—|]\s*|\s*\n\s*/).map(x=>x.trim()).filter(Boolean);
+        const lic=parts.find(x=>/[✅⚠️]|bản quyền|ban quyen|lậu|lau|miễn phí|mien phi/i.test(x));
+        if (lic && parts.length>1) return {value:parts.filter(x=>x!==lic).join(' - '),license:lic};
+        return {value:text,license:/[✅⚠️]|bản quyền|ban quyen|lậu|lau|miễn phí|mien phi/i.test(text)?text:''};
+    }
+    function taoMaKhaoSatMoi(used) {
+        let max=0;
+        (dsKhaoSatChuyenSau||[]).forEach(i=>{ const m=String(i.code||'').match(/(\d+)$/); if(m) max=Math.max(max,parseInt(m[1],10)||0); });
+        let code;
+        do { max++; code='KS-'+String(max).padStart(3,'0'); } while(used.has(code));
+        used.add(code); return code;
+    }
+    function chuanHoaDongKhaoSatNhap(row) {
+        const user=layGiaTriTheoCotKhaoSat(row,['Người sử dụng','Người Sử Dụng','Họ và tên','Họ tên','User','Employee']);
+        const dept=layGiaTriTheoCotKhaoSat(row,['Bộ phận','Phòng ban','Bộ phận / Phòng ban','Department','Dept']);
+        const device=layGiaTriTheoCotKhaoSat(row,['Thiết bị','Loại thiết bị','Loại thiết bị khảo sát','Device','Equipment']);
+        const qtyRaw=layGiaTriTheoCotKhaoSat(row,['SL','Số lượng','Qty','Quantity']);
+        const specs=layGiaTriTheoCotKhaoSat(row,['Cấu hình','Cấu hình phần cứng','Thông số kỹ thuật','Specs','Hardware']);
+        let os=layGiaTriTheoCotKhaoSat(row,['Hệ điều hành','HĐH','OS','Hệ điều hành (OS)']);
+        let osLicense=layGiaTriTheoCotKhaoSat(row,['Bản quyền OS','OS License','Bản quyền hệ điều hành']);
+        let office=layGiaTriTheoCotKhaoSat(row,['Microsoft Office','Office','MS Office']);
+        let officeLicense=layGiaTriTheoCotKhaoSat(row,['Bản quyền Office','Office License']);
+        let bizSoft=layGiaTriTheoCotKhaoSat(row,['Phần mềm NV','Phần mềm nghiệp vụ','Business Software','Software']);
+        let bizLicense=layGiaTriTheoCotKhaoSat(row,['Bản quyền NV','Bản quyền phần mềm NV','Business License','Software License']);
+        if(!osLicense){ const t=tachGiaTriVaBanQuyenKhaoSat(os); os=t.value; osLicense=t.license; }
+        if(!officeLicense){ const t=tachGiaTriVaBanQuyenKhaoSat(office); office=t.value; officeLicense=t.license; }
+        if(!bizLicense){ const t=tachGiaTriVaBanQuyenKhaoSat(bizSoft); bizSoft=t.value; bizLicense=t.license; }
+        return {user:String(user||'').trim(),dept:String(dept||'').trim(),device:String(device||'').trim(),qty:Math.max(1,parseInt(qtyRaw)||1),specs:String(specs||'').trim(),os:String(os||'').trim(),osLicense:String(osLicense||'').trim(),office:String(office||'').trim(),officeLicense:String(officeLicense||'').trim(),bizSoft:String(bizSoft||'').trim(),bizLicense:String(bizLicense||'').trim()};
+    }
+    function moNhapHangLoatKhaoSat(){ const el=document.getElementById('surveyBulkFileInput'); if(el){el.value='';el.click();} }
+    function taiMauNhapHangLoatKhaoSat(){
+        const rows=[['Người sử dụng','Bộ phận','Thiết bị','SL','Cấu hình','Hệ điều hành','Bản quyền OS','Microsoft Office','Bản quyền Office','Phần mềm NV','Bản quyền NV'],['Nguyễn Văn A','Phòng CNTT','Laptop cá nhân (Doanh nghiệp trang bị)',1,'Core i7, RAM 16GB, SSD 512GB','Windows 11 Pro','✅ Có bản quyền chính hãng','Microsoft 365 (Cloud)','✅ Bản quyền Tổng công ty','Cloudoffice (Văn thư)','✅ Có bản quyền chính hãng']];
+        const wb=XLSX.utils.book_new(),ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=[{wch:24},{wch:22},{wch:38},{wch:8},{wch:38},{wch:24},{wch:28},{wch:24},{wch:30},{wch:28},{wch:30}];XLSX.utils.book_append_sheet(wb,ws,'NhapKhaoSat');XLSX.writeFile(wb,'Mau_Nhap_Hang_Loat_Khao_Sat.xlsx');
+    }
+    async function docBangWordKhaoSat(file){
+        if(typeof mammoth==='undefined') throw new Error('Thư viện đọc Word chưa tải được. Hãy thử lại sau khi có kết nối Internet.');
+        const buf=await file.arrayBuffer();
+        const result=await mammoth.convertToHtml({arrayBuffer:buf});
+        const dom=new DOMParser().parseFromString(result.value,'text/html');
+        const tables=[...dom.querySelectorAll('table')];
+        if(!tables.length) throw new Error('File Word không có bảng dữ liệu khảo sát. Vui lòng đặt dữ liệu trong bảng.');
+        const out=[];
+        tables.forEach(table=>{
+            const rows=[...table.querySelectorAll('tr')].map(tr=>[...tr.querySelectorAll('th,td')].map(td=>td.textContent.trim()));
+            if(rows.length<1) return;
+            let headerIdx=rows.findIndex(r=>r.some(c=>/người sử dụng|họ và tên|phòng ban|bộ phận|thiết bị/i.test(c)));
+            if(headerIdx<0) headerIdx=0;
+            const headers=rows[headerIdx];
+            rows.slice(headerIdx+1).forEach(r=>{ if(r.some(c=>String(c).trim())){ const o={}; headers.forEach((h,i)=>o[h||('Cột '+(i+1))]=r[i]??''); out.push(o); } });
+        });
+        return out;
+    }
+    async function nhapHangLoatKhaoSatTuFile(file){
+        if(!file) return;
+        try{
+            const name=file.name||'', ext=name.split('.').pop().toLowerCase(); let rows=[];
+            if(ext==='xlsx'||ext==='xls'||ext==='csv'){
+                const buf=await file.arrayBuffer();
+                const wb=XLSX.read(buf,{type:'array',cellDates:false});
+                wb.SheetNames.forEach(sn=>{
+                    const ws=wb.Sheets[sn];
+                    const arr=XLSX.utils.sheet_to_json(ws,{defval:'',raw:false});
+                    if(arr.length) rows.push(...arr);
+                });
+            } else if(ext==='docx') rows=await docBangWordKhaoSat(file);
+            else if(ext==='doc') throw new Error('Hệ thống hỗ trợ Word .docx (Word hiện đại). Với .doc cũ, hãy mở bằng Word và lưu lại thành .docx rồi nhập.');
+            else throw new Error('Định dạng không được hỗ trợ. Chọn Excel (.xlsx/.xls/.csv) hoặc Word (.docx).');
+            const used=new Set((dsKhaoSatChuyenSau||[]).map(i=>String(i.code||'')));
+            const imported=[]; let skipped=0;
+            rows.forEach(r=>{
+                const x=chuanHoaDongKhaoSatNhap(r);
+                if(!x.user && !x.dept && !x.device && !x.specs) {skipped++;return;}
+                x.code=taoMaKhaoSatMoi(used); imported.push(x);
+            });
+            if(!imported.length) throw new Error('Không tìm thấy dòng dữ liệu hợp lệ. Hãy kiểm tra tiêu đề cột theo mẫu Excel.');
+            dsKhaoSatChuyenSau.push(...imported);
+            // Chỉ bổ sung, không thay thế dữ liệu cũ; lưu + đồng bộ ngay.
+            renderSurveyTable();
+            capNhat();
+            try{ await tuDongDayDuLieuLenDrive(); }catch(e){}
+            hienThongBaoXuatFile(`Đã nhập thêm <b>${imported.length}</b> bản ghi khảo sát. Giữ nguyên ${Math.max(0,dsKhaoSatChuyenSau.length-imported.length)} bản ghi cũ${skipped?`; bỏ qua ${skipped} dòng trống`:''}.`,true);
+        }catch(e){ console.error('NHAP_HANG_LOAT_KHAO_SAT',e); hienThongBaoXuatFile(`Không thể nhập file: ${e.message||e}`,false); }
+    }
+
     function luuHoacCapNhatKhaoSat() {
         let user = document.getElementById('inputSurveyUser').value.trim();
         let dept = document.getElementById('inputSurveyDept').value.trim();
@@ -4743,7 +4867,7 @@
             user: i.user || '',
             dept: i.dept || '',
             device: i.device || '',
-            qty: 1,
+            qty: Number(i.qty||1),
             specs: i.specs || '',
             os: [i.os || '', i.osLicense || ''].filter(Boolean).join(' '),
             office: [i.office || '', i.officeLicense || ''].filter(Boolean).join(' ')

@@ -475,7 +475,7 @@
             <button class="btn btn-purple" onclick="moModalLichVanNien()"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên</button>
             <button class="btn btn-yellow" onclick="batTatNhacNghiGoi()"><i class="fa-solid fa-mug-hot"></i> Nhắc Nghỉ</button>
             <button class="btn btn-green" onclick="thuCongDongBoLenDrive()"><i class="fa-solid fa-cloud-arrow-up"></i> Đồng Bộ Drive</button>
-            <button class="btn btn-blue" onclick="thuCongTaiVeTuDrive(event)"><i class="fa-solid fa-cloud-arrow-down"></i> Tải Về Mới Nhất</button>
+            <button class="btn btn-blue" onclick="thuCongTaiVeTuDrive(event)" title="Tải bản dữ liệu mới nhất đã đồng bộ từ điện thoại qua Google Drive"><i class="fa-solid fa-mobile-screen-button"></i> Tải Dữ Liệu Mới Nhất</button>
         </div>
     </div>
 
@@ -2379,24 +2379,43 @@
         }
 
         try {
+            // QUAN TRỌNG: getVinapacoSnapshot() tạo savedAt mới mỗi lần gọi,
+            // vì vậy KHÔNG dùng timestamp tạm thời đó để so sánh với bản trên điện thoại.
             const localSnapshot = getVinapacoSnapshot();
             await ghiSnapshotIndexedDB(localSnapshot,'pre_manual_download_'+new Date().toISOString().replace(/[:.]/g,'-'));
 
-            const result = await gasReadJson(gasWebhookUrl + "?nocache=" + Date.now());
+            const result = await gasReadJson(gasWebhookUrl + "?nocache=" + Date.now() + "&source=mobile_latest");
             if (!result || typeof result !== "object") throw new Error("Dữ liệu trả về từ Google Drive/GAS không hợp lệ.");
 
-            const localTime = new Date(localSnapshot.savedAt || 0).getTime();
-            const remoteTime = new Date(result.savedAt || 0).getTime();
+            // Lấy timestamp của BẢN DỮ LIỆU ĐANG LƯU THỰC TẾ trên máy.
+            let persistedLocalSnapshot = null;
+            try {
+                const raw = localStorage.getItem('bapaco_persistent_snapshot_v3');
+                if (raw) persistedLocalSnapshot = JSON.parse(raw);
+            } catch (_) {}
+            if (!persistedLocalSnapshot) {
+                try { persistedLocalSnapshot = await docSnapshotIndexedDB('latest'); } catch (_) {}
+            }
+
+            const localTime = new Date(
+                persistedLocalSnapshot?.savedAt ||
+                persistedLocalSnapshot?.clientSavedAt ||
+                0
+            ).getTime();
+
+            // Tương thích GAS có thể trả savedAt, updatedAt hoặc serverSavedAt.
+            const remoteSavedAt = result.savedAt || result.updatedAt || result.serverSavedAt || result.clientSavedAt;
+            const remoteTime = new Date(remoteSavedAt || 0).getTime();
 
             if (!Number.isFinite(remoteTime) || remoteTime <= 0) {
-                throw new Error("Bản dữ liệu trên Drive không có thời gian lưu hợp lệ. Hệ thống không ghi đè dữ liệu cục bộ để bảo toàn an toàn.");
+                throw new Error("Bản dữ liệu trên Drive/GAS không có thời gian cập nhật hợp lệ. Hệ thống không ghi đè dữ liệu cục bộ để bảo toàn an toàn.");
             }
             if (localTime > 0 && remoteTime < localTime) {
-                throw new Error("Dữ liệu trên Drive cũ hơn dữ liệu đang có trên máy. Hệ thống đã chặn ghi đè để tránh mất dữ liệu.");
+                throw new Error("Dữ liệu trên Drive/GAS cũ hơn dữ liệu đang có trên máy. Hệ thống đã chặn ghi đè để tránh mất dữ liệu.");
             }
             if (localTime > 0 && remoteTime === localTime) {
-                if (btn) { btn.disabled = false; btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> Tải Về Mới Nhất`; }
-                alert("ℹ️ Dữ liệu trên Drive và máy đang cùng phiên bản. Không cần tải lại.");
+                if (btn) { btn.disabled = false; btn.innerHTML = `<i class="fa-solid fa-mobile-screen-button"></i> Tải Dữ Liệu Mới Nhất`; }
+                alert("ℹ️ Dữ liệu trên điện thoại/Drive và máy tính đang cùng phiên bản. Không cần tải lại.");
                 return;
             }
 
@@ -2437,18 +2456,19 @@
 
             if (btn) {
                 btn.disabled = false;
-                btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> Tải Về Mới Nhất`;
+                btn.innerHTML = `<i class="fa-solid fa-mobile-screen-button"></i> Tải Dữ Liệu Mới Nhất`;
             }
-            alert(`✅ Đã tải phiên bản mới hơn từ Google Drive.
+            alert(`✅ Đã tải bản dữ liệu MỚI NHẤT từ điện thoại/Google Drive.
 
 • Thanh toán văn phòng: ${vppCount} bản ghi
 • Cước viễn thông: ${telecomCount} bản ghi
-• Tháng đang chọn: ${currentThangKey}/${currentNamKey}`);
+• Tháng đang chọn: ${currentThangKey}/${currentNamKey}
+• Thời điểm dữ liệu từ xa: ${new Date(remoteTime).toLocaleString("vi-VN")}`);
         } catch (error) {
             console.error("Lỗi tải dữ liệu mới nhất từ Drive:", error);
             if (btn) {
                 btn.disabled = false;
-                btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> Tải Về Mới Nhất`;
+                btn.innerHTML = `<i class="fa-solid fa-mobile-screen-button"></i> Tải Dữ Liệu Mới Nhất`;
             }
             alert("❌ Không tải/ghi đè dữ liệu.\n\n" + (error && error.message ? error.message : "Vui lòng kiểm tra GAS Webhook URL và kết nối mạng."));
         }

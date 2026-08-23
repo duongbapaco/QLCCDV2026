@@ -4054,7 +4054,20 @@
         }
     }
 
+    function xoaDuLieuMauKhoMuc(){
+        // Chỉ xóa đúng dữ liệu mẫu mặc định của phiên bản trước; không xóa dữ liệu thực tế.
+        const mauCode='MUC001', mauTen='Hộp mực Canon 337', mauMay='Canon LBP 151dw';
+        const laMau=m=>m && String(m.code||'').trim().toUpperCase()===mauCode && String(m.name||'').trim()===mauTen && String(m.printer||'').trim()===mauMay;
+        const codes=new Set(dsKhoMucDanhMuc.filter(laMau).map(m=>String(m.code||'').trim().toUpperCase()));
+        if(codes.size){
+            dsKhoMucDanhMuc=dsKhoMucDanhMuc.filter(m=>!laMau(m));
+            dsKhoMucGiaoDich=dsKhoMucGiaoDich.filter(g=>!codes.has(String(g.code||'').trim().toUpperCase()));
+            dsKhoMucIn=dsKhoMucIn.filter(i=>!(codes.has(String(i.code||'').trim().toUpperCase()) && String(i.name||'').trim()===mauTen));
+        }
+    }
+
     function khoiTaoKhoMucMoi() {
+        xoaDuLieuMauKhoMuc();
         // Migration an toàn: dữ liệu cũ chỉ được đọc và chuyển đổi khi kho mới chưa có dữ liệu.
         // Không bao giờ reset danh mục/giao dịch hiện có khi cập nhật phiên bản HTML.
         if (!Array.isArray(dsKhoMucDanhMuc)) dsKhoMucDanhMuc=[];
@@ -4078,9 +4091,8 @@
                 code:i.code||'',name:i.name||'',qty:Number(i.qty||0),price:Number(i.price||0),receiver:i.receiver||'',createdBy:i.createdBy||''
             }));
         }
-        if(!dsKhoMucDanhMuc.length){
-            dsKhoMucDanhMuc=[{code:'MUC001',name:'Hộp mực Canon 337',printer:'Canon LBP 151dw',unit:'Hộp',opening:0,minQty:2}];
-        }
+        // KHÔNG TẠO DỮ LIỆU MẪU/GIẢ LẬP. Kho mực mới bắt đầu rỗng để nhập dữ liệu thực tế.
+        if(!Array.isArray(dsKhoMucDanhMuc)) dsKhoMucDanhMuc=[];
         dsKhoMucDanhMuc.forEach(m=>{m.code=String(m.code||'').trim().toUpperCase();m.name=m.name||'';m.printer=m.printer||'';m.unit=m.unit||'Hộp';m.opening=Math.max(0,Number(m.opening||0));m.minQty=Math.max(0,Number(m.minQty||0));});
         dsKhoMucGiaoDich.forEach(g=>{g.type=g.type==='xuat'?'xuat':'nhap';g.qty=Math.max(0,Number(g.qty||0));g.price=Math.max(0,Number(g.price||0));g.code=String(g.code||'').trim().toUpperCase();});
         capNhatDanhSachMaMuc();

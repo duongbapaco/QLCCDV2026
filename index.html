@@ -408,9 +408,9 @@
         </div>
 
         <div class="config-item"><label>Ngày Công Chế Độ</label><input type="number" id="cfgNCD" onchange="luuCauHinhHienTai()"></div>
-        <div class="config-item"><label>Mức Lương Cơ Bản</label><input type="number" id="cfgMucLCB" onchange="luuCauHinhHienTai()"></div>
-        <div class="config-item"><label>Mức Tối Thiểu Vùng</label><input type="number" id="cfgMucTTV" onchange="luuCauHinhHienTai()"></div>
-        <div class="config-item"><label>Mức Lương Công Việc</label><input type="number" id="cfgMucLCV" onchange="luuCauHinhHienTai()"></div>
+        <div class="config-item"><label>Mức Lương Cơ Bản</label><input type="text" id="cfgMucLCB" onchange="dinhDangOOCurrency(this)"></div>
+        <div class="config-item"><label>Mức Tối Thiểu Vùng</label><input type="text" id="cfgMucTTV" onchange="dinhDangOOCurrency(this)"></div>
+        <div class="config-item"><label>Mức Lương Công Việc</label><input type="text" id="cfgMucLCV" onchange="dinhDangOOCurrency(this)"></div>
     </div>
 
     <!-- KPI TỔNG QUAN -->
@@ -1016,6 +1016,24 @@
     let modalCurrentNvIndex = 0;
     let cachedWeatherCoords = { lat: 21.3228, lon: 105.3377, cityName: "Phú Thọ" };
 
+    // HÀM XỬ LÝ VÀ ĐỊNH DẠNG TIỀN TỆ ĐA DẠNG VÀ LINH HOẠT
+    function parseVNDMoney(val) {
+        if (!val) return 0;
+        if (typeof val === 'number') return val;
+        let cleaned = String(val).trim().toLowerCase()
+            .replace(/vnđ|vnd|đ|\s/g, '')
+            .replace(/\./g, '')
+            .replace(/,/g, '');
+        let num = parseFloat(cleaned);
+        return isNaN(num) ? 0 : Math.round(num);
+    }
+
+    function dinhDangOOCurrency(input) {
+        let val = parseVNDMoney(input.value);
+        input.value = val > 0 ? val.toLocaleString('vi-VN') : '';
+        luuCauHinhHienTai();
+    }
+
     // CƠ CHẾ LƯU & TỰ ĐỘNG ĐỒNG BỘ THÔNG MINH GIỮA CÁC THIẾT BỊ (PC & MOBILE)
     function saveToLocalStorage() {
         try {
@@ -1028,7 +1046,6 @@
             localStorage.setItem('vinapaco_tasks', JSON.stringify(danhSachCongViec));
             localStorage.setItem('vinapaco_accounts', JSON.stringify(danhSachTaiKhoanHeThong));
             
-            // Tự động kích hoạt đồng bộ ngầm lên Cloud (GAS Webhook) nếu có URL
             tuDongDongBoCloudNgam();
         } catch(e) {}
     }
@@ -1282,14 +1299,6 @@
         }
     }
 
-    function parseVNDMoney(val) {
-        if (!val) return 0;
-        if (typeof val === 'number') return val;
-        let s = String(val).trim().replace(/\./g, '').replace(',', '.');
-        let num = parseFloat(s);
-        return isNaN(num) ? 0 : Math.round(num);
-    }
-
     function formatVNDate(dateString) {
         if (!dateString) return '--';
         let parts = dateString.split('-');
@@ -1325,10 +1334,29 @@
         if (!coSoDuLieuNamThang[currentNamKey][currentThangKey]) {
             coSoDuLieuNamThang[currentNamKey][currentThangKey] = JSON.parse(JSON.stringify(defaultCoSoDuLieuNamThang["2026"] ? defaultCoSoDuLieuNamThang["2026"]["Tháng 08"] : Object.values(Object.values(defaultCoSoDuLieuNamThang)[0])[0]));
         }
+
+        // Cập nhật giá trị lên giao diện cấu hình
+        let monthData = coSoDuLieuNamThang[currentNamKey][currentThangKey];
+        if (monthData && monthData.config) {
+            if(document.getElementById('cfgNCD')) document.getElementById('cfgNCD').value = monthData.config.ncd || 22;
+            if(document.getElementById('cfgMucLCB')) document.getElementById('cfgMucLCB').value = (monthData.config.mucLCB || 0).toLocaleString('vi-VN');
+            if(document.getElementById('cfgMucTTV')) document.getElementById('cfgMucTTV').value = (monthData.config.mucTTV || 0).toLocaleString('vi-VN');
+            if(document.getElementById('cfgMucLCV')) document.getElementById('cfgMucLCV').value = (monthData.config.mucLCV || 0).toLocaleString('vi-VN');
+        }
+
         capNhat();
     }
 
-    function luuCauHinhHienTai() { capNhat(); }
+    function luuCauHinhHienTai() {
+        let monthData = coSoDuLieuNamThang[currentNamKey] ? coSoDuLieuNamThang[currentNamKey][currentThangKey] : null;
+        if (monthData && monthData.config) {
+            monthData.config.ncd = parseFloat(document.getElementById('cfgNCD').value) || 22;
+            monthData.config.mucLCB = parseVNDMoney(document.getElementById('cfgMucLCB').value);
+            monthData.config.mucTTV = parseVNDMoney(document.getElementById('cfgMucTTV').value);
+            monthData.config.mucLCV = parseVNDMoney(document.getElementById('cfgMucLCV').value);
+        }
+        capNhat();
+    }
 
     function updateStaffField(idx, field, value) {
         let ds = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey]) ? coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu : [];
@@ -2276,7 +2304,6 @@
             let taskSum = done + doing + todo;
             let taskPieValues = taskSum > 0 ? [done, doing, todo] : [0, 0, 1];
 
-            // BỔ SUNG ĐẦY ĐỦ THUỘC TÍNH `label` CHO DATASET ĐỂ KHẮC PHỤC LỖI UNDEFINED TRÊN BIỂU ĐỒ CỘT
             let taskData = { 
                 labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], 
                 datasets: [{ 

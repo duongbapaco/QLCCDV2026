@@ -97,6 +97,11 @@
         .lunar-display { font-size: 13px; font-weight: 700; color: #16a34a; line-height: 1.4; }
         .weather-display { font-size: 13px; font-weight: 700; color: #d97706; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 
+        /* WIDGET THỜI TIẾT 10 NGÀY STYLES */
+        .weather-10day-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-top: 10px; }
+        .weather-day-card { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; text-align: center; display: flex; flex-direction: column; gap: 6px; transition: transform 0.2s; }
+        .weather-day-card:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
         .lich-grid-header { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; font-weight: 900; font-size: 13px; text-align: center; padding: 8px 0; background: #e2e8f0; border-radius: 8px; color: #334155; }
         .lich-grid-header div:first-child { color: #dc2626; }
         .lich-grid-header div:last-child { color: #0284c7; }
@@ -126,6 +131,46 @@
     </style>
 </head>
 <body>
+
+<!-- MODAL DỰ BÁO THỜI TIẾT 10 NGÀY CHUYÊN NGHIỆP -->
+<div class="modal-overlay hidden" id="modalWeather10DaysPreview">
+    <div class="modal-card" style="max-width: 960px;">
+        <div style="padding: 16px 20px; background: linear-gradient(135deg, #0284c7, #0369a1); color: white; display: flex; justify-content: space-between; align-items: center;">
+            <b style="text-transform: uppercase; font-size: 15px; letter-spacing: 0.5px;"><i class="fa-solid fa-cloud-sun-rain"></i> Trung Tâm Dự Báo Thời Tiết & Khí Tượng VINAPACO (10 Ngày)</b>
+            <button class="btn btn-red" style="padding: 6px 12px;" onclick="document.getElementById('modalWeather10DaysPreview').classList.add('hidden')"><i class="fa-solid fa-xmark"></i> Đóng</button>
+        </div>
+        
+        <div style="padding: 20px; background: #f8fafc; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; max-height: 84vh;">
+            <div id="weatherCurrentOverviewBox" style="background: white; border: 1.5px solid var(--border-color); border-radius: 12px; padding: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <div id="wMainIcon" style="font-size: 40px; color: #f59e0b;"><i class="fa-solid fa-sun"></i></div>
+                    <div>
+                        <div style="font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;" id="wLocationTitle">Khu vực: Phú Thọ</div>
+                        <div style="font-size: 24px; font-weight: 900; color: #0f172a;" id="wCurrentTemp">--°C</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #0284c7;" id="wCurrentCondition">Đang cập nhật...</div>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; justify-content: center; gap: 4px; font-size: 13px; font-weight: 700; color: #334155;">
+                    <div>💧 Độ ẩm không khí: <span id="wHumidity" style="color: #0284c7;">--%</span></div>
+                    <div>💨 Tốc độ & Gió: <span id="wWind" style="color: #16a34a;">-- km/h</span></div>
+                </div>
+                <div style="display: flex; flex-direction: column; justify-content: center; gap: 4px; font-size: 13px; font-weight: 700; color: #334155;">
+                    <div>🌅 Bình minh: <span id="wSunrise" style="color: #d97706;">--:--</span></div>
+                    <div>🌇 Hoàng hôn: <span id="wSunset" style="color: #d97706;">--:--</span></div>
+                </div>
+            </div>
+
+            <div style="background: white; border: 1.5px solid var(--border-color); border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
+                <div style="font-weight: 900; font-size: 14px; color: #0369a1; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-calendar-week"></i> Dự Báo Chi Tiết Thời Tiết 10 Ngày Tới
+                </div>
+                <div id="weather10DaysContainer" class="weather-10day-grid">
+                    <div style="text-align: center; padding: 20px; color: #64748b; font-weight: bold;">Đang tải dữ liệu khí tượng 10 ngày...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- MODAL NHẮC NGHỈ NGƠI CHUYÊN NGHIỆP (VINAPACO WELLNESS - 60 PHÚT) -->
 <div class="modal-overlay hidden" id="modalVinapacoWellness">
@@ -316,8 +361,11 @@
         <div class="info-widget-card" style="justify-content: space-between;">
             <div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-cloud-sun"></i> Thời Tiết Vùng</div>
-                    <button class="btn btn-blue btn-lg" style="padding: 6px 14px !important; font-size: 12px !important;" onclick="layThoiTietTheoGPS()"><i class="fa-solid fa-location-crosshairs"></i> GPS</button>
+                    <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-cloud-sun"></i> Thời Tiết Vùng & 10 Ngày</div>
+                    <div style="display: flex; gap: 6px;">
+                        <button class="btn btn-purple btn-lg" style="padding: 5px 10px !important; font-size: 11px !important;" onclick="moModalDuBaoThoiTiet10Ngay()"><i class="fa-solid fa-calendar-week"></i> 10 Ngày</button>
+                        <button class="btn btn-blue btn-lg" style="padding: 5px 10px !important; font-size: 11px !important;" onclick="layThoiTietTheoGPS()"><i class="fa-solid fa-location-crosshairs"></i> GPS</button>
+                    </div>
                 </div>
                 <div class="weather-display" id="weatherWidgetText">Đang tải thời tiết...</div>
             </div>
@@ -376,7 +424,7 @@
     </div>
 
     <!-- TAB 0: DASHBOARD TỔNG QUAN -->
-    <div id="dashboardTab" class="tab-pane active table-card" style="background: transparent; border: none; padding: 0;">
+    <div id="dashboardTab" class="tab-pane table-card" style="background: transparent; border: none; padding: 0;">
         <div class="charts-multi-grid">
             <div class="chart-card">
                 <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #0284c7;"></i> Tỷ Trọng Tài Chính Cả Năm (%)</div>
@@ -584,7 +632,7 @@
         </table>
     </div>
 
-    <!-- TAB 8: THANH TOÁN VĂN PHÒNG (CÓ SỬA, HỦY) -->
+    <!-- TAB 8: THANH TOÁN VĂN PHÒNG -->
     <div id="officePaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
@@ -631,7 +679,7 @@
         </table>
     </div>
 
-    <!-- TAB 9: KHO MỰC IN (CÓ SỬA, HỦY) -->
+    <!-- TAB 9: KHO MỰC IN -->
     <div id="inkInventoryTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-warehouse"></i> QUẢN LÝ KHO MỰC IN & XUẤT NHẬP TỒN (XNT)</div>
@@ -659,7 +707,7 @@
         <table><thead><tr><th>Mã VT</th><th>Tên Mực</th><th>Máy In</th><th>Nghiệp Vụ</th><th>SL</th><th>Người Nhận</th><th>Đơn Giá</th><th>Thành Tiền</th><th style="text-align: center;">Thao Tác</th></tr></thead><tbody id="inkInventoryTableBody"></tbody></table>
     </div>
 
-    <!-- TAB 10: GIAO NHẬN (CÓ SỬA, HỦY) -->
+    <!-- TAB 10: GIAO NHẬN -->
     <div id="deliverySlipTab" class="tab-pane table-card">
         <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-file-contract"></i> QUẢN LÝ & IN PHIẾU GIAO NHẬN THIẾT BỊ</div></div>
         <div class="form-card" id="formCardSlip" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
@@ -679,7 +727,7 @@
         <table><thead><tr><th>Số Phiếu</th><th>Bên Giao</th><th>Bên Nhận</th><th>Bộ Phận</th><th>Tên Thiết Bị</th><th>Tình Trạng</th><th>Ngày Giao</th><th style="text-align: center;">Thao Tác</th></tr></thead><tbody id="deliveryTableBody"></tbody></table>
     </div>
 
-    <!-- TAB 11: CƯỚC VIỄN THÔNG (CÓ SỬA, HỦY, DRIVE) -->
+    <!-- TAB 11: CƯỚC VIỄN THÔNG -->
     <div id="telecomPaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-wifi"></i> CƯỚC MẠNG & INTERNET (NĂM <span id="telecomYearTitle">2026</span>)</div>
@@ -721,7 +769,7 @@
         </table>
     </div>
 
-    <!-- TAB 12: KHẢO SÁT CHUYÊN SÂU (CÓ SỬA, HỦY) -->
+    <!-- TAB 12: KHẢO SÁT CHUYÊN SÂU -->
     <div id="surveyTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-clipboard-check"></i> KHẢO SÁT THIẾT BỊ, BẢN QUYỀN OS, OFFICE & PHẦN MỀM NGHIỆP VỤ</div>
@@ -950,6 +998,7 @@
     let currentNamKey = new Date().getFullYear().toString();
     let currentThangKey = "Tháng 08";
     let modalCurrentNvIndex = 0;
+    let cachedWeatherCoords = { lat: 21.3228, lon: 105.3377, cityName: "Phú Thọ" };
 
     function saveToLocalStorage() {
         try {
@@ -1012,7 +1061,6 @@
     const chiList = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
     
     function convertSolar2LunarPro(dd, mm, yy) {
-        // Thuật toán quy chiếu lịch chuẩn xác cho năm 2026 và lân cận
         let baseDate = new Date(yy, mm - 1, dd);
         let timeDiff = baseDate.getTime() - new Date(2026, 7, 24).getTime();
         let dayDiff = Math.round(timeDiff / (1000 * 3600 * 24));
@@ -1450,7 +1498,6 @@
         });
     }
 
-    // TAB 8: THANH TOÁN VĂN PHÒNG (CÓ SỬA, HỦY)
     function renderOfficePaymentTable() {
         let tbody = document.getElementById('officePaymentTableBody');
         if(!tbody) return; tbody.innerHTML = '';
@@ -1545,7 +1592,6 @@
     }
     function xoaVPP(key, idx) { if (dsThanhToanVanPhongProByMonth[key]) dsThanhToanVanPhongProByMonth[key].splice(idx, 1); capNhat(); }
 
-    // TAB 9: KHO MỰC IN (CÓ SỬA, HỦY)
     function renderInkInventoryTable() {
         let tbody = document.getElementById('inkInventoryTableBody');
         if(!tbody) return; tbody.innerHTML = '';
@@ -1644,7 +1690,6 @@
         document.getElementById('modalHandoverSlipPreview').classList.remove('hidden');
     }
 
-    // TAB 10: GIAO NHẬN THIẾT BỊ (CÓ SỬA, HỦY)
     function renderDeliveryTable() {
         let tbody = document.getElementById('deliveryTableBody');
         if(!tbody) return; tbody.innerHTML = '';
@@ -1751,7 +1796,6 @@
         });
     }
 
-    // TAB 11: CƯỚC VIỄN THÔNG (CÓ SỬA, HỦY, DRIVE)
     function renderTelecomPaymentTable() {
         let tbody = document.getElementById('telecomPaymentTableBody');
         if(!tbody) return; tbody.innerHTML = '';
@@ -1836,7 +1880,6 @@
         document.getElementById('inputTelecomVatInput').value = vat.toLocaleString('vi-VN');
     }
 
-    // TAB 12: KHẢO SÁT CHUYÊN SÂU (CÓ SỬA, HỦY)
     function renderSurveyTable() {
         let tbody = document.getElementById('surveyTableBody');
         if(!tbody) return; tbody.innerHTML = '';
@@ -1919,7 +1962,6 @@
     }
     function xoaKhaoSat(idx) { dsKhaoSatChuyenSau.splice(idx, 1); renderSurveyTable(); capNhat(); }
 
-    // TAB 3: CÔNG VIỆC (CÓ SỬA, HỦY)
     function renderTaskTable() {
         let tbody = document.getElementById('taskTableBody');
         if (!tbody) return; tbody.innerHTML = '';
@@ -2014,6 +2056,47 @@
         XLSX.writeFile(wb, `VINAPACO_Toan_Bo_${currentNamKey}_${currentThangKey}.xlsx`);
     }
 
+    const barValuePlugin = {
+        id: 'barValuePlugin',
+        afterDatasetsDraw(chart) {
+            const { ctx } = chart;
+            if (chart.config.type !== 'bar') return;
+            chart.data.datasets.forEach((dataset, datasetIndex) => {
+                const meta = chart.getDatasetMeta(datasetIndex);
+                if (!meta.hidden) {
+                    meta.data.forEach((element, index) => {
+                        const value = dataset.data[index];
+                        if (value !== null && value !== undefined && value !== 0) {
+                            ctx.save();
+                            ctx.font = 'bold 11px sans-serif';
+                            ctx.fillStyle = '#0f172a';
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'bottom';
+                            
+                            let displayVal = value;
+                            if (typeof value === 'number') {
+                                if (value >= 1000000000) {
+                                    displayVal = (value / 1000000000).toFixed(1) + ' Tỷ';
+                                } else if (value >= 1000000) {
+                                    displayVal = (value / 1000000).toFixed(1) + ' Tr';
+                                } else if (value >= 1000) {
+                                    displayVal = value.toLocaleString('vi-VN');
+                                } else {
+                                    displayVal = value;
+                                }
+                            }
+                            
+                            const pos = element.tooltipPosition();
+                            ctx.fillText(displayVal, pos.x, pos.y - 5);
+                            ctx.restore();
+                        }
+                    });
+                }
+            });
+        }
+    };
+    if (typeof Chart !== 'undefined') { Chart.register(barValuePlugin); }
+
     let chartInstances = {};
     function createOrUpdateChart(canvasId, type, data, options) {
         if (typeof Chart === 'undefined') return;
@@ -2038,7 +2121,7 @@
             createOrUpdateChart('overviewBarChart', 'bar', {
                 labels: ['Lương NET', 'VPP', 'Viễn Thông'],
                 datasets: [{ label: 'VNĐ', data: [totalNetYear, yearVppTotal, yearTelecomTotal], backgroundColor: ['#16a34a', '#d97706', '#0284c7'] }]
-            }, { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } });
+            }, { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grace: '20%' } } });
 
             let done = danhSachCongViec.filter(t => t.status === 'Hoàn thành').length;
             let doing = danhSachCongViec.filter(t => t.status === 'Đang làm').length;
@@ -2047,7 +2130,7 @@
 
             createOrUpdateChart('overviewTaskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false });
             createOrUpdateChart('taskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false });
-            createOrUpdateChart('taskBarChart', 'bar', taskData, { responsive: true, maintainAspectRatio: false });
+            createOrUpdateChart('taskBarChart', 'bar', taskData, { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grace: '25%' } } });
 
             let months = ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"];
             let monthlyNetList = months.map(m => {
@@ -2057,7 +2140,7 @@
 
             createOrUpdateChart('monthlySalaryBarChart', 'bar', {
                 labels: months, datasets: [{ label: 'Quỹ Lương NET (VNĐ)', data: monthlyNetList, backgroundColor: '#0284c7' }]
-            }, { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } });
+            }, { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grace: '20%' } } });
 
             let nsList = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey]) ? coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu : [];
             let names = nsList.map(i => i.hoTen);
@@ -2067,7 +2150,7 @@
             createOrUpdateChart('overviewLeaveBarChart', 'bar', {
                 labels: names,
                 datasets: [{ label: 'Đã Dùng', data: usedLeaves, backgroundColor: '#d97706', borderRadius: 4 }, { label: 'Còn Lại', data: remainingLeaves, backgroundColor: '#16a34a', borderRadius: 4 }]
-            }, { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } });
+            }, { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grace: '20%' } } });
 
             createOrUpdateChart('leavePieChart', 'pie', {
                 labels: ['Đã Dùng', 'Còn Lại'],
@@ -2179,7 +2262,6 @@
         if (found) moModalPhiieuLuongTheoTen(found.hoTen);
     }
 
-    // VINAPACO WELLNESS - NHẮC NGHỈ NGƠI CHUYÊN NGHIỆP (60 PHÚT)
     let wellnessTimer = null;
     function batTatNhacNghiGoi() {
         let btn = document.querySelector('button[onclick="batTatNhacNghiGoi()"]');
@@ -2211,16 +2293,80 @@
 
     function luuGasUrlNhanh() { alert("✅ Đã lưu cấu hình Gas Webhook URL!"); }
 
+    function getWeatherInfo(code) {
+        switch (code) {
+            case 0: return { text: "Trời quang đãng", icon: "fa-sun", color: "#f59e0b" };
+            case 1: case 2: case 3: return { text: "Mây rải rác / Nhiều mây", icon: "fa-cloud-sun", color: "#38bdf8" };
+            case 45: case 48: return { text: "Sương mù", icon: "fa-smog", color: "#94a3b8" };
+            case 51: case 53: case 55: case 56: case 57: return { text: "Mưa phùn nhẹ", icon: "fa-cloud-rain", color: "#60a5fa" };
+            case 61: case 63: case 65: case 66: case 67: return { text: "Mưa rào / Mưa lớn", icon: "fa-cloud-showers-heavy", color: "#2563eb" };
+            case 71: case 73: case 75: case 77: return { text: "Tuyết rơi", icon: "fa-snowflake", color: "#93c5fd" };
+            case 80: case 81: case 82: return { text: "Mưa dông mạnh", icon: "fa-cloud-bolt", color: "#d97706" };
+            case 95: case 96: case 99: return { text: "Dông bão kèm sấm sét", icon: "fa-bolt", color: "#dc2626" };
+            default: return { text: "Thời tiết ổn định", icon: "fa-cloud", color: "#64748b" };
+        }
+    }
+
     async function goiApiLayThoiTiet(lat, lon, cityName) {
+        cachedWeatherCoords = { lat: lat, lon: lon, cityName: cityName };
         try {
-            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_probability_max&timezone=auto`);
             let data = await res.json();
-            if (data && data.current_weather) {
-                document.getElementById('weatherWidgetText').innerHTML = `<i class="fa-solid fa-temperature-three-quarters" style="color:#ef4444;"></i> ${cityName}: <b>${data.current_weather.temperature}°C</b>, Gió: ${data.current_weather.windspeed} km/h`;
+            if (data && data.current) {
+                let cur = data.current;
+                let wInfo = getWeatherInfo(cur.weather_code);
+                
+                // [ĐÃ SỬA] Đổi cur.temperature thành cur.temperature_2m để lấy đúng giá trị nhiệt độ từ API
+                document.getElementById('weatherWidgetText').innerHTML = `<i class="fa-solid ${wInfo.icon}" style="color:${wInfo.color};"></i> ${cityName}: <b>${cur.temperature_2m}°C</b> (${wInfo.text}) - Độ ẩm: ${cur.relative_humidity_2m}%`;
+                
+                document.getElementById('wLocationTitle').innerText = `Khu vực: ${cityName} (Lat: ${lat.toFixed(2)}, Lon: ${lon.toFixed(2)})`;
+                document.getElementById('wCurrentTemp').innerText = `${cur.temperature_2m}°C`;
+                document.getElementById('wCurrentCondition').innerText = wInfo.text;
+                document.getElementById('wMainIcon').innerHTML = `<i class="fa-solid ${wInfo.icon}" style="color:${wInfo.color};"></i>`;
+                document.getElementById('wHumidity').innerText = `${cur.relative_humidity_2m}%`;
+                document.getElementById('wWind').innerText = `${cur.wind_speed_10m} km/h`;
+
+                if (data.daily) {
+                    let d = data.daily;
+                    let sunriseStr = d.sunrise && d.sunrise[0] ? d.sunrise[0].split('T')[1] : '05:30';
+                    let sunsetStr = d.sunset && d.sunset[0] ? d.sunset[0].split('T')[1] : '18:15';
+                    document.getElementById('wSunrise').innerText = sunriseStr;
+                    document.getElementById('wSunset').innerText = sunsetStr;
+
+                    let grid10Days = document.getElementById('weather10DaysContainer');
+                    if (grid10Days) {
+                        grid10Days.innerHTML = '';
+                        for (let i = 0; i < (d.time ? d.time.length : 10); i++) {
+                            let dateStr = d.time[i];
+                            let parts = dateStr.split('-');
+                            let formattedDate = parts.length === 3 ? `${parts[2]}/${parts[1]}` : dateStr;
+                            let dayCode = d.weather_code[i];
+                            let dayWInfo = getWeatherInfo(dayCode);
+                            let tMax = d.temperature_2m_max[i];
+                            let tMin = d.temperature_2m_min[i];
+                            let rainProb = d.precipitation_probability_max ? d.precipitation_probability_max[i] : 0;
+
+                            grid10Days.innerHTML += `
+                                <div class="weather-day-card">
+                                    <div style="font-size: 12px; font-weight: 900; color: #0369a1;">${i === 0 ? 'Hôm nay' : formattedDate}</div>
+                                    <div style="font-size: 26px; margin: 4px 0; color: ${dayWInfo.color};"><i class="fa-solid ${dayWInfo.icon}"></i></div>
+                                    <div style="font-size: 11px; font-weight: 800; color: #334155; min-height: 28px;">${dayWInfo.text}</div>
+                                    <div style="font-size: 13px; font-weight: 900; color: #0f172a;">${tMax}°C / <span style="color:#64748b; font-weight:700;">${tMin}°C</span></div>
+                                    <div style="font-size: 11px; color: #0284c7; font-weight: 700;"><i class="fa-solid fa-umbrella"></i> Mưa: ${rainProb}%</div>
+                                </div>
+                            `;
+                        }
+                    }
+                }
             }
         } catch (e) {
             document.getElementById('weatherWidgetText').innerHTML = `<i class="fa-solid fa-cloud-sun" style="color:#d97706;"></i> ${cityName}: 30.5°C, Nắng đẹp`;
         }
+    }
+
+    function moModalDuBaoThoiTiet10Ngay() {
+        document.getElementById('modalWeather10DaysPreview').classList.remove('hidden');
+        goiApiLayThoiTiet(cachedWeatherCoords.lat, cachedWeatherCoords.lon, cachedWeatherCoords.cityName);
     }
 
     function layThoiTietTheoGPS() {

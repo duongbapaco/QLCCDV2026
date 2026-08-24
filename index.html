@@ -339,6 +339,7 @@
             <button class="btn btn-yellow" onclick="batTatNhacNghiGoi()"><i class="fa-solid fa-mug-hot"></i> Nhắc Nghỉ</button>
             <button class="btn btn-green" onclick="xuatToanBoHeThongExcel()"><i class="fa-solid fa-file-excel"></i> Xuất Toàn Bộ Excel</button>
             <button class="btn btn-blue" onclick="thuCongDongBoLenDrive()"><i class="fa-solid fa-cloud-arrow-up"></i> Đồng Bộ Ngay</button>
+            <button class="btn btn-yellow" onclick="taiDuLieuTuDongTuGas()"><i class="fa-solid fa-cloud-arrow-down"></i> Tải Dữ Liệu Cloud</button>
         </div>
     </div>
 
@@ -1015,6 +1016,7 @@
     let modalCurrentNvIndex = 0;
     let cachedWeatherCoords = { lat: 21.3228, lon: 105.3377, cityName: "Phú Thọ" };
 
+    // CƠ CHẾ LƯU & TỰ ĐỘNG ĐỒNG BỘ THÔNG MINH GIỮA CÁC THIẾT BỊ (PC & MOBILE)
     function saveToLocalStorage() {
         try {
             localStorage.setItem('vinapaco_data_namthang', JSON.stringify(coSoDuLieuNamThang));
@@ -1025,7 +1027,53 @@
             localStorage.setItem('vinapaco_survey', JSON.stringify(dsKhaoSatChuyenSau));
             localStorage.setItem('vinapaco_tasks', JSON.stringify(danhSachCongViec));
             localStorage.setItem('vinapaco_accounts', JSON.stringify(danhSachTaiKhoanHeThong));
+            
+            // Tự động kích hoạt đồng bộ ngầm lên Cloud (GAS Webhook) nếu có URL
+            tuDongDongBoCloudNgam();
         } catch(e) {}
+    }
+
+    let autoSyncTimer = null;
+    function tuDongDongBoCloudNgam() {
+        if (autoSyncTimer) clearTimeout(autoSyncTimer);
+        autoSyncTimer = setTimeout(() => {
+            let gasUrl = document.getElementById('inputGasUrlSetting').value.trim();
+            if (gasUrl) {
+                let payload = {
+                    action: "syncData", namKey: currentNamKey, thangKey: currentThangKey,
+                    dataNamThang: coSoDuLieuNamThang, dataVpp: dsThanhToanVanPhongProByMonth,
+                    dataTelecom: dsThanhToanTelecombyMonth, dataInk: dsKhoMucIn,
+                    dataDelivery: dsPhieuGiaoNhan, dataSurvey: dsKhaoSatChuyenSau,
+                    dataTasks: danhSachCongViec, timestamp: new Date().toISOString()
+                };
+                fetch(gasUrl, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) }).catch(e => {});
+            }
+        }, 1500);
+    }
+
+    async function taiDuLieuTuDongTuGas() {
+        let gasUrl = document.getElementById('inputGasUrlSetting').value.trim();
+        if (!gasUrl) { alert("Vui lòng nhập GAS Webhook URL!"); return; }
+        
+        try {
+            let res = await fetch(gasUrl + "?action=getData");
+            let data = await res.json();
+            if (data) {
+                if (data.dataNamThang) coSoDuLieuNamThang = data.dataNamThang;
+                if (data.dataVpp) dsThanhToanVanPhongProByMonth = data.dataVpp;
+                if (data.dataTelecom) dsThanhToanTelecombyMonth = data.dataTelecom;
+                if (data.dataInk) dsKhoMucIn = data.dataInk;
+                if (data.dataDelivery) dsPhieuGiaoNhan = data.dataDelivery;
+                if (data.dataSurvey) dsKhaoSatChuyenSau = data.dataSurvey;
+                if (data.dataTasks) danhSachCongViec = data.dataTasks;
+                
+                saveToLocalStorage();
+                capNhat();
+                alert("✅ Đã tải và đồng bộ dữ liệu mới nhất từ Cloud thành công!");
+            }
+        } catch(err) {
+            alert("⚠️ Đang dùng bản dữ liệu hiện tại trên thiết bị. (Kiểm tra lại kết nối Cloud/GAS Webhook nếu muốn đồng bộ trực tuyến).");
+        }
     }
 
     async function thuCongDongBoLenDrive() {
@@ -1411,7 +1459,7 @@
         if (document.getElementById("kpiTotalSurvey")) document.getElementById("kpiTotalSurvey").innerText = dsKhaoSatChuyenSau.length + " Thiết bị";
         if (document.getElementById("kpiTotalTamUng")) document.getElementById("kpiTotalTamUng").innerText = totalTamUng.toLocaleString('vi-VN');
 
-        let totalTasksDone = danhSachCongViec.filter(t => t.status === 'Hoàn thành').length;
+        let totalTasksDone = danhSachCongViec.filter(t => (t.status || '').trim() === 'Hoàn thành').length;
         if (document.getElementById("sumNetVal")) document.getElementById("sumNetVal").innerText = totalYearNet.toLocaleString('vi-VN');
         if (document.getElementById("sumVppVal")) document.getElementById("sumVppVal").innerText = totalOfficeYear.toLocaleString('vi-VN');
         if (document.getElementById("sumTelecomVal")) document.getElementById("sumTelecomVal").innerText = totalTelecomYear.toLocaleString('vi-VN');
@@ -2019,11 +2067,12 @@
         let tbody = document.getElementById('taskTableBody');
         if (!tbody) return; tbody.innerHTML = '';
         danhSachCongViec.forEach((item, idx) => {
-            let badgeClass = item.status === 'Hoàn thành' ? 'badge-net' : (item.status === 'Đang làm' ? 'badge-warning' : 'badge-danger');
+            let st = (item.status || '').trim();
+            let badgeClass = st === 'Hoàn thành' ? 'badge-net' : (st === 'Đang làm' ? 'badge-warning' : 'badge-danger');
             tbody.innerHTML += `<tr>
                 <td style="text-align:center;">${idx + 1}</td><td><b>${item.name}</b></td><td>${item.assignee}</td>
                 <td style="text-align:center;">${formatVNDate(item.dueDate)}</td>
-                <td style="text-align:center;"><span class="${badgeClass}">${item.status}</span></td>
+                <td style="text-align:center;"><span class="${badgeClass}">${item.status || 'Chưa làm'}</span></td>
                 <td style="text-align:center; display:flex; gap:4px; justify-content:center; align-items:center;">
                     <button class="btn btn-yellow" style="padding:3px 6px; font-size:11px;" onclick="doiTrangThaiNhanhCongViec(${idx})" title="Đổi trạng thái"><i class="fa-solid fa-rotate"></i></button>
                     <button class="btn btn-blue" style="padding:3px 6px; font-size:11px;" onclick="suaCongViec(${idx})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
@@ -2036,8 +2085,9 @@
     function doiTrangThaiNhanhCongViec(idx) {
         let t = danhSachCongViec[idx];
         if (!t) return;
-        if (t.status === 'Chưa làm') t.status = 'Đang làm';
-        else if (t.status === 'Đang làm') t.status = 'Hoàn thành';
+        let st = (t.status || '').trim();
+        if (st === 'Chưa làm') t.status = 'Đang làm';
+        else if (st === 'Đang làm') t.status = 'Hoàn thành';
         else t.status = 'Chưa làm';
         renderTaskTable(); capNhat();
     }
@@ -2049,7 +2099,7 @@
         document.getElementById('inputTaskName').value = t.name;
         document.getElementById('inputTaskAssignee').value = t.assignee;
         if (t.dueDate) document.getElementById('inputTaskDueDate').value = t.dueDate;
-        document.getElementById('inputTaskStatus').value = t.status;
+        document.getElementById('inputTaskStatus').value = t.status || 'Chưa làm';
         document.getElementById('btnTaskText').innerText = "Cập Nhật Công Việc";
         document.getElementById('btnCancelTask').classList.remove('hidden');
         document.getElementById('formCardTask').scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -2217,9 +2267,13 @@
                 datasets: [{ label: 'VNĐ', data: [totalNetYear, yearVppTotal, yearTelecomTotal], backgroundColor: ['#16a34a', '#d97706', '#0284c7'] }]
             }, { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grace: '20%' } } });
 
-            let done = danhSachCongViec.filter(t => t.status === 'Hoàn thành').length;
-            let doing = danhSachCongViec.filter(t => t.status === 'Đang làm').length;
-            let todo = danhSachCongViec.filter(t => t.status === 'Chưa làm').length;
+            // SỬA LỖI UNDEFINED BẰNG CÁCH LỌC VÀ AN TOÀN HÓA TRẠNG THÁI CÔNG VIỆC
+            let done = danhSachCongViec.filter(t => (t.status || '').trim() === 'Hoàn thành').length;
+            let doing = danhSachCongViec.filter(t => (t.status || '').trim() === 'Đang làm').length;
+            let todo = danhSachCongViec.filter(t => {
+                let st = (t.status || '').trim();
+                return st === 'Chưa làm' || (st !== 'Hoàn thành' && st !== 'Đang làm');
+            }).length;
             let taskSum = done + doing + todo;
             let taskPieValues = taskSum > 0 ? [done, doing, todo] : [0, 0, 1];
 
@@ -2510,6 +2564,8 @@
             renderAccountTable();
             khoiTaoClock();
             traCuuThoiTietTheoThanhPho();
+            // Tự động tải dữ liệu đồng bộ mới nhất từ Cloud khi mở app trên mobile/PC
+            taiDuLieuTuDongTuGas();
             setTimeout(() => veTatCaBieuDoDashboard(), 100);
         } catch (err) {}
     }

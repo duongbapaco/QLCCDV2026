@@ -97,7 +97,6 @@
         .lunar-display { font-size: 13px; font-weight: 700; color: #16a34a; line-height: 1.4; }
         .weather-display { font-size: 13px; font-weight: 700; color: #d97706; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 
-        /* UPLOAD STATUS BAR STYLES */
         .upload-status-bar { background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 12px 18px; border-radius: 10px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2); margin-bottom: 12px; }
         .upload-status-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 800; }
         .upload-progress-track { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.25); border-radius: 4px; overflow: hidden; }
@@ -343,7 +342,7 @@
         </div>
     </div>
 
-    <!-- THANH TRẠNG THÁI ĐẨY FILE ĐÍNH KÈM LÊN DRIVE (MỚI) -->
+    <!-- THANH TRẠNG THÁI ĐẨY FILE ĐÍNH KÈM LÊN DRIVE -->
     <div id="driveUploadStatusBar" class="upload-status-bar hidden">
         <div class="upload-status-header">
             <span id="uploadStatusTitle"><i class="fa-solid fa-cloud-arrow-up"></i> Đang chuẩn bị tải file lên Google Drive...</span>
@@ -2110,6 +2109,7 @@
         XLSX.writeFile(wb, `VINAPACO_Toan_Bo_${currentNamKey}_${currentThangKey}.xlsx`);
     }
 
+    // PLUGIN HIỂN THỊ GIÁ TRỊ TRÊN BIỂU ĐỒ CỘT
     const barValuePlugin = {
         id: 'barValuePlugin',
         afterDatasetsDraw(chart) {
@@ -2149,7 +2149,44 @@
             });
         }
     };
-    if (typeof Chart !== 'undefined') { Chart.register(barValuePlugin); }
+
+    // PLUGIN HIỂN THỊ CON SỐ PHẦN TRĂM (%) TRÊN BIỂU ĐỒ TRÒN / TỶ TRỌNG & TỶ LỆ
+    const piePercentagePlugin = {
+        id: 'piePercentagePlugin',
+        afterDatasetsDraw(chart) {
+            if (chart.config.type !== 'pie' && chart.config.type !== 'doughnut') return;
+            const { ctx } = chart;
+            chart.data.datasets.forEach((dataset, datasetIndex) => {
+                const meta = chart.getDatasetMeta(datasetIndex);
+                if (!meta.hidden) {
+                    const total = dataset.data.reduce((acc, val) => acc + (val || 0), 0);
+                    meta.data.forEach((element, index) => {
+                        const value = dataset.data[index] || 0;
+                        if (value > 0 && total > 0) {
+                            const percentage = ((value / total) * 100).toFixed(1) + '%';
+                            const pos = element.tooltipPosition();
+                            ctx.save();
+                            ctx.font = 'bold 12px sans-serif';
+                            ctx.fillStyle = '#ffffff';
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            ctx.shadowColor = 'rgba(0, 0, 0, 0.75)';
+                            ctx.shadowBlur = 5;
+                            ctx.lineWidth = 3;
+                            ctx.strokeText(percentage, pos.x, pos.y);
+                            ctx.fillText(percentage, pos.x, pos.y);
+                            ctx.restore();
+                        }
+                    });
+                }
+            });
+        }
+    };
+
+    if (typeof Chart !== 'undefined') { 
+        Chart.register(barValuePlugin); 
+        Chart.register(piePercentagePlugin); 
+    }
 
     let chartInstances = {};
     function createOrUpdateChart(canvasId, type, data, options) {
@@ -2167,7 +2204,6 @@
             let yearVppTotal = layTatCaDanhSachVPPTheoNam().reduce((s, i) => s + (i.total || 0), 0);
             let yearTelecomTotal = layTatCaDanhSachTelecomTheoNam().reduce((s, i) => s + (i.tong || 0), 0);
 
-            // Sửa lỗi biểu đồ tỷ trọng (cho phép nhận giá trị 0 hoặc thực tế linh hoạt)
             let sumFinancial = totalNetYear + yearVppTotal + yearTelecomTotal;
             let pieFinancialData = sumFinancial > 0 ? [totalNetYear, yearVppTotal, yearTelecomTotal] : [1, 0, 0];
 
@@ -2189,8 +2225,8 @@
 
             let taskData = { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: taskPieValues, backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] };
 
-            createOrUpdateChart('overviewTaskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false });
-            createOrUpdateChart('taskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false });
+            createOrUpdateChart('overviewTaskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } });
+            createOrUpdateChart('taskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } });
             createOrUpdateChart('taskBarChart', 'bar', taskData, { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grace: '25%' } } });
 
             let months = ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"];
@@ -2220,7 +2256,7 @@
             createOrUpdateChart('leavePieChart', 'pie', {
                 labels: ['Đã Dùng', 'Còn Lại'],
                 datasets: [{ data: leavePieValues, backgroundColor: ['#d97706', '#16a34a'] }]
-            }, { responsive: true, maintainAspectRatio: false });
+            }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } });
         } catch (e) {}
     }
 

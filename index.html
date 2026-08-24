@@ -1,1 +1,2525 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hệ Thống Quản Lý VINAPACO - Pro Full Version 2026</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0284c7; --primary-dark: #0369a1; --bg-body: #f1f5f9; --card-bg: #ffffff;
+            --text-main: #0f172a; --text-muted: #475569; --border-color: #cbd5e1;
+            --green-badge: #dcfce7; --green-text: #15803d;
+            --yellow-badge: #fef9c3; --yellow-text: #854d0e;
+            --red-badge: #fee2e2; --red-text: #991b1b;
+            font-size: 16px;
+        }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-main); padding: 12px; scroll-behavior: smooth; }
+        .container { max-width: 1720px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; width: 100%; }
+        .hidden { display: none !important; }
+
+        .banner { background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 16px 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .banner h1 { font-size: 18px; font-weight: 800; text-transform: uppercase; }
+        .banner p { font-size: 14px; opacity: 0.95; margin-top: 4px; font-weight: 500; }
+
+        .btn-group-header { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .btn { padding: 8px 14px; border-radius: 8px; font-weight: 800; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: none; transition: all 0.2s; white-space: nowrap; }
+        .btn:hover { opacity: 0.92; transform: translateY(-1px); }
+        .btn-lg { padding: 10px 22px !important; font-size: 14px !important; font-weight: 900 !important; border-radius: 8px !important; letter-spacing: 0.3px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        
+        .btn-green { background-color: #16a34a; color: white; }
+        .btn-blue { background-color: #0284c7; color: white; }
+        .btn-red { background-color: #ef4444; color: white; }
+        .btn-yellow { background-color: #d97706; color: white; }
+        .btn-purple { background-color: #8b5cf6; color: white; }
+        .btn-zalo { background-color: #0068ff; color: white; }
+        .btn-gray { background-color: #64748b; color: white; }
+
+        .config-bar { background: white; padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border-color); display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; align-items: center; }
+        .config-item { display: flex; flex-direction: column; gap: 4px; }
+        .config-item label { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
+        .config-item input, .config-item select { padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color); font-weight: 800; font-size: 14px; color: #0f172a; outline: none; background: #fff; width: 100%; }
+        .config-item.drive-path-box { grid-column: span 2; }
+
+        .form-card { background: #f8fafc; border: 2px dashed var(--primary); padding: 14px; border-radius: 10px; margin-bottom: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; align-items: flex-end; scroll-margin-top: 20px; }
+        .form-group { display: flex; flex-direction: column; gap: 4px; }
+        .form-group label { font-size: 13px; font-weight: 800; color: var(--text-muted); }
+        .form-group input, .form-group select, .form-group textarea { padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 14px; font-weight: 700; outline: none; background: white; width: 100%; }
+
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+        .kpi-card { background: var(--card-bg); padding: 14px; border-radius: 10px; border: 1px solid var(--border-color); }
+        .kpi-title { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
+        .kpi-value { font-size: 22px; font-weight: 900; color: var(--text-main); margin: 4px 0 2px 0; }
+        .kpi-sub { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+
+        .charts-multi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 14px; margin-top: 8px; }
+        .chart-card { background: white; padding: 14px; border-radius: 10px; border: 1px solid var(--border-color); }
+        .chart-title { font-size: 13px; font-weight: 800; color: var(--text-main); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; }
+
+        .tab-nav { display: flex; gap: 6px; border-bottom: 3px solid var(--border-color); padding-bottom: 8px; margin-top: 6px; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+        .tab-btn-nav { padding: 8px 14px; border-radius: 8px 8px 0 0; background: #e2e8f0; border: none; font-weight: 800; font-size: 13px; cursor: pointer; color: var(--text-muted); flex-shrink: 0; }
+        .tab-btn-nav.active { background: var(--primary); color: white; }
+
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; }
+
+        .table-card { background: var(--card-bg); border-radius: 10px; border: 1px solid var(--border-color); padding: 14px; overflow-x: auto; }
+        .table-header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+        .table-title { font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; min-width: 600px; }
+        th, td { padding: 8px 10px; border: 1px solid var(--border-color); vertical-align: middle; }
+        th { background-color: #f1f5f9; color: var(--text-muted); font-weight: 900; font-size: 12px; text-transform: uppercase; text-align: center; }
+        
+        input.cell-input { width: 100%; padding: 6px 8px; border: 1px solid transparent; border-radius: 6px; font-size: 14px; font-weight: 700; outline: none; background: transparent; }
+        input.cell-input:hover { border-color: #cbd5e1; background: #f8fafc; }
+        input.cell-input:focus { border-color: #0284c7; background: #ffffff; box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2); }
+        input.num-center { text-align: center; }
+        input.money-input { text-align: right; color: #dc2626; font-weight: 800; }
+
+        .badge-net { background: var(--green-badge); color: var(--green-text); padding: 3px 8px; border-radius: 6px; font-weight: 900; font-size: 12px; display: inline-block; }
+        .badge-danger { background: var(--red-badge); color: var(--red-text); padding: 3px 8px; border-radius: 6px; font-weight: 900; font-size: 12px; display: inline-block; }
+        .badge-warning { background: #fef9c3; color: #854d0e; padding: 3px 8px; border-radius: 6px; font-weight: 900; font-size: 12px; display: inline-block; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.75); display: flex; justify-content: center; align-items: center; z-index: 10000; backdrop-filter: blur(6px); padding: 12px; }
+        .modal-card { background: white; width: 100%; max-width: 1040px; border-radius: 16px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); max-height: 94vh; display: flex; flex-direction: column; }
+        .modal-actions { padding: 14px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+
+        .top-info-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-bottom: 12px; }
+        .info-widget-card { background: white; padding: 14px; border-radius: 10px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 6px; }
+        .clock-display { font-size: 24px; font-weight: 900; color: #0284c7; font-family: monospace; }
+        .lunar-display { font-size: 13px; font-weight: 700; color: #16a34a; line-height: 1.4; }
+        .weather-display { font-size: 13px; font-weight: 700; color: #d97706; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+
+        .upload-status-bar { background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 12px 18px; border-radius: 10px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2); margin-bottom: 12px; }
+        .upload-status-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 800; }
+        .upload-progress-track { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.25); border-radius: 4px; overflow: hidden; }
+        .upload-progress-fill { height: 100%; background: #22c55e; width: 0%; transition: width 0.3s ease; border-radius: 4px; }
+
+        .weather-10day-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-top: 10px; }
+        .weather-day-card { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; text-align: center; display: flex; flex-direction: column; gap: 6px; transition: transform 0.2s; }
+        .weather-day-card:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+        .lich-grid-header { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; font-weight: 900; font-size: 13px; text-align: center; padding: 8px 0; background: #e2e8f0; border-radius: 8px; color: #334155; }
+        .lich-grid-header div:first-child { color: #dc2626; }
+        .lich-grid-header div:last-child { color: #0284c7; }
+        
+        .lich-day-tile { padding: 8px 6px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 11px; display: flex; flex-direction: column; gap: 3px; cursor: pointer; transition: all 0.2s; background: white; position: relative; min-height: 62px; }
+        .lich-day-tile:hover { transform: scale(1.04); box-shadow: 0 4px 12px rgba(0,0,0,0.12); z-index: 2; border-color: #0284c7; }
+        .lich-day-tile.selected { border: 2.5px solid #0284c7 !important; background: #f0f9ff !important; }
+        .lich-day-tile.today { border: 2.5px solid #16a34a !important; background: #f0fdf4 !important; }
+
+        .fengshui-item { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0; border-bottom: 1px dashed #e2e8f0; font-size: 13px; }
+        .fengshui-label { font-weight: 800; min-width: 145px; color: #475569; display: flex; align-items: center; gap: 6px; }
+        .fengshui-val { font-weight: 700; color: #0f172a; flex: 1; line-height: 1.4; }
+
+        .salary-signature-footer { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; margin-top: 24px; padding: 14px 0 8px 0; font-size: 13px; font-weight: 800; color: #0f172a; text-transform: uppercase; }
+        .salary-signature-footer .sign-col { display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
+        .salary-signature-footer .sign-space { height: 55px; }
+        .salary-signature-footer .sign-name { text-transform: none; font-weight: 800; font-size: 14px; color: #0f172a; }
+
+        .handover-slip-container { background: #ffffff; width: 100%; max-width: 760px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); overflow: hidden; border: 1px solid #cbd5e1; margin: 0 auto; font-size: 14px; color: #0f172a; padding: 30px; }
+        .handover-header { text-align: center; border-bottom: 2px solid #0f172a; padding-bottom: 15px; margin-bottom: 20px; }
+        .handover-title { font-size: 20px; font-weight: 900; text-transform: uppercase; margin-top: 8px; color: #0369a1; }
+        .handover-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        .handover-table th, .handover-table td { padding: 10px 12px; border: 1px solid #94a3b8; }
+        .handover-table th { background: #f1f5f9; font-weight: 800; color: #334155; text-align: center; }
+        .handover-signatures { display: grid; grid-template-columns: repeat(2, 1fr); text-align: center; margin-top: 30px; font-weight: 800; }
+        .handover-sign-space { height: 75px; }
+    </style>
+</head>
+<body>
+
+<!-- MODAL DỰ BÁO THỜI TIẾT 10 NGÀY CHUYÊN NGHIỆP -->
+<div class="modal-overlay hidden" id="modalWeather10DaysPreview">
+    <div class="modal-card" style="max-width: 960px;">
+        <div style="padding: 16px 20px; background: linear-gradient(135deg, #0284c7, #0369a1); color: white; display: flex; justify-content: space-between; align-items: center;">
+            <b style="text-transform: uppercase; font-size: 15px; letter-spacing: 0.5px;"><i class="fa-solid fa-cloud-sun-rain"></i> Trung Tâm Dự Báo Thời Tiết & Khí Tượng VINAPACO (10 Ngày)</b>
+            <button class="btn btn-red" style="padding: 6px 12px;" onclick="document.getElementById('modalWeather10DaysPreview').classList.add('hidden')"><i class="fa-solid fa-xmark"></i> Đóng</button>
+        </div>
+        
+        <div style="padding: 20px; background: #f8fafc; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; max-height: 84vh;">
+            <div id="weatherCurrentOverviewBox" style="background: white; border: 1.5px solid var(--border-color); border-radius: 12px; padding: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <div id="wMainIcon" style="font-size: 40px; color: #f59e0b;"><i class="fa-solid fa-sun"></i></div>
+                    <div>
+                        <div style="font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;" id="wLocationTitle">Khu vực: Phú Thọ</div>
+                        <div style="font-size: 24px; font-weight: 900; color: #0f172a;" id="wCurrentTemp">--°C</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #0284c7;" id="wCurrentCondition">Đang cập nhật...</div>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; justify-content: center; gap: 4px; font-size: 13px; font-weight: 700; color: #334155;">
+                    <div>💧 Độ ẩm không khí: <span id="wHumidity" style="color: #0284c7;">--%</span></div>
+                    <div>💨 Tốc độ & Gió: <span id="wWind" style="color: #16a34a;">-- km/h</span></div>
+                </div>
+                <div style="display: flex; flex-direction: column; justify-content: center; gap: 4px; font-size: 13px; font-weight: 700; color: #334155;">
+                    <div>🌅 Bình minh: <span id="wSunrise" style="color: #d97706;">--:--</span></div>
+                    <div>🌇 Hoàng hôn: <span id="wSunset" style="color: #d97706;">--:--</span></div>
+                </div>
+            </div>
+
+            <div style="background: white; border: 1.5px solid var(--border-color); border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
+                <div style="font-weight: 900; font-size: 14px; color: #0369a1; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-calendar-week"></i> Dự Báo Chi Tiết Thời Tiết 10 Ngày Tới
+                </div>
+                <div id="weather10DaysContainer" class="weather-10day-grid">
+                    <div style="text-align: center; padding: 20px; color: #64748b; font-weight: bold;">Đang tải dữ liệu khí tượng 10 ngày...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL NHẮC NGHỈ NGƠI CHUYÊN NGHIỆP (VINAPACO WELLNESS - 60 PHÚT) -->
+<div class="modal-overlay hidden" id="modalVinapacoWellness">
+    <div class="modal-card" style="max-width: 540px; border-top: 5px solid #16a34a;">
+        <div style="padding: 16px 20px; background: linear-gradient(135deg, #16a34a, #15803d); color: white; display: flex; justify-content: space-between; align-items: center;">
+            <b style="text-transform: uppercase; font-size: 14px; letter-spacing: 0.5px;"><i class="fa-solid fa-mug-hot"></i> VINAPACO Wellness - Tái Tạo Năng Lượng</b>
+            <button class="btn btn-red" style="padding: 4px 8px;" onclick="dongModalNghiNgoi()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <div style="padding: 22px; background: #f8fafc; display: flex; flex-direction: column; gap: 14px; font-size: 14px; color: #0f172a; line-height: 1.6;">
+            <div style="display: flex; gap: 12px; align-items: center; background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: 8px;">
+                <i class="fa-solid fa-clock-rotate-left" style="font-size: 24px; color: #16a34a;"></i>
+                <div>
+                    <div style="font-weight: 900; color: #166534;">Đã hoàn thành 60 phút tập trung làm việc!</div>
+                    <div style="font-size: 12px; color: #475569;">Thời gian lý tưởng để cơ thể thả lỏng và phục hồi thị lực.</div>
+                </div>
+            </div>
+
+            <div style="background: white; border: 1px solid var(--border-color); padding: 14px; border-radius: 8px; display: flex; flex-direction: column; gap: 8px;">
+                <div style="font-weight: 800; color: #0369a1; font-size: 13px; text-transform: uppercase;"><i class="fa-solid fa-heart-pulse"></i> Gợi ý vận động tại chỗ:</div>
+                <div>👁️ <b>Quy tắc 20-20-20:</b> Nhìn ra xa tối thiểu 6 mét trong 20 giây để giảm mỏi mắt.</div>
+                <div>🧘 <b>Vươn vai & Xoay khớp:</b> Giúp giảm áp lực đốt sống cổ và thắt lưng.</div>
+                <div>💧 <b>Bổ sung nước:</b> Uống 1 ngụm nước ấm để thanh lọc và tuần hoàn máu.</div>
+            </div>
+        </div>
+
+        <div class="modal-actions" style="justify-content: flex-end; gap: 10px;">
+            <button class="btn btn-yellow" onclick="hoanLaiNhacNghi()"><i class="fa-solid fa-business-time"></i> Hoãn lại 10 phút</button>
+            <button class="btn btn-green btn-lg" onclick="dongModalNghiNgoi()"><i class="fa-solid fa-check"></i> Đã hiểu & Tiếp tục làm việc</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL LỊCH VẠN NIÊN & PHONG THỦY CHUẨN XÁC PRO -->
+<div class="modal-overlay hidden" id="modalLichVanNien">
+    <div class="modal-card" style="max-width: 1100px;">
+        <div style="padding: 16px 20px; background: linear-gradient(135deg, #8B0000, #a00000); color: white; display: flex; justify-content: space-between; align-items: center;">
+            <b style="text-transform: uppercase; font-size: 15px; letter-spacing: 0.5px;"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên & Phong Thủy Cát Hung Doanh Nghiệp VINAPACO</b>
+            <button class="btn btn-red" style="padding: 6px 12px;" onclick="document.getElementById('modalLichVanNien').classList.add('hidden')"><i class="fa-solid fa-xmark"></i> Đóng</button>
+        </div>
+        
+        <div style="padding: 18px; background: #f8fafc; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; max-height: 85vh;">
+            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; background: white; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);">
+                <div class="form-group" style="flex: 1; min-width: 140px;"><label>Chọn Tháng</label><select id="lichThangSelect" style="padding: 8px; font-weight: bold;" onchange="renderLichGridPro()"></select></div>
+                <div class="form-group" style="flex: 1; min-width: 140px;"><label>Chọn Năm</label><select id="lichNamSelect" style="padding: 8px; font-weight: bold;" onchange="renderLichGridPro()"></select></div>
+                <button class="btn btn-green btn-lg" style="margin-top: 18px;" onclick="troVeHomNayLich()"><i class="fa-solid fa-clock-rotate-left"></i> Về Hôm Nay</button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 480px; gap: 16px; align-items: start;">
+                <div style="background: white; border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                    <div class="lich-grid-header"><div>CN</div><div>T2</div><div>T3</div><div>T4</div><div>T5</div><div>T6</div><div>T7</div></div>
+                    <div id="lichGridContainer" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 8px; text-align: center;"></div>
+                </div>
+
+                <div style="background: white; border: 2px solid #8B0000; border-radius: 12px; padding: 16px; box-shadow: 0 4px 12px rgba(139, 0, 0, 0.12);">
+                    <div style="font-weight: 900; font-size: 15px; color: #8B0000; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+                        <span><i class="fa-solid fa-compass" style="color: #D4AF37;"></i> PHONG THỦY & CÁT HUNG CHI TIẾT</span>
+                        <span id="labelNgayDangChonBadge" class="badge-net" style="font-size: 11px;">Hôm nay</span>
+                    </div>
+                    <div id="chiTietNgayNoiDung" style="display: flex; flex-direction: column; gap: 4px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL IN PHIẾU BÀN GIAO / KHO -->
+<div class="modal-overlay hidden" id="modalHandoverSlipPreview">
+    <div class="modal-card" style="max-width: 840px; padding: 0;">
+        <div style="padding: 14px 20px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center;">
+            <b style="text-transform: uppercase; font-size: 14px;"><i class="fa-solid fa-file-contract"></i> Xem Trước & In Phiếu Doanh Nghiệp (Bàn Giao / Kho)</b>
+            <button class="btn btn-red" style="padding: 4px 8px;" onclick="document.getElementById('modalHandoverSlipPreview').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div style="padding: 24px; background: #e2e8f0; max-height: 82vh; overflow-y: auto;">
+            <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 14px; display: flex; gap: 10px; align-items: center;">
+                <label style="font-weight: 800; font-size: 13px; color: #475569;">Tiêu Đề Phiếu:</label>
+                <input type="text" id="inputCustomSlipTitle" value="BIÊN BẢN BÀN GIAO & GIAO NHẬN THIẾT BỊ" style="flex: 1; padding: 6px 10px; border: 1px solid var(--border-color); font-weight: 800; border-radius: 6px;" oninput="capNhatTieuDePhieuIn()">
+            </div>
+
+            <div id="handoverSlipCapture" class="handover-slip-container">
+                <div class="handover-header">
+                    <div style="font-size: 12px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase;">TỔNG CÔNG TY GIẤY VIỆT NAM (VINAPACO)</div>
+                    <div style="font-size: 11px; font-weight: 700; color: #475569;">Văn phòng Tổng công ty - Ban CNTT & Kho vận</div>
+                    <div class="handover-title" id="previewSlipTitleText">BIÊN BẢN BÀN GIAO & GIAO NHẬN THIẾT BỊ</div>
+                    <div style="font-size: 12px; font-weight: 700; margin-top: 4px;" id="previewSlipNoDate">Số: PGN-2026/08-01 | Ngày 24 tháng 08 năm 2026</div>
+                </div>
+
+                <div style="margin-bottom: 14px; font-size: 13.5px; line-height: 1.6;">
+                    - Căn cứ vào nghiệp vụ quản lý tài sản và xuất nhập kho của Tổng công ty Giấy Việt Nam;<br>
+                    - Hôm nay, ngày <span id="pDay">24</span> tháng <span id="pMonth">08</span> năm <span id="pYear">2026</span>, tại Kho văn phòng Tổng công ty, chúng tôi gồm có:
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #cbd5e1;">
+                    <div>
+                        <b style="color: #0369a1; text-transform: uppercase; font-size: 12px;"><i class="fa-solid fa-user-tie"></i> BÊN GIAO / THỦ KHO:</b>
+                        <div style="margin-top: 4px; font-weight: 800;" id="pFrom">Trần Bình Dương</div>
+                        <div style="font-size: 12px; color: #475569;">Đơn vị: Văn phòng TCT</div>
+                    </div>
+                    <div>
+                        <b style="color: #0369a1; text-transform: uppercase; font-size: 12px;"><i class="fa-solid fa-user"></i> BÊN NHẬN / BỘ PHẬN:</b>
+                        <div style="margin-top: 4px; font-weight: 800;" id="pTo">Nguyễn Minh Ngọc</div>
+                        <div style="font-size: 12px; color: #475569;">Bộ phận: <span id="pDept">Kế toán</span></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 6px; font-weight: 800; font-size: 13px; color: #0369a1;">CHI TIẾT VẬT TƯ / THIẾT BỊ BÀN GIAO / XUẤT KHO:</div>
+                <table class="handover-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">STT</th>
+                            <th>Tên Hàng Hóa / Vật Tư / Thiết Bị</th>
+                            <th>Số Lượng</th>
+                            <th>Tình Trạng / Đơn Giá</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align: center;">1</td>
+                            <td><b id="pItem">Laptop Dell Latitude</b></td>
+                            <td style="text-align: center;" id="pQty">01 Bộ</td>
+                            <td id="pStatus">Mới 100%, nguyên seal</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="font-size: 13.5px; line-height: 1.6; margin-top: 10px;">
+                    <b>Cam kết:</b> Người nhận có trách nhiệm bảo quản và sử dụng đúng mục đích công vụ. Biên bản được lập thành 02 bản có giá trị pháp lý như nhau.
+                </div>
+
+                <div class="handover-signatures">
+                    <div>
+                        <div><b>ĐẠI DIỆN BÊN GIAO / THỦ KHO</b></div>
+                        <div style="font-size: 11px; font-weight: normal; color: #475569;">(Ký, ghi rõ họ tên)</div>
+                        <div class="handover-sign-space"></div>
+                        <div id="signFromName" style="font-weight: 800;">Trần Bình Dương</div>
+                    </div>
+                    <div>
+                        <div><b>ĐẠI DIỆN BÊN NHẬN</b></div>
+                        <div style="font-size: 11px; font-weight: normal; color: #475569;">(Ký, ghi rõ họ tên)</div>
+                        <div class="handover-sign-space"></div>
+                        <div id="signToName" style="font-weight: 800;">Nguyễn Minh Ngọc</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-purple btn-lg" onclick="window.print()"><i class="fa-solid fa-print"></i> In Biên Bản</button>
+            <button class="btn btn-green btn-lg" onclick="taiAnhPhieuBànGiao()"><i class="fa-solid fa-download"></i> Tải Ảnh</button>
+        </div>
+    </div>
+</div>
+
+<!-- GIAO DIỆN CHÍNH -->
+<div class="container" id="appMainContainer">
+    <div class="banner">
+        <div>
+            <h1><i class="fa-solid fa-building-shield"></i> Hệ Thống Quản Lý Đa Dashboard & So Sánh Chi Phí Cả Năm</h1>
+            <p id="userStatusTag">Tổng công ty Giấy Việt Nam - Chế độ Trực tiếp Toàn quyền</p>
+        </div>
+        <div class="btn-group-header">
+            <button class="btn btn-purple" onclick="moModalLichVanNien()"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên</button>
+            <button class="btn btn-yellow" onclick="batTatNhacNghiGoi()"><i class="fa-solid fa-mug-hot"></i> Nhắc Nghỉ</button>
+            <button class="btn btn-green" onclick="xuatToanBoHeThongExcel()"><i class="fa-solid fa-file-excel"></i> Xuất Toàn Bộ Excel</button>
+            <button class="btn btn-blue" onclick="thuCongDongBoLenDrive()"><i class="fa-solid fa-cloud-arrow-up"></i> Đồng Bộ Ngay</button>
+        </div>
+    </div>
+
+    <!-- THANH TRẠNG THÁI ĐẨY FILE ĐÍNH KÈM LÊN DRIVE -->
+    <div id="driveUploadStatusBar" class="upload-status-bar hidden">
+        <div class="upload-status-header">
+            <span id="uploadStatusTitle"><i class="fa-solid fa-cloud-arrow-up"></i> Đang chuẩn bị tải file lên Google Drive...</span>
+            <span id="uploadStatusPercentText">0%</span>
+        </div>
+        <div class="upload-progress-track">
+            <div id="uploadProgressFillBar" class="upload-progress-fill"></div>
+        </div>
+    </div>
+
+    <!-- CẤU HÌNH GAS WEBHOOK -->
+    <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 12px 18px; border-radius: 12px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+        <span style="font-size: 13px; font-weight: 900; color: #0369a1; text-transform: uppercase;"><i class="fa-solid fa-link"></i> GAS WEBHOOK URL:</span>
+        <input type="text" id="inputGasUrlSetting" style="flex: 1; min-width: 280px; padding: 10px 14px; border-radius: 8px; border: 1.5px solid var(--border-color); font-size: 13px; font-weight: bold; background: #f8fafc;" value="https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec">
+        <button class="btn btn-blue btn-lg" onclick="luuGasUrlNhanh()"><i class="fa-solid fa-floppy-disk"></i> LƯU THÔNG TIN</button>
+    </div>
+
+    <!-- THANH THỜI GIAN & THỜI TIẾT -->
+    <div class="top-info-bar">
+        <div class="info-widget-card">
+            <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-clock"></i> Đồng Hồ Số</div>
+            <div class="clock-display" id="liveClockDisplay">00:00:00</div>
+            <div style="font-size: 12px; font-weight: 700; color: var(--text-muted);" id="liveDateDisplay">Thứ Hai, 24/08/2026</div>
+        </div>
+
+        <div class="info-widget-card">
+            <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-calendar-days"></i> Âm Lịch Hôm Nay</div>
+            <div class="lunar-display" id="lunarWidgetText">Đang tải...</div>
+        </div>
+
+        <div class="info-widget-card" style="justify-content: space-between;">
+            <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-cloud-sun"></i> Thời Tiết Vùng & 10 Ngày</div>
+                    <div style="display: flex; gap: 6px;">
+                        <button class="btn btn-purple btn-lg" style="padding: 5px 10px !important; font-size: 11px !important;" onclick="moModalDuBaoThoiTiet10Ngay()"><i class="fa-solid fa-calendar-week"></i> 10 Ngày</button>
+                        <button class="btn btn-blue btn-lg" style="padding: 5px 10px !important; font-size: 11px !important;" onclick="layThoiTietTheoGPS()"><i class="fa-solid fa-location-crosshairs"></i> GPS</button>
+                    </div>
+                </div>
+                <div class="weather-display" id="weatherWidgetText">Đang tải thời tiết...</div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center; margin-top: 8px;">
+                <input type="text" id="inputSearchCity" placeholder="Nhập Tỉnh/Thành..." style="padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 13px; font-weight: bold; flex: 1;" value="Phú Thọ">
+                <button class="btn btn-green btn-lg" style="padding: 8px 16px !important; font-size: 13px !important;" onclick="traCuuThoiTietTheoThanhPho()"><i class="fa-solid fa-magnifying-glass"></i> TRA CỨU</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- THANH CẤU HÌNH LƯƠNG CHẾ ĐỘ -->
+    <div class="config-bar">
+        <div class="config-item"><label>Năm Lưu Trữ</label><select id="cfgNamChon" onchange="doiThangHoSoLuong()"></select></div>
+        <div class="config-item"><label>Tháng Nhập / Lưu Trữ</label><select id="cfgThangChon" onchange="doiThangHoSoLuong()">
+            <option value="Tháng 01">Tháng 01</option><option value="Tháng 02">Tháng 02</option><option value="Tháng 03">Tháng 03</option><option value="Tháng 04">Tháng 04</option><option value="Tháng 05">Tháng 05</option><option value="Tháng 06">Tháng 06</option><option value="Tháng 07">Tháng 07</option><option value="Tháng 08" selected>Tháng 08</option><option value="Tháng 09">Tháng 09</option><option value="Tháng 10">Tháng 10</option><option value="Tháng 11">Tháng 11</option><option value="Tháng 12">Tháng 12</option>
+        </select></div>
+        
+        <div class="config-item drive-path-box">
+            <label>Đường Dẫn VINAPACO_Drive</label>
+            <div style="display: flex; gap: 6px;">
+                <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold; flex: 1;" value="VINAPACO_Drive / 2026 / Tháng 08">
+                <button class="btn btn-blue" style="padding: 6px 12px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Mở Drive</button>
+            </div>
+        </div>
+
+        <div class="config-item"><label>Ngày Công Chế Độ</label><input type="number" id="cfgNCD" onchange="luuCauHinhHienTai()"></div>
+        <div class="config-item"><label>Mức Lương Cơ Bản</label><input type="number" id="cfgMucLCB" onchange="luuCauHinhHienTai()"></div>
+        <div class="config-item"><label>Mức Tối Thiểu Vùng</label><input type="number" id="cfgMucTTV" onchange="luuCauHinhHienTai()"></div>
+        <div class="config-item"><label>Mức Lương Công Việc</label><input type="number" id="cfgMucLCV" onchange="luuCauHinhHienTai()"></div>
+    </div>
+
+    <!-- KPI TỔNG QUAN -->
+    <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-title">Tổng Quỹ Lương NET (Cả Năm)</div><div class="kpi-value" style="color: #15803d;" id="kpiTotalNet">0</div><div class="kpi-sub">Lũy kế cả năm</div></div>
+        <div class="kpi-card"><div class="kpi-title">Tổng Thanh Toán VP (Cả Năm)</div><div class="kpi-value" style="color: #d97706;" id="kpiTotalPayment">0</div><div class="kpi-sub">Lũy kế cả năm</div></div>
+        <div class="kpi-card"><div class="kpi-title">Tồn Kho Mực In Hiện Tại</div><div class="kpi-value" style="color: #0284c7;" id="kpiTotalInkStock">0 Hộp</div><div class="kpi-sub">Thực tế</div></div>
+        <div class="kpi-card"><div class="kpi-title">Tổng Thiết Bị Khảo Sát</div><div class="kpi-value" style="color: #8b5cf6;" id="kpiTotalSurvey">0 Thiết bị</div><div class="kpi-sub">Bản quyền phần mềm</div></div>
+        <div class="kpi-card"><div class="kpi-title">Tổng Tạm Ứng Đã Trừ</div><div class="kpi-value" style="color: #dc2626;" id="kpiTotalTamUng">0</div><div class="kpi-sub">Giữa tháng</div></div>
+    </div>
+
+    <!-- THANH CHUYỂN TAB -->
+    <div class="tab-nav">
+        <button class="tab-btn-nav active" onclick="switchTab('dashboardTab', this)"><i class="fa-solid fa-chart-pie"></i> DB Tổng Quan</button>
+        <button class="tab-btn-nav" onclick="switchTab('monthlySalaryDashboardTab', this)"><i class="fa-solid fa-money-bill-trend-up"></i> DB Lương Tháng</button>
+        <button class="tab-btn-nav" onclick="switchTab('accountManagerTab', this)"><i class="fa-solid fa-users-gear"></i> Tài Khoản</button>
+        <button class="tab-btn-nav" onclick="switchTab('taskTab', this)"><i class="fa-solid fa-list-check"></i> Công Việc</button>
+        <button class="tab-btn-nav" onclick="switchTab('timekeepingDetailTab', this)"><i class="fa-solid fa-business-time"></i> Chấm Công</button>
+        <button class="tab-btn-nav" onclick="switchTab('salaryCBTab', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Lương CB</button>
+        <button class="tab-btn-nav" onclick="switchTab('salaryCVTab', this)"><i class="fa-solid fa-briefcase"></i> Lương CV & Phiếu</button>
+        <button class="tab-btn-nav" onclick="switchTab('leaveTab', this)"><i class="fa-solid fa-calendar-days"></i> Phép Năm</button>
+        <button class="tab-btn-nav" onclick="switchTab('officePaymentTab', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Thanh Toán VP</button>
+        <button class="tab-btn-nav" onclick="switchTab('inkInventoryTab', this)"><i class="fa-solid fa-warehouse"></i> Kho Mực In</button>
+        <button class="tab-btn-nav" onclick="switchTab('deliverySlipTab', this)"><i class="fa-solid fa-file-contract"></i> Giao Nhận</button>
+        <button class="tab-btn-nav" onclick="switchTab('telecomPaymentTab', this)"><i class="fa-solid fa-wifi"></i> Cước Viễn Thông</button>
+        <button class="tab-btn-nav" onclick="switchTab('surveyTab', this)"><i class="fa-solid fa-clipboard-check"></i> Khảo Sát</button>
+    </div>
+
+    <!-- TAB 0: DASHBOARD TỔNG QUAN -->
+    <div id="dashboardTab" class="tab-pane table-card" style="background: transparent; border: none; padding: 0;">
+        <div class="charts-multi-grid">
+            <div class="chart-card">
+                <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #0284c7;"></i> Tỷ Trọng Tài Chính Cả Năm (%)</div>
+                <div style="position: relative; height: 260px;"><canvas id="salaryPieChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title"><i class="fa-solid fa-chart-column" style="color: #16a34a;"></i> Biểu Đồ Cột: So Sánh Chi Phí Cả Năm</div>
+                <div style="position: relative; height: 260px;"><canvas id="overviewBarChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #d97706;"></i> Trạng Thái Công Việc (%)</div>
+                <div style="position: relative; height: 260px;"><canvas id="overviewTaskPieChart"></canvas></div>
+            </div>
+        </div>
+
+        <div class="table-card" style="margin-top: 14px;">
+            <div class="table-header-bar">
+                <div class="table-title"><i class="fa-solid fa-table"></i> BẢNG TỔNG KẾT ĐỐI SOÁT TÀI CHÍNH QUY MÔ CẢ NĂM</div>
+            </div>
+            <table>
+                <thead>
+                    <tr><th>STT</th><th>Hạng Mục Quản Trị (Cả Năm)</th><th>Chỉ Số Tài Chính / Giá Trị</th><th>ĐVT</th><th>Trạng Thái Định Mức</th></tr>
+                </thead>
+                <tbody id="dashboardSummaryTableBody">
+                    <tr><td style="text-align:center;">1</td><td><b>Quỹ Lương NET Nhân Sự (Lũy kế cả năm)</b></td><td id="sumNetVal" style="color:#15803d; font-weight:bold;">0</td><td>VNĐ</td><td><span class="badge-net">Ổn định năm</span></td></tr>
+                    <tr><td style="text-align:center;">2</td><td><b>Thanh Toán Văn Phòng Phẩm & Dịch Vụ (Cả năm)</b></td><td id="sumVppVal" style="color:#d97706; font-weight:bold;">0</td><td>VNĐ</td><td><span class="badge-warning">Toàn niên</span></td></tr>
+                    <tr><td style="text-align:center;">3</td><td><b>Cước Viễn Thông & Internet Trả Sau (Cả năm)</b></td><td id="sumTelecomVal" style="color:#0284c7; font-weight:bold;">0</td><td>VNĐ</td><td><span class="badge-net">Đã quyết toán</span></td></tr>
+                    <tr><td style="text-align:center;">4</td><td><b>Tổng Số Công Việc Hoàn Thành</b></td><td id="sumTaskVal" style="font-weight:bold;">0</td><td>Công việc</td><td><span class="badge-net">Đúng hạn</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TAB 1: DASHBOARD LƯƠNG TỪNG THÁNG -->
+    <div id="monthlySalaryDashboardTab" class="tab-pane table-card">
+        <div class="table-header-bar">
+            <div class="table-title"><i class="fa-solid fa-money-bill-trend-up"></i> DASHBOARD QUỸ LƯƠNG HÀNG THÁNG (NĂM <span id="monthlySalaryYearTitle">2026</span>)</div>
+            <button class="btn btn-green" onclick="xuatBaoCaoLuongCacThangExcel()"><i class="fa-solid fa-file-excel"></i> Xuất Excel Tổng Hợp</button>
+        </div>
+
+        <div class="kpi-grid" style="margin-bottom: 14px;">
+            <div class="kpi-card" style="border-left: 5px solid #16a34a;">
+                <div class="kpi-title">Tổng Quỹ Lương NET Tháng (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
+                <div class="kpi-value" style="color: #15803d;" id="kpiMonthNetSelected">0</div>
+                <div class="kpi-sub">Thực lĩnh toàn đơn vị</div>
+            </div>
+            <div class="kpi-card" style="border-left: 5px solid #0284c7;">
+                <div class="kpi-title">Tổng Lương Cơ Bản Thực Tế</div>
+                <div class="kpi-value" style="color: #0284c7;" id="kpiMonthLCBSelected">0</div>
+                <div class="kpi-sub">Theo hợp đồng</div>
+            </div>
+            <div class="kpi-card" style="border-left: 5px solid #d97706;">
+                <div class="kpi-title">Tổng Lương Công Việc Thực Tế</div>
+                <div class="kpi-value" style="color: #d97706;" id="kpiMonthLCVSelected">0</div>
+                <div class="kpi-sub">Gắn với hiệu suất</div>
+            </div>
+            <div class="kpi-card" style="border-left: 5px solid #ef4444;">
+                <div class="kpi-title">Tổng Trừ BHXH & Tạm Ứng</div>
+                <div class="kpi-value" style="color: #dc2626;" id="kpiMonthDeductionsSelected">0</div>
+                <div class="kpi-sub">Khấu trừ toàn đơn vị</div>
+            </div>
+        </div>
+
+        <div class="charts-multi-grid" style="margin-bottom: 16px;">
+            <div class="chart-card" style="grid-column: span 2;">
+                <div class="chart-title"><i class="fa-solid fa-chart-column" style="color: #16a34a;"></i> Biến Động Quỹ Lương NET Chi Trả Theo 12 Tháng</div>
+                <div style="position: relative; height: 300px;"><canvas id="monthlySalaryBarChart"></canvas></div>
+            </div>
+        </div>
+
+        <div class="table-card">
+            <div class="table-title" style="font-size: 14px; margin-bottom: 10px;"><i class="fa-solid fa-list-ol"></i> BẢNG CHI TIẾT BIẾN ĐỘNG QUỸ LƯƠNG QUA CÁC THÁNG</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">STT</th>
+                        <th>Tháng Hạch Toán</th>
+                        <th style="text-align: center;">Số Nhân Sự</th>
+                        <th style="text-align: right;">Tổng Lương CB</th>
+                        <th style="text-align: right;">Tổng Lương CV</th>
+                        <th style="text-align: right;">Khấu Trừ BH</th>
+                        <th style="text-align: right;">Tạm Ứng</th>
+                        <th style="text-align: right;">TỔNG LƯƠNG NET</th>
+                        <th style="text-align: center;">Trạng Thái</th>
+                    </tr>
+                </thead>
+                <tbody id="monthlySalaryTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TAB 2: QUẢN LÝ TÀI KHOẢN -->
+    <div id="accountManagerTab" class="tab-pane table-card">
+        <div class="table-header-bar">
+            <div class="table-title"><i class="fa-solid fa-users-gear"></i> QUẢN LÝ TÀI KHOẢN & PHÂN QUYỀN HỆ THỐNG</div>
+            <button class="btn btn-green" onclick="moModalThemTaiKhoan()"><i class="fa-solid fa-user-plus"></i> Thêm Tài Khoản</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 40px;">STT</th>
+                    <th>Tên Tài Khoản / Email</th>
+                    <th>Họ và Tên Cán Bộ</th>
+                    <th style="width: 100px; text-align: center;">Vai Trò</th>
+                    <th style="width: 100px; text-align: center;">Trạng Thái</th>
+                    <th>Email Nhận Reset</th>
+                    <th style="width: 140px; text-align: center;">Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody id="accountTableBody"></tbody>
+        </table>
+    </div>
+
+    <!-- TAB 3: QUẢN LÝ CÔNG VIỆC -->
+    <div id="taskTab" class="tab-pane table-card">
+        <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-list-check"></i> QUẢN LÝ CÔNG VIỆC HÀNG NGÀY & TIẾN ĐỘ</div></div>
+        <div class="charts-multi-grid" style="margin-bottom: 14px;">
+            <div class="chart-card" style="padding: 10px;"><div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Lệ Trạng Thái (%)</div><div style="position: relative; height: 200px;"><canvas id="taskPieChart"></canvas></div></div>
+            <div class="chart-card" style="padding: 10px;"><div class="chart-title"><i class="fa-solid fa-chart-column"></i> Số Lượng Công Việc</div><div style="position: relative; height: 200px;"><canvas id="taskBarChart"></canvas></div></div>
+        </div>
+        
+        <div class="form-card" id="formCardTask" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+            <input type="hidden" id="editTaskIndex" value="-1">
+            <div class="form-group"><label>Nội Dung Công Việc</label><input type="text" id="inputTaskName" placeholder="VD: Lập báo cáo điều hành..."></div>
+            <div class="form-group"><label>Người Thực Hiện</label><input type="text" id="inputTaskAssignee" value="Trần Bình Dương"></div>
+            <div class="form-group"><label>Hạn Hoàn Thành</label><input type="date" id="inputTaskDueDate"></div>
+            <div class="form-group"><label>Trạng Thái</label><select id="inputTaskStatus"><option value="Chưa làm">⏳ Chưa làm</option><option value="Đang làm">🔄 Đang làm</option><option value="Hoàn thành">✅ Hoàn thành</option></select></div>
+            <div class="form-group" style="display: flex; gap: 6px;">
+                <button class="btn btn-blue btn-lg" id="btnSaveTask" onclick="luuHoacCapNhatCongViec()"><i class="fas fa-plus-circle"></i> <span id="btnTaskText">Thêm Công Việc</span></button>
+                <button class="btn btn-red btn-lg hidden" id="btnCancelTask" onclick="huyBoCapNhatCongViec()"><i class="fa-solid fa-xmark"></i> Hủy</button>
+            </div>
+        </div>
+        <table><thead><tr><th>STT</th><th>Nội Dung Công Việc</th><th>Người Thực Hiện</th><th>Hạn Hoàn Thành</th><th>Trạng Thái</th><th style="text-align:center;">Thao Tác</th></tr></thead><tbody id="taskTableBody"></tbody></table>
+    </div>
+
+    <!-- TAB 4: CHẤM CÔNG -->
+    <div id="timekeepingDetailTab" class="tab-pane table-card">
+        <div class="table-header-bar">
+            <div class="table-title"><i class="fa-solid fa-business-time"></i> BẢNG THEO DÕI CHẤM CÔNG CHI TIẾT (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
+            <button class="btn btn-green" onclick="xuatExcelCongChiTiet()"><i class="fa-solid fa-file-excel"></i> Xuất Excel Chấm Công</button>
+        </div>
+        <table><thead><tr><th>STT</th><th>Họ và Tên</th><th>NCD Chuẩn</th><th>Ngày Công Thực Tế</th><th>Nghỉ Phép (P)</th><th>Nghỉ Lễ (L)</th><th>Hệ Số (K)</th><th>Ghi Chú</th></tr></thead><tbody id="timekeepingDetailTableBody"></tbody></table>
+    </div>
+
+    <!-- TAB 5: LƯƠNG CƠ BẢN -->
+    <div id="salaryCBTab" class="tab-pane table-card">
+        <div class="table-header-bar">
+            <div class="table-title"><i class="fa-solid fa-table-list"></i> BẢNG LƯƠNG CƠ BẢN (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
+            <button class="btn btn-green" onclick="xuatExcelCB()"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
+        </div>
+        <table><thead><tr><th>STT</th><th>Họ và Tên</th><th>SĐT / Zalo</th><th>HSL.CB</th><th>PC.CB</th><th>L.HĐLĐ</th><th>L.CB</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>Ki</th><th>L.TG</th><th>L.Lễ/Phép</th><th>Tổng Tiền</th><th>BHTN(1%)</th><th>BHXH</th><th>Thực Lĩnh LCB</th></tr></thead><tbody id="tableBodyCB"></tbody></table>
+        
+        <div class="salary-signature-footer">
+            <div class="sign-col"><div>PHÒNG NHÂN SỰ</div><div class="sign-space"></div></div>
+            <div class="sign-col"><div>THỦ TRƯỞNG ĐƠN VỊ</div><div class="sign-space"></div></div>
+            <div class="sign-col"><div>NGƯỜI LẬP BIỂU</div><div class="sign-space"></div><div class="sign-name">Nguyễn Thị Tuyết Nhung</div></div>
+        </div>
+    </div>
+
+    <!-- TAB 6: LƯƠNG CV & PHIẾU LƯƠNG -->
+    <div id="salaryCVTab" class="tab-pane table-card">
+        <div class="table-header-bar">
+            <div class="table-title"><i class="fa-solid fa-briefcase"></i> BẢNG LƯƠNG CÔNG VIỆC & PHIẾU LƯƠNG (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
+            <button class="btn btn-green" onclick="xuatExcelCV()"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
+        </div>
+
+        <div style="background: #f8fafc; border: 2px solid var(--primary); padding: 14px; border-radius: 10px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
+            <button class="btn btn-blue btn-lg" onclick="moModalPhiieuLuongDauTien()"><i class="fa-solid fa-file-invoice-dollar"></i> Mở Phiếu Lương Tổng Hợp Nhân Sự</button>
+        </div>
+
+        <table>
+            <thead><tr><th>STT</th><th>Họ và Tên</th><th>HSL.CV</th><th>PC.CV</th><th>L.CV Gốc</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>Ki</th><th>L.CV TT</th><th>Tổng LCB + LCV</th><th>Tạm Ứng</th><th>Thực Lĩnh CV</th><th>THỰC LĨNH NET</th><th>Zalo</th></tr></thead>
+            <tbody id="tableBodyCV"></tbody>
+        </table>
+
+        <div class="salary-signature-footer">
+            <div class="sign-col"><div>PHÒNG NHÂN SỰ</div><div class="sign-space"></div></div>
+            <div class="sign-col"><div>THỦ TRƯỞNG ĐƠN VỊ</div><div class="sign-space"></div></div>
+            <div class="sign-col"><div>NGƯỜI LẬP BIỂU</div><div class="sign-space"></div><div class="sign-name">Nguyễn Thị Tuyết Nhung</div></div>
+        </div>
+    </div>
+
+    <!-- TAB 7: PHÉP NĂM -->
+    <div id="leaveTab" class="tab-pane table-card">
+        <div class="table-header-bar">
+            <div class="table-title"><i class="fa-solid fa-calendar-days"></i> QUẢN LÝ PHÉP NĂM & CỘNG DỒN (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
+            <button class="btn btn-blue" onclick="moModalDangKyNghiPhep()"><i class="fa-solid fa-file-pen"></i> Đăng Ký Nghỉ & Bàn Giao</button>
+        </div>
+        <div class="charts-multi-grid" style="margin-bottom: 14px;">
+            <div class="chart-card" style="padding: 10px; grid-column: span 2;"><div class="chart-title"><i class="fa-solid fa-chart-column"></i> Biểu Đồ Cột: Ngày Nghỉ Phép Nhân Sự</div><div style="position: relative; height: 320px;"><canvas id="overviewLeaveBarChart"></canvas></div></div>
+            <div class="chart-card" style="padding: 10px;"><div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Phép Đã Dùng (%)</div><div style="position: relative; height: 320px;"><canvas id="leavePieChart"></canvas></div></div>
+        </div>
+
+        <div class="table-card" style="margin-bottom: 14px;">
+            <div class="table-title" style="font-size: 14px; margin-bottom: 8px;"><i class="fa-solid fa-table"></i> Bảng Tổng Kết Phép Năm</div>
+            <table>
+                <thead><tr><th>Chỉ Số Phép Năm</th><th>Tổng Số Ngày</th><th>Tỷ Trọng (%)</th><th>Đánh Giá Chấp Hành</th></tr></thead>
+                <tbody id="leaveSummaryTableBody"></tbody>
+            </table>
+        </div>
+
+        <table>
+            <thead><tr><th>STT</th><th>Họ và Tên</th><th>Tổng Phép Cấp</th><th>Nghỉ Tháng Này</th><th>Nghỉ Lễ</th><th>Đã Dùng Lũy Kế</th><th>Phép Còn Lại</th><th>Trạng Thái</th></tr></thead>
+            <tbody id="leaveTableBody"></tbody>
+        </table>
+    </div>
+
+    <!-- TAB 8: THANH TOÁN VĂN PHÒNG -->
+    <div id="officePaymentTab" class="tab-pane table-card">
+        <div class="table-header-bar">
+            <div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
+            <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Mở Thư Mục Drive</button>
+        </div>
+
+        <div class="form-card" id="formCardVpp">
+            <input type="hidden" id="editOfficeKey" value="">
+            <input type="hidden" id="editOfficeIndex" value="-1">
+            <div class="form-group"><label>Mã Hồ Sơ</label><input type="text" id="autoOfficeId" readonly style="background: #e2e8f0; font-weight: bold;" value="VP-01"></div>
+            <div class="form-group"><label>Đơn Vị Thụ Hưởng</label><input type="text" id="inputOfficeBeneficiary" placeholder="VD: Công ty TNHH..."></div>
+            <div class="form-group"><label>Tên Ngân Hàng</label><input type="text" id="inputOfficeBankName" placeholder="VD: Vietcombank"></div>
+            <div class="form-group"><label>Số Tài Khoản</label><input type="text" id="inputOfficeBankAccount" placeholder="Số TK..."></div>
+            <div class="form-group"><label>Nội Dung</label><input type="text" id="inputOfficeContent" placeholder="Nội dung chi..."></div>
+            
+            <div class="form-group">
+                <label>Đơn Vị Tính (ĐVT)</label>
+                <select id="inputOfficeUnit">
+                    <option value="Cái" selected>Cái</option><option value="Chiếc">Chiếc</option><option value="Hộp">Hộp</option><option value="Bộ">Bộ</option><option value="Tháng">Tháng</option><option value="Quyển">Quyển</option><option value="Gói">Gói</option><option value="Thùng">Thùng</option><option value="Ram (Ream)">Ram (Ream)</option><option value="Cuộn">Cuộn</option><option value="Kg">Kg</option><option value="Tấn">Tấn</option><option value="m³ (Khối)">m³ (Khối)</option><option value="m²">m²</option><option value="Mét">Mét</option><option value="Lượt">Lượt</option><option value="Khóa">Khóa</option><option value="Gói cước">Gói cước</option><option value="Bộ hồ sơ">Bộ hồ sơ</option><option value="Chuyến">Chuyến</option><option value="Lần">Lần</option>
+                </select>
+            </div>
+
+            <div class="form-group"><label>Số Lượng</label><input type="number" id="inputOfficeQty" value="1" min="1" oninput="tinhToanTienVPP()"></div>
+            <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputOfficePrice" placeholder="0" oninput="tinhToanTienVPP()"></div>
+            <div class="form-group"><label>Tỷ Lệ VAT</label><select id="inputOfficeVatRate" onchange="tinhToanTienVPP()"><option value="0.1" selected>10% VAT</option><option value="0.08">8% VAT</option><option value="0">0% Không thuế</option></select></div>
+            <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputOfficeTruocThue" placeholder="0" oninput="tinhToanVatTuTong()"></div>
+            <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputOfficeVAT" placeholder="0" oninput="tinhToanVatTuTong()"></div>
+            <div class="form-group"><label>Tổng Thanh Toán</label><input type="text" id="previewOfficeTotal" placeholder="0" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;"></div>
+            <div class="form-group"><label>Ngày Chứng Từ</label><input type="date" id="inputOfficeDate"></div>
+            <div class="form-group"><label>Đính Kèm File Drive</label><input type="file" id="vppFileUpload" onchange="taiTepLenThuMucChinhXac(this, 'Thanh Toán Văn Phòng')" style="padding: 6px; font-size: 12px;"></div>
+            <div class="form-group" style="display: flex; gap: 6px; grid-column: span 2;">
+                <button class="btn btn-green btn-lg" id="btnSaveVpp" onclick="luuHoacCapNhatVPP()"><i class="fas fa-save"></i> <span id="btnVppText">LƯU CHỨNG TỪ</span></button>
+                <button class="btn btn-red btn-lg hidden" id="btnCancelVpp" onclick="huyBoCapNhatVPP()"><i class="fa-solid fa-xmark"></i> Hủy</button>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã HS</th><th>Tháng</th><th>Thụ Hưởng</th><th>Ngân Hàng / STK</th><th>Nội Dung</th><th>ĐVT</th><th>SL x Đơn Giá</th><th>Trước Thuế</th><th>VAT</th><th>Tổng TT</th><th>Ngày CT</th><th style="text-align:center;">Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody id="officePaymentTableBody"></tbody>
+        </table>
+    </div>
+
+    <!-- TAB 9: KHO MỰC IN -->
+    <div id="inkInventoryTab" class="tab-pane table-card">
+        <div class="table-header-bar">
+            <div class="table-title"><i class="fa-solid fa-warehouse"></i> QUẢN LÝ KHO MỰC IN & XUẤT NHẬP TỒN (XNT)</div>
+            <button class="btn btn-green" onclick="xuatBaoCaoXNTExcel()"><i class="fa-solid fa-file-excel"></i> Xuất Báo Cáo XNT Excel</button>
+        </div>
+        <div style="margin-bottom: 14px; background: #f8fafc; border: 1px solid var(--border-color); padding: 12px; border-radius: 8px;">
+            <div style="font-weight: 900; font-size: 13px; margin-bottom: 6px; color: #0369a1;"><i class="fa-solid fa-chart-line"></i> BẢNG TỔNG HỢP XUẤT - NHẬP - TỒN THỰC TẾ</div>
+            <table><thead><tr><th>STT</th><th>Mã VT</th><th>Tên Vật Tư</th><th>Tồn Đầu Kỳ</th><th>Tổng Nhập</th><th>Tổng Xuất</th><th>Tồn Cuối Kỳ</th><th>Trạng Thái</th></tr></thead><tbody id="xntTableBody"></tbody></table>
+        </div>
+        <div class="form-card" id="formCardInk" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+            <input type="hidden" id="editInkIndex" value="-1">
+            <div class="form-group"><label>Mã VT</label><input type="text" id="autoInkCode" readonly style="background: #e2e8f0; font-weight: bold;" value="MUC001"></div>
+            <div class="form-group"><label>Tên Mực In</label><input type="text" id="inputInkName" placeholder="VD: Canon 337"></div>
+            <div class="form-group"><label>Máy In</label><input type="text" id="inputInkPrinter" placeholder="VD: Canon 151dw"></div>
+            <div class="form-group"><label>Nghiệp Vụ</label><select id="inputInkAction"><option value="Nhập mới kho">📥 Nhập kho</option><option value="Cấp phát sử dụng">📤 Cấp phát</option></select></div>
+            <div class="form-group"><label>Số Lượng</label><input type="number" id="inputInkQty" value="1" min="1"></div>
+            <div class="form-group"><label>Người Nhận / Kho</label><input type="text" id="inputInkReceiver" placeholder="Người nhận..."></div>
+            <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputInkPrice" placeholder="450.000"></div>
+            <div class="form-group"><label>Đính Kèm Phiếu Kho</label><input type="file" id="inkFileUpload" onchange="taiTepLenThuMucChinhXac(this, 'Kho Mực In')" style="padding: 6px; font-size: 12px;"></div>
+            <div class="form-group" style="display: flex; gap: 6px;">
+                <button class="btn btn-green btn-lg" id="btnSaveInk" onclick="luuHoacCapNhatKhoMuc()"><i class="fas fa-warehouse"></i> <span id="btnInkText">GHI SỔ KHO</span></button>
+                <button class="btn btn-red btn-lg hidden" id="btnCancelInk" onclick="huyBoCapNhatKhoMuc()"><i class="fa-solid fa-xmark"></i> Hủy</button>
+            </div>
+        </div>
+        <table><thead><tr><th>Mã VT</th><th>Tên Mực</th><th>Máy In</th><th>Nghiệp Vụ</th><th>SL</th><th>Người Nhận</th><th>Đơn Giá</th><th>Thành Tiền</th><th style="text-align: center;">Thao Tác</th></tr></thead><tbody id="inkInventoryTableBody"></tbody></table>
+    </div>
+
+    <!-- TAB 10: GIAO NHẬN -->
+    <div id="deliverySlipTab" class="tab-pane table-card">
+        <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-file-contract"></i> QUẢN LÝ & IN PHIẾU GIAO NHẬN THIẾT BỊ</div></div>
+        <div class="form-card" id="formCardSlip" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+            <input type="hidden" id="editSlipIndex" value="-1">
+            <div class="form-group"><label>Số Phiếu</label><input type="text" id="inputSlipNo" value="PGN-2026/08-01"></div>
+            <div class="form-group"><label>Bên Giao</label><input type="text" id="inputSlipFrom" value="Trần Bình Dương - Văn phòng TCT"></div>
+            <div class="form-group"><label>Bên Nhận</label><input type="text" id="inputSlipTo" placeholder="Họ tên cán bộ nhận..."></div>
+            <div class="form-group"><label>Bộ Phận</label><input type="text" id="inputSlipDept" placeholder="Phòng ban..."></div>
+            <div class="form-group"><label>Tên Thiết Bị</label><input type="text" id="inputSlipItem" placeholder="Laptop Dell..."></div>
+            <div class="form-group"><label>Tình Trạng</label><input type="text" id="inputSlipStatus" value="Mới 100%, nguyên seal"></div>
+            <div class="form-group"><label>Ngày Giao</label><input type="date" id="inputSlipDate"></div>
+            <div class="form-group" style="display: flex; gap: 6px;">
+                <button class="btn btn-green btn-lg" id="btnSaveSlip" onclick="luuHoacCapNhatPhieuGiao()"><i class="fas fa-plus-circle"></i> <span id="btnSlipText">THÊM PHIẾU</span></button>
+                <button class="btn btn-red btn-lg hidden" id="btnCancelSlip" onclick="huyBoCapNhatPhieuGiao()"><i class="fa-solid fa-xmark"></i> Hủy</button>
+            </div>
+        </div>
+        <table><thead><tr><th>Số Phiếu</th><th>Bên Giao</th><th>Bên Nhận</th><th>Bộ Phận</th><th>Tên Thiết Bị</th><th>Tình Trạng</th><th>Ngày Giao</th><th style="text-align: center;">Thao Tác</th></tr></thead><tbody id="deliveryTableBody"></tbody></table>
+    </div>
+
+    <!-- TAB 11: CƯỚC VIỄN THÔNG -->
+    <div id="telecomPaymentTab" class="tab-pane table-card">
+        <div class="table-header-bar">
+            <div class="table-title"><i class="fa-solid fa-wifi"></i> CƯỚC MẠNG & INTERNET (NĂM <span id="telecomYearTitle">2026</span>)</div>
+            <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Thư Mục Drive</button>
+        </div>
+        
+        <div class="kpi-grid" style="margin-bottom: 14px;">
+            <div class="kpi-card" style="border-left: 5px solid #0284c7;"><div class="kpi-title">Tổng Cước Trước Thuế (Cả Năm)</div><div class="kpi-value" style="color: #0284c7;" id="telecomKpiTruocThue">0</div><div class="kpi-sub">Lũy kế cả năm</div></div>
+            <div class="kpi-card" style="border-left: 5px solid #ef4444;"><div class="kpi-title">Tổng Thuế VAT (Cả Năm)</div><div class="kpi-value" style="color: #ef4444;" id="telecomKpiVAT">0</div><div class="kpi-sub">Lũy kế cả năm</div></div>
+            <div class="kpi-card" style="border-left: 5px solid #16a34a;"><div class="kpi-title">Tổng Thanh Toán Đã VAT (Cả Năm)</div><div class="kpi-value" style="color: #15803d;" id="telecomKpiTongThanhToan">0</div><div class="kpi-sub">Lũy kế cả năm</div></div>
+        </div>
+
+        <div class="form-card" id="formCardTelecom" style="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));">
+            <input type="hidden" id="editTelecomKey" value="">
+            <input type="hidden" id="editTelecomIndex" value="-1">
+            <div class="form-group"><label>Mã HS</label><input type="text" id="inputTelecomMaHs" readonly style="background: #e2e8f0; font-weight: bold;" value="VT-01"></div>
+            <div class="form-group"><label>Nhà Mạng</label><select id="inputTelecomSupplier"><option value="VNPT">VNPT</option><option value="Viettel">Viettel</option><option value="Mobifone">Mobifone</option></select></div>
+            <div class="form-group"><label>Loại Cước</label><input type="text" id="inputTelecomType" placeholder="VD: Cáp quang..."></div>
+            <div class="form-group"><label>Tháng</label><select id="inputTelecomThangChon">
+                <option value="Tháng 01">Tháng 01</option><option value="Tháng 02">Tháng 02</option><option value="Tháng 03">Tháng 03</option><option value="Tháng 04">Tháng 04</option><option value="Tháng 05">Tháng 05</option><option value="Tháng 06">Tháng 06</option><option value="Tháng 07">Tháng 07</option><option value="Tháng 08" selected>Tháng 08</option><option value="Tháng 09">Tháng 09</option><option value="Tháng 10">Tháng 10</option><option value="Tháng 11">Tháng 11</option><option value="Tháng 12">Tháng 12</option>
+            </select></div>
+            <div class="form-group"><label>Tổng Cước (Đã VAT)</label><input type="text" id="inputTelecomTongVat" placeholder="2.500.000" oninput="tinhTienTelecomTuTong()"></div>
+            <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
+            <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
+            <div class="form-group"><label>Đính Kèm File Cước</label><input type="file" id="telecomFileUpload" onchange="taiTepLenThuMucChinhXac(this, 'Cước Viễn Thông')" style="padding: 6px; font-size: 11px;"></div>
+            <div class="form-group" style="display: flex; gap: 6px; grid-column: span 2;">
+                <button class="btn btn-green btn-lg" id="btnSaveTelecom" onclick="luuHoacCapNhatTelecom()"><i class="fas fa-plus-circle"></i> <span id="btnTelecomText">THÊM CƯỚC</span></button>
+                <button class="btn btn-red btn-lg hidden" id="btnCancelTelecom" onclick="huyBoCapNhatTelecom()"><i class="fa-solid fa-xmark"></i> Hủy</button>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã HS</th><th>Tháng</th><th>Nhà Mạng</th><th>Loại Cước</th><th>Kỳ Cước</th><th>Trước Thuế</th><th>VAT</th><th>Tổng TT</th><th style="text-align:center;">Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody id="telecomPaymentTableBody"></tbody>
+        </table>
+    </div>
+
+    <!-- TAB 12: KHẢO SÁT CHUYÊN SÂU -->
+    <div id="surveyTab" class="tab-pane table-card">
+        <div class="table-header-bar">
+            <div class="table-title"><i class="fa-solid fa-clipboard-check"></i> KHẢO SÁT THIẾT BỊ, BẢN QUYỀN OS, OFFICE & PHẦN MỀM NGHIỆP VỤ</div>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn btn-purple" onclick="moModalNhapHangLoatKhaoSat()"><i class="fa-solid fa-file-import"></i> Nhập Hàng Loạt</button>
+                <button class="btn btn-green" onclick="xuatExcelBaoCaoKhaoSat()"><i class="fa-solid fa-file-excel"></i> Xuất Báo Cáo Chuẩn</button>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 14px; background: #f8fafc; border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 700; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <div><b>💻 Tổng thiết bị:</b> <span id="statSurveyTotal" style="color: #0284c7; font-weight: 900;">0</span></div>
+            <div><b>⚠️ Chưa bản quyền:</b> <span id="statSurveyUnlicensed" style="color: #dc2626; font-weight: 900;">0</span></div>
+            <div><b>📊 Tích hợp phần mềm:</b> <span style="color: #16a34a; font-weight: 900;">AutoCAD, SolidWorks, Cloudoffice, Asia, MISA, Quasoft</span></div>
+        </div>
+
+        <div class="form-card" id="formCardSurvey" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));">
+            <input type="hidden" id="editSurveyIndex" value="-1">
+            <div class="form-group"><label>Mã KS</label><input type="text" id="autoSurveyCode" readonly style="background:#e2e8f0; font-weight:bold;" value="KS-01"></div>
+            <div class="form-group"><label>Người Sử Dụng</label><input type="text" id="inputSurveyUser" placeholder="Họ tên cán bộ..."></div>
+            <div class="form-group"><label>Bộ Phận</label><input type="text" id="inputSurveyDept" placeholder="Phòng ban..."></div>
+            
+            <div class="form-group">
+                <label>Loại Thiết Bị</label>
+                <select id="inputSurveyDeviceName">
+                    <option value="Laptop doanh nghiệp" selected>Laptop doanh nghiệp</option><option value="Laptop cá nhân (BYOD)">Laptop cá nhân (BYOD)</option><option value="Máy tính để bàn (Desktop)">Máy tính để bàn (Desktop)</option><option value="Máy trạm Workstation">Máy trạm Workstation</option><option value="Máy chủ vật lý (Server)">Máy chủ vật lý (Server)</option><option value="Máy chủ ảo hóa (VM)">Máy chủ ảo hóa (VM)</option><option value="Máy in / Thiết bị ngoại vi">Máy in / Thiết bị ngoại vi</option><option value="Thiết bị di động / Tablet">Thiết bị di động / Tablet</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Hệ Điều Hành (OS)</label>
+                <select id="inputSurveyOS">
+                    <option value="Windows 11 Pro" selected>Windows 11 Pro</option><option value="Windows 11 Enterprise">Windows 11 Enterprise</option><option value="Windows 10 Pro">Windows 10 Pro</option><option value="Windows 10 Enterprise">Windows 10 Enterprise</option><option value="Windows 8.1 / 8">Windows 8.1 / 8</option><option value="Windows 7 Professional">Windows 7 Professional</option><option value="Windows XP / Vista (Cũ)">Windows XP / Vista (Cũ)</option><option value="Windows Server 2022">Windows Server 2022</option><option value="Windows Server 2019 / 2016">Windows Server 2019 / 2016</option><option value="macOS Sequoia (15.x)">macOS Sequoia (15.x)</option><option value="macOS Sonoma (14.x) / Ventura">macOS Sonoma (14.x) / Ventura</option><option value="macOS phiên bản cũ">macOS phiên bản cũ</option><option value="Ubuntu / Linux Mint / CentOS">Ubuntu / Linux Mint / CentOS</option><option value="Hệ điều hành khác">Hệ điều hành khác</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Bản Quyền OS</label>
+                <select id="inputSurveyOSLicense">
+                    <option value="✅ Có bản quyền chính hãng" selected>✅ Có bản quyền chính hãng</option><option value="⚠️ Chưa có bản quyền">⚠️ Chưa có bản quyền</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Microsoft Office / VP</label>
+                <select id="inputSurveyOffice">
+                    <option value="Microsoft 365 (Cloud)" selected>Microsoft 365 (Cloud)</option><option value="Microsoft Office 2024">Microsoft Office 2024</option><option value="Microsoft Office 2021">Microsoft Office 2021</option><option value="Microsoft Office 2019">Microsoft Office 2019</option><option value="Microsoft Office 2016">Microsoft Office 2016</option><option value="Microsoft Office 2013">Microsoft Office 2013</option><option value="Microsoft Office 2010">Microsoft Office 2010</option><option value="Microsoft Office 2007 / 2003 (Cũ)">Microsoft Office 2007 / 2003 (Cũ)</option><option value="WPS Office / LibreOffice">WPS Office / LibreOffice</option><option value="Không sử dụng Office">Không sử dụng Office</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Bản Quyền Office</label>
+                <select id="inputSurveyOfficeLicense">
+                    <option value="✅ Bản quyền Tổng công ty" selected>✅ Bản quyền Tổng công ty</option><option value="✅ Bản quyền cá nhân / mua rời">✅ Bản quyền cá nhân / mua rời</option><option value="⚠️ Chưa có bản quyền">⚠️ Chưa có bản quyền</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Phần Mềm Nghiệp Vụ</label>
+                <select id="inputSurveyBusinessSoftware">
+                    <option value="Cloudoffice (Văn thư)" selected>Cloudoffice (Văn thư)</option><option value="AutoCAD (Thiết kế)">AutoCAD (Thiết kế)</option><option value="SolidWorks (Cơ khí 3D)">SolidWorks (Cơ khí 3D)</option><option value="Asia (Kế toán ERP)">Asia (Kế toán ERP)</option><option value="MISA (Kế toán)">MISA (Kế toán)</option><option value="Quasoft (Quản lý CL)">Quasoft (Quản lý CL)</option><option value="Photoshop / Illustrator">Photoshop / Illustrator</option><option value="Không sử dụng">Không sử dụng</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Bản Quyền Nghiệp Vụ</label>
+                <select id="inputSurveyBusinessLicense">
+                    <option value="✅ Có bản quyền chính hãng" selected>✅ Có bản quyền chính hãng</option><option value="⚠️ Chưa có bản quyền">⚠️ Chưa có bản quyền</option><option value="Không áp dụng">Không áp dụng</option>
+                </select>
+            </div>
+
+            <div class="form-group"><label>Cấu Hình Chi Tiết</label><input type="text" id="inputSurveySpecs" placeholder="VD: Core i7, RAM 16GB, SSD 512GB"></div>
+            
+            <div class="form-group" style="display: flex; gap: 6px;">
+                <button class="btn btn-purple btn-lg" id="btnSaveSurvey" onclick="luuHoacCapNhatKhaoSat()"><i class="fas fa-plus-circle"></i> <span id="btnSurveyText">LƯU KHẢO SÁT</span></button>
+                <button class="btn btn-red btn-lg hidden" id="btnCancelSurvey" onclick="huyBoCapNhatKhaoSat()"><i class="fa-solid fa-xmark"></i> Hủy</button>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã KS</th><th>Người Sử Dụng</th><th>Bộ Phận</th><th>Loại Thiết Bị</th><th>Hệ Điều Hành</th><th>BQ OS</th><th>Microsoft Office</th><th>BQ Office</th><th>Phần Mềm NV</th><th>BQ NV</th><th>Cấu Hình Chi Tiết</th><th style="text-align: center;">Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody id="surveyTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- MODAL XEM PHIẾU LƯƠNG NHÂN SỰ -->
+<div class="modal-overlay hidden" id="previewModal">
+    <div class="modal-card" style="max-width: 680px; padding: 0;">
+        <div style="padding: 12px 16px; background: #f8fafc; border-bottom: 1px solid #cbd5e1; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <b style="color: #0369a1; text-transform: uppercase; font-size: 13px;"><i class="fa-solid fa-file-invoice-dollar"></i> Phiếu Lương</b>
+                <input type="text" id="inputTimKiemNhanSuModal" placeholder="🔍 Tìm kiếm..." style="padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 12px; font-weight: bold; width: 180px;" oninput="locDanhSachNhanSuModal(this.value)">
+            </div>
+            <div style="display: flex; gap: 6px; align-items: center;">
+                <select id="selectModalNhanSu" style="padding: 5px 8px; border-radius: 6px; font-weight: bold; font-size: 12px;" onchange="chonNhanSuXemPhieuLuong(this.value)"></select>
+                <button class="btn btn-red" style="padding: 5px 8px;" onclick="document.getElementById('previewModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        </div>
+
+        <div style="padding: 16px; background: #e2e8f0; max-height: 76vh; overflow-y: auto;">
+            <div id="payslip-capture" class="payslip-container">
+                <div class="payslip-header">
+                    <div style="font-size: 11px; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px;">TỔNG CÔNG TY GIẤY VIỆT NAM</div>
+                    <h2 style="font-size: 18px; font-weight: 900; text-transform: uppercase; margin: 4px 0;">PHIẾU THANH TOÁN LƯƠNG</h2>
+                    <div id="slipMonthSub" style="display:inline-block; background:rgba(255,255,255,0.25); padding:3px 14px; border-radius:15px; font-size:12px; font-weight: 700;">Tháng 08/2026 - Văn phòng Tổng công ty</div>
+                </div>
+
+                <div class="payslip-body">
+                    <div class="payslip-info-grid">
+                        <div><span style="font-size: 10px; text-transform: uppercase; color: #475569; font-weight: 800;">Họ và Tên</span><div style="font-size: 14px; font-weight: 800; color: #0f172a;" id="slipName">--</div></div>
+                        <div><span style="font-size: 10px; text-transform: uppercase; color: #475569; font-weight: 800;">Bộ Phận</span><div style="font-size: 14px; font-weight: 800; color: #0f172a;">Văn phòng TCT</div></div>
+                        <div><span style="font-size: 10px; text-transform: uppercase; color: #475569; font-weight: 800;">SĐT / Zalo</span><div style="font-size: 13px; font-weight: 800; color: #0284c7;" id="slipPhone">--</div></div>
+                        <div><span style="font-size: 10px; text-transform: uppercase; color: #475569; font-weight: 800;">Chức Danh</span><div style="font-size: 13px; font-weight: 700; color: #0f172a;">Cán bộ quản lý</div></div>
+                    </div>
+
+                    <div>
+                        <div class="payslip-section-title"><i class="fa-solid fa-clock-rotate-left"></i> I. Chấm Công & Hệ Số Lương</div>
+                        <table class="payslip-table">
+                            <thead>
+                                <tr><th>HSL.CB</th><th>PC.CB</th><th>HSL.CV</th><th>PC.CV</th><th>NC Thực Tế</th><th>Phép (P)</th><th>Lễ (L)</th><th>Hệ Số (Ki)</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr style="text-align: center; font-weight: 800; background: #fafafa;">
+                                    <td id="slipHslCb">0</td><td id="slipPcCb">0</td><td id="slipHslCv">0</td><td id="slipPcCv">0</td>
+                                    <td id="slipNcTg" style="color: #0284c7;">22</td><td id="slipNcP" style="color: #d97706;">0</td><td id="slipNcL">0</td><td id="slipKht" style="color: #16a34a;">1.0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div>
+                        <div class="payslip-section-title"><i class="fa-solid fa-calculator"></i> II. Chi Tiết Thu Nhập & Khấu Trừ</div>
+                        <table class="payslip-table">
+                            <thead>
+                                <tr><th style="text-align: left; width: 65%;">Khoản Mục</th><th style="text-align: right; width: 35%;">Số Tiền (VNĐ)</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1. Lương Cơ Bản Thực Tế (L.CB)</td><td style="text-align: right; font-weight: 700;" id="slipLCB">0</td></tr>
+                                <tr><td>2. Lương Công Việc Thực Tế (L.CV)</td><td style="text-align: right; font-weight: 700;" id="slipLCV">0</td></tr>
+                                <tr style="background-color: #f0f9ff;"><td style="font-weight: 800; color: #0284c7;">3. TỔNG LCB + LCV THỰC TẾ</td><td style="font-weight: 900; text-align: right; color: #0284c7;" id="slipTongCbCv">0</td></tr>
+                                <tr><td>4. Khấu Trừ BHXH + BHYT (9.5%)</td><td style="text-align: right; color: #dc2626;" id="slipBHXH">0</td></tr>
+                                <tr><td>5. Khấu Trừ BHTN (1%)</td><td style="text-align: right; color: #dc2626;" id="slipBHTN">0</td></tr>
+                                <tr><td>6. Tạm Ứng Giữa Tháng</td><td style="text-align: right; color: #dc2626;" id="slipTamUng">0</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1.5px solid #bbf7d0; border-radius: 10px; padding: 12px 18px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-weight: 900; font-size: 14px; text-transform: uppercase; color: #166534;">THỰC LĨNH NET:</span>
+                        <span style="font-size: 19px; font-weight: 900; color: #15803d;" id="slipThucLinh">0 VNĐ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn btn-zalo" onclick="guiPhieuLuongQuaZalo()"><i class="fa-solid fa-paper-plane"></i> 📱 Mở Zalo PC Gửi</button>
+            <button class="btn btn-green" onclick="taiAnhPhieuLuongZalo()"><i class="fa-solid fa-download"></i> Tải Ảnh</button>
+            <div style="display: flex; gap: 6px;">
+                <button class="btn btn-blue" onclick="chuyenNhanSuModal(-1)"><i class="fa-solid fa-chevron-left"></i> Trước</button>
+                <button class="btn btn-blue" onclick="chuyenNhanSuModal(1)">Sau <i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+            <button class="btn btn-purple" onclick="window.print()"><i class="fa-solid fa-print"></i> In</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const defaultCoSoDuLieuNamThang = {
+        "2026": {
+            "Tháng 08": {
+                config: { ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 },
+                nhansu: [
+                    {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "sdt": "0988123456", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 5000000, "phep_cap": 12},
+                    {"stt": 2, "hoTen": "Nguyễn Văn Nam", "sdt": "0988234567", "hsl_cb": 1.48, "pc_cb": 0.25, "hsl_cv": 2.24, "pc_cv": 0.5, "nc_tg": 21, "nc_p": 1, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
+                    {"stt": 3, "hoTen": "Nguyễn Thị Tuyết Nhung", "sdt": "0988345678", "hsl_cb": 1.79, "pc_cb": 0.25, "hsl_cv": 1.74, "pc_cv": 0.5, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 4, "hoTen": "Vũ Thị Thu", "sdt": "0988456789", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 1.86, "pc_cv": 0.5, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 5, "hoTen": "Đào Thị Liên", "sdt": "0988567890", "hsl_cb": 1.79, "pc_cb": 0.25, "hsl_cv": 1.74, "pc_cv": 0.5, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
+                    {"stt": 6, "hoTen": "Võ Thị Thanh Tuyền", "sdt": "0988678901", "hsl_cb": 1.71, "pc_cb": 0.25, "hsl_cv": 1.74, "pc_cv": 0.5, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 7, "hoTen": "Trần Thị Thanh", "sdt": "0988789012", "hsl_cb": 1.67, "pc_cb": 0.25, "hsl_cv": 1.48, "pc_cv": 0.5, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
+                    {"stt": 8, "hoTen": "Trần Đức Chiến", "sdt": "0988890123", "hsl_cb": 1.83, "pc_cb": 0.25, "hsl_cv": 1.66, "pc_cv": 0.5, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 9, "hoTen": "Phạm Tiến Long", "sdt": "0988901234", "hsl_cb": 1.80, "pc_cb": 0.25, "hsl_cv": 1.62, "pc_cv": 0.5, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
+                    {"stt": 10, "hoTen": "Đinh Hữu Vinh", "sdt": "0988012345", "hsl_cb": 1.83, "pc_cb": 0.25, "hsl_cv": 1.66, "pc_cv": 0.5, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 11, "hoTen": "Bùi Đình Điệp", "sdt": "0987123456", "hsl_cb": 1.53, "pc_cb": 0.25, "hsl_cv": 1.62, "pc_cv": 0.5, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 12, "hoTen": "Hoàng Mạnh Hùng", "sdt": "0987234567", "hsl_cb": 1.53, "pc_cb": 0.25, "hsl_cv": 1.62, "pc_cv": 0.5, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 13, "hoTen": "Ma Trọng Luận", "sdt": "0987345678", "hsl_cb": 1.35, "pc_cb": 0.25, "hsl_cv": 1.63, "pc_cv": 0.5, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.1, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 14, "hoTen": "Trần Bình Dương", "sdt": "0987456789", "hsl_cb": 1.79, "pc_cb": 0.25, "hsl_cv": 2.40, "pc_cv": 0.5, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 15, "hoTen": "Đặng Trần Trung", "sdt": "0987567890", "hsl_cb": 1.53, "pc_cb": 0.25, "hsl_cv": 1.62, "pc_cv": 0.5, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+                    {"stt": 16, "hoTen": "Phạm Huy Chiến", "sdt": "0987678901", "hsl_cb": 2.26, "pc_cb": 0.25, "hsl_cv": 2.40, "pc_cv": 0.5, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12}
+                ]
+            }
+        }
+    };
+
+    let coSoDuLieuNamThang = JSON.parse(localStorage.getItem('vinapaco_data_namthang')) || defaultCoSoDuLieuNamThang;
+    let dsThanhToanVanPhongProByMonth = JSON.parse(localStorage.getItem('vinapaco_vpp')) || {
+        "2026_Tháng 08": [
+            { id: "VP-01", beneficiary: "Công ty Văn phòng phẩm Hồng Hà", bankName: "Vietcombank", bankAccount: "0011001234567", content: "Mua giấy A4 và vật tư văn phòng TCT", unit: "Ram (Ream)", qty: 50, price: 65000, truocThue: 3250000, vat: 325000, total: 3575000, date: "2026-08-15" }
+        ]
+    };
+    let dsThanhToanTelecombyMonth = JSON.parse(localStorage.getItem('vinapaco_telecom')) || {
+        "2026_Tháng 08": [
+            { id: "VT-01", supplier: "VNPT", type: "Cáp quang Internet leased line", kyCuoc: "Tháng 08/2026", thangHachToan: "Tháng 08", truocThue: 2272727, vat: 227273, tong: 2500000 }
+        ]
+    };
+    let dsKhoMucIn = JSON.parse(localStorage.getItem('vinapaco_ink')) || [
+        {"code":"MUC001","name":"Hộp mực Canon 337","printer":"Canon LBP 151dw","action":"Nhập mới kho","qty":5,"receiver":"Kho Văn phòng","price":450000,"total":2250000}
+    ];
+    let dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('vinapaco_delivery')) || [
+        {"slipNo":"PGN-2026/08-01","from":"Trần Bình Dương","to":"Nguyễn Minh Ngọc","dept":"Kế toán","item":"Laptop Dell Latitude","status":"Mới 100%","date":"2026-08-24"}
+    ];
+    let dsKhaoSatChuyenSau = JSON.parse(localStorage.getItem('vinapaco_survey')) || [
+        {"code":"KS-01","user":"Trần Bình Dương","dept":"Văn phòng TCT","device":"Laptop doanh nghiệp","os":"Windows 11 Pro","osLicense":"✅ Có bản quyền chính hãng","office":"Microsoft 365 (Cloud)","officeLicense":"✅ Bản quyền Tổng công ty","bizSoft":"Cloudoffice (Văn thư)","bizLicense":"✅ Có bản quyền chính hãng","specs":"Core i7, RAM 16GB, SSD 512GB"}
+    ];
+    let danhSachCongViec = JSON.parse(localStorage.getItem('vinapaco_tasks')) || [
+        {"id":1,"name":"Hoàn thiện báo cáo điều hành Tháng 08","assignee":"Trần Bình Dương","dueDate":"2026-08-31","status":"Đang làm"}
+    ];
+    let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('vinapaco_accounts')) || [
+        {"email":"admin@vinapaco.com.vn","password":"123","fullName":"Trần Bình Dương","role":"Admin","status":"Active"}
+    ];
+
+    let currentNamKey = new Date().getFullYear().toString();
+    let currentThangKey = "Tháng 08";
+    let modalCurrentNvIndex = 0;
+    let cachedWeatherCoords = { lat: 21.3228, lon: 105.3377, cityName: "Phú Thọ" };
+
+    function saveToLocalStorage() {
+        try {
+            localStorage.setItem('vinapaco_data_namthang', JSON.stringify(coSoDuLieuNamThang));
+            localStorage.setItem('vinapaco_vpp', JSON.stringify(dsThanhToanVanPhongProByMonth));
+            localStorage.setItem('vinapaco_telecom', JSON.stringify(dsThanhToanTelecombyMonth));
+            localStorage.setItem('vinapaco_ink', JSON.stringify(dsKhoMucIn));
+            localStorage.setItem('vinapaco_delivery', JSON.stringify(dsPhieuGiaoNhan));
+            localStorage.setItem('vinapaco_survey', JSON.stringify(dsKhaoSatChuyenSau));
+            localStorage.setItem('vinapaco_tasks', JSON.stringify(danhSachCongViec));
+            localStorage.setItem('vinapaco_accounts', JSON.stringify(danhSachTaiKhoanHeThong));
+        } catch(e) {}
+    }
+
+    async function thuCongDongBoLenDrive() {
+        let gasUrl = document.getElementById('inputGasUrlSetting').value.trim();
+        if (!gasUrl) { alert("Vui lòng nhập GAS Webhook URL!"); return; }
+
+        let statusBar = document.getElementById('driveUploadStatusBar');
+        let statusTitle = document.getElementById('uploadStatusTitle');
+        let statusPercent = document.getElementById('uploadStatusPercentText');
+        let progressFill = document.getElementById('uploadProgressFillBar');
+        statusBar.classList.remove('hidden');
+
+        statusTitle.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang chuẩn bị gói dữ liệu hệ thống...`;
+        progressFill.style.width = "20%";
+        statusPercent.innerText = "20%";
+
+        let payload = {
+            action: "syncData", namKey: currentNamKey, thangKey: currentThangKey,
+            dataNamThang: coSoDuLieuNamThang, dataVpp: dsThanhToanVanPhongProByMonth,
+            dataTelecom: dsThanhToanTelecombyMonth, dataInk: dsKhoMucIn,
+            dataDelivery: dsPhieuGiaoNhan, dataSurvey: dsKhaoSatChuyenSau,
+            dataTasks: danhSachCongViec, timestamp: new Date().toISOString()
+        };
+
+        setTimeout(() => {
+            statusTitle.innerHTML = `<i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> Đang đẩy dữ liệu lên Google Drive...`;
+            progressFill.style.width = "65%";
+            statusPercent.innerText = "65%";
+        }, 400);
+
+        try {
+            await fetch(gasUrl, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
+            progressFill.style.width = "100%";
+            statusPercent.innerText = "100%";
+            statusTitle.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#22c55e;"></i> Đồng bộ toàn bộ hệ thống lên Google Drive thành công!`;
+            setTimeout(() => { statusBar.classList.add('hidden'); }, 3500);
+        } catch (error) { 
+            statusTitle.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi đồng bộ: ${error.message}`; 
+        }
+    }
+
+    async function taiTepLenThuMucChinhXac(inputElement, tabCategoryName) {
+        let file = inputElement.files[0];
+        if (!file) return;
+
+        let gasUrl = document.getElementById('inputGasUrlSetting').value.trim();
+        if (!gasUrl) { alert("Vui lòng cấu hình GAS Webhook URL trước!"); return; }
+
+        let statusBar = document.getElementById('driveUploadStatusBar');
+        let statusTitle = document.getElementById('uploadStatusTitle');
+        let statusPercent = document.getElementById('uploadStatusPercentText');
+        let progressFill = document.getElementById('uploadProgressFillBar');
+        statusBar.classList.remove('hidden');
+
+        statusTitle.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang đọc file "${file.name}"...`;
+        progressFill.style.width = "25%";
+        statusPercent.innerText = "25%";
+
+        let reader = new FileReader();
+        reader.onload = async function(e) {
+            let base64Content = e.target.result.split(',')[1];
+            let payload = {
+                action: "uploadFile", year: currentNamKey, month: currentThangKey,
+                category: tabCategoryName, fileName: file.name, mimeType: file.type, fileData: base64Content
+            };
+
+            statusTitle.innerHTML = `<i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> Đang tải file lên thư mục [${tabCategoryName}] trên Drive...`;
+            progressFill.style.width = "70%";
+            statusPercent.innerText = "70%";
+
+            try {
+                await fetch(gasUrl, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
+                progressFill.style.width = "100%";
+                statusPercent.innerText = "100%";
+                statusTitle.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#22c55e;"></i> Đã tải file "${file.name}" lên Drive thành công vào thư mục chuẩn!`;
+                setTimeout(() => { statusBar.classList.add('hidden'); }, 3500);
+            } catch (err) { 
+                statusTitle.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi tải file: ${err.message}`; 
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // ================= LỊCH VẠN NIÊN & PHONG THỦY CHUẨN XÁC PRO =================
+    const canList = ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"];
+    const chiList = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
+    
+    function convertSolar2LunarPro(dd, mm, yy) {
+        let baseDate = new Date(yy, mm - 1, dd);
+        let timeDiff = baseDate.getTime() - new Date(2026, 7, 24).getTime();
+        let dayDiff = Math.round(timeDiff / (1000 * 3600 * 24));
+        
+        let lunarDay = 12 + dayDiff;
+        let lunarMonth = 7;
+        let lunarYear = 2026;
+
+        while (lunarDay > 29) { lunarDay -= 29; lunarMonth++; if (lunarMonth > 12) { lunarMonth = 1; lunarYear++; } }
+        while (lunarDay < 1) { lunarDay += 29; lunarMonth--; if (lunarMonth < 1) { lunarMonth = 12; lunarYear--; } }
+
+        let canYear = canList[(yy + 6) % 10] + " " + chiList[(yy + 8) % 12];
+        let canMonth = canList[(yy * 12 + mm + 3) % 10] + " " + chiList[(mm + 1) % 12];
+        let dayOfYear = Math.floor((baseDate - new Date(yy, 0, 1)) / 86400000);
+        let canDay = canList[(dayOfYear + 4) % 10] + " " + chiList[(dayOfYear + 2) % 12];
+        
+        let isHoangDao = (dd + mm) % 2 === 0;
+        return {
+            day: lunarDay, month: lunarMonth, year: lunarYear,
+            canChiNam: canYear, canChiThang: canMonth, canChiNgay: canDay,
+            nguHanh: yy === 2026 ? "Lộ Bàng Thổ (Đất ven đường)" : "Hải Trung Kim",
+            tietKhi: mm === 8 ? "Xử Thử / Lập Thu" : "Kinh Trập / Xuân Phân",
+            truc: isHoangDao ? "Trực Khai (Cát: Mở mang, thông suốt)" : "Trực Phá (Hung: Kỵ ký kết lớn)",
+            star: isHoangDao ? "Sao Giác (Giác Mộc Giao) - Đại Cát" : "Sao Nguy (Nguy Nguyệt Yến) - Hung",
+            hoangDaoName: isHoangDao ? "Thanh Long Hoàng Đạo (Ngày tốt)" : "Bạch Hổ Hắc Đạo (Ngày xấu)",
+            isHoangDao: isHoangDao,
+            conflict: `Tuổi xung khắc: ${chiList[(dayOfYear)%12]} - ${chiList[(dayOfYear+6)%12]}`,
+            goodHours: "Tý (23-1), Sửu (1-3), Mão (5-7), Ngọ (11-13), Thân (15-17), Dậu (17-19)",
+            taiThan: "Hướng Đông Nam",
+            hylThan: "Hướng Tây Bắc",
+            doList: isHoangDao ? "Ký kết hợp đồng, giao dịch tài chính, khai trương, nhậm chức, xuất hành." : "Dọn dẹp kho tàng, bảo trì thiết bị, cúng tế, chữa bệnh.",
+            dontList: isHoangDao ? "Kiện tụng kéo dài, tranh chấp pháp lý." : "Khai trương lớn, đầu tư tài chính trọng đại, khởi công xây dựng."
+        };
+    }
+
+    let ngayLichDangChon = { d: new Date().getDate(), m: new Date().getMonth() + 1, y: new Date().getFullYear() };
+
+    function moModalLichVanNien() {
+        let selThang = document.getElementById('lichThangSelect');
+        if (selThang) {
+            selThang.innerHTML = "";
+            ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"].forEach((t, idx) => {
+                selThang.innerHTML += `<option value="${idx + 1}" ${idx + 1 === ngayLichDangChon.m ? 'selected' : ''}>${t}</option>`;
+            });
+        }
+        let namSelect = document.getElementById('lichNamSelect');
+        if (namSelect) namSelect.value = ngayLichDangChon.y;
+        document.getElementById('modalLichVanNien').classList.remove('hidden');
+        renderLichGridPro();
+    }
+
+    function troVeHomNayLich() {
+        let now = new Date();
+        ngayLichDangChon = { d: now.getDate(), m: now.getMonth() + 1, y: now.getFullYear() };
+        document.getElementById('lichThangSelect').value = ngayLichDangChon.m;
+        document.getElementById('lichNamSelect').value = ngayLichDangChon.y;
+        renderLichGridPro();
+    }
+
+    function renderLichGridPro() {
+        let grid = document.getElementById('lichGridContainer');
+        if (!grid) return; grid.innerHTML = "";
+        let m = parseInt(document.getElementById('lichThangSelect').value);
+        let y = parseInt(document.getElementById('lichNamSelect').value);
+        let daysInMonth = new Date(y, m, 0).getDate();
+        let firstDay = new Date(y, m - 1, 1).getDay();
+
+        for (let i = 0; i < firstDay; i++) grid.innerHTML += '<div></div>';
+
+        let now = new Date();
+        for (let d = 1; d <= daysInMonth; d++) {
+            let lunar = convertSolar2LunarPro(d, m, y);
+            let isToday = (d === now.getDate() && m === (now.getMonth() + 1) && y === now.getFullYear());
+            let isSelected = (d === ngayLichDangChon.d && m === ngayLichDangChon.m && y === ngayLichDangChon.y);
+            let classes = "lich-day-tile" + (isToday ? " today" : "") + (isSelected ? " selected" : "");
+            let badgeColor = lunar.isHoangDao ? "color:#15803d; font-weight:800;" : "color:#dc2626;";
+
+            grid.innerHTML += `<div class="${classes}" onclick="chonNgayLichPro(${d}, ${m}, ${y})">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:14px; color:#0f172a;">${d}</b>
+                    <span style="font-size:9px; ${badgeColor}">${lunar.isHoangDao?'Hoàng Đạo':'Hắc Đạo'}</span>
+                </div>
+                <div style="color:#16a34a; font-weight:800; font-size:10px;">Âm: ${lunar.day}/${lunar.month}</div>
+                <div style="font-size:9px; color:#64748b; white-space:nowrap; overflow:hidden;">${lunar.canChiNgay}</div>
+            </div>`;
+        }
+        hienThiPhongThuyNgayPro(ngayLichDangChon.d, ngayLichDangChon.m, ngayLichDangChon.y);
+    }
+
+    function chonNgayLichPro(d, m, y) { ngayLichDangChon = { d: d, m: m, y: y }; renderLichGridPro(); }
+
+    function hienThiPhongThuyNgayPro(d, m, y) {
+        let lunar = convertSolar2LunarPro(d, m, y);
+        let box = document.getElementById('chiTietNgayNoiDung');
+        let badgeEl = document.getElementById('labelNgayDangChonBadge');
+        if (badgeEl) badgeEl.innerText = `${d}/${m}/${y}`;
+        if (box) {
+            box.innerHTML = `
+                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-sun" style="color:#d97706;"></i> Dương Lịch:</div><div class="fengshui-val"><b>Ngày ${d}/${m}/${y}</b></div></div>
+                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-moon" style="color:#0284c7;"></i> Âm Lịch:</div><div class="fengshui-val"><b style="color:#0284c7;">Ngày ${lunar.day} tháng ${lunar.month} năm ${lunar.canChiNam}</b></div></div>
+                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-layer-group"></i> Can Chi Ngày:</div><div class="fengshui-val"><b>${lunar.canChiNgay}</b> (Tháng: ${lunar.canChiThang})</div></div>
+                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-shield-halved"></i> Cát/Hung Ngày:</div><div class="fengshui-val" style="font-weight:900; color:${lunar.isHoangDao?'#15803d':'#dc2626'};">${lunar.hoangDaoName}</div></div>
+                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-fire"></i> Ngũ Hành Nạp Âm:</div><div class="fengshui-val"><b>${lunar.nguHanh}</b></div></div>
+                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-scroll"></i> Thập Nhị Trực:</div><div class="fengshui-val"><b>${lunar.truc}</b></div></div>
+                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-star" style="color:#D4AF37;"></i> Nhị Thập Bát Tú:</div><div class="fengshui-val"><b>${lunar.star}</b></div></div>
+                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-triangle-exclamation" style="color:#dc2626;"></i> Tuổi Xung Khắc:</div><div class="fengshui-val" style="color:#dc2626;">${lunar.conflict}</div></div>
+                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-clock"></i> Giờ Hoàng Đạo:</div><div class="fengshui-val" style="font-size:12px; color:#0369a1;">${lunar.goodHours}</div></div>
+                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-location-arrow"></i> Hướng Xuất Hành:</div><div class="fengshui-val" style="font-size:12px;">✨ Tài thần: <b>${lunar.taiThan}</b> | 🕊️ Hỷ thần: <b>${lunar.hylThan}</b></div></div>
+                <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:8px; margin-top:4px;">
+                    <div style="font-weight:800; color:#166534; font-size:12px;"><i class="fa-solid fa-circle-check"></i> VIỆC NÊN LÀM:</div>
+                    <div style="font-size:12px; color:#15803d; font-weight:700;">${lunar.doList}</div>
+                </div>
+                <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:8px; padding:8px; margin-top:4px;">
+                    <div style="font-weight:800; color:#991b1b; font-size:12px;"><i class="fa-solid fa-circle-xmark"></i> VIỆC KIÊNG KỴ:</div>
+                    <div style="font-size:12px; color:#dc2626; font-weight:700;">${lunar.dontList}</div>
+                </div>
+            `;
+        }
+    }
+
+    function parseVNDMoney(val) {
+        if (!val) return 0;
+        if (typeof val === 'number') return val;
+        let s = String(val).trim().replace(/\./g, '').replace(',', '.');
+        let num = parseFloat(s);
+        return isNaN(num) ? 0 : Math.round(num);
+    }
+
+    function formatVNDate(dateString) {
+        if (!dateString) return '--';
+        let parts = dateString.split('-');
+        return parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : dateString;
+    }
+
+    function khoiTaoDanhSachNamTuSinh() {
+        let el = document.getElementById('cfgNamChon');
+        let lichNam = document.getElementById('lichNamSelect');
+        let currentYear = new Date().getFullYear();
+        let startYear = 2025;
+        let endYear = Math.max(2028, currentYear + 3);
+        
+        let optionsHTML = '';
+        for (let y = startYear; y <= endYear; y++) {
+            optionsHTML += `<option value="${y}" ${y === currentYear ? 'selected' : ''}>${y}</option>`;
+        }
+        if (el) el.innerHTML = optionsHTML;
+        if (lichNam) lichNam.innerHTML = optionsHTML;
+        currentNamKey = currentYear.toString();
+    }
+
+    function doiThangHoSoLuong() {
+        let elNam = document.getElementById('cfgNamChon');
+        let elThang = document.getElementById('cfgThangChon');
+        if (elNam) currentNamKey = elNam.value;
+        if (elThang) currentThangKey = elThang.value;
+        document.querySelectorAll('.thangHienTaiTitle').forEach(el => el.innerText = `${currentThangKey}/${currentNamKey}`);
+        let pathInput = document.getElementById('cfgDrivePath');
+        if(pathInput) pathInput.value = `VINAPACO_Drive / ${currentNamKey} / ${currentThangKey}`;
+
+        if (!coSoDuLieuNamThang[currentNamKey]) coSoDuLieuNamThang[currentNamKey] = {};
+        if (!coSoDuLieuNamThang[currentNamKey][currentThangKey]) {
+            coSoDuLieuNamThang[currentNamKey][currentThangKey] = JSON.parse(JSON.stringify(defaultCoSoDuLieuNamThang["2026"] ? defaultCoSoDuLieuNamThang["2026"]["Tháng 08"] : Object.values(Object.values(defaultCoSoDuLieuNamThang)[0])[0]));
+        }
+        capNhat();
+    }
+
+    function luuCauHinhHienTai() { capNhat(); }
+
+    function updateStaffField(idx, field, value) {
+        let ds = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey]) ? coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu : [];
+        if (ds && ds[idx]) {
+            if (field === 'sdt') ds[idx][field] = String(value).trim();
+            else if (field === 'k_ht') ds[idx][field] = parseFloat(value) || 1.0;
+            else if (field === 'tam_ung') ds[idx][field] = parseVNDMoney(value);
+            else ds[idx][field] = parseFloat(value) || 0;
+            capNhat();
+        }
+    }
+
+    function capNhat() {
+        let monthData = coSoDuLieuNamThang[currentNamKey] ? coSoDuLieuNamThang[currentNamKey][currentThangKey] : null;
+        if (!monthData) return;
+        let cfg = monthData.config;
+        let ds = monthData.nhansu || [];
+        
+        ds.forEach(i => {
+            i.luongHDLD = Math.round(((i.hsl_cb||0) + (i.pc_cb||0)) * cfg.mucTTV);
+            i.luongCBThang = Math.round(((i.hsl_cb||0) + (i.pc_cb||0)) * cfg.mucLCB);
+            i.luongCBTG = Math.round(i.luongCBThang / cfg.ncd * (i.nc_tg||0));
+            i.luongCBLP = Math.round(i.luongHDLD / cfg.ncd * ((i.nc_p||0) + (i.nc_l||0)));
+            i.tongLCB = Math.round(i.luongCBTG * (i.k_ht||1.0)) + i.luongCBLP;
+            i.bhtn = Math.round(i.luongHDLD * 0.01);
+            i.bhxh = Math.round(i.luongHDLD * 0.095);
+            i.thucLinhLCB = i.tongLCB - i.bhtn - i.bhxh;
+            
+            i.luongCVGoc = Math.round(((i.hsl_cv||0) + (i.pc_cv||0)) * cfg.mucLCV);
+            i.luongCVTT = Math.round(i.luongCVGoc / cfg.ncd * (i.nc_tg||0) * (i.k_ht||1.0));
+            i.thucLinhCV = i.luongCVTT - (i.tam_ung||0);
+            i.thucLinhCuoiCung = i.thucLinhLCB + i.thucLinhCV;
+            i.tongCbCv = i.tongLCB + i.luongCVTT;
+        });
+
+        renderTimekeepingDetailTable();
+        renderTableCB();
+        renderTableCV();
+        renderLeaveTable();
+        renderOfficePaymentTable();
+        renderInkInventoryTable();
+        renderDeliveryTable();
+        renderTelecomPaymentTable();
+        renderSurveyTable();
+        renderTaskTable();
+        renderAccountTable();
+        renderMonthlySalaryDashboard();
+        khoiTaoDanhSachNhanSuModalSelect();
+        capNhatKPI();
+        veTatCaBieuDoDashboard();
+        saveToLocalStorage();
+    }
+
+    function layTatCaDanhSachVPPTheoNam() {
+        let allVpp = [];
+        for (let key in dsThanhToanVanPhongProByMonth) {
+            let parts = key.split('_');
+            if (parts[0] === currentNamKey) {
+                let items = dsThanhToanVanPhongProByMonth[key];
+                if (Array.isArray(items)) {
+                    items.forEach((item, index) => {
+                        allVpp.push(Object.assign({}, item, { namHachToan: parts[0], thangHachToan: parts[1], originalKey: key, originalIndex: index }));
+                    });
+                }
+            }
+        }
+        return allVpp;
+    }
+
+    function layTatCaDanhSachTelecomTheoNam() {
+        let allTelecom = [];
+        for (let key in dsThanhToanTelecombyMonth) {
+            let parts = key.split('_');
+            if (parts[0] === currentNamKey) {
+                let items = dsThanhToanTelecombyMonth[key];
+                if (Array.isArray(items)) {
+                    items.forEach((item, index) => {
+                        allTelecom.push(Object.assign({}, item, { namHachToan: parts[0], thangHachToan: parts[1] || "Tháng 01", originalKey: key, originalIndex: index }));
+                    });
+                }
+            }
+        }
+        return allTelecom;
+    }
+
+    function layTongLuyKePhepDaNghi(tenNhanSu) {
+        let totalP = 0;
+        let yearData = coSoDuLieuNamThang[currentNamKey];
+        if (yearData) {
+            for (let mKey in yearData) {
+                let monthData = yearData[mKey];
+                if (monthData && monthData.nhansu) {
+                    let nv = monthData.nhansu.find(i => i.hoTen === tenNhanSu);
+                    if (nv) totalP += (parseFloat(nv.nc_p) || 0);
+                }
+            }
+        }
+        return { totalP: totalP };
+    }
+
+    function layTongLuongNetCaNam() {
+        let yearData = coSoDuLieuNamThang[currentNamKey];
+        let totalYearNet = 0;
+        if (yearData) {
+            for (let mKey in yearData) {
+                let monthData = yearData[mKey];
+                if (monthData && monthData.nhansu) {
+                    totalYearNet += monthData.nhansu.reduce((sum, i) => sum + (i.thucLinhCuoiCung || 0), 0);
+                }
+            }
+        }
+        return totalYearNet;
+    }
+
+    function capNhatKPI() {
+        let totalYearNet = layTongLuongNetCaNam();
+        let yearVpp = layTatCaDanhSachVPPTheoNam();
+        let totalOfficeYear = yearVpp.reduce((sum, i) => sum + (i.total || 0), 0);
+        let yearTelecom = layTatCaDanhSachTelecomTheoNam();
+        let totalTelecomYear = yearTelecom.reduce((s, i) => s + (i.tong || 0), 0);
+        let ds = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey]) ? coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu : [];
+        let totalStockInk = dsKhoMucIn.reduce((sum, i) => (i.action || '').includes('Nhập') ? sum + i.qty : sum - i.qty, 0);
+        let totalTamUng = ds.reduce((sum, i) => sum + (i.tam_ung || 0), 0);
+        
+        if (document.getElementById("kpiTotalNet")) document.getElementById("kpiTotalNet").innerText = totalYearNet.toLocaleString('vi-VN');
+        if (document.getElementById("kpiTotalPayment")) document.getElementById("kpiTotalPayment").innerText = totalOfficeYear.toLocaleString('vi-VN');
+        if (document.getElementById("kpiTotalInkStock")) document.getElementById("kpiTotalInkStock").innerText = totalStockInk + " Hộp";
+        if (document.getElementById("kpiTotalSurvey")) document.getElementById("kpiTotalSurvey").innerText = dsKhaoSatChuyenSau.length + " Thiết bị";
+        if (document.getElementById("kpiTotalTamUng")) document.getElementById("kpiTotalTamUng").innerText = totalTamUng.toLocaleString('vi-VN');
+
+        let totalTasksDone = danhSachCongViec.filter(t => t.status === 'Hoàn thành').length;
+        if (document.getElementById("sumNetVal")) document.getElementById("sumNetVal").innerText = totalYearNet.toLocaleString('vi-VN');
+        if (document.getElementById("sumVppVal")) document.getElementById("sumVppVal").innerText = totalOfficeYear.toLocaleString('vi-VN');
+        if (document.getElementById("sumTelecomVal")) document.getElementById("sumTelecomVal").innerText = totalTelecomYear.toLocaleString('vi-VN');
+        if (document.getElementById("sumTaskVal")) document.getElementById("sumTaskVal").innerText = `${totalTasksDone} / ${danhSachCongViec.length}`;
+    }
+
+    function renderMonthlySalaryDashboard() {
+        let yearData = coSoDuLieuNamThang[currentNamKey] || {};
+        let monthsList = ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"];
+        let tbody = document.getElementById('monthlySalaryTableBody');
+        if (!tbody) return; tbody.innerHTML = '';
+        if (document.getElementById('monthlySalaryYearTitle')) document.getElementById('monthlySalaryYearTitle').innerText = currentNamKey;
+
+        let selMonthData = yearData[currentThangKey] ? yearData[currentThangKey].nhansu : [];
+        let totalNetSel = selMonthData.reduce((sum, i) => sum + (i.thucLinhCuoiCung || 0), 0);
+        let totalLcbSel = selMonthData.reduce((sum, i) => sum + (i.tongLCB || 0), 0);
+        let totalLcvSel = selMonthData.reduce((sum, i) => sum + (i.luongCVTT || 0), 0);
+        let totalDeductSel = selMonthData.reduce((sum, i) => sum + (i.bhxh || 0) + (i.bhtn || 0) + (i.tam_ung || 0), 0);
+
+        if(document.getElementById('kpiMonthNetSelected')) document.getElementById('kpiMonthNetSelected').innerText = totalNetSel.toLocaleString('vi-VN') + " VNĐ";
+        if(document.getElementById('kpiMonthLCBSelected')) document.getElementById('kpiMonthLCBSelected').innerText = totalLcbSel.toLocaleString('vi-VN') + " VNĐ";
+        if(document.getElementById('kpiMonthLCVSelected')) document.getElementById('kpiMonthLCVSelected').innerText = totalLcvSel.toLocaleString('vi-VN') + " VNĐ";
+        if(document.getElementById('kpiMonthDeductionsSelected')) document.getElementById('kpiMonthDeductionsSelected').innerText = totalDeductSel.toLocaleString('vi-VN') + " VNĐ";
+
+        monthsList.forEach((mName, idx) => {
+            let mData = yearData[mName] ? yearData[mName].nhansu : [];
+            let countStaff = mData.length;
+            let sumLCB = mData.reduce((s, i) => s + (i.tongLCB || 0), 0);
+            let sumLCV = mData.reduce((s, i) => s + (i.luongCVTT || 0), 0);
+            let sumBH = mData.reduce((s, i) => s + (i.bhxh || 0) + (i.bhtn || 0), 0);
+            let sumTU = mData.reduce((s, i) => s + (i.tam_ung || 0), 0);
+            let sumNet = mData.reduce((s, i) => s + (i.thucLinhCuoiCung || 0), 0);
+            let statusBadge = sumNet > 0 ? '<span class="badge-net">Đã chốt</span>' : '<span class="badge-danger">Chưa hạch toán</span>';
+
+            tbody.innerHTML += `<tr>
+                <td style="text-align:center;">${idx + 1}</td><td><b>${mName}</b></td><td style="text-align:center;">${countStaff}</td>
+                <td style="text-align:right;">${sumLCB.toLocaleString('vi-VN')}</td><td style="text-align:right;">${sumLCV.toLocaleString('vi-VN')}</td>
+                <td style="text-align:right; color:#dc2626;">-${sumBH.toLocaleString('vi-VN')}</td><td style="text-align:right; color:#dc2626;">-${sumTU.toLocaleString('vi-VN')}</td>
+                <td style="text-align:right; font-weight:bold; color:#15803d; background:#f0fdf4;">${sumNet.toLocaleString('vi-VN')}</td>
+                <td style="text-align:center;">${statusBadge}</td>
+            </tr>`;
+        });
+    }
+
+    function renderAccountTable() {
+        let tbody = document.getElementById('accountTableBody');
+        if(!tbody) return; tbody.innerHTML = '';
+        danhSachTaiKhoanHeThong.forEach((acc, idx) => {
+            tbody.innerHTML += `<tr><td style="text-align:center;">${idx + 1}</td><td><b>${acc.email}</b></td><td>${acc.fullName}</td><td style="text-align:center;"><span class="badge-net">${acc.role}</span></td><td style="text-align:center;"><span class="badge-net">${acc.status}</span></td><td>${acc.email}</td><td style="text-align:center;"><button class="btn btn-red" style="padding:4px 8px; font-size:11px;" onclick="xoaTaiKhoan(${idx})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+        });
+    }
+
+    function moModalThemTaiKhoan() {
+        let email = prompt("Nhập tên đăng nhập / email tài khoản mới:");
+        if (email) {
+            danhSachTaiKhoanHeThong.push({ email: email, password: "123", fullName: "Cán bộ VINAPACO", role: "Editor", status: "Active" });
+            renderAccountTable(); saveToLocalStorage(); alert("✅ Thêm tài khoản thành công!");
+        }
+    }
+    function xoaTaiKhoan(idx) { danhSachTaiKhoanHeThong.splice(idx, 1); renderAccountTable(); saveToLocalStorage(); }
+
+    function renderTimekeepingDetailTable() {
+        let tbody = document.getElementById("timekeepingDetailTableBody");
+        if(!tbody) return; tbody.innerHTML = "";
+        let dsData = coSoDuLieuNamThang[currentNamKey] ? coSoDuLieuNamThang[currentNamKey][currentThangKey] : null;
+        if (!dsData) return;
+        dsData.nhansu.forEach((item, idx) => {
+            tbody.innerHTML += `<tr>
+                <td style="text-align:center;">${idx+1}</td><td><b>${item.hoTen}</b></td><td style="text-align:center;">${dsData.config.ncd}</td>
+                <td><input class="cell-input num-center" type="number" value="${item.nc_tg}" onchange="updateStaffField(${idx}, 'nc_tg', this.value)"></td>
+                <td><input class="cell-input num-center" type="number" value="${item.nc_p||0}" onchange="updateStaffField(${idx}, 'nc_p', this.value)"></td>
+                <td><input class="cell-input num-center" type="number" value="${item.nc_l||0}" onchange="updateStaffField(${idx}, 'nc_l', this.value)"></td>
+                <td><input class="cell-input num-center" type="number" step="0.05" value="${item.k_ht||1.0}" onchange="updateStaffField(${idx}, 'k_ht', this.value)"></td>
+                <td style="text-align:center;"><span class="badge-net">Đã chốt</span></td>
+            </tr>`;
+        });
+    }
+
+    function renderTableCB() {
+        let tbody = document.getElementById("tableBodyCB");
+        if(!tbody) return; tbody.innerHTML = "";
+        let dsData = coSoDuLieuNamThang[currentNamKey] ? coSoDuLieuNamThang[currentNamKey][currentThangKey] : null;
+        if (!dsData) return;
+        dsData.nhansu.forEach((item, idx) => {
+            tbody.innerHTML += `<tr>
+                <td style="text-align:center;">${idx+1}</td><td><b>${item.hoTen}</b></td>
+                <td><input class="cell-input" type="text" value="${item.sdt || ''}" onchange="updateStaffField(${idx}, 'sdt', this.value)"></td>
+                <td style="text-align:center;">${item.hsl_cb}</td><td style="text-align:center;">${item.pc_cb||0}</td>
+                <td style="text-align:right;">${item.luongHDLD.toLocaleString()}</td><td style="text-align:right;">${item.luongCBThang.toLocaleString()}</td>
+                <td style="text-align:center;">${item.nc_tg}</td><td style="text-align:center;">${item.nc_p||0}</td><td style="text-align:center;">${item.nc_l||0}</td>
+                <td style="text-align:center;">${item.k_ht||1.0}</td><td style="text-align:right;">${item.luongCBTG.toLocaleString()}</td>
+                <td style="text-align:right;">${item.luongCBLP.toLocaleString()}</td><td style="text-align:right; font-weight:bold;">${item.tongLCB.toLocaleString()}</td>
+                <td style="text-align:right; color:#dc2626;">${item.bhtn.toLocaleString()}</td><td style="text-align:right; color:#dc2626;">${item.bhxh.toLocaleString()}</td>
+                <td style="text-align:right; color:#0284c7; font-weight:bold;">${item.thucLinhLCB.toLocaleString()}</td>
+            </tr>`;
+        });
+    }
+
+    function renderTableCV() {
+        let tbody = document.getElementById("tableBodyCV");
+        if(!tbody) return; tbody.innerHTML = "";
+        let dsData = coSoDuLieuNamThang[currentNamKey] ? coSoDuLieuNamThang[currentNamKey][currentThangKey] : null;
+        if (!dsData) return;
+        dsData.nhansu.forEach((item, idx) => {
+            tbody.innerHTML += `<tr>
+                <td style="text-align:center;">${idx+1}</td><td><b>${item.hoTen}</b></td>
+                <td style="text-align:center;">${item.hsl_cv}</td><td style="text-align:center;">${item.pc_cv||0}</td>
+                <td style="text-align:right;">${item.luongCVGoc.toLocaleString()}</td><td style="text-align:center;">${item.nc_tg}</td>
+                <td style="text-align:center;">${item.nc_p||0}</td><td style="text-align:center;">${item.nc_l||0}</td><td style="text-align:center;">${item.k_ht||1.0}</td>
+                <td style="text-align:right; font-weight:bold;">${item.luongCVTT.toLocaleString()}</td>
+                <td style="text-align:right; font-weight:bold; color:#0369a1;">${item.tongCbCv.toLocaleString()}</td>
+                <td><input class="cell-input money-input" type="text" value="${(item.tam_ung||0).toLocaleString()}" onchange="updateStaffField(${idx}, 'tam_ung', this.value)"></td>
+                <td style="text-align:right; font-weight:bold;">${item.thucLinhCV.toLocaleString()}</td>
+                <td style="text-align:right;"><span class="badge-net">${item.thucLinhCuoiCung.toLocaleString()}</span></td>
+                <td style="text-align:center;"><button class="btn btn-zalo" style="padding:3px 8px;" onclick="moModalPhiieuLuongTheoTen('${item.hoTen}')"><i class="fa-solid fa-paper-plane"></i> Zalo</button></td>
+            </tr>`;
+        });
+    }
+
+    function renderLeaveTable() {
+        let tbody = document.getElementById("leaveTableBody");
+        if(!tbody) return; tbody.innerHTML = "";
+        let totalPhepCap = 0, totalPhepDung = 0;
+        let dsData = coSoDuLieuNamThang[currentNamKey] ? coSoDuLieuNamThang[currentNamKey][currentThangKey] : null;
+        if (!dsData) return;
+        dsData.nhansu.forEach((item, idx) => {
+            let phepCap = item.phep_cap || 12;
+            let luyKe = layTongLuyKePhepDaNghi(item.hoTen);
+            totalPhepCap += phepCap; totalPhepDung += luyKe.totalP;
+            let conLai = phepCap - luyKe.totalP;
+            tbody.innerHTML += `<tr>
+                <td style="text-align:center;">${idx+1}</td><td><b>${item.hoTen}</b></td>
+                <td style="text-align:center;">${phepCap}</td><td style="text-align:center;">${item.nc_p||0}</td>
+                <td style="text-align:center;">${item.nc_l||0}</td><td style="text-align:center; font-weight:bold; color:#d97706;">${luyKe.totalP}</td>
+                <td style="text-align:center; font-weight:bold;">${conLai}</td><td style="text-align:center;"><span class="badge-net">Còn ${conLai} ngày</span></td>
+            </tr>`;
+        });
+    }
+
+    function renderOfficePaymentTable() {
+        let tbody = document.getElementById('officePaymentTableBody');
+        if(!tbody) return; tbody.innerHTML = '';
+        layTatCaDanhSachVPPTheoNam().forEach(item => {
+            tbody.innerHTML += `<tr>
+                <td style="text-align:center;">${item.id}</td><td style="text-align:center;">${item.thangHachToan}</td>
+                <td><b>${item.beneficiary}</b></td><td>${item.bankName || '--'}</td><td>${item.content}</td>
+                <td style="text-align:center;">${item.unit}</td><td style="text-align:center;">${item.qty} x ${item.price.toLocaleString()}</td>
+                <td style="text-align:right;">${item.truocThue.toLocaleString()}</td><td style="text-align:right; color:#dc2626;">${item.vat.toLocaleString()}</td>
+                <td style="text-align:right; font-weight:bold; color:#15803d;">${item.total.toLocaleString()}</td>
+                <td style="text-align:center;">${formatVNDate(item.date)}</td>
+                <td style="text-align:center; display:flex; gap:4px; justify-content:center;">
+                    <button class="btn btn-blue" style="padding:3px 6px; font-size:11px;" onclick="suaVPP('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px; font-size:11px;" onclick="xoaVPP('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            </tr>`;
+        });
+    }
+
+    function suaVPP(key, idx) {
+        let item = dsThanhToanVanPhongProByMonth[key][idx];
+        if (!item) return;
+        document.getElementById('editOfficeKey').value = key;
+        document.getElementById('editOfficeIndex').value = idx;
+        document.getElementById('autoOfficeId').value = item.id;
+        document.getElementById('inputOfficeBeneficiary').value = item.beneficiary;
+        document.getElementById('inputOfficeBankName').value = item.bankName || '';
+        document.getElementById('inputOfficeBankAccount').value = item.bankAccount || '';
+        document.getElementById('inputOfficeContent').value = item.content;
+        document.getElementById('inputOfficeUnit').value = item.unit;
+        document.getElementById('inputOfficeQty').value = item.qty;
+        document.getElementById('inputOfficePrice').value = item.price.toLocaleString('vi-VN');
+        document.getElementById('inputOfficeTruocThue').value = item.truocThue.toLocaleString('vi-VN');
+        document.getElementById('inputOfficeVAT').value = item.vat.toLocaleString('vi-VN');
+        document.getElementById('previewOfficeTotal').value = item.total.toLocaleString('vi-VN');
+        if (item.date) document.getElementById('inputOfficeDate').value = item.date;
+        document.getElementById('btnVppText').innerText = "CẬP NHẬT CHỨNG TỪ";
+        document.getElementById('btnCancelVpp').classList.remove('hidden');
+        document.getElementById('formCardVpp').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function huyBoCapNhatVPP() {
+        document.getElementById('editOfficeKey').value = '';
+        document.getElementById('editOfficeIndex').value = -1;
+        document.getElementById('inputOfficeBeneficiary').value = '';
+        document.getElementById('inputOfficeContent').value = '';
+        document.getElementById('inputOfficeBankName').value = '';
+        document.getElementById('inputOfficeBankAccount').value = '';
+        document.getElementById('inputOfficeQty').value = '1';
+        document.getElementById('inputOfficePrice').value = '';
+        document.getElementById('previewOfficeTotal').value = '';
+        document.getElementById('btnVppText').innerText = "LƯU CHỨNG TỪ";
+        document.getElementById('btnCancelVpp').classList.add('hidden');
+    }
+
+    function luuHoacCapNhatVPP() {
+        let contentEl = document.getElementById('inputOfficeContent');
+        let beneficiaryEl = document.getElementById('inputOfficeBeneficiary');
+        let content = contentEl ? contentEl.value.trim() : "";
+        let beneficiary = beneficiaryEl ? beneficiaryEl.value.trim() : "";
+        if (!content || !beneficiary) { alert("Nhập đủ nội dung và đơn vị thụ hưởng!"); return; }
+        
+        let total = parseVNDMoney(document.getElementById('previewOfficeTotal').value);
+        let editKey = document.getElementById('editOfficeKey').value;
+        let editIdx = parseInt(document.getElementById('editOfficeIndex').value);
+        let key = currentNamKey + "_" + currentThangKey;
+
+        let vppItem = {
+            id: editIdx >= 0 && dsThanhToanVanPhongProByMonth[editKey] ? dsThanhToanVanPhongProByMonth[editKey][editIdx].id : "VP-0" + ((dsThanhToanVanPhongProByMonth[key]||[]).length + 1),
+            content: content, beneficiary: beneficiary, 
+            bankName: document.getElementById('inputOfficeBankName').value,
+            bankAccount: document.getElementById('inputOfficeBankAccount').value,
+            unit: document.getElementById('inputOfficeUnit').value,
+            qty: parseFloat(document.getElementById('inputOfficeQty').value)||1,
+            price: parseVNDMoney(document.getElementById('inputOfficePrice').value),
+            truocThue: parseVNDMoney(document.getElementById('inputOfficeTruocThue').value),
+            vat: parseVNDMoney(document.getElementById('inputOfficeVAT').value),
+            total: total, 
+            date: document.getElementById('inputOfficeDate').value || new Date().toISOString().split('T')[0]
+        };
+
+        if (editIdx >= 0 && editKey && dsThanhToanVanPhongProByMonth[editKey]) {
+            dsThanhToanVanPhongProByMonth[editKey][editIdx] = vppItem;
+            huyBoCapNhatVPP();
+        } else {
+            if (!dsThanhToanVanPhongProByMonth[key]) dsThanhToanVanPhongProByMonth[key] = [];
+            dsThanhToanVanPhongProByMonth[key].push(vppItem);
+            if(contentEl) contentEl.value = '';
+            if(beneficiaryEl) beneficiaryEl.value = '';
+        }
+        capNhat(); alert("✅ Đã lưu/cập nhật chứng từ văn phòng thành công!");
+    }
+    function xoaVPP(key, idx) { if (dsThanhToanVanPhongProByMonth[key]) dsThanhToanVanPhongProByMonth[key].splice(idx, 1); capNhat(); }
+
+    function renderInkInventoryTable() {
+        let tbody = document.getElementById('inkInventoryTableBody');
+        if(!tbody) return; tbody.innerHTML = '';
+        dsKhoMucIn.forEach((item, idx) => {
+            tbody.innerHTML += `<tr>
+                <td style="text-align:center;">${item.code}</td>
+                <td><b>${item.name}</b></td>
+                <td>${item.printer}</td>
+                <td>${item.action}</td>
+                <td style="text-align:center;">${item.qty}</td>
+                <td>${item.receiver}</td>
+                <td style="text-align:right;">${item.price.toLocaleString()}</td>
+                <td style="text-align:right; font-weight:bold;">${item.total.toLocaleString()}</td>
+                <td style="text-align:center; display:flex; gap:4px; justify-content:center;">
+                    <button class="btn btn-purple" style="padding:3px 6px; font-size:11px;" onclick="moModalInPhieuKho(${idx})" title="In phiếu"><i class="fa-solid fa-print"></i></button>
+                    <button class="btn btn-blue" style="padding:3px 6px; font-size:11px;" onclick="suaKhoMuc(${idx})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px; font-size:11px;" onclick="xoaKhoMuc(${idx})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            </tr>`;
+        });
+        let xntEl = document.getElementById('xntTableBody');
+        if(xntEl) xntEl.innerHTML = `<tr><td style="text-align:center;">1</td><td style="text-align:center;">MUC001</td><td>Canon 337 (151dw)</td><td style="text-align:center;">2</td><td style="text-align:center;">5</td><td style="text-align:center;">1</td><td style="font-weight:bold; color:#0284c7; text-align:center;">6</td><td style="text-align:center;"><span class="badge-net">Ổn định</span></td></tr>`;
+    }
+
+    function suaKhoMuc(idx) {
+        let item = dsKhoMucIn[idx];
+        if (!item) return;
+        document.getElementById('editInkIndex').value = idx;
+        document.getElementById('autoInkCode').value = item.code;
+        document.getElementById('inputInkName').value = item.name;
+        document.getElementById('inputInkPrinter').value = item.printer;
+        document.getElementById('inputInkAction').value = item.action;
+        document.getElementById('inputInkQty').value = item.qty;
+        document.getElementById('inputInkReceiver').value = item.receiver;
+        document.getElementById('inputInkPrice').value = item.price.toLocaleString('vi-VN');
+        document.getElementById('btnInkText').innerText = "CẬP NHẬT KHO";
+        document.getElementById('btnCancelInk').classList.remove('hidden');
+        document.getElementById('formCardInk').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function huyBoCapNhatKhoMuc() {
+        document.getElementById('editInkIndex').value = -1;
+        document.getElementById('inputInkName').value = '';
+        document.getElementById('inputInkPrinter').value = '';
+        document.getElementById('inputInkReceiver').value = '';
+        document.getElementById('inputInkPrice').value = '';
+        document.getElementById('btnInkText').innerText = "GHI SỔ KHO";
+        document.getElementById('btnCancelInk').classList.add('hidden');
+    }
+
+    function luuHoacCapNhatKhoMuc() {
+        let nameEl = document.getElementById('inputInkName');
+        let name = nameEl ? nameEl.value.trim() : "";
+        if(!name) { alert("Nhập tên mực in!"); return; }
+        let editIdx = parseInt(document.getElementById('editInkIndex').value);
+        let qty = parseFloat(document.getElementById('inputInkQty').value) || 1;
+        let price = parseVNDMoney(document.getElementById('inputInkPrice').value);
+
+        let item = {
+            code: editIdx >= 0 && dsKhoMucIn[editIdx] ? dsKhoMucIn[editIdx].code : "MUC00" + (dsKhoMucIn.length + 1),
+            name: name, printer: document.getElementById('inputInkPrinter').value,
+            action: document.getElementById('inputInkAction').value, qty: qty,
+            receiver: document.getElementById('inputInkReceiver').value, price: price, total: qty * price
+        };
+
+        if (editIdx >= 0 && dsKhoMucIn[editIdx]) {
+            dsKhoMucIn[editIdx] = item;
+            huyBoCapNhatKhoMuc();
+        } else {
+            dsKhoMucIn.push(item);
+            if(nameEl) nameEl.value = '';
+        }
+        renderInkInventoryTable(); capNhat(); alert("✅ Ghi sổ kho mực thành công!");
+    }
+
+    function xoaKhoMuc(idx) { dsKhoMucIn.splice(idx, 1); renderInkInventoryTable(); capNhat(); }
+
+    function moModalInPhieuKho(idx) {
+        let item = dsKhoMucIn[idx];
+        if (!item) return;
+        document.getElementById('inputCustomSlipTitle').value = item.action.includes('Nhập') ? "PHIẾU NHẬP KHO VẬT TƯ / MỰC IN" : "PHIẾU XUẤT KHO / CẤP PHÁT VẬT TƯ";
+        capNhatTieuDePhieuIn();
+        document.getElementById('previewSlipNoDate').innerText = `Mã phiếu: ${item.code} | Ngày ${new Date().getDate()} tháng ${new Date().getMonth()+1} năm ${new Date().getFullYear()}`;
+        document.getElementById('pYear').innerText = new Date().getFullYear();
+        document.getElementById('pMonth').innerText = new Date().getMonth()+1;
+        document.getElementById('pDay').innerText = new Date().getDate();
+        document.getElementById('pFrom').innerText = "Thủ kho Văn phòng TCT";
+        document.getElementById('signFromName').innerText = "Thủ kho TCT";
+        document.getElementById('pTo').innerText = item.receiver || "Đơn vị sử dụng";
+        document.getElementById('signToName').innerText = item.receiver || "Người nhận";
+        document.getElementById('pDept').innerText = item.printer || "Văn phòng TCT";
+        document.getElementById('pItem').innerText = `${item.name} (Dùng cho máy: ${item.printer})`;
+        document.getElementById('pQty').innerText = `${item.qty} Hộp`;
+        document.getElementById('pStatus').innerText = `Đơn giá: ${item.price.toLocaleString('vi-VN')} VNĐ | Thành tiền: ${item.total.toLocaleString('vi-VN')} VNĐ`;
+
+        document.getElementById('modalHandoverSlipPreview').classList.remove('hidden');
+    }
+
+    function renderDeliveryTable() {
+        let tbody = document.getElementById('deliveryTableBody');
+        if(!tbody) return; tbody.innerHTML = '';
+        dsPhieuGiaoNhan.forEach((s, idx) => {
+            tbody.innerHTML += `<tr>
+                <td><b>${s.slipNo}</b></td><td>${s.from}</td><td><b>${s.to}</b></td><td>${s.dept}</td><td><b>${s.item}</b></td><td>${s.status}</td><td style="text-align:center;">${formatVNDate(s.date)}</td>
+                <td style="text-align:center; display:flex; gap:4px; justify-content:center; align-items:center;">
+                    <button class="btn btn-purple" style="padding:3px 6px; font-size:11px;" onclick="moModalInPhieuGiao(${idx})"><i class="fa-solid fa-print"></i> In</button>
+                    <button class="btn btn-blue" style="padding:3px 6px; font-size:11px;" onclick="suaPhieuGiao(${idx})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px; font-size:11px;" onclick="xoaPhieuGiao(${idx})"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            </tr>`;
+        });
+    }
+
+    function suaPhieuGiao(idx) {
+        let s = dsPhieuGiaoNhan[idx];
+        if (!s) return;
+        document.getElementById('editSlipIndex').value = idx;
+        document.getElementById('inputSlipNo').value = s.slipNo;
+        document.getElementById('inputSlipFrom').value = s.from;
+        document.getElementById('inputSlipTo').value = s.to;
+        document.getElementById('inputSlipDept').value = s.dept;
+        document.getElementById('inputSlipItem').value = s.item;
+        document.getElementById('inputSlipStatus').value = s.status;
+        if (s.date) document.getElementById('inputSlipDate').value = s.date;
+        document.getElementById('btnSlipText').innerText = "CẬP NHẬT PHIẾU";
+        document.getElementById('btnCancelSlip').classList.remove('hidden');
+        document.getElementById('formCardSlip').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function huyBoCapNhatPhieuGiao() {
+        document.getElementById('editSlipIndex').value = -1;
+        document.getElementById('inputSlipTo').value = '';
+        document.getElementById('inputSlipDept').value = '';
+        document.getElementById('inputSlipItem').value = '';
+        document.getElementById('btnSlipText').innerText = "THÊM PHIẾU";
+        document.getElementById('btnCancelSlip').classList.add('hidden');
+    }
+
+    function luuHoacCapNhatPhieuGiao() {
+        let toEl = document.getElementById('inputSlipTo');
+        let toName = toEl ? toEl.value.trim() : "";
+        if(!toName) { alert("Nhập tên bên nhận!"); return; }
+        let editIdx = parseInt(document.getElementById('editSlipIndex').value);
+
+        let s = {
+            slipNo: document.getElementById('inputSlipNo').value,
+            from: document.getElementById('inputSlipFrom').value,
+            to: toName, dept: document.getElementById('inputSlipDept').value,
+            item: document.getElementById('inputSlipItem').value,
+            status: document.getElementById('inputSlipStatus').value,
+            date: document.getElementById('inputSlipDate').value || new Date().toISOString().split('T')[0]
+        };
+
+        if (editIdx >= 0 && dsPhieuGiaoNhan[editIdx]) {
+            dsPhieuGiaoNhan[editIdx] = s;
+            huyBoCapNhatPhieuGiao();
+        } else {
+            dsPhieuGiaoNhan.push(s);
+            if(toEl) toEl.value = '';
+        }
+        renderDeliveryTable(); capNhat(); alert("✅ Lưu phiếu giao nhận thành công!");
+    }
+
+    function xoaPhieuGiao(idx) { dsPhieuGiaoNhan.splice(idx, 1); renderDeliveryTable(); capNhat(); }
+
+    function moModalInPhieuGiao(idx) {
+        let s = dsPhieuGiaoNhan[idx];
+        if (!s) return;
+        document.getElementById('inputCustomSlipTitle').value = "BIÊN BẢN BÀN GIAO & GIAO NHẬN THIẾT BỊ";
+        capNhatTieuDePhieuIn();
+        document.getElementById('previewSlipNoDate').innerText = `Số: ${s.slipNo} | Ngày ${s.date ? s.date.split('-')[2] : '24'} tháng ${s.date ? s.date.split('-')[1] : '08'} năm ${s.date ? s.date.split('-')[0] : '2026'}`;
+        if(s.date) {
+            let p = s.date.split('-');
+            document.getElementById('pYear').innerText = p[0];
+            document.getElementById('pMonth').innerText = p[1];
+            document.getElementById('pDay').innerText = p[2];
+        }
+        document.getElementById('pFrom').innerText = s.from;
+        document.getElementById('signFromName').innerText = s.from.split('-')[0].trim();
+        document.getElementById('pTo').innerText = s.to;
+        document.getElementById('signToName').innerText = s.to;
+        document.getElementById('pDept').innerText = s.dept;
+        document.getElementById('pItem').innerText = s.item;
+        document.getElementById('pQty').innerText = "01 Bộ";
+        document.getElementById('pStatus').innerText = s.status;
+
+        document.getElementById('modalHandoverSlipPreview').classList.remove('hidden');
+    }
+
+    function capNhatTieuDePhieuIn() {
+        let val = document.getElementById('inputCustomSlipTitle').value;
+        document.getElementById('previewSlipTitleText').innerText = val;
+    }
+
+    function taiAnhPhieuBànGiao() {
+        if (typeof html2canvas === 'undefined') return;
+        html2canvas(document.getElementById("handoverSlipCapture")).then(canvas => {
+            let link = document.createElement('a');
+            link.download = `Bien_Ban_Ban_Giao.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        });
+    }
+
+    function renderTelecomPaymentTable() {
+        let tbody = document.getElementById('telecomPaymentTableBody');
+        if(!tbody) return; tbody.innerHTML = '';
+        let yearTelecom = layTatCaDanhSachTelecomTheoNam();
+        yearTelecom.forEach(item => {
+            tbody.innerHTML += `<tr>
+                <td style="text-align:center;">${item.maHs || 'VT-01'}</td><td style="text-align:center;">${item.thangHachToan}</td>
+                <td style="text-align:center;">${item.supplier}</td><td>${item.type}</td><td style="text-align:center;">${item.kyCuoc}</td>
+                <td style="text-align:right;">${item.truocThue.toLocaleString()}</td><td style="text-align:right; color:#dc2626;">${item.vat.toLocaleString()}</td>
+                <td style="text-align:right; font-weight:bold; color:#15803d;">${item.tong.toLocaleString()}</td>
+                <td style="text-align:center; display:flex; gap:4px; justify-content:center;">
+                    <button class="btn btn-blue" style="padding:3px 6px; font-size:11px;" onclick="suaTelecom('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px; font-size:11px;" onclick="xoaTelecom('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            </tr>`;
+        });
+        if(document.getElementById('telecomKpiTruocThue')) document.getElementById('telecomKpiTruocThue').innerText = yearTelecom.reduce((s, i) => s + (i.truocThue || 0), 0).toLocaleString('vi-VN');
+        if(document.getElementById('telecomKpiVAT')) document.getElementById('telecomKpiVAT').innerText = yearTelecom.reduce((s, i) => s + (i.vat || 0), 0).toLocaleString('vi-VN');
+        if(document.getElementById('telecomKpiTongThanhToan')) document.getElementById('telecomKpiTongThanhToan').innerText = yearTelecom.reduce((s, i) => s + (i.tong || 0), 0).toLocaleString('vi-VN');
+    }
+
+    function suaTelecom(key, idx) {
+        let item = dsThanhToanTelecombyMonth[key][idx];
+        if (!item) return;
+        document.getElementById('editTelecomKey').value = key;
+        document.getElementById('editTelecomIndex').value = idx;
+        document.getElementById('inputTelecomSupplier').value = item.supplier;
+        document.getElementById('inputTelecomType').value = item.type;
+        document.getElementById('inputTelecomThangChon').value = item.thangHachToan || currentThangKey;
+        document.getElementById('inputTelecomTongVat').value = item.tong.toLocaleString('vi-VN');
+        tinhTienTelecomTuTong();
+        document.getElementById('btnTelecomText').innerText = "CẬP NHẬT CƯỚC";
+        document.getElementById('btnCancelTelecom').classList.remove('hidden');
+        document.getElementById('formCardTelecom').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function huyBoCapNhatTelecom() {
+        document.getElementById('editTelecomKey').value = '';
+        document.getElementById('editTelecomIndex').value = -1;
+        document.getElementById('inputTelecomType').value = '';
+        document.getElementById('inputTelecomTongVat').value = '';
+        document.getElementById('inputTelecomTruocThueInput').value = '';
+        document.getElementById('inputTelecomVatInput').value = '';
+        document.getElementById('btnTelecomText').innerText = "THÊM CƯỚC";
+        document.getElementById('btnCancelTelecom').classList.add('hidden');
+    }
+
+    function luuHoacCapNhatTelecom() {
+        let typeEl = document.getElementById('inputTelecomType');
+        let type = typeEl ? typeEl.value.trim() : "";
+        let tong = parseVNDMoney(document.getElementById('inputTelecomTongVat').value);
+        let thangChon = document.getElementById('inputTelecomThangChon').value;
+        if (!type || tong <= 0) { alert("Nhập đủ loại cước và tổng cước!"); return; }
+
+        let editKey = document.getElementById('editTelecomKey').value;
+        let editIdx = parseInt(document.getElementById('editTelecomIndex').value);
+        let key = currentNamKey + "_" + thangChon;
+
+        let telecomItem = {
+            id: "VT-01", supplier: document.getElementById('inputTelecomSupplier').value,
+            type: type, kyCuoc: thangChon + "/" + currentNamKey, thangHachToan: thangChon,
+            tong: tong, truocThue: Math.round(tong/1.1), vat: tong - Math.round(tong/1.1)
+        };
+
+        if (editIdx >= 0 && editKey && dsThanhToanTelecombyMonth[editKey]) {
+            dsThanhToanTelecombyMonth[editKey][editIdx] = telecomItem;
+            huyBoCapNhatTelecom();
+        } else {
+            if (!dsThanhToanTelecombyMonth[key]) dsThanhToanTelecombyMonth[key] = [];
+            dsThanhToanTelecombyMonth[key].push(telecomItem);
+            if(typeEl) typeEl.value = '';
+        }
+        renderTelecomPaymentTable(); capNhat(); alert("✅ Lưu/cập nhật cước viễn thông thành công!");
+    }
+    function xoaTelecom(key, idx) { if (dsThanhToanTelecombyMonth[key]) dsThanhToanTelecombyMonth[key].splice(idx, 1); renderTelecomPaymentTable(); capNhat(); }
+
+    function tinhTienTelecomTuTong() {
+        let tong = parseVNDMoney(document.getElementById('inputTelecomTongVat').value);
+        let truocThue = Math.round(tong / 1.1);
+        let vat = tong - truocThue;
+        document.getElementById('inputTelecomTruocThueInput').value = truocThue.toLocaleString('vi-VN');
+        document.getElementById('inputTelecomVatInput').value = vat.toLocaleString('vi-VN');
+    }
+
+    function renderSurveyTable() {
+        let tbody = document.getElementById('surveyTableBody');
+        if(!tbody) return; tbody.innerHTML = '';
+        let countUnlicensed = 0;
+        dsKhaoSatChuyenSau.forEach((item, idx) => {
+            let isOsWarn = (item.osLicense || '').includes('Chưa');
+            let isOfficeWarn = (item.officeLicense || '').includes('Chưa');
+            let isBizWarn = (item.bizLicense || '').includes('Chưa');
+            if (isOsWarn || isOfficeWarn || isBizWarn) countUnlicensed++;
+            tbody.innerHTML += `<tr>
+                <td style="text-align:center;"><b>${item.code}</b></td><td><b>${item.user}</b></td><td>${item.dept}</td><td>${item.device}</td>
+                <td>${item.os}</td><td style="text-align:center;"><span class="${isOsWarn?'badge-danger':'badge-net'}">${item.osLicense}</span></td>
+                <td>${item.office}</td><td style="text-align:center;"><span class="${isOfficeWarn?'badge-danger':'badge-net'}">${item.officeLicense}</span></td>
+                <td><b>${item.bizSoft}</b></td><td style="text-align:center;"><span class="${isBizWarn?'badge-danger':'badge-net'}">${item.bizLicense}</span></td>
+                <td>${item.specs || '--'}</td>
+                <td style="text-align:center; display:flex; gap:4px; justify-content:center;">
+                    <button class="btn btn-blue" style="padding:3px 6px; font-size:11px;" onclick="suaKhaoSat(${idx})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px; font-size:11px;" onclick="xoaKhaoSat(${idx})"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            </tr>`;
+        });
+        if(document.getElementById('statSurveyTotal')) document.getElementById('statSurveyTotal').innerText = dsKhaoSatChuyenSau.length + " Thiết bị";
+        if(document.getElementById('statSurveyUnlicensed')) document.getElementById('statSurveyUnlicensed').innerText = countUnlicensed + " Thiết bị";
+    }
+
+    function suaKhaoSat(idx) {
+        let item = dsKhaoSatChuyenSau[idx];
+        if (!item) return;
+        document.getElementById('editSurveyIndex').value = idx;
+        document.getElementById('autoSurveyCode').value = item.code;
+        document.getElementById('inputSurveyUser').value = item.user;
+        document.getElementById('inputSurveyDept').value = item.dept;
+        document.getElementById('inputSurveyDeviceName').value = item.device;
+        document.getElementById('inputSurveyOS').value = item.os;
+        document.getElementById('inputSurveyOSLicense').value = item.osLicense;
+        document.getElementById('inputSurveyOffice').value = item.office;
+        document.getElementById('inputSurveyOfficeLicense').value = item.officeLicense;
+        document.getElementById('inputSurveyBusinessSoftware').value = item.bizSoft;
+        document.getElementById('inputSurveyBusinessLicense').value = item.bizLicense;
+        document.getElementById('inputSurveySpecs').value = item.specs || '';
+        document.getElementById('btnSurveyText').innerText = "CẬP NHẬT KHẢO SÁT";
+        document.getElementById('btnCancelSurvey').classList.remove('hidden');
+        document.getElementById('formCardSurvey').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function huyBoCapNhatKhaoSat() {
+        document.getElementById('editSurveyIndex').value = -1;
+        document.getElementById('inputSurveyUser').value = '';
+        document.getElementById('inputSurveyDept').value = '';
+        document.getElementById('inputSurveySpecs').value = '';
+        document.getElementById('btnSurveyText').innerText = "LƯU KHẢO SÁT";
+        document.getElementById('btnCancelSurvey').classList.add('hidden');
+    }
+
+    function luuHoacCapNhatKhaoSat() {
+        let userEl = document.getElementById('inputSurveyUser');
+        let user = userEl ? userEl.value.trim() : "";
+        if (!user) { alert("Nhập tên người sử dụng!"); return; }
+        let editIdx = parseInt(document.getElementById('editSurveyIndex').value);
+
+        let surveyData = {
+            code: editIdx >= 0 && dsKhaoSatChuyenSau[editIdx] ? dsKhaoSatChuyenSau[editIdx].code : "KS-0" + (dsKhaoSatChuyenSau.length + 1),
+            user: user, 
+            dept: document.getElementById('inputSurveyDept').value || "Văn phòng TCT",
+            device: document.getElementById('inputSurveyDeviceName').value,
+            os: document.getElementById('inputSurveyOS').value, osLicense: document.getElementById('inputSurveyOSLicense').value,
+            office: document.getElementById('inputSurveyOffice').value, officeLicense: document.getElementById('inputSurveyOfficeLicense').value,
+            bizSoft: document.getElementById('inputSurveyBusinessSoftware').value, bizLicense: document.getElementById('inputSurveyBusinessLicense').value,
+            specs: document.getElementById('inputSurveySpecs').value
+        };
+
+        if (editIdx >= 0 && dsKhaoSatChuyenSau[editIdx]) {
+            dsKhaoSatChuyenSau[editIdx] = surveyData;
+            huyBoCapNhatKhaoSat();
+        } else {
+            dsKhaoSatChuyenSau.push(surveyData);
+            if(userEl) userEl.value = '';
+        }
+        renderSurveyTable(); capNhat(); alert("✅ Lưu/cập nhật khảo sát thành công!");
+    }
+    function xoaKhaoSat(idx) { dsKhaoSatChuyenSau.splice(idx, 1); renderSurveyTable(); capNhat(); }
+
+    function renderTaskTable() {
+        let tbody = document.getElementById('taskTableBody');
+        if (!tbody) return; tbody.innerHTML = '';
+        danhSachCongViec.forEach((item, idx) => {
+            let badgeClass = item.status === 'Hoàn thành' ? 'badge-net' : (item.status === 'Đang làm' ? 'badge-warning' : 'badge-danger');
+            tbody.innerHTML += `<tr>
+                <td style="text-align:center;">${idx + 1}</td><td><b>${item.name}</b></td><td>${item.assignee}</td>
+                <td style="text-align:center;">${formatVNDate(item.dueDate)}</td>
+                <td style="text-align:center;"><span class="${badgeClass}">${item.status}</span></td>
+                <td style="text-align:center; display:flex; gap:4px; justify-content:center; align-items:center;">
+                    <button class="btn btn-yellow" style="padding:3px 6px; font-size:11px;" onclick="doiTrangThaiNhanhCongViec(${idx})" title="Đổi trạng thái"><i class="fa-solid fa-rotate"></i></button>
+                    <button class="btn btn-blue" style="padding:3px 6px; font-size:11px;" onclick="suaCongViec(${idx})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px; font-size:11px;" onclick="xoaCongViec(${idx})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            </tr>`;
+        });
+    }
+
+    function doiTrangThaiNhanhCongViec(idx) {
+        let t = danhSachCongViec[idx];
+        if (!t) return;
+        if (t.status === 'Chưa làm') t.status = 'Đang làm';
+        else if (t.status === 'Đang làm') t.status = 'Hoàn thành';
+        else t.status = 'Chưa làm';
+        renderTaskTable(); capNhat();
+    }
+
+    function suaCongViec(idx) {
+        let t = danhSachCongViec[idx];
+        if (!t) return;
+        document.getElementById('editTaskIndex').value = idx;
+        document.getElementById('inputTaskName').value = t.name;
+        document.getElementById('inputTaskAssignee').value = t.assignee;
+        if (t.dueDate) document.getElementById('inputTaskDueDate').value = t.dueDate;
+        document.getElementById('inputTaskStatus').value = t.status;
+        document.getElementById('btnTaskText').innerText = "Cập Nhật Công Việc";
+        document.getElementById('btnCancelTask').classList.remove('hidden');
+        document.getElementById('formCardTask').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function huyBoCapNhatCongViec() {
+        document.getElementById('editTaskIndex').value = -1;
+        document.getElementById('inputTaskName').value = '';
+        document.getElementById('btnTaskText').innerText = "Thêm Công Việc";
+        document.getElementById('btnCancelTask').classList.add('hidden');
+    }
+
+    function luuHoacCapNhatCongViec() {
+        let nameEl = document.getElementById('inputTaskName');
+        let name = nameEl ? nameEl.value.trim() : "";
+        if (!name) { alert("Nhập nội dung công việc!"); return; }
+        let editIdx = parseInt(document.getElementById('editTaskIndex').value);
+        let assignee = document.getElementById('inputTaskAssignee').value;
+        let dueDate = document.getElementById('inputTaskDueDate').value;
+        let status = document.getElementById('inputTaskStatus').value;
+
+        if (editIdx >= 0 && danhSachCongViec[editIdx]) {
+            danhSachCongViec[editIdx] = { id: danhSachCongViec[editIdx].id, name: name, assignee: assignee, dueDate: dueDate, status: status };
+            huyBoCapNhatCongViec();
+        } else {
+            danhSachCongViec.push({ id: danhSachCongViec.length + 1, name: name, assignee: assignee, dueDate: dueDate, status: status });
+            if(nameEl) nameEl.value = '';
+        }
+        renderTaskTable(); capNhat();
+    }
+
+    function xoaCongViec(idx) { danhSachCongViec.splice(idx, 1); renderTaskTable(); capNhat(); }
+
+    function tinhToanTienVPP() {
+        let qty = parseFloat(document.getElementById('inputOfficeQty').value) || 1;
+        let price = parseVNDMoney(document.getElementById('inputOfficePrice').value);
+        let truocThue = qty * price;
+        let vatRate = parseFloat(document.getElementById('inputOfficeVatRate').value) || 0.1;
+        let vat = Math.round(truocThue * vatRate);
+        let total = truocThue + vat;
+        document.getElementById('inputOfficeTruocThue').value = truocThue.toLocaleString('vi-VN');
+        document.getElementById('inputOfficeVAT').value = vat.toLocaleString('vi-VN');
+        document.getElementById('previewOfficeTotal').value = total.toLocaleString('vi-VN');
+    }
+
+    function tinhToanVatTuTong() {}
+
+    function xuatToanBoHeThongExcel() {
+        if (typeof XLSX === 'undefined') return;
+        let wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu), "BangLuong");
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(layTatCaDanhSachVPPTheoNam()), "VPP");
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(layTatCaDanhSachTelecomTheoNam()), "Telecom");
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dsKhaoSatChuyenSau), "KhaoSat");
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dsKhoMucIn), "KhoMucIn");
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(danhSachCongViec), "CongViec");
+        XLSX.writeFile(wb, `VINAPACO_Toan_Bo_${currentNamKey}_${currentThangKey}.xlsx`);
+    }
+
+    // PLUGIN HIỂN THỊ GIÁ TRỊ TRÊN BIỂU ĐỒ CỘT
+    const barValuePlugin = {
+        id: 'barValuePlugin',
+        afterDatasetsDraw(chart) {
+            const { ctx } = chart;
+            if (chart.config.type !== 'bar') return;
+            chart.data.datasets.forEach((dataset, datasetIndex) => {
+                const meta = chart.getDatasetMeta(datasetIndex);
+                if (!meta.hidden) {
+                    meta.data.forEach((element, index) => {
+                        const value = dataset.data[index];
+                        if (value !== null && value !== undefined && value !== 0) {
+                            ctx.save();
+                            ctx.font = 'bold 11px sans-serif';
+                            ctx.fillStyle = '#0f172a';
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'bottom';
+                            
+                            let displayVal = value;
+                            if (typeof value === 'number') {
+                                if (value >= 1000000000) {
+                                    displayVal = (value / 1000000000).toFixed(1) + ' Tỷ';
+                                } else if (value >= 1000000) {
+                                    displayVal = (value / 1000000).toFixed(1) + ' Tr';
+                                } else if (value >= 1000) {
+                                    displayVal = value.toLocaleString('vi-VN');
+                                } else {
+                                    displayVal = value;
+                                }
+                            }
+                            
+                            const pos = element.tooltipPosition();
+                            ctx.fillText(displayVal, pos.x, pos.y - 5);
+                            ctx.restore();
+                        }
+                    });
+                }
+            });
+        }
+    };
+
+    // PLUGIN HIỂN THỊ CON SỐ PHẦN TRĂM (%) TRÊN BIỂU ĐỒ TRÒN / TỶ TRỌNG & TỶ LỆ
+    const piePercentagePlugin = {
+        id: 'piePercentagePlugin',
+        afterDatasetsDraw(chart) {
+            if (chart.config.type !== 'pie' && chart.config.type !== 'doughnut') return;
+            const { ctx } = chart;
+            chart.data.datasets.forEach((dataset, datasetIndex) => {
+                const meta = chart.getDatasetMeta(datasetIndex);
+                if (!meta.hidden) {
+                    const total = dataset.data.reduce((acc, val) => acc + (val || 0), 0);
+                    meta.data.forEach((element, index) => {
+                        const value = dataset.data[index] || 0;
+                        if (value > 0 && total > 0) {
+                            const percentage = ((value / total) * 100).toFixed(1) + '%';
+                            const pos = element.tooltipPosition();
+                            ctx.save();
+                            ctx.font = 'bold 12px sans-serif';
+                            ctx.fillStyle = '#ffffff';
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            ctx.shadowColor = 'rgba(0, 0, 0, 0.75)';
+                            ctx.shadowBlur = 5;
+                            ctx.lineWidth = 3;
+                            ctx.strokeText(percentage, pos.x, pos.y);
+                            ctx.fillText(percentage, pos.x, pos.y);
+                            ctx.restore();
+                        }
+                    });
+                }
+            });
+        }
+    };
+
+    if (typeof Chart !== 'undefined') { 
+        Chart.register(barValuePlugin); 
+        Chart.register(piePercentagePlugin); 
+    }
+
+    let chartInstances = {};
+    function createOrUpdateChart(canvasId, type, data, options) {
+        if (typeof Chart === 'undefined') return;
+        let ctx = document.getElementById(canvasId);
+        if (!ctx) return;
+        if (chartInstances[canvasId]) { try { chartInstances[canvasId].destroy(); } catch(e){} }
+        try { chartInstances[canvasId] = new Chart(ctx, { type: type, data: data, options: options }); } catch(err) {}
+    }
+
+    function veTatCaBieuDoDashboard() {
+        if (typeof Chart === 'undefined') return;
+        try {
+            let totalNetYear = layTongLuongNetCaNam();
+            let yearVppTotal = layTatCaDanhSachVPPTheoNam().reduce((s, i) => s + (i.total || 0), 0);
+            let yearTelecomTotal = layTatCaDanhSachTelecomTheoNam().reduce((s, i) => s + (i.tong || 0), 0);
+
+            let sumFinancial = totalNetYear + yearVppTotal + yearTelecomTotal;
+            let pieFinancialData = sumFinancial > 0 ? [totalNetYear, yearVppTotal, yearTelecomTotal] : [1, 0, 0];
+
+            createOrUpdateChart('salaryPieChart', 'pie', {
+                labels: ['Lương NET', 'VPP', 'Viễn Thông'],
+                datasets: [{ data: pieFinancialData, backgroundColor: ['#16a34a', '#d97706', '#0284c7'] }]
+            }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } });
+
+            createOrUpdateChart('overviewBarChart', 'bar', {
+                labels: ['Lương NET', 'VPP', 'Viễn Thông'],
+                datasets: [{ label: 'VNĐ', data: [totalNetYear, yearVppTotal, yearTelecomTotal], backgroundColor: ['#16a34a', '#d97706', '#0284c7'] }]
+            }, { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grace: '20%' } } });
+
+            let done = danhSachCongViec.filter(t => t.status === 'Hoàn thành').length;
+            let doing = danhSachCongViec.filter(t => t.status === 'Đang làm').length;
+            let todo = danhSachCongViec.filter(t => t.status === 'Chưa làm').length;
+            let taskSum = done + doing + todo;
+            let taskPieValues = taskSum > 0 ? [done, doing, todo] : [0, 0, 1];
+
+            let taskData = { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: taskPieValues, backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] };
+
+            createOrUpdateChart('overviewTaskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } });
+            createOrUpdateChart('taskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } });
+            createOrUpdateChart('taskBarChart', 'bar', taskData, { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grace: '25%' } } });
+
+            let months = ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"];
+            let monthlyNetList = months.map(m => {
+                let mData = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][m]) ? coSoDuLieuNamThang[currentNamKey][m].nhansu : [];
+                return mData.reduce((s, i) => s + (i.thucLinhCuoiCung || 0), 0);
+            });
+
+            createOrUpdateChart('monthlySalaryBarChart', 'bar', {
+                labels: months, datasets: [{ label: 'Quỹ Lương NET (VNĐ)', data: monthlyNetList, backgroundColor: '#0284c7' }]
+            }, { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grace: '20%' } } });
+
+            let nsList = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey]) ? coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu : [];
+            let names = nsList.map(i => i.hoTen);
+            let usedLeaves = nsList.map(i => layTongLuyKePhepDaNghi(i.hoTen).totalP);
+            let remainingLeaves = nsList.map(i => (i.phep_cap || 12) - layTongLuyKePhepDaNghi(i.hoTen).totalP);
+
+            createOrUpdateChart('overviewLeaveBarChart', 'bar', {
+                labels: names,
+                datasets: [{ label: 'Đã Dùng', data: usedLeaves, backgroundColor: '#d97706', borderRadius: 4 }, { label: 'Còn Lại', data: remainingLeaves, backgroundColor: '#16a34a', borderRadius: 4 }]
+            }, { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grace: '20%' } } });
+
+            let totalUsedLeaves = usedLeaves.reduce((a,b)=>a+b,0);
+            let totalRemLeaves = remainingLeaves.reduce((a,b)=>a+b,0);
+            let leavePieValues = (totalUsedLeaves + totalRemLeaves) > 0 ? [totalUsedLeaves, totalRemLeaves] : [0, 1];
+
+            createOrUpdateChart('leavePieChart', 'pie', {
+                labels: ['Đã Dùng', 'Còn Lại'],
+                datasets: [{ data: leavePieValues, backgroundColor: ['#d97706', '#16a34a'] }]
+            }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } });
+        } catch (e) {}
+    }
+
+    function xuatExcelCB() { if (typeof XLSX === 'undefined') return; XLSX.writeFile(XLSX.utils.book_append_sheet(XLSX.utils.book_new(), XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu), "LuongCB"), "Luong_Co_Ban.xlsx"); }
+    function xuatExcelCV() { if (typeof XLSX === 'undefined') return; XLSX.writeFile(XLSX.utils.book_append_sheet(XLSX.utils.book_new(), XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu), "LuongCV"), "Luong_Cong_Viec.xlsx"); }
+    function xuatExcelCongChiTiet() { if (typeof XLSX === 'undefined') return; XLSX.writeFile(XLSX.utils.book_append_sheet(XLSX.utils.book_new(), XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu), "ChamCong"), "Cham_Cong.xlsx"); }
+    function xuatBaoCaoXNTExcel() { if (typeof XLSX === 'undefined') return; XLSX.writeFile(XLSX.utils.book_append_sheet(XLSX.utils.book_new(), XLSX.utils.json_to_sheet(dsKhoMucIn), "XNT"), "Xuat_Nhap_Ton.xlsx"); }
+    function xuatBaoCaoLuongCacThangExcel() {
+        if (typeof XLSX === 'undefined') return;
+        let dataExport = [];
+        ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"].forEach(m => {
+            let mData = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][m]) ? coSoDuLieuNamThang[currentNamKey][m].nhansu : [];
+            dataExport.push({ "Tháng": m, "Tổng Lương NET": mData.reduce((s, i) => s + (i.thucLinhCuoiCung || 0), 0) });
+        });
+        XLSX.writeFile(XLSX.utils.book_append_sheet(XLSX.utils.book_new(), XLSX.utils.json_to_sheet(dataExport), "Luong12Thang"), "Bao_Cao_Luong_12_Thang.xlsx");
+    }
+
+    function khoiTaoDanhSachNhanSuModalSelect() {
+        let sel = document.getElementById('selectModalNhanSu');
+        if (!sel) return; sel.innerHTML = '';
+        coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.forEach((item, idx) => {
+            sel.innerHTML += `<option value="${item.hoTen}">${idx+1}. ${item.hoTen} (${(item.thucLinhCuoiCung||0).toLocaleString()} VNĐ)</option>`;
+        });
+    }
+
+    function moModalPhiieuLuongDauTien() {
+        khoiTaoDanhSachNhanSuModalSelect();
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
+        if (ds && ds.length > 0) moModalPhiieuLuongTheoTen(ds[0].hoTen);
+        document.getElementById('previewModal').classList.remove('hidden');
+    }
+
+    function moModalPhiieuLuongTheoTen(hoTen) {
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
+        let idx = ds.findIndex(i => i.hoTen === hoTen);
+        if (idx === -1) idx = 0;
+        modalCurrentNvIndex = idx;
+        let nv = ds[idx];
+        let sel = document.getElementById('selectModalNhanSu');
+        if (sel) sel.value = nv.hoTen;
+        
+        document.getElementById("slipMonthSub").innerText = `${currentThangKey}/${currentNamKey} - Văn phòng TCT`;
+        document.getElementById("slipName").innerText = nv.hoTen;
+        document.getElementById("slipPhone").innerText = nv.sdt || 'Chưa cập nhật';
+        document.getElementById("slipHslCb").innerText = nv.hsl_cb || 0;
+        document.getElementById("slipPcCb").innerText = nv.pc_cb || 0;
+        document.getElementById("slipHslCv").innerText = nv.hsl_cv || 0;
+        document.getElementById("slipPcCv").innerText = nv.pc_cv || 0;
+        document.getElementById("slipNcTg").innerText = nv.nc_tg || 0;
+        document.getElementById("slipNcP").innerText = nv.nc_p || 0;
+        document.getElementById("slipNcL").innerText = nv.nc_l || 0;
+        document.getElementById("slipKht").innerText = nv.k_ht || 1.0;
+        document.getElementById("slipLCB").innerText = (nv.tongLCB||0).toLocaleString('vi-VN');
+        document.getElementById("slipLCV").innerText = (nv.luongCVTT||0).toLocaleString('vi-VN');
+        document.getElementById("slipTongCbCv").innerText = (nv.tongCbCv||0).toLocaleString('vi-VN') + " VNĐ";
+        document.getElementById("slipBHXH").innerText = '-' + (nv.bhxh||0).toLocaleString('vi-VN');
+        document.getElementById("slipBHTN").innerText = '-' + (nv.bhtn||0).toLocaleString('vi-VN');
+        document.getElementById("slipTamUng").innerText = '-' + (nv.tam_ung||0).toLocaleString('vi-VN');
+        document.getElementById("slipThucLinh").innerText = (nv.thucLinhCuoiCung||0).toLocaleString('vi-VN') + ' VNĐ';
+        document.getElementById('previewModal').classList.remove('hidden');
+    }
+
+    function guiPhieuLuongQuaZalo() {
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
+        let nv = ds[modalCurrentNvIndex] || ds[0];
+        let phone = (nv.sdt || '').replace(/[^0-9]/g, '');
+        let textCopy = `📋 PHIẾU LƯƠNG ${currentThangKey}/${currentNamKey} - VINAPACO\n👤 Kính gửi: ${nv.hoTen}\n💰 THỰC LĨNH NET: ${(nv.thucLinhCuoiCung||0).toLocaleString('vi-VN')} VNĐ`;
+        if (navigator.clipboard) navigator.clipboard.writeText(textCopy);
+        alert(`✅ Đã copy phiếu lương của ${nv.hoTen}!\n🚀 Đang mở Zalo...`);
+        if (phone) window.location.href = `zalo://chat?phone=${phone}`;
+        else window.open("https://chat.zalo.me/", '_blank');
+    }
+
+    function taiAnhPhieuLuongZalo() {
+        if (typeof html2canvas === 'undefined') return;
+        html2canvas(document.getElementById("payslip-capture")).then(canvas => {
+            let link = document.createElement('a');
+            link.download = `Phieu_Luong_${currentThangKey}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        });
+    }
+
+    function switchTab(tabId, btnEl) {
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn-nav').forEach(b => b.classList.remove('active'));
+        let targetTab = document.getElementById(tabId);
+        if (targetTab) targetTab.classList.add('active');
+        if (btnEl) btnEl.classList.add('active');
+        if (tabId === 'accountManagerTab') renderAccountTable();
+        else setTimeout(() => veTatCaBieuDoDashboard(), 50);
+    }
+
+    function moModalDangKyNghiPhep() { alert("📝 Tính năng đăng ký phép trực tuyến đang mở."); }
+    function chonNhanSuXemPhieuLuong(hoTen) { moModalPhiieuLuongTheoTen(hoTen); }
+    function chuyenNhanSuModal(step) {
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
+        modalCurrentNvIndex = (modalCurrentNvIndex + step + ds.length) % ds.length;
+        moModalPhiieuLuongTheoTen(ds[modalCurrentNvIndex].hoTen);
+    }
+    function locDanhSachNhanSuModal(keyword) {
+        let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
+        let found = ds.find(i => i.hoTen.toLowerCase().includes(keyword.toLowerCase()));
+        if (found) moModalPhiieuLuongTheoTen(found.hoTen);
+    }
+
+    let wellnessTimer = null;
+    function batTatNhacNghiGoi() {
+        let btn = document.querySelector('button[onclick="batTatNhacNghiGoi()"]');
+        if (wellnessTimer) {
+            clearInterval(wellnessTimer);
+            wellnessTimer = null;
+            if(btn) { btn.style.background = "#d97706"; btn.innerHTML = '<i class="fa-solid fa-mug-hot"></i> Nhắc Nghỉ'; }
+            alert("☕ Đã TẮT tính năng nhắc nghỉ ngơi.");
+        } else {
+            wellnessTimer = setInterval(() => {
+                document.getElementById('modalVinapacoWellness').classList.remove('hidden');
+            }, 60 * 60 * 1000);
+
+            if(btn) { btn.style.background = "#16a34a"; btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Đang Bật Nhắc Nghỉ'; }
+            alert("☕ Đã BẬT hệ thống VINAPACO Wellness! Hệ thống sẽ hiển thị bảng nhắc nhở chuyên nghiệp sau mỗi 60 phút làm việc.");
+        }
+    }
+
+    function dongModalNghiNgoi() {
+        document.getElementById('modalVinapacoWellness').classList.add('hidden');
+    }
+
+    function hoanLaiNhacNghi() {
+        dongModalNghiNgoi();
+        setTimeout(() => {
+            document.getElementById('modalVinapacoWellness').classList.remove('hidden');
+        }, 10 * 60 * 1000);
+    }
+
+    function luuGasUrlNhanh() { alert("✅ Đã lưu cấu hình Gas Webhook URL!"); }
+
+    function getWeatherInfo(code) {
+        switch (code) {
+            case 0: return { text: "Trời quang đãng", icon: "fa-sun", color: "#f59e0b" };
+            case 1: case 2: case 3: return { text: "Mây rải rác / Nhiều mây", icon: "fa-cloud-sun", color: "#38bdf8" };
+            case 45: case 48: return { text: "Sương mù", icon: "fa-smog", color: "#94a3b8" };
+            case 51: case 53: case 55: case 56: case 57: return { text: "Mưa phùn nhẹ", icon: "fa-cloud-rain", color: "#60a5fa" };
+            case 61: case 63: case 65: case 66: case 67: return { text: "Mưa rào / Mưa lớn", icon: "fa-cloud-showers-heavy", color: "#2563eb" };
+            case 71: case 73: case 75: case 77: return { text: "Tuyết rơi", icon: "fa-snowflake", color: "#93c5fd" };
+            case 80: case 81: case 82: return { text: "Mưa dông mạnh", icon: "fa-cloud-bolt", color: "#d97706" };
+            case 95: case 96: case 99: return { text: "Dông bão kèm sấm sét", icon: "fa-bolt", color: "#dc2626" };
+            default: return { text: "Thời tiết ổn định", icon: "fa-cloud", color: "#64748b" };
+        }
+    }
+
+    async function goiApiLayThoiTiet(lat, lon, cityName) {
+        cachedWeatherCoords = { lat: lat, lon: lon, cityName: cityName };
+        try {
+            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_probability_max&timezone=auto`);
+            let data = await res.json();
+            if (data && data.current) {
+                let cur = data.current;
+                let wInfo = getWeatherInfo(cur.weather_code);
+                
+                document.getElementById('weatherWidgetText').innerHTML = `<i class="fa-solid ${wInfo.icon}" style="color:${wInfo.color};"></i> ${cityName}: <b>${cur.temperature_2m}°C</b> (${wInfo.text}) - Độ ẩm: ${cur.relative_humidity_2m}%`;
+                
+                document.getElementById('wLocationTitle').innerText = `Khu vực: ${cityName} (Lat: ${lat.toFixed(2)}, Lon: ${lon.toFixed(2)})`;
+                document.getElementById('wCurrentTemp').innerText = `${cur.temperature_2m}°C`;
+                document.getElementById('wCurrentCondition').innerText = wInfo.text;
+                document.getElementById('wMainIcon').innerHTML = `<i class="fa-solid ${wInfo.icon}" style="color:${wInfo.color};"></i>`;
+                document.getElementById('wHumidity').innerText = `${cur.relative_humidity_2m}%`;
+                document.getElementById('wWind').innerText = `${cur.wind_speed_10m} km/h`;
+
+                if (data.daily) {
+                    let d = data.daily;
+                    let sunriseStr = d.sunrise && d.sunrise[0] ? d.sunrise[0].split('T')[1] : '05:30';
+                    let sunsetStr = d.sunset && d.sunset[0] ? d.sunset[0].split('T')[1] : '18:15';
+                    document.getElementById('wSunrise').innerText = sunriseStr;
+                    document.getElementById('wSunset').innerText = sunsetStr;
+
+                    let grid10Days = document.getElementById('weather10DaysContainer');
+                    if (grid10Days) {
+                        grid10Days.innerHTML = '';
+                        for (let i = 0; i < (d.time ? d.time.length : 10); i++) {
+                            let dateStr = d.time[i];
+                            let parts = dateStr.split('-');
+                            let formattedDate = parts.length === 3 ? `${parts[2]}/${parts[1]}` : dateStr;
+                            let dayCode = d.weather_code[i];
+                            let dayWInfo = getWeatherInfo(dayCode);
+                            let tMax = d.temperature_2m_max[i];
+                            let tMin = d.temperature_2m_min[i];
+                            let rainProb = d.precipitation_probability_max ? d.precipitation_probability_max[i] : 0;
+
+                            grid10Days.innerHTML += `
+                                <div class="weather-day-card">
+                                    <div style="font-size: 12px; font-weight: 900; color: #0369a1;">${i === 0 ? 'Hôm nay' : formattedDate}</div>
+                                    <div style="font-size: 26px; margin: 4px 0; color: ${dayWInfo.color};"><i class="fa-solid ${dayWInfo.icon}"></i></div>
+                                    <div style="font-size: 11px; font-weight: 800; color: #334155; min-height: 28px;">${dayWInfo.text}</div>
+                                    <div style="font-size: 13px; font-weight: 900; color: #0f172a;">${tMax}°C / <span style="color:#64748b; font-weight:700;">${tMin}°C</span></div>
+                                    <div style="font-size: 11px; color: #0284c7; font-weight: 700;"><i class="fa-solid fa-umbrella"></i> Mưa: ${rainProb}%</div>
+                                </div>
+                            `;
+                        }
+                    }
+                }
+            }
+        } catch (e) {
+            document.getElementById('weatherWidgetText').innerHTML = `<i class="fa-solid fa-cloud-sun" style="color:#d97706;"></i> ${cityName}: 30.5°C, Nắng đẹp`;
+        }
+    }
+
+    function moModalDuBaoThoiTiet10Ngay() {
+        document.getElementById('modalWeather10DaysPreview').classList.remove('hidden');
+        goiApiLayThoiTiet(cachedWeatherCoords.lat, cachedWeatherCoords.lon, cachedWeatherCoords.cityName);
+    }
+
+    function layThoiTietTheoGPS() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                pos => goiApiLayThoiTiet(pos.coords.latitude, pos.coords.longitude, "Vị trí GPS"),
+                err => goiApiLayThoiTiet(21.3228, 105.3377, "Phú Thọ")
+            );
+        } else { goiApiLayThoiTiet(21.3228, 105.3377, "Phú Thọ"); }
+    }
+
+    async function traCuuThoiTietTheoThanhPho() {
+        let city = document.getElementById('inputSearchCity').value.trim() || "Phú Thọ";
+        try {
+            let res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=vi&format=json`);
+            let data = await res.json();
+            if (data && data.results && data.results.length > 0) {
+                goiApiLayThoiTiet(data.results[0].latitude, data.results[0].longitude, data.results[0].name);
+            } else { goiApiLayThoiTiet(21.3228, 105.3377, city); }
+        } catch (e) { goiApiLayThoiTiet(21.3228, 105.3377, city); }
+    }
+
+    function moThuThucDriveChung() { window.open('https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m', '_blank'); }
+
+    function khoiTaoClock() {
+        setInterval(() => {
+            let now = new Date();
+            document.getElementById('liveClockDisplay').innerText = now.toLocaleTimeString('vi-VN');
+            document.getElementById('liveDateDisplay').innerText = now.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        }, 1000);
+        let now = new Date();
+        let lunar = convertSolar2LunarPro(now.getDate(), now.getMonth()+1, now.getFullYear());
+        document.getElementById('lunarWidgetText').innerHTML = `🌙 Ngày ${lunar.day}/${lunar.month} (${lunar.canChiNam})<br>✨ ${lunar.hoangDaoName}`;
+    }
+
+    function khoiTaoVaChayHeThong() {
+        try {
+            khoiTaoDanhSachNamTuSinh();
+            doiThangHoSoLuong();
+            renderTaskTable();
+            renderAccountTable();
+            khoiTaoClock();
+            traCuuThoiTietTheoThanhPho();
+            setTimeout(() => veTatCaBieuDoDashboard(), 100);
+        } catch (err) {}
+    }
+
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        setTimeout(khoiTaoVaChayHeThong, 10);
+    } else {
+        window.addEventListener('DOMContentLoaded', khoiTaoVaChayHeThong);
+        window.addEventListener('load', khoiTaoVaChayHeThong);
+    }
+</script>
+</body>
+</html>

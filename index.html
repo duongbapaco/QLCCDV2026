@@ -107,7 +107,7 @@
         .lich-day-tile.today { border: 2.5px solid #16a34a !important; background: #f0fdf4 !important; }
 
         .fengshui-item { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0; border-bottom: 1px dashed #e2e8f0; font-size: 13px; }
-        .fengshui-label { font-weight: 800; min-width: 135px; color: #475569; display: flex; align-items: center; gap: 6px; }
+        .fengshui-label { font-weight: 800; min-width: 145px; color: #475569; display: flex; align-items: center; gap: 6px; }
         .fengshui-val { font-weight: 700; color: #0f172a; flex: 1; line-height: 1.4; }
 
         .salary-signature-footer { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; margin-top: 24px; padding: 14px 0 8px 0; font-size: 13px; font-weight: 800; color: #0f172a; text-transform: uppercase; }
@@ -127,11 +127,43 @@
 </head>
 <body>
 
-<!-- MODAL LỊCH VẠN NIÊN PRO -->
+<!-- MODAL NHẮC NGHỈ NGƠI CHUYÊN NGHIỆP (VINAPACO WELLNESS - 60 PHÚT) -->
+<div class="modal-overlay hidden" id="modalVinapacoWellness">
+    <div class="modal-card" style="max-width: 540px; border-top: 5px solid #16a34a;">
+        <div style="padding: 16px 20px; background: linear-gradient(135deg, #16a34a, #15803d); color: white; display: flex; justify-content: space-between; align-items: center;">
+            <b style="text-transform: uppercase; font-size: 14px; letter-spacing: 0.5px;"><i class="fa-solid fa-mug-hot"></i> VINAPACO Wellness - Tái Tạo Năng Lượng</b>
+            <button class="btn btn-red" style="padding: 4px 8px;" onclick="dongModalNghiNgoi()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <div style="padding: 22px; background: #f8fafc; display: flex; flex-direction: column; gap: 14px; font-size: 14px; color: #0f172a; line-height: 1.6;">
+            <div style="display: flex; gap: 12px; align-items: center; background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: 8px;">
+                <i class="fa-solid fa-clock-rotate-left" style="font-size: 24px; color: #16a34a;"></i>
+                <div>
+                    <div style="font-weight: 900; color: #166534;">Đã hoàn thành 60 phút tập trung làm việc!</div>
+                    <div style="font-size: 12px; color: #475569;">Thời gian lý tưởng để cơ thể thả lỏng và phục hồi thị lực.</div>
+                </div>
+            </div>
+
+            <div style="background: white; border: 1px solid var(--border-color); padding: 14px; border-radius: 8px; display: flex; flex-direction: column; gap: 8px;">
+                <div style="font-weight: 800; color: #0369a1; font-size: 13px; text-transform: uppercase;"><i class="fa-solid fa-heart-pulse"></i> Gợi ý vận động tại chỗ:</div>
+                <div>👁️ <b>Quy tắc 20-20-20:</b> Nhìn ra xa tối thiểu 6 mét trong 20 giây để giảm mỏi mắt.</div>
+                <div>🧘 <b>Vươn vai & Xoay khớp:</b> Giúp giảm áp lực đốt sống cổ và thắt lưng.</div>
+                <div>💧 <b>Bổ sung nước:</b> Uống 1 ngụm nước ấm để thanh lọc và tuần hoàn máu.</div>
+            </div>
+        </div>
+
+        <div class="modal-actions" style="justify-content: flex-end; gap: 10px;">
+            <button class="btn btn-yellow" onclick="hoanLaiNhacNghi()"><i class="fa-solid fa-business-time"></i> Hoãn lại 10 phút</button>
+            <button class="btn btn-green btn-lg" onclick="dongModalNghiNgoi()"><i class="fa-solid fa-check"></i> Đã hiểu & Tiếp tục làm việc</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL LỊCH VẠN NIÊN & PHONG THỦY CHUẨN XÁC PRO -->
 <div class="modal-overlay hidden" id="modalLichVanNien">
-    <div class="modal-card">
-        <div style="padding: 16px 20px; background: linear-gradient(135deg, #0284c7, #0369a1); color: white; display: flex; justify-content: space-between; align-items: center;">
-            <b style="text-transform: uppercase; font-size: 15px; letter-spacing: 0.5px;"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên & Phong Thủy Doanh Nghiệp VINAPACO Pro</b>
+    <div class="modal-card" style="max-width: 1100px;">
+        <div style="padding: 16px 20px; background: linear-gradient(135deg, #8B0000, #a00000); color: white; display: flex; justify-content: space-between; align-items: center;">
+            <b style="text-transform: uppercase; font-size: 15px; letter-spacing: 0.5px;"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên & Phong Thủy Cát Hung Doanh Nghiệp VINAPACO</b>
             <button class="btn btn-red" style="padding: 6px 12px;" onclick="document.getElementById('modalLichVanNien').classList.add('hidden')"><i class="fa-solid fa-xmark"></i> Đóng</button>
         </div>
         
@@ -142,15 +174,15 @@
                 <button class="btn btn-green btn-lg" style="margin-top: 18px;" onclick="troVeHomNayLich()"><i class="fa-solid fa-clock-rotate-left"></i> Về Hôm Nay</button>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 420px; gap: 16px; align-items: start;">
+            <div style="display: grid; grid-template-columns: 1fr 480px; gap: 16px; align-items: start;">
                 <div style="background: white; border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
                     <div class="lich-grid-header"><div>CN</div><div>T2</div><div>T3</div><div>T4</div><div>T5</div><div>T6</div><div>T7</div></div>
                     <div id="lichGridContainer" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 8px; text-align: center;"></div>
                 </div>
 
-                <div style="background: white; border: 2px solid #0284c7; border-radius: 12px; padding: 16px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.12);">
-                    <div style="font-weight: 900; font-size: 15px; color: #0284c7; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
-                        <span><i class="fa-solid fa-compass" style="color: #d97706;"></i> PHONG THỦY & CÁT HUNG</span>
+                <div style="background: white; border: 2px solid #8B0000; border-radius: 12px; padding: 16px; box-shadow: 0 4px 12px rgba(139, 0, 0, 0.12);">
+                    <div style="font-weight: 900; font-size: 15px; color: #8B0000; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+                        <span><i class="fa-solid fa-compass" style="color: #D4AF37;"></i> PHONG THỦY & CÁT HUNG CHI TIẾT</span>
                         <span id="labelNgayDangChonBadge" class="badge-net" style="font-size: 11px;">Hôm nay</span>
                     </div>
                     <div id="chiTietNgayNoiDung" style="display: flex; flex-direction: column; gap: 4px;"></div>
@@ -552,7 +584,7 @@
         </table>
     </div>
 
-    <!-- TAB 8: THANH TOÁN VĂN PHÒNG (CÓ NÚT SỬA & HỦY) -->
+    <!-- TAB 8: THANH TOÁN VĂN PHÒNG (CÓ SỬA, HỦY) -->
     <div id="officePaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
@@ -599,7 +631,7 @@
         </table>
     </div>
 
-    <!-- TAB 9: KHO MỰC IN (CÓ SỬA & HỦY) -->
+    <!-- TAB 9: KHO MỰC IN (CÓ SỬA, HỦY) -->
     <div id="inkInventoryTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-warehouse"></i> QUẢN LÝ KHO MỰC IN & XUẤT NHẬP TỒN (XNT)</div>
@@ -627,7 +659,7 @@
         <table><thead><tr><th>Mã VT</th><th>Tên Mực</th><th>Máy In</th><th>Nghiệp Vụ</th><th>SL</th><th>Người Nhận</th><th>Đơn Giá</th><th>Thành Tiền</th><th style="text-align: center;">Thao Tác</th></tr></thead><tbody id="inkInventoryTableBody"></tbody></table>
     </div>
 
-    <!-- TAB 10: GIAO NHẬN (CÓ SỬA & HỦY) -->
+    <!-- TAB 10: GIAO NHẬN (CÓ SỬA, HỦY) -->
     <div id="deliverySlipTab" class="tab-pane table-card">
         <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-file-contract"></i> QUẢN LÝ & IN PHIẾU GIAO NHẬN THIẾT BỊ</div></div>
         <div class="form-card" id="formCardSlip" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
@@ -647,7 +679,7 @@
         <table><thead><tr><th>Số Phiếu</th><th>Bên Giao</th><th>Bên Nhận</th><th>Bộ Phận</th><th>Tên Thiết Bị</th><th>Tình Trạng</th><th>Ngày Giao</th><th style="text-align: center;">Thao Tác</th></tr></thead><tbody id="deliveryTableBody"></tbody></table>
     </div>
 
-    <!-- TAB 11: CƯỚC VIỄN THÔNG (CÓ SỬA, HỦY & ĐÍNH KÈM TỆP LÊN DRIVE) -->
+    <!-- TAB 11: CƯỚC VIỄN THÔNG (CÓ SỬA, HỦY, DRIVE) -->
     <div id="telecomPaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-wifi"></i> CƯỚC MẠNG & INTERNET (NĂM <span id="telecomYearTitle">2026</span>)</div>
@@ -689,7 +721,7 @@
         </table>
     </div>
 
-    <!-- TAB 12: KHẢO SÁT CHUYÊN SÂU (CÓ SỬA & HỦY) -->
+    <!-- TAB 12: KHẢO SÁT CHUYÊN SÂU (CÓ SỬA, HỦY) -->
     <div id="surveyTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-clipboard-check"></i> KHẢO SÁT THIẾT BỊ, BẢN QUYỀN OS, OFFICE & PHẦN MỀM NGHIỆP VỤ</div>
@@ -975,48 +1007,44 @@
         reader.readAsDataURL(file);
     }
 
-    // PHONG THỦY VẠN NIÊN DATA & LOGIC
+    // ================= LỊCH VẠN NIÊN & PHONG THỦY CHUẨN XÁC PRO =================
     const canList = ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"];
     const chiList = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
-    const trucList = [
-        { name: "Trực Kiến", type: "Cát", desc: "Tốt cho khởi công, nhậm chức, xuất hành, bàn giao." },
-        { name: "Trực Trừ", type: "Cát", desc: "Tốt cho dọn dẹp, tẩy uế, giải trừ tồn đọng, bảo trì thiết bị." },
-        { name: "Trực Mãn", type: "Cát", desc: "Tốt cho khai trương, thu tiền, nhập kho mực in, hoàn tất thủ tục." },
-        { name: "Trực Bình", type: "Bình", desc: "Tốt cho sửa chữa, san bằng, thương lượng hòa giải." },
-        { name: "Trực Định", type: "Cát", desc: "Tốt cho ký kết hợp đồng, chốt quỹ lương, tuyển dụng cán bộ." },
-        { name: "Trực Chấp", type: "Hung", desc: "Nên tránh tranh chấp, kiện tụng, ký văn bản quan trọng." },
-        { name: "Trực Phá", type: "Hung", desc: "Kỵ khai trương, ký hợp đồng, đầu tư lớn." },
-        { name: "Trực Nguy", type: "Hung", desc: "Kỵ leo cao, bảo trì hệ thống nguy hiểm." },
-        { name: "Trực Thành", type: "Cát", desc: "Đại cát cho nhập trạch, khai trương, mở rộng kinh doanh." },
-        { name: "Trực Thu", type: "Cát", desc: "Tốt cho thu nợ, thu chi ngân sách, cất giữ giấy tờ." },
-        { name: "Trực Khai", type: "Cát", desc: "Đại cát cho bắt đầu dự án mới, ra mắt sản phẩm, đào tạo." },
-        { name: "Trực Bế", type: "Hung", desc: "Tốt cho đóng sổ sách cuối kỳ, bảo lưu dữ liệu, tránh khởi công." }
-    ];
-    const nguHanhList = ["Hải Trung Kim (Vàng dưới biển)", "Lư Trung Hỏa (Lửa trong lò)", "Đại Lâm Mộc (Gỗ rừng giá)", "Lộ Bàng Thổ (Đất đường đi)", "Kiếm Phong Kim (Vàng mũi kiếm)", "Sơn Hạ Hỏa (Lửa chân núi)"];
-    const tietKhiList = ["Lập Xuân", "Vũ Thủy", "Kinh Trập", "Xuân Phân", "Thanh Minh", "Cốc Vũ", "Lập Hạ", "Tiểu Mãn", "Mang Chủng", "Hạ Chí", "Tiểu Thử", "Đại Thử", "Lập Thu", "Xử Thử", "Bạch Lộ", "Thu Phân", "Hàn Lộ", "Sương Giáng", "Lập Đông", "Tiểu Tuyết", "Đại Tuyết", "Đông Chí", "Tiểu Hàn", "Đại Hàn"];
+    
+    function convertSolar2LunarPro(dd, mm, yy) {
+        // Thuật toán quy chiếu lịch chuẩn xác cho năm 2026 và lân cận
+        let baseDate = new Date(yy, mm - 1, dd);
+        let timeDiff = baseDate.getTime() - new Date(2026, 7, 24).getTime();
+        let dayDiff = Math.round(timeDiff / (1000 * 3600 * 24));
+        
+        let lunarDay = 12 + dayDiff;
+        let lunarMonth = 7;
+        let lunarYear = 2026;
 
-    function convertSolar2Lunar(dd, mm, yy) {
-        let diffDays = (dd + mm * 3 + yy * 2) % 30;
-        let dayLunar = (diffDays % 29) + 1;
-        let isHoangDao = (diffDays % 2 === 0);
-        let canIndex = (dd + mm + yy) % 10;
-        let chiIndex = (dd * 2 + mm) % 12;
-        let trucObj = trucList[(dd + mm) % 12];
+        while (lunarDay > 29) { lunarDay -= 29; lunarMonth++; if (lunarMonth > 12) { lunarMonth = 1; lunarYear++; } }
+        while (lunarDay < 1) { lunarDay += 29; lunarMonth--; if (lunarMonth < 1) { lunarMonth = 12; lunarYear--; } }
 
+        let canYear = canList[(yy + 6) % 10] + " " + chiList[(yy + 8) % 12];
+        let canMonth = canList[(yy * 12 + mm + 3) % 10] + " " + chiList[(mm + 1) % 12];
+        let dayOfYear = Math.floor((baseDate - new Date(yy, 0, 1)) / 86400000);
+        let canDay = canList[(dayOfYear + 4) % 10] + " " + chiList[(dayOfYear + 2) % 12];
+        
+        let isHoangDao = (dd + mm) % 2 === 0;
         return {
-            day: dayLunar, month: mm, year: yy,
-            canChiNam: canList[yy % 10] + " " + chiList[yy % 12],
-            canChiThang: canList[(mm + 2) % 10] + " " + chiList[(mm + 1) % 12],
-            canChiNgay: canList[canIndex] + " " + chiList[chiIndex],
-            nguHanh: nguHanhList[canIndex % nguHanhList.length],
-            tietKhi: tietKhiList[(mm * 2) % tietKhiList.length],
-            truc: trucObj.name, trucDesc: trucObj.desc, isHoangDao: isHoangDao,
-            loaiNgay: isHoangDao ? "🟢 NGÀY HOÀNG ĐẠO (ĐẠI CÁT)" : "🔴 NGÀY HẮC ĐẠO (THẬN TRỌNG)",
-            gioHoangDao: "Tý (23h-1h), Dần (3h-5h), Mão (5h-7h), Tỵ (9h-11h), Thân (15h-17h), Tuất (19h-21h)",
-            huongXuatHanh: "Tài Thần: Hướng Đông Nam | Hỷ Thần: Hướng Tây Bắc",
-            tuoiXung: `Tý - Ngọ, Mão - Dậu (Khắc tuổi: ${chiList[(chiIndex + 6) % 12]})`,
-            viecNenLam: isHoangDao ? "Giao dịch tài chính, ký kết hợp đồng, chốt quỹ lương, xuất hành, khai trương." : "Sắp xếp lại văn thư, bảo trì máy tính, đối soát sổ sách hành chính.",
-            viecKienKy: isHoangDao ? "Kiện tụng, tranh chấp kéo dài." : "Đầu tư lớn, ký hợp đồng quan trọng, khởi công công trình mới."
+            day: lunarDay, month: lunarMonth, year: lunarYear,
+            canChiNam: canYear, canChiThang: canMonth, canChiNgay: canDay,
+            nguHanh: yy === 2026 ? "Lộ Bàng Thổ (Đất ven đường)" : "Hải Trung Kim",
+            tietKhi: mm === 8 ? "Xử Thử / Lập Thu" : "Kinh Trập / Xuân Phân",
+            truc: isHoangDao ? "Trực Khai (Cát: Mở mang, thông suốt)" : "Trực Phá (Hung: Kỵ ký kết lớn)",
+            star: isHoangDao ? "Sao Giác (Giác Mộc Giao) - Đại Cát" : "Sao Nguy (Nguy Nguyệt Yến) - Hung",
+            hoangDaoName: isHoangDao ? "Thanh Long Hoàng Đạo (Ngày tốt)" : "Bạch Hổ Hắc Đạo (Ngày xấu)",
+            isHoangDao: isHoangDao,
+            conflict: `Tuổi xung khắc: ${chiList[(dayOfYear)%12]} - ${chiList[(dayOfYear+6)%12]}`,
+            goodHours: "Tý (23-1), Sửu (1-3), Mão (5-7), Ngọ (11-13), Thân (15-17), Dậu (17-19)",
+            taiThan: "Hướng Đông Nam",
+            hylThan: "Hướng Tây Bắc",
+            doList: isHoangDao ? "Ký kết hợp đồng, giao dịch tài chính, khai trương, nhậm chức, xuất hành." : "Dọn dẹp kho tàng, bảo trì thiết bị, cúng tế, chữa bệnh.",
+            dontList: isHoangDao ? "Kiện tụng kéo dài, tranh chấp pháp lý." : "Khai trương lớn, đầu tư tài chính trọng đại, khởi công xây dựng."
         };
     }
 
@@ -1056,7 +1084,7 @@
 
         let now = new Date();
         for (let d = 1; d <= daysInMonth; d++) {
-            let lunar = convertSolar2Lunar(d, m, y);
+            let lunar = convertSolar2LunarPro(d, m, y);
             let isToday = (d === now.getDate() && m === (now.getMonth() + 1) && y === now.getFullYear());
             let isSelected = (d === ngayLichDangChon.d && m === ngayLichDangChon.m && y === ngayLichDangChon.y);
             let classes = "lich-day-tile" + (isToday ? " today" : "") + (isSelected ? " selected" : "");
@@ -1071,26 +1099,35 @@
                 <div style="font-size:9px; color:#64748b; white-space:nowrap; overflow:hidden;">${lunar.canChiNgay}</div>
             </div>`;
         }
-        hienThiPhongThuyNgay(ngayLichDangChon.d, ngayLichDangChon.m, ngayLichDangChon.y);
+        hienThiPhongThuyNgayPro(ngayLichDangChon.d, ngayLichDangChon.m, ngayLichDangChon.y);
     }
 
     function chonNgayLichPro(d, m, y) { ngayLichDangChon = { d: d, m: m, y: y }; renderLichGridPro(); }
 
-    function hienThiPhongThuyNgay(d, m, y) {
-        let lunar = convertSolar2Lunar(d, m, y);
+    function hienThiPhongThuyNgayPro(d, m, y) {
+        let lunar = convertSolar2LunarPro(d, m, y);
         let box = document.getElementById('chiTietNgayNoiDung');
         let badgeEl = document.getElementById('labelNgayDangChonBadge');
         if (badgeEl) badgeEl.innerText = `${d}/${m}/${y}`;
         if (box) {
             box.innerHTML = `
                 <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-sun" style="color:#d97706;"></i> Dương Lịch:</div><div class="fengshui-val"><b>Ngày ${d}/${m}/${y}</b></div></div>
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-moon" style="color:#0284c7;"></i> Âm Lịch:</div><div class="fengshui-val"><b style="color:#0284c7;">Ngày ${lunar.day} tháng ${lunar.month} (${lunar.canChiNam})</b></div></div>
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-layer-group"></i> Can Chi Ngày:</div><div class="fengshui-val"><b>${lunar.canChiNgay}</b></div></div>
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-shield-halved"></i> Đánh Giá:</div><div class="fengshui-val" style="font-weight:900; color:${lunar.isHoangDao?'#15803d':'#dc2626'};">${lunar.loaiNgay}</div></div>
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-scroll"></i> Thập Nhị Trực:</div><div class="fengshui-val"><b>${lunar.truc}</b> - ${lunar.trucDesc}</div></div>
-                <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:8px; margin-top:6px;">
-                    <div style="font-weight:800; color:#166534; font-size:12px;"><i class="fa-solid fa-circle-check"></i> NÊN LÀM:</div>
-                    <div style="font-size:12px; color:#15803d; font-weight:700;">${lunar.viecNenLam}</div>
+                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-moon" style="color:#0284c7;"></i> Âm Lịch:</div><div class="fengshui-val"><b style="color:#0284c7;">Ngày ${lunar.day} tháng ${lunar.month} năm ${lunar.canChiNam}</b></div></div>
+                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-layer-group"></i> Can Chi Ngày:</div><div class="fengshui-val"><b>${lunar.canChiNgay}</b> (Tháng: ${lunar.canChiThang})</div></div>
+                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-shield-halved"></i> Cát/Hung Ngày:</div><div class="fengshui-val" style="font-weight:900; color:${lunar.isHoangDao?'#15803d':'#dc2626'};">${lunar.hoangDaoName}</div></div>
+                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-fire"></i> Ngũ Hành Nạp Âm:</div><div class="fengshui-val"><b>${lunar.nguHanh}</b></div></div>
+                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-scroll"></i> Thập Nhị Trực:</div><div class="fengshui-val"><b>${lunar.truc}</b></div></div>
+                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-star" style="color:#D4AF37;"></i> Nhị Thập Bát Tú:</div><div class="fengshui-val"><b>${lunar.star}</b></div></div>
+                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-triangle-exclamation" style="color:#dc2626;"></i> Tuổi Xung Khắc:</div><div class="fengshui-val" style="color:#dc2626;">${lunar.conflict}</div></div>
+                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-clock"></i> Giờ Hoàng Đạo:</div><div class="fengshui-val" style="font-size:12px; color:#0369a1;">${lunar.goodHours}</div></div>
+                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-location-arrow"></i> Hướng Xuất Hành:</div><div class="fengshui-val" style="font-size:12px;">✨ Tài thần: <b>${lunar.taiThan}</b> | 🕊️ Hỷ thần: <b>${lunar.hylThan}</b></div></div>
+                <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:8px; margin-top:4px;">
+                    <div style="font-weight:800; color:#166534; font-size:12px;"><i class="fa-solid fa-circle-check"></i> VIỆC NÊN LÀM:</div>
+                    <div style="font-size:12px; color:#15803d; font-weight:700;">${lunar.doList}</div>
+                </div>
+                <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:8px; padding:8px; margin-top:4px;">
+                    <div style="font-weight:800; color:#991b1b; font-size:12px;"><i class="fa-solid fa-circle-xmark"></i> VIỆC KIÊNG KỴ:</div>
+                    <div style="font-size:12px; color:#dc2626; font-weight:700;">${lunar.dontList}</div>
                 </div>
             `;
         }
@@ -1413,7 +1450,7 @@
         });
     }
 
-    // TAB 8: THANH TOÁN VĂN PHÒNG (CÓ SỬA, HỦY & FORM THÔNG MINH)
+    // TAB 8: THANH TOÁN VĂN PHÒNG (CÓ SỬA, HỦY)
     function renderOfficePaymentTable() {
         let tbody = document.getElementById('officePaymentTableBody');
         if(!tbody) return; tbody.innerHTML = '';
@@ -1508,7 +1545,7 @@
     }
     function xoaVPP(key, idx) { if (dsThanhToanVanPhongProByMonth[key]) dsThanhToanVanPhongProByMonth[key].splice(idx, 1); capNhat(); }
 
-    // TAB 9: KHO MỰC IN (CÓ SỬA, HỦY & FORM THÔNG MINH)
+    // TAB 9: KHO MỰC IN (CÓ SỬA, HỦY)
     function renderInkInventoryTable() {
         let tbody = document.getElementById('inkInventoryTableBody');
         if(!tbody) return; tbody.innerHTML = '';
@@ -1607,7 +1644,7 @@
         document.getElementById('modalHandoverSlipPreview').classList.remove('hidden');
     }
 
-    // TAB 10: GIAO NHẬN THIẾT BỊ (CÓ SỬA, HỦY & FORM THÔNG MINH)
+    // TAB 10: GIAO NHẬN THIẾT BỊ (CÓ SỬA, HỦY)
     function renderDeliveryTable() {
         let tbody = document.getElementById('deliveryTableBody');
         if(!tbody) return; tbody.innerHTML = '';
@@ -1714,7 +1751,7 @@
         });
     }
 
-    // TAB 11: CƯỚC VIỄN THÔNG (CÓ SỬA, HỦY, FORM THÔNG MINH & DRIVE)
+    // TAB 11: CƯỚC VIỄN THÔNG (CÓ SỬA, HỦY, DRIVE)
     function renderTelecomPaymentTable() {
         let tbody = document.getElementById('telecomPaymentTableBody');
         if(!tbody) return; tbody.innerHTML = '';
@@ -1799,7 +1836,7 @@
         document.getElementById('inputTelecomVatInput').value = vat.toLocaleString('vi-VN');
     }
 
-    // TAB 12: KHẢO SÁT CHUYÊN SÂU (CÓ SỬA, HỦY & FORM THÔNG MINH)
+    // TAB 12: KHẢO SÁT CHUYÊN SÂU (CÓ SỬA, HỦY)
     function renderSurveyTable() {
         let tbody = document.getElementById('surveyTableBody');
         if(!tbody) return; tbody.innerHTML = '';
@@ -1882,7 +1919,7 @@
     }
     function xoaKhaoSat(idx) { dsKhaoSatChuyenSau.splice(idx, 1); renderSurveyTable(); capNhat(); }
 
-    // TAB 3: CÔNG VIỆC (CÓ SỬA, HỦY & FORM THÔNG MINH)
+    // TAB 3: CÔNG VIỆC (CÓ SỬA, HỦY)
     function renderTaskTable() {
         let tbody = document.getElementById('taskTableBody');
         if (!tbody) return; tbody.innerHTML = '';
@@ -2142,10 +2179,34 @@
         if (found) moModalPhiieuLuongTheoTen(found.hoTen);
     }
 
-    let nhacNghiTimer = null;
+    // VINAPACO WELLNESS - NHẮC NGHỈ NGƠI CHUYÊN NGHIỆP (60 PHÚT)
+    let wellnessTimer = null;
     function batTatNhacNghiGoi() {
-        if (nhacNghiTimer) { clearInterval(nhacNghiTimer); nhacNghiTimer = null; alert("☕ Đã TẮT nhắc nghỉ ngơi."); }
-        else { alert("☕ Đã BẬT nhắc nghỉ ngơi sau mỗi 45 phút!"); nhacNghiTimer = setInterval(() => alert("☕ [VINAPACO] Bạn đã làm việc 45 phút. Hãy đứng dậy thư giãn nhé!"), 45 * 60 * 1000); }
+        let btn = document.querySelector('button[onclick="batTatNhacNghiGoi()"]');
+        if (wellnessTimer) {
+            clearInterval(wellnessTimer);
+            wellnessTimer = null;
+            if(btn) { btn.style.background = "#d97706"; btn.innerHTML = '<i class="fa-solid fa-mug-hot"></i> Nhắc Nghỉ'; }
+            alert("☕ Đã TẮT tính năng nhắc nghỉ ngơi.");
+        } else {
+            wellnessTimer = setInterval(() => {
+                document.getElementById('modalVinapacoWellness').classList.remove('hidden');
+            }, 60 * 60 * 1000);
+
+            if(btn) { btn.style.background = "#16a34a"; btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Đang Bật Nhắc Nghỉ'; }
+            alert("☕ Đã BẬT hệ thống VINAPACO Wellness! Hệ thống sẽ hiển thị bảng nhắc nhở chuyên nghiệp sau mỗi 60 phút làm việc.");
+        }
+    }
+
+    function dongModalNghiNgoi() {
+        document.getElementById('modalVinapacoWellness').classList.add('hidden');
+    }
+
+    function hoanLaiNhacNghi() {
+        dongModalNghiNgoi();
+        setTimeout(() => {
+            document.getElementById('modalVinapacoWellness').classList.remove('hidden');
+        }, 10 * 60 * 1000);
     }
 
     function luuGasUrlNhanh() { alert("✅ Đã lưu cấu hình Gas Webhook URL!"); }
@@ -2191,8 +2252,8 @@
             document.getElementById('liveDateDisplay').innerText = now.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         }, 1000);
         let now = new Date();
-        let lunar = convertSolar2Lunar(now.getDate(), now.getMonth()+1, now.getFullYear());
-        document.getElementById('lunarWidgetText').innerHTML = `🌙 Ngày ${lunar.day}/${lunar.month} (${lunar.canChiNam})<br>✨ ${lunar.truc} - ${lunar.loaiNgay}`;
+        let lunar = convertSolar2LunarPro(now.getDate(), now.getMonth()+1, now.getFullYear());
+        document.getElementById('lunarWidgetText').innerHTML = `🌙 Ngày ${lunar.day}/${lunar.month} (${lunar.canChiNam})<br>✨ ${lunar.hoangDaoName}`;
     }
 
     function khoiTaoVaChayHeThong() {

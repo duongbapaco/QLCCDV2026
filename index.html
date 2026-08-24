@@ -97,7 +97,12 @@
         .lunar-display { font-size: 13px; font-weight: 700; color: #16a34a; line-height: 1.4; }
         .weather-display { font-size: 13px; font-weight: 700; color: #d97706; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 
-        /* WIDGET THỜI TIẾT 10 NGÀY STYLES */
+        /* UPLOAD STATUS BAR STYLES */
+        .upload-status-bar { background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 12px 18px; border-radius: 10px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2); margin-bottom: 12px; }
+        .upload-status-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 800; }
+        .upload-progress-track { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.25); border-radius: 4px; overflow: hidden; }
+        .upload-progress-fill { height: 100%; background: #22c55e; width: 0%; transition: width 0.3s ease; border-radius: 4px; }
+
         .weather-10day-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-top: 10px; }
         .weather-day-card { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; text-align: center; display: flex; flex-direction: column; gap: 6px; transition: transform 0.2s; }
         .weather-day-card:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
@@ -335,6 +340,17 @@
             <button class="btn btn-yellow" onclick="batTatNhacNghiGoi()"><i class="fa-solid fa-mug-hot"></i> Nhắc Nghỉ</button>
             <button class="btn btn-green" onclick="xuatToanBoHeThongExcel()"><i class="fa-solid fa-file-excel"></i> Xuất Toàn Bộ Excel</button>
             <button class="btn btn-blue" onclick="thuCongDongBoLenDrive()"><i class="fa-solid fa-cloud-arrow-up"></i> Đồng Bộ Ngay</button>
+        </div>
+    </div>
+
+    <!-- THANH TRẠNG THÁI ĐẨY FILE ĐÍNH KÈM LÊN DRIVE (MỚI) -->
+    <div id="driveUploadStatusBar" class="upload-status-bar hidden">
+        <div class="upload-status-header">
+            <span id="uploadStatusTitle"><i class="fa-solid fa-cloud-arrow-up"></i> Đang chuẩn bị tải file lên Google Drive...</span>
+            <span id="uploadStatusPercentText">0%</span>
+        </div>
+        <div class="upload-progress-track">
+            <div id="uploadProgressFillBar" class="upload-progress-fill"></div>
         </div>
     </div>
 
@@ -1017,6 +1033,16 @@
         let gasUrl = document.getElementById('inputGasUrlSetting').value.trim();
         if (!gasUrl) { alert("Vui lòng nhập GAS Webhook URL!"); return; }
 
+        let statusBar = document.getElementById('driveUploadStatusBar');
+        let statusTitle = document.getElementById('uploadStatusTitle');
+        let statusPercent = document.getElementById('uploadStatusPercentText');
+        let progressFill = document.getElementById('uploadProgressFillBar');
+        statusBar.classList.remove('hidden');
+
+        statusTitle.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang chuẩn bị gói dữ liệu hệ thống...`;
+        progressFill.style.width = "20%";
+        statusPercent.innerText = "20%";
+
         let payload = {
             action: "syncData", namKey: currentNamKey, thangKey: currentThangKey,
             dataNamThang: coSoDuLieuNamThang, dataVpp: dsThanhToanVanPhongProByMonth,
@@ -1025,11 +1051,21 @@
             dataTasks: danhSachCongViec, timestamp: new Date().toISOString()
         };
 
+        setTimeout(() => {
+            statusTitle.innerHTML = `<i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> Đang đẩy dữ liệu lên Google Drive...`;
+            progressFill.style.width = "65%";
+            statusPercent.innerText = "65%";
+        }, 400);
+
         try {
-            alert("⏳ Đang đồng bộ dữ liệu hệ thống lên Google Drive...");
             await fetch(gasUrl, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
-            alert("✅ Đã gửi lệnh đồng bộ dữ liệu lên Google Drive thành công!");
-        } catch (error) { alert("❌ Lỗi đồng bộ: " + error); }
+            progressFill.style.width = "100%";
+            statusPercent.innerText = "100%";
+            statusTitle.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#22c55e;"></i> Đồng bộ toàn bộ hệ thống lên Google Drive thành công!`;
+            setTimeout(() => { statusBar.classList.add('hidden'); }, 3500);
+        } catch (error) { 
+            statusTitle.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi đồng bộ: ${error.message}`; 
+        }
     }
 
     async function taiTepLenThuMucChinhXac(inputElement, tabCategoryName) {
@@ -1039,6 +1075,16 @@
         let gasUrl = document.getElementById('inputGasUrlSetting').value.trim();
         if (!gasUrl) { alert("Vui lòng cấu hình GAS Webhook URL trước!"); return; }
 
+        let statusBar = document.getElementById('driveUploadStatusBar');
+        let statusTitle = document.getElementById('uploadStatusTitle');
+        let statusPercent = document.getElementById('uploadStatusPercentText');
+        let progressFill = document.getElementById('uploadProgressFillBar');
+        statusBar.classList.remove('hidden');
+
+        statusTitle.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang đọc file "${file.name}"...`;
+        progressFill.style.width = "25%";
+        statusPercent.innerText = "25%";
+
         let reader = new FileReader();
         reader.onload = async function(e) {
             let base64Content = e.target.result.split(',')[1];
@@ -1047,11 +1093,19 @@
                 category: tabCategoryName, fileName: file.name, mimeType: file.type, fileData: base64Content
             };
 
+            statusTitle.innerHTML = `<i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> Đang tải file lên thư mục [${tabCategoryName}] trên Drive...`;
+            progressFill.style.width = "70%";
+            statusPercent.innerText = "70%";
+
             try {
-                alert(`⏳ Đang tải file lên thư mục: VINAPACO_Drive / ${currentNamKey} / ${currentThangKey} / ${tabCategoryName}...`);
                 await fetch(gasUrl, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
-                alert(`✅ Đã tải file "${file.name}" lên Google Drive thành công vào thư mục đúng phân cấp!`);
-            } catch (err) { alert("❌ Lỗi tải file: " + err); }
+                progressFill.style.width = "100%";
+                statusPercent.innerText = "100%";
+                statusTitle.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#22c55e;"></i> Đã tải file "${file.name}" lên Drive thành công vào thư mục chuẩn!`;
+                setTimeout(() => { statusBar.classList.add('hidden'); }, 3500);
+            } catch (err) { 
+                statusTitle.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi tải file: ${err.message}`; 
+            }
         };
         reader.readAsDataURL(file);
     }
@@ -2113,9 +2167,13 @@
             let yearVppTotal = layTatCaDanhSachVPPTheoNam().reduce((s, i) => s + (i.total || 0), 0);
             let yearTelecomTotal = layTatCaDanhSachTelecomTheoNam().reduce((s, i) => s + (i.tong || 0), 0);
 
+            // Sửa lỗi biểu đồ tỷ trọng (cho phép nhận giá trị 0 hoặc thực tế linh hoạt)
+            let sumFinancial = totalNetYear + yearVppTotal + yearTelecomTotal;
+            let pieFinancialData = sumFinancial > 0 ? [totalNetYear, yearVppTotal, yearTelecomTotal] : [1, 0, 0];
+
             createOrUpdateChart('salaryPieChart', 'pie', {
                 labels: ['Lương NET', 'VPP', 'Viễn Thông'],
-                datasets: [{ data: [totalNetYear || 100, yearVppTotal || 10, yearTelecomTotal || 10], backgroundColor: ['#16a34a', '#d97706', '#0284c7'] }]
+                datasets: [{ data: pieFinancialData, backgroundColor: ['#16a34a', '#d97706', '#0284c7'] }]
             }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } });
 
             createOrUpdateChart('overviewBarChart', 'bar', {
@@ -2126,7 +2184,10 @@
             let done = danhSachCongViec.filter(t => t.status === 'Hoàn thành').length;
             let doing = danhSachCongViec.filter(t => t.status === 'Đang làm').length;
             let todo = danhSachCongViec.filter(t => t.status === 'Chưa làm').length;
-            let taskData = { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: [done || 1, doing || 1, todo || 1], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] };
+            let taskSum = done + doing + todo;
+            let taskPieValues = taskSum > 0 ? [done, doing, todo] : [0, 0, 1];
+
+            let taskData = { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: taskPieValues, backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] };
 
             createOrUpdateChart('overviewTaskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false });
             createOrUpdateChart('taskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false });
@@ -2152,9 +2213,13 @@
                 datasets: [{ label: 'Đã Dùng', data: usedLeaves, backgroundColor: '#d97706', borderRadius: 4 }, { label: 'Còn Lại', data: remainingLeaves, backgroundColor: '#16a34a', borderRadius: 4 }]
             }, { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grace: '20%' } } });
 
+            let totalUsedLeaves = usedLeaves.reduce((a,b)=>a+b,0);
+            let totalRemLeaves = remainingLeaves.reduce((a,b)=>a+b,0);
+            let leavePieValues = (totalUsedLeaves + totalRemLeaves) > 0 ? [totalUsedLeaves, totalRemLeaves] : [0, 1];
+
             createOrUpdateChart('leavePieChart', 'pie', {
                 labels: ['Đã Dùng', 'Còn Lại'],
-                datasets: [{ data: [usedLeaves.reduce((a,b)=>a+b,0) || 1, remainingLeaves.reduce((a,b)=>a+b,0) || 1], backgroundColor: ['#d97706', '#16a34a'] }]
+                datasets: [{ data: leavePieValues, backgroundColor: ['#d97706', '#16a34a'] }]
             }, { responsive: true, maintainAspectRatio: false });
         } catch (e) {}
     }
@@ -2316,7 +2381,6 @@
                 let cur = data.current;
                 let wInfo = getWeatherInfo(cur.weather_code);
                 
-                // [ĐÃ SỬA] Đổi cur.temperature thành cur.temperature_2m để lấy đúng giá trị nhiệt độ từ API
                 document.getElementById('weatherWidgetText').innerHTML = `<i class="fa-solid ${wInfo.icon}" style="color:${wInfo.color};"></i> ${cityName}: <b>${cur.temperature_2m}°C</b> (${wInfo.text}) - Độ ẩm: ${cur.relative_humidity_2m}%`;
                 
                 document.getElementById('wLocationTitle').innerText = `Khu vực: ${cityName} (Lat: ${lat.toFixed(2)}, Lon: ${lon.toFixed(2)})`;

@@ -2267,7 +2267,6 @@
                 datasets: [{ label: 'VNĐ', data: [totalNetYear, yearVppTotal, yearTelecomTotal], backgroundColor: ['#16a34a', '#d97706', '#0284c7'] }]
             }, { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grace: '20%' } } });
 
-            // SỬA LỖI UNDEFINED BẰNG CÁCH LỌC VÀ AN TOÀN HÓA TRẠNG THÁI CÔNG VIỆC
             let done = danhSachCongViec.filter(t => (t.status || '').trim() === 'Hoàn thành').length;
             let doing = danhSachCongViec.filter(t => (t.status || '').trim() === 'Đang làm').length;
             let todo = danhSachCongViec.filter(t => {
@@ -2277,7 +2276,15 @@
             let taskSum = done + doing + todo;
             let taskPieValues = taskSum > 0 ? [done, doing, todo] : [0, 0, 1];
 
-            let taskData = { labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], datasets: [{ data: taskPieValues, backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] };
+            // BỔ SUNG ĐẦY ĐỦ THUỘC TÍNH `label` CHO DATASET ĐỂ KHẮC PHỤC LỖI UNDEFINED TRÊN BIỂU ĐỒ CỘT
+            let taskData = { 
+                labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], 
+                datasets: [{ 
+                    label: 'Số lượng công việc', 
+                    data: taskPieValues, 
+                    backgroundColor: ['#16a34a', '#d97706', '#ef4444'] 
+                }] 
+            };
 
             createOrUpdateChart('overviewTaskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } });
             createOrUpdateChart('taskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } });
@@ -2564,7 +2571,6 @@
             renderAccountTable();
             khoiTaoClock();
             traCuuThoiTietTheoThanhPho();
-            // Tự động tải dữ liệu đồng bộ mới nhất từ Cloud khi mở app trên mobile/PC
             taiDuLieuTuDongTuGas();
             setTimeout(() => veTatCaBieuDoDashboard(), 100);
         } catch (err) {}

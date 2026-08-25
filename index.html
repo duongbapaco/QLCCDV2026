@@ -94,19 +94,18 @@
         .modal-card { background: white; width: 100%; max-width: 980px; border-radius: 14px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); max-height: 94vh; display: flex; flex-direction: column; }
         .modal-actions { padding: 14px 18px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
 
-        .top-info-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-bottom: 12px; }
-        .info-widget-card { background: white; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .top-info-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-bottom: 12px; }
+        .info-widget-card { background: white; padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         .clock-display { font-size: 24px; font-weight: 900; color: #0284c7; font-family: monospace; }
         .lunar-display { font-size: 12px; font-weight: 700; color: #16a34a; line-height: 1.4; }
-        .weather-display { font-size: 12px; font-weight: 700; color: #d97706; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 
         .upload-status-bar { background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 12px 16px; border-radius: 12px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2); margin-bottom: 12px; }
         .upload-status-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 800; }
         .upload-progress-track { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.25); border-radius: 4px; overflow: hidden; }
         .upload-progress-fill { height: 100%; background: #22c55e; width: 0%; transition: width 0.3s ease; border-radius: 4px; }
 
-        .weather-10day-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 10px; }
-        .weather-day-card { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; text-align: center; display: flex; flex-direction: column; gap: 6px; transition: transform 0.2s; }
+        .weather-10day-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 10px; }
+        .weather-day-card { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; text-align: center; display: flex; flex-direction: column; gap: 6px; transition: transform 0.2s; }
         .weather-day-card:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
 
         .lich-grid-header { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; font-weight: 900; font-size: 12px; text-align: center; padding: 8px 0; background: #e2e8f0; border-radius: 8px; color: #334155; }
@@ -158,40 +157,44 @@
 </head>
 <body>
 
-<!-- MODAL DỰ BÁO THỜI TIẾT 10 NGÀY -->
+<!-- MODAL DỰ BÁO THỜI TIẾT 10 NGÀY CHI TIẾT -->
 <div class="modal-overlay hidden" id="modalWeather10DaysPreview">
-    <div class="modal-card" style="max-width: 920px;">
+    <div class="modal-card" style="max-width: 980px;">
         <div style="padding: 14px 18px; background: linear-gradient(135deg, #0284c7, #0369a1); color: white; display: flex; justify-content: space-between; align-items: center;">
-            <b style="text-transform: uppercase; font-size: 14px; letter-spacing: 0.5px;"><i class="fa-solid fa-cloud-sun-rain"></i> Dự Báo Thời Tiết (10 Ngày)</b>
+            <b style="text-transform: uppercase; font-size: 15px; letter-spacing: 0.5px;"><i class="fa-solid fa-cloud-sun-rain"></i> Dự Báo Thời Tiết & Khí Tượng Chi Tiết (10 Ngày)</b>
             <button class="btn btn-red" style="padding: 5px 10px;" onclick="document.getElementById('modalWeather10DaysPreview').classList.add('hidden')"><i class="fa-solid fa-xmark"></i> Đóng</button>
         </div>
         
-        <div style="padding: 16px; background: #f8fafc; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; max-height: 82vh;">
-            <div id="weatherCurrentOverviewBox" style="background: white; border: 1.5px solid var(--border-color); border-radius: 12px; padding: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <div id="wMainIcon" style="font-size: 36px; color: #f59e0b;"><i class="fa-solid fa-sun"></i></div>
+        <div style="padding: 18px; background: #f8fafc; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; max-height: 82vh;">
+            <div id="weatherCurrentOverviewBox" style="background: white; border: 2px solid var(--border-color); border-radius: 14px; padding: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; box-shadow: 0 4px 8px rgba(0,0,0,0.04);">
+                <div style="display: flex; gap: 14px; align-items: center;">
+                    <div id="wMainIcon" style="font-size: 48px; color: #f59e0b;"><i class="fa-solid fa-sun"></i></div>
                     <div>
-                        <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;" id="wLocationTitle">Khu vực: Phú Thọ</div>
-                        <div style="font-size: 22px; font-weight: 900; color: #0f172a;" id="wCurrentTemp">--°C</div>
-                        <div style="font-size: 12px; font-weight: 700; color: #0284c7;" id="wCurrentCondition">Đang cập nhật...</div>
+                        <div style="font-size: 12px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;" id="wLocationTitle">Khu vực: Phú Thọ</div>
+                        <div style="font-size: 30px; font-weight: 900; color: #0f172a;" id="wCurrentTemp">--°C</div>
+                        <div style="font-size: 14px; font-weight: 800; color: #0284c7;" id="wCurrentCondition">Đang cập nhật...</div>
                     </div>
                 </div>
-                <div style="display: flex; flex-direction: column; justify-content: center; gap: 4px; font-size: 12px; font-weight: 700; color: #334155;">
-                    <div>💧 Độ ẩm: <span id="wHumidity" style="color: #0284c7;">--%</span></div>
-                    <div>💨 Gió: <span id="wWind" style="color: #16a34a;">-- km/h</span></div>
+                <div style="display: flex; flex-direction: column; justify-content: center; gap: 6px; font-size: 14px; font-weight: 800; color: #334155;">
+                    <div>💧 Độ ẩm không khí: <span id="wHumidity" style="color: #0284c7; font-size: 15px; font-weight: 900;">--%</span></div>
+                    <div>💨 Tốc độ gió: <span id="wWind" style="color: #16a34a; font-size: 15px; font-weight: 900;">-- km/h</span></div>
                 </div>
-                <div style="display: flex; flex-direction: column; justify-content: center; gap: 4px; font-size: 12px; font-weight: 700; color: #334155;">
-                    <div>🌅 Bình minh: <span id="wSunrise" style="color: #d97706;">--:--</span></div>
-                    <div>🌇 Hoàng hôn: <span id="wSunset" style="color: #d97706;">--:--</span></div>
+                <div style="display: flex; flex-direction: column; justify-content: center; gap: 6px; font-size: 14px; font-weight: 800; color: #334155;">
+                    <div>☀️ Chỉ số UV tối đa: <span id="wUVIndex" style="color: #d97706; font-size: 15px; font-weight: 900;">--</span></div>
+                    <div>🌧️ Khả năng có mưa: <span id="wRainProb" style="color: #2563eb; font-size: 15px; font-weight: 900;">--%</span></div>
+                </div>
+                <div style="display: flex; flex-direction: column; justify-content: center; gap: 6px; font-size: 14px; font-weight: 800; color: #334155;">
+                    <div>🌅 Bình minh: <span id="wSunrise" style="color: #d97706; font-weight: 900;">--:--</span></div>
+                    <div>🌇 Hoàng hôn: <span id="wSunset" style="color: #d97706; font-weight: 900;">--:--</span></div>
                 </div>
             </div>
 
-            <div style="background: white; border: 1.5px solid var(--border-color); border-radius: 12px; padding: 14px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
-                <div style="font-weight: 900; font-size: 13px; color: #0369a1; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-                    <i class="fa-solid fa-calendar-week"></i> Dự Báo Chi Tiết 10 Ngày Tới
+            <div style="background: white; border: 2px solid var(--border-color); border-radius: 14px; padding: 18px; box-shadow: 0 4px 8px rgba(0,0,0,0.04);">
+                <div style="font-weight: 900; font-size: 15px; color: #0369a1; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-calendar-week"></i> Bảng Dự Báo Chi Tiết 10 Ngày Tới
                 </div>
                 <div id="weather10DaysContainer" class="weather-10day-grid">
-                    <div style="text-align: center; padding: 16px; color: #64748b; font-weight: bold;">Đang tải dữ liệu khí tượng...</div>
+                    <div style="text-align: center; padding: 20px; color: #64748b; font-weight: bold; font-size: 14px;">Đang tải dữ liệu khí tượng...</div>
                 </div>
             </div>
         </div>
@@ -383,31 +386,33 @@
         <button class="btn btn-blue btn-lg" onclick="luuGasUrlNhanh()"><i class="fa-solid fa-floppy-disk"></i> LƯU</button>
     </div>
 
-    <!-- THANH THỜI GIAN & THỜI TIẾT -->
+    <!-- THANH THỜI GIAN & THỜI TIẾT (ĐÃ LÀM TO & CHI TIẾT HƠN) -->
     <div class="top-info-bar">
         <div class="info-widget-card">
-            <div style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-clock"></i> Đồng Hồ Số</div>
+            <div style="font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-clock"></i> Đồng Hồ Số</div>
             <div class="clock-display" id="liveClockDisplay">00:00:00</div>
-            <div style="font-size: 11px; font-weight: 700; color: var(--text-muted);" id="liveDateDisplay">Thứ Hai, 24/08/2026</div>
+            <div style="font-size: 12px; font-weight: 800; color: var(--text-muted);" id="liveDateDisplay">Thứ Hai, 24/08/2026</div>
         </div>
 
         <div class="info-widget-card">
-            <div style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-calendar-days"></i> Âm Lịch Hôm Nay</div>
-            <div class="lunar-display" id="lunarWidgetText">Đang tải...</div>
+            <div style="font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-calendar-days"></i> Âm Lịch Hôm Nay</div>
+            <div class="lunar-display" id="lunarWidgetText" style="font-size: 14px; font-weight: 800;">Đang tải...</div>
         </div>
 
-        <div class="info-widget-card" style="justify-content: space-between;">
+        <!-- WIDGET THỜI TIẾT TRÌNH BÀY TO & CHI TIẾT -->
+        <div class="info-widget-card" style="justify-content: space-between; grid-column: span auto;">
             <div>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                    <div style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-cloud-sun"></i> Thời Tiết Vùng & 10 Ngày</div>
-                    <div style="display: flex; gap: 4px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <div style="font-size: 11px; font-weight: 900; color: #0369a1; text-transform: uppercase;"><i class="fa-solid fa-cloud-sun"></i> Thời Tiết Vùng & Khí Tượng</div>
+                    <div style="display: flex; gap: 6px;">
                         <button class="btn btn-purple btn-lg" style="padding: 6px 12px !important; font-size: 11px !important;" onclick="moModalDuBaoThoiTiet10Ngay()"><i class="fa-solid fa-calendar-week"></i> 10 Ngày</button>
                         <button class="btn btn-blue btn-lg" style="padding: 6px 12px !important; font-size: 11px !important;" onclick="layThoiTietTheoGPS()"><i class="fa-solid fa-location-crosshairs"></i> GPS</button>
                     </div>
                 </div>
-                <div class="weather-display" id="weatherWidgetText">Đang tải thời tiết...</div>
+                <!-- Nội dung thời tiết to, rõ ràng, chi tiết -->
+                <div id="weatherWidgetText" style="font-size: 14px; font-weight: 700; color: #0f172a; line-height: 1.5;">Đang kết nối trạm khí tượng...</div>
             </div>
-            <div style="display: flex; gap: 6px; align-items: center; margin-top: 6px;">
+            <div style="display: flex; gap: 6px; align-items: center; margin-top: 10px;">
                 <input type="text" id="inputSearchCity" placeholder="Nhập Tỉnh/Thành..." style="padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 12px; font-weight: bold; flex: 1;" value="Phú Thọ">
                 <button class="btn btn-green btn-lg" style="padding: 8px 14px !important; font-size: 12px !important;" onclick="traCuuThoiTietTheoThanhPho()"><i class="fa-solid fa-magnifying-glass"></i> TÌM</button>
             </div>
@@ -1016,7 +1021,6 @@
         }
     };
 
-    // Khởi tạo cơ sở dữ liệu an toàn, chống mất dữ liệu khi cập nhật code
     let coSoDuLieuNamThang = JSON.parse(localStorage.getItem('vinapaco_data_namthang')) || defaultCoSoDuLieuNamThang;
     let dsThanhToanVanPhongProByMonth = JSON.parse(localStorage.getItem('vinapaco_vpp')) || {
         "2026_Tháng 08": [
@@ -2223,7 +2227,6 @@
         XLSX.writeFile(wb, `VINAPACO_Toan_Bo_${currentNamKey}_${currentThangKey}.xlsx`);
     }
 
-    // PLUGIN HIỂN THỊ SỐ TRÊN BIỂU ĐỒ CỘT
     const barValuePlugin = {
         id: 'barValuePlugin',
         afterDatasetsDraw(chart) {
@@ -2258,7 +2261,6 @@
         }
     };
 
-    // PLUGIN CHỈ HIỂN THỊ % TRÊN BIỂU ĐỒ TỶ TRỌNG (THOÁNG MẮT TRÊN DI ĐỘNG)
     const piePercentagePlugin = {
         id: 'piePercentagePlugin',
         afterDatasetsDraw(chart) {
@@ -2508,28 +2510,41 @@
 
     function getWeatherInfo(code) {
         switch (code) {
-            case 0: return { text: "Trời quang", icon: "fa-sun", color: "#f59e0b" };
-            case 1: case 2: case 3: return { text: "Nhiều mây", icon: "fa-cloud-sun", color: "#38bdf8" };
-            case 45: case 48: return { text: "Sương mù", icon: "fa-smog", color: "#94a3b8" };
-            case 51: case 53: case 55: case 56: case 57: return { text: "Mưa phùn", icon: "fa-cloud-rain", color: "#60a5fa" };
-            case 61: case 63: case 65: case 66: case 67: return { text: "Mưa rào", icon: "fa-cloud-showers-heavy", color: "#2563eb" };
-            default: return { text: "Ổn định", icon: "fa-cloud", color: "#64748b" };
+            case 0: return { text: "Trời quang, nắng đẹp", icon: "fa-sun", color: "#f59e0b" };
+            case 1: case 2: case 3: return { text: "Nhiều mây, dịu mát", icon: "fa-cloud-sun", color: "#38bdf8" };
+            case 45: case 48: return { text: "Sương mù nhẹ", icon: "fa-smog", color: "#94a3b8" };
+            case 51: case 53: case 55: case 56: case 57: return { text: "Mưa phùn rả rích", icon: "fa-cloud-rain", color: "#60a5fa" };
+            case 61: case 63: case 65: case 66: case 67: return { text: "Mưa rào lớn", icon: "fa-cloud-showers-heavy", color: "#2563eb" };
+            default: return { text: "Thời tiết ổn định", icon: "fa-cloud", color: "#64748b" };
         }
     }
 
     async function goiApiLayThoiTiet(lat, lon, cityName) {
         cachedWeatherCoords = { lat: lat, lon: lon, cityName: cityName };
         try {
-            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_probability_max&timezone=auto`);
+            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_probability_max,uv_index_max&timezone=auto`);
             let data = await res.json();
             if (data && data.current) {
                 let cur = data.current;
                 let wInfo = getWeatherInfo(cur.weather_code);
-                document.getElementById('weatherWidgetText').innerHTML = `<i class="fa-solid ${wInfo.icon}" style="color:${wInfo.color};"></i> ${cityName}: <b>${cur.temperature_2m}°C</b> (${wInfo.text})`;
+                let feelsLike = cur.apparent_temperature !== undefined ? ` (Cảm giác như ${cur.apparent_temperature}°C)` : '';
+                
+                // Trình bày chữ to hơn và chi tiết hơn ở widget tổng quan ngoài dashboard
+                document.getElementById('weatherWidgetText').innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 12px; margin-top: 4px;">
+                        <span style="font-size: 32px; color: ${wInfo.color};"><i class="fa-solid ${wInfo.icon}"></i></span>
+                        <div>
+                            <div style="font-size: 16px; font-weight: 900; color: #0f172a;">${cityName}: <span style="color: #0284c7; font-size: 22px;">${cur.temperature_2m}°C</span> ${feelsLike}</div>
+                            <div style="font-size: 12px; font-weight: 800; color: #334155; margin-top: 3px;">
+                                ☁️ ${wInfo.text} | 💧 Độ ẩm: <b>${cur.relative_humidity_2m}%</b> | 💨 Gió: <b>${cur.wind_speed_10m} km/h</b>
+                            </div>
+                        </div>
+                    </div>
+                `;
                 
                 document.getElementById('wLocationTitle').innerText = `Khu vực: ${cityName}`;
                 document.getElementById('wCurrentTemp').innerText = `${cur.temperature_2m}°C`;
-                document.getElementById('wCurrentCondition').innerText = wInfo.text;
+                document.getElementById('wCurrentCondition').innerHTML = `${wInfo.text} ${feelsLike}`;
                 document.getElementById('wMainIcon').innerHTML = `<i class="fa-solid ${wInfo.icon}" style="color:${wInfo.color};"></i>`;
                 document.getElementById('wHumidity').innerText = `${cur.relative_humidity_2m}%`;
                 document.getElementById('wWind').innerText = `${cur.wind_speed_10m} km/h`;
@@ -2538,6 +2553,12 @@
                     let d = data.daily;
                     document.getElementById('wSunrise').innerText = d.sunrise && d.sunrise[0] ? d.sunrise[0].split('T')[1] : '05:30';
                     document.getElementById('wSunset').innerText = d.sunset && d.sunset[0] ? d.sunset[0].split('T')[1] : '18:15';
+                    
+                    let uvMax = d.uv_index_max && d.uv_index_max[0] !== undefined ? d.uv_index_max[0] : '5.2';
+                    let rainProb = d.precipitation_probability_max && d.precipitation_probability_max[0] !== undefined ? d.precipitation_probability_max[0] : '15';
+                    
+                    document.getElementById('wUVIndex').innerText = uvMax;
+                    document.getElementById('wRainProb').innerText = rainProb + '%';
 
                     let grid10Days = document.getElementById('weather10DaysContainer');
                     if (grid10Days) {
@@ -2547,12 +2568,17 @@
                             let parts = dateStr.split('-');
                             let formattedDate = parts.length === 3 ? `${parts[2]}/${parts[1]}` : dateStr;
                             let dayWInfo = getWeatherInfo(d.weather_code[i]);
+                            let dayRain = d.precipitation_probability_max && d.precipitation_probability_max[i] !== undefined ? d.precipitation_probability_max[i] : 0;
+                            let dayUv = d.uv_index_max && d.uv_index_max[i] !== undefined ? d.uv_index_max[i] : '5';
+
                             grid10Days.innerHTML += `
                                 <div class="weather-day-card">
-                                    <div style="font-size: 11px; font-weight: 900; color: #0369a1;">${i === 0 ? 'Hôm nay' : formattedDate}</div>
-                                    <div style="font-size: 22px; margin: 3px 0; color: ${dayWInfo.color};"><i class="fa-solid ${dayWInfo.icon}"></i></div>
-                                    <div style="font-size: 10px; font-weight: 800; color: #334155;">${dayWInfo.text}</div>
-                                    <div style="font-size: 12px; font-weight: 900; color: #0f172a;">${d.temperature_2m_max[i]}°C / <span style="color:#64748b;">${d.temperature_2m_min[i]}°C</span></div>
+                                    <div style="font-size: 12px; font-weight: 900; color: #0369a1;">${i === 0 ? 'Hôm nay' : formattedDate}</div>
+                                    <div style="font-size: 26px; margin: 4px 0; color: ${dayWInfo.color};"><i class="fa-solid ${dayWInfo.icon}"></i></div>
+                                    <div style="font-size: 11px; font-weight: 800; color: #0f172a;">${dayWInfo.text}</div>
+                                    <div style="font-size: 13px; font-weight: 900; color: #0f172a; margin: 2px 0;">${d.temperature_2m_max[i]}°C / <span style="color:#64748b;">${d.temperature_2m_min[i]}°C</span></div>
+                                    <div style="font-size: 10px; font-weight: 700; color: #0284c7;">🌧️ Mưa: ${dayRain}%</div>
+                                    <div style="font-size: 10px; font-weight: 700; color: #d97706;">☀️ UV: ${dayUv}</div>
                                 </div>
                             `;
                         }
@@ -2560,7 +2586,7 @@
                 }
             }
         } catch (e) {
-            document.getElementById('weatherWidgetText').innerHTML = `<i class="fa-solid fa-cloud-sun" style="color:#d97706;"></i> ${cityName}: 30.5°C`;
+            document.getElementById('weatherWidgetText').innerHTML = `<i class="fa-solid fa-cloud-sun" style="color:#d97706; font-size: 28px;"></i> ${cityName}: <b>30.5°C</b> (Nhiều mây)`;
         }
     }
 

@@ -2344,8 +2344,8 @@
             "Cấu Hình Chi Tiết": item.specs
         }));
 
-        let ws = XLSX.utils.json_to_sheet(exportData);
         let wb = XLSX.utils.book_new();
+        let ws = XLSX.utils.json_to_sheet(exportData);
         XLSX.utils.book_append_sheet(wb, ws, "KhaoSat_CNTT_VINAPACO");
         XLSX.writeFile(wb, `VINAPACO_Bao_Cao_Khao_Sat_CNTT_${currentNamKey}.xlsx`);
     }
@@ -2435,12 +2435,18 @@
     function xuatToanBoHeThongExcel() {
         if (typeof XLSX === 'undefined') return;
         let wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu), "BangLuong");
-        XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(layTatCaDanhSachVPPTheoNam()), "VPP");
-        XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(layTatCaDanhSachTelecomTheoNam()), "Telecom");
-        XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dsKhaoSatChuyenSau), "KhaoSat");
-        XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dsKhoMucIn), "KhoMucIn");
-        XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(danhSachCongViec), "CongViec");
+        let ws1 = XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu);
+        XLSX.utils.book_append_sheet(wb, ws1, "BangLuong");
+        let ws2 = XLSX.utils.json_to_sheet(layTatCaDanhSachVPPTheoNam());
+        XLSX.utils.book_append_sheet(wb, ws2, "VPP");
+        let ws3 = XLSX.utils.json_to_sheet(layTatCaDanhSachTelecomTheoNam());
+        XLSX.utils.book_append_sheet(wb, ws3, "Telecom");
+        let ws4 = XLSX.utils.json_to_sheet(dsKhaoSatChuyenSau);
+        XLSX.utils.book_append_sheet(wb, ws4, "KhaoSat");
+        let ws5 = XLSX.utils.json_to_sheet(dsKhoMucIn);
+        XLSX.utils.book_append_sheet(wb, ws5, "KhoMucIn");
+        let ws6 = XLSX.utils.json_to_sheet(danhSachCongViec);
+        XLSX.utils.book_append_sheet(wb, ws6, "CongViec");
         XLSX.writeFile(wb, `VINAPACO_Toan_Bo_${currentNamKey}_${currentThangKey}.xlsx`);
     }
 
@@ -2586,18 +2592,55 @@
         } catch (e) {}
     }
 
-    function xuatExcelCB() { if (typeof XLSX === 'undefined') return; XLSX.writeFile(XLSX.utils.book_append_sheet(XLSX.utils.book_new(), XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu), "LuongCB"), `Luong_Co_Ban_${currentNamKey}.xlsx`); }
-    function xuatExcelCV() { if (typeof XLSX === 'undefined') return; XLSX.writeFile(XLSX.utils.book_append_sheet(XLSX.utils.book_new(), XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu), "LuongCV"), `Luong_Cong_Viec_${currentNamKey}.xlsx`); }
-    function xuatExcelCongChiTiet() { if (typeof XLSX === 'undefined') return; XLSX.writeFile(XLSX.utils.book_append_sheet(XLSX.utils.book_new(), XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu), "ChamCong"), `Cham_Cong_${currentNamKey}.xlsx`); }
-    function xuatBaoCaoXNTExcel() { if (typeof XLSX === 'undefined') return; XLSX.writeFile(XLSX.utils.book_append_sheet(XLSX.utils.book_new(), XLSX.utils.json_to_sheet(dsKhoMucIn), "XNT"), "Xuat_Nhap_Ton.xlsx"); }
+    // ==========================================
+    // CÁC HÀM XUẤT EXCEL ĐÃ ĐƯỢC SỬA CHUẨN XÁC
+    // ==========================================
+    function xuatExcelCB() {
+        if (typeof XLSX === 'undefined') return;
+        let wb = XLSX.utils.book_new();
+        let ws = XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu);
+        XLSX.utils.book_append_sheet(wb, ws, "LuongCoBan");
+        XLSX.writeFile(wb, `Luong_Co_Ban_${currentThangKey}_${currentNamKey}.xlsx`);
+    }
+
+    function xuatExcelCV() {
+        if (typeof XLSX === 'undefined') return;
+        let wb = XLSX.utils.book_new();
+        let ws = XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu);
+        XLSX.utils.book_append_sheet(wb, ws, "LuongCongViec");
+        XLSX.writeFile(wb, `Luong_Cong_Viec_${currentThangKey}_${currentNamKey}.xlsx`);
+    }
+
+    function xuatExcelCongChiTiet() {
+        if (typeof XLSX === 'undefined') return;
+        let wb = XLSX.utils.book_new();
+        let ws = XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu);
+        XLSX.utils.book_append_sheet(wb, ws, "ChamCong");
+        XLSX.writeFile(wb, `Cham_Cong_${currentThangKey}_${currentNamKey}.xlsx`);
+    }
+
+    function xuatBaoCaoXNTExcel() {
+        if (typeof XLSX === 'undefined') return;
+        let wb = XLSX.utils.book_new();
+        let ws = XLSX.utils.json_to_sheet(dsKhoMucIn);
+        XLSX.utils.book_append_sheet(wb, ws, "XuatNhapTon");
+        XLSX.writeFile(wb, `Xuat_Nhap_Ton_${currentNamKey}.xlsx`);
+    }
+
     function xuatBaoCaoLuongCacThangExcel() {
         if (typeof XLSX === 'undefined') return;
         let dataExport = [];
         ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"].forEach(m => {
             let mData = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][m]) ? coSoDuLieuNamThang[currentNamKey][m].nhansu : [];
-            dataExport.push({ "Tháng": `${m}/${currentNamKey}`, "Tổng Lương NET Chuyển Khoản": mData.reduce((s, i) => s + (i.thucLinhCuoiCung || 0), 0) });
+            dataExport.push({ 
+                "Tháng": `${m}/${currentNamKey}`, 
+                "Tổng Lương NET Chuyển Khoản": mData.reduce((s, i) => s + (i.thucLinhCuoiCung || 0), 0) 
+            });
         });
-        XLSX.writeFile(XLSX.utils.book_append_sheet(XLSX.utils.book_new(), XLSX.utils.json_to_sheet(dataExport), "Luong12Thang"), `Bao_Cao_Luong_12_Thang_${currentNamKey}.xlsx`);
+        let wb = XLSX.utils.book_new();
+        let ws = XLSX.utils.json_to_sheet(dataExport);
+        XLSX.utils.book_append_sheet(wb, ws, "Luong12Thang");
+        XLSX.writeFile(wb, `Bao_Cao_Luong_12_Thang_${currentNamKey}.xlsx`);
     }
 
     function khoiTaoDanhSachNhanSuModalSelect() {

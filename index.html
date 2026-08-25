@@ -281,12 +281,12 @@
                     <div style="font-size: 11px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase;">TỔNG CÔNG TY GIẤY VIỆT NAM (VINAPACO)</div>
                     <div style="font-size: 10px; font-weight: 700; color: #475569;">Văn phòng Tổng công ty - Ban CNTT & Kho vận</div>
                     <div class="handover-title" id="previewSlipTitleText">BIÊN BẢN BÀN GIAO & GIAO NHẬN THIẾT BỊ</div>
-                    <div style="font-size: 11px; font-weight: 700; margin-top: 4px;" id="previewSlipNoDate">Số: PGN-2026/08-01 | Ngày 24 tháng 08 năm 2026</div>
+                    <div style="font-size: 11px; font-weight: 700; margin-top: 4px;" id="previewSlipNoDate">Số: PGN-2026/08-01 | Ngày 25 tháng 08 năm 2026</div>
                 </div>
 
                 <div style="margin-bottom: 12px; font-size: 13px; line-height: 1.5;">
                     - Căn cứ vào nghiệp vụ quản lý tài sản và xuất nhập kho của Tổng công ty Giấy Việt Nam;<br>
-                    - Hôm nay, ngày <span id="pDay">24</span> tháng <span id="pMonth">08</span> năm <span id="pYear">2026</span>, tại Kho văn phòng Tổng công ty, chúng tôi gồm có:
+                    - Hôm nay, ngày <span id="pDay">25</span> tháng <span id="pMonth">08</span> năm <span id="pYear">2026</span>, tại Kho văn phòng Tổng công ty, chúng tôi gồm có:
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1;">
@@ -388,7 +388,7 @@
         <div class="info-widget-card">
             <div style="font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-clock"></i> Đồng Hồ Số</div>
             <div class="clock-display" id="liveClockDisplay">00:00:00</div>
-            <div style="font-size: 12px; font-weight: 800; color: var(--text-muted);" id="liveDateDisplay">Thứ Hai, 24/08/2026</div>
+            <div style="font-size: 12px; font-weight: 800; color: var(--text-muted);" id="liveDateDisplay">Thứ Ba, 25/08/2026</div>
         </div>
 
         <div class="info-widget-card">
@@ -500,7 +500,7 @@
     <!-- TAB 1: DASHBOARD LƯƠNG TỪNG THÁNG -->
     <div id="monthlySalaryDashboardTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-money-bill-trend-up"></i> QUỸ LƯƠNG & CHUYỂN KHOẢN HÀNG THÁNG (<span id="monthlySalaryYearTitle">2026</span>)</div>
+            <div class="table-title"><i class="fa-solid fa-money-bill-trend-up"></i> QUỶ LƯƠNG & CHUYỂN KHOẢN HÀNG THÁNG (<span id="monthlySalaryYearTitle">2026</span>)</div>
             <button class="btn btn-green" onclick="xuatBaoCaoLuongCacThangExcel()"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
         </div>
 
@@ -535,7 +535,7 @@
         </div>
 
         <div class="table-card">
-            <div class="table-title" style="font-size: 13px; margin-bottom: 8px;"><i class="fa-solid fa-list-ol"></i> CHI TIẾT BIẾN ĐỘNG QUỸ LƯƠNG QUA CÁC THÁNG</div>
+            <div class="table-title" style="font-size: 13px; margin-bottom: 8px;"><i class="fa-solid fa-list-ol"></i> CHI TIẾT BIẾN ĐỘNG QUỶ LƯƠNG QUA CÁC THÁNG</div>
             <table>
                 <thead>
                     <tr>
@@ -737,8 +737,8 @@
                         <th>Tên Vật Tư / Mực In</th>
                         <th>Máy In Tương Thích</th>
                         <th style="text-align: center;">Đầu Kỳ</th>
-                        <th style="text-align: center;">Nhập</th>
-                        <th style="text-align: center;">Xuất</th>
+                        <th style="text-align: center;">Nhập Kho</th>
+                        <th style="text-align: center;">Xuất Kho</th>
                         <th style="text-align: center;">Tồn Thực Tế</th>
                         <th style="text-align: center;">Định Mức (Min - Max)</th>
                         <th style="text-align: center;">Trạng Thái Cảnh Báo</th>
@@ -748,20 +748,21 @@
             </table>
         </div>
 
-        <!-- FORM GHI SỔ TÁCH BẠCH NHẬP / XUẤT -->
+        <!-- FORM GHI SỔ TÁCH BẠCH ĐẦU KỲ / NHẬP / XUẤT -->
         <div class="form-card" id="formCardInk" style="border: 2px dashed #0284c7; background: #f0f9ff;">
             <input type="hidden" id="editInkIndex" value="-1">
             <div class="form-group">
                 <label>Nghiệp Vụ Kho (Enter để ghi sổ)</label>
                 <select id="inputInkAction" style="border: 2px solid #0284c7; font-weight: bold;">
+                    <option value="Số dư đầu kỳ">📦 Số dư đầu kỳ (Khai báo ban đầu)</option>
                     <option value="Nhập kho" selected>📥 Nhập kho (Nhập mới vật tư)</option>
-                    <option value="Xuất kho">📤 Xuất kho (Cấp phát sử dụng)</option>
+                    <option value="Xuất kho">📤 Xuất kho (Cấp phát sử dụng - Tự trừ tồn)</option>
                 </select>
             </div>
             <div class="form-group"><label>Tên Mực In / Vật Tư</label><input type="text" id="inputInkName" placeholder="VD: Hộp mực Canon 337"></div>
             <div class="form-group"><label>Máy In Sử Dụng</label><input type="text" id="inputInkPrinter" placeholder="VD: Canon LBP 151dw"></div>
             <div class="form-group"><label>Số Lượng</label><input type="number" id="inputInkQty" value="1" min="1"></div>
-            <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputInkPrice" placeholder="450.000"></div>
+            <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputInkPrice" placeholder="0"></div>
             <div class="form-group"><label>Nhà Cung Cấp / Người Nhận</label><input type="text" id="inputInkReceiver" placeholder="Tên NCC hoặc Cán bộ nhận..."></div>
             <div class="form-group"><label>Định Mức Min / Max</label><input type="text" id="inputInkMinMax" value="2 / 10" placeholder="VD: 2 / 10"></div>
             <div class="form-group"><label>Ngày Chứng Từ</label><input type="date" id="inputInkDate"></div>
@@ -772,17 +773,18 @@
             </div>
         </div>
 
-        <!-- 2 BẢNG TÁCH BẠCH: NHẬP KHO VÀ XUẤT KHO -->
+        <!-- 2 BẢNG TÁCH BẠCH: NHẬP/ĐẦU KỲ VÀ XUẤT KHO -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
             <div style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px;">
                 <div style="font-weight: 900; font-size: 13px; color: #15803d; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-                    <i class="fa-solid fa-cart-arrow-down"></i> LỊCH SỬ NHẬP KHO (INBOUND)
+                    <i class="fa-solid fa-cart-arrow-down"></i> LỊCH SỬ ĐẦU KỲ & NHẬP KHO (INBOUND)
                 </div>
                 <table>
                     <thead>
                         <tr>
                             <th>Tên Mực / Vật Tư</th>
-                            <th style="text-align: center;">SL Nhập</th>
+                            <th style="text-align: center;">Nghiệp Vụ</th>
+                            <th style="text-align: center;">SL</th>
                             <th style="text-align: right;">Đơn Giá</th>
                             <th style="text-align: center;">Thao Tác</th>
                         </tr>
@@ -1088,12 +1090,12 @@
             { id: "VT-01", supplier: "VNPT", type: "Cáp quang Internet leased line", kyCuoc: "Tháng 08/2026", thangHachToan: "Tháng 08", truocThue: 2272727, vat: 227273, tong: 2500000 }
         ]
     };
-    let dsKhoMucIn = JSON.parse(localStorage.getItem('vinapaco_ink')) || [
-        {"code":"MUC001","name":"Hộp mực Canon 337","printer":"Canon LBP 151dw","action":"Nhập kho","qty":5,"receiver":"Công ty Hồng Hà","price":450000,"total":2250000,"minMax":"2 / 10","date":"2026-08-01"},
-        {"code":"MUC002","name":"Hộp mực Canon 337","printer":"Canon LBP 151dw","action":"Xuất kho","qty":1,"receiver":"Phòng Kế toán","price":450000,"total":450000,"minMax":"2 / 10","date":"2026-08-10"}
-    ];
+    
+    // MẶC ĐỊNH LÀ RỖNG [] - TỰ NHẬP THỰC TẾ
+    let dsKhoMucIn = JSON.parse(localStorage.getItem('vinapaco_ink')) || [];
+
     let dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('vinapaco_delivery')) || [
-        {"slipNo":"PGN-2026/08-01","from":"Trần Bình Dương","to":"Nguyễn Minh Ngọc","dept":"Kế toán","item":"Laptop Dell Latitude","status":"Mới 100%","date":"2026-08-24"}
+        {"slipNo":"PGN-2026/08-01","from":"Trần Bình Dương","to":"Nguyễn Minh Ngọc","dept":"Kế toán","item":"Laptop Dell Latitude","status":"Mới 100%","date":"2026-08-25"}
     ];
     let dsKhaoSatChuyenSau = JSON.parse(localStorage.getItem('vinapaco_survey')) || [
         {"code":"KS-01","user":"Trần Bình Dương","dept":"Văn phòng TCT","device":"Laptop doanh nghiệp","os":"Windows 11 Pro","osLicense":"✅ Có bản quyền chính hãng","office":"Microsoft 365 (Cloud)","officeLicense":"✅ Bản quyền Tổng công ty","bizSoft":"Cloudoffice (Văn thư)","bizLicense":"✅ Có bản quyền chính hãng","specs":"Core i7, RAM 16GB, SSD 512GB"}
@@ -1271,10 +1273,10 @@
     
     function convertSolar2LunarPro(dd, mm, yy) {
         let baseDate = new Date(yy, mm - 1, dd);
-        let timeDiff = baseDate.getTime() - new Date(2026, 7, 24).getTime();
+        let timeDiff = baseDate.getTime() - new Date(2026, 7, 25).getTime();
         let dayDiff = Math.round(timeDiff / (1000 * 3600 * 24));
         
-        let lunarDay = 12 + dayDiff;
+        let lunarDay = 13 + dayDiff;
         let lunarMonth = 7;
         let lunarYear = 2026;
 
@@ -1570,12 +1572,19 @@
         let ds = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey]) ? coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu : [];
         let totalTamUng = ds.reduce((sum, i) => sum + (i.tam_ung || 0), 0);
         
+        // TÍNH TỒN KHO MỰC IN TỰ ĐỘNG TỪ DỮ LIỆU THỰC TẾ
         let itemMap = {};
         dsKhoMucIn.forEach(item => {
             let key = (item.name || '').trim().toLowerCase();
-            if (!itemMap[key]) itemMap[key] = { dauKy: 2, nhap: 0, xuat: 0 };
-            if ((item.action || '').includes('Nhập')) itemMap[key].nhap += (item.qty || 0);
-            else itemMap[key].xuat += (item.qty || 0);
+            if (!itemMap[key]) itemMap[key] = { dauKy: 0, nhap: 0, xuat: 0 };
+            let act = (item.action || '').trim();
+            if (act.includes('Đầu kỳ')) {
+                itemMap[key].dauKy += (item.qty || 0);
+            } else if (act.includes('Nhập')) {
+                itemMap[key].nhap += (item.qty || 0);
+            } else if (act.includes('Xuất')) {
+                itemMap[key].xuat += (item.qty || 0);
+            }
         });
         let totalStockInk = 0;
         for(let k in itemMap) {
@@ -1830,6 +1839,7 @@
     }
     function xoaVPP(key, idx) { if (dsThanhToanVanPhongProByMonth[key]) dsThanhToanVanPhongProByMonth[key].splice(idx, 1); capNhat(); }
 
+    // RENDER BẢNG KHO MỰC IN & TỰ ĐỘNG TÍNH TỒN KHO THỰC TẾ
     function renderInkInventoryTable() {
         let tbodyIn = document.getElementById('inkInboundTableBody');
         let tbodyOut = document.getElementById('inkOutboundTableBody');
@@ -1840,21 +1850,27 @@
         tbodyOut.innerHTML = '';
 
         dsKhoMucIn.forEach((item, idx) => {
-            let isImport = (item.action || '').includes('Nhập');
+            let isOutbound = (item.action || '').includes('Xuất');
+            let isDauKy = (item.action || '').includes('Đầu kỳ');
+            let badgeAct = isDauKy ? '<span class="badge-warning">📦 Đầu kỳ</span>' : (isOutbound ? '<span class="badge-danger">📤 Xuất kho</span>' : '<span class="badge-net">📥 Nhập kho</span>');
+
             let rowHtml = `<tr>
                 <td><b>${item.name}</b><br><small style="color:#64748b;">${item.printer || ''}</small></td>
-                <td style="text-align:center; font-weight:bold; color:${isImport?'#16a34a':'#dc2626'};">${item.qty}</td>
-                ${isImport ? `<td style="text-align:right;">${(item.price||0).toLocaleString()}</td>` : `<td>${item.receiver || '--'}</td>`}
+                <td style="text-align:center;">${badgeAct}</td>
+                <td style="text-align:center; font-weight:bold; color:${isOutbound?'#dc2626':'#16a34a'};">${item.qty}</td>
+                ${!isOutbound ? `<td style="text-align:right;">${(item.price||0).toLocaleString()}</td>` : `<td>${item.receiver || '--'}</td>`}
                 <td style="text-align:center; display:flex; gap:4px; justify-content:center;">
                     <button class="btn btn-purple" style="padding:3px 6px; font-size:10px;" onclick="moModalInPhieuKho(${idx})" title="In"><i class="fa-solid fa-print"></i></button>
                     <button class="btn btn-blue" style="padding:3px 6px; font-size:10px;" onclick="suaKhoMuc(${idx})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
                     <button class="btn btn-red" style="padding:3px 6px; font-size:10px;" onclick="xoaKhoMuc(${idx})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>`;
-            if (isImport) tbodyIn.innerHTML += rowHtml;
-            else tbodyOut.innerHTML += rowHtml;
+            
+            if (isOutbound) tbodyOut.innerHTML += rowHtml;
+            else tbodyIn.innerHTML += rowHtml;
         });
 
+        // TỔNG HỢP TỒN KHO THỰC TẾ = ĐẦU KỲ + NHẬP KHO - XUẤT KHO
         let itemMap = {};
         dsKhoMucIn.forEach(item => {
             let key = (item.name || '').trim().toLowerCase();
@@ -1862,15 +1878,18 @@
                 itemMap[key] = {
                     name: item.name,
                     printer: item.printer || '',
-                    dauKy: 2,
+                    dauKy: 0,
                     nhap: 0,
                     xuat: 0,
                     minMax: item.minMax || '2 / 10'
                 };
             }
-            if ((item.action || '').includes('Nhập')) {
+            let act = (item.action || '').trim();
+            if (act.includes('Đầu kỳ')) {
+                itemMap[key].dauKy += (item.qty || 0);
+            } else if (act.includes('Nhập')) {
                 itemMap[key].nhap += (item.qty || 0);
-            } else {
+            } else if (act.includes('Xuất')) {
                 itemMap[key].xuat += (item.qty || 0);
             }
             if (item.minMax) itemMap[key].minMax = item.minMax;
@@ -1882,7 +1901,7 @@
 
         for (let key in itemMap) {
             let obj = itemMap[key];
-            let tonThucTe = obj.dauKy + obj.nhap - obj.xuat;
+            let tonThucTe = obj.dauKy + obj.nhap - obj.xuat; // TỰ ĐỘNG TRỪ KHI XUẤT KHO
             totalStockInk += tonThucTe;
 
             let parts = obj.minMax.split('/');
@@ -1899,17 +1918,17 @@
                 <td style="text-align:center;">${stt++}</td>
                 <td><b>${obj.name}</b></td>
                 <td>${obj.printer}</td>
-                <td style="text-align:center;">${obj.dauKy}</td>
+                <td style="text-align:center; font-weight:bold; color:#d97706;">${obj.dauKy}</td>
                 <td style="text-align:center; color:#16a34a; font-weight:bold;">${obj.nhap}</td>
                 <td style="text-align:center; color:#dc2626; font-weight:bold;">${obj.xuat}</td>
-                <td style="text-align:center; font-weight:900; color:#0284c7; font-size:14px;">${tonThucTe}</td>
+                <td style="text-align:center; font-weight:900; color:#0284c7; font-size:14px; background:#f0f9ff;">${tonThucTe}</td>
                 <td style="text-align:center;">${obj.minMax}</td>
                 <td style="text-align:center;">${statusBadge}</td>
             </tr>`;
         }
 
         if (Object.keys(itemMap).length === 0) {
-            xntBody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#64748b; padding:15px;">Chưa có dữ liệu vật tư / mực in.</td></tr>`;
+            xntBody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#64748b; padding:15px;">Chưa có dữ liệu vật tư / mực in. Vui lòng nhập số dư đầu kỳ hoặc phiếu nhập kho.</td></tr>`;
         }
 
         if (document.getElementById("kpiTotalInkStock")) {
@@ -1925,7 +1944,7 @@
         document.getElementById('inputInkName').value = item.name;
         document.getElementById('inputInkPrinter').value = item.printer;
         document.getElementById('inputInkQty').value = item.qty;
-        document.getElementById('inputInkReceiver').value = item.receiver;
+        document.getElementById('inputInkReceiver').value = item.receiver || '';
         document.getElementById('inputInkPrice').value = (item.price || 0).toLocaleString('vi-VN');
         document.getElementById('inputInkMinMax').value = item.minMax || '2 / 10';
         document.getElementById('btnInkText').innerText = "CẬP NHẬT KHO";
@@ -1946,7 +1965,7 @@
     function luuHoacCapNhatKhoMuc() {
         let nameEl = document.getElementById('inputInkName');
         let name = nameEl ? nameEl.value.trim() : "";
-        if(!name) { alert("Nhập tên mực in / vật tư!"); return; }
+        if(!name) { alert("Vui lòng nhập tên mực in / vật tư!"); return; }
         let editIdx = parseInt(document.getElementById('editInkIndex').value);
         let qty = parseFloat(document.getElementById('inputInkQty').value) || 1;
         let price = parseVNDMoney(document.getElementById('inputInkPrice').value);
@@ -1976,7 +1995,7 @@
     function moModalInPhieuKho(idx) {
         let item = dsKhoMucIn[idx];
         if (!item) return;
-        let isImport = (item.action || '').includes('Nhập');
+        let isImport = (item.action || '').includes('Nhập') || (item.action || '').includes('Đầu kỳ');
         document.getElementById('inputCustomSlipTitle').value = isImport ? "PHIẾU NHẬP KHO VẬT TƯ / MỰC IN" : "PHIẾU XUẤT KHO / CẤP PHÁT";
         capNhatTieuDePhieuIn();
         document.getElementById('previewSlipNoDate').innerText = `Mã phiếu: ${item.code} | Ngày ${new Date().getDate()} tháng ${new Date().getMonth()+1} năm ${new Date().getFullYear()}`;
@@ -2067,7 +2086,7 @@
         if (!s) return;
         document.getElementById('inputCustomSlipTitle').value = "BIÊN BẢN BÀN GIAO & GIAO NHẬN THIẾT BỊ";
         capNhatTieuDePhieuIn();
-        document.getElementById('previewSlipNoDate').innerText = `Số: ${s.slipNo} | Ngày ${s.date ? s.date.split('-')[2] : '24'} tháng ${s.date ? s.date.split('-')[1] : '08'} năm ${s.date ? s.date.split('-')[0] : '2026'}`;
+        document.getElementById('previewSlipNoDate').innerText = `Số: ${s.slipNo} | Ngày ${s.date ? s.date.split('-')[2] : '25'} tháng ${s.date ? s.date.split('-')[1] : '08'} năm ${s.date ? s.date.split('-')[0] : '2026'}`;
         if(s.date) {
             let p = s.date.split('-');
             document.getElementById('pYear').innerText = p[0];
@@ -2664,112 +2683,124 @@
         try {
             let geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=vi&format=json`);
             let geoData = await geoRes.json();
-            if (geoData && geoData.results && geoData.results.length > 0) {
+            if (geoData.results && geoData.results.length > 0) {
                 let loc = geoData.results[0];
-                cachedWeatherCoords = { lat: loc.latitude, lon: loc.longitude, cityName: loc.name };
-                layDuLieuThoiTietChiTiet(loc.latitude, loc.longitude, loc.name);
+                cachedWeatherCoords = { lat: loc.latitude, lon: loc.longitude, cityName: loc.name || city };
+                await capNhatThoiTiet(loc.latitude, loc.longitude, loc.name || city);
             } else {
-                alert("Không tìm thấy địa điểm phù hợp!");
+                alert("Không tìm thấy địa điểm!");
             }
         } catch(e) {
-            alert("Lỗi kết nối trạm thời tiết.");
+            console.error(e);
         }
     }
 
-    function layThoiTietTheoGPS() {
+    async function layThoiTietTheoGPS() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(async pos => {
+            navigator.geolocation.getCurrentPosition(async (pos) => {
                 let lat = pos.coords.latitude;
                 let lon = pos.coords.longitude;
-                cachedWeatherCoords = { lat: lat, lon: lon, cityName: "Vị trí của bạn" };
-                layDuLieuThoiTietChiTiet(lat, lon, "Vị trí của bạn");
-            }, () => { alert("Không thể lấy tọa độ GPS."); });
+                cachedWeatherCoords = { lat: lat, lon: lon, cityName: "Vị trí GPS" };
+                await capNhatThoiTiet(lat, lon, "Vị trí GPS");
+            }, (err) => {
+                alert("Không thể lấy vị trí GPS từ thiết bị!");
+            });
         } else {
-            alert("Trình duyệt không hỗ trợ Geolocation.");
+            alert("Trình duyệt không hỗ trợ Geolocation!");
         }
     }
 
-    async function layDuLieuThoiTietChiTiet(lat, lon, cityName) {
+    async function capNhatThoiTiet(lat, lon, cityName) {
         try {
-            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&timezone=Asia%2FBangkok`);
+            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`);
             let data = await res.json();
-            if (data && data.current) {
-                let wInfo = getWeatherInfo(data.current.weather_code);
-                let wText = `${cityName}: ${data.current.temperature_2m}°C, ${wInfo.text} (Gió: ${data.current.wind_speed_10m} km/h, Độ ẩm: ${data.current.relative_humidity_2m}%)`;
-                document.getElementById('weatherWidgetText').innerText = wText;
+            if (data && data.current_weather) {
+                let cw = data.current_weather;
+                let info = getWeatherInfo(cw.weathercode);
+                let wText = document.getElementById('weatherWidgetText');
+                if (wText) {
+                    wText.innerHTML = `<b>${cityName}</b>: ${cw.temperature}°C | <i class="fa-solid ${info.icon}" style="color:${info.color}"></i> ${info.text} (Gió: ${cw.windspeed} km/h)`;
+                }
+                let wMainIcon = document.getElementById('wMainIcon');
+                if (wMainIcon) wMainIcon.innerHTML = `<i class="fa-solid ${info.icon}"></i>`;
+                if (document.getElementById('wLocationTitle')) document.getElementById('wLocationTitle').innerText = `Khu vực: ${cityName}`;
+                if (document.getElementById('wCurrentTemp')) document.getElementById('wCurrentTemp').innerText = `${cw.temperature}°C`;
+                if (document.getElementById('wCurrentCondition')) document.getElementById('wCurrentCondition').innerText = info.text;
+                if (document.getElementById('wWind')) document.getElementById('wWind').innerText = `${cw.windspeed} km/h`;
             }
-        } catch(e) {
-            document.getElementById('weatherWidgetText').innerText = "Không thể tải dữ liệu thời tiết.";
+        } catch (e) {
+            console.error(e);
         }
     }
 
     async function moModalDuBaoThoiTiet10Ngay() {
         document.getElementById('modalWeather10DaysPreview').classList.remove('hidden');
         let container = document.getElementById('weather10DaysContainer');
-        container.innerHTML = `<div style="text-align: center; padding: 20px; color: #64748b; font-weight: bold; font-size: 14px; grid-column: span 5;">Đang tải dữ liệu khí tượng 10 ngày...</div>`;
+        if (!container) return;
+        container.innerHTML = '<div style="text-align:center; padding:20px; color:#64748b;">Đang tải dữ liệu khí tượng...</div>';
+
         try {
-            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${cachedWeatherCoords.lat}&longitude=${cachedWeatherCoords.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_probability_max&timezone=Asia%2FBangkok`);
+            let lat = cachedWeatherCoords.lat;
+            let lon = cachedWeatherCoords.lon;
+            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`);
             let data = await res.json();
             if (data && data.daily) {
-                let cur = data.current;
-                let daily = data.daily;
-                let wInfo = getWeatherInfo(cur.weather_code);
-                
-                document.getElementById('wLocationTitle').innerText = `Khu vực: ${cachedWeatherCoords.cityName}`;
-                document.getElementById('wCurrentTemp').innerText = `${cur.temperature_2m}°C`;
-                document.getElementById('wCurrentCondition').innerText = wInfo.text;
-                document.getElementById('wMainIcon').innerHTML = `<i class="fa-solid ${wInfo.icon}" style="color: ${wInfo.color};"></i>`;
-                document.getElementById('wHumidity').innerText = `${cur.relative_humidity_2m}%`;
-                document.getElementById('wWind').innerText = `${cur.wind_speed_10m} km/h`;
-                document.getElementById('wUVIndex').innerText = daily.uv_index_max ? daily.uv_index_max[0] : '5.2';
-                document.getElementById('wRainProb').innerText = daily.precipitation_probability_max ? daily.precipitation_probability_max[0] : '10%';
-                document.getElementById('wSunrise').innerText = daily.sunrise && daily.sunrise[0] ? daily.sunrise[0].split('T')[1] : '05:30';
-                document.getElementById('wSunset').innerText = daily.sunset && daily.sunset[0] ? daily.sunset[0].split('T')[1] : '18:15';
-
                 container.innerHTML = '';
+                let daily = data.daily;
                 for (let i = 0; i < daily.time.length; i++) {
-                    let dStr = formatVNDate(daily.time[i]);
-                    let dInfo = getWeatherInfo(daily.weather_code[i]);
+                    let dateStr = daily.time[i];
+                    let parts = dateStr.split('-');
+                    let formattedDate = `${parts[2]}/${parts[1]}`;
+                    let maxT = daily.temperature_2m_max[i];
+                    let minT = daily.temperature_2m_min[i];
+                    let prob = daily.precipitation_probability_max ? daily.precipitation_probability_max[i] : 0;
+                    let info = getWeatherInfo(daily.weathercode[i]);
+
                     container.innerHTML += `
                         <div class="weather-day-card">
-                            <div style="font-weight: 900; color: #0369a1; font-size: 12px;">${dStr}</div>
-                            <div style="font-size: 28px; color: ${dInfo.color}; margin: 4px 0;"><i class="fa-solid ${dInfo.icon}"></i></div>
-                            <div style="font-size: 11px; font-weight: 800; color: #0f172a; height: 32px; display:flex; align-items:center; justify-content:center;">${dInfo.text}</div>
-                            <div style="font-weight: 900; font-size: 13px; color: #16a34a;">${daily.temperature_2m_max[i]}°C <span style="color:#94a3b8; font-weight:normal;">/</span> <span style="color:#0284c7;">${daily.temperature_2m_min[i]}°C</span></div>
+                            <div style="font-weight:900; font-size:13px; color:#0f172a;">${formattedDate}</div>
+                            <div style="font-size:28px; color:${info.color};"><i class="fa-solid ${info.icon}"></i></div>
+                            <div style="font-size:12px; font-weight:800; color:#334155;">${info.text}</div>
+                            <div style="font-size:13px; font-weight:900; color:#dc2626;">${maxT}°C / <span style="color:#0284c7;">${minT}°C</span></div>
+                            <div style="font-size:11px; font-weight:700; color:#2563eb;">🌧️ ${prob}%</div>
                         </div>
                     `;
                 }
             }
-        } catch(e) {
-            container.innerHTML = `<div style="text-align: center; padding: 20px; color: #dc2626; font-weight: bold; font-size: 14px; grid-column: span 5;">Không thể tải dữ liệu khí tượng. Vui lòng thử lại sau.</div>`;
+        } catch (e) {
+            container.innerHTML = '<div style="text-align:center; padding:20px; color:#dc2626;">Lỗi tải dữ liệu thời tiết 10 ngày!</div>';
         }
     }
 
-    window.onload = function() {
-        khoiTaoDanhSachNamTuSinh();
-        doiThangHoSoLuong();
-        
-        setInterval(() => {
+    function initLiveClockAndLunar() {
+        function updateClock() {
             let now = new Date();
-            let hours = String(now.getHours()).padStart(2, '0');
+            let hrs = String(now.getHours()).padStart(2, '0');
             let mins = String(now.getMinutes()).padStart(2, '0');
             let secs = String(now.getSeconds()).padStart(2, '0');
             let clockEl = document.getElementById('liveClockDisplay');
-            if (clockEl) clockEl.innerText = `${hours}:${mins}:${secs}`;
-            
-            let days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
-            let dayName = days[now.getDay()];
-            let dStr = `${dayName}, ${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
+            if (clockEl) clockEl.innerText = `${hrs}:${mins}:${secs}`;
+
+            let days = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
             let dateEl = document.getElementById('liveDateDisplay');
-            if (dateEl) dateEl.innerText = dStr;
+            if (dateEl) dateEl.innerText = `${days[now.getDay()]}, ${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
 
-            let lunar = convertSolar2LunarPro(now.getDate(), now.getMonth() + 1, now.getFullYear());
-            let lunarEl = document.getElementById('lunarWidgetText');
-            if (lunarEl) lunarEl.innerHTML = `Ngày ${lunar.day} tháng ${lunar.month} năm ${lunar.year} (${lunar.canChiNgay})`;
-        }, 1000);
+            let lunarWidget = document.getElementById('lunarWidgetText');
+            if (lunarWidget) {
+                let lunar = convertSolar2LunarPro(now.getDate(), now.getMonth() + 1, now.getFullYear());
+                lunarWidget.innerHTML = `Ngày <b>${lunar.day}/${lunar.month}</b> (${lunar.canChiNam})<br><small style="color:#0369a1; font-weight:700;">${lunar.canChiNgay} - ${lunar.hoangDaoName}</small>`;
+            }
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+    }
 
-        traCuuThoiTietTheoThanhPho();
-    };
+    window.addEventListener('DOMContentLoaded', () => {
+        khoiTaoDanhSachNamTuSinh();
+        doiThangHoSoLuong();
+        initLiveClockAndLunar();
+        capNhatThoiTiet(cachedWeatherCoords.lat, cachedWeatherCoords.lon, cachedWeatherCoords.cityName);
+    });
 </script>
 </body>
 </html>

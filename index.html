@@ -1570,7 +1570,6 @@
         let ds = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey]) ? coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu : [];
         let totalTamUng = ds.reduce((sum, i) => sum + (i.tam_ung || 0), 0);
         
-        // Calculate total remaining ink stock from inventory items
         let itemMap = {};
         dsKhoMucIn.forEach(item => {
             let key = (item.name || '').trim().toLowerCase();
@@ -1856,7 +1855,6 @@
             else tbodyOut.innerHTML += rowHtml;
         });
 
-        // Compute XNT summary grouped by item name
         let itemMap = {};
         dsKhoMucIn.forEach(item => {
             let key = (item.name || '').trim().toLowerCase();
@@ -2583,9 +2581,12 @@
         let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         let nv = ds[modalCurrentNvIndex] || ds[0];
         let phone = (nv.sdt || '').replace(/[^0-9]/g, '');
-        let textCopy = `📋 PHIẾU LƯƠNG ${currentThangKey}/${currentNamKey} - ${nv.hoTen}\n🏦 STK: ${nv.stk || '--'} (${nv.nganHang || '--'})\n💰 THỰC LĨNH: ${(nv.thucLinhCuoiCung||0).toLocaleString('vi-VN')} VNĐ`;
+        let textCopy = `📋 PHIẾU LƯƠNG ${currentThangKey}/${currentNamKey} - ${nv.hoTen}
+🏦 STK: ${nv.stk || '--'} (${nv.nganHang || '--'})
+💰 THỰC LĨNH: ${(nv.thucLinhCuoiCung||0).toLocaleString('vi-VN')} VNĐ`;
         if (navigator.clipboard) navigator.clipboard.writeText(textCopy);
-        alert(`✅ Đã copy phiếu lương!\n🚀 Đang mở Zalo...`);
+        alert(`✅ Đã copy phiếu lương!
+🚀 Đang mở Zalo...`);
         if (phone) window.location.href = `zalo://chat?phone=${phone}`;
         else window.open("https://chat.zalo.me/", '_blank');
     }
@@ -2649,4 +2650,126 @@
             case 0: return { text: "Trời quang, nắng đẹp", icon: "fa-sun", color: "#f59e0b" };
             case 1: case 2: case 3: return { text: "Nhiều mây, dịu mát", icon: "fa-cloud-sun", color: "#38bdf8" };
             case 45: case 48: return { text: "Sương mù nhẹ", icon: "fa-smog", color: "#94a3b8" };
-            case 51: case 53: case 55: case 56: case 57: return { text: "Mưa phùn rả rích", iconTôi là một mô hình ngôn ngữ nên điều đó nằm ngoài mục đích mà tôi được tạo ra.
+            case 51: case 53: case 55: case 56: case 57: return { text: "Mưa phùn rả rích", icon: "fa-cloud-rain", color: "#60a5fa" };
+            case 61: case 63: case 65: case 66: case 67: return { text: "Có mưa rào", icon: "fa-cloud-showers-heavy", color: "#2563eb" };
+            case 71: case 73: case 75: case 77: return { text: "Tuyết rơi", icon: "fa-snowflake", color: "#93c5fd" };
+            case 80: case 81: case 82: return { text: "Mưa dông nặng hạt", icon: "fa-cloud-bolt", color: "#1d4ed8" };
+            case 95: case 96: case 99: return { text: "Dông sét mạnh", icon: "fa-poo-storm", color: "#dc2626" };
+            default: return { text: "Thời tiết ổn định", icon: "fa-cloud", color: "#64748b" };
+        }
+    }
+
+    async function traCuuThoiTietTheoThanhPho() {
+        let city = document.getElementById('inputSearchCity').value.trim() || "Phú Thọ";
+        try {
+            let geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=vi&format=json`);
+            let geoData = await geoRes.json();
+            if (geoData && geoData.results && geoData.results.length > 0) {
+                let loc = geoData.results[0];
+                cachedWeatherCoords = { lat: loc.latitude, lon: loc.longitude, cityName: loc.name };
+                layDuLieuThoiTietChiTiet(loc.latitude, loc.longitude, loc.name);
+            } else {
+                alert("Không tìm thấy địa điểm phù hợp!");
+            }
+        } catch(e) {
+            alert("Lỗi kết nối trạm thời tiết.");
+        }
+    }
+
+    function layThoiTietTheoGPS() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async pos => {
+                let lat = pos.coords.latitude;
+                let lon = pos.coords.longitude;
+                cachedWeatherCoords = { lat: lat, lon: lon, cityName: "Vị trí của bạn" };
+                layDuLieuThoiTietChiTiet(lat, lon, "Vị trí của bạn");
+            }, () => { alert("Không thể lấy tọa độ GPS."); });
+        } else {
+            alert("Trình duyệt không hỗ trợ Geolocation.");
+        }
+    }
+
+    async function layDuLieuThoiTietChiTiet(lat, lon, cityName) {
+        try {
+            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&timezone=Asia%2FBangkok`);
+            let data = await res.json();
+            if (data && data.current) {
+                let wInfo = getWeatherInfo(data.current.weather_code);
+                let wText = `${cityName}: ${data.current.temperature_2m}°C, ${wInfo.text} (Gió: ${data.current.wind_speed_10m} km/h, Độ ẩm: ${data.current.relative_humidity_2m}%)`;
+                document.getElementById('weatherWidgetText').innerText = wText;
+            }
+        } catch(e) {
+            document.getElementById('weatherWidgetText').innerText = "Không thể tải dữ liệu thời tiết.";
+        }
+    }
+
+    async function moModalDuBaoThoiTiet10Ngay() {
+        document.getElementById('modalWeather10DaysPreview').classList.remove('hidden');
+        let container = document.getElementById('weather10DaysContainer');
+        container.innerHTML = `<div style="text-align: center; padding: 20px; color: #64748b; font-weight: bold; font-size: 14px; grid-column: span 5;">Đang tải dữ liệu khí tượng 10 ngày...</div>`;
+        try {
+            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${cachedWeatherCoords.lat}&longitude=${cachedWeatherCoords.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_probability_max&timezone=Asia%2FBangkok`);
+            let data = await res.json();
+            if (data && data.daily) {
+                let cur = data.current;
+                let daily = data.daily;
+                let wInfo = getWeatherInfo(cur.weather_code);
+                
+                document.getElementById('wLocationTitle').innerText = `Khu vực: ${cachedWeatherCoords.cityName}`;
+                document.getElementById('wCurrentTemp').innerText = `${cur.temperature_2m}°C`;
+                document.getElementById('wCurrentCondition').innerText = wInfo.text;
+                document.getElementById('wMainIcon').innerHTML = `<i class="fa-solid ${wInfo.icon}" style="color: ${wInfo.color};"></i>`;
+                document.getElementById('wHumidity').innerText = `${cur.relative_humidity_2m}%`;
+                document.getElementById('wWind').innerText = `${cur.wind_speed_10m} km/h`;
+                document.getElementById('wUVIndex').innerText = daily.uv_index_max ? daily.uv_index_max[0] : '5.2';
+                document.getElementById('wRainProb').innerText = daily.precipitation_probability_max ? daily.precipitation_probability_max[0] : '10%';
+                document.getElementById('wSunrise').innerText = daily.sunrise && daily.sunrise[0] ? daily.sunrise[0].split('T')[1] : '05:30';
+                document.getElementById('wSunset').innerText = daily.sunset && daily.sunset[0] ? daily.sunset[0].split('T')[1] : '18:15';
+
+                container.innerHTML = '';
+                for (let i = 0; i < daily.time.length; i++) {
+                    let dStr = formatVNDate(daily.time[i]);
+                    let dInfo = getWeatherInfo(daily.weather_code[i]);
+                    container.innerHTML += `
+                        <div class="weather-day-card">
+                            <div style="font-weight: 900; color: #0369a1; font-size: 12px;">${dStr}</div>
+                            <div style="font-size: 28px; color: ${dInfo.color}; margin: 4px 0;"><i class="fa-solid ${dInfo.icon}"></i></div>
+                            <div style="font-size: 11px; font-weight: 800; color: #0f172a; height: 32px; display:flex; align-items:center; justify-content:center;">${dInfo.text}</div>
+                            <div style="font-weight: 900; font-size: 13px; color: #16a34a;">${daily.temperature_2m_max[i]}°C <span style="color:#94a3b8; font-weight:normal;">/</span> <span style="color:#0284c7;">${daily.temperature_2m_min[i]}°C</span></div>
+                        </div>
+                    `;
+                }
+            }
+        } catch(e) {
+            container.innerHTML = `<div style="text-align: center; padding: 20px; color: #dc2626; font-weight: bold; font-size: 14px; grid-column: span 5;">Không thể tải dữ liệu khí tượng. Vui lòng thử lại sau.</div>`;
+        }
+    }
+
+    window.onload = function() {
+        khoiTaoDanhSachNamTuSinh();
+        doiThangHoSoLuong();
+        
+        setInterval(() => {
+            let now = new Date();
+            let hours = String(now.getHours()).padStart(2, '0');
+            let mins = String(now.getMinutes()).padStart(2, '0');
+            let secs = String(now.getSeconds()).padStart(2, '0');
+            let clockEl = document.getElementById('liveClockDisplay');
+            if (clockEl) clockEl.innerText = `${hours}:${mins}:${secs}`;
+            
+            let days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+            let dayName = days[now.getDay()];
+            let dStr = `${dayName}, ${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
+            let dateEl = document.getElementById('liveDateDisplay');
+            if (dateEl) dateEl.innerText = dStr;
+
+            let lunar = convertSolar2LunarPro(now.getDate(), now.getMonth() + 1, now.getFullYear());
+            let lunarEl = document.getElementById('lunarWidgetText');
+            if (lunarEl) lunarEl.innerHTML = `Ngày ${lunar.day} tháng ${lunar.month} năm ${lunar.year} (${lunar.canChiNgay})`;
+        }, 1000);
+
+        traCuuThoiTietTheoThanhPho();
+    };
+</script>
+</body>
+</html>

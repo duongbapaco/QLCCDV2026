@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hệ Thống Quản Lý VINAPACO - Pro Full Version 2026</title>
+    <title>Hệ Thống Quản Lý VINAPACO - Full Pro Edition 2026</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -16,7 +16,7 @@
             --green-badge: #dcfce7; --green-text: #15803d;
             --yellow-badge: #fef9c3; --yellow-text: #854d0e;
             --red-badge: #fee2e2; --red-text: #991b1b;
-            font-size: 16px;
+            font-size: 14px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -28,10 +28,10 @@
         .banner h1 { font-size: 18px; font-weight: 800; text-transform: uppercase; }
         .banner p { font-size: 13px; opacity: 0.95; margin-top: 4px; font-weight: 500; }
 
-        .btn-group-header { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-        .btn { padding: 10px 18px; border-radius: 10px; font-weight: 800; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: none; transition: all 0.2s; white-space: nowrap; box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
+        .btn-group-header { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .btn { padding: 8px 14px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: none; transition: all 0.2s; white-space: nowrap; box-shadow: 0 2px 4px rgba(0,0,0,0.08); text-decoration: none; }
         .btn:hover { opacity: 0.92; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.12); }
-        .btn-lg { padding: 12px 22px !important; font-size: 14px !important; font-weight: 900 !important; border-radius: 10px !important; }
+        .btn-lg { padding: 10px 18px !important; font-size: 13px !important; font-weight: 900 !important; border-radius: 9px !important; }
         
         .btn-green { background-color: #16a34a; color: white; }
         .btn-blue { background-color: #0284c7; color: white; }
@@ -39,48 +39,46 @@
         .btn-yellow { background-color: #d97706; color: white; }
         .btn-purple { background-color: #8b5cf6; color: white; }
         .btn-zalo { background-color: #0068ff; color: white; }
-        .btn-gray { background-color: #64748b; color: white; }
 
         .config-bar { background: white; padding: 14px 18px; border-radius: 12px; border: 1px solid var(--border-color); display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         .config-item { display: flex; flex-direction: column; gap: 6px; }
-        .config-item label { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
-        .config-item input, .config-item select { padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border-color); font-weight: 800; font-size: 13px; color: #0f172a; outline: none; background: #fff; width: 100%; }
+        .config-item label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
+        .config-item input, .config-item select { height: 38px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--border-color); font-weight: 800; font-size: 13px; color: #0f172a; outline: none; background: #fff; width: 100%; }
         .config-item.drive-path-box { grid-column: span 2; }
 
-        .form-card { background: #f8fafc; border: 2px dashed var(--primary); padding: 16px; border-radius: 12px; margin-bottom: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; align-items: flex-end; scroll-margin-top: 20px; }
+        .form-card { background: #f8fafc; border: 2px dashed var(--primary); padding: 16px; border-radius: 12px; margin-bottom: 14px; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; align-items: end; }
         .form-group { display: flex; flex-direction: column; gap: 5px; }
-        .form-group label { font-size: 12px; font-weight: 800; color: var(--text-muted); }
-        .form-group input, .form-group select, .form-group textarea { padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 13px; font-weight: 700; outline: none; background: white; width: 100%; }
+        .form-group label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
+        .form-group input, .form-group select, .form-group textarea { height: 38px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 13px; font-weight: 700; outline: none; background: white; width: 100%; }
 
         .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
         .kpi-card { background: var(--card-bg); padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .kpi-title { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
-        .kpi-value { font-size: 20px; font-weight: 900; color: var(--text-main); margin: 6px 0 2px 0; word-break: break-word; }
-        .kpi-sub { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+        .kpi-title { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
+        .kpi-value { font-size: 18px; font-weight: 900; color: var(--text-main); margin: 6px 0 2px 0; word-break: break-word; }
+        .kpi-sub { font-size: 11px; color: var(--text-muted); font-weight: 600; }
 
         .charts-multi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; margin-top: 8px; }
         .chart-card { background: white; padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .chart-title { font-size: 13px; font-weight: 800; color: var(--text-main); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
+        .chart-title { font-size: 12px; font-weight: 800; color: var(--text-main); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
 
-        .tab-nav { display: flex; gap: 8px; border-bottom: 3px solid var(--border-color); padding-bottom: 8px; margin-top: 6px; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
-        .tab-btn-nav { padding: 10px 18px; border-radius: 10px 10px 0 0; background: #e2e8f0; border: none; font-weight: 800; font-size: 13px; cursor: pointer; color: var(--text-muted); flex-shrink: 0; transition: all 0.2s; }
-        .tab-btn-nav:hover { background: #cbd5e1; color: var(--text-main); }
+        .tab-nav { display: flex; gap: 6px; border-bottom: 3px solid var(--border-color); padding-bottom: 8px; margin-top: 6px; overflow-x: auto; white-space: nowrap; }
+        .tab-btn-nav { padding: 9px 16px; border-radius: 8px 8px 0 0; background: #e2e8f0; border: none; font-weight: 800; font-size: 12px; cursor: pointer; color: var(--text-muted); flex-shrink: 0; transition: all 0.2s; }
         .tab-btn-nav.active { background: var(--primary); color: white; box-shadow: 0 -2px 6px rgba(2,132,199,0.2); }
 
         .tab-pane { display: none; }
         .tab-pane.active { display: block; }
 
-        .table-card { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border-color); padding: 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .table-card { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border-color); padding: 16px; overflow-x: auto; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         .table-header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
-        .table-title { font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        .table-title { font-size: 14px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
 
-        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; min-width: 600px; }
-        th, td { padding: 9px 12px; border: 1px solid var(--border-color); vertical-align: middle; }
-        th { background-color: #f1f5f9; color: var(--text-muted); font-weight: 900; font-size: 12px; text-transform: uppercase; text-align: center; }
-        
-        input.cell-input { width: 100%; padding: 6px 9px; border: 1px solid transparent; border-radius: 6px; font-size: 13px; font-weight: 700; outline: none; background: transparent; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; min-width: 650px; }
+        th, td { padding: 8px 10px; border: 1px solid var(--border-color); vertical-align: middle; }
+        th { background-color: #f1f5f9; color: var(--text-muted); font-weight: 900; font-size: 11px; text-transform: uppercase; text-align: center; }
+
+        input.cell-input { width: 100%; padding: 4px 6px; border: 1px solid transparent; border-radius: 4px; font-size: 12px; font-weight: 700; outline: none; background: transparent; }
         input.cell-input:hover { border-color: #cbd5e1; background: #f8fafc; }
-        input.cell-input:focus { border-color: #0284c7; background: #ffffff; box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2); }
+        input.cell-input:focus { border-color: #0284c7; background: #ffffff; box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2); }
         input.num-center { text-align: center; }
         input.money-input { text-align: right; color: #dc2626; font-weight: 800; }
 
@@ -88,124 +86,86 @@
         .badge-danger { background: var(--red-badge); color: var(--red-text); padding: 3px 8px; border-radius: 6px; font-weight: 900; font-size: 11px; display: inline-block; }
         .badge-warning { background: #fef9c3; color: #854d0e; padding: 3px 8px; border-radius: 6px; font-weight: 900; font-size: 11px; display: inline-block; }
 
+        .top-info-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-bottom: 12px; }
+        .info-widget-card { background: white; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .clock-display { font-size: 22px; font-weight: 900; color: #0284c7; font-family: monospace; }
+        .lunar-display { font-size: 12px; font-weight: 700; color: #16a34a; line-height: 1.4; }
+
+        .upload-status-bar { background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 12px 16px; border-radius: 12px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2); margin-bottom: 12px; }
+        .upload-status-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 800; }
+        .upload-progress-track { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.25); border-radius: 4px; overflow: hidden; }
+        .upload-progress-fill { height: 100%; background: #22c55e; width: 0%; transition: width 0.3s ease; }
+
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.75); display: flex; justify-content: center; align-items: center; z-index: 10000; backdrop-filter: blur(6px); padding: 12px; }
         .modal-card { background: white; width: 100%; max-width: 980px; border-radius: 14px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); max-height: 94vh; display: flex; flex-direction: column; }
         .modal-actions { padding: 14px 18px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
 
-        .top-info-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-bottom: 12px; }
-        .info-widget-card { background: white; padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .clock-display { font-size: 24px; font-weight: 900; color: #0284c7; font-family: monospace; }
-        .lunar-display { font-size: 12px; font-weight: 700; color: #16a34a; line-height: 1.4; }
-
-        .upload-status-bar { background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 12px 16px; border-radius: 12px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2); margin-bottom: 12px; }
-        .upload-status-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 800; }
-        .upload-progress-track { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.25); border-radius: 4px; overflow: hidden; }
-        .upload-progress-fill { height: 100%; background: #22c55e; width: 0%; transition: width 0.3s ease; border-radius: 4px; }
-
-        .weather-10day-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 10px; }
-        .weather-day-card { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; text-align: center; display: flex; flex-direction: column; gap: 6px; transition: transform 0.2s; }
-        .weather-day-card:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .weather-10day-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 10px; }
+        .weather-day-card { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px; text-align: center; display: flex; flex-direction: column; gap: 4px; }
 
         .lich-grid-header { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; font-weight: 900; font-size: 12px; text-align: center; padding: 8px 0; background: #e2e8f0; border-radius: 8px; color: #334155; }
-        .lich-grid-header div:first-child { color: #dc2626; }
-        .lich-grid-header div:last-child { color: #0284c7; }
-        
-        .lich-day-tile { padding: 8px 6px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 11px; display: flex; flex-direction: column; gap: 3px; cursor: pointer; transition: all 0.2s; background: white; position: relative; min-height: 62px; }
-        .lich-day-tile:hover { transform: scale(1.04); box-shadow: 0 4px 12px rgba(0,0,0,0.12); z-index: 2; border-color: #0284c7; }
+        .lich-day-tile { padding: 8px 6px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 11px; display: flex; flex-direction: column; gap: 3px; cursor: pointer; transition: all 0.2s; background: white; min-height: 58px; }
         .lich-day-tile.selected { border: 2.5px solid #0284c7 !important; background: #f0f9ff !important; }
         .lich-day-tile.today { border: 2.5px solid #16a34a !important; background: #f0fdf4 !important; }
 
-        .fengshui-item { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0; border-bottom: 1px dashed #e2e8f0; font-size: 12px; }
-        .fengshui-label { font-weight: 800; min-width: 130px; color: #475569; display: flex; align-items: center; gap: 6px; }
-        .fengshui-val { font-weight: 700; color: #0f172a; flex: 1; line-height: 1.4; }
+        .fengshui-item { display: flex; align-items: flex-start; gap: 8px; padding: 5px 0; border-bottom: 1px dashed #e2e8f0; font-size: 11px; }
+        .fengshui-label { font-weight: 800; min-width: 110px; color: #475569; display: flex; align-items: center; gap: 4px; }
+        .fengshui-val { font-weight: 700; color: #0f172a; flex: 1; line-height: 1.3; }
 
-        .salary-signature-footer { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; margin-top: 24px; padding: 14px 0 8px 0; font-size: 13px; font-weight: 800; color: #0f172a; text-transform: uppercase; }
-        .salary-signature-footer .sign-col { display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
-        .salary-signature-footer .sign-space { height: 60px; }
-        .salary-signature-footer .sign-name { text-transform: none; font-weight: 800; font-size: 13px; color: #0f172a; }
-
-        .handover-slip-container { background: #ffffff; width: 100%; max-width: 720px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); overflow: hidden; border: 1px solid #cbd5e1; margin: 0 auto; font-size: 13px; color: #0f172a; padding: 22px; }
-        .handover-header { text-align: center; border-bottom: 2px solid #0f172a; padding-bottom: 12px; margin-bottom: 16px; }
-        .handover-title { font-size: 18px; font-weight: 900; text-transform: uppercase; margin-top: 6px; color: #0369a1; }
-        .handover-table { width: 100%; border-collapse: collapse; margin: 12px 0; }
-        .handover-table th, .handover-table td { padding: 8px 10px; border: 1px solid #94a3b8; }
+        .handover-slip-container { background: #ffffff; width: 100%; max-width: 720px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); overflow: hidden; border: 1px solid #cbd5e1; margin: 0 auto; font-size: 12px; color: #0f172a; padding: 20px; }
+        .handover-header { text-align: center; border-bottom: 2px solid #0f172a; padding-bottom: 10px; margin-bottom: 14px; }
+        .handover-title { font-size: 17px; font-weight: 900; text-transform: uppercase; margin-top: 4px; color: #0369a1; }
+        .handover-table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+        .handover-table th, .handover-table td { padding: 7px 9px; border: 1px solid #94a3b8; }
         .handover-table th { background: #f1f5f9; font-weight: 800; color: #334155; text-align: center; }
-        .handover-signatures { display: grid; grid-template-columns: repeat(2, 1fr); text-align: center; margin-top: 24px; font-weight: 800; }
-        .handover-sign-space { height: 65px; }
+        .handover-signatures { display: grid; grid-template-columns: repeat(2, 1fr); text-align: center; margin-top: 20px; font-weight: 800; }
+        .handover-sign-space { height: 55px; }
 
-        @media (max-width: 768px) {
-            body { padding: 8px; }
-            .banner { padding: 12px 14px; flex-direction: column; align-items: flex-start; }
-            .banner h1 { font-size: 15px; }
-            .banner p { font-size: 11px; }
-            .btn-group-header { width: 100%; justify-content: flex-start; gap: 6px; }
-            .btn { padding: 8px 12px; font-size: 12px; }
-            .config-bar { grid-template-columns: 1fr; }
-            .config-item.drive-path-box { grid-column: span 1; }
-            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-            .charts-multi-grid { grid-template-columns: 1fr; }
-            .top-info-bar { grid-template-columns: 1fr; }
-            .form-card { grid-template-columns: 1fr; }
-            .modal-card { max-height: 98vh; width: 100%; border-radius: 10px; }
-            table { font-size: 12px; }
-            th, td { padding: 6px 7px; }
-        }
+        .salary-signature-footer { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; margin-top: 20px; padding: 12px 0 6px 0; font-size: 12px; font-weight: 800; color: #0f172a; text-transform: uppercase; }
+        .salary-signature-footer .sign-col { display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
+        .salary-signature-footer .sign-space { height: 50px; }
+        .salary-signature-footer .sign-name { text-transform: none; font-weight: 800; font-size: 12px; color: #0f172a; }
     </style>
 </head>
 <body>
 
-<!-- MODAL DỰ BÁO THỜI TIẾT 10 NGÀY CHI TIẾT -->
+<!-- MODAL DỰ BÁO THỜI TIẾT 10 NGÀY -->
 <div class="modal-overlay hidden" id="modalWeather10DaysPreview">
     <div class="modal-card" style="max-width: 980px;">
         <div style="padding: 14px 18px; background: linear-gradient(135deg, #0284c7, #0369a1); color: white; display: flex; justify-content: space-between; align-items: center;">
-            <b style="text-transform: uppercase; font-size: 15px; letter-spacing: 0.5px;"><i class="fa-solid fa-cloud-sun-rain"></i> Dự Báo Thời Tiết & Khí Tượng Chi Tiết (10 Ngày)</b>
-            <button class="btn btn-red" style="padding: 5px 10px;" onclick="document.getElementById('modalWeather10DaysPreview').classList.add('hidden')"><i class="fa-solid fa-xmark"></i> Đóng</button>
+            <b style="text-transform: uppercase; font-size: 14px;"><i class="fa-solid fa-cloud-sun-rain"></i> Dự Báo Thời Tiết & Khí Tượng Chi Tiết (10 Ngày)</b>
+            <button class="btn btn-red" style="padding: 4px 8px;" onclick="document.getElementById('modalWeather10DaysPreview').classList.add('hidden')"><i class="fa-solid fa-xmark"></i> Đóng</button>
         </div>
-        
         <div style="padding: 18px; background: #f8fafc; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; max-height: 82vh;">
-            <div id="weatherCurrentOverviewBox" style="background: white; border: 2px solid var(--border-color); border-radius: 14px; padding: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; box-shadow: 0 4px 8px rgba(0,0,0,0.04);">
+            <div id="weatherCurrentOverviewBox" style="background: white; border: 2px solid var(--border-color); border-radius: 14px; padding: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
                 <div style="display: flex; gap: 14px; align-items: center;">
-                    <div id="wMainIcon" style="font-size: 48px; color: #f59e0b;"><i class="fa-solid fa-sun"></i></div>
+                    <div id="wMainIcon" style="font-size: 44px; color: #f59e0b;"><i class="fa-solid fa-sun"></i></div>
                     <div>
-                        <div style="font-size: 12px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;" id="wLocationTitle">Khu vực: Phú Thọ</div>
-                        <div style="font-size: 30px; font-weight: 900; color: #0f172a;" id="wCurrentTemp">--°C</div>
-                        <div style="font-size: 14px; font-weight: 800; color: #0284c7;" id="wCurrentCondition">Đang cập nhật...</div>
+                        <div style="font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;" id="wLocationTitle">Khu vực: Phú Thọ</div>
+                        <div style="font-size: 28px; font-weight: 900; color: #0f172a;" id="wCurrentTemp">--°C</div>
+                        <div style="font-size: 13px; font-weight: 800; color: #0284c7;" id="wCurrentCondition">Đang cập nhật...</div>
                     </div>
                 </div>
-                <div style="display: flex; flex-direction: column; justify-content: center; gap: 6px; font-size: 14px; font-weight: 800; color: #334155;">
-                    <div>💧 Độ ẩm không khí: <span id="wHumidity" style="color: #0284c7; font-size: 15px; font-weight: 900;">--%</span></div>
-                    <div>💨 Tốc độ gió: <span id="wWind" style="color: #16a34a; font-size: 15px; font-weight: 900;">-- km/h</span></div>
-                </div>
-                <div style="display: flex; flex-direction: column; justify-content: center; gap: 6px; font-size: 14px; font-weight: 800; color: #334155;">
-                    <div>☀️ Chỉ số UV tối đa: <span id="wUVIndex" style="color: #d97706; font-size: 15px; font-weight: 900;">--</span></div>
-                    <div>🌧️ Khả năng có mưa: <span id="wRainProb" style="color: #2563eb; font-size: 15px; font-weight: 900;">--%</span></div>
-                </div>
-                <div style="display: flex; flex-direction: column; justify-content: center; gap: 6px; font-size: 14px; font-weight: 800; color: #334155;">
-                    <div>🌅 Bình minh: <span id="wSunrise" style="color: #d97706; font-weight: 900;">--:--</span></div>
-                    <div>🌇 Hoàng hôn: <span id="wSunset" style="color: #d97706; font-weight: 900;">--:--</span></div>
+                <div style="display: flex; flex-direction: column; justify-content: center; gap: 6px; font-size: 13px; font-weight: 800; color: #334155;">
+                    <div>💧 Độ ẩm: <span id="wHumidity" style="color: #0284c7; font-weight: 900;">--%</span></div>
+                    <div>💨 Tốc độ gió: <span id="wWind" style="color: #16a34a; font-weight: 900;">-- km/h</span></div>
                 </div>
             </div>
-
-            <div style="background: white; border: 2px solid var(--border-color); border-radius: 14px; padding: 18px; box-shadow: 0 4px 8px rgba(0,0,0,0.04);">
-                <div style="font-weight: 900; font-size: 15px; color: #0369a1; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-calendar-week"></i> Bảng Dự Báo Chi Tiết 10 Ngày Tới
-                </div>
-                <div id="weather10DaysContainer" class="weather-10day-grid">
-                    <div style="text-align: center; padding: 20px; color: #64748b; font-weight: bold; font-size: 14px;">Đang tải dữ liệu khí tượng...</div>
-                </div>
+            <div style="background: white; border: 2px solid var(--border-color); border-radius: 14px; padding: 18px;">
+                <div style="font-weight: 900; font-size: 14px; color: #0369a1; text-transform: uppercase; margin-bottom: 12px;"><i class="fa-solid fa-calendar-week"></i> Dự Báo Chi Tiết 10 Ngày Tới</div>
+                <div id="weather10DaysContainer" class="weather-10day-grid"></div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- MODAL NHẮC NGHỈ NGƠI (VINAPACO WELLNESS) -->
+<!-- MODAL NHẮC NGHỈ NGƠI (WELLNESS) -->
 <div class="modal-overlay hidden" id="modalVinapacoWellness">
     <div class="modal-card" style="max-width: 500px; border-top: 5px solid #16a34a;">
         <div style="padding: 14px 18px; background: linear-gradient(135deg, #16a34a, #15803d); color: white; display: flex; justify-content: space-between; align-items: center;">
-            <b style="text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px;"><i class="fa-solid fa-mug-hot"></i> VINAPACO Wellness - Tái Tạo Năng Lượng</b>
+            <b style="text-transform: uppercase; font-size: 13px;"><i class="fa-solid fa-mug-hot"></i> VINAPACO Wellness - Tái Tạo Năng Lượng</b>
             <button class="btn btn-red" style="padding: 4px 8px;" onclick="dongModalNghiNgoi()"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        
         <div style="padding: 18px; background: #f8fafc; display: flex; flex-direction: column; gap: 12px; font-size: 13px; color: #0f172a; line-height: 1.6;">
             <div style="display: flex; gap: 10px; align-items: center; background: #f0fdf4; border: 1px solid #bbf7d0; padding: 10px; border-radius: 8px;">
                 <i class="fa-solid fa-clock-rotate-left" style="font-size: 22px; color: #16a34a;"></i>
@@ -214,15 +174,13 @@
                     <div style="font-size: 11px; color: #475569;">Thời gian lý tưởng để cơ thể thả lỏng và phục hồi thị lực.</div>
                 </div>
             </div>
-
             <div style="background: white; border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; display: flex; flex-direction: column; gap: 6px;">
                 <div style="font-weight: 800; color: #0369a1; font-size: 12px; text-transform: uppercase;"><i class="fa-solid fa-heart-pulse"></i> Gợi ý vận động tại chỗ:</div>
-                <div>👁️ <b>Quy tắc 20-20-20:</b> Nhìn ra xa tối thiểu 6 mét trong 20 giây.</div>
+                <div>👁️ <b>Quy tắc 20-20-20:</b> Nhìn ra xa 6 mét trong 20 giây.</div>
                 <div>🧘 <b>Vươn vai & Xoay khớp:</b> Giảm áp lực đốt sống cổ và thắt lưng.</div>
                 <div>💧 <b>Bổ sung nước:</b> Uống 1 ngụm nước ấm thanh lọc cơ thể.</div>
             </div>
         </div>
-
         <div class="modal-actions" style="justify-content: flex-end; gap: 8px;">
             <button class="btn btn-yellow" onclick="hoanLaiNhacNghi()"><i class="fa-solid fa-business-time"></i> Hoãn lại 10 phút</button>
             <button class="btn btn-green btn-lg" onclick="dongModalNghiNgoi()"><i class="fa-solid fa-check"></i> Đã hiểu & Tiếp tục</button>
@@ -234,27 +192,24 @@
 <div class="modal-overlay hidden" id="modalLichVanNien">
     <div class="modal-card" style="max-width: 1040px;">
         <div style="padding: 14px 18px; background: linear-gradient(135deg, #8B0000, #a00000); color: white; display: flex; justify-content: space-between; align-items: center;">
-            <b style="text-transform: uppercase; font-size: 14px; letter-spacing: 0.5px;"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên & Phong Thủy Doanh Nghiệp</b>
-            <button class="btn btn-red" style="padding: 5px 10px;" onclick="document.getElementById('modalLichVanNien').classList.add('hidden')"><i class="fa-solid fa-xmark"></i> Đóng</button>
+            <b style="text-transform: uppercase; font-size: 14px;"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên & Phong Thủy VINAPACO</b>
+            <button class="btn btn-red" style="padding: 4px 8px;" onclick="document.getElementById('modalLichVanNien').classList.add('hidden')"><i class="fa-solid fa-xmark"></i> Đóng</button>
         </div>
-        
         <div style="padding: 16px; background: #f8fafc; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; max-height: 82vh;">
             <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; background: white; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color);">
-                <div class="form-group" style="flex: 1; min-width: 120px;"><label>Chọn Tháng</label><select id="lichThangSelect" style="padding: 7px; font-weight: bold;" onchange="renderLichGridPro()"></select></div>
-                <div class="form-group" style="flex: 1; min-width: 120px;"><label>Chọn Năm</label><select id="lichNamSelect" style="padding: 7px; font-weight: bold;" onchange="renderLichGridPro()"></select></div>
-                <button class="btn btn-green btn-lg" style="margin-top: 16px;" onclick="troVeHomNayLich()"><i class="fa-solid fa-clock-rotate-left"></i> Về Hôm Nay</button>
+                <div class="form-group" style="flex: 1;"><label>Tháng</label><select id="lichThangSelect" onchange="renderLichGridPro()"></select></div>
+                <div class="form-group" style="flex: 1;"><label>Năm</label><select id="lichNamSelect" onchange="renderLichGridPro()"></select></div>
+                <button class="btn btn-green btn-lg" style="margin-top: 16px;" onclick="troVeHomNayLich()"><i class="fa-solid fa-clock-rotate-left"></i> Hôm Nay</button>
             </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 420px; gap: 14px; align-items: start;">
-                <div style="background: white; border: 1px solid var(--border-color); border-radius: 12px; padding: 10px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            <div style="display: grid; grid-template-columns: 1fr 380px; gap: 14px; align-items: start;">
+                <div style="background: white; border: 1px solid var(--border-color); border-radius: 12px; padding: 10px;">
                     <div class="lich-grid-header"><div>CN</div><div>T2</div><div>T3</div><div>T4</div><div>T5</div><div>T6</div><div>T7</div></div>
-                    <div id="lichGridContainer" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 6px; text-align: center;"></div>
+                    <div id="lichGridContainer" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 6px;"></div>
                 </div>
-
-                <div style="background: white; border: 2px solid #8B0000; border-radius: 12px; padding: 14px; box-shadow: 0 4px 12px rgba(139, 0, 0, 0.12);">
-                    <div style="font-weight: 900; font-size: 14px; color: #8B0000; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
-                        <span><i class="fa-solid fa-compass" style="color: #D4AF37;"></i> PHONG THỦY CHI TIẾT</span>
-                        <span id="labelNgayDangChonBadge" class="badge-net" style="font-size: 10px;">Hôm nay</span>
+                <div style="background: white; border: 2px solid #8B0000; border-radius: 12px; padding: 14px;">
+                    <div style="font-weight: 900; font-size: 13px; color: #8B0000; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 10px; display: flex; justify-content: space-between;">
+                        <span><i class="fa-solid fa-compass"></i> PHONG THỦY NGÀY</span>
+                        <span id="labelNgayDangChonBadge" class="badge-net">Đang chọn</span>
                     </div>
                     <div id="chiTietNgayNoiDung" style="display: flex; flex-direction: column; gap: 4px;"></div>
                 </div>
@@ -275,7 +230,6 @@
                 <label style="font-weight: 800; font-size: 12px; color: #475569;">Tiêu Đề:</label>
                 <input type="text" id="inputCustomSlipTitle" value="BIÊN BẢN BÀN GIAO & GIAO NHẬN THIẾT BỊ" style="flex: 1; padding: 5px 8px; border: 1px solid var(--border-color); font-weight: 800; border-radius: 6px; font-size: 12px;" oninput="capNhatTieuDePhieuIn()">
             </div>
-
             <div id="handoverSlipCapture" class="handover-slip-container">
                 <div class="handover-header">
                     <div style="font-size: 11px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase;">TỔNG CÔNG TY GIẤY VIỆT NAM (VINAPACO)</div>
@@ -283,12 +237,10 @@
                     <div class="handover-title" id="previewSlipTitleText">BIÊN BẢN BÀN GIAO & GIAO NHẬN THIẾT BỊ</div>
                     <div style="font-size: 11px; font-weight: 700; margin-top: 4px;" id="previewSlipNoDate">Số: PGN-2026/08-01 | Ngày 25 tháng 08 năm 2026</div>
                 </div>
-
-                <div style="margin-bottom: 12px; font-size: 13px; line-height: 1.5;">
+                <div style="margin-bottom: 12px; font-size: 12px; line-height: 1.5;">
                     - Căn cứ vào nghiệp vụ quản lý tài sản và xuất nhập kho của Tổng công ty Giấy Việt Nam;<br>
                     - Hôm nay, ngày <span id="pDay">25</span> tháng <span id="pMonth">08</span> năm <span id="pYear">2026</span>, tại Kho văn phòng Tổng công ty, chúng tôi gồm có:
                 </div>
-
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1;">
                     <div>
                         <b style="color: #0369a1; text-transform: uppercase; font-size: 11px;"><i class="fa-solid fa-user-tie"></i> BÊN GIAO / THỦ KHO:</b>
@@ -301,31 +253,18 @@
                         <div style="font-size: 11px; color: #475569;">Bộ phận: <span id="pDept">Kế toán</span></div>
                     </div>
                 </div>
-
                 <div style="margin-bottom: 4px; font-weight: 800; font-size: 12px; color: #0369a1;">CHI TIẾT VẬT TƯ / THIẾT BỊ BÀN GIAO / XUẤT KHO:</div>
                 <table class="handover-table">
                     <thead>
-                        <tr>
-                            <th style="width: 45px;">STT</th>
-                            <th>Tên Hàng Hóa / Vật Tư / Thiết Bị</th>
-                            <th>Số Lượng</th>
-                            <th>Tình Trạng / Đơn Giá</th>
-                        </tr>
+                        <tr><th style="width: 45px;">STT</th><th>Tên Hàng Hóa / Vật Tư / Thiết Bị</th><th>Số Lượng</th><th>Tình Trạng / Đơn Giá</th></tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td style="text-align: center;">1</td>
-                            <td><b id="pItem">Laptop Dell Latitude</b></td>
-                            <td style="text-align: center;" id="pQty">01 Bộ</td>
-                            <td id="pStatus">Mới 100%, nguyên seal</td>
-                        </tr>
+                        <tr><td style="text-align: center;">1</td><td><b id="pItem">Laptop Dell Latitude</b></td><td style="text-align: center;" id="pQty">01 Bộ</td><td id="pStatus">Mới 100%, nguyên seal</td></tr>
                     </tbody>
                 </table>
-
-                <div style="font-size: 13px; line-height: 1.5; margin-top: 8px;">
-                    <b>Cam kết:</b> Người nhận có trách nhiệm bảo quản và sử dụng đúng mục đích công vụ. Biên bản lập thành 02 bản có giá trị pháp lý như nhau.
+                <div style="font-size: 12px; line-height: 1.5; margin-top: 8px;">
+                    <b>Cam kết:</b> Người nhận có trách nhiệm bảo quản và sử dụng đúng mục đích công vụ.
                 </div>
-
                 <div class="handover-signatures">
                     <div>
                         <div><b>ĐẠI DIỆN BÊN GIAO / THỦ KHO</b></div>
@@ -353,22 +292,23 @@
 <div class="container" id="appMainContainer">
     <div class="banner">
         <div>
-            <h1><i class="fa-solid fa-building-shield"></i> Hệ Thống Quản Lý Đa Dashboard & So Sánh Chi Phí</h1>
-            <p id="userStatusTag">Tổng công ty Giấy Việt Nam - Chế độ Trực tiếp Toàn quyền</p>
+            <h1><i class="fa-solid fa-building-shield"></i> Hệ Thống Quản Lý VINAPACO Pro Full Edition 2026</h1>
+            <p>Tổng công ty Giấy Việt Nam - Quản trị Tự động hóa, Tác nghiệp & Đồng bộ Google Drive</p>
         </div>
         <div class="btn-group-header">
-            <button class="btn btn-purple" onclick="moModalLichVanNien()"><i class="fa-solid fa-calendar-days"></i> Lịch</button>
-            <button class="btn btn-yellow" onclick="batTatNhacNghiGoi()"><i class="fa-solid fa-mug-hot"></i> Nghỉ</button>
-            <button class="btn btn-green" onclick="xuatToanBoHeThongExcel()"><i class="fa-solid fa-file-excel"></i> Excel</button>
-            <button class="btn btn-blue" onclick="thuCongDongBoLenDrive()"><i class="fa-solid fa-cloud-arrow-up"></i> Đồng bộ</button>
-            <button class="btn btn-yellow" onclick="taiDuLieuTuDongTuGas()"><i class="fa-solid fa-cloud-arrow-down"></i> Tải Cloud</button>
+            <button class="btn btn-purple" onclick="moModalDuBaoThoiTiet10Ngay()"><i class="fa-solid fa-cloud-sun"></i> Thời tiết</button>
+            <button class="btn btn-purple" onclick="moModalLichVanNien()"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên</button>
+            <button class="btn btn-yellow" onclick="batTatNhacNghiGoi()"><i class="fa-solid fa-mug-hot"></i> Wellness</button>
+            <button class="btn btn-green" onclick="xuatToanBoHeThongExcel()"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
+            <button class="btn btn-blue" onclick="thuCongDongBoLenDrive()"><i class="fa-solid fa-cloud-arrow-up"></i> Đồng bộ Cloud</button>
+            <button class="btn btn-yellow" onclick="taiDuLieuTuDongTuGas()"><i class="fa-solid fa-cloud-arrow-down"></i> Tải từ GAS</button>
         </div>
     </div>
 
-    <!-- THANH TRẠNG THÁI ĐẨY FILE ĐÍNH KÈM LÊN DRIVE -->
+    <!-- THANH TRẠNG THÁI UP DRIVE -->
     <div id="driveUploadStatusBar" class="upload-status-bar hidden">
         <div class="upload-status-header">
-            <span id="uploadStatusTitle"><i class="fa-solid fa-cloud-arrow-up"></i> Đang chuẩn bị tải file lên Google Drive...</span>
+            <span id="uploadStatusTitle"><i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> Đang chuẩn bị tải file lên Google Drive...</span>
             <span id="uploadStatusPercentText">0%</span>
         </div>
         <div class="upload-progress-track">
@@ -376,60 +316,55 @@
         </div>
     </div>
 
-    <!-- CẤU HÌNH GAS WEBHOOK -->
-    <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 12px 16px; border-radius: 12px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-        <span style="font-size: 12px; font-weight: 900; color: #0369a1; text-transform: uppercase;"><i class="fa-solid fa-link"></i> GAS URL:</span>
-        <input type="text" id="inputGasUrlSetting" style="flex: 1; min-width: 220px; padding: 8px 12px; border-radius: 8px; border: 1.5px solid var(--border-color); font-size: 12px; font-weight: bold; background: #f8fafc;" value="https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec">
-        <button class="btn btn-blue btn-lg" onclick="luuGasUrlNhanh()"><i class="fa-solid fa-floppy-disk"></i> LƯU</button>
+    <!-- CẤU HÌNH LIÊN KẾT DRIVER & GAS -->
+    <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 12px 16px; border-radius: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; align-items: center;">
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <span style="font-size: 11px; font-weight: 900; color: #0369a1; text-transform: uppercase; white-space: nowrap;"><i class="fa-solid fa-link"></i> GAS Webhook URL:</span>
+            <input type="text" id="inputGasUrlSetting" style="flex: 1; height: 36px; padding: 0 10px; border-radius: 8px; border: 1.5px solid var(--border-color); font-size: 12px; font-weight: bold; background: #f8fafc;" value="https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec">
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <span style="font-size: 11px; font-weight: 900; color: #16a34a; text-transform: uppercase; white-space: nowrap;"><i class="fa-brands fa-google-drive"></i> Link Thư Mục Drive:</span>
+            <input type="text" id="inputDriveRootFolderUrl" style="flex: 1; height: 36px; padding: 0 10px; border-radius: 8px; border: 1.5px solid var(--border-color); font-size: 12px; font-weight: bold; background: #f8fafc;" value="https://drive.google.com/drive/u/0/my-drive">
+            <button class="btn btn-blue" style="height: 36px;" onclick="luuCauHinhDriveUrl()"><i class="fa-solid fa-floppy-disk"></i> LƯU</button>
+        </div>
     </div>
 
-    <!-- THANH THỜI GIAN & THỜI TIẾT -->
+    <!-- WIDGET THỜI GIAN & THỜI TIẾT -->
     <div class="top-info-bar">
         <div class="info-widget-card">
             <div style="font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-clock"></i> Đồng Hồ Số</div>
             <div class="clock-display" id="liveClockDisplay">00:00:00</div>
             <div style="font-size: 12px; font-weight: 800; color: var(--text-muted);" id="liveDateDisplay">Thứ Ba, 25/08/2026</div>
         </div>
-
         <div class="info-widget-card">
             <div style="font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-calendar-days"></i> Âm Lịch Hôm Nay</div>
-            <div class="lunar-display" id="lunarWidgetText" style="font-size: 14px; font-weight: 800;">Đang tải...</div>
+            <div class="lunar-display" id="lunarWidgetText">Đang tải...</div>
         </div>
-
-        <!-- WIDGET THỜI TIẾT -->
-        <div class="info-widget-card" style="justify-content: space-between; grid-column: span auto;">
-            <div>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <div style="font-size: 11px; font-weight: 900; color: #0369a1; text-transform: uppercase;"><i class="fa-solid fa-cloud-sun"></i> Thời Tiết Vùng & Khí Tượng</div>
-                    <div style="display: flex; gap: 6px;">
-                        <button class="btn btn-purple btn-lg" style="padding: 6px 12px !important; font-size: 11px !important;" onclick="moModalDuBaoThoiTiet10Ngay()"><i class="fa-solid fa-calendar-week"></i> 10 Ngày</button>
-                        <button class="btn btn-blue btn-lg" style="padding: 6px 12px !important; font-size: 11px !important;" onclick="layThoiTietTheoGPS()"><i class="fa-solid fa-location-crosshairs"></i> GPS</button>
-                    </div>
+        <div class="info-widget-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <div style="font-size: 11px; font-weight: 900; color: #0369a1; text-transform: uppercase;"><i class="fa-solid fa-cloud-sun"></i> Khí Tượng Phú Thọ</div>
+                <div style="display: flex; gap: 4px;">
+                    <button class="btn btn-purple" style="padding: 4px 8px; font-size: 10px;" onclick="moModalDuBaoThoiTiet10Ngay()">10 Ngày</button>
+                    <button class="btn btn-blue" style="padding: 4px 8px; font-size: 10px;" onclick="layThoiTietTheoGPS()">GPS</button>
                 </div>
-                <div id="weatherWidgetText" style="font-size: 14px; font-weight: 700; color: #0f172a; line-height: 1.5;">Đang kết nối trạm khí tượng...</div>
             </div>
-            <div style="display: flex; gap: 6px; align-items: center; margin-top: 10px;">
-                <input type="text" id="inputSearchCity" placeholder="Nhập Tỉnh/Thành (Nhấn Enter để tìm)..." style="padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 12px; font-weight: bold; flex: 1;" value="Phú Thọ">
-                <button class="btn btn-green btn-lg" style="padding: 8px 14px !important; font-size: 12px !important;" onclick="traCuuThoiTietTheoThanhPho()"><i class="fa-solid fa-magnifying-glass"></i> TÌM</button>
-            </div>
+            <div id="weatherWidgetText" style="font-size: 13px; font-weight: 700; color: #0f172a;">Đang tải thời tiết...</div>
         </div>
     </div>
 
-    <!-- THANH CẤU HÌNH LƯƠNG CHẾ ĐỘ -->
+    <!-- CẤU HÌNH LƯƠNG & THỜI GIAN -->
     <div class="config-bar">
         <div class="config-item"><label>Năm Lưu Trữ</label><select id="cfgNamChon" onchange="doiThangHoSoLuong()"></select></div>
         <div class="config-item"><label>Tháng Nhập / Lưu Trữ</label><select id="cfgThangChon" onchange="doiThangHoSoLuong()">
             <option value="Tháng 01">Tháng 01</option><option value="Tháng 02">Tháng 02</option><option value="Tháng 03">Tháng 03</option><option value="Tháng 04">Tháng 04</option><option value="Tháng 05">Tháng 05</option><option value="Tháng 06">Tháng 06</option><option value="Tháng 07">Tháng 07</option><option value="Tháng 08" selected>Tháng 08</option><option value="Tháng 09">Tháng 09</option><option value="Tháng 10">Tháng 10</option><option value="Tháng 11">Tháng 11</option><option value="Tháng 12">Tháng 12</option>
         </select></div>
-        
         <div class="config-item drive-path-box">
-            <label>Đường Dẫn VINAPACO_Drive</label>
+            <label>Thư Mục Google Drive Lưu Trữ</label>
             <div style="display: flex; gap: 6px;">
                 <input type="text" id="cfgDrivePath" readonly style="background: #e2e8f0; color: #166534; font-weight: bold; flex: 1;" value="VINAPACO_Drive / 2026 / Tháng 08">
-                <button class="btn btn-blue" style="padding: 7px 12px;" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Mở Drive</button>
+                <button class="btn btn-green" style="padding: 0 14px; height: 38px;" onclick="moThuThucDriveChung()"><i class="fa-brands fa-google-drive"></i> MỞ DRIVE</button>
             </div>
         </div>
-
         <div class="config-item"><label>Ngày Công Chế Độ</label><input type="number" id="cfgNCD" onchange="luuCauHinhHienTai()"></div>
         <div class="config-item"><label>Mức Lương Cơ Bản</label><input type="text" id="cfgMucLCB" onchange="dinhDangOOCurrency(this)"></div>
         <div class="config-item"><label>Mức Tối Thiểu Vùng</label><input type="text" id="cfgMucTTV" onchange="dinhDangOOCurrency(this)"></div>
@@ -438,11 +373,11 @@
 
     <!-- KPI TỔNG QUAN -->
     <div class="kpi-grid">
-        <div class="kpi-card"><div class="kpi-title">Tổng Quỹ Lương NET</div><div class="kpi-value" style="color: #15803d;" id="kpiTotalNet">0</div><div class="kpi-sub">Lũy kế cả năm</div></div>
+        <div class="kpi-card"><div class="kpi-title">Quỹ Lương NET (Năm)</div><div class="kpi-value" style="color: #15803d;" id="kpiTotalNet">0</div><div class="kpi-sub">Lũy kế cả năm</div></div>
         <div class="kpi-card"><div class="kpi-title">Tổng Chuyển Khoản NH</div><div class="kpi-value" style="color: #0284c7;" id="kpiTotalBankTransfer">0</div><div class="kpi-sub">Tổng thực lĩnh STK</div></div>
         <div class="kpi-card"><div class="kpi-title">Tổng Thanh Toán VP</div><div class="kpi-value" style="color: #d97706;" id="kpiTotalPayment">0</div><div class="kpi-sub">Lũy kế cả năm</div></div>
         <div class="kpi-card"><div class="kpi-title">Tồn Kho Mực In</div><div class="kpi-value" style="color: #0284c7;" id="kpiTotalInkStock">0 Hộp</div><div class="kpi-sub">Thực tế</div></div>
-        <div class="kpi-card"><div class="kpi-title">Tổng Tạm Ứng Đã Trừ</div><div class="kpi-value" style="color: #dc2626;" id="kpiTotalTamUng">0</div><div class="kpi-sub">Giữa tháng</div></div>
+        <div class="kpi-card"><div class="kpi-title">Tạm Ứng Đã Trừ</div><div class="kpi-value" style="color: #dc2626;" id="kpiTotalTamUng">0</div><div class="kpi-sub">Toàn đơn vị</div></div>
     </div>
 
     <!-- THANH CHUYỂN TAB -->
@@ -462,8 +397,8 @@
         <button class="tab-btn-nav" onclick="switchTab('surveyTab', this)"><i class="fa-solid fa-clipboard-check"></i> Khảo Sát</button>
     </div>
 
-    <!-- TAB 0: DASHBOARD TỔNG QUAN -->
-    <div id="dashboardTab" class="tab-pane table-card" style="background: transparent; border: none; padding: 0;">
+    <!-- TAB DASHBOARD TỔNG QUAN -->
+    <div id="dashboardTab" class="tab-pane active table-card" style="background: transparent; border: none; padding: 0;">
         <div class="charts-multi-grid">
             <div class="chart-card">
                 <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #0284c7;"></i> Tỷ Trọng Tài Chính Cả Năm (%)</div>
@@ -497,10 +432,10 @@
         </div>
     </div>
 
-    <!-- TAB 1: DASHBOARD LƯƠNG TỪNG THÁNG -->
+    <!-- TAB DASHBOARD LƯƠNG TỪNG THÁNG -->
     <div id="monthlySalaryDashboardTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-money-bill-trend-up"></i> QUỶ LƯƠNG & CHUYỂN KHOẢN HÀNG THÁNG (<span id="monthlySalaryYearTitle">2026</span>)</div>
+            <div class="table-title"><i class="fa-solid fa-money-bill-trend-up"></i> QUỸ LƯƠNG & CHUYỂN KHOẢN HÀNG THÁNG (<span id="monthlySalaryYearTitle">2026</span>)</div>
             <button class="btn btn-green" onclick="xuatBaoCaoLuongCacThangExcel()"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
         </div>
 
@@ -528,26 +463,18 @@
         </div>
 
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
-            <div class="chart-card" style="grid-column: span 1;">
+            <div class="chart-card">
                 <div class="chart-title"><i class="fa-solid fa-chart-column" style="color: #16a34a;"></i> Biến Động Quỹ Lương NET Theo 12 Tháng</div>
                 <div style="position: relative; height: 260px;"><canvas id="monthlySalaryBarChart"></canvas></div>
             </div>
         </div>
 
         <div class="table-card">
-            <div class="table-title" style="font-size: 13px; margin-bottom: 8px;"><i class="fa-solid fa-list-ol"></i> CHI TIẾT BIẾN ĐỘNG QUỶ LƯƠNG QUA CÁC THÁNG</div>
+            <div class="table-title" style="font-size: 13px; margin-bottom: 8px;"><i class="fa-solid fa-list-ol"></i> CHI TIẾT BIẾN ĐỘNG QUỸ LƯƠNG QUA CÁC THÁNG</div>
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 40px;">STT</th>
-                        <th>Tháng</th>
-                        <th style="text-align: center;">NS</th>
-                        <th style="text-align: right;">Tổng LCB</th>
-                        <th style="text-align: right;">Tổng LCV</th>
-                        <th style="text-align: right;">Khấu Trừ BH</th>
-                        <th style="text-align: right;">Tạm Ứng</th>
-                        <th style="text-align: right;">TỔNG NET (CHUYỂN KHOẢN)</th>
-                        <th style="text-align: center;">Trạng Thái</th>
+                        <th style="width: 40px;">STT</th><th>Tháng</th><th style="text-align: center;">NS</th><th style="text-align: right;">Tổng LCB</th><th style="text-align: right;">Tổng LCV</th><th style="text-align: right;">Khấu Trừ BH</th><th style="text-align: right;">Tạm Ứng</th><th style="text-align: right;">TỔNG NET (CHUYỂN KHOẢN)</th><th style="text-align: center;">Trạng Thái</th>
                     </tr>
                 </thead>
                 <tbody id="monthlySalaryTableBody"></tbody>
@@ -555,7 +482,7 @@
         </div>
     </div>
 
-    <!-- TAB 2: QUẢN LÝ TÀI KHOẢN -->
+    <!-- TAB QUẢN LÝ TÀI KHOẢN -->
     <div id="accountManagerTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-users-gear"></i> QUẢN LÝ TÀI KHOẢN & PHÂN QUYỀN HỆ THỐNG</div>
@@ -563,20 +490,13 @@
         </div>
         <table>
             <thead>
-                <tr>
-                    <th style="width: 35px;">STT</th>
-                    <th>Email / Tài Khoản</th>
-                    <th>Họ và Tên Cán Bộ</th>
-                    <th style="width: 90px; text-align: center;">Vai Trò</th>
-                    <th style="width: 90px; text-align: center;">Trạng Thái</th>
-                    <th style="width: 120px; text-align: center;">Thao Tác</th>
-                </tr>
+                <tr><th style="width: 35px;">STT</th><th>Email / Tài Khoản</th><th>Họ và Tên Cán Bộ</th><th style="text-align: center;">Vai Trò</th><th style="text-align: center;">Trạng Thái</th><th style="text-align: center;">Thao Tác</th></tr>
             </thead>
             <tbody id="accountTableBody"></tbody>
         </table>
     </div>
 
-    <!-- TAB 3: QUẢN LÝ CÔNG VIỆC -->
+    <!-- TAB CÔNG VIỆC -->
     <div id="taskTab" class="tab-pane table-card">
         <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-list-check"></i> QUẢN LÝ CÔNG VIỆC HÀNG NGÀY & TIẾN ĐỘ</div></div>
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
@@ -586,7 +506,7 @@
         
         <div class="form-card" id="formCardTask">
             <input type="hidden" id="editTaskIndex" value="-1">
-            <div class="form-group"><label>Nội Dung Công Việc (Enter để lưu)</label><input type="text" id="inputTaskName" placeholder="VD: Lập báo cáo điều hành..."></div>
+            <div class="form-group"><label>Nội Dung Công Việc</label><input type="text" id="inputTaskName" placeholder="VD: Lập báo cáo điều hành..."></div>
             <div class="form-group"><label>Người Thực Hiện</label><input type="text" id="inputTaskAssignee" value="Trần Bình Dương"></div>
             <div class="form-group"><label>Hạn Hoàn Thành</label><input type="date" id="inputTaskDueDate"></div>
             <div class="form-group"><label>Trạng Thái</label><select id="inputTaskStatus"><option value="Chưa làm">⏳ Chưa làm</option><option value="Đang làm">🔄 Đang làm</option><option value="Hoàn thành">✅ Hoàn thành</option></select></div>
@@ -598,7 +518,7 @@
         <table><thead><tr><th>STT</th><th>Nội Dung Công Việc</th><th>Người Thực Hiện</th><th>Hạn</th><th>Trạng Thái</th><th style="text-align:center;">Thao Tác</th></tr></thead><tbody id="taskTableBody"></tbody></table>
     </div>
 
-    <!-- TAB 4: CHẤM CÔNG -->
+    <!-- TAB CHẤM CÔNG -->
     <div id="timekeepingDetailTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-business-time"></i> CHẤM CÔNG CHI TIẾT (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
@@ -607,14 +527,13 @@
         <table><thead><tr><th>STT</th><th>Họ và Tên</th><th>NCD Chuẩn</th><th>Thực Tế</th><th>Phép (P)</th><th>Lễ (L)</th><th>Hệ Số (K)</th><th>Ghi Chú</th></tr></thead><tbody id="timekeepingDetailTableBody"></tbody></table>
     </div>
 
-    <!-- TAB 5: LƯƠNG CƠ BẢN -->
+    <!-- TAB LƯƠNG CƠ BẢN -->
     <div id="salaryCBTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-table-list"></i> BẢNG LƯƠNG CƠ BẢN & NGÂN HÀNG (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
             <button class="btn btn-green" onclick="xuatExcelCB()"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
         </div>
         <table><thead><tr><th>STT</th><th>Họ và Tên</th><th>SĐT / Zalo</th><th>Tên Ngân Hàng</th><th>Số Tài Khoản (STK)</th><th>HSL.CB</th><th>PC.CB</th><th>L.HĐLĐ</th><th>L.CB</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>Ki</th><th>L.TG</th><th>L.Lễ/Phép</th><th>Tổng Tiền</th><th>BHTN(1%)</th><th>BHXH</th><th>Thực Lĩnh LCB</th></tr></thead><tbody id="tableBodyCB"></tbody></table>
-        
         <div class="salary-signature-footer">
             <div class="sign-col"><div>PHÒNG NHÂN SỰ</div><div class="sign-space"></div></div>
             <div class="sign-col"><div>THỦ TRƯỞNG ĐƠN VỊ</div><div class="sign-space"></div></div>
@@ -622,22 +541,19 @@
         </div>
     </div>
 
-    <!-- TAB 6: LƯƠNG CV & PHIẾU LƯƠNG -->
+    <!-- TAB LƯƠNG CÔNG VIỆC -->
     <div id="salaryCVTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-briefcase"></i> BẢNG LƯƠNG CÔNG VIỆC, STK & PHIẾU LƯƠNG (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
             <button class="btn btn-green" onclick="xuatExcelCV()"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
         </div>
-
         <div style="background: #f8fafc; border: 2px solid var(--primary); padding: 14px; border-radius: 12px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px;">
             <button class="btn btn-blue btn-lg" onclick="moModalPhiieuLuongDauTien()"><i class="fa-solid fa-file-invoice-dollar"></i> Mở Phiếu Lương Tổng Hợp Nhân Sự</button>
         </div>
-
         <table>
             <thead><tr><th>STT</th><th>Họ và Tên</th><th>Tên Ngân Hàng</th><th>Số Tài Khoản (STK)</th><th>HSL.CV</th><th>PC.CV</th><th>L.CV Gốc</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>Ki</th><th>L.CV TT</th><th>Tổng LCB+CV</th><th>Tạm Ứng</th><th>Thực Lĩnh CV</th><th>THỰC LĨNH NET (CHUYỂN KHOẢN)</th><th>Zalo</th></tr></thead>
             <tbody id="tableBodyCV"></tbody>
         </table>
-
         <div class="salary-signature-footer">
             <div class="sign-col"><div>PHÒNG NHÂN SỰ</div><div class="sign-space"></div></div>
             <div class="sign-col"><div>THỦ TRƯỞNG ĐƠN VỊ</div><div class="sign-space"></div></div>
@@ -645,54 +561,43 @@
         </div>
     </div>
 
-    <!-- TAB 7: PHÉP NĂM -->
+    <!-- TAB PHÉP NĂM -->
     <div id="leaveTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-calendar-days"></i> QUẢN LÝ PHÉP NĂM (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
-            <button class="btn btn-blue" onclick="moModalDangKyNghiPhep()"><i class="fa-solid fa-file-pen"></i> Đăng Ký</button>
+            <button class="btn btn-blue" onclick="alert('📝 Đăng ký phép trực tuyến.')"><i class="fa-solid fa-file-pen"></i> Đăng Ký</button>
         </div>
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
-            <div class="chart-card" style="padding: 10px; grid-column: span 1;"><div class="chart-title"><i class="fa-solid fa-chart-column"></i> Ngày Nghỉ Phép Nhân Sự</div><div style="position: relative; height: 260px;"><canvas id="overviewLeaveBarChart"></canvas></div></div>
+            <div class="chart-card" style="padding: 10px;"><div class="chart-title"><i class="fa-solid fa-chart-column"></i> Ngày Nghỉ Phép Nhân Sự</div><div style="position: relative; height: 260px;"><canvas id="overviewLeaveBarChart"></canvas></div></div>
             <div class="chart-card" style="padding: 10px;"><div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Phép Đã Dùng (%)</div><div style="position: relative; height: 260px;"><canvas id="leavePieChart"></canvas></div></div>
         </div>
-
-        <div class="table-card" style="margin-bottom: 14px;">
-            <div class="table-title" style="font-size: 13px; margin-bottom: 6px;"><i class="fa-solid fa-table"></i> Bảng Tổng Kết Phép Năm</div>
-            <table>
-                <thead><tr><th>Chỉ Số Phép Năm</th><th>Tổng Số Ngày</th><th>Tỷ Trọng (%)</th><th>Đánh Giá Chấp Hành</th></tr></thead>
-                <tbody id="leaveSummaryTableBody"></tbody>
-            </table>
-        </div>
-
         <table>
             <thead><tr><th>STT</th><th>Họ và Tên</th><th>Tổng Phép Cấp</th><th>Nghỉ Tháng Này</th><th>Nghỉ Lễ</th><th>Đã Dùng Lũy Kế</th><th>Phép Còn Lại</th><th>Trạng Thái</th></tr></thead>
             <tbody id="leaveTableBody"></tbody>
         </table>
     </div>
 
-    <!-- TAB 8: THANH TOÁN VĂN PHÒNG -->
+    <!-- TAB THANH TOÁN VĂN PHÒNG -->
     <div id="officePaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
-            <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Mở Drive</button>
+            <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-brands fa-google-drive"></i> Mở Drive</button>
         </div>
-
         <div class="form-card" id="formCardVpp">
             <input type="hidden" id="editOfficeKey" value="">
             <input type="hidden" id="editOfficeIndex" value="-1">
+            <input type="hidden" id="inputOfficeFileUrl" value="">
             <div class="form-group"><label>Mã HS</label><input type="text" id="autoOfficeId" readonly style="background: #e2e8f0; font-weight: bold;" value="VP-01"></div>
-            <div class="form-group"><label>Đơn Vị Thụ Hưởng</label><input type="text" id="inputOfficeBeneficiary" placeholder="VD: Công ty TNHH..."></div>
+            <div class="form-group"><label>Đơn Vị Thụ Hưởng</label><input type="text" id="inputOfficeBeneficiary" placeholder="VD: Công ty TNHH Hồng Hà..."></div>
             <div class="form-group"><label>Tên Ngân Hàng</label><input type="text" id="inputOfficeBankName" placeholder="VD: Vietcombank"></div>
             <div class="form-group"><label>Số Tài Khoản</label><input type="text" id="inputOfficeBankAccount" placeholder="Số TK..."></div>
-            <div class="form-group"><label>Nội Dung (Enter để lưu)</label><input type="text" id="inputOfficeContent" placeholder="Nội dung chi..."></div>
-            
+            <div class="form-group"><label>Nội Dung Chi</label><input type="text" id="inputOfficeContent" placeholder="Giấy A4 và văn phòng phẩm..."></div>
             <div class="form-group">
                 <label>ĐVT</label>
                 <select id="inputOfficeUnit">
-                    <option value="Cái" selected>Cái</option><option value="Chiếc">Chiếc</option><option value="Hộp">Hộp</option><option value="Bộ">Bộ</option><option value="Tháng">Tháng</option><option value="Quyển">Quyển</option><option value="Gói">Gói</option><option value="Thùng">Thùng</option><option value="Ram (Ream)">Ram (Ream)</option><option value="Cuộn">Cuộn</option><option value="Kg">Kg</option><option value="Tấn">Tấn</option><option value="m³">m³</option><option value="m²">m²</option><option value="Mét">Mét</option><option value="Lượt">Lượt</option><option value="Lần">Lần</option>
+                    <option value="Ram (Ream)" selected>Ram (Ream)</option><option value="Cái">Cái</option><option value="Chiếc">Chiếc</option><option value="Hộp">Hộp</option><option value="Bộ">Bộ</option><option value="Tháng">Tháng</option><option value="Quyển">Quyển</option><option value="Gói">Gói</option><option value="Thùng">Thùng</option><option value="Cuộn">Cuộn</option><option value="Kg">Kg</option><option value="Tấn">Tấn</option>
                 </select>
             </div>
-
             <div class="form-group"><label>Số Lượng</label><input type="number" id="inputOfficeQty" value="1" min="1" oninput="tinhToanTienVPP()"></div>
             <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputOfficePrice" placeholder="0" oninput="tinhToanTienVPP()"></div>
             <div class="form-group"><label>VAT</label><select id="inputOfficeVatRate" onchange="tinhToanTienVPP()"><option value="0.1" selected>10% VAT</option><option value="0.08">8% VAT</option><option value="0">0% Không thuế</option></select></div>
@@ -700,126 +605,88 @@
             <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputOfficeVAT" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Tổng Thanh Toán</label><input type="text" id="previewOfficeTotal" placeholder="0" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;"></div>
             <div class="form-group"><label>Ngày CT</label><input type="date" id="inputOfficeDate"></div>
-            <div class="form-group"><label>Đính Kèm Drive</label><input type="file" id="vppFileUpload" onchange="taiTepLenThuMucChinhXac(this, 'Thanh Toán Văn Phòng')" style="padding: 4px; font-size: 11px;"></div>
+            <div class="form-group"><label>Tải Tệp lên Drive</label><input type="file" id="vppFileUpload" onchange="taiTepLenThuMucChinhXac(this, 'Thanh Toán Văn Phòng', 'inputOfficeFileUrl')"></div>
             <div class="form-group" style="display: flex; gap: 6px; grid-column: span 2;">
                 <button class="btn btn-green btn-lg" id="btnSaveVpp" onclick="luuHoacCapNhatVPP()"><i class="fas fa-save"></i> <span id="btnVppText">LƯU CHỨNG TỪ</span></button>
                 <button class="btn btn-red btn-lg hidden" id="btnCancelVpp" onclick="huyBoCapNhatVPP()"><i class="fa-solid fa-xmark"></i> Hủy</button>
             </div>
         </div>
-
         <table>
             <thead>
-                <tr>
-                    <th>Mã HS</th><th>Tháng</th><th>Thụ Hưởng</th><th>Ngân Hàng / STK</th><th>Nội Dung</th><th>ĐVT</th><th>SL x Đơn Giá</th><th>Trước Thuế</th><th>VAT</th><th>Tổng TT</th><th>Ngày CT</th><th style="text-align:center;">Thao Tác</th>
-                </tr>
+                <tr><th>Mã HS</th><th>Tháng</th><th>Thụ Hưởng</th><th>Ngân Hàng / STK</th><th>Nội Dung</th><th>ĐVT</th><th>SL x Đơn Giá</th><th>Trước Thuế</th><th>VAT</th><th>Tổng TT</th><th>Ngày CT</th><th style="text-align:center;">Drive File</th><th style="text-align:center;">Thao Tác</th></tr>
             </thead>
             <tbody id="officePaymentTableBody"></tbody>
         </table>
     </div>
 
-    <!-- TAB 9: KHO MỰC IN -->
+    <!-- TAB KHO MỰC IN -->
     <div id="inkInventoryTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-warehouse"></i> QUẢN LÝ KHO MỰC IN & XUẤT NHẬP TỒN (XNT) - CẢNH BÁO MIN/MAX</div>
+            <div class="table-title"><i class="fa-solid fa-warehouse"></i> QUẢN LÝ KHO MỰC IN & XUẤT NHẬP TỒN (XNT)</div>
             <button class="btn btn-green" onclick="xuatBaoCaoXNTExcel()"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
         </div>
-
-        <!-- BẢNG TỔNG HỢP XNT & CẢNH BÁO MIN/MAX -->
         <div style="margin-bottom: 14px; background: #f8fafc; border: 1.5px solid var(--border-color); padding: 14px; border-radius: 12px;">
             <div style="font-weight: 900; font-size: 13px; margin-bottom: 10px; color: #0369a1; display:flex; justify-content:space-between; align-items:center;">
-                <span><i class="fa-solid fa-chart-line"></i> BẢNG TỔNG HỢP XUẤT - NHẬP - TỒN & CẢNH BÁO TỒN KHO (MIN / MAX)</span>
-                <span class="badge-net" style="font-size: 11px;">Tự động cập nhật</span>
+                <span><i class="fa-solid fa-chart-line"></i> BẢNG TỔNG HỢP XUẤT - NHẬP - TỒN & CẢNH BÁO TỒN KHO</span>
+                <span class="badge-net">Tự động cập nhật</span>
             </div>
             <table>
                 <thead>
-                    <tr>
-                        <th style="width: 40px;">STT</th>
-                        <th>Tên Vật Tư / Mực In</th>
-                        <th>Máy In Tương Thích</th>
-                        <th style="text-align: center;">Đầu Kỳ</th>
-                        <th style="text-align: center;">Nhập Kho</th>
-                        <th style="text-align: center;">Xuất Kho</th>
-                        <th style="text-align: center;">Tồn Thực Tế</th>
-                        <th style="text-align: center;">Định Mức (Min - Max)</th>
-                        <th style="text-align: center;">Trạng Thái Cảnh Báo</th>
-                    </tr>
+                    <tr><th>STT</th><th>Tên Vật Tư / Mực In</th><th>Máy In Tương Thích</th><th style="text-align: center;">Đầu Kỳ</th><th style="text-align: center;">Nhập Kho</th><th style="text-align: center;">Xuất Kho</th><th style="text-align: center;">Tồn Thực Tế</th><th style="text-align: center;">Định Mức</th><th style="text-align: center;">Trạng Thái Cảnh Báo</th></tr>
                 </thead>
                 <tbody id="xntTableBody"></tbody>
             </table>
         </div>
-
-        <!-- FORM GHI SỔ TÁCH BẠCH ĐẦU KỲ / NHẬP / XUẤT -->
         <div class="form-card" id="formCardInk" style="border: 2px dashed #0284c7; background: #f0f9ff;">
             <input type="hidden" id="editInkIndex" value="-1">
+            <input type="hidden" id="inputInkFileUrl" value="">
             <div class="form-group">
-                <label>Nghiệp Vụ Kho (Enter để ghi sổ)</label>
+                <label>Nghiệp Vụ Kho</label>
                 <select id="inputInkAction" style="border: 2px solid #0284c7; font-weight: bold;">
-                    <option value="Số dư đầu kỳ">📦 Số dư đầu kỳ (Khai báo ban đầu)</option>
-                    <option value="Nhập kho" selected>📥 Nhập kho (Nhập mới vật tư)</option>
-                    <option value="Xuất kho">📤 Xuất kho (Cấp phát sử dụng - Tự trừ tồn)</option>
+                    <option value="Số dư đầu kỳ">📦 Số dư đầu kỳ</option>
+                    <option value="Nhập kho" selected>📥 Nhập kho</option>
+                    <option value="Xuất kho">📤 Xuất kho</option>
                 </select>
             </div>
             <div class="form-group"><label>Tên Mực In / Vật Tư</label><input type="text" id="inputInkName" placeholder="VD: Hộp mực Canon 337"></div>
             <div class="form-group"><label>Máy In Sử Dụng</label><input type="text" id="inputInkPrinter" placeholder="VD: Canon LBP 151dw"></div>
             <div class="form-group"><label>Số Lượng</label><input type="number" id="inputInkQty" value="1" min="1"></div>
             <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputInkPrice" placeholder="0"></div>
-            <div class="form-group"><label>Nhà Cung Cấp / Người Nhận</label><input type="text" id="inputInkReceiver" placeholder="Tên NCC hoặc Cán bộ nhận..."></div>
-            <div class="form-group"><label>Định Mức Min / Max</label><input type="text" id="inputInkMinMax" value="2 / 10" placeholder="VD: 2 / 10"></div>
+            <div class="form-group"><label>Người Nhận / NCC</label><input type="text" id="inputInkReceiver" placeholder="Tên NCC hoặc Cán bộ nhận..."></div>
+            <div class="form-group"><label>Định Mức Min / Max</label><input type="text" id="inputInkMinMax" value="2 / 10"></div>
             <div class="form-group"><label>Ngày Chứng Từ</label><input type="date" id="inputInkDate"></div>
-            <div class="form-group"><label>Đính Kèm Phiếu</label><input type="file" id="inkFileUpload" onchange="taiTepLenThuMucChinhXac(this, 'Kho Mực In')" style="padding: 4px; font-size: 11px;"></div>
+            <div class="form-group"><label>Đính Kèm Phiếu lên Drive</label><input type="file" id="inkFileUpload" onchange="taiTepLenThuMucChinhXac(this, 'Kho Mực In', 'inputInkFileUrl')"></div>
             <div class="form-group" style="display: flex; gap: 6px; grid-column: span 2;">
                 <button class="btn btn-green btn-lg" id="btnSaveInk" onclick="luuHoacCapNhatKhoMuc()"><i class="fas fa-warehouse"></i> <span id="btnInkText">GHI SỔ KHO</span></button>
                 <button class="btn btn-red btn-lg hidden" id="btnCancelInk" onclick="huyBoCapNhatKhoMuc()"><i class="fa-solid fa-xmark"></i> Hủy</button>
             </div>
         </div>
-
-        <!-- 2 BẢNG TÁCH BẠCH: NHẬP/ĐẦU KỲ VÀ XUẤT KHO -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
             <div style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px;">
-                <div style="font-weight: 900; font-size: 13px; color: #15803d; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-                    <i class="fa-solid fa-cart-arrow-down"></i> LỊCH SỬ ĐẦU KỲ & NHẬP KHO (INBOUND)
-                </div>
+                <div style="font-weight: 900; font-size: 13px; color: #15803d; margin-bottom: 8px;"><i class="fa-solid fa-cart-arrow-down"></i> LỊCH SỬ ĐẦU KỲ & NHẬP KHO</div>
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Tên Mực / Vật Tư</th>
-                            <th style="text-align: center;">Nghiệp Vụ</th>
-                            <th style="text-align: center;">SL</th>
-                            <th style="text-align: right;">Đơn Giá</th>
-                            <th style="text-align: center;">Thao Tác</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Tên Mực / Vật Tư</th><th style="text-align: center;">Nghiệp Vụ</th><th style="text-align: center;">SL</th><th style="text-align: right;">Đơn Giá</th><th style="text-align: center;">Thao Tác</th></tr></thead>
                     <tbody id="inkInboundTableBody"></tbody>
                 </table>
             </div>
-
             <div style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px;">
-                <div style="font-weight: 900; font-size: 13px; color: #dc2626; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-                    <i class="fa-solid fa-cart-arrow-up"></i> LỊCH SỬ XUẤT KHO / CẤP PHÁT (OUTBOUND)
-                </div>
+                <div style="font-weight: 900; font-size: 13px; color: #dc2626; margin-bottom: 8px;"><i class="fa-solid fa-cart-arrow-up"></i> LỊCH SỬ XUẤT KHO / CẤP PHÁT</div>
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Tên Mực / Vật Tư</th>
-                            <th style="text-align: center;">SL Xuất</th>
-                            <th>Người Nhận</th>
-                            <th style="text-align: center;">Thao Tác</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Tên Mực / Vật Tư</th><th style="text-align: center;">SL Xuất</th><th>Người Nhận</th><th style="text-align: center;">Thao Tác</th></tr></thead>
                     <tbody id="inkOutboundTableBody"></tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- TAB 10: GIAO NHẬN -->
+    <!-- TAB GIAO NHẬN -->
     <div id="deliverySlipTab" class="tab-pane table-card">
         <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-file-contract"></i> QUẢN LÝ & IN PHIẾU GIAO NHẬN THIẾT BỊ</div></div>
         <div class="form-card" id="formCardSlip">
             <input type="hidden" id="editSlipIndex" value="-1">
             <div class="form-group"><label>Số Phiếu</label><input type="text" id="inputSlipNo" value="PGN-2026/08-01"></div>
             <div class="form-group"><label>Bên Giao</label><input type="text" id="inputSlipFrom" value="Trần Bình Dương - VP TCT"></div>
-            <div class="form-group"><label>Bên Nhận (Enter để thêm)</label><input type="text" id="inputSlipTo" placeholder="Họ tên cán bộ nhận..."></div>
+            <div class="form-group"><label>Bên Nhận</label><input type="text" id="inputSlipTo" placeholder="Họ tên cán bộ nhận..."></div>
             <div class="form-group"><label>Bộ Phận</label><input type="text" id="inputSlipDept" placeholder="Phòng ban..."></div>
             <div class="form-group"><label>Tên Thiết Bị</label><input type="text" id="inputSlipItem" placeholder="Laptop Dell..."></div>
             <div class="form-group"><label>Tình Trạng</label><input type="text" id="inputSlipStatus" value="Mới 100%, nguyên seal"></div>
@@ -832,216 +699,185 @@
         <table><thead><tr><th>Số Phiếu</th><th>Bên Giao</th><th>Bên Nhận</th><th>Bộ Phận</th><th>Tên Thiết Bị</th><th>Tình Trạng</th><th>Ngày Giao</th><th style="text-align: center;">Thao Tác</th></tr></thead><tbody id="deliveryTableBody"></tbody></table>
     </div>
 
-    <!-- TAB 11: CƯỚC VIỄN THÔNG -->
+    <!-- TAB CƯỚC VIỄN THÔNG -->
     <div id="telecomPaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-wifi"></i> CƯỚC MẠNG & INTERNET (NĂM <span id="telecomYearTitle">2026</span>)</div>
-            <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-solid fa-folder-open"></i> Drive</button>
+            <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-brands fa-google-drive"></i> Mở Drive</button>
         </div>
-        
         <div class="kpi-grid" style="margin-bottom: 14px;">
             <div class="kpi-card" style="border-left: 5px solid #0284c7;"><div class="kpi-title">Cước Trước Thuế (Cả Năm)</div><div class="kpi-value" style="color: #0284c7;" id="telecomKpiTruocThue">0</div><div class="kpi-sub">Lũy kế cả năm</div></div>
             <div class="kpi-card" style="border-left: 5px solid #ef4444;"><div class="kpi-title">Thuế VAT (Cả Năm)</div><div class="kpi-value" style="color: #ef4444;" id="telecomKpiVAT">0</div><div class="kpi-sub">Lũy kế cả năm</div></div>
             <div class="kpi-card" style="border-left: 5px solid #16a34a;"><div class="kpi-title">Tổng Thanh Toán (Cả Năm)</div><div class="kpi-value" style="color: #15803d;" id="telecomKpiTongThanhToan">0</div><div class="kpi-sub">Lũy kế cả năm</div></div>
         </div>
-
         <div class="form-card" id="formCardTelecom">
             <input type="hidden" id="editTelecomKey" value="">
             <input type="hidden" id="editTelecomIndex" value="-1">
+            <input type="hidden" id="inputTelecomFileUrl" value="">
             <div class="form-group"><label>Mã HS</label><input type="text" id="inputTelecomMaHs" readonly style="background: #e2e8f0; font-weight: bold;" value="VT-01"></div>
             <div class="form-group"><label>Nhà Mạng</label><select id="inputTelecomSupplier"><option value="VNPT">VNPT</option><option value="Viettel">Viettel</option><option value="Mobifone">Mobifone</option></select></div>
-            <div class="form-group"><label>Loại Cước (Enter để thêm)</label><input type="text" id="inputTelecomType" placeholder="VD: Cáp quang..."></div>
+            <div class="form-group"><label>Loại Cước</label><input type="text" id="inputTelecomType" placeholder="VD: Cáp quang Leased Line..."></div>
             <div class="form-group"><label>Tháng</label><select id="inputTelecomThangChon">
                 <option value="Tháng 01">Tháng 01</option><option value="Tháng 02">Tháng 02</option><option value="Tháng 03">Tháng 03</option><option value="Tháng 04">Tháng 04</option><option value="Tháng 05">Tháng 05</option><option value="Tháng 06">Tháng 06</option><option value="Tháng 07">Tháng 07</option><option value="Tháng 08" selected>Tháng 08</option><option value="Tháng 09">Tháng 09</option><option value="Tháng 10">Tháng 10</option><option value="Tháng 11">Tháng 11</option><option value="Tháng 12">Tháng 12</option>
             </select></div>
             <div class="form-group"><label>Tổng Cước (VAT)</label><input type="text" id="inputTelecomTongVat" placeholder="2.500.000" oninput="tinhTienTelecomTuTong()"></div>
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
-            <div class="form-group"><label>Đính Kèm File</label><input type="file" id="telecomFileUpload" onchange="taiTepLenThuMucChinhXac(this, 'Cước Viễn Thông')" style="padding: 4px; font-size: 11px;"></div>
+            <div class="form-group"><label>Đính Kèm Hóa Đơn lên Drive</label><input type="file" id="telecomFileUpload" onchange="taiTepLenThuMucChinhXac(this, 'Cước Viễn Thông', 'inputTelecomFileUrl')"></div>
             <div class="form-group" style="display: flex; gap: 6px; grid-column: span 2;">
                 <button class="btn btn-green btn-lg" id="btnSaveTelecom" onclick="luuHoacCapNhatTelecom()"><i class="fas fa-plus-circle"></i> <span id="btnTelecomText">THÊM CƯỚC</span></button>
                 <button class="btn btn-red btn-lg hidden" id="btnCancelTelecom" onclick="huyBoCapNhatTelecom()"><i class="fa-solid fa-xmark"></i> Hủy</button>
             </div>
         </div>
-
         <table>
             <thead>
-                <tr>
-                    <th>Mã HS</th><th>Tháng</th><th>Nhà Mạng</th><th>Loại Cước</th><th>Kỳ Cước</th><th>Trước Thuế</th><th>VAT</th><th>Tổng TT</th><th style="text-align:center;">Thao Tác</th>
-                </tr>
+                <tr><th>Mã HS</th><th>Tháng</th><th>Nhà Mạng</th><th>Loại Cước</th><th>Kỳ Cước</th><th>Trước Thuế</th><th>VAT</th><th>Tổng TT</th><th style="text-align:center;">Drive File</th><th style="text-align:center;">Thao Tác</th></tr>
             </thead>
             <tbody id="telecomPaymentTableBody"></tbody>
         </table>
     </div>
 
-    <!-- TAB 12: KHẢO SÁT CHUYÊN SÂU -->
+    <!-- TAB KHẢO SÁT THIẾT BỊ -->
     <div id="surveyTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-clipboard-check"></i> KHẢO SÁT THIẾT BỊ, OS & PHẦN MỀM NGHIỆP VỤ</div>
-            <div style="display: flex; gap: 8px;">
-                <button class="btn btn-purple" onclick="moModalNhapHangLoatKhaoSat()"><i class="fa-solid fa-file-import"></i> Nhập</button>
-                <button class="btn btn-green" onclick="xuatExcelBaoCaoKhaoSat()"><i class="fa-solid fa-file-excel"></i> Xuất</button>
-            </div>
+            <button class="btn btn-green" onclick="xuatToanBoHeThongExcel()"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
         </div>
-
         <div style="margin-bottom: 12px; background: #f8fafc; border: 1px solid var(--border-color); padding: 12px; border-radius: 10px; font-size: 12px; font-weight: 700; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
             <div><b>💻 Tổng thiết bị:</b> <span id="statSurveyTotal" style="color: #0284c7; font-weight: 900;">0</span></div>
             <div><b>⚠️ Chưa bản quyền:</b> <span id="statSurveyUnlicensed" style="color: #dc2626; font-weight: 900;">0</span></div>
-            <div><b>📊 Tích hợp phần mềm:</b> <span style="color: #16a34a; font-weight: 900;">AutoCAD, SolidWorks, Cloudoffice, Asia, MISA, Quasoft</span></div>
+            <div><b>📊 Tích hợp phần mềm:</b> <span style="color: #16a34a; font-weight: 900;">AutoCAD, SolidWorks, Cloudoffice, Asia, MISA</span></div>
         </div>
-
         <div class="form-card" id="formCardSurvey">
             <input type="hidden" id="editSurveyIndex" value="-1">
             <div class="form-group"><label>Mã KS</label><input type="text" id="autoSurveyCode" readonly style="background:#e2e8f0; font-weight:bold;" value="KS-01"></div>
-            <div class="form-group"><label>Người Sử Dụng (Enter để lưu)</label><input type="text" id="inputSurveyUser" placeholder="Họ tên cán bộ..."></div>
+            <div class="form-group"><label>Người Sử Dụng</label><input type="text" id="inputSurveyUser" placeholder="Họ tên cán bộ..."></div>
             <div class="form-group"><label>Bộ Phận</label><input type="text" id="inputSurveyDept" placeholder="Phòng ban..."></div>
-            
             <div class="form-group">
                 <label>Loại Thiết Bị</label>
                 <select id="inputSurveyDeviceName">
-                    <option value="Laptop doanh nghiệp" selected>Laptop doanh nghiệp</option><option value="Laptop cá nhân (BYOD)">Laptop cá nhân (BYOD)</option><option value="Máy tính để bàn (Desktop)">Máy tính để bàn (Desktop)</option><option value="Máy trạm Workstation">Máy trạm Workstation</option><option value="Máy chủ vật lý (Server)">Máy chủ vật lý (Server)</option><option value="Thiết bị di động / Tablet">Thiết bị di động / Tablet</option>
+                    <option value="Laptop doanh nghiệp" selected>Laptop doanh nghiệp</option><option value="Laptop cá nhân (BYOD)">Laptop cá nhân (BYOD)</option><option value="Máy tính để bàn (Desktop)">Máy tính để bàn (Desktop)</option><option value="Máy trạm Workstation">Máy trạm Workstation</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Hệ Điều Hành (OS)</label>
                 <select id="inputSurveyOS">
-                    <option value="Windows 11 Pro" selected>Windows 11 Pro</option><option value="Windows 11 Enterprise">Windows 11 Enterprise</option><option value="Windows 10 Pro">Windows 10 Pro</option><option value="Windows 10 Enterprise">Windows 10 Enterprise</option><option value="macOS Sequoia / Sonoma">macOS Sequoia / Sonoma</option><option value="Ubuntu / Linux">Ubuntu / Linux</option>
+                    <option value="Windows 11 Pro" selected>Windows 11 Pro</option><option value="Windows 10 Pro">Windows 10 Pro</option><option value="macOS Sequoia / Sonoma">macOS Sequoia / Sonoma</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Bản Quyền OS</label>
                 <select id="inputSurveyOSLicense">
                     <option value="✅ Có bản quyền chính hãng" selected>✅ Có bản quyền chính hãng</option><option value="⚠️ Chưa có bản quyền">⚠️ Chưa có bản quyền</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Microsoft Office</label>
                 <select id="inputSurveyOffice">
-                    <option value="Microsoft 365 (Cloud)" selected>Microsoft 365 (Cloud)</option><option value="Microsoft Office 2024 / 2021">Microsoft Office 2024 / 2021</option><option value="Microsoft Office 2019 / 2016">Microsoft Office 2019 / 2016</option><option value="WPS Office / LibreOffice">WPS Office / LibreOffice</option>
+                    <option value="Microsoft 365 (Cloud)" selected>Microsoft 365 (Cloud)</option><option value="Microsoft Office 2021">Microsoft Office 2021</option><option value="WPS Office">WPS Office</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Bản Quyền Office</label>
                 <select id="inputSurveyOfficeLicense">
-                    <option value="✅ Bản quyền Tổng công ty" selected>✅ Bản quyền Tổng công ty</option><option value="✅ Bản quyền cá nhân">✅ Bản quyền cá nhân</option><option value="⚠️ Chưa có bản quyền">⚠️ Chưa có bản quyền</option>
+                    <option value="✅ Bản quyền Tổng công ty" selected>✅ Bản quyền Tổng công ty</option><option value="⚠️ Chưa có bản quyền">⚠️ Chưa có bản quyền</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Phần Mềm Nghiệp Vụ</label>
                 <select id="inputSurveyBusinessSoftware">
-                    <option value="Cloudoffice (Văn thư)" selected>Cloudoffice (Văn thư)</option><option value="AutoCAD (Thiết kế)">AutoCAD (Thiết kế)</option><option value="SolidWorks (Cơ khí 3D)">SolidWorks (Cơ khí 3D)</option><option value="Asia (Kế toán ERP)">Asia (Kế toán ERP)</option><option value="MISA (Kế toán)">MISA (Kế toán)</option><option value="Quasoft (Quản lý CL)">Quasoft (Quản lý CL)</option>
+                    <option value="Cloudoffice (Văn thư)" selected>Cloudoffice (Văn thư)</option><option value="AutoCAD (Thiết kế)">AutoCAD (Thiết kế)</option><option value="SolidWorks (Cơ khí 3D)">SolidWorks (Cơ khí 3D)</option><option value="MISA (Kế toán)">MISA (Kế toán)</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Bản Quyền Nghiệp Vụ</label>
                 <select id="inputSurveyBusinessLicense">
-                    <option value="✅ Có bản quyền chính hãng" selected>✅ Có bản quyền chính hãng</option><option value="⚠️ Chưa có bản quyền">⚠️ Chưa có bản quyền</option><option value="Không áp dụng">Không áp dụng</option>
+                    <option value="✅ Có bản quyền chính hãng" selected>✅ Có bản quyền chính hãng</option><option value="⚠️ Chưa có bản quyền">⚠️ Chưa có bản quyền</option>
                 </select>
             </div>
-
             <div class="form-group"><label>Cấu Hình Chi Tiết</label><input type="text" id="inputSurveySpecs" placeholder="VD: Core i7, RAM 16GB, SSD 512GB"></div>
-            
             <div class="form-group" style="display: flex; gap: 6px;">
                 <button class="btn btn-purple btn-lg" id="btnSaveSurvey" onclick="luuHoacCapNhatKhaoSat()"><i class="fas fa-plus-circle"></i> <span id="btnSurveyText">LƯU</span></button>
                 <button class="btn btn-red btn-lg hidden" id="btnCancelSurvey" onclick="huyBoCapNhatKhaoSat()"><i class="fa-solid fa-xmark"></i> Hủy</button>
             </div>
         </div>
-
         <table>
             <thead>
-                <tr>
-                    <th>Mã KS</th><th>Người Dùng</th><th>Bộ Phận</th><th>Thiết Bị</th><th>HĐH</th><th>BQ OS</th><th>Office</th><th>BQ Office</th><th>Phần Mềm NV</th><th>BQ NV</th><th>Cấu Hình</th><th style="text-align: center;">Thao Tác</th>
-                </tr>
+                <tr><th>Mã KS</th><th>Người Dùng</th><th>Bộ Phận</th><th>Thiết Bị</th><th>HĐH</th><th>BQ OS</th><th>Office</th><th>BQ Office</th><th>Phần Mềm NV</th><th>BQ NV</th><th>Cấu Hình</th><th style="text-align: center;">Thao Tác</th></tr>
             </thead>
             <tbody id="surveyTableBody"></tbody>
         </table>
     </div>
 </div>
 
-<!-- MODAL XEM PHIẾU LƯƠNG NHÂN SỰ -->
+<!-- MODAL PHIẾU LƯƠNG NHÂN SỰ -->
 <div class="modal-overlay hidden" id="previewModal">
     <div class="modal-card" style="max-width: 720px; padding: 0;">
         <div style="padding: 12px 18px; background: #f8fafc; border-bottom: 1px solid #cbd5e1; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;">
             <div style="display: flex; align-items: center; gap: 8px;">
                 <b style="color: #0369a1; text-transform: uppercase; font-size: 13px;"><i class="fa-solid fa-file-invoice-dollar"></i> Phiếu Lương Chuyên Nghiệp</b>
-                <input type="text" id="inputTimKiemNhanSuModal" placeholder="🔍 Tìm kiếm nhân sự..." style="padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 12px; font-weight: bold; width: 170px;" oninput="locDanhSachNhanSuModal(this.value)">
+                <input type="text" id="inputTimKiemNhanSuModal" placeholder="🔍 Tìm nhân sự..." style="padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 12px; font-weight: bold; width: 160px;" oninput="locDanhSachNhanSuModal(this.value)">
             </div>
             <div style="display: flex; gap: 8px; align-items: center;">
                 <select id="selectModalNhanSu" style="padding: 6px 10px; border-radius: 6px; font-weight: bold; font-size: 12px;" onchange="chonNhanSuXemPhieuLuong(this.value)"></select>
                 <button class="btn btn-red" style="padding: 6px 12px;" onclick="document.getElementById('previewModal').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
             </div>
         </div>
-
         <div style="padding: 18px; background: #e2e8f0; max-height: 78vh; overflow-y: auto;">
-            <div id="payslip-capture" class="payslip-container" style="background: white; padding: 24px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); color: #0f172a;">
-                
+            <div id="payslip-capture" style="background: white; padding: 24px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); color: #0f172a;">
                 <div style="text-align: center; border-bottom: 2.5px solid #0f172a; padding-bottom: 14px; margin-bottom: 16px;">
                     <div style="font-size: 11px; text-transform: uppercase; font-weight: 900; letter-spacing: 1px; color: #475569;">TỔNG CÔNG TY GIẤY VIỆT NAM (VINAPACO)</div>
                     <h2 style="font-size: 18px; font-weight: 900; text-transform: uppercase; margin: 6px 0; color: #0369a1;">PHIẾU THANH TOÁN LƯƠNG & CHUYỂN KHOẢN</h2>
                     <div id="slipMonthSub" style="display:inline-block; background:#f0f9ff; color:#0284c7; padding:3px 12px; border-radius:12px; font-size:12px; font-weight: 800; border: 1px solid #bae6fd;">Tháng 08/2026 - Văn phòng TCT</div>
                 </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #f8fafc; padding: 12px; border-radius: 10px; border: 1px solid #cbd5e1; margin-bottom: 14px; font-size: 13px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #f8fafc; padding: 12px; border-radius: 10px; border: 1px solid #cbd5e1; margin-bottom: 14px; font-size: 12px;">
                     <div><span style="font-size: 10px; text-transform: uppercase; color: #475569; font-weight: 800;">Họ và Tên Cán Bộ:</span><div style="font-size: 14px; font-weight: 900; color: #0f172a; margin-top: 2px;" id="slipName">--</div></div>
                     <div><span style="font-size: 10px; text-transform: uppercase; color: #475569; font-weight: 800;">Ngân Hàng & STK:</span><div style="font-size: 13px; font-weight: 900; color: #0284c7; margin-top: 2px;" id="slipBankInfo">--</div></div>
-                    <div><span style="font-size: 10px; text-transform: uppercase; color: #475569; font-weight: 800;">SĐT / Zalo:</span><div style="font-size: 13px; font-weight: 800; color: #0f172a; margin-top: 2px;" id="slipPhone">--</div></div>
-                    <div><span style="font-size: 10px; text-transform: uppercase; color: #475569; font-weight: 800;">Chức Danh / Vị Trí:</span><div style="font-size: 13px; font-weight: 800; color: #0f172a; margin-top: 2px;">Cán bộ quản lý chuyên môn</div></div>
+                    <div><span style="font-size: 10px; text-transform: uppercase; color: #475569; font-weight: 800;">SĐT / Zalo:</span><div style="font-size: 12px; font-weight: 800; color: #0f172a; margin-top: 2px;" id="slipPhone">--</div></div>
+                    <div><span style="font-size: 10px; text-transform: uppercase; color: #475569; font-weight: 800;">Chức Danh:</span><div style="font-size: 12px; font-weight: 800; color: #0f172a; margin-top: 2px;">Cán bộ chuyên môn</div></div>
                 </div>
-
                 <div style="margin-bottom: 14px;">
-                    <div style="font-weight: 900; color: #0369a1; font-size: 12px; text-transform: uppercase; margin-bottom: 6px;"><i class="fa-solid fa-clock-rotate-left"></i> I. Thông Số Chấm Công & Hệ Số Lương</div>
-                    <table style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: center;">
+                    <div style="font-weight: 900; color: #0369a1; font-size: 11px; text-transform: uppercase; margin-bottom: 6px;"><i class="fa-solid fa-clock-rotate-left"></i> I. Thông Số Chấm Công & Hệ Số Lương</div>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 11px; text-align: center;">
                         <thead>
-                            <tr style="background: #f1f5f9;"><th style="padding: 6px; border: 1px solid #cbd5e1;">HSL.CB</th><th style="padding: 6px; border: 1px solid #cbd5e1;">PC.CB</th><th style="padding: 6px; border: 1px solid #cbd5e1;">HSL.CV</th><th style="padding: 6px; border: 1px solid #cbd5e1;">PC.CV</th><th style="padding: 6px; border: 1px solid #cbd5e1;">NC Thực Tế</th><th style="padding: 6px; border: 1px solid #cbd5e1;">Phép (P)</th><th style="padding: 6px; border: 1px solid #cbd5e1;">Lễ (L)</th><th style="padding: 6px; border: 1px solid #cbd5e1;">Hệ Số K</th></tr>
+                            <tr style="background: #f1f5f9;"><th style="padding: 5px; border: 1px solid #cbd5e1;">HSL.CB</th><th style="padding: 5px; border: 1px solid #cbd5e1;">PC.CB</th><th style="padding: 5px; border: 1px solid #cbd5e1;">HSL.CV</th><th style="padding: 5px; border: 1px solid #cbd5e1;">PC.CV</th><th style="padding: 5px; border: 1px solid #cbd5e1;">NC Thực Tế</th><th style="padding: 5px; border: 1px solid #cbd5e1;">Phép (P)</th><th style="padding: 5px; border: 1px solid #cbd5e1;">Lễ (L)</th><th style="padding: 5px; border: 1px solid #cbd5e1;">Hệ Số K</th></tr>
                         </thead>
                         <tbody>
                             <tr style="font-weight: 800; background: #fafafa;">
-                                <td style="padding: 7px; border: 1px solid #cbd5e1;" id="slipHslCb">0</td>
-                                <td style="padding: 7px; border: 1px solid #cbd5e1;" id="slipPcCb">0</td>
-                                <td style="padding: 7px; border: 1px solid #cbd5e1;" id="slipHslCv">0</td>
-                                <td style="padding: 7px; border: 1px solid #cbd5e1;" id="slipPcCv">0</td>
-                                <td style="padding: 7px; border: 1px solid #cbd5e1; color: #0284c7;" id="slipNcTg">22</td>
-                                <td style="padding: 7px; border: 1px solid #cbd5e1; color: #d97706;" id="slipNcP">0</td>
-                                <td style="padding: 7px; border: 1px solid #cbd5e1;" id="slipNcL">0</td>
-                                <td style="padding: 7px; border: 1px solid #cbd5e1; color: #16a34a;" id="slipKht">1.0</td>
+                                <td style="padding: 6px; border: 1px solid #cbd5e1;" id="slipHslCb">0</td>
+                                <td style="padding: 6px; border: 1px solid #cbd5e1;" id="slipPcCb">0</td>
+                                <td style="padding: 6px; border: 1px solid #cbd5e1;" id="slipHslCv">0</td>
+                                <td style="padding: 6px; border: 1px solid #cbd5e1;" id="slipPcCv">0</td>
+                                <td style="padding: 6px; border: 1px solid #cbd5e1; color: #0284c7;" id="slipNcTg">22</td>
+                                <td style="padding: 6px; border: 1px solid #cbd5e1; color: #d97706;" id="slipNcP">0</td>
+                                <td style="padding: 6px; border: 1px solid #cbd5e1;" id="slipNcL">0</td>
+                                <td style="padding: 6px; border: 1px solid #cbd5e1; color: #16a34a;" id="slipKht">1.0</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
                 <div style="margin-bottom: 14px;">
-                    <div style="font-weight: 900; color: #0369a1; font-size: 12px; text-transform: uppercase; margin-bottom: 6px;"><i class="fa-solid fa-calculator"></i> II. Chi Tiết Thu Nhập, Khấu Trừ & Thực Lĩnh</div>
+                    <div style="font-weight: 900; color: #0369a1; font-size: 11px; text-transform: uppercase; margin-bottom: 6px;"><i class="fa-solid fa-calculator"></i> II. Chi Tiết Thu Nhập, Khấu Trừ & Thực Lĩnh</div>
                     <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-                        <thead>
-                            <tr style="background: #f1f5f9;"><th style="padding: 6px 10px; border: 1px solid #cbd5e1; text-align: left; width: 70%;">Nội Dung Khoản Mục</th><th style="padding: 6px 10px; border: 1px solid #cbd5e1; text-align: right; width: 30%;">Số Tiền (VNĐ)</th></tr>
-                        </thead>
+                        <thead><tr style="background: #f1f5f9;"><th style="padding: 6px 10px; border: 1px solid #cbd5e1; text-align: left;">Nội Dung Khoản Mục</th><th style="padding: 6px 10px; border: 1px solid #cbd5e1; text-align: right;">Số Tiền (VNĐ)</th></tr></thead>
                         <tbody>
-                            <tr><td style="padding: 7px 10px; border: 1px solid #cbd5e1;">1. Lương Cơ Bản Thực Tế (L.CB)</td><td style="padding: 7px 10px; border: 1px solid #cbd5e1; text-align: right; font-weight: 800;" id="slipLCB">0</td></tr>
-                            <tr><td style="padding: 7px 10px; border: 1px solid #cbd5e1;">2. Lương Công Việc Thực Tế (L.CV)</td><td style="padding: 7px 10px; border: 1px solid #cbd5e1; text-align: right; font-weight: 800;" id="slipLCV">0</td></tr>
-                            <tr style="background-color: #f0f9ff;"><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 900; color: #0284c7;">3. TỔNG LCB + LCV (GỘP THỰC TẾ)</td><td style="padding: 7px 10px; border: 1px solid #cbd5e1; font-weight: 900; text-align: right; color: #0284c7;" id="slipTongCbCv">0</td></tr>
-                            <tr><td style="padding: 7px 10px; border: 1px solid #cbd5e1;">4. Khấu Trừ BHXH + BHYT (9.5%)</td><td style="padding: 7px 10px; border: 1px solid #cbd5e1; text-align: right; color: #dc2626; font-weight: 800;" id="slipBHXH">0</td></tr>
-                            <tr><td style="padding: 7px 10px; border: 1px solid #cbd5e1;">5. Khấu Trừ BHTN (1%)</td><td style="padding: 7px 10px; border: 1px solid #cbd5e1; text-align: right; color: #dc2626; font-weight: 800;" id="slipBHTN">0</td></tr>
-                            <tr><td style="padding: 7px 10px; border: 1px solid #cbd5e1;">6. Tạm Ứng Giữa Tháng</td><td style="padding: 7px 10px; border: 1px solid #cbd5e1; text-align: right; color: #dc2626; font-weight: 800;" id="slipTamUng">0</td></tr>
+                            <tr><td style="padding: 6px 10px; border: 1px solid #cbd5e1;">1. Lương Cơ Bản Thực Tế (L.CB)</td><td style="padding: 6px 10px; border: 1px solid #cbd5e1; text-align: right; font-weight: 800;" id="slipLCB">0</td></tr>
+                            <tr><td style="padding: 6px 10px; border: 1px solid #cbd5e1;">2. Lương Công Việc Thực Tế (L.CV)</td><td style="padding: 6px 10px; border: 1px solid #cbd5e1; text-align: right; font-weight: 800;" id="slipLCV">0</td></tr>
+                            <tr style="background-color: #f0f9ff;"><td style="padding: 6px 10px; border: 1px solid #cbd5e1; font-weight: 900; color: #0284c7;">3. TỔNG LCB + LCV (GỘP THỰC TẾ)</td><td style="padding: 6px 10px; border: 1px solid #cbd5e1; font-weight: 900; text-align: right; color: #0284c7;" id="slipTongCbCv">0</td></tr>
+                            <tr><td style="padding: 6px 10px; border: 1px solid #cbd5e1;">4. Khấu Trừ BHXH + BHYT (9.5%)</td><td style="padding: 6px 10px; border: 1px solid #cbd5e1; text-align: right; color: #dc2626; font-weight: 800;" id="slipBHXH">0</td></tr>
+                            <tr><td style="padding: 6px 10px; border: 1px solid #cbd5e1;">5. Khấu Trừ BHTN (1%)</td><td style="padding: 6px 10px; border: 1px solid #cbd5e1; text-align: right; color: #dc2626; font-weight: 800;" id="slipBHTN">0</td></tr>
+                            <tr><td style="padding: 6px 10px; border: 1px solid #cbd5e1;">6. Tạm Ứng Giữa Tháng</td><td style="padding: 6px 10px; border: 1px solid #cbd5e1; text-align: right; color: #dc2626; font-weight: 800;" id="slipTamUng">0</td></tr>
                         </tbody>
                     </table>
                 </div>
-
-                <div style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 2px solid #bbf7d0; border-radius: 10px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-                    <span style="font-weight: 900; font-size: 13px; text-transform: uppercase; color: #166534;"><i class="fa-solid fa-circle-check"></i> THỰC LĨNH NET (CHUYỂN KHOẢN):</span>
-                    <span style="font-size: 18px; font-weight: 900; color: #15803d;" id="slipThucLinh">0 VNĐ</span>
+                <div style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 2px solid #bbf7d0; border-radius: 10px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 900; font-size: 12px; text-transform: uppercase; color: #166534;"><i class="fa-solid fa-circle-check"></i> THỰC LĨNH NET (CHUYỂN KHOẢN):</span>
+                    <span style="font-size: 17px; font-weight: 900; color: #15803d;" id="slipThucLinh">0 VNĐ</span>
                 </div>
-
             </div>
         </div>
-
         <div class="modal-actions">
-            <button class="btn btn-zalo btn-lg" onclick="guiPhieuLuongQuaZalo()"><i class="fa-solid fa-paper-plane"></i> 📱 Gửi Zalo PC</button>
+            <button class="btn btn-zalo btn-lg" onclick="guiPhieuLuongQuaZalo()"><i class="fa-solid fa-paper-plane"></i> Gửi Zalo</button>
             <button class="btn btn-green btn-lg" onclick="taiAnhPhieuLuongZalo()"><i class="fa-solid fa-download"></i> Tải Ảnh</button>
             <div style="display: flex; gap: 6px;">
                 <button class="btn btn-blue btn-lg" onclick="chuyenNhanSuModal(-1)"><i class="fa-solid fa-chevron-left"></i> Trước</button>
@@ -1053,6 +889,14 @@
 </div>
 
 <script>
+    let currentNamKey = "2026";
+    let currentThangKey = "Tháng 08";
+    let modalCurrentNvIndex = 0;
+    let cachedWeatherCoords = { lat: 21.3228, lon: 105.3377, cityName: "Phú Thọ" };
+
+    let rootDriveFolderUrl = localStorage.getItem('vinapaco_drive_root_url') || 'https://drive.google.com/drive/u/0/my-drive';
+    let gasWebhookUrl = localStorage.getItem('vinapaco_gas_webhook_url') || 'https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec';
+
     const defaultCoSoDuLieuNamThang = {
         "2026": {
             "Tháng 08": {
@@ -1063,17 +907,7 @@
                     {"stt": 3, "hoTen": "Nguyễn Thị Tuyết Nhung", "sdt": "0988345678", "nganHang": "BIDV", "stk": "0031004567890", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
                     {"stt": 4, "hoTen": "Vũ Thị Thu", "sdt": "0988456789", "nganHang": "Agribank", "stk": "0041005678901", "hsl_cb": 1.94, "pc_cb": 0, "hsl_cv": 1.86, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
                     {"stt": 5, "hoTen": "Đào Thị Liên", "sdt": "0988567890", "nganHang": "VietinBank", "stk": "0051006789012", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
-                    {"stt": 6, "hoTen": "Võ Thị Thanh Tuyền", "sdt": "0988678901", "nganHang": "MB Bank", "stk": "0061007890123", "hsl_cb": 1.71, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 7, "hoTen": "Trần Thị Thanh", "sdt": "0988789012", "nganHang": "ACB", "stk": "0071008901234", "hsl_cb": 1.67, "pc_cb": 0, "hsl_cv": 1.48, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
-                    {"stt": 8, "hoTen": "Trần Đức Chiến", "sdt": "0988890123", "nganHang": "Techcombank", "stk": "0081009012345", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 9, "hoTen": "Phạm Tiến Long", "sdt": "0988901234", "nganHang": "Vietcombank", "stk": "0091000123456", "hsl_cb": 1.80, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
-                    {"stt": 10, "hoTen": "Đinh Hữu Vinh", "sdt": "0988012345", "nganHang": "BIDV", "stk": "0101001234567", "hsl_cb": 1.83, "pc_cb": 0, "hsl_cv": 1.66, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 11, "hoTen": "Bùi Đình Điệp", "sdt": "0987123456", "nganHang": "Agribank", "stk": "0111002345678", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 12, "hoTen": "Hoàng Mạnh Hùng", "sdt": "0987234567", "nganHang": "VietinBank", "stk": "0121003456789", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 13, "hoTen": "Ma Trọng Luận", "sdt": "0987345678", "nganHang": "MB Bank", "stk": "0131004567890", "hsl_cb": 1.35, "pc_cb": 0, "hsl_cv": 1.63, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.1, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 14, "hoTen": "Trần Bình Dương", "sdt": "0987456789", "nganHang": "Vietcombank", "stk": "0141005678901", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 15, "hoTen": "Đặng Trần Trung", "sdt": "0987567890", "nganHang": "Techcombank", "stk": "0151006789012", "hsl_cb": 1.53, "pc_cb": 0, "hsl_cv": 1.62, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 16, "hoTen": "Phạm Huy Chiến", "sdt": "0987678901", "nganHang": "ACB", "stk": "0161007890123", "hsl_cb": 2.26, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12}
+                    {"stt": 6, "hoTen": "Trần Bình Dương", "sdt": "0987456789", "nganHang": "Vietcombank", "stk": "0141005678901", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12}
                 ]
             }
         }
@@ -1082,43 +916,34 @@
     let coSoDuLieuNamThang = JSON.parse(localStorage.getItem('vinapaco_data_namthang')) || defaultCoSoDuLieuNamThang;
     let dsThanhToanVanPhongProByMonth = JSON.parse(localStorage.getItem('vinapaco_vpp')) || {
         "2026_Tháng 08": [
-            { id: "VP-01", beneficiary: "Công ty Văn phòng phẩm Hồng Hà", bankName: "Vietcombank", bankAccount: "0011001234567", content: "Mua giấy A4 và vật tư văn phòng TCT", unit: "Ram (Ream)", qty: 50, price: 65000, truocThue: 3250000, vat: 325000, total: 3575000, date: "2026-08-15" }
+            { id: "VP-01", beneficiary: "Công ty Văn phòng phẩm Hồng Hà", bankName: "Vietcombank", bankAccount: "0011001234567", content: "Mua giấy A4 và vật tư văn phòng TCT", unit: "Ram (Ream)", qty: 50, price: 65000, truocThue: 3250000, vat: 325000, total: 3575000, date: "2026-08-15", fileUrl: rootDriveFolderUrl }
         ]
     };
     let dsThanhToanTelecombyMonth = JSON.parse(localStorage.getItem('vinapaco_telecom')) || {
         "2026_Tháng 08": [
-            { id: "VT-01", supplier: "VNPT", type: "Cáp quang Internet leased line", kyCuoc: "Tháng 08/2026", thangHachToan: "Tháng 08", truocThue: 2272727, vat: 227273, tong: 2500000 }
+            { id: "VT-01", supplier: "VNPT", type: "Cáp quang Internet leased line", kyCuoc: "Tháng 08/2026", thangHachToan: "Tháng 08", truocThue: 2272727, vat: 227273, tong: 2500000, fileUrl: rootDriveFolderUrl }
         ]
     };
-    
-    // MẶC ĐỊNH LÀ RỖNG [] - TỰ NHẬP THỰC TẾ
-    let dsKhoMucIn = JSON.parse(localStorage.getItem('vinapaco_ink')) || [];
-
+    let dsKhoMucIn = JSON.parse(localStorage.getItem('vinapaco_ink')) || [
+        { code: "MUC001", name: "Mực in HP 26A", printer: "HP Pro M402dn", action: "Nhập kho", qty: 10, price: 850000, receiver: "Nhà cung cấp", minMax: "2 / 10", date: "2026-08-10", fileUrl: rootDriveFolderUrl }
+    ];
     let dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('vinapaco_delivery')) || [
-        {"slipNo":"PGN-2026/08-01","from":"Trần Bình Dương","to":"Nguyễn Minh Ngọc","dept":"Kế toán","item":"Laptop Dell Latitude","status":"Mới 100%","date":"2026-08-25"}
+        { slipNo: "PGN-2026/08-01", from: "Trần Bình Dương", to: "Nguyễn Minh Ngọc", dept: "Kế toán", item: "Laptop Dell Latitude", status: "Mới 100%", date: "2026-08-25" }
     ];
     let dsKhaoSatChuyenSau = JSON.parse(localStorage.getItem('vinapaco_survey')) || [
-        {"code":"KS-01","user":"Trần Bình Dương","dept":"Văn phòng TCT","device":"Laptop doanh nghiệp","os":"Windows 11 Pro","osLicense":"✅ Có bản quyền chính hãng","office":"Microsoft 365 (Cloud)","officeLicense":"✅ Bản quyền Tổng công ty","bizSoft":"Cloudoffice (Văn thư)","bizLicense":"✅ Có bản quyền chính hãng","specs":"Core i7, RAM 16GB, SSD 512GB"}
+        { code: "KS-01", user: "Trần Bình Dương", dept: "Văn phòng TCT", device: "Laptop doanh nghiệp", os: "Windows 11 Pro", osLicense: "✅ Có bản quyền chính hãng", office: "Microsoft 365 (Cloud)", officeLicense: "✅ Bản quyền Tổng công ty", bizSoft: "Cloudoffice (Văn thư)", bizLicense: "✅ Có bản quyền chính hãng", specs: "Core i7, RAM 16GB, SSD 512GB" }
     ];
     let danhSachCongViec = JSON.parse(localStorage.getItem('vinapaco_tasks')) || [
-        {"id":1,"name":"Hoàn thiện báo cáo điều hành Tháng 08","assignee":"Trần Bình Dương","dueDate":"2026-08-31","status":"Đang làm"}
+        { id: 1, name: "Hoàn thiện báo cáo điều hành Tháng 08", assignee: "Trần Bình Dương", dueDate: "2026-08-31", status: "Đang làm" }
     ];
     let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('vinapaco_accounts')) || [
-        {"email":"admin@vinapaco.com.vn","password":"123","fullName":"Trần Bình Dương","role":"Admin","status":"Active"}
+        { email: "admin@vinapaco.com.vn", password: "123", fullName: "Trần Bình Dương", role: "Admin", status: "Active" }
     ];
-
-    let currentNamKey = new Date().getFullYear().toString();
-    let currentThangKey = "Tháng 08";
-    let modalCurrentNvIndex = 0;
-    let cachedWeatherCoords = { lat: 21.3228, lon: 105.3377, cityName: "Phú Thọ" };
 
     function parseVNDMoney(val) {
         if (!val) return 0;
         if (typeof val === 'number') return val;
-        let cleaned = String(val).trim().toLowerCase()
-            .replace(/vnđ|vnd|đ|\s/g, '')
-            .replace(/\./g, '')
-            .replace(/,/g, '');
+        let cleaned = String(val).replace(/[^0-9]/g, '');
         let num = parseFloat(cleaned);
         return isNaN(num) ? 0 : Math.round(num);
     }
@@ -1130,41 +955,142 @@
     }
 
     function saveToLocalStorage() {
-        try {
-            localStorage.setItem('vinapaco_data_namthang', JSON.stringify(coSoDuLieuNamThang));
-            localStorage.setItem('vinapaco_vpp', JSON.stringify(dsThanhToanVanPhongProByMonth));
-            localStorage.setItem('vinapaco_telecom', JSON.stringify(dsThanhToanTelecombyMonth));
-            localStorage.setItem('vinapaco_ink', JSON.stringify(dsKhoMucIn));
-            localStorage.setItem('vinapaco_delivery', JSON.stringify(dsPhieuGiaoNhan));
-            localStorage.setItem('vinapaco_survey', JSON.stringify(dsKhaoSatChuyenSau));
-            localStorage.setItem('vinapaco_tasks', JSON.stringify(danhSachCongViec));
-            localStorage.setItem('vinapaco_accounts', JSON.stringify(danhSachTaiKhoanHeThong));
-            tuDongDongBoCloudNgam();
-        } catch(e) {}
+        localStorage.setItem('vinapaco_data_namthang', JSON.stringify(coSoDuLieuNamThang));
+        localStorage.setItem('vinapaco_vpp', JSON.stringify(dsThanhToanVanPhongProByMonth));
+        localStorage.setItem('vinapaco_telecom', JSON.stringify(dsThanhToanTelecombyMonth));
+        localStorage.setItem('vinapaco_ink', JSON.stringify(dsKhoMucIn));
+        localStorage.setItem('vinapaco_delivery', JSON.stringify(dsPhieuGiaoNhan));
+        localStorage.setItem('vinapaco_survey', JSON.stringify(dsKhaoSatChuyenSau));
+        localStorage.setItem('vinapaco_tasks', JSON.stringify(danhSachCongViec));
+        localStorage.setItem('vinapaco_accounts', JSON.stringify(danhSachTaiKhoanHeThong));
+        localStorage.setItem('vinapaco_drive_root_url', rootDriveFolderUrl);
+        localStorage.setItem('vinapaco_gas_webhook_url', gasWebhookUrl);
     }
 
-    let autoSyncTimer = null;
-    function tuDongDongBoCloudNgam() {
-        if (autoSyncTimer) clearTimeout(autoSyncTimer);
-        autoSyncTimer = setTimeout(() => {
-            let gasUrl = document.getElementById('inputGasUrlSetting').value.trim();
-            if (gasUrl) {
-                let payload = {
-                    action: "syncData", namKey: currentNamKey, thangKey: currentThangKey,
-                    dataNamThang: coSoDuLieuNamThang, dataVpp: dsThanhToanVanPhongProByMonth,
-                    dataTelecom: dsThanhToanTelecombyMonth, dataInk: dsKhoMucIn,
-                    dataDelivery: dsPhieuGiaoNhan, dataSurvey: dsKhaoSatChuyenSau,
-                    dataTasks: danhSachCongViec, timestamp: new Date().toISOString()
-                };
-                fetch(gasUrl, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) }).catch(e => {});
-            }
-        }, 1500);
+    function luuCauHinhDriveUrl() {
+        let inputUrl = document.getElementById('inputDriveRootFolderUrl').value.trim();
+        let gasUrl = document.getElementById('inputGasUrlSetting').value.trim();
+        if (inputUrl) rootDriveFolderUrl = inputUrl;
+        if (gasUrl) gasWebhookUrl = gasUrl;
+        saveToLocalStorage();
+        alert("✅ Đã lưu cấu hình Drive & GAS thành công!");
+    }
+
+    function moThuThucDriveChung() {
+        let driveUrl = document.getElementById('inputDriveRootFolderUrl').value.trim() || rootDriveFolderUrl;
+        if (!driveUrl.startsWith('http://') && !driveUrl.startsWith('https://')) driveUrl = 'https://' + driveUrl;
+        window.open(driveUrl, '_blank');
+    }
+
+    function taiTepLenThuMucChinhXac(inputElement, categoryName, hiddenUrlInputId) {
+        let file = inputElement.files[0];
+        if (!file) return;
+
+        let statusBar = document.getElementById('driveUploadStatusBar');
+        let statusTitle = document.getElementById('uploadStatusTitle');
+        let statusPercent = document.getElementById('uploadStatusPercentText');
+        let progressFill = document.getElementById('uploadProgressFillBar');
+
+        statusBar.classList.remove('hidden');
+        progressFill.style.width = '10%';
+        statusPercent.innerText = '10%';
+        statusTitle.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang đọc file "${file.name}"...`;
+
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            let base64Content = e.target.result.split(',')[1];
+            let payload = {
+                action: "uploadFile",
+                year: currentNamKey,
+                month: currentThangKey,
+                category: categoryName,
+                fileName: file.name,
+                mimeType: file.type,
+                fileData: base64Content
+            };
+
+            statusTitle.innerHTML = `<i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> Đang tải file lên Google Drive...`;
+            progressFill.style.width = '50%';
+            statusPercent.innerText = '50%';
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", gasWebhookUrl, true);
+            xhr.setRequestHeader("Content-Type", "text/plain;charset=utf-8");
+
+            xhr.upload.onprogress = function(event) {
+                if (event.lengthComputable) {
+                    let percent = 50 + Math.round((event.loaded / event.total) * 45);
+                    progressFill.style.width = percent + '%';
+                    statusPercent.innerText = percent + '%';
+                }
+            };
+
+            xhr.onload = function() {
+                progressFill.style.width = '100%';
+                statusPercent.innerText = '100%';
+                let generatedLink = rootDriveFolderUrl;
+                try {
+                    let response = JSON.parse(xhr.responseText);
+                    if (response && response.fileUrl) generatedLink = response.fileUrl;
+                } catch(err) {}
+
+                statusTitle.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#22c55e;"></i> Đã lưu file lên Google Drive thành công!`;
+                if (hiddenUrlInputId && document.getElementById(hiddenUrlInputId)) document.getElementById(hiddenUrlInputId).value = generatedLink;
+                setTimeout(() => { statusBar.classList.add('hidden'); }, 2500);
+            };
+
+            xhr.onerror = function() {
+                statusTitle.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi Webhook! Gán link Drive mặc định.`;
+                if (hiddenUrlInputId && document.getElementById(hiddenUrlInputId)) document.getElementById(hiddenUrlInputId).value = rootDriveFolderUrl;
+                setTimeout(() => { statusBar.classList.add('hidden'); }, 2500);
+            };
+
+            xhr.send(JSON.stringify(payload));
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+    async function thuCongDongBoLenDrive() {
+        let gasUrl = document.getElementById('inputGasUrlSetting').value.trim() || gasWebhookUrl;
+        let statusBar = document.getElementById('driveUploadStatusBar');
+        let statusTitle = document.getElementById('uploadStatusTitle');
+        let statusPercent = document.getElementById('uploadStatusPercentText');
+        let progressFill = document.getElementById('uploadProgressFillBar');
+        statusBar.classList.remove('hidden');
+
+        statusTitle.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang đóng gói dữ liệu toàn hệ thống...`;
+        progressFill.style.width = "20%";
+        statusPercent.innerText = "20%";
+
+        let payload = {
+            action: "syncData", namKey: currentNamKey, thangKey: currentThangKey,
+            dataNamThang: coSoDuLieuNamThang, dataVpp: dsThanhToanVanPhongProByMonth,
+            dataTelecom: dsThanhToanTelecombyMonth, dataInk: dsKhoMucIn,
+            dataDelivery: dsPhieuGiaoNhan, dataSurvey: dsKhaoSatChuyenSau,
+            dataTasks: danhSachCongViec, timestamp: new Date().toISOString()
+        };
+
+        setTimeout(() => {
+            statusTitle.innerHTML = `<i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> Đang đẩy dữ liệu lên Google Cloud...`;
+            progressFill.style.width = "65%";
+            statusPercent.innerText = "65%";
+        }, 400);
+
+        try {
+            await fetch(gasUrl, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
+            progressFill.style.width = "100%";
+            statusPercent.innerText = "100%";
+            statusTitle.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#22c55e;"></i> Đồng bộ dữ liệu thành công!`;
+            setTimeout(() => { statusBar.classList.add('hidden'); }, 2500);
+        } catch (error) { 
+            statusTitle.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi đồng bộ: ${error.message}`; 
+            setTimeout(() => { statusBar.classList.add('hidden'); }, 2500);
+        }
     }
 
     async function taiDuLieuTuDongTuGas() {
-        let gasUrl = document.getElementById('inputGasUrlSetting').value.trim();
-        if (!gasUrl) { alert("Vui lòng nhập GAS Webhook URL!"); return; }
-        
+        let gasUrl = document.getElementById('inputGasUrlSetting').value.trim() || gasWebhookUrl;
         try {
             let res = await fetch(gasUrl + "?action=getData");
             let data = await res.json();
@@ -1179,95 +1105,14 @@
                 
                 saveToLocalStorage();
                 capNhat();
-                alert("✅ Đã tải và đồng bộ dữ liệu mới nhất từ Cloud thành công!");
+                alert("✅ Đã tải dữ liệu mới nhất từ Cloud thành công!");
             }
         } catch(err) {
-            alert("⚠️ Đang dùng bản dữ liệu hiện tại trên thiết bị.");
+            alert("⚠️ Không thể tải từ GAS, đang dùng dữ liệu lưu tạm trên máy.");
         }
     }
 
-    async function thuCongDongBoLenDrive() {
-        let gasUrl = document.getElementById('inputGasUrlSetting').value.trim();
-        if (!gasUrl) { alert("Vui lòng nhập GAS Webhook URL!"); return; }
-
-        let statusBar = document.getElementById('driveUploadStatusBar');
-        let statusTitle = document.getElementById('uploadStatusTitle');
-        let statusPercent = document.getElementById('uploadStatusPercentText');
-        let progressFill = document.getElementById('uploadProgressFillBar');
-        statusBar.classList.remove('hidden');
-
-        statusTitle.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang chuẩn bị gói dữ liệu...`;
-        progressFill.style.width = "20%";
-        statusPercent.innerText = "20%";
-
-        let payload = {
-            action: "syncData", namKey: currentNamKey, thangKey: currentThangKey,
-            dataNamThang: coSoDuLieuNamThang, dataVpp: dsThanhToanVanPhongProByMonth,
-            dataTelecom: dsThanhToanTelecombyMonth, dataInk: dsKhoMucIn,
-            dataDelivery: dsPhieuGiaoNhan, dataSurvey: dsKhaoSatChuyenSau,
-            dataTasks: danhSachCongViec, timestamp: new Date().toISOString()
-        };
-
-        setTimeout(() => {
-            statusTitle.innerHTML = `<i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> Đang đẩy dữ liệu lên Google Drive...`;
-            progressFill.style.width = "65%";
-            statusPercent.innerText = "65%";
-        }, 400);
-
-        try {
-            await fetch(gasUrl, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
-            progressFill.style.width = "100%";
-            statusPercent.innerText = "100%";
-            statusTitle.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#22c55e;"></i> Đồng bộ hệ thống lên Google Drive thành công!`;
-            setTimeout(() => { statusBar.classList.add('hidden'); }, 3500);
-        } catch (error) { 
-            statusTitle.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi đồng bộ: ${error.message}`; 
-        }
-    }
-
-    async function taiTepLenThuMucChinhXac(inputElement, tabCategoryName) {
-        let file = inputElement.files[0];
-        if (!file) return;
-
-        let gasUrl = document.getElementById('inputGasUrlSetting').value.trim();
-        if (!gasUrl) { alert("Vui lòng cấu hình GAS Webhook URL trước!"); return; }
-
-        let statusBar = document.getElementById('driveUploadStatusBar');
-        let statusTitle = document.getElementById('uploadStatusTitle');
-        let statusPercent = document.getElementById('uploadStatusPercentText');
-        let progressFill = document.getElementById('uploadProgressFillBar');
-        statusBar.classList.remove('hidden');
-
-        statusTitle.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang đọc file "${file.name}"...`;
-        progressFill.style.width = "25%";
-        statusPercent.innerText = "25%";
-
-        let reader = new FileReader();
-        reader.onload = async function(e) {
-            let base64Content = e.target.result.split(',')[1];
-            let payload = {
-                action: "uploadFile", year: currentNamKey, month: currentThangKey,
-                category: tabCategoryName, fileName: file.name, mimeType: file.type, fileData: base64Content
-            };
-
-            statusTitle.innerHTML = `<i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> Đang tải file lên thư mục [${tabCategoryName}] trên Drive...`;
-            progressFill.style.width = "70%";
-            statusPercent.innerText = "70%";
-
-            try {
-                await fetch(gasUrl, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
-                progressFill.style.width = "100%";
-                statusPercent.innerText = "100%";
-                statusTitle.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#22c55e;"></i> Đã tải file lên Drive thành công!`;
-                setTimeout(() => { statusBar.classList.add('hidden'); }, 3500);
-            } catch (err) { 
-                statusTitle.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi tải file: ${err.message}`; 
-            }
-        };
-        reader.readAsDataURL(file);
-    }
-
-    // LỊCH VẠN NIÊN & PHONG THỦY CHUẨN XÁC PRO
+    // LỊCH VẠN NIÊN PRO
     const canList = ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"];
     const chiList = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
     
@@ -1284,41 +1129,30 @@
         while (lunarDay < 1) { lunarDay += 29; lunarMonth--; if (lunarMonth < 1) { lunarMonth = 12; lunarYear--; } }
 
         let canYear = canList[(yy + 6) % 10] + " " + chiList[(yy + 8) % 12];
-        let canMonth = canList[(yy * 12 + mm + 3) % 10] + " " + chiList[(mm + 1) % 12];
         let dayOfYear = Math.floor((baseDate - new Date(yy, 0, 1)) / 86400000);
         let canDay = canList[(dayOfYear + 4) % 10] + " " + chiList[(dayOfYear + 2) % 12];
-        
         let isHoangDao = (dd + mm) % 2 === 0;
+
         return {
             day: lunarDay, month: lunarMonth, year: lunarYear,
-            canChiNam: canYear, canChiThang: canMonth, canChiNgay: canDay,
-            nguHanh: yy === 2026 ? "Lộ Bàng Thổ (Đất ven đường)" : "Hải Trung Kim",
-            tietKhi: mm === 8 ? "Xử Thử / Lập Thu" : "Kinh Trập / Xuân Phân",
-            truc: isHoangDao ? "Trực Khai (Cát: Mở mang)" : "Trực Phá (Hung: Kỵ ký kết)",
-            star: isHoangDao ? "Sao Giác - Đại Cát" : "Sao Nguy - Hung",
-            hoangDaoName: isHoangDao ? "Thanh Long Hoàng Đạo (Tốt)" : "Bạch Hổ Hắc Đạo (Xấu)",
+            canChiNam: canYear, canChiNgay: canDay,
+            hoangDaoName: isHoangDao ? "Hoàng Đạo (Cát)" : "Hắc Đạo (Hung)",
             isHoangDao: isHoangDao,
-            conflict: `Tuổi xung khắc: ${chiList[(dayOfYear)%12]} - ${chiList[(dayOfYear+6)%12]}`,
-            goodHours: "Tý (23-1), Sửu (1-3), Mão (5-7), Ngọ (11-13), Thân (15-17)",
-            taiThan: "Hướng Đông Nam",
-            hylThan: "Hướng Tây Bắc",
-            doList: isHoangDao ? "Ký kết hợp đồng, giao dịch tài chính, khai trương, xuất hành." : "Dọn dẹp kho tàng, bảo trì thiết bị, chữa bệnh.",
-            dontList: isHoangDao ? "Kiện tụng kéo dài, tranh chấp." : "Khai trương lớn, đầu tư tài chính trọng đại."
+            goodHours: "Tý (23-1), Sửu (1-3), Mão (5-7), Ngọ (11-13)",
+            doList: isHoangDao ? "Ký kết hợp đồng, giao dịch tài chính, xuất hành." : "Bảo trì thiết bị, dọn dẹp kho tàng.",
+            dontList: isHoangDao ? "Tranh chấp, kiện tụng." : "Khai trương lớn, đầu tư rủi ro."
         };
     }
 
-    let ngayLichDangChon = { d: new Date().getDate(), m: new Date().getMonth() + 1, y: new Date().getFullYear() };
+    let ngayLichDangChon = { d: 25, m: 8, y: 2026 };
 
     function moModalLichVanNien() {
         let selThang = document.getElementById('lichThangSelect');
-        if (selThang) {
-            selThang.innerHTML = "";
-            ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"].forEach((t, idx) => {
-                selThang.innerHTML += `<option value="${idx + 1}" ${idx + 1 === ngayLichDangChon.m ? 'selected' : ''}>${t}</option>`;
-            });
+        let selNam = document.getElementById('lichNamSelect');
+        if (selThang && selThang.children.length === 0) {
+            for (let m = 1; m <= 12; m++) selThang.innerHTML += `<option value="${m}" ${m===8?'selected':''}>Tháng ${m}</option>`;
+            for (let y = 2025; y <= 2028; y++) selNam.innerHTML += `<option value="${y}" ${y===2026?'selected':''}>Năm ${y}</option>`;
         }
-        let namSelect = document.getElementById('lichNamSelect');
-        if (namSelect) namSelect.value = ngayLichDangChon.y;
         document.getElementById('modalLichVanNien').classList.remove('hidden');
         renderLichGridPro();
     }
@@ -1334,25 +1168,23 @@
     function renderLichGridPro() {
         let grid = document.getElementById('lichGridContainer');
         if (!grid) return; grid.innerHTML = "";
-        let m = parseInt(document.getElementById('lichThangSelect').value);
-        let y = parseInt(document.getElementById('lichNamSelect').value);
+        let m = parseInt(document.getElementById('lichThangSelect').value) || 8;
+        let y = parseInt(document.getElementById('lichNamSelect').value) || 2026;
         let daysInMonth = new Date(y, m, 0).getDate();
         let firstDay = new Date(y, m - 1, 1).getDay();
 
         for (let i = 0; i < firstDay; i++) grid.innerHTML += '<div></div>';
 
-        let now = new Date();
         for (let d = 1; d <= daysInMonth; d++) {
             let lunar = convertSolar2LunarPro(d, m, y);
-            let isToday = (d === now.getDate() && m === (now.getMonth() + 1) && y === now.getFullYear());
+            let isToday = (d === 25 && m === 8 && y === 2026);
             let isSelected = (d === ngayLichDangChon.d && m === ngayLichDangChon.m && y === ngayLichDangChon.y);
             let classes = "lich-day-tile" + (isToday ? " today" : "") + (isSelected ? " selected" : "");
-            let badgeColor = lunar.isHoangDao ? "color:#15803d; font-weight:800;" : "color:#dc2626;";
 
             grid.innerHTML += `<div class="${classes}" onclick="chonNgayLichPro(${d}, ${m}, ${y})">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:13px; color:#0f172a;">${d}</b>
-                    <span style="font-size:8px; ${badgeColor}">${lunar.isHoangDao?'Tốt':'Xấu'}</span>
+                    <b style="font-size:12px; color:#0f172a;">${d}</b>
+                    <span style="font-size:9px; color:${lunar.isHoangDao?'#15803d':'#dc2626'}; font-weight:800;">${lunar.isHoangDao?'Tốt':'Xấu'}</span>
                 </div>
                 <div style="color:#16a34a; font-weight:800; font-size:9px;">Âm: ${lunar.day}/${lunar.month}</div>
             </div>`;
@@ -1369,23 +1201,19 @@
         if (badgeEl) badgeEl.innerText = `${d}/${m}/${y}`;
         if (box) {
             box.innerHTML = `
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-sun" style="color:#d97706;"></i> Dương Lịch:</div><div class="fengshui-val"><b>Ngày ${d}/${m}/${y}</b></div></div>
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-moon" style="color:#0284c7;"></i> Âm Lịch:</div><div class="fengshui-val"><b style="color:#0284c7;">Ngày ${lunar.day}/${lunar.month} (${lunar.canChiNam})</b></div></div>
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-layer-group"></i> Can Chi Ngày:</div><div class="fengshui-val"><b>${lunar.canChiNgay}</b></div></div>
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-shield-halved"></i> Cát/Hung:</div><div class="fengshui-val" style="font-weight:900; color:${lunar.isHoangDao?'#15803d':'#dc2626'};">${lunar.hoangDaoName}</div></div>
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-fire"></i> Ngũ Hành:</div><div class="fengshui-val"><b>${lunar.nguHanh}</b></div></div>
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-triangle-exclamation" style="color:#dc2626;"></i> Xung Khắc:</div><div class="fengshui-val" style="color:#dc2626;">${lunar.conflict}</div></div>
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-clock"></i> Giờ Hoàng Đạo:</div><div class="fengshui-val" style="font-size:11px; color:#0369a1;">${lunar.goodHours}</div></div>
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-location-arrow"></i> Xuất Hành:</div><div class="fengshui-val" style="font-size:11px;">Tài thần: <b>${lunar.taiThan}</b> | Hỷ thần: <b>${lunar.hylThan}</b></div></div>
-                <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; padding:6px; margin-top:2px;">
-                    <div style="font-weight:800; color:#166534; font-size:11px;"><i class="fa-solid fa-circle-check"></i> VIỆC NÊN LÀM:</div>
-                    <div style="font-size:11px; color:#15803d; font-weight:700;">${lunar.doList}</div>
+                <div class="fengshui-item"><div class="fengshui-label">☀️ Dương Lịch:</div><div class="fengshui-val"><b>${d}/${m}/${y}</b></div></div>
+                <div class="fengshui-item"><div class="fengshui-label">🌙 Âm Lịch:</div><div class="fengshui-val"><b style="color:#0284c7;">${lunar.day}/${lunar.month} (${lunar.canChiNam})</b></div></div>
+                <div class="fengshui-item"><div class="fengshui-label">☯️ Can Chi Ngày:</div><div class="fengshui-val"><b>${lunar.canChiNgay}</b></div></div>
+                <div class="fengshui-item"><div class="fengshui-label">🛡️ Cát / Hung:</div><div class="fengshui-val" style="color:${lunar.isHoangDao?'#15803d':'#dc2626'}; font-weight:bold;">${lunar.hoangDaoName}</div></div>
+                <div class="fengshui-item"><div class="fengshui-label">⏰ Giờ Hoàng Đạo:</div><div class="fengshui-val">${lunar.goodHours}</div></div>
+                <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; padding:6px; margin-top:4px;">
+                    <div style="font-weight:800; color:#166534; font-size:11px;">✅ VIỆC NÊN LÀM:</div>
+                    <div style="font-size:11px; color:#15803d;">${lunar.doList}</div>
                 </div>
-                <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:6px; padding:6px; margin-top:2px;">
-                    <div style="font-weight:800; color:#991b1b; font-size:11px;"><i class="fa-solid fa-circle-xmark"></i> VIỆC KIÊNG KỴ:</div>
-                    <div style="font-size:11px; color:#dc2626; font-weight:700;">${lunar.dontList}</div>
-                </div>
-            `;
+                <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:6px; padding:6px; margin-top:4px;">
+                    <div style="font-weight:800; color:#991b1b; font-size:11px;">❌ VIỆC KIÊNG KỴ:</div>
+                    <div style="font-size:11px; color:#dc2626;">${lunar.dontList}</div>
+                </div>`;
         }
     }
 
@@ -1397,18 +1225,7 @@
 
     function khoiTaoDanhSachNamTuSinh() {
         let el = document.getElementById('cfgNamChon');
-        let lichNam = document.getElementById('lichNamSelect');
-        let currentYear = new Date().getFullYear();
-        let startYear = 2025;
-        let endYear = Math.max(2028, currentYear + 3);
-        
-        let optionsHTML = '';
-        for (let y = startYear; y <= endYear; y++) {
-            optionsHTML += `<option value="${y}" ${y === currentYear ? 'selected' : ''}>${y}</option>`;
-        }
-        if (el) el.innerHTML = optionsHTML;
-        if (lichNam) lichNam.innerHTML = optionsHTML;
-        currentNamKey = currentYear.toString();
+        if (el) el.innerHTML = `<option value="2026" selected>2026</option><option value="2027">2027</option>`;
     }
 
     function doiThangHoSoLuong() {
@@ -1422,7 +1239,7 @@
 
         if (!coSoDuLieuNamThang[currentNamKey]) coSoDuLieuNamThang[currentNamKey] = {};
         if (!coSoDuLieuNamThang[currentNamKey][currentThangKey]) {
-            coSoDuLieuNamThang[currentNamKey][currentThangKey] = JSON.parse(JSON.stringify(defaultCoSoDuLieuNamThang["2026"] ? defaultCoSoDuLieuNamThang["2026"]["Tháng 08"] : Object.values(Object.values(defaultCoSoDuLieuNamThang)[0])[0]));
+            coSoDuLieuNamThang[currentNamKey][currentThangKey] = JSON.parse(JSON.stringify(defaultCoSoDuLieuNamThang["2026"]["Tháng 08"]));
         }
 
         let monthData = coSoDuLieuNamThang[currentNamKey][currentThangKey];
@@ -1571,25 +1388,18 @@
         let totalTelecomYear = yearTelecom.reduce((s, i) => s + (i.tong || 0), 0);
         let ds = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey]) ? coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu : [];
         let totalTamUng = ds.reduce((sum, i) => sum + (i.tam_ung || 0), 0);
-        
-        // TÍNH TỒN KHO MỰC IN TỰ ĐỘNG TỪ DỮ LIỆU THỰC TẾ
+
         let itemMap = {};
         dsKhoMucIn.forEach(item => {
             let key = (item.name || '').trim().toLowerCase();
             if (!itemMap[key]) itemMap[key] = { dauKy: 0, nhap: 0, xuat: 0 };
             let act = (item.action || '').trim();
-            if (act.includes('Đầu kỳ')) {
-                itemMap[key].dauKy += (item.qty || 0);
-            } else if (act.includes('Nhập')) {
-                itemMap[key].nhap += (item.qty || 0);
-            } else if (act.includes('Xuất')) {
-                itemMap[key].xuat += (item.qty || 0);
-            }
+            if (act.includes('Đầu kỳ')) itemMap[key].dauKy += (item.qty || 0);
+            else if (act.includes('Nhập')) itemMap[key].nhap += (item.qty || 0);
+            else if (act.includes('Xuất')) itemMap[key].xuat += (item.qty || 0);
         });
         let totalStockInk = 0;
-        for(let k in itemMap) {
-            totalStockInk += (itemMap[k].dauKy + itemMap[k].nhap - itemMap[k].xuat);
-        }
+        for(let k in itemMap) totalStockInk += (itemMap[k].dauKy + itemMap[k].nhap - itemMap[k].xuat);
 
         if (document.getElementById("kpiTotalNet")) document.getElementById("kpiTotalNet").innerText = totalYearNet.toLocaleString('vi-VN');
         if (document.getElementById("kpiTotalBankTransfer")) document.getElementById("kpiTotalBankTransfer").innerText = totalYearNet.toLocaleString('vi-VN');
@@ -1613,7 +1423,6 @@
 
         let selMonthData = yearData[currentThangKey] ? yearData[currentThangKey].nhansu : [];
         let totalNetSel = selMonthData.reduce((sum, i) => sum + (i.thucLinhCuoiCung || 0), 0);
-        let totalLcbSel = selMonthData.reduce((sum, i) => sum + (i.tongLCB || 0), 0);
         let totalLcvSel = selMonthData.reduce((sum, i) => sum + (i.luongCVTT || 0), 0);
         let totalDeductSel = selMonthData.reduce((sum, i) => sum + (i.bhxh || 0) + (i.bhtn || 0) + (i.tam_ung || 0), 0);
 
@@ -1646,7 +1455,7 @@
         let tbody = document.getElementById('accountTableBody');
         if(!tbody) return; tbody.innerHTML = '';
         danhSachTaiKhoanHeThong.forEach((acc, idx) => {
-            tbody.innerHTML += `<tr><td style="text-align:center;">${idx + 1}</td><td><b>${acc.email}</b></td><td>${acc.fullName}</td><td style="text-align:center;"><span class="badge-net">${acc.role}</span></td><td style="text-align:center;"><span class="badge-net">${acc.status}</span></td><td style="text-align:center;"><button class="btn btn-red" style="padding:4px 8px; font-size:11px;" onclick="xoaTaiKhoan(${idx})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+            tbody.innerHTML += `<tr><td style="text-align:center;">${idx + 1}</td><td><b>${acc.email}</b></td><td>${acc.fullName}</td><td style="text-align:center;"><span class="badge-net">${acc.role}</span></td><td style="text-align:center;"><span class="badge-net">${acc.status}</span></td><td style="text-align:center;"><button class="btn btn-red" style="padding:3px 6px; font-size:11px;" onclick="xoaTaiKhoan(${idx})"><i class="fa-solid fa-trash"></i></button></td></tr>`;
         });
     }
 
@@ -1686,10 +1495,9 @@
             tbody.innerHTML += `<tr>
                 <td style="text-align:center;">${idx+1}</td><td><b>${item.hoTen}</b></td>
                 <td><input class="cell-input" type="text" value="${item.sdt || ''}" onchange="updateStaffField(${idx}, 'sdt', this.value)"></td>
-                <td><input class="cell-input" type="text" value="${item.nganHang || ''}" placeholder="Nhập NH..." onchange="updateStaffField(${idx}, 'nganHang', this.value)"></td>
-                <td><input class="cell-input" type="text" value="${item.stk || ''}" placeholder="Nhập STK..." onchange="updateStaffField(${idx}, 'stk', this.value)"></td>
-                <td style="text-align:center;">${item.hsl_cb}</td>
-                <td style="text-align:center;">${pcCbVal}</td>
+                <td><input class="cell-input" type="text" value="${item.nganHang || ''}" onchange="updateStaffField(${idx}, 'nganHang', this.value)"></td>
+                <td><input class="cell-input" type="text" value="${item.stk || ''}" onchange="updateStaffField(${idx}, 'stk', this.value)"></td>
+                <td style="text-align:center;">${item.hsl_cb}</td><td style="text-align:center;">${pcCbVal}</td>
                 <td style="text-align:right;">${item.luongHDLD.toLocaleString()}</td><td style="text-align:right;">${item.luongCBThang.toLocaleString()}</td>
                 <td style="text-align:center;">${item.nc_tg}</td><td style="text-align:center;">${item.nc_p||0}</td><td style="text-align:center;">${item.nc_l||0}</td>
                 <td style="text-align:center;">${item.k_ht||1.0}</td><td style="text-align:right;">${item.luongCBTG.toLocaleString()}</td>
@@ -1709,10 +1517,9 @@
             let pcCvVal = (item.hoTen === "Nguyễn Minh Ngọc") ? (item.pc_cv || 0) : 0;
             tbody.innerHTML += `<tr>
                 <td style="text-align:center;">${idx+1}</td><td><b>${item.hoTen}</b></td>
-                <td><input class="cell-input" type="text" value="${item.nganHang || ''}" placeholder="Nhập NH..." onchange="updateStaffField(${idx}, 'nganHang', this.value)"></td>
-                <td><input class="cell-input" type="text" value="${item.stk || ''}" placeholder="Nhập STK..." onchange="updateStaffField(${idx}, 'stk', this.value)"></td>
-                <td style="text-align:center;">${item.hsl_cv}</td>
-                <td style="text-align:center;">${pcCvVal}</td>
+                <td><input class="cell-input" type="text" value="${item.nganHang || ''}" onchange="updateStaffField(${idx}, 'nganHang', this.value)"></td>
+                <td><input class="cell-input" type="text" value="${item.stk || ''}" onchange="updateStaffField(${idx}, 'stk', this.value)"></td>
+                <td style="text-align:center;">${item.hsl_cv}</td><td style="text-align:center;">${pcCvVal}</td>
                 <td style="text-align:right;">${item.luongCVGoc.toLocaleString()}</td><td style="text-align:center;">${item.nc_tg}</td>
                 <td style="text-align:center;">${item.nc_p||0}</td><td style="text-align:center;">${item.nc_l||0}</td><td style="text-align:center;">${item.k_ht||1.0}</td>
                 <td style="text-align:right; font-weight:bold;">${item.luongCVTT.toLocaleString()}</td>
@@ -1720,7 +1527,7 @@
                 <td><input class="cell-input money-input" type="text" value="${(item.tam_ung||0).toLocaleString()}" onchange="updateStaffField(${idx}, 'tam_ung', this.value)"></td>
                 <td style="text-align:right; font-weight:bold;">${item.thucLinhCV.toLocaleString()}</td>
                 <td style="text-align:right;"><span class="badge-net">${item.thucLinhCuoiCung.toLocaleString()}</span></td>
-                <td style="text-align:center;"><button class="btn btn-zalo" style="padding:5px 10px;" onclick="moModalPhiieuLuongTheoTen('${item.hoTen}')"><i class="fa-solid fa-paper-plane"></i> Zalo</button></td>
+                <td style="text-align:center;"><button class="btn btn-zalo" style="padding:4px 8px; font-size:11px;" onclick="moModalPhiieuLuongTheoTen('${item.hoTen}')"><i class="fa-solid fa-paper-plane"></i> Zalo</button></td>
             </tr>`;
         });
     }
@@ -1728,13 +1535,11 @@
     function renderLeaveTable() {
         let tbody = document.getElementById("leaveTableBody");
         if(!tbody) return; tbody.innerHTML = "";
-        let totalPhepCap = 0, totalPhepDung = 0;
         let dsData = coSoDuLieuNamThang[currentNamKey] ? coSoDuLieuNamThang[currentNamKey][currentThangKey] : null;
         if (!dsData) return;
         dsData.nhansu.forEach((item, idx) => {
             let phepCap = item.phep_cap || 12;
             let luyKe = layTongLuyKePhepDaNghi(item.hoTen);
-            totalPhepCap += phepCap; totalPhepDung += luyKe.totalP;
             let conLai = phepCap - luyKe.totalP;
             tbody.innerHTML += `<tr>
                 <td style="text-align:center;">${idx+1}</td><td><b>${item.hoTen}</b></td>
@@ -1749,16 +1554,18 @@
         let tbody = document.getElementById('officePaymentTableBody');
         if(!tbody) return; tbody.innerHTML = '';
         layTatCaDanhSachVPPTheoNam().forEach(item => {
+            let driveBtn = item.fileUrl ? `<a href="${item.fileUrl}" target="_blank" class="btn btn-blue" style="padding:3px 6px; font-size:10px;"><i class="fa-brands fa-google-drive"></i> File Drive</a>` : '--';
             tbody.innerHTML += `<tr>
                 <td style="text-align:center;">${item.id}</td><td style="text-align:center;">${item.thangHachToan}</td>
-                <td><b>${item.beneficiary}</b></td><td>${item.bankName || '--'}</td><td>${item.content}</td>
+                <td><b>${item.beneficiary}</b></td><td>${item.bankName || '--'} / ${item.bankAccount || '--'}</td><td>${item.content}</td>
                 <td style="text-align:center;">${item.unit}</td><td style="text-align:center;">${item.qty} x ${item.price.toLocaleString()}</td>
                 <td style="text-align:right;">${item.truocThue.toLocaleString()}</td><td style="text-align:right; color:#dc2626;">${item.vat.toLocaleString()}</td>
                 <td style="text-align:right; font-weight:bold; color:#15803d;">${item.total.toLocaleString()}</td>
                 <td style="text-align:center;">${formatVNDate(item.date)}</td>
-                <td style="text-align:center; display:flex; gap:6px; justify-content:center;">
-                    <button class="btn btn-blue" style="padding:4px 8px; font-size:11px;" onclick="suaVPP('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-pen"></i></button>
-                    <button class="btn btn-red" style="padding:4px 8px; font-size:11px;" onclick="xoaVPP('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-trash"></i></button>
+                <td style="text-align:center;">${driveBtn}</td>
+                <td style="text-align:center; display:flex; gap:4px; justify-content:center;">
+                    <button class="btn btn-blue" style="padding:3px 6px; font-size:10px;" onclick="suaVPP('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px; font-size:10px;" onclick="xoaVPP('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>`;
         });
@@ -1774,13 +1581,14 @@
         document.getElementById('inputOfficeBankName').value = item.bankName || '';
         document.getElementById('inputOfficeBankAccount').value = item.bankAccount || '';
         document.getElementById('inputOfficeContent').value = item.content;
-        document.getElementById('inputOfficeUnit').value = item.unit;
+        document.getElementById('inputOfficeUnit').value = item.unit || 'Ram (Ream)';
         document.getElementById('inputOfficeQty').value = item.qty;
         document.getElementById('inputOfficePrice').value = item.price.toLocaleString('vi-VN');
         document.getElementById('inputOfficeTruocThue').value = item.truocThue.toLocaleString('vi-VN');
         document.getElementById('inputOfficeVAT').value = item.vat.toLocaleString('vi-VN');
         document.getElementById('previewOfficeTotal').value = item.total.toLocaleString('vi-VN');
         if (item.date) document.getElementById('inputOfficeDate').value = item.date;
+        if (item.fileUrl) document.getElementById('inputOfficeFileUrl').value = item.fileUrl;
         document.getElementById('btnVppText').innerText = "CẬP NHẬT";
         document.getElementById('btnCancelVpp').classList.remove('hidden');
         document.getElementById('formCardVpp').scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1796,6 +1604,7 @@
         document.getElementById('inputOfficeQty').value = '1';
         document.getElementById('inputOfficePrice').value = '';
         document.getElementById('previewOfficeTotal').value = '';
+        document.getElementById('inputOfficeFileUrl').value = '';
         document.getElementById('btnVppText').innerText = "LƯU CHỨNG TỪ";
         document.getElementById('btnCancelVpp').classList.add('hidden');
     }
@@ -1805,7 +1614,7 @@
         let beneficiaryEl = document.getElementById('inputOfficeBeneficiary');
         let content = contentEl ? contentEl.value.trim() : "";
         let beneficiary = beneficiaryEl ? beneficiaryEl.value.trim() : "";
-        if (!content || !beneficiary) { alert("Nhập đủ nội dung và đơn vị thụ hưởng!"); return; }
+        if (!content || !beneficiary) { alert("Vui lòng nhập đủ nội dung chi và đơn vị thụ hưởng!"); return; }
         
         let total = parseVNDMoney(document.getElementById('previewOfficeTotal').value);
         let editKey = document.getElementById('editOfficeKey').value;
@@ -1823,7 +1632,8 @@
             truocThue: parseVNDMoney(document.getElementById('inputOfficeTruocThue').value),
             vat: parseVNDMoney(document.getElementById('inputOfficeVAT').value),
             total: total, 
-            date: document.getElementById('inputOfficeDate').value || new Date().toISOString().split('T')[0]
+            date: document.getElementById('inputOfficeDate').value || new Date().toISOString().split('T')[0],
+            fileUrl: document.getElementById('inputOfficeFileUrl').value || rootDriveFolderUrl
         };
 
         if (editIdx >= 0 && editKey && dsThanhToanVanPhongProByMonth[editKey]) {
@@ -1839,7 +1649,6 @@
     }
     function xoaVPP(key, idx) { if (dsThanhToanVanPhongProByMonth[key]) dsThanhToanVanPhongProByMonth[key].splice(idx, 1); capNhat(); }
 
-    // RENDER BẢNG KHO MỰC IN & TỰ ĐỘNG TÍNH TỒN KHO THỰC TẾ
     function renderInkInventoryTable() {
         let tbodyIn = document.getElementById('inkInboundTableBody');
         let tbodyOut = document.getElementById('inkOutboundTableBody');
@@ -1860,9 +1669,9 @@
                 <td style="text-align:center; font-weight:bold; color:${isOutbound?'#dc2626':'#16a34a'};">${item.qty}</td>
                 ${!isOutbound ? `<td style="text-align:right;">${(item.price||0).toLocaleString()}</td>` : `<td>${item.receiver || '--'}</td>`}
                 <td style="text-align:center; display:flex; gap:4px; justify-content:center;">
-                    <button class="btn btn-purple" style="padding:3px 6px; font-size:10px;" onclick="moModalInPhieuKho(${idx})" title="In"><i class="fa-solid fa-print"></i></button>
-                    <button class="btn btn-blue" style="padding:3px 6px; font-size:10px;" onclick="suaKhoMuc(${idx})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
-                    <button class="btn btn-red" style="padding:3px 6px; font-size:10px;" onclick="xoaKhoMuc(${idx})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
+                    <button class="btn btn-purple" style="padding:3px 6px; font-size:10px;" onclick="moModalInPhieuKho(${idx})"><i class="fa-solid fa-print"></i></button>
+                    <button class="btn btn-blue" style="padding:3px 6px; font-size:10px;" onclick="suaKhoMuc(${idx})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px; font-size:10px;" onclick="xoaKhoMuc(${idx})"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>`;
             
@@ -1870,29 +1679,16 @@
             else tbodyIn.innerHTML += rowHtml;
         });
 
-        // TỔNG HỢP TỒN KHO THỰC TẾ = ĐẦU KỲ + NHẬP KHO - XUẤT KHO
         let itemMap = {};
         dsKhoMucIn.forEach(item => {
             let key = (item.name || '').trim().toLowerCase();
             if (!itemMap[key]) {
-                itemMap[key] = {
-                    name: item.name,
-                    printer: item.printer || '',
-                    dauKy: 0,
-                    nhap: 0,
-                    xuat: 0,
-                    minMax: item.minMax || '2 / 10'
-                };
+                itemMap[key] = { name: item.name, printer: item.printer || '', dauKy: 0, nhap: 0, xuat: 0, minMax: item.minMax || '2 / 10' };
             }
             let act = (item.action || '').trim();
-            if (act.includes('Đầu kỳ')) {
-                itemMap[key].dauKy += (item.qty || 0);
-            } else if (act.includes('Nhập')) {
-                itemMap[key].nhap += (item.qty || 0);
-            } else if (act.includes('Xuất')) {
-                itemMap[key].xuat += (item.qty || 0);
-            }
-            if (item.minMax) itemMap[key].minMax = item.minMax;
+            if (act.includes('Đầu kỳ')) itemMap[key].dauKy += (item.qty || 0);
+            else if (act.includes('Nhập')) itemMap[key].nhap += (item.qty || 0);
+            else if (act.includes('Xuất')) itemMap[key].xuat += (item.qty || 0);
         });
 
         xntBody.innerHTML = '';
@@ -1901,18 +1697,15 @@
 
         for (let key in itemMap) {
             let obj = itemMap[key];
-            let tonThucTe = obj.dauKy + obj.nhap - obj.xuat; // TỰ ĐỘNG TRỪ KHI XUẤT KHO
+            let tonThucTe = obj.dauKy + obj.nhap - obj.xuat;
             totalStockInk += tonThucTe;
 
             let parts = obj.minMax.split('/');
             let minVal = parts.length > 0 ? parseInt(parts[0].trim()) || 2 : 2;
 
             let statusBadge = '<span class="badge-net">🟢 Ổn định</span>';
-            if (tonThucTe <= 0) {
-                statusBadge = '<span class="badge-danger">🔴 Hết hàng</span>';
-            } else if (tonThucTe <= minVal) {
-                statusBadge = '<span class="badge-warning">⚠️ Sắp hết hàng</span>';
-            }
+            if (tonThucTe <= 0) statusBadge = '<span class="badge-danger">🔴 Hết hàng</span>';
+            else if (tonThucTe <= minVal) statusBadge = '<span class="badge-warning">⚠️ Sắp hết hàng</span>';
 
             xntBody.innerHTML += `<tr>
                 <td style="text-align:center;">${stt++}</td>
@@ -1921,14 +1714,14 @@
                 <td style="text-align:center; font-weight:bold; color:#d97706;">${obj.dauKy}</td>
                 <td style="text-align:center; color:#16a34a; font-weight:bold;">${obj.nhap}</td>
                 <td style="text-align:center; color:#dc2626; font-weight:bold;">${obj.xuat}</td>
-                <td style="text-align:center; font-weight:900; color:#0284c7; font-size:14px; background:#f0f9ff;">${tonThucTe}</td>
+                <td style="text-align:center; font-weight:900; color:#0284c7; background:#f0f9ff;">${tonThucTe}</td>
                 <td style="text-align:center;">${obj.minMax}</td>
                 <td style="text-align:center;">${statusBadge}</td>
             </tr>`;
         }
 
         if (Object.keys(itemMap).length === 0) {
-            xntBody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#64748b; padding:15px;">Chưa có dữ liệu vật tư / mực in. Vui lòng nhập số dư đầu kỳ hoặc phiếu nhập kho.</td></tr>`;
+            xntBody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#64748b; padding:12px;">Chưa có dữ liệu vật tư / mực in.</td></tr>`;
         }
 
         if (document.getElementById("kpiTotalInkStock")) {
@@ -1947,6 +1740,7 @@
         document.getElementById('inputInkReceiver').value = item.receiver || '';
         document.getElementById('inputInkPrice').value = (item.price || 0).toLocaleString('vi-VN');
         document.getElementById('inputInkMinMax').value = item.minMax || '2 / 10';
+        if (item.fileUrl) document.getElementById('inputInkFileUrl').value = item.fileUrl;
         document.getElementById('btnInkText').innerText = "CẬP NHẬT KHO";
         document.getElementById('btnCancelInk').classList.remove('hidden');
         document.getElementById('formCardInk').scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1958,6 +1752,7 @@
         document.getElementById('inputInkPrinter').value = '';
         document.getElementById('inputInkReceiver').value = '';
         document.getElementById('inputInkPrice').value = '';
+        document.getElementById('inputInkFileUrl').value = '';
         document.getElementById('btnInkText').innerText = "GHI SỔ KHO";
         document.getElementById('btnCancelInk').classList.add('hidden');
     }
@@ -1977,7 +1772,8 @@
             action: action, qty: qty,
             receiver: document.getElementById('inputInkReceiver').value, price: price, total: qty * price,
             minMax: document.getElementById('inputInkMinMax').value || '2 / 10',
-            date: document.getElementById('inputInkDate').value || new Date().toISOString().split('T')[0]
+            date: document.getElementById('inputInkDate').value || new Date().toISOString().split('T')[0],
+            fileUrl: document.getElementById('inputInkFileUrl').value || rootDriveFolderUrl
         };
 
         if (editIdx >= 0 && dsKhoMucIn[editIdx]) {
@@ -2020,10 +1816,10 @@
         dsPhieuGiaoNhan.forEach((s, idx) => {
             tbody.innerHTML += `<tr>
                 <td><b>${s.slipNo}</b></td><td>${s.from}</td><td><b>${s.to}</b></td><td>${s.dept}</td><td><b>${s.item}</b></td><td>${s.status}</td><td style="text-align:center;">${formatVNDate(s.date)}</td>
-                <td style="text-align:center; display:flex; gap:6px; justify-content:center; align-items:center;">
-                    <button class="btn btn-purple" style="padding:4px 8px; font-size:11px;" onclick="moModalInPhieuGiao(${idx})"><i class="fa-solid fa-print"></i></button>
-                    <button class="btn btn-blue" style="padding:4px 8px; font-size:11px;" onclick="suaPhieuGiao(${idx})"><i class="fa-solid fa-pen"></i></button>
-                    <button class="btn btn-red" style="padding:4px 8px; font-size:11px;" onclick="xoaPhieuGiao(${idx})"><i class="fa-solid fa-trash"></i></button>
+                <td style="text-align:center; display:flex; gap:4px; justify-content:center;">
+                    <button class="btn btn-purple" style="padding:3px 6px; font-size:10px;" onclick="moModalInPhieuGiao(${idx})"><i class="fa-solid fa-print"></i></button>
+                    <button class="btn btn-blue" style="padding:3px 6px; font-size:10px;" onclick="suaPhieuGiao(${idx})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px; font-size:10px;" onclick="xoaPhieuGiao(${idx})"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>`;
         });
@@ -2057,7 +1853,7 @@
     function luuHoacCapNhatPhieuGiao() {
         let toEl = document.getElementById('inputSlipTo');
         let toName = toEl ? toEl.value.trim() : "";
-        if(!toName) { alert("Nhập tên bên nhận!"); return; }
+        if(!toName) { alert("Vui lòng nhập tên bên nhận!"); return; }
         let editIdx = parseInt(document.getElementById('editSlipIndex').value);
 
         let s = {
@@ -2086,13 +1882,7 @@
         if (!s) return;
         document.getElementById('inputCustomSlipTitle').value = "BIÊN BẢN BÀN GIAO & GIAO NHẬN THIẾT BỊ";
         capNhatTieuDePhieuIn();
-        document.getElementById('previewSlipNoDate').innerText = `Số: ${s.slipNo} | Ngày ${s.date ? s.date.split('-')[2] : '25'} tháng ${s.date ? s.date.split('-')[1] : '08'} năm ${s.date ? s.date.split('-')[0] : '2026'}`;
-        if(s.date) {
-            let p = s.date.split('-');
-            document.getElementById('pYear').innerText = p[0];
-            document.getElementById('pMonth').innerText = p[1];
-            document.getElementById('pDay').innerText = p[2];
-        }
+        document.getElementById('previewSlipNoDate').innerText = `Số: ${s.slipNo} | Ngày 25 tháng 08 năm 2026`;
         document.getElementById('pFrom').innerText = s.from;
         document.getElementById('signFromName').innerText = s.from.split('-')[0].trim();
         document.getElementById('pTo').innerText = s.to;
@@ -2125,14 +1915,16 @@
         if(!tbody) return; tbody.innerHTML = '';
         let yearTelecom = layTatCaDanhSachTelecomTheoNam();
         yearTelecom.forEach(item => {
+            let driveBtn = item.fileUrl ? `<a href="${item.fileUrl}" target="_blank" class="btn btn-blue" style="padding:3px 6px; font-size:10px;"><i class="fa-brands fa-google-drive"></i> Hóa Đơn</a>` : '--';
             tbody.innerHTML += `<tr>
-                <td style="text-align:center;">${item.maHs || 'VT-01'}</td><td style="text-align:center;">${item.thangHachToan}</td>
+                <td style="text-align:center;">${item.id || 'VT-01'}</td><td style="text-align:center;">${item.thangHachToan}</td>
                 <td style="text-align:center;">${item.supplier}</td><td>${item.type}</td><td style="text-align:center;">${item.kyCuoc}</td>
                 <td style="text-align:right;">${item.truocThue.toLocaleString()}</td><td style="text-align:right; color:#dc2626;">${item.vat.toLocaleString()}</td>
                 <td style="text-align:right; font-weight:bold; color:#15803d;">${item.tong.toLocaleString()}</td>
-                <td style="text-align:center; display:flex; gap:6px; justify-content:center;">
-                    <button class="btn btn-blue" style="padding:4px 8px; font-size:11px;" onclick="suaTelecom('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-pen"></i></button>
-                    <button class="btn btn-red" style="padding:4px 8px; font-size:11px;" onclick="xoaTelecom('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-trash"></i></button>
+                <td style="text-align:center;">${driveBtn}</td>
+                <td style="text-align:center; display:flex; gap:4px; justify-content:center;">
+                    <button class="btn btn-blue" style="padding:3px 6px; font-size:10px;" onclick="suaTelecom('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px; font-size:10px;" onclick="xoaTelecom('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>`;
         });
@@ -2150,6 +1942,7 @@
         document.getElementById('inputTelecomType').value = item.type;
         document.getElementById('inputTelecomThangChon').value = item.thangHachToan || currentThangKey;
         document.getElementById('inputTelecomTongVat').value = item.tong.toLocaleString('vi-VN');
+        if (item.fileUrl) document.getElementById('inputTelecomFileUrl').value = item.fileUrl;
         tinhTienTelecomTuTong();
         document.getElementById('btnTelecomText').innerText = "CẬP NHẬT";
         document.getElementById('btnCancelTelecom').classList.remove('hidden');
@@ -2163,6 +1956,7 @@
         document.getElementById('inputTelecomTongVat').value = '';
         document.getElementById('inputTelecomTruocThueInput').value = '';
         document.getElementById('inputTelecomVatInput').value = '';
+        document.getElementById('inputTelecomFileUrl').value = '';
         document.getElementById('btnTelecomText').innerText = "THÊM CƯỚC";
         document.getElementById('btnCancelTelecom').classList.add('hidden');
     }
@@ -2181,7 +1975,8 @@
         let telecomItem = {
             id: "VT-01", supplier: document.getElementById('inputTelecomSupplier').value,
             type: type, kyCuoc: thangChon + "/" + currentNamKey, thangHachToan: thangChon,
-            tong: tong, truocThue: Math.round(tong/1.1), vat: tong - Math.round(tong/1.1)
+            tong: tong, truocThue: Math.round(tong/1.1), vat: tong - Math.round(tong/1.1),
+            fileUrl: document.getElementById('inputTelecomFileUrl').value || rootDriveFolderUrl
         };
 
         if (editIdx >= 0 && editKey && dsThanhToanTelecombyMonth[editKey]) {
@@ -2219,9 +2014,9 @@
                 <td>${item.office}</td><td style="text-align:center;"><span class="${isOfficeWarn?'badge-danger':'badge-net'}">${item.officeLicense}</span></td>
                 <td><b>${item.bizSoft}</b></td><td style="text-align:center;"><span class="${isBizWarn?'badge-danger':'badge-net'}">${item.bizLicense}</span></td>
                 <td>${item.specs || '--'}</td>
-                <td style="text-align:center; display:flex; gap:6px; justify-content:center;">
-                    <button class="btn btn-blue" style="padding:4px 8px; font-size:11px;" onclick="suaKhaoSat(${idx})"><i class="fa-solid fa-pen"></i></button>
-                    <button class="btn btn-red" style="padding:4px 8px; font-size:11px;" onclick="xoaKhaoSat(${idx})"><i class="fa-solid fa-trash"></i></button>
+                <td style="text-align:center; display:flex; gap:4px; justify-content:center;">
+                    <button class="btn btn-blue" style="padding:3px 6px; font-size:10px;" onclick="suaKhaoSat(${idx})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px; font-size:10px;" onclick="xoaKhaoSat(${idx})"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>`;
         });
@@ -2261,7 +2056,7 @@
     function luuHoacCapNhatKhaoSat() {
         let userEl = document.getElementById('inputSurveyUser');
         let user = userEl ? userEl.value.trim() : "";
-        if (!user) { alert("Nhập tên người sử dụng!"); return; }
+        if (!user) { alert("Vui lòng nhập tên người sử dụng!"); return; }
         let editIdx = parseInt(document.getElementById('editSurveyIndex').value);
 
         let surveyData = {
@@ -2296,10 +2091,10 @@
                 <td style="text-align:center;">${idx + 1}</td><td><b>${item.name}</b></td><td>${item.assignee}</td>
                 <td style="text-align:center;">${formatVNDate(item.dueDate)}</td>
                 <td style="text-align:center;"><span class="${badgeClass}">${item.status || 'Chưa làm'}</span></td>
-                <td style="text-align:center; display:flex; gap:6px; justify-content:center; align-items:center;">
-                    <button class="btn btn-yellow" style="padding:4px 8px; font-size:11px;" onclick="doiTrangThaiNhanhCongViec(${idx})" title="Đổi trạng thái"><i class="fa-solid fa-rotate"></i></button>
-                    <button class="btn btn-blue" style="padding:4px 8px; font-size:11px;" onclick="suaCongViec(${idx})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
-                    <button class="btn btn-red" style="padding:4px 8px; font-size:11px;" onclick="xoaCongViec(${idx})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
+                <td style="text-align:center; display:flex; gap:4px; justify-content:center;">
+                    <button class="btn btn-yellow" style="padding:3px 6px; font-size:10px;" onclick="doiTrangThaiNhanhCongViec(${idx})"><i class="fa-solid fa-rotate"></i></button>
+                    <button class="btn btn-blue" style="padding:3px 6px; font-size:10px;" onclick="suaCongViec(${idx})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px; font-size:10px;" onclick="xoaCongViec(${idx})"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>`;
         });
@@ -2380,77 +2175,6 @@
         XLSX.writeFile(wb, `VINAPACO_Toan_Bo_${currentNamKey}_${currentThangKey}.xlsx`);
     }
 
-    const barValuePlugin = {
-        id: 'barValuePlugin',
-        afterDatasetsDraw(chart) {
-            const { ctx } = chart;
-            if (chart.config.type !== 'bar') return;
-            chart.data.datasets.forEach((dataset, datasetIndex) => {
-                const meta = chart.getDatasetMeta(datasetIndex);
-                if (!meta.hidden) {
-                    meta.data.forEach((element, index) => {
-                        const value = dataset.data[index];
-                        if (value !== null && value !== undefined && value !== 0) {
-                            ctx.save();
-                            ctx.font = 'bold 10px sans-serif';
-                            ctx.fillStyle = '#0f172a';
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'bottom';
-                            
-                            let displayVal = value;
-                            if (typeof value === 'number') {
-                                if (value >= 1000000000) displayVal = (value / 1000000000).toFixed(1) + ' Tỷ';
-                                else if (value >= 1000000) displayVal = (value / 1000000).toFixed(1) + ' Tr';
-                                else if (value >= 1000) displayVal = value.toLocaleString('vi-VN');
-                            }
-                            
-                            const pos = element.tooltipPosition();
-                            ctx.fillText(displayVal, pos.x, pos.y - 4);
-                            ctx.restore();
-                        }
-                    });
-                }
-            });
-        }
-    };
-
-    const piePercentagePlugin = {
-        id: 'piePercentagePlugin',
-        afterDatasetsDraw(chart) {
-            if (chart.config.type !== 'pie' && chart.config.type !== 'doughnut') return;
-            const { ctx } = chart;
-            chart.data.datasets.forEach((dataset, datasetIndex) => {
-                const meta = chart.getDatasetMeta(datasetIndex);
-                if (!meta.hidden) {
-                    const total = dataset.data.reduce((acc, val) => acc + (val || 0), 0);
-                    meta.data.forEach((element, index) => {
-                        const value = dataset.data[index] || 0;
-                        if (value > 0 && total > 0) {
-                            const percentage = ((value / total) * 100).toFixed(1) + '%';
-                            const pos = element.tooltipPosition();
-                            ctx.save();
-                            ctx.font = 'bold 11px sans-serif';
-                            ctx.fillStyle = '#ffffff';
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'middle';
-                            ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
-                            ctx.shadowBlur = 4;
-                            ctx.lineWidth = 2;
-                            ctx.strokeText(percentage, pos.x, pos.y);
-                            ctx.fillText(percentage, pos.x, pos.y);
-                            ctx.restore();
-                        }
-                    });
-                }
-            });
-        }
-    };
-
-    if (typeof Chart !== 'undefined') { 
-        Chart.register(barValuePlugin); 
-        Chart.register(piePercentagePlugin); 
-    }
-
     let chartInstances = {};
     function createOrUpdateChart(canvasId, type, data, options) {
         if (typeof Chart === 'undefined') return;
@@ -2467,40 +2191,30 @@
             let yearVppTotal = layTatCaDanhSachVPPTheoNam().reduce((s, i) => s + (i.total || 0), 0);
             let yearTelecomTotal = layTatCaDanhSachTelecomTheoNam().reduce((s, i) => s + (i.tong || 0), 0);
 
-            let sumFinancial = totalNetYear + yearVppTotal + yearTelecomTotal;
-            let pieFinancialData = sumFinancial > 0 ? [totalNetYear, yearVppTotal, yearTelecomTotal] : [1, 0, 0];
+            let pieFinancialData = [totalNetYear || 1, yearVppTotal, yearTelecomTotal];
 
             createOrUpdateChart('salaryPieChart', 'pie', {
                 labels: ['Lương NET', 'VPP', 'Viễn Thông'],
                 datasets: [{ data: pieFinancialData, backgroundColor: ['#16a34a', '#d97706', '#0284c7'] }]
-            }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } } });
+            }, { responsive: true, maintainAspectRatio: false });
 
             createOrUpdateChart('overviewBarChart', 'bar', {
                 labels: ['Lương NET', 'VPP', 'Viễn Thông'],
                 datasets: [{ label: 'VNĐ', data: [totalNetYear, yearVppTotal, yearTelecomTotal], backgroundColor: ['#16a34a', '#d97706', '#0284c7'] }]
-            }, { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grace: '20%' }, x: { ticks: { font: { size: 10 } } } } });
+            }, { responsive: true, maintainAspectRatio: false });
 
             let done = danhSachCongViec.filter(t => (t.status || '').trim() === 'Hoàn thành').length;
             let doing = danhSachCongViec.filter(t => (t.status || '').trim() === 'Đang làm').length;
-            let todo = danhSachCongViec.filter(t => {
-                let st = (t.status || '').trim();
-                return st === 'Chưa làm' || (st !== 'Hoàn thành' && st !== 'Đang làm');
-            }).length;
-            let taskSum = done + doing + todo;
-            let taskPieValues = taskSum > 0 ? [done, doing, todo] : [0, 0, 1];
+            let todo = danhSachCongViec.filter(t => (t.status || '').trim() === 'Chưa làm').length;
 
             let taskData = { 
                 labels: ['Hoàn thành', 'Đang làm', 'Chưa làm'], 
-                datasets: [{ 
-                    label: 'Số lượng', 
-                    data: taskPieValues, 
-                    backgroundColor: ['#16a34a', '#d97706', '#ef4444'] 
-                }] 
+                datasets: [{ label: 'Số lượng', data: [done, doing, todo], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] 
             };
 
-            createOrUpdateChart('overviewTaskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } } });
-            createOrUpdateChart('taskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } } });
-            createOrUpdateChart('taskBarChart', 'bar', taskData, { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grace: '25%' } } });
+            createOrUpdateChart('overviewTaskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false });
+            createOrUpdateChart('taskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false });
+            createOrUpdateChart('taskBarChart', 'bar', taskData, { responsive: true, maintainAspectRatio: false });
 
             let months = ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"];
             let monthlyNetList = months.map(m => {
@@ -2510,7 +2224,7 @@
 
             createOrUpdateChart('monthlySalaryBarChart', 'bar', {
                 labels: months, datasets: [{ label: 'Quỹ Lương NET (VNĐ)', data: monthlyNetList, backgroundColor: '#0284c7' }]
-            }, { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grace: '20%' }, x: { ticks: { font: { size: 9 } } } } });
+            }, { responsive: true, maintainAspectRatio: false });
 
             let nsList = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey]) ? coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu : [];
             let names = nsList.map(i => i.hoTen);
@@ -2519,17 +2233,13 @@
 
             createOrUpdateChart('overviewLeaveBarChart', 'bar', {
                 labels: names,
-                datasets: [{ label: 'Đã Dùng', data: usedLeaves, backgroundColor: '#d97706', borderRadius: 4 }, { label: 'Còn Lại', data: remainingLeaves, backgroundColor: '#16a34a', borderRadius: 4 }]
-            }, { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grace: '20%' }, x: { ticks: { font: { size: 8 } } } } });
-
-            let totalUsedLeaves = usedLeaves.reduce((a,b)=>a+b,0);
-            let totalRemLeaves = remainingLeaves.reduce((a,b)=>a+b,0);
-            let leavePieValues = (totalUsedLeaves + totalRemLeaves) > 0 ? [totalUsedLeaves, totalRemLeaves] : [0, 1];
+                datasets: [{ label: 'Đã Dùng', data: usedLeaves, backgroundColor: '#d97706' }, { label: 'Còn Lại', data: remainingLeaves, backgroundColor: '#16a34a' }]
+            }, { responsive: true, maintainAspectRatio: false });
 
             createOrUpdateChart('leavePieChart', 'pie', {
                 labels: ['Đã Dùng', 'Còn Lại'],
-                datasets: [{ data: leavePieValues, backgroundColor: ['#d97706', '#16a34a'] }]
-            }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } } });
+                datasets: [{ data: [usedLeaves.reduce((a,b)=>a+b,0), remainingLeaves.reduce((a,b)=>a+b,0)], backgroundColor: ['#d97706', '#16a34a'] }]
+            }, { responsive: true, maintainAspectRatio: false });
         } catch (e) {}
     }
 
@@ -2600,12 +2310,6 @@
         let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
         let nv = ds[modalCurrentNvIndex] || ds[0];
         let phone = (nv.sdt || '').replace(/[^0-9]/g, '');
-        let textCopy = `📋 PHIẾU LƯƠNG ${currentThangKey}/${currentNamKey} - ${nv.hoTen}
-🏦 STK: ${nv.stk || '--'} (${nv.nganHang || '--'})
-💰 THỰC LĨNH: ${(nv.thucLinhCuoiCung||0).toLocaleString('vi-VN')} VNĐ`;
-        if (navigator.clipboard) navigator.clipboard.writeText(textCopy);
-        alert(`✅ Đã copy phiếu lương!
-🚀 Đang mở Zalo...`);
         if (phone) window.location.href = `zalo://chat?phone=${phone}`;
         else window.open("https://chat.zalo.me/", '_blank');
     }
@@ -2630,7 +2334,6 @@
         else setTimeout(() => veTatCaBieuDoDashboard(), 50);
     }
 
-    function moModalDangKyNghiPhep() { alert("📝 Đăng ký phép trực tuyến."); }
     function chonNhanSuXemPhieuLuong(hoTen) { moModalPhiieuLuongTheoTen(hoTen); }
     function chuyenNhanSuModal(step) {
         let ds = coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu;
@@ -2645,141 +2348,90 @@
 
     let wellnessTimer = null;
     function batTatNhacNghiGoi() {
-        let btn = document.querySelector('button[onclick="batTatNhacNghiGoi()"]');
         if (wellnessTimer) {
             clearInterval(wellnessTimer);
             wellnessTimer = null;
-            if(btn) { btn.style.background = "#d97706"; btn.innerHTML = '<i class="fa-solid fa-mug-hot"></i> Nghỉ'; }
-            alert("☕ Đã TẮT nhắc nghỉ.");
+            alert("☕ Đã TẮT nhắc nghỉ Wellness.");
         } else {
             wellnessTimer = setInterval(() => {
                 document.getElementById('modalVinapacoWellness').classList.remove('hidden');
             }, 60 * 60 * 1000);
-            if(btn) { btn.style.background = "#16a34a"; btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Đang Bật'; }
             alert("☕ Đã BẬT Wellness! Nhắc nhở sau mỗi 60 phút.");
         }
     }
 
     function dongModalNghiNgoi() { document.getElementById('modalVinapacoWellness').classList.add('hidden'); }
     function hoanLaiNhacNghi() { dongModalNghiNgoi(); setTimeout(() => { document.getElementById('modalVinapacoWellness').classList.remove('hidden'); }, 10 * 60 * 1000); }
-    function luuGasUrlNhanh() { alert("✅ Đã lưu GAS URL!"); }
 
     function getWeatherInfo(code) {
         switch (code) {
             case 0: return { text: "Trời quang, nắng đẹp", icon: "fa-sun", color: "#f59e0b" };
             case 1: case 2: case 3: return { text: "Nhiều mây, dịu mát", icon: "fa-cloud-sun", color: "#38bdf8" };
             case 45: case 48: return { text: "Sương mù nhẹ", icon: "fa-smog", color: "#94a3b8" };
-            case 51: case 53: case 55: case 56: case 57: return { text: "Mưa phùn rả rích", icon: "fa-cloud-rain", color: "#60a5fa" };
-            case 61: case 63: case 65: case 66: case 67: return { text: "Có mưa rào", icon: "fa-cloud-showers-heavy", color: "#2563eb" };
-            case 71: case 73: case 75: case 77: return { text: "Tuyết rơi", icon: "fa-snowflake", color: "#93c5fd" };
+            case 51: case 53: case 55: return { text: "Mưa phùn rả rích", icon: "fa-cloud-rain", color: "#60a5fa" };
+            case 61: case 63: case 65: return { text: "Có mưa rào", icon: "fa-cloud-showers-heavy", color: "#2563eb" };
             case 80: case 81: case 82: return { text: "Mưa dông nặng hạt", icon: "fa-cloud-bolt", color: "#1d4ed8" };
-            case 95: case 96: case 99: return { text: "Dông sét mạnh", icon: "fa-poo-storm", color: "#dc2626" };
             default: return { text: "Thời tiết ổn định", icon: "fa-cloud", color: "#64748b" };
-        }
-    }
-
-    async function traCuuThoiTietTheoThanhPho() {
-        let city = document.getElementById('inputSearchCity').value.trim() || "Phú Thọ";
-        try {
-            let geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=vi&format=json`);
-            let geoData = await geoRes.json();
-            if (geoData.results && geoData.results.length > 0) {
-                let loc = geoData.results[0];
-                cachedWeatherCoords = { lat: loc.latitude, lon: loc.longitude, cityName: loc.name || city };
-                await capNhatThoiTiet(loc.latitude, loc.longitude, loc.name || city);
-            } else {
-                alert("Không tìm thấy địa điểm!");
-            }
-        } catch(e) {
-            console.error(e);
         }
     }
 
     async function layThoiTietTheoGPS() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(async (pos) => {
-                let lat = pos.coords.latitude;
-                let lon = pos.coords.longitude;
-                cachedWeatherCoords = { lat: lat, lon: lon, cityName: "Vị trí GPS" };
-                await capNhatThoiTiet(lat, lon, "Vị trí GPS");
-            }, (err) => {
-                alert("Không thể lấy vị trí GPS từ thiết bị!");
-            });
-        } else {
-            alert("Trình duyệt không hỗ trợ Geolocation!");
+                await capNhatThoiTiet(pos.coords.latitude, pos.coords.longitude, "Vị trí GPS");
+            }, () => { alert("Không thể vị trí GPS!"); });
         }
     }
 
     async function capNhatThoiTiet(lat, lon, cityName) {
         try {
-            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`);
+            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto`);
             let data = await res.json();
             if (data && data.current_weather) {
                 let cw = data.current_weather;
                 let info = getWeatherInfo(cw.weathercode);
                 let wText = document.getElementById('weatherWidgetText');
-                if (wText) {
-                    wText.innerHTML = `<b>${cityName}</b>: ${cw.temperature}°C | <i class="fa-solid ${info.icon}" style="color:${info.color}"></i> ${info.text} (Gió: ${cw.windspeed} km/h)`;
-                }
-                let wMainIcon = document.getElementById('wMainIcon');
-                if (wMainIcon) wMainIcon.innerHTML = `<i class="fa-solid ${info.icon}"></i>`;
-                if (document.getElementById('wLocationTitle')) document.getElementById('wLocationTitle').innerText = `Khu vực: ${cityName}`;
+                if (wText) wText.innerHTML = `<b>${cityName}</b>: ${cw.temperature}°C | <i class="fa-solid ${info.icon}" style="color:${info.color}"></i> ${info.text}`;
                 if (document.getElementById('wCurrentTemp')) document.getElementById('wCurrentTemp').innerText = `${cw.temperature}°C`;
                 if (document.getElementById('wCurrentCondition')) document.getElementById('wCurrentCondition').innerText = info.text;
-                if (document.getElementById('wWind')) document.getElementById('wWind').innerText = `${cw.windspeed} km/h`;
             }
-        } catch (e) {
-            console.error(e);
-        }
+        } catch (e) {}
     }
 
     async function moModalDuBaoThoiTiet10Ngay() {
         document.getElementById('modalWeather10DaysPreview').classList.remove('hidden');
         let container = document.getElementById('weather10DaysContainer');
         if (!container) return;
-        container.innerHTML = '<div style="text-align:center; padding:20px; color:#64748b;">Đang tải dữ liệu khí tượng...</div>';
-
+        container.innerHTML = '';
         try {
-            let lat = cachedWeatherCoords.lat;
-            let lon = cachedWeatherCoords.lon;
-            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`);
+            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${cachedWeatherCoords.lat}&longitude=${cachedWeatherCoords.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto`);
             let data = await res.json();
             if (data && data.daily) {
-                container.innerHTML = '';
                 let daily = data.daily;
                 for (let i = 0; i < daily.time.length; i++) {
-                    let dateStr = daily.time[i];
-                    let parts = dateStr.split('-');
+                    let parts = daily.time[i].split('-');
                     let formattedDate = `${parts[2]}/${parts[1]}`;
-                    let maxT = daily.temperature_2m_max[i];
-                    let minT = daily.temperature_2m_min[i];
-                    let prob = daily.precipitation_probability_max ? daily.precipitation_probability_max[i] : 0;
                     let info = getWeatherInfo(daily.weathercode[i]);
 
                     container.innerHTML += `
                         <div class="weather-day-card">
-                            <div style="font-weight:900; font-size:13px; color:#0f172a;">${formattedDate}</div>
-                            <div style="font-size:28px; color:${info.color};"><i class="fa-solid ${info.icon}"></i></div>
-                            <div style="font-size:12px; font-weight:800; color:#334155;">${info.text}</div>
-                            <div style="font-size:13px; font-weight:900; color:#dc2626;">${maxT}°C / <span style="color:#0284c7;">${minT}°C</span></div>
-                            <div style="font-size:11px; font-weight:700; color:#2563eb;">🌧️ ${prob}%</div>
-                        </div>
-                    `;
+                            <div style="font-weight:900; font-size:12px; color:#0f172a;">${formattedDate}</div>
+                            <div style="font-size:24px; color:${info.color};"><i class="fa-solid ${info.icon}"></i></div>
+                            <div style="font-size:11px; font-weight:800; color:#334155;">${info.text}</div>
+                            <div style="font-size:12px; font-weight:900; color:#dc2626;">${daily.temperature_2m_max[i]}°C / <span style="color:#0284c7;">${daily.temperature_2m_min[i]}°C</span></div>
+                        </div>`;
                 }
             }
         } catch (e) {
-            container.innerHTML = '<div style="text-align:center; padding:20px; color:#dc2626;">Lỗi tải dữ liệu thời tiết 10 ngày!</div>';
+            container.innerHTML = '<div style="text-align:center; padding:20px; color:#dc2626;">Lỗi tải dữ liệu thời tiết!</div>';
         }
     }
 
     function initLiveClockAndLunar() {
         function updateClock() {
             let now = new Date();
-            let hrs = String(now.getHours()).padStart(2, '0');
-            let mins = String(now.getMinutes()).padStart(2, '0');
-            let secs = String(now.getSeconds()).padStart(2, '0');
             let clockEl = document.getElementById('liveClockDisplay');
-            if (clockEl) clockEl.innerText = `${hrs}:${mins}:${secs}`;
+            if (clockEl) clockEl.innerText = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
 
             let days = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
             let dateEl = document.getElementById('liveDateDisplay');
@@ -2800,6 +2452,8 @@
         doiThangHoSoLuong();
         initLiveClockAndLunar();
         capNhatThoiTiet(cachedWeatherCoords.lat, cachedWeatherCoords.lon, cachedWeatherCoords.cityName);
+        document.getElementById('inputDriveRootFolderUrl').value = rootDriveFolderUrl;
+        document.getElementById('inputGasUrlSetting').value = gasWebhookUrl;
     });
 </script>
 </body>

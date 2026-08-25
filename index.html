@@ -1056,7 +1056,11 @@
 
     const defaultCoSoDuLieuNamThang = {
         "2025": generateYearMonthsData({ ncd: 22, mucLCB: 2340000, mucTTV: 3960000, mucLCV: 1980000 }),
-        "2026": generateYearMonthsData({ ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 })
+        "2026": generateYearMonthsData({ ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 }),
+        "2027": generateYearMonthsData({ ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 }),
+        "2028": generateYearMonthsData({ ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 }),
+        "2029": generateYearMonthsData({ ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 }),
+        "2030": generateYearMonthsData({ ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 })
     };
 
     let coSoDuLieuNamThang = JSON.parse(localStorage.getItem('vinapaco_data_namthang')) || defaultCoSoDuLieuNamThang;
@@ -1331,7 +1335,7 @@
         let selNam = document.getElementById('lichNamSelect');
         if (selThang && selThang.children.length === 0) {
             for (let m = 1; m <= 12; m++) selThang.innerHTML += `<option value="${m}" ${m===8?'selected':''}>Tháng ${m}</option>`;
-            for (let y = 2025; y <= 2028; y++) selNam.innerHTML += `<option value="${y}" ${y===2026?'selected':''}>Năm ${y}</option>`;
+            for (let y = 2025; y <= 2035; y++) selNam.innerHTML += `<option value="${y}" ${y===2026?'selected':''}>Năm ${y}</option>`;
         }
         document.getElementById('modalLichVanNien').classList.remove('hidden');
         renderLichGridPro();
@@ -1471,10 +1475,27 @@
     function updateStaffField(idx, field, value) {
         let ds = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey]) ? coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu : [];
         if (ds && ds[idx]) {
-            if (field === 'sdt' || field === 'stk' || field === 'nganHang') ds[idx][field] = String(value).trim();
-            else if (field === 'k_ht') ds[idx][field] = parseFloat(value) || 1.0;
-            else if (field === 'tam_ung') ds[idx][field] = parseVNDMoney(value);
-            else ds[idx][field] = parseFloat(value) || 0;
+            let targetName = ds[idx].hoTen;
+            let cleanedVal = String(value).trim();
+
+            // NẾU LÀ SĐT, NGÂN HÀNG HOẶC STK THÌ TỰ ĐỘNG CẬP NHẬT CHO TẤT CẢ CÁC THÁNG VÀ NĂM (TỪ 2025 TRỞ ĐI)
+            if (field === 'sdt' || field === 'stk' || field === 'nganHang') {
+                for (let yKey in coSoDuLieuNamThang) {
+                    for (let mKey in coSoDuLieuNamThang[yKey]) {
+                        let monthNhansu = coSoDuLieuNamThang[yKey][mKey].nhansu;
+                        if (monthNhansu) {
+                            let foundStaff = monthNhansu.find(i => i.hoTen === targetName);
+                            if (foundStaff) {
+                                foundStaff[field] = cleanedVal;
+                            }
+                        }
+                    }
+                }
+            } else {
+                if (field === 'k_ht') ds[idx][field] = parseFloat(value) || 1.0;
+                else if (field === 'tam_ung') ds[idx][field] = parseVNDMoney(value);
+                else ds[idx][field] = parseFloat(value) || 0;
+            }
             capNhat();
         }
     }

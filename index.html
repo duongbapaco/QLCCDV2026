@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hệ Thống Quản Lý VINAPACO - Full Pro Edition 2026</title>
+    <title>Hệ Thống Quản Lý VINAPACO - Full Pro Edition 2025-2026</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -60,6 +61,10 @@
         .charts-multi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; margin-top: 8px; }
         .chart-card { background: white; padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         .chart-title { font-size: 12px; font-weight: 800; color: var(--text-main); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
+
+        @media (max-width: 768px) {
+            .charts-multi-grid, .chart-card { display: none !important; }
+        }
 
         .tab-nav { display: flex; gap: 6px; border-bottom: 3px solid var(--border-color); padding-bottom: 8px; margin-top: 6px; overflow-x: auto; white-space: nowrap; }
         .tab-btn-nav { padding: 9px 16px; border-radius: 8px 8px 0 0; background: #e2e8f0; border: none; font-weight: 800; font-size: 12px; cursor: pointer; color: var(--text-muted); flex-shrink: 0; transition: all 0.2s; }
@@ -292,7 +297,7 @@
 <div class="container" id="appMainContainer">
     <div class="banner">
         <div>
-            <h1><i class="fa-solid fa-building-shield"></i> Hệ Thống Quản Lý VINAPACO Pro Full Edition 2026</h1>
+            <h1><i class="fa-solid fa-building-shield"></i> Hệ Thống Quản Lý VINAPACO Pro Full Edition 2025 - 2026</h1>
             <p>Tổng công ty Giấy Việt Nam - Quản trị Tự động hóa, Tác nghiệp & Đồng bộ Google Drive</p>
         </div>
         <div class="btn-group-header">
@@ -402,15 +407,15 @@
         <div class="charts-multi-grid">
             <div class="chart-card">
                 <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #0284c7;"></i> Tỷ Trọng Tài Chính Cả Năm (%)</div>
-                <div style="position: relative; height: 240px;"><canvas id="salaryPieChart"></canvas></div>
+                <div style="position: relative; height: 260px;"><canvas id="salaryPieChart"></canvas></div>
             </div>
             <div class="chart-card">
                 <div class="chart-title"><i class="fa-solid fa-chart-column" style="color: #16a34a;"></i> So Sánh Chi Phí Cả Năm</div>
-                <div style="position: relative; height: 240px;"><canvas id="overviewBarChart"></canvas></div>
+                <div style="position: relative; height: 260px;"><canvas id="overviewBarChart"></canvas></div>
             </div>
             <div class="chart-card">
                 <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #d97706;"></i> Trạng Thái Công Việc (%)</div>
-                <div style="position: relative; height: 240px;"><canvas id="overviewTaskPieChart"></canvas></div>
+                <div style="position: relative; height: 260px;"><canvas id="overviewTaskPieChart"></canvas></div>
             </div>
         </div>
 
@@ -465,7 +470,7 @@
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
             <div class="chart-card">
                 <div class="chart-title"><i class="fa-solid fa-chart-column" style="color: #16a34a;"></i> Biến Động Quỹ Lương NET Theo 12 Tháng</div>
-                <div style="position: relative; height: 260px;"><canvas id="monthlySalaryBarChart"></canvas></div>
+                <div style="position: relative; height: 280px;"><canvas id="monthlySalaryBarChart"></canvas></div>
             </div>
         </div>
 
@@ -500,8 +505,8 @@
     <div id="taskTab" class="tab-pane table-card">
         <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-list-check"></i> QUẢN LÝ CÔNG VIỆC HÀNG NGÀY & TIẾN ĐỘ</div></div>
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
-            <div class="chart-card" style="padding: 10px;"><div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Lệ Trạng Thái (%)</div><div style="position: relative; height: 180px;"><canvas id="taskPieChart"></canvas></div></div>
-            <div class="chart-card" style="padding: 10px;"><div class="chart-title"><i class="fa-solid fa-chart-column"></i> Số Lượng Công Việc</div><div style="position: relative; height: 180px;"><canvas id="taskBarChart"></canvas></div></div>
+            <div class="chart-card" style="padding: 10px;"><div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Lệ Trạng Thái (%)</div><div style="position: relative; height: 220px;"><canvas id="taskPieChart"></canvas></div></div>
+            <div class="chart-card" style="padding: 10px;"><div class="chart-title"><i class="fa-solid fa-chart-column"></i> Số Lượng Công Việc</div><div style="position: relative; height: 220px;"><canvas id="taskBarChart"></canvas></div></div>
         </div>
         
         <div class="form-card" id="formCardTask">
@@ -568,8 +573,8 @@
             <button class="btn btn-blue" onclick="alert('📝 Đăng ký phép trực tuyến.')"><i class="fa-solid fa-file-pen"></i> Đăng Ký</button>
         </div>
         <div class="charts-multi-grid" style="margin-bottom: 14px;">
-            <div class="chart-card" style="padding: 10px;"><div class="chart-title"><i class="fa-solid fa-chart-column"></i> Ngày Nghỉ Phép Nhân Sự</div><div style="position: relative; height: 260px;"><canvas id="overviewLeaveBarChart"></canvas></div></div>
-            <div class="chart-card" style="padding: 10px;"><div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Phép Đã Dùng (%)</div><div style="position: relative; height: 260px;"><canvas id="leavePieChart"></canvas></div></div>
+            <div class="chart-card" style="padding: 10px;"><div class="chart-title"><i class="fa-solid fa-chart-column"></i> Ngày Nghỉ Phép Nhân Sự</div><div style="position: relative; height: 280px;"><canvas id="overviewLeaveBarChart"></canvas></div></div>
+            <div class="chart-card" style="padding: 10px;"><div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Phép Đã Dùng (%)</div><div style="position: relative; height: 280px;"><canvas id="leavePieChart"></canvas></div></div>
         </div>
         <table>
             <thead><tr><th>STT</th><th>Họ và Tên</th><th>Tổng Phép Cấp</th><th>Nghỉ Tháng Này</th><th>Nghỉ Lễ</th><th>Đã Dùng Lũy Kế</th><th>Phép Còn Lại</th><th>Trạng Thái</th></tr></thead>
@@ -740,59 +745,141 @@
     <!-- TAB KHẢO SÁT THIẾT BỊ -->
     <div id="surveyTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-clipboard-check"></i> KHẢO SÁT THIẾT BỊ, OS & PHẦN MỀM NGHIỆP VỤ</div>
-            <button class="btn btn-green" onclick="xuatToanBoHeThongExcel()"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
+            <div class="table-title"><i class="fa-solid fa-clipboard-check"></i> KHẢO SÁT THIẾT BỊ, OS & PHẦN MỀM NGHIỆP VỤ (VINAPACO PRO)</div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <input type="file" id="surveyExcelImport" accept=".xlsx, .xls, .csv" class="hidden" onchange="nhapKhaoSatTuExcel(this)">
+                <button class="btn btn-green" onclick="document.getElementById('surveyExcelImport').click()"><i class="fa-solid fa-file-excel"></i> Nhập Hàng Loạt (Excel)</button>
+                <button class="btn btn-purple" onclick="xuatKhaoSatExcelPro()"><i class="fa-solid fa-file-arrow-down"></i> Xuất Báo Cáo Pro</button>
+            </div>
         </div>
         <div style="margin-bottom: 12px; background: #f8fafc; border: 1px solid var(--border-color); padding: 12px; border-radius: 10px; font-size: 12px; font-weight: 700; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
             <div><b>💻 Tổng thiết bị:</b> <span id="statSurveyTotal" style="color: #0284c7; font-weight: 900;">0</span></div>
             <div><b>⚠️ Chưa bản quyền:</b> <span id="statSurveyUnlicensed" style="color: #dc2626; font-weight: 900;">0</span></div>
-            <div><b>📊 Tích hợp phần mềm:</b> <span style="color: #16a34a; font-weight: 900;">AutoCAD, SolidWorks, Cloudoffice, Asia, MISA</span></div>
+            <div><b>📊 Tích hợp phần mềm:</b> <span style="color: #16a34a; font-weight: 900;">AutoCAD, SolidWorks, Cloudoffice, ASIA, Quasoft, MISA</span></div>
         </div>
         <div class="form-card" id="formCardSurvey">
             <input type="hidden" id="editSurveyIndex" value="-1">
             <div class="form-group"><label>Mã KS</label><input type="text" id="autoSurveyCode" readonly style="background:#e2e8f0; font-weight:bold;" value="KS-01"></div>
             <div class="form-group"><label>Người Sử Dụng</label><input type="text" id="inputSurveyUser" placeholder="Họ tên cán bộ..."></div>
             <div class="form-group"><label>Bộ Phận</label><input type="text" id="inputSurveyDept" placeholder="Phòng ban..."></div>
+            
             <div class="form-group">
                 <label>Loại Thiết Bị</label>
                 <select id="inputSurveyDeviceName">
-                    <option value="Laptop doanh nghiệp" selected>Laptop doanh nghiệp</option><option value="Laptop cá nhân (BYOD)">Laptop cá nhân (BYOD)</option><option value="Máy tính để bàn (Desktop)">Máy tính để bàn (Desktop)</option><option value="Máy trạm Workstation">Máy trạm Workstation</option>
+                    <optgroup label="Máy tính xách tay (Laptop)">
+                        <option value="Laptop doanh nghiệp" selected>Laptop doanh nghiệp</option>
+                        <option value="Laptop cá nhân (BYOD)">Laptop cá nhân (BYOD)</option>
+                        <option value="Laptop siêu mỏng / Ultrabook">Laptop siêu mỏng / Ultrabook</option>
+                    </optgroup>
+                    <optgroup label="Máy tính để bàn & Máy chủ">
+                        <option value="Máy tính để bàn (Desktop PC)">Máy tính để bàn (Desktop PC)</option>
+                        <option value="Máy tính All-in-One (AIO)">Máy tính All-in-One (AIO)</option>
+                        <option value="Máy trạm Workstation">Máy trạm Workstation</option>
+                        <option value="Máy chủ (Server)">Máy chủ (Server)</option>
+                        <option value="Thiết bị đầu cuối (Thin Client)">Thiết bị đầu cuối (Thin Client)</option>
+                    </optgroup>
+                    <optgroup label="Thiết bị di động & Khác">
+                        <option value="Máy tính bảng (Tablet / iPad)">Máy tính bảng (Tablet / iPad)</option>
+                        <option value="Thiết bị di động khác">Thiết bị di động khác</option>
+                    </optgroup>
                 </select>
             </div>
+            
             <div class="form-group">
                 <label>Hệ Điều Hành (OS)</label>
                 <select id="inputSurveyOS">
-                    <option value="Windows 11 Pro" selected>Windows 11 Pro</option><option value="Windows 10 Pro">Windows 10 Pro</option><option value="macOS Sequoia / Sonoma">macOS Sequoia / Sonoma</option>
+                    <optgroup label="Windows (Cũ đến Mới nhất)">
+                        <option value="Windows 95">Windows 95</option>
+                        <option value="Windows 98">Windows 98</option>
+                        <option value="Windows ME">Windows ME</option>
+                        <option value="Windows 2000">Windows 2000</option>
+                        <option value="Windows XP">Windows XP</option>
+                        <option value="Windows Vista">Windows Vista</option>
+                        <option value="Windows 7">Windows 7</option>
+                        <option value="Windows 8 / 8.1">Windows 8 / 8.1</option>
+                        <option value="Windows 10 Pro">Windows 10 Pro</option>
+                        <option value="Windows 10 Enterprise">Windows 10 Enterprise</option>
+                        <option value="Windows 11 Pro" selected>Windows 11 Pro</option>
+                        <option value="Windows 11 Enterprise">Windows 11 Enterprise</option>
+                        <option value="Windows Server">Windows Server (2012/2016/2019/2022)</option>
+                    </optgroup>
+                    <optgroup label="macOS (Cũ đến Mới nhất)">
+                        <option value="Mac OS X (Cũ)">Mac OS X (Cũ)</option>
+                        <option value="macOS Sierra / High Sierra">macOS Sierra / High Sierra</option>
+                        <option value="macOS Mojave / Catalina">macOS Mojave / Catalina</option>
+                        <option value="macOS Big Sur / Monterey">macOS Big Sur / Monterey</option>
+                        <option value="macOS Ventura / Sonoma">macOS Ventura / Sonoma</option>
+                        <option value="macOS Sequoia">macOS Sequoia</option>
+                    </optgroup>
+                    <optgroup label="Linux & Hệ điều hành khác">
+                        <option value="Ubuntu Linux">Ubuntu Linux</option>
+                        <option value="CentOS / RHEL">CentOS / RHEL</option>
+                        <option value="Fedora / Debian">Fedora / Debian</option>
+                        <option value="Khác (Unix/Other)">Khác (Unix/Other)</option>
+                    </optgroup>
                 </select>
             </div>
+
             <div class="form-group">
                 <label>Bản Quyền OS</label>
                 <select id="inputSurveyOSLicense">
-                    <option value="✅ Có bản quyền chính hãng" selected>✅ Có bản quyền chính hãng</option><option value="⚠️ Chưa có bản quyền">⚠️ Chưa có bản quyền</option>
+                    <option value="✅ Có bản quyền chính hãng" selected>✅ Có bản quyền chính hãng</option>
+                    <option value="⚠️ Chưa có bản quyền">⚠️ Chưa có bản quyền</option>
                 </select>
             </div>
+
             <div class="form-group">
-                <label>Microsoft Office</label>
+                <label>Microsoft Office / Bộ Văn Phòng</label>
                 <select id="inputSurveyOffice">
-                    <option value="Microsoft 365 (Cloud)" selected>Microsoft 365 (Cloud)</option><option value="Microsoft Office 2021">Microsoft Office 2021</option><option value="WPS Office">WPS Office</option>
+                    <optgroup label="Microsoft Office (Cũ đến Mới nhất)">
+                        <option value="Office 97 / 2000 / XP">Office 97 / 2000 / XP</option>
+                        <option value="Office 2003">Office 2003</option>
+                        <option value="Office 2007">Office 2007</option>
+                        <option value="Office 2010">Office 2010</option>
+                        <option value="Office 2013">Office 2013</option>
+                        <option value="Office 2016">Office 2016</option>
+                        <option value="Office 2019">Office 2019</option>
+                        <option value="Office 2021">Office 2021</option>
+                        <option value="Office 2024">Office 2024</option>
+                        <option value="Microsoft 365 (Cloud)" selected>Microsoft 365 (Cloud)</option>
+                    </optgroup>
+                    <optgroup label="Bộ Văn Phòng Khác">
+                        <option value="WPS Office">WPS Office</option>
+                        <option value="LibreOffice / OpenOffice">LibreOffice / OpenOffice</option>
+                        <option value="Google Workspace (Web)">Google Workspace (Web)</option>
+                    </optgroup>
                 </select>
             </div>
+
             <div class="form-group">
                 <label>Bản Quyền Office</label>
                 <select id="inputSurveyOfficeLicense">
-                    <option value="✅ Bản quyền Tổng công ty" selected>✅ Bản quyền Tổng công ty</option><option value="⚠️ Chưa có bản quyền">⚠️ Chưa có bản quyền</option>
+                    <option value="✅ Bản quyền Tổng công ty" selected>✅ Bản quyền Tổng công ty</option>
+                    <option value="⚠️ Chưa có bản quyền">⚠️ Chưa có bản quyền</option>
                 </select>
             </div>
+
             <div class="form-group">
                 <label>Phần Mềm Nghiệp Vụ</label>
                 <select id="inputSurveyBusinessSoftware">
-                    <option value="Cloudoffice (Văn thư)" selected>Cloudoffice (Văn thư)</option><option value="AutoCAD (Thiết kế)">AutoCAD (Thiết kế)</option><option value="SolidWorks (Cơ khí 3D)">SolidWorks (Cơ khí 3D)</option><option value="MISA (Kế toán)">MISA (Kế toán)</option>
+                    <option value="Cloudoffice (Văn thư)" selected>Cloudoffice (Văn thư)</option>
+                    <option value="Phần mềm ASIA (Kế toán & Quản trị)">Phần mềm ASIA (Kế toán & Quản trị)</option>
+                    <option value="Phần mềm Quasoft">Phần mềm Quasoft</option>
+                    <option value="MISA / Fast Accounting (Kế toán)">MISA / Fast Accounting (Kế toán)</option>
+                    <option value="AutoCAD / AutoCAD LT (Thiết kế)">AutoCAD / AutoCAD LT (Thiết kế)</option>
+                    <option value="SolidWorks / CATIA (Cơ khí 3D)">SolidWorks / CATIA (Cơ khí 3D)</option>
+                    <option value="ERP / SAP / Quản trị Nhà máy">ERP / SAP / Quản trị Nhà máy</option>
+                    <option value="Phần mềm chuyên ngành Giấy">Phần mềm chuyên ngành Giấy</option>
+                    <option value="Phần mềm khác">Phần mềm khác</option>
+                    <option value="Không dùng">❌ Không dùng</option>
                 </select>
             </div>
+
             <div class="form-group">
                 <label>Bản Quyền Nghiệp Vụ</label>
                 <select id="inputSurveyBusinessLicense">
-                    <option value="✅ Có bản quyền chính hãng" selected>✅ Có bản quyền chính hãng</option><option value="⚠️ Chưa có bản quyền">⚠️ Chưa có bản quyền</option>
+                    <option value="✅ Có bản quyền chính hãng" selected>✅ Có bản quyền chính hãng</option>
+                    <option value="⚠️ Chưa có bản quyền">⚠️ Chưa có bản quyền</option>
                 </select>
             </div>
             <div class="form-group"><label>Cấu Hình Chi Tiết</label><input type="text" id="inputSurveySpecs" placeholder="VD: Core i7, RAM 16GB, SSD 512GB"></div>
@@ -889,6 +976,10 @@
 </div>
 
 <script>
+    if (typeof ChartDataLabels !== 'undefined') {
+        Chart.register(ChartDataLabels);
+    }
+
     let currentNamKey = "2026";
     let currentThangKey = "Tháng 08";
     let modalCurrentNvIndex = 0;
@@ -897,29 +988,50 @@
     let rootDriveFolderUrl = localStorage.getItem('vinapaco_drive_root_url') || 'https://drive.google.com/drive/u/0/my-drive';
     let gasWebhookUrl = localStorage.getItem('vinapaco_gas_webhook_url') || 'https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec';
 
+    const defaultNhansuTemplate = [
+        {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "sdt": "0988123456", "nganHang": "Vietcombank", "stk": "0011002345678", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 5000000, "phep_cap": 12},
+        {"stt": 2, "hoTen": "Nguyễn Văn Nam", "sdt": "0988234567", "nganHang": "Techcombank", "stk": "0021003456789", "hsl_cb": 1.48, "pc_cb": 0, "hsl_cv": 2.24, "pc_cv": 0, "nc_tg": 21, "nc_p": 1, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
+        {"stt": 3, "hoTen": "Nguyễn Thị Tuyết Nhung", "sdt": "0988345678", "nganHang": "BIDV", "stk": "0031004567890", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+        {"stt": 4, "hoTen": "Vũ Thị Thu", "sdt": "0988456789", "nganHang": "Agribank", "stk": "0041005678901", "hsl_cb": 1.94, "pc_cb": 0, "hsl_cv": 1.86, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
+        {"stt": 5, "hoTen": "Đào Thị Liên", "sdt": "0988567890", "nganHang": "VietinBank", "stk": "0051006789012", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
+        {"stt": 6, "hoTen": "Trần Bình Dương", "sdt": "0987456789", "nganHang": "Vietcombank", "stk": "0141005678901", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12}
+    ];
+
+    function generateYearMonthsData(config) {
+        const dsThang = ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"];
+        let result = {};
+        dsThang.forEach(thang => {
+            result[thang] = {
+                config: { ...config },
+                nhansu: JSON.parse(JSON.stringify(defaultNhansuTemplate))
+            };
+        });
+        return result;
+    }
+
     const defaultCoSoDuLieuNamThang = {
-        "2026": {
-            "Tháng 08": {
-                config: { ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 },
-                nhansu: [
-                    {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "sdt": "0988123456", "nganHang": "Vietcombank", "stk": "0011002345678", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 5000000, "phep_cap": 12},
-                    {"stt": 2, "hoTen": "Nguyễn Văn Nam", "sdt": "0988234567", "nganHang": "Techcombank", "stk": "0021003456789", "hsl_cb": 1.48, "pc_cb": 0, "hsl_cv": 2.24, "pc_cv": 0, "nc_tg": 21, "nc_p": 1, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
-                    {"stt": 3, "hoTen": "Nguyễn Thị Tuyết Nhung", "sdt": "0988345678", "nganHang": "BIDV", "stk": "0031004567890", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 4, "hoTen": "Vũ Thị Thu", "sdt": "0988456789", "nganHang": "Agribank", "stk": "0041005678901", "hsl_cb": 1.94, "pc_cb": 0, "hsl_cv": 1.86, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-                    {"stt": 5, "hoTen": "Đào Thị Liên", "sdt": "0988567890", "nganHang": "VietinBank", "stk": "0051006789012", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.74, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
-                    {"stt": 6, "hoTen": "Trần Bình Dương", "sdt": "0987456789", "nganHang": "Vietcombank", "stk": "0141005678901", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12}
-                ]
-            }
-        }
+        "2025": generateYearMonthsData({ ncd: 22, mucLCB: 2340000, mucTTV: 3960000, mucLCV: 1980000 }),
+        "2026": generateYearMonthsData({ ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 })
     };
 
     let coSoDuLieuNamThang = JSON.parse(localStorage.getItem('vinapaco_data_namthang')) || defaultCoSoDuLieuNamThang;
+    
+    if (!coSoDuLieuNamThang["2025"]) {
+        coSoDuLieuNamThang["2025"] = generateYearMonthsData({ ncd: 22, mucLCB: 2340000, mucTTV: 3960000, mucLCV: 1980000 });
+    }
+
     let dsThanhToanVanPhongProByMonth = JSON.parse(localStorage.getItem('vinapaco_vpp')) || {
+        "2025_Tháng 12": [
+            { id: "VP-2025-01", beneficiary: "Công ty Văn phòng phẩm Hồng Hà", bankName: "Vietcombank", bankAccount: "0011001234567", content: "Mua sổ nhật ký công tác năm 2025 TCT", unit: "Quyển", qty: 100, price: 45000, truocThue: 4500000, vat: 450000, total: 4950000, date: "2025-12-20", fileUrl: rootDriveFolderUrl }
+        ],
         "2026_Tháng 08": [
             { id: "VP-01", beneficiary: "Công ty Văn phòng phẩm Hồng Hà", bankName: "Vietcombank", bankAccount: "0011001234567", content: "Mua giấy A4 và vật tư văn phòng TCT", unit: "Ram (Ream)", qty: 50, price: 65000, truocThue: 3250000, vat: 325000, total: 3575000, date: "2026-08-15", fileUrl: rootDriveFolderUrl }
         ]
     };
     let dsThanhToanTelecombyMonth = JSON.parse(localStorage.getItem('vinapaco_telecom')) || {
+        "2025_Tháng 12": [
+            { id: "VT-2025-12", supplier: "VNPT", type: "Cáp quang Internet leased line năm 2025", kyCuoc: "Tháng 12/2025", thangHachToan: "Tháng 12", truocThue: 2272727, vat: 227273, tong: 2500000, fileUrl: rootDriveFolderUrl }
+        ],
         "2026_Tháng 08": [
             { id: "VT-01", supplier: "VNPT", type: "Cáp quang Internet leased line", kyCuoc: "Tháng 08/2026", thangHachToan: "Tháng 08", truocThue: 2272727, vat: 227273, tong: 2500000, fileUrl: rootDriveFolderUrl }
         ]
@@ -1225,7 +1337,7 @@
 
     function khoiTaoDanhSachNamTuSinh() {
         let el = document.getElementById('cfgNamChon');
-        if (el) el.innerHTML = `<option value="2026" selected>2026</option><option value="2027">2027</option>`;
+        if (el) el.innerHTML = `<option value="2025">Năm 2025</option><option value="2026" selected>Năm 2026</option><option value="2027">Năm 2027</option>`;
     }
 
     function doiThangHoSoLuong() {
@@ -1237,9 +1349,14 @@
         let pathInput = document.getElementById('cfgDrivePath');
         if(pathInput) pathInput.value = `VINAPACO_Drive / ${currentNamKey} / ${currentThangKey}`;
 
-        if (!coSoDuLieuNamThang[currentNamKey]) coSoDuLieuNamThang[currentNamKey] = {};
+        if (!coSoDuLieuNamThang[currentNamKey]) {
+            coSoDuLieuNamThang[currentNamKey] = generateYearMonthsData({ ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 });
+        }
         if (!coSoDuLieuNamThang[currentNamKey][currentThangKey]) {
-            coSoDuLieuNamThang[currentNamKey][currentThangKey] = JSON.parse(JSON.stringify(defaultCoSoDuLieuNamThang["2026"]["Tháng 08"]));
+            coSoDuLieuNamThang[currentNamKey][currentThangKey] = {
+                config: { ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 },
+                nhansu: JSON.parse(JSON.stringify(defaultNhansuTemplate))
+            };
         }
 
         let monthData = coSoDuLieuNamThang[currentNamKey][currentThangKey];
@@ -1442,7 +1559,7 @@
             let statusBadge = sumNet > 0 ? '<span class="badge-net">Đã chốt</span>' : '<span class="badge-danger">Chưa chốt</span>';
 
             tbody.innerHTML += `<tr>
-                <td style="text-align:center;">${idx + 1}</td><td><b>${mName}</b></td><td style="text-align:center;">${countStaff}</td>
+                <td style="text-align:center;">${idx + 1}</td><td><b>${mName} (${currentNamKey})</b></td><td style="text-align:center;">${countStaff}</td>
                 <td style="text-align:right;">${sumLCB.toLocaleString('vi-VN')}</td><td style="text-align:right;">${sumLCV.toLocaleString('vi-VN')}</td>
                 <td style="text-align:right; color:#dc2626;">-${sumBH.toLocaleString('vi-VN')}</td><td style="text-align:right; color:#dc2626;">-${sumTU.toLocaleString('vi-VN')}</td>
                 <td style="text-align:right; font-weight:bold; color:#15803d; background:#f0fdf4;">${sumNet.toLocaleString('vi-VN')}</td>
@@ -2081,6 +2198,71 @@
     }
     function xoaKhaoSat(idx) { dsKhaoSatChuyenSau.splice(idx, 1); renderSurveyTable(); capNhat(); }
 
+    function nhapKhaoSatTuExcel(input) {
+        let file = input.files[0];
+        if (!file) return;
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                let data = new Uint8Array(e.target.result);
+                let workbook = XLSX.read(data, { type: 'array' });
+                let firstSheetName = workbook.SheetNames[0];
+                let worksheet = workbook.Sheets[firstSheetName];
+                let json = XLSX.utils.sheet_to_json(worksheet);
+                
+                if (json && json.length > 0) {
+                    json.forEach((row, idx) => {
+                        dsKhaoSatChuyenSau.push({
+                            code: row['Mã KS'] || row['code'] || ("KS-0" + (dsKhaoSatChuyenSau.length + 1)),
+                            user: row['Người Sử Dụng'] || row['user'] || "Chưa rõ",
+                            dept: row['Bộ Phận'] || row['dept'] || "Văn phòng TCT",
+                            device: row['Loại Thiết Bị'] || row['device'] || "Laptop doanh nghiệp",
+                            os: row['Hệ Điều Hành (OS)'] || row['os'] || "Windows 11 Pro",
+                            osLicense: row['Bản Quyền OS'] || row['osLicense'] || "✅ Có bản quyền chính hãng",
+                            office: row['Microsoft Office'] || row['office'] || "Microsoft 365 (Cloud)",
+                            officeLicense: row['Bản Quyền Office'] || row['officeLicense'] || "✅ Bản quyền Tổng công ty",
+                            bizSoft: row['Phần Mềm Nghiệp Vụ'] || row['bizSoft'] || "Cloudoffice (Văn thư)",
+                            bizLicense: row['Bản Quyền Nghiệp Vụ'] || row['bizLicense'] || "✅ Có bản quyền chính hãng",
+                            specs: row['Cấu Hình Chi Tiết'] || row['specs'] || "Core i5 / RAM 8GB"
+                        });
+                    });
+                    renderSurveyTable();
+                    capNhat();
+                    alert(`✅ Đã nhập hàng loạt thành công ${json.length} bản ghi khảo sát vào hệ thống!`);
+                } else {
+                    alert("⚠️ File Excel không có dữ liệu hợp lệ.");
+                }
+            } catch(err) {
+                alert("❌ Lỗi đọc file Excel: " + err.message);
+            }
+            input.value = '';
+        };
+        reader.readAsArrayBuffer(file);
+    }
+
+    function xuatKhaoSatExcelPro() {
+        if (typeof XLSX === 'undefined') return;
+        let exportData = dsKhaoSatChuyenSau.map((item, idx) => ({
+            "STT": idx + 1,
+            "Mã KS": item.code,
+            "Người Sử Dụng": item.user,
+            "Bộ Phận": item.dept,
+            "Loại Thiết Bị": item.device,
+            "Hệ Điều Hành (OS)": item.os,
+            "Bản Quyền OS": item.osLicense,
+            "Microsoft Office": item.office,
+            "Bản Quyền Office": item.officeLicense,
+            "Phần Mềm Nghiệp Vụ": item.bizSoft,
+            "Bản Quyền Nghiệp Vụ": item.bizLicense,
+            "Cấu Hình Chi Tiết": item.specs
+        }));
+
+        let ws = XLSX.utils.json_to_sheet(exportData);
+        let wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "KhaoSat_CNTT_VINAPACO");
+        XLSX.writeFile(wb, `VINAPACO_Bao_Cao_Khao_Sat_CNTT_${currentNamKey}.xlsx`);
+    }
+
     function renderTaskTable() {
         let tbody = document.getElementById('taskTableBody');
         if (!tbody) return; tbody.innerHTML = '';
@@ -2176,12 +2358,86 @@
     }
 
     let chartInstances = {};
-    function createOrUpdateChart(canvasId, type, data, options) {
+    function createOrUpdateChart(canvasId, type, data, customOptions) {
         if (typeof Chart === 'undefined') return;
         let ctx = document.getElementById(canvasId);
         if (!ctx) return;
         if (chartInstances[canvasId]) { try { chartInstances[canvasId].destroy(); } catch(e){} }
-        try { chartInstances[canvasId] = new Chart(ctx, { type: type, data: data, options: options }); } catch(err) {}
+
+        let isPie = type === 'pie' || type === 'doughnut';
+
+        let defaultOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    top: isPie ? 10 : 25,
+                    bottom: 10,
+                    left: 10,
+                    right: 10
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { font: { size: 11, weight: 'bold' } }
+                },
+                datalabels: {
+                    display: true,
+                    font: { weight: 'bold', size: 11 },
+                    ...(isPie ? {
+                        color: '#ffffff',
+                        formatter: (value, ctx) => {
+                            let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                            if (!sum) return '0%';
+                            let percentage = (value * 100 / sum).toFixed(1) + '%';
+                            return (value * 100 / sum) < 5 ? '' : percentage;
+                        }
+                    } : {
+                        anchor: 'end',
+                        align: 'end',
+                        offset: 2,
+                        color: '#0f172a',
+                        formatter: (value) => {
+                            if (!value && value !== 0) return '';
+                            if (value >= 1e9) return (value / 1e9).toFixed(2) + ' Tỷ';
+                            if (value >= 1e6) return (value / 1e6).toFixed(1) + ' Tr';
+                            return value.toLocaleString('vi-VN');
+                        }
+                    })
+                }
+            }
+        };
+
+        if (!isPie) {
+            defaultOptions.scales = {
+                y: {
+                    grace: '18%',
+                    ticks: {
+                        font: { weight: 'bold', size: 10 },
+                        callback: function(val) {
+                            if (val >= 1e9) return (val / 1e9).toFixed(1) + ' tỷ';
+                            if (val >= 1e6) return (val / 1e6).toFixed(0) + ' tr';
+                            return val;
+                        }
+                    }
+                },
+                x: { ticks: { font: { weight: 'bold', size: 10 } } }
+            };
+        }
+
+        let finalOptions = Object.assign({}, defaultOptions, customOptions || {});
+        if (customOptions && customOptions.plugins) {
+            finalOptions.plugins = Object.assign({}, defaultOptions.plugins, customOptions.plugins);
+        }
+
+        try { 
+            chartInstances[canvasId] = new Chart(ctx, { 
+                type: type, 
+                data: data, 
+                options: finalOptions 
+            }); 
+        } catch(err) {}
     }
 
     function veTatCaBieuDoDashboard() {
@@ -2196,12 +2452,12 @@
             createOrUpdateChart('salaryPieChart', 'pie', {
                 labels: ['Lương NET', 'VPP', 'Viễn Thông'],
                 datasets: [{ data: pieFinancialData, backgroundColor: ['#16a34a', '#d97706', '#0284c7'] }]
-            }, { responsive: true, maintainAspectRatio: false });
+            });
 
             createOrUpdateChart('overviewBarChart', 'bar', {
                 labels: ['Lương NET', 'VPP', 'Viễn Thông'],
                 datasets: [{ label: 'VNĐ', data: [totalNetYear, yearVppTotal, yearTelecomTotal], backgroundColor: ['#16a34a', '#d97706', '#0284c7'] }]
-            }, { responsive: true, maintainAspectRatio: false });
+            });
 
             let done = danhSachCongViec.filter(t => (t.status || '').trim() === 'Hoàn thành').length;
             let doing = danhSachCongViec.filter(t => (t.status || '').trim() === 'Đang làm').length;
@@ -2212,9 +2468,9 @@
                 datasets: [{ label: 'Số lượng', data: [done, doing, todo], backgroundColor: ['#16a34a', '#d97706', '#ef4444'] }] 
             };
 
-            createOrUpdateChart('overviewTaskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false });
-            createOrUpdateChart('taskPieChart', 'pie', taskData, { responsive: true, maintainAspectRatio: false });
-            createOrUpdateChart('taskBarChart', 'bar', taskData, { responsive: true, maintainAspectRatio: false });
+            createOrUpdateChart('overviewTaskPieChart', 'pie', taskData);
+            createOrUpdateChart('taskPieChart', 'pie', taskData);
+            createOrUpdateChart('taskBarChart', 'bar', taskData);
 
             let months = ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"];
             let monthlyNetList = months.map(m => {
@@ -2223,8 +2479,8 @@
             });
 
             createOrUpdateChart('monthlySalaryBarChart', 'bar', {
-                labels: months, datasets: [{ label: 'Quỹ Lương NET (VNĐ)', data: monthlyNetList, backgroundColor: '#0284c7' }]
-            }, { responsive: true, maintainAspectRatio: false });
+                labels: months, datasets: [{ label: `Quỹ Lương NET Năm ${currentNamKey} (VNĐ)`, data: monthlyNetList, backgroundColor: '#0284c7' }]
+            });
 
             let nsList = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey]) ? coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu : [];
             let names = nsList.map(i => i.hoTen);
@@ -2234,27 +2490,27 @@
             createOrUpdateChart('overviewLeaveBarChart', 'bar', {
                 labels: names,
                 datasets: [{ label: 'Đã Dùng', data: usedLeaves, backgroundColor: '#d97706' }, { label: 'Còn Lại', data: remainingLeaves, backgroundColor: '#16a34a' }]
-            }, { responsive: true, maintainAspectRatio: false });
+            });
 
             createOrUpdateChart('leavePieChart', 'pie', {
                 labels: ['Đã Dùng', 'Còn Lại'],
                 datasets: [{ data: [usedLeaves.reduce((a,b)=>a+b,0), remainingLeaves.reduce((a,b)=>a+b,0)], backgroundColor: ['#d97706', '#16a34a'] }]
-            }, { responsive: true, maintainAspectRatio: false });
+            });
         } catch (e) {}
     }
 
-    function xuatExcelCB() { if (typeof XLSX === 'undefined') return; XLSX.writeFile(XLSX.utils.book_append_sheet(XLSX.utils.book_new(), XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu), "LuongCB"), "Luong_Co_Ban.xlsx"); }
-    function xuatExcelCV() { if (typeof XLSX === 'undefined') return; XLSX.writeFile(XLSX.utils.book_append_sheet(XLSX.utils.book_new(), XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu), "LuongCV"), "Luong_Cong_Viec.xlsx"); }
-    function xuatExcelCongChiTiet() { if (typeof XLSX === 'undefined') return; XLSX.writeFile(XLSX.utils.book_append_sheet(XLSX.utils.book_new(), XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu), "ChamCong"), "Cham_Cong.xlsx"); }
+    function xuatExcelCB() { if (typeof XLSX === 'undefined') return; XLSX.writeFile(XLSX.utils.book_append_sheet(XLSX.utils.book_new(), XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu), "LuongCB"), `Luong_Co_Ban_${currentNamKey}.xlsx`); }
+    function xuatExcelCV() { if (typeof XLSX === 'undefined') return; XLSX.writeFile(XLSX.utils.book_append_sheet(XLSX.utils.book_new(), XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu), "LuongCV"), `Luong_Cong_Viec_${currentNamKey}.xlsx`); }
+    function xuatExcelCongChiTiet() { if (typeof XLSX === 'undefined') return; XLSX.writeFile(XLSX.utils.book_append_sheet(XLSX.utils.book_new(), XLSX.utils.json_to_sheet(coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu), "ChamCong"), `Cham_Cong_${currentNamKey}.xlsx`); }
     function xuatBaoCaoXNTExcel() { if (typeof XLSX === 'undefined') return; XLSX.writeFile(XLSX.utils.book_append_sheet(XLSX.utils.book_new(), XLSX.utils.json_to_sheet(dsKhoMucIn), "XNT"), "Xuat_Nhap_Ton.xlsx"); }
     function xuatBaoCaoLuongCacThangExcel() {
         if (typeof XLSX === 'undefined') return;
         let dataExport = [];
         ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"].forEach(m => {
             let mData = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][m]) ? coSoDuLieuNamThang[currentNamKey][m].nhansu : [];
-            dataExport.push({ "Tháng": m, "Tổng Lương NET Chuyển Khoản": mData.reduce((s, i) => s + (i.thucLinhCuoiCung || 0), 0) });
+            dataExport.push({ "Tháng": `${m}/${currentNamKey}`, "Tổng Lương NET Chuyển Khoản": mData.reduce((s, i) => s + (i.thucLinhCuoiCung || 0), 0) });
         });
-        XLSX.writeFile(XLSX.utils.book_append_sheet(XLSX.utils.book_new(), XLSX.utils.json_to_sheet(dataExport), "Luong12Thang"), "Bao_Cao_Luong_12_Thang.xlsx");
+        XLSX.writeFile(XLSX.utils.book_append_sheet(XLSX.utils.book_new(), XLSX.utils.json_to_sheet(dataExport), "Luong12Thang"), `Bao_Cao_Luong_12_Thang_${currentNamKey}.xlsx`);
     }
 
     function khoiTaoDanhSachNhanSuModalSelect() {
@@ -2318,7 +2574,7 @@
         if (typeof html2canvas === 'undefined') return;
         html2canvas(document.getElementById("payslip-capture")).then(canvas => {
             let link = document.createElement('a');
-            link.download = `Phieu_Luong_${currentThangKey}.png`;
+            link.download = `Phieu_Luong_${currentThangKey}_${currentNamKey}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
         });
@@ -2375,86 +2631,98 @@
         }
     }
 
-    async function layThoiTietTheoGPS() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(async (pos) => {
-                await capNhatThoiTiet(pos.coords.latitude, pos.coords.longitude, "Vị trí GPS");
-            }, () => { alert("Không thể vị trí GPS!"); });
+    async function capNhatThoiTiet(lat, lon, cityName) {
+        try {
+            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=relativehumidity_2m,windspeed_10m`);
+            let data = await res.json();
+            if (data && data.current_weather) {
+                cachedWeatherCoords = { lat: lat, lon: lon, cityName: cityName };
+                let temp = data.current_weather.temperature;
+                let info = getWeatherInfo(data.current_weather.weathercode);
+                
+                let wText = document.getElementById('weatherWidgetText');
+                if (wText) wText.innerHTML = `<b>${cityName}</b>: ${temp}°C, ${info.text}`;
+                
+                let wLoc = document.getElementById('wLocationTitle');
+                if (wLoc) wLoc.innerText = `Khu vực: ${cityName}`;
+                
+                let wTemp = document.getElementById('wCurrentTemp');
+                if (wTemp) wTemp.innerText = `${temp}°C`;
+                
+                let wCond = document.getElementById('wCurrentCondition');
+                if (wCond) wCond.innerText = info.text;
+
+                let wHum = document.getElementById('wHumidity');
+                if (wHum && data.hourly && data.hourly.relativehumidity_2m) {
+                    wHum.innerText = data.hourly.relativehumidity_2m[0] + '%';
+                }
+                let wWind = document.getElementById('wWind');
+                if (wWind) {
+                    wWind.innerText = data.current_weather.windspeed + ' km/h';
+                }
+            }
+        } catch (err) {
+            let wText = document.getElementById('weatherWidgetText');
+            if (wText) wText.innerText = "Không thể tải thời tiết trực tuyến.";
         }
     }
 
-    async function capNhatThoiTiet(lat, lon, cityName) {
+    async function capNhatThoiTiet10Ngay(lat, lon, cityName) {
         try {
-            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto`);
+            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia/Bangkok`);
             let data = await res.json();
-            if (data && data.current_weather) {
-                let cw = data.current_weather;
-                let info = getWeatherInfo(cw.weathercode);
-                let wText = document.getElementById('weatherWidgetText');
-                if (wText) wText.innerHTML = `<b>${cityName}</b>: ${cw.temperature}°C | <i class="fa-solid ${info.icon}" style="color:${info.color}"></i> ${info.text}`;
-                if (document.getElementById('wCurrentTemp')) document.getElementById('wCurrentTemp').innerText = `${cw.temperature}°C`;
-                if (document.getElementById('wCurrentCondition')) document.getElementById('wCurrentCondition').innerText = info.text;
+            if (data && data.daily) {
+                let container = document.getElementById('weather10DaysContainer');
+                if (!container) return;
+                container.innerHTML = '';
+                for (let i = 0; i < data.daily.time.length; i++) {
+                    let dateStr = formatVNDate(data.daily.time[i]);
+                    let tMax = data.daily.temperature_2m_max[i];
+                    let tMin = data.daily.temperature_2m_min[i];
+                    let info = getWeatherInfo(data.daily.weathercode[i]);
+                    container.innerHTML += `
+                        <div class="weather-day-card">
+                            <div style="font-size:11px; font-weight:800; color:#475569;">${dateStr}</div>
+                            <div style="font-size:24px; color:${info.color};"><i class="fa-solid ${info.icon}"></i></div>
+                            <div style="font-size:11px; font-weight:900; color:#0f172a;">${tMin}°C - ${tMax}°C</div>
+                            <div style="font-size:10px; font-weight:700; color:#0284c7;">${info.text}</div>
+                        </div>
+                    `;
+                }
             }
-        } catch (e) {}
+        } catch (err) {}
     }
 
     async function moModalDuBaoThoiTiet10Ngay() {
         document.getElementById('modalWeather10DaysPreview').classList.remove('hidden');
-        let container = document.getElementById('weather10DaysContainer');
-        if (!container) return;
-        container.innerHTML = '';
-        try {
-            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${cachedWeatherCoords.lat}&longitude=${cachedWeatherCoords.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto`);
-            let data = await res.json();
-            if (data && data.daily) {
-                let daily = data.daily;
-                for (let i = 0; i < daily.time.length; i++) {
-                    let parts = daily.time[i].split('-');
-                    let formattedDate = `${parts[2]}/${parts[1]}`;
-                    let info = getWeatherInfo(daily.weathercode[i]);
+        await capNhatThoiTiet10Ngay(cachedWeatherCoords.lat, cachedWeatherCoords.lon, cachedWeatherCoords.cityName);
+    }
 
-                    container.innerHTML += `
-                        <div class="weather-day-card">
-                            <div style="font-weight:900; font-size:12px; color:#0f172a;">${formattedDate}</div>
-                            <div style="font-size:24px; color:${info.color};"><i class="fa-solid ${info.icon}"></i></div>
-                            <div style="font-size:11px; font-weight:800; color:#334155;">${info.text}</div>
-                            <div style="font-size:12px; font-weight:900; color:#dc2626;">${daily.temperature_2m_max[i]}°C / <span style="color:#0284c7;">${daily.temperature_2m_min[i]}°C</span></div>
-                        </div>`;
-                }
-            }
-        } catch (e) {
-            container.innerHTML = '<div style="text-align:center; padding:20px; color:#dc2626;">Lỗi tải dữ liệu thời tiết!</div>';
+    async function layThoiTietTheoGPS() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                await capNhatThoiTiet(pos.coords.latitude, pos.coords.longitude, "Vị trí GPS");
+            }, (error) => {
+                alert("Không thể lấy vị trí GPS: " + error.message);
+            });
+        } else {
+            alert("Trình duyệt không hỗ trợ Geolocation.");
         }
     }
 
-    function initLiveClockAndLunar() {
-        function updateClock() {
-            let now = new Date();
-            let clockEl = document.getElementById('liveClockDisplay');
-            if (clockEl) clockEl.innerText = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
-
-            let days = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
-            let dateEl = document.getElementById('liveDateDisplay');
-            if (dateEl) dateEl.innerText = `${days[now.getDay()]}, ${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
-
-            let lunarWidget = document.getElementById('lunarWidgetText');
-            if (lunarWidget) {
-                let lunar = convertSolar2LunarPro(now.getDate(), now.getMonth() + 1, now.getFullYear());
-                lunarWidget.innerHTML = `Ngày <b>${lunar.day}/${lunar.month}</b> (${lunar.canChiNam})<br><small style="color:#0369a1; font-weight:700;">${lunar.canChiNgay} - ${lunar.hoangDaoName}</small>`;
-            }
-        }
-        updateClock();
-        setInterval(updateClock, 1000);
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
+    window.onload = function() {
         khoiTaoDanhSachNamTuSinh();
         doiThangHoSoLuong();
-        initLiveClockAndLunar();
+        setInterval(() => {
+            let now = new Date();
+            let clockEl = document.getElementById('liveClockDisplay');
+            if (clockEl) clockEl.innerText = now.toLocaleTimeString('vi-VN');
+        }, 1000);
         capNhatThoiTiet(cachedWeatherCoords.lat, cachedWeatherCoords.lon, cachedWeatherCoords.cityName);
-        document.getElementById('inputDriveRootFolderUrl').value = rootDriveFolderUrl;
-        document.getElementById('inputGasUrlSetting').value = gasWebhookUrl;
-    });
+        let lunar = convertSolar2LunarPro(25, 8, 2026);
+        let lunarEl = document.getElementById('lunarWidgetText');
+        if (lunarEl) lunarEl.innerHTML = `<b>${lunar.day}/${lunar.month}/${lunar.year}</b><br>Ngày ${lunar.canChiNgay} (${lunar.hoangDaoName})`;
+    };
 </script>
 </body>
 </html>

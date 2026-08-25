@@ -130,6 +130,51 @@
         .salary-signature-footer .sign-col { display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
         .salary-signature-footer .sign-space { height: 50px; }
         .salary-signature-footer .sign-name { text-transform: none; font-weight: 800; font-size: 12px; color: #0f172a; }
+
+        /* CẤU HÌNH IN ẤN CHUẨN VĂN BẢN HÀNH CHÍNH & ẨN TOÀN BỘ THANH CUỘN */
+        @media print {
+            body * { visibility: hidden; }
+            #previewModal, #previewModal * { visibility: visible; }
+            #previewModal { 
+                position: absolute !important; 
+                left: 0 !important; 
+                top: 0 !important; 
+                width: 100% !important; 
+                background: white !important; 
+                display: block !important;
+            }
+            .modal-overlay { 
+                background: white !important; 
+                position: static !important; 
+                backdrop-filter: none !important; 
+                padding: 0 !important;
+            }
+            .modal-card { 
+                box-shadow: none !important; 
+                max-height: none !important; 
+                overflow: visible !important; 
+                border: none !important; 
+                width: 100% !important;
+            }
+            #payslip-capture { 
+                box-shadow: none !important; 
+                padding: 0 !important; 
+                width: 100% !important; 
+                max-height: none !important; 
+                overflow: visible !important; 
+                border: none !important;
+            }
+            /* Ẩn hoàn toàn thanh cuộn và các nút điều hướng khi in */
+            ::-webkit-scrollbar { display: none !important; }
+            * { 
+                -ms-overflow-style: none !important; 
+                scrollbar-width: none !important; 
+                overflow: visible !important; 
+            }
+            .modal-actions, .modal-card > div:first-child { 
+                display: none !important; 
+            }
+        }
     </style>
 </head>
 <body>
@@ -988,7 +1033,6 @@
     let rootDriveFolderUrl = localStorage.getItem('vinapaco_drive_root_url') || 'https://drive.google.com/drive/u/0/my-drive';
     let gasWebhookUrl = localStorage.getItem('vinapaco_gas_webhook_url') || 'https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec';
 
-    // Mẫu nhân sự chuẩn đầy đủ SĐT, Tên ngân hàng, Số tài khoản áp dụng cho mọi tháng và năm
     const defaultNhansuTemplate = [
         {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "sdt": "0988123456", "nganHang": "Vietcombank", "stk": "0011002345678", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 5000000, "phep_cap": 12},
         {"stt": 2, "hoTen": "Nguyễn Văn Nam", "sdt": "0988234567", "nganHang": "Techcombank", "stk": "0021003456789", "hsl_cb": 1.48, "pc_cb": 0, "hsl_cv": 2.24, "pc_cv": 0, "nc_tg": 21, "nc_p": 1, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
@@ -1017,7 +1061,6 @@
 
     let coSoDuLieuNamThang = JSON.parse(localStorage.getItem('vinapaco_data_namthang')) || defaultCoSoDuLieuNamThang;
     
-    // Đảm bảo mọi năm/tháng tồn tại đều được nạp đầy đủ thông tin định danh ngân hàng và SĐT chuẩn
     Object.keys(coSoDuLieuNamThang).forEach(yKey => {
         let yData = coSoDuLieuNamThang[yKey];
         if (yData) {
@@ -1238,7 +1281,6 @@
         }
     }
 
-    // LỊCH VẠN NIÊN & PHONG THỦY PRO NÂNG CẤP ĐẦY ĐỦ
     const canList = ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"];
     const chiList = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
     const trucList = ["Kiến", "Trừ", "Mãn", "Bình", "Định", "Phá", "Nguy", "Thành", "Thu", "Khai", "Bế"];
@@ -1263,7 +1305,6 @@
         let chiDayIdx = (dayOfYear + 2) % 12;
         let isHoangDao = (dd + mm) % 2 === 0;
 
-        // Bổ sung phong thủy chi tiết
         let trucNgay = trucList[(dayOfYear + 3) % 11];
         let saoChieuMenh = nhiThapBatTu[(dayOfYear * 3) % nhiThapBatTu.length];
         let nguHanhNgay = nguHanhList[(dd + mm + yy) % nguHanhList.length];
@@ -1397,7 +1438,6 @@
                 nhansu: JSON.parse(JSON.stringify(defaultNhansuTemplate))
             };
         } else {
-            // Đảm bảo bổ sung dữ liệu SĐT/Ngân hàng/STK đầy đủ nếu tháng cũ chưa có
             coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.forEach((ns, index) => {
                 let templateDefault = defaultNhansuTemplate[index] || defaultNhansuTemplate[0];
                 if (!ns.sdt) ns.sdt = templateDefault.sdt;
@@ -2649,7 +2689,6 @@
         if (found) moModalPhiieuLuongTheoTen(found.hoTen);
     }
 
-    // WELLNESS NÂNG CẤP CÓ CHUYỂN TRẠNG THÁI NÚT BẤM
     let wellnessTimer = null;
     function batTatNhacNghiGoi() {
         let btnToggle = document.getElementById('btnWellnessToggle');

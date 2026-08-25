@@ -29,7 +29,6 @@
         .banner p { font-size: 13px; opacity: 0.95; margin-top: 4px; font-weight: 500; }
 
         .btn-group-header { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-        /* Nút bấm thiết kế to hơn, nổi bật hơn trên desktop */
         .btn { padding: 10px 18px; border-radius: 10px; font-weight: 800; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: none; transition: all 0.2s; white-space: nowrap; box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
         .btn:hover { opacity: 0.92; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.12); }
         .btn-lg { padding: 12px 22px !important; font-size: 14px !important; font-weight: 900 !important; border-radius: 10px !important; }
@@ -63,7 +62,6 @@
         .chart-card { background: white; padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         .chart-title { font-size: 13px; font-weight: 800; color: var(--text-main); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
 
-        /* Nhãn tab lớn hơn, rõ ràng trên desktop */
         .tab-nav { display: flex; gap: 8px; border-bottom: 3px solid var(--border-color); padding-bottom: 8px; margin-top: 6px; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
         .tab-btn-nav { padding: 10px 18px; border-radius: 10px 10px 0 0; background: #e2e8f0; border: none; font-weight: 800; font-size: 13px; cursor: pointer; color: var(--text-muted); flex-shrink: 0; transition: all 0.2s; }
         .tab-btn-nav:hover { background: #cbd5e1; color: var(--text-main); }
@@ -135,7 +133,6 @@
         .handover-signatures { display: grid; grid-template-columns: repeat(2, 1fr); text-align: center; margin-top: 24px; font-weight: 800; }
         .handover-sign-space { height: 65px; }
 
-        /* Tối ưu khi xem trên di động */
         @media (max-width: 768px) {
             body { padding: 8px; }
             .banner { padding: 12px 14px; flex-direction: column; align-items: flex-start; }
@@ -386,7 +383,7 @@
         <button class="btn btn-blue btn-lg" onclick="luuGasUrlNhanh()"><i class="fa-solid fa-floppy-disk"></i> LƯU</button>
     </div>
 
-    <!-- THANH THỜI GIAN & THỜI TIẾT (ĐÃ LÀM TO & CHI TIẾT HƠN) -->
+    <!-- THANH THỜI GIAN & THỜI TIẾT -->
     <div class="top-info-bar">
         <div class="info-widget-card">
             <div style="font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-clock"></i> Đồng Hồ Số</div>
@@ -399,7 +396,7 @@
             <div class="lunar-display" id="lunarWidgetText" style="font-size: 14px; font-weight: 800;">Đang tải...</div>
         </div>
 
-        <!-- WIDGET THỜI TIẾT TRÌNH BÀY TO & CHI TIẾT -->
+        <!-- WIDGET THỜI TIẾT -->
         <div class="info-widget-card" style="justify-content: space-between; grid-column: span auto;">
             <div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
@@ -409,11 +406,10 @@
                         <button class="btn btn-blue btn-lg" style="padding: 6px 12px !important; font-size: 11px !important;" onclick="layThoiTietTheoGPS()"><i class="fa-solid fa-location-crosshairs"></i> GPS</button>
                     </div>
                 </div>
-                <!-- Nội dung thời tiết to, rõ ràng, chi tiết -->
                 <div id="weatherWidgetText" style="font-size: 14px; font-weight: 700; color: #0f172a; line-height: 1.5;">Đang kết nối trạm khí tượng...</div>
             </div>
             <div style="display: flex; gap: 6px; align-items: center; margin-top: 10px;">
-                <input type="text" id="inputSearchCity" placeholder="Nhập Tỉnh/Thành..." style="padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 12px; font-weight: bold; flex: 1;" value="Phú Thọ">
+                <input type="text" id="inputSearchCity" placeholder="Nhập Tỉnh/Thành (Nhấn Enter để tìm)..." style="padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 12px; font-weight: bold; flex: 1;" value="Phú Thọ">
                 <button class="btn btn-green btn-lg" style="padding: 8px 14px !important; font-size: 12px !important;" onclick="traCuuThoiTietTheoThanhPho()"><i class="fa-solid fa-magnifying-glass"></i> TÌM</button>
             </div>
         </div>
@@ -590,7 +586,7 @@
         
         <div class="form-card" id="formCardTask">
             <input type="hidden" id="editTaskIndex" value="-1">
-            <div class="form-group"><label>Nội Dung Công Việc</label><input type="text" id="inputTaskName" placeholder="VD: Lập báo cáo điều hành..."></div>
+            <div class="form-group"><label>Nội Dung Công Việc (Enter để lưu)</label><input type="text" id="inputTaskName" placeholder="VD: Lập báo cáo điều hành..."></div>
             <div class="form-group"><label>Người Thực Hiện</label><input type="text" id="inputTaskAssignee" value="Trần Bình Dương"></div>
             <div class="form-group"><label>Hạn Hoàn Thành</label><input type="date" id="inputTaskDueDate"></div>
             <div class="form-group"><label>Trạng Thái</label><select id="inputTaskStatus"><option value="Chưa làm">⏳ Chưa làm</option><option value="Đang làm">🔄 Đang làm</option><option value="Hoàn thành">✅ Hoàn thành</option></select></div>
@@ -688,7 +684,7 @@
             <div class="form-group"><label>Đơn Vị Thụ Hưởng</label><input type="text" id="inputOfficeBeneficiary" placeholder="VD: Công ty TNHH..."></div>
             <div class="form-group"><label>Tên Ngân Hàng</label><input type="text" id="inputOfficeBankName" placeholder="VD: Vietcombank"></div>
             <div class="form-group"><label>Số Tài Khoản</label><input type="text" id="inputOfficeBankAccount" placeholder="Số TK..."></div>
-            <div class="form-group"><label>Nội Dung</label><input type="text" id="inputOfficeContent" placeholder="Nội dung chi..."></div>
+            <div class="form-group"><label>Nội Dung (Enter để lưu)</label><input type="text" id="inputOfficeContent" placeholder="Nội dung chi..."></div>
             
             <div class="form-group">
                 <label>ĐVT</label>
@@ -724,29 +720,94 @@
     <!-- TAB 9: KHO MỰC IN -->
     <div id="inkInventoryTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-warehouse"></i> QUẢN LÝ KHO MỰC IN & XUẤT NHẬP TỒN (XNT)</div>
+            <div class="table-title"><i class="fa-solid fa-warehouse"></i> QUẢN LÝ KHO MỰC IN & XUẤT NHẬP TỒN (XNT) - CẢNH BÁO MIN/MAX</div>
             <button class="btn btn-green" onclick="xuatBaoCaoXNTExcel()"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
         </div>
-        <div style="margin-bottom: 12px; background: #f8fafc; border: 1px solid var(--border-color); padding: 10px; border-radius: 8px;">
-            <div style="font-weight: 900; font-size: 12px; margin-bottom: 6px; color: #0369a1;"><i class="fa-solid fa-chart-line"></i> TỔNG HỢP XUẤT - NHẬP - TỒN THỰC TẾ</div>
-            <table><thead><tr><th>STT</th><th>Mã VT</th><th>Tên Vật Tư</th><th>Đầu Kỳ</th><th>Nhập</th><th>Xuất</th><th>Cuối Kỳ</th><th>Trạng Thái</th></tr></thead><tbody id="xntTableBody"></tbody></table>
+
+        <!-- BẢNG TỔNG HỢP XNT & CẢNH BÁO MIN/MAX -->
+        <div style="margin-bottom: 14px; background: #f8fafc; border: 1.5px solid var(--border-color); padding: 14px; border-radius: 12px;">
+            <div style="font-weight: 900; font-size: 13px; margin-bottom: 10px; color: #0369a1; display:flex; justify-content:space-between; align-items:center;">
+                <span><i class="fa-solid fa-chart-line"></i> BẢNG TỔNG HỢP XUẤT - NHẬP - TỒN & CẢNH BÁO TỒN KHO (MIN / MAX)</span>
+                <span class="badge-net" style="font-size: 11px;">Tự động cập nhật</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 40px;">STT</th>
+                        <th>Tên Vật Tư / Mực In</th>
+                        <th>Máy In Tương Thích</th>
+                        <th style="text-align: center;">Đầu Kỳ</th>
+                        <th style="text-align: center;">Nhập</th>
+                        <th style="text-align: center;">Xuất</th>
+                        <th style="text-align: center;">Tồn Thực Tế</th>
+                        <th style="text-align: center;">Định Mức (Min - Max)</th>
+                        <th style="text-align: center;">Trạng Thái Cảnh Báo</th>
+                    </tr>
+                </thead>
+                <tbody id="xntTableBody"></tbody>
+            </table>
         </div>
-        <div class="form-card" id="formCardInk">
+
+        <!-- FORM GHI SỔ TÁCH BẠCH NHẬP / XUẤT -->
+        <div class="form-card" id="formCardInk" style="border: 2px dashed #0284c7; background: #f0f9ff;">
             <input type="hidden" id="editInkIndex" value="-1">
-            <div class="form-group"><label>Mã VT</label><input type="text" id="autoInkCode" readonly style="background: #e2e8f0; font-weight: bold;" value="MUC001"></div>
-            <div class="form-group"><label>Tên Mực In</label><input type="text" id="inputInkName" placeholder="VD: Canon 337"></div>
-            <div class="form-group"><label>Máy In</label><input type="text" id="inputInkPrinter" placeholder="VD: Canon 151dw"></div>
-            <div class="form-group"><label>Nghiệp Vụ</label><select id="inputInkAction"><option value="Nhập mới kho">📥 Nhập kho</option><option value="Cấp phát sử dụng">📤 Cấp phát</option></select></div>
+            <div class="form-group">
+                <label>Nghiệp Vụ Kho (Enter để ghi sổ)</label>
+                <select id="inputInkAction" style="border: 2px solid #0284c7; font-weight: bold;">
+                    <option value="Nhập kho" selected>📥 Nhập kho (Nhập mới vật tư)</option>
+                    <option value="Xuất kho">📤 Xuất kho (Cấp phát sử dụng)</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Tên Mực In / Vật Tư</label><input type="text" id="inputInkName" placeholder="VD: Hộp mực Canon 337"></div>
+            <div class="form-group"><label>Máy In Sử Dụng</label><input type="text" id="inputInkPrinter" placeholder="VD: Canon LBP 151dw"></div>
             <div class="form-group"><label>Số Lượng</label><input type="number" id="inputInkQty" value="1" min="1"></div>
-            <div class="form-group"><label>Người Nhận</label><input type="text" id="inputInkReceiver" placeholder="Người nhận..."></div>
             <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputInkPrice" placeholder="450.000"></div>
+            <div class="form-group"><label>Nhà Cung Cấp / Người Nhận</label><input type="text" id="inputInkReceiver" placeholder="Tên NCC hoặc Cán bộ nhận..."></div>
+            <div class="form-group"><label>Định Mức Min / Max</label><input type="text" id="inputInkMinMax" value="2 / 10" placeholder="VD: 2 / 10"></div>
+            <div class="form-group"><label>Ngày Chứng Từ</label><input type="date" id="inputInkDate"></div>
             <div class="form-group"><label>Đính Kèm Phiếu</label><input type="file" id="inkFileUpload" onchange="taiTepLenThuMucChinhXac(this, 'Kho Mực In')" style="padding: 4px; font-size: 11px;"></div>
-            <div class="form-group" style="display: flex; gap: 6px;">
-                <button class="btn btn-green btn-lg" id="btnSaveInk" onclick="luuHoacCapNhatKhoMuc()"><i class="fas fa-warehouse"></i> <span id="btnInkText">GHI SỔ</span></button>
+            <div class="form-group" style="display: flex; gap: 6px; grid-column: span 2;">
+                <button class="btn btn-green btn-lg" id="btnSaveInk" onclick="luuHoacCapNhatKhoMuc()"><i class="fas fa-warehouse"></i> <span id="btnInkText">GHI SỔ KHO</span></button>
                 <button class="btn btn-red btn-lg hidden" id="btnCancelInk" onclick="huyBoCapNhatKhoMuc()"><i class="fa-solid fa-xmark"></i> Hủy</button>
             </div>
         </div>
-        <table><thead><tr><th>Mã VT</th><th>Tên Mực</th><th>Máy In</th><th>Nghiệp Vụ</th><th>SL</th><th>Người Nhận</th><th>Đơn Giá</th><th>Thành Tiền</th><th style="text-align: center;">Thao Tác</th></tr></thead><tbody id="inkInventoryTableBody"></tbody></table>
+
+        <!-- 2 BẢNG TÁCH BẠCH: NHẬP KHO VÀ XUẤT KHO -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
+            <div style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px;">
+                <div style="font-weight: 900; font-size: 13px; color: #15803d; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                    <i class="fa-solid fa-cart-arrow-down"></i> LỊCH SỬ NHẬP KHO (INBOUND)
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tên Mực / Vật Tư</th>
+                            <th style="text-align: center;">SL Nhập</th>
+                            <th style="text-align: right;">Đơn Giá</th>
+                            <th style="text-align: center;">Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inkInboundTableBody"></tbody>
+                </table>
+            </div>
+
+            <div style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px;">
+                <div style="font-weight: 900; font-size: 13px; color: #dc2626; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                    <i class="fa-solid fa-cart-arrow-up"></i> LỊCH SỬ XUẤT KHO / CẤP PHÁT (OUTBOUND)
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tên Mực / Vật Tư</th>
+                            <th style="text-align: center;">SL Xuất</th>
+                            <th>Người Nhận</th>
+                            <th style="text-align: center;">Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inkOutboundTableBody"></tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <!-- TAB 10: GIAO NHẬN -->
@@ -756,7 +817,7 @@
             <input type="hidden" id="editSlipIndex" value="-1">
             <div class="form-group"><label>Số Phiếu</label><input type="text" id="inputSlipNo" value="PGN-2026/08-01"></div>
             <div class="form-group"><label>Bên Giao</label><input type="text" id="inputSlipFrom" value="Trần Bình Dương - VP TCT"></div>
-            <div class="form-group"><label>Bên Nhận</label><input type="text" id="inputSlipTo" placeholder="Họ tên cán bộ nhận..."></div>
+            <div class="form-group"><label>Bên Nhận (Enter để thêm)</label><input type="text" id="inputSlipTo" placeholder="Họ tên cán bộ nhận..."></div>
             <div class="form-group"><label>Bộ Phận</label><input type="text" id="inputSlipDept" placeholder="Phòng ban..."></div>
             <div class="form-group"><label>Tên Thiết Bị</label><input type="text" id="inputSlipItem" placeholder="Laptop Dell..."></div>
             <div class="form-group"><label>Tình Trạng</label><input type="text" id="inputSlipStatus" value="Mới 100%, nguyên seal"></div>
@@ -787,7 +848,7 @@
             <input type="hidden" id="editTelecomIndex" value="-1">
             <div class="form-group"><label>Mã HS</label><input type="text" id="inputTelecomMaHs" readonly style="background: #e2e8f0; font-weight: bold;" value="VT-01"></div>
             <div class="form-group"><label>Nhà Mạng</label><select id="inputTelecomSupplier"><option value="VNPT">VNPT</option><option value="Viettel">Viettel</option><option value="Mobifone">Mobifone</option></select></div>
-            <div class="form-group"><label>Loại Cước</label><input type="text" id="inputTelecomType" placeholder="VD: Cáp quang..."></div>
+            <div class="form-group"><label>Loại Cước (Enter để thêm)</label><input type="text" id="inputTelecomType" placeholder="VD: Cáp quang..."></div>
             <div class="form-group"><label>Tháng</label><select id="inputTelecomThangChon">
                 <option value="Tháng 01">Tháng 01</option><option value="Tháng 02">Tháng 02</option><option value="Tháng 03">Tháng 03</option><option value="Tháng 04">Tháng 04</option><option value="Tháng 05">Tháng 05</option><option value="Tháng 06">Tháng 06</option><option value="Tháng 07">Tháng 07</option><option value="Tháng 08" selected>Tháng 08</option><option value="Tháng 09">Tháng 09</option><option value="Tháng 10">Tháng 10</option><option value="Tháng 11">Tháng 11</option><option value="Tháng 12">Tháng 12</option>
             </select></div>
@@ -830,7 +891,7 @@
         <div class="form-card" id="formCardSurvey">
             <input type="hidden" id="editSurveyIndex" value="-1">
             <div class="form-group"><label>Mã KS</label><input type="text" id="autoSurveyCode" readonly style="background:#e2e8f0; font-weight:bold;" value="KS-01"></div>
-            <div class="form-group"><label>Người Sử Dụng</label><input type="text" id="inputSurveyUser" placeholder="Họ tên cán bộ..."></div>
+            <div class="form-group"><label>Người Sử Dụng (Enter để lưu)</label><input type="text" id="inputSurveyUser" placeholder="Họ tên cán bộ..."></div>
             <div class="form-group"><label>Bộ Phận</label><input type="text" id="inputSurveyDept" placeholder="Phòng ban..."></div>
             
             <div class="form-group">
@@ -901,7 +962,7 @@
     </div>
 </div>
 
-<!-- MODAL XEM PHIẾU LƯƠNG NHÂN SỰ (THIẾT KẾ CHUYÊN NGHIỆP, KHÔNG BỊ ĐÈ KHUẤT) -->
+<!-- MODAL XEM PHIẾU LƯƠNG NHÂN SỰ -->
 <div class="modal-overlay hidden" id="previewModal">
     <div class="modal-card" style="max-width: 720px; padding: 0;">
         <div style="padding: 12px 18px; background: #f8fafc; border-bottom: 1px solid #cbd5e1; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;">
@@ -918,14 +979,12 @@
         <div style="padding: 18px; background: #e2e8f0; max-height: 78vh; overflow-y: auto;">
             <div id="payslip-capture" class="payslip-container" style="background: white; padding: 24px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); color: #0f172a;">
                 
-                <!-- Header Phiếu Lương -->
                 <div style="text-align: center; border-bottom: 2.5px solid #0f172a; padding-bottom: 14px; margin-bottom: 16px;">
                     <div style="font-size: 11px; text-transform: uppercase; font-weight: 900; letter-spacing: 1px; color: #475569;">TỔNG CÔNG TY GIẤY VIỆT NAM (VINAPACO)</div>
                     <h2 style="font-size: 18px; font-weight: 900; text-transform: uppercase; margin: 6px 0; color: #0369a1;">PHIẾU THANH TOÁN LƯƠNG & CHUYỂN KHOẢN</h2>
                     <div id="slipMonthSub" style="display:inline-block; background:#f0f9ff; color:#0284c7; padding:3px 12px; border-radius:12px; font-size:12px; font-weight: 800; border: 1px solid #bae6fd;">Tháng 08/2026 - Văn phòng TCT</div>
                 </div>
 
-                <!-- Thông Tin Cán Bộ -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #f8fafc; padding: 12px; border-radius: 10px; border: 1px solid #cbd5e1; margin-bottom: 14px; font-size: 13px;">
                     <div><span style="font-size: 10px; text-transform: uppercase; color: #475569; font-weight: 800;">Họ và Tên Cán Bộ:</span><div style="font-size: 14px; font-weight: 900; color: #0f172a; margin-top: 2px;" id="slipName">--</div></div>
                     <div><span style="font-size: 10px; text-transform: uppercase; color: #475569; font-weight: 800;">Ngân Hàng & STK:</span><div style="font-size: 13px; font-weight: 900; color: #0284c7; margin-top: 2px;" id="slipBankInfo">--</div></div>
@@ -933,7 +992,6 @@
                     <div><span style="font-size: 10px; text-transform: uppercase; color: #475569; font-weight: 800;">Chức Danh / Vị Trí:</span><div style="font-size: 13px; font-weight: 800; color: #0f172a; margin-top: 2px;">Cán bộ quản lý chuyên môn</div></div>
                 </div>
 
-                <!-- Bảng 1: Chấm Công & Hệ Số -->
                 <div style="margin-bottom: 14px;">
                     <div style="font-weight: 900; color: #0369a1; font-size: 12px; text-transform: uppercase; margin-bottom: 6px;"><i class="fa-solid fa-clock-rotate-left"></i> I. Thông Số Chấm Công & Hệ Số Lương</div>
                     <table style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: center;">
@@ -955,7 +1013,6 @@
                     </table>
                 </div>
 
-                <!-- Bảng 2: Chi Tiết Thu Nhập & Khấu Trừ -->
                 <div style="margin-bottom: 14px;">
                     <div style="font-weight: 900; color: #0369a1; font-size: 12px; text-transform: uppercase; margin-bottom: 6px;"><i class="fa-solid fa-calculator"></i> II. Chi Tiết Thu Nhập, Khấu Trừ & Thực Lĩnh</div>
                     <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
@@ -973,7 +1030,6 @@
                     </table>
                 </div>
 
-                <!-- Tổng Thực Lĩnh NET -->
                 <div style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 2px solid #bbf7d0; border-radius: 10px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
                     <span style="font-weight: 900; font-size: 13px; text-transform: uppercase; color: #166534;"><i class="fa-solid fa-circle-check"></i> THỰC LĨNH NET (CHUYỂN KHOẢN):</span>
                     <span style="font-size: 18px; font-weight: 900; color: #15803d;" id="slipThucLinh">0 VNĐ</span>
@@ -1033,7 +1089,8 @@
         ]
     };
     let dsKhoMucIn = JSON.parse(localStorage.getItem('vinapaco_ink')) || [
-        {"code":"MUC001","name":"Hộp mực Canon 337","printer":"Canon LBP 151dw","action":"Nhập mới kho","qty":5,"receiver":"Kho Văn phòng","price":450000,"total":2250000}
+        {"code":"MUC001","name":"Hộp mực Canon 337","printer":"Canon LBP 151dw","action":"Nhập kho","qty":5,"receiver":"Công ty Hồng Hà","price":450000,"total":2250000,"minMax":"2 / 10","date":"2026-08-01"},
+        {"code":"MUC002","name":"Hộp mực Canon 337","printer":"Canon LBP 151dw","action":"Xuất kho","qty":1,"receiver":"Phòng Kế toán","price":450000,"total":450000,"minMax":"2 / 10","date":"2026-08-10"}
     ];
     let dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('vinapaco_delivery')) || [
         {"slipNo":"PGN-2026/08-01","from":"Trần Bình Dương","to":"Nguyễn Minh Ngọc","dept":"Kế toán","item":"Laptop Dell Latitude","status":"Mới 100%","date":"2026-08-24"}
@@ -1406,7 +1463,6 @@
         let ds = monthData.nhansu || [];
         
         ds.forEach(i => {
-            // Loại bỏ toàn bộ phụ cấp (pc_cb, pc_cv = 0) trừ nhân sự Nguyễn Minh Ngọc
             let pcCbActual = (i.hoTen === "Nguyễn Minh Ngọc") ? (i.pc_cb || 0) : 0;
             let pcCvActual = (i.hoTen === "Nguyễn Minh Ngọc") ? (i.pc_cv || 0) : 0;
 
@@ -1512,9 +1568,21 @@
         let yearTelecom = layTatCaDanhSachTelecomTheoNam();
         let totalTelecomYear = yearTelecom.reduce((s, i) => s + (i.tong || 0), 0);
         let ds = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey]) ? coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu : [];
-        let totalStockInk = dsKhoMucIn.reduce((sum, i) => (i.action || '').includes('Nhập') ? sum + i.qty : sum - i.qty, 0);
         let totalTamUng = ds.reduce((sum, i) => sum + (i.tam_ung || 0), 0);
         
+        // Calculate total remaining ink stock from inventory items
+        let itemMap = {};
+        dsKhoMucIn.forEach(item => {
+            let key = (item.name || '').trim().toLowerCase();
+            if (!itemMap[key]) itemMap[key] = { dauKy: 2, nhap: 0, xuat: 0 };
+            if ((item.action || '').includes('Nhập')) itemMap[key].nhap += (item.qty || 0);
+            else itemMap[key].xuat += (item.qty || 0);
+        });
+        let totalStockInk = 0;
+        for(let k in itemMap) {
+            totalStockInk += (itemMap[k].dauKy + itemMap[k].nhap - itemMap[k].xuat);
+        }
+
         if (document.getElementById("kpiTotalNet")) document.getElementById("kpiTotalNet").innerText = totalYearNet.toLocaleString('vi-VN');
         if (document.getElementById("kpiTotalBankTransfer")) document.getElementById("kpiTotalBankTransfer").innerText = totalYearNet.toLocaleString('vi-VN');
         if (document.getElementById("kpiTotalPayment")) document.getElementById("kpiTotalPayment").innerText = totalOfficeYear.toLocaleString('vi-VN');
@@ -1764,41 +1832,105 @@
     function xoaVPP(key, idx) { if (dsThanhToanVanPhongProByMonth[key]) dsThanhToanVanPhongProByMonth[key].splice(idx, 1); capNhat(); }
 
     function renderInkInventoryTable() {
-        let tbody = document.getElementById('inkInventoryTableBody');
-        if(!tbody) return; tbody.innerHTML = '';
+        let tbodyIn = document.getElementById('inkInboundTableBody');
+        let tbodyOut = document.getElementById('inkOutboundTableBody');
+        let xntBody = document.getElementById('xntTableBody');
+        if(!tbodyIn || !tbodyOut || !xntBody) return;
+
+        tbodyIn.innerHTML = '';
+        tbodyOut.innerHTML = '';
+
         dsKhoMucIn.forEach((item, idx) => {
-            tbody.innerHTML += `<tr>
-                <td style="text-align:center;">${item.code}</td>
-                <td><b>${item.name}</b></td>
-                <td>${item.printer}</td>
-                <td>${item.action}</td>
-                <td style="text-align:center;">${item.qty}</td>
-                <td>${item.receiver}</td>
-                <td style="text-align:right;">${item.price.toLocaleString()}</td>
-                <td style="text-align:right; font-weight:bold;">${item.total.toLocaleString()}</td>
-                <td style="text-align:center; display:flex; gap:6px; justify-content:center;">
-                    <button class="btn btn-purple" style="padding:4px 8px; font-size:11px;" onclick="moModalInPhieuKho(${idx})" title="In"><i class="fa-solid fa-print"></i></button>
-                    <button class="btn btn-blue" style="padding:4px 8px; font-size:11px;" onclick="suaKhoMuc(${idx})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
-                    <button class="btn btn-red" style="padding:4px 8px; font-size:11px;" onclick="xoaKhoMuc(${idx})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
+            let isImport = (item.action || '').includes('Nhập');
+            let rowHtml = `<tr>
+                <td><b>${item.name}</b><br><small style="color:#64748b;">${item.printer || ''}</small></td>
+                <td style="text-align:center; font-weight:bold; color:${isImport?'#16a34a':'#dc2626'};">${item.qty}</td>
+                ${isImport ? `<td style="text-align:right;">${(item.price||0).toLocaleString()}</td>` : `<td>${item.receiver || '--'}</td>`}
+                <td style="text-align:center; display:flex; gap:4px; justify-content:center;">
+                    <button class="btn btn-purple" style="padding:3px 6px; font-size:10px;" onclick="moModalInPhieuKho(${idx})" title="In"><i class="fa-solid fa-print"></i></button>
+                    <button class="btn btn-blue" style="padding:3px 6px; font-size:10px;" onclick="suaKhoMuc(${idx})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-red" style="padding:3px 6px; font-size:10px;" onclick="xoaKhoMuc(${idx})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>`;
+            if (isImport) tbodyIn.innerHTML += rowHtml;
+            else tbodyOut.innerHTML += rowHtml;
         });
-        let xntEl = document.getElementById('xntTableBody');
-        if(xntEl) xntEl.innerHTML = `<tr><td style="text-align:center;">1</td><td style="text-align:center;">MUC001</td><td>Canon 337 (151dw)</td><td style="text-align:center;">2</td><td style="text-align:center;">5</td><td style="text-align:center;">1</td><td style="font-weight:bold; color:#0284c7; text-align:center;">6</td><td style="text-align:center;"><span class="badge-net">Ổn định</span></td></tr>`;
+
+        // Compute XNT summary grouped by item name
+        let itemMap = {};
+        dsKhoMucIn.forEach(item => {
+            let key = (item.name || '').trim().toLowerCase();
+            if (!itemMap[key]) {
+                itemMap[key] = {
+                    name: item.name,
+                    printer: item.printer || '',
+                    dauKy: 2,
+                    nhap: 0,
+                    xuat: 0,
+                    minMax: item.minMax || '2 / 10'
+                };
+            }
+            if ((item.action || '').includes('Nhập')) {
+                itemMap[key].nhap += (item.qty || 0);
+            } else {
+                itemMap[key].xuat += (item.qty || 0);
+            }
+            if (item.minMax) itemMap[key].minMax = item.minMax;
+        });
+
+        xntBody.innerHTML = '';
+        let stt = 1;
+        let totalStockInk = 0;
+
+        for (let key in itemMap) {
+            let obj = itemMap[key];
+            let tonThucTe = obj.dauKy + obj.nhap - obj.xuat;
+            totalStockInk += tonThucTe;
+
+            let parts = obj.minMax.split('/');
+            let minVal = parts.length > 0 ? parseInt(parts[0].trim()) || 2 : 2;
+
+            let statusBadge = '<span class="badge-net">🟢 Ổn định</span>';
+            if (tonThucTe <= 0) {
+                statusBadge = '<span class="badge-danger">🔴 Hết hàng</span>';
+            } else if (tonThucTe <= minVal) {
+                statusBadge = '<span class="badge-warning">⚠️ Sắp hết hàng</span>';
+            }
+
+            xntBody.innerHTML += `<tr>
+                <td style="text-align:center;">${stt++}</td>
+                <td><b>${obj.name}</b></td>
+                <td>${obj.printer}</td>
+                <td style="text-align:center;">${obj.dauKy}</td>
+                <td style="text-align:center; color:#16a34a; font-weight:bold;">${obj.nhap}</td>
+                <td style="text-align:center; color:#dc2626; font-weight:bold;">${obj.xuat}</td>
+                <td style="text-align:center; font-weight:900; color:#0284c7; font-size:14px;">${tonThucTe}</td>
+                <td style="text-align:center;">${obj.minMax}</td>
+                <td style="text-align:center;">${statusBadge}</td>
+            </tr>`;
+        }
+
+        if (Object.keys(itemMap).length === 0) {
+            xntBody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#64748b; padding:15px;">Chưa có dữ liệu vật tư / mực in.</td></tr>`;
+        }
+
+        if (document.getElementById("kpiTotalInkStock")) {
+            document.getElementById("kpiTotalInkStock").innerText = totalStockInk + " Hộp";
+        }
     }
 
     function suaKhoMuc(idx) {
         let item = dsKhoMucIn[idx];
         if (!item) return;
         document.getElementById('editInkIndex').value = idx;
-        document.getElementById('autoInkCode').value = item.code;
+        document.getElementById('inputInkAction').value = item.action || 'Nhập kho';
         document.getElementById('inputInkName').value = item.name;
         document.getElementById('inputInkPrinter').value = item.printer;
-        document.getElementById('inputInkAction').value = item.action;
         document.getElementById('inputInkQty').value = item.qty;
         document.getElementById('inputInkReceiver').value = item.receiver;
-        document.getElementById('inputInkPrice').value = item.price.toLocaleString('vi-VN');
-        document.getElementById('btnInkText').innerText = "CẬP NHẬT";
+        document.getElementById('inputInkPrice').value = (item.price || 0).toLocaleString('vi-VN');
+        document.getElementById('inputInkMinMax').value = item.minMax || '2 / 10';
+        document.getElementById('btnInkText').innerText = "CẬP NHẬT KHO";
         document.getElementById('btnCancelInk').classList.remove('hidden');
         document.getElementById('formCardInk').scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
@@ -1809,23 +1941,26 @@
         document.getElementById('inputInkPrinter').value = '';
         document.getElementById('inputInkReceiver').value = '';
         document.getElementById('inputInkPrice').value = '';
-        document.getElementById('btnInkText').innerText = "GHI SỔ";
+        document.getElementById('btnInkText').innerText = "GHI SỔ KHO";
         document.getElementById('btnCancelInk').classList.add('hidden');
     }
 
     function luuHoacCapNhatKhoMuc() {
         let nameEl = document.getElementById('inputInkName');
         let name = nameEl ? nameEl.value.trim() : "";
-        if(!name) { alert("Nhập tên mực in!"); return; }
+        if(!name) { alert("Nhập tên mực in / vật tư!"); return; }
         let editIdx = parseInt(document.getElementById('editInkIndex').value);
         let qty = parseFloat(document.getElementById('inputInkQty').value) || 1;
         let price = parseVNDMoney(document.getElementById('inputInkPrice').value);
+        let action = document.getElementById('inputInkAction').value;
 
         let item = {
             code: editIdx >= 0 && dsKhoMucIn[editIdx] ? dsKhoMucIn[editIdx].code : "MUC00" + (dsKhoMucIn.length + 1),
             name: name, printer: document.getElementById('inputInkPrinter').value,
-            action: document.getElementById('inputInkAction').value, qty: qty,
-            receiver: document.getElementById('inputInkReceiver').value, price: price, total: qty * price
+            action: action, qty: qty,
+            receiver: document.getElementById('inputInkReceiver').value, price: price, total: qty * price,
+            minMax: document.getElementById('inputInkMinMax').value || '2 / 10',
+            date: document.getElementById('inputInkDate').value || new Date().toISOString().split('T')[0]
         };
 
         if (editIdx >= 0 && dsKhoMucIn[editIdx]) {
@@ -1835,7 +1970,7 @@
             dsKhoMucIn.push(item);
             if(nameEl) nameEl.value = '';
         }
-        renderInkInventoryTable(); capNhat(); alert("✅ Ghi sổ thành công!");
+        renderInkInventoryTable(); capNhat(); alert("✅ Ghi sổ kho thành công!");
     }
 
     function xoaKhoMuc(idx) { dsKhoMucIn.splice(idx, 1); renderInkInventoryTable(); capNhat(); }
@@ -1843,16 +1978,17 @@
     function moModalInPhieuKho(idx) {
         let item = dsKhoMucIn[idx];
         if (!item) return;
-        document.getElementById('inputCustomSlipTitle').value = item.action.includes('Nhập') ? "PHIẾU NHẬP KHO VẬT TƯ / MỰC IN" : "PHIẾU XUẤT KHO / CẤP PHÁT";
+        let isImport = (item.action || '').includes('Nhập');
+        document.getElementById('inputCustomSlipTitle').value = isImport ? "PHIẾU NHẬP KHO VẬT TƯ / MỰC IN" : "PHIẾU XUẤT KHO / CẤP PHÁT";
         capNhatTieuDePhieuIn();
         document.getElementById('previewSlipNoDate').innerText = `Mã phiếu: ${item.code} | Ngày ${new Date().getDate()} tháng ${new Date().getMonth()+1} năm ${new Date().getFullYear()}`;
         document.getElementById('pYear').innerText = new Date().getFullYear();
         document.getElementById('pMonth').innerText = new Date().getMonth()+1;
         document.getElementById('pDay').innerText = new Date().getDate();
-        document.getElementById('pFrom').innerText = "Thủ kho Văn phòng TCT";
-        document.getElementById('signFromName').innerText = "Thủ kho TCT";
-        document.getElementById('pTo').innerText = item.receiver || "Đơn vị sử dụng";
-        document.getElementById('signToName').innerText = item.receiver || "Người nhận";
+        document.getElementById('pFrom').innerText = isImport ? (item.receiver || "Nhà cung cấp") : "Thủ kho Văn phòng TCT";
+        document.getElementById('signFromName').innerText = isImport ? "Nhà cung cấp" : "Thủ kho TCT";
+        document.getElementById('pTo').innerText = isImport ? "Thủ kho Văn phòng TCT" : (item.receiver || "Đơn vị sử dụng");
+        document.getElementById('signToName').innerText = isImport ? "Thủ kho TCT" : (item.receiver || "Người nhận");
         document.getElementById('pDept').innerText = item.printer || "Văn phòng TCT";
         document.getElementById('pItem').innerText = `${item.name} (Máy: ${item.printer})`;
         document.getElementById('pQty').innerText = `${item.qty} Hộp`;
@@ -2513,140 +2649,4 @@
             case 0: return { text: "Trời quang, nắng đẹp", icon: "fa-sun", color: "#f59e0b" };
             case 1: case 2: case 3: return { text: "Nhiều mây, dịu mát", icon: "fa-cloud-sun", color: "#38bdf8" };
             case 45: case 48: return { text: "Sương mù nhẹ", icon: "fa-smog", color: "#94a3b8" };
-            case 51: case 53: case 55: case 56: case 57: return { text: "Mưa phùn rả rích", icon: "fa-cloud-rain", color: "#60a5fa" };
-            case 61: case 63: case 65: case 66: case 67: return { text: "Mưa rào lớn", icon: "fa-cloud-showers-heavy", color: "#2563eb" };
-            default: return { text: "Thời tiết ổn định", icon: "fa-cloud", color: "#64748b" };
-        }
-    }
-
-    async function goiApiLayThoiTiet(lat, lon, cityName) {
-        cachedWeatherCoords = { lat: lat, lon: lon, cityName: cityName };
-        try {
-            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_probability_max,uv_index_max&timezone=auto`);
-            let data = await res.json();
-            if (data && data.current) {
-                let cur = data.current;
-                let wInfo = getWeatherInfo(cur.weather_code);
-                let feelsLike = cur.apparent_temperature !== undefined ? ` (Cảm giác như ${cur.apparent_temperature}°C)` : '';
-                
-                // Trình bày chữ to hơn và chi tiết hơn ở widget tổng quan ngoài dashboard
-                document.getElementById('weatherWidgetText').innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 12px; margin-top: 4px;">
-                        <span style="font-size: 32px; color: ${wInfo.color};"><i class="fa-solid ${wInfo.icon}"></i></span>
-                        <div>
-                            <div style="font-size: 16px; font-weight: 900; color: #0f172a;">${cityName}: <span style="color: #0284c7; font-size: 22px;">${cur.temperature_2m}°C</span> ${feelsLike}</div>
-                            <div style="font-size: 12px; font-weight: 800; color: #334155; margin-top: 3px;">
-                                ☁️ ${wInfo.text} | 💧 Độ ẩm: <b>${cur.relative_humidity_2m}%</b> | 💨 Gió: <b>${cur.wind_speed_10m} km/h</b>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                document.getElementById('wLocationTitle').innerText = `Khu vực: ${cityName}`;
-                document.getElementById('wCurrentTemp').innerText = `${cur.temperature_2m}°C`;
-                document.getElementById('wCurrentCondition').innerHTML = `${wInfo.text} ${feelsLike}`;
-                document.getElementById('wMainIcon').innerHTML = `<i class="fa-solid ${wInfo.icon}" style="color:${wInfo.color};"></i>`;
-                document.getElementById('wHumidity').innerText = `${cur.relative_humidity_2m}%`;
-                document.getElementById('wWind').innerText = `${cur.wind_speed_10m} km/h`;
-
-                if (data.daily) {
-                    let d = data.daily;
-                    document.getElementById('wSunrise').innerText = d.sunrise && d.sunrise[0] ? d.sunrise[0].split('T')[1] : '05:30';
-                    document.getElementById('wSunset').innerText = d.sunset && d.sunset[0] ? d.sunset[0].split('T')[1] : '18:15';
-                    
-                    let uvMax = d.uv_index_max && d.uv_index_max[0] !== undefined ? d.uv_index_max[0] : '5.2';
-                    let rainProb = d.precipitation_probability_max && d.precipitation_probability_max[0] !== undefined ? d.precipitation_probability_max[0] : '15';
-                    
-                    document.getElementById('wUVIndex').innerText = uvMax;
-                    document.getElementById('wRainProb').innerText = rainProb + '%';
-
-                    let grid10Days = document.getElementById('weather10DaysContainer');
-                    if (grid10Days) {
-                        grid10Days.innerHTML = '';
-                        for (let i = 0; i < (d.time ? d.time.length : 10); i++) {
-                            let dateStr = d.time[i];
-                            let parts = dateStr.split('-');
-                            let formattedDate = parts.length === 3 ? `${parts[2]}/${parts[1]}` : dateStr;
-                            let dayWInfo = getWeatherInfo(d.weather_code[i]);
-                            let dayRain = d.precipitation_probability_max && d.precipitation_probability_max[i] !== undefined ? d.precipitation_probability_max[i] : 0;
-                            let dayUv = d.uv_index_max && d.uv_index_max[i] !== undefined ? d.uv_index_max[i] : '5';
-
-                            grid10Days.innerHTML += `
-                                <div class="weather-day-card">
-                                    <div style="font-size: 12px; font-weight: 900; color: #0369a1;">${i === 0 ? 'Hôm nay' : formattedDate}</div>
-                                    <div style="font-size: 26px; margin: 4px 0; color: ${dayWInfo.color};"><i class="fa-solid ${dayWInfo.icon}"></i></div>
-                                    <div style="font-size: 11px; font-weight: 800; color: #0f172a;">${dayWInfo.text}</div>
-                                    <div style="font-size: 13px; font-weight: 900; color: #0f172a; margin: 2px 0;">${d.temperature_2m_max[i]}°C / <span style="color:#64748b;">${d.temperature_2m_min[i]}°C</span></div>
-                                    <div style="font-size: 10px; font-weight: 700; color: #0284c7;">🌧️ Mưa: ${dayRain}%</div>
-                                    <div style="font-size: 10px; font-weight: 700; color: #d97706;">☀️ UV: ${dayUv}</div>
-                                </div>
-                            `;
-                        }
-                    }
-                }
-            }
-        } catch (e) {
-            document.getElementById('weatherWidgetText').innerHTML = `<i class="fa-solid fa-cloud-sun" style="color:#d97706; font-size: 28px;"></i> ${cityName}: <b>30.5°C</b> (Nhiều mây)`;
-        }
-    }
-
-    function moModalDuBaoThoiTiet10Ngay() {
-        document.getElementById('modalWeather10DaysPreview').classList.remove('hidden');
-        goiApiLayThoiTiet(cachedWeatherCoords.lat, cachedWeatherCoords.lon, cachedWeatherCoords.cityName);
-    }
-
-    function layThoiTietTheoGPS() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                pos => goiApiLayThoiTiet(pos.coords.latitude, pos.coords.longitude, "Vị trí GPS"),
-                err => goiApiLayThoiTiet(21.3228, 105.3377, "Phú Thọ")
-            );
-        } else { goiApiLayThoiTiet(21.3228, 105.3377, "Phú Thọ"); }
-    }
-
-    async function traCuuThoiTietTheoThanhPho() {
-        let city = document.getElementById('inputSearchCity').value.trim() || "Phú Thọ";
-        try {
-            let res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=vi&format=json`);
-            let data = await res.json();
-            if (data && data.results && data.results.length > 0) {
-                goiApiLayThoiTiet(data.results[0].latitude, data.results[0].longitude, data.results[0].name);
-            } else { goiApiLayThoiTiet(21.3228, 105.3377, city); }
-        } catch (e) { goiApiLayThoiTiet(21.3228, 105.3377, city); }
-    }
-
-    function moThuThucDriveChung() { window.open('https://drive.google.com/drive/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m', '_blank'); }
-
-    function khoiTaoClock() {
-        setInterval(() => {
-            let now = new Date();
-            document.getElementById('liveClockDisplay').innerText = now.toLocaleTimeString('vi-VN');
-            document.getElementById('liveDateDisplay').innerText = now.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        }, 1000);
-        let now = new Date();
-        let lunar = convertSolar2LunarPro(now.getDate(), now.getMonth()+1, now.getFullYear());
-        document.getElementById('lunarWidgetText').innerHTML = `🌙 Ngày ${lunar.day}/${lunar.month} (${lunar.canChiNam})<br>✨ ${lunar.hoangDaoName}`;
-    }
-
-    function khoiTaoVaChayHeThong() {
-        try {
-            khoiTaoDanhSachNamTuSinh();
-            doiThangHoSoLuong();
-            renderTaskTable();
-            renderAccountTable();
-            khoiTaoClock();
-            traCuuThoiTietTheoThanhPho();
-            taiDuLieuTuDongTuGas();
-            setTimeout(() => veTatCaBieuDoDashboard(), 100);
-        } catch (err) {}
-    }
-
-    if (document.readyState === 'complete' || document.readyState === 'interactive') {
-        setTimeout(khoiTaoVaChayHeThong, 10);
-    } else {
-        window.addEventListener('DOMContentLoaded', khoiTaoVaChayHeThong);
-        window.addEventListener('load', khoiTaoVaChayHeThong);
-    }
-</script>
-</body>
-</html>
+            case 51: case 53: case 55: case 56: case 57: return { text: "Mưa phùn rả rích", iconTôi là một mô hình ngôn ngữ nên điều đó nằm ngoài mục đích mà tôi được tạo ra.

@@ -81,7 +81,6 @@
         th, td { padding: 8px 10px; border: 1px solid var(--border-color); vertical-align: middle; }
         th { background-color: #f1f5f9; color: var(--text-muted); font-weight: 900; font-size: 11px; text-transform: uppercase; text-align: center; }
 
-        /* CHUẨN HÓA CỘT THAO TÁC RỘNG VÀ ĐẸP */
         th.action-col, td.action-cell {
             width: 125px;
             min-width: 125px;
@@ -303,11 +302,11 @@
                     <div style="font-size: 11px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase;">TỔNG CÔNG TY GIẤY VIỆT NAM (VINAPACO)</div>
                     <div style="font-size: 10px; font-weight: 700; color: #475569;">Văn phòng Tổng công ty - Ban CNTT & Kho vận</div>
                     <div class="handover-title" id="previewSlipTitleText">BIÊN BẢN BÀN GIAO & GIAO NHẬN THIẾT BỊ</div>
-                    <div style="font-size: 11px; font-weight: 700; margin-top: 4px;" id="previewSlipNoDate">Số: PGN-2026/08-01 | Ngày 25 tháng 08 năm 2026</div>
+                    <div style="font-size: 11px; font-weight: 700; margin-top: 4px;" id="previewSlipNoDate">Số: PGN-2026/08-01 | Ngày 26 tháng 08 năm 2026</div>
                 </div>
                 <div style="margin-bottom: 12px; font-size: 12px; line-height: 1.5;">
                     - Căn cứ vào nghiệp vụ quản lý tài sản và xuất nhập kho của Tổng công ty Giấy Việt Nam;<br>
-                    - Hôm nay, ngày <span id="pDay">25</span> tháng <span id="pMonth">08</span> năm <span id="pYear">2026</span>, tại Kho văn phòng Tổng công ty, chúng tôi gồm có:
+                    - Hôm nay, ngày <span id="pDay">26</span> tháng <span id="pMonth">08</span> năm <span id="pYear">2026</span>, tại Kho văn phòng Tổng công ty, chúng tôi gồm có:
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1;">
                     <div>
@@ -402,7 +401,7 @@
         <div class="info-widget-card">
             <div style="font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-clock"></i> Đồng Hồ Số</div>
             <div class="clock-display" id="liveClockDisplay">00:00:00</div>
-            <div style="font-size: 12px; font-weight: 800; color: var(--text-muted);" id="liveDateDisplay">Thứ Ba, 25/08/2026</div>
+            <div style="font-size: 12px; font-weight: 800; color: var(--text-muted);" id="liveDateDisplay">Đang tải ngày...</div>
         </div>
         <div class="info-widget-card">
             <div style="font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-calendar-days"></i> Âm Lịch Hôm Nay</div>
@@ -1119,7 +1118,7 @@
         { code: "MUC001", name: "Mực in HP 26A", printer: "HP Pro M402dn", action: "Nhập kho", qty: 10, price: 850000, receiver: "Nhà cung cấp", minMax: "2 / 10", date: "2026-08-10", fileUrl: rootDriveFolderUrl }
     ];
     let dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('vinapaco_delivery')) || [
-        { slipNo: "PGN-2026/08-01", from: "Trần Bình Dương", to: "Nguyễn Minh Ngọc", dept: "Kế toán", item: "Laptop Dell Latitude", status: "Mới 100%", date: "2026-08-25" }
+        { slipNo: "PGN-2026/08-01", from: "Trần Bình Dương", to: "Nguyễn Minh Ngọc", dept: "Kế toán", item: "Laptop Dell Latitude", status: "Mới 100%", date: "2026-08-26" }
     ];
     let dsKhaoSatChuyenSau = JSON.parse(localStorage.getItem('vinapaco_survey')) || [
         { code: "KS-01", user: "Trần Bình Dương", dept: "Văn phòng TCT", device: "Laptop doanh nghiệp", os: "Windows 11 Pro", osLicense: "✅ Có bản quyền chính hãng", office: "Microsoft 365 (Cloud)", officeLicense: "✅ Bản quyền Tổng công ty", bizSoft: "Cloudoffice (Văn thư)", bizLicense: "✅ Có bản quyền chính hãng", specs: "Core i7, RAM 16GB, SSD 512GB" }
@@ -1173,7 +1172,6 @@
         window.open(driveUrl, '_blank');
     }
 
-    // Hàm tải tệp lên sử dụng fetch mode no-cors để tránh lỗi Webhook / CORS
     function taiTepLenThuMucChinhXac(inputElement, categoryName, hiddenUrlInputId) {
         let file = inputElement.files[0];
         if (!file) return;
@@ -1301,10 +1299,10 @@
     
     function convertSolar2LunarPro(dd, mm, yy) {
         let baseDate = new Date(yy, mm - 1, dd);
-        let timeDiff = baseDate.getTime() - new Date(2026, 7, 25).getTime();
+        let timeDiff = baseDate.getTime() - new Date(2026, 7, 26).getTime();
         let dayDiff = Math.round(timeDiff / (1000 * 3600 * 24));
         
-        let lunarDay = 13 + dayDiff;
+        let lunarDay = 14 + dayDiff;
         let lunarMonth = 7;
         let lunarYear = 2026;
 
@@ -1336,14 +1334,18 @@
         };
     }
 
-    let ngayLichDangChon = { d: 25, m: 8, y: 2026 };
+    // Cập nhật lấy ngày hiện tại động thay vì fix cứng 25/08/2026
+    let _nowInit = new Date();
+    let ngayLichDangChon = { d: _nowInit.getDate(), m: _nowInit.getMonth() + 1, y: _nowInit.getFullYear() };
 
     function moModalLichVanNien() {
         let selThang = document.getElementById('lichThangSelect');
         let selNam = document.getElementById('lichNamSelect');
         if (selThang && selThang.children.length === 0) {
-            for (let m = 1; m <= 12; m++) selThang.innerHTML += `<option value="${m}" ${m===8?'selected':''}>Tháng ${m}</option>`;
-            for (let y = 2025; y <= 2035; y++) selNam.innerHTML += `<option value="${y}" ${y===2026?'selected':''}>Năm ${y}</option>`;
+            let currentM = new Date().getMonth() + 1;
+            let currentY = new Date().getFullYear();
+            for (let m = 1; m <= 12; m++) selThang.innerHTML += `<option value="${m}" ${m===currentM?'selected':''}>Tháng ${m}</option>`;
+            for (let y = 2025; y <= 2035; y++) selNam.innerHTML += `<option value="${y}" ${y===currentY?'selected':''}>Năm ${y}</option>`;
         }
         document.getElementById('modalLichVanNien').classList.remove('hidden');
         renderLichGridPro();
@@ -1360,16 +1362,18 @@
     function renderLichGridPro() {
         let grid = document.getElementById('lichGridContainer');
         if (!grid) return; grid.innerHTML = "";
-        let m = parseInt(document.getElementById('lichThangSelect').value) || 8;
-        let y = parseInt(document.getElementById('lichNamSelect').value) || 2026;
+        let nowReal = new Date();
+        let m = parseInt(document.getElementById('lichThangSelect').value) || (nowReal.getMonth() + 1);
+        let y = parseInt(document.getElementById('lichNamSelect').value) || nowReal.getFullYear();
         let daysInMonth = new Date(y, m, 0).getDate();
         let firstDay = new Date(y, m - 1, 1).getDay();
 
         for (let i = 0; i < firstDay; i++) grid.innerHTML += '<div></div>';
 
+        let _todayObj = new Date();
         for (let d = 1; d <= daysInMonth; d++) {
             let lunar = convertSolar2LunarPro(d, m, y);
-            let isToday = (d === 25 && m === 8 && y === 2026);
+            let isToday = (d === _todayObj.getDate() && m === (_todayObj.getMonth() + 1) && y === _todayObj.getFullYear());
             let isSelected = (d === ngayLichDangChon.d && m === ngayLichDangChon.m && y === ngayLichDangChon.y);
             let classes = "lich-day-tile" + (isToday ? " today" : "") + (isSelected ? " selected" : "");
 
@@ -2045,10 +2049,11 @@
         let isImport = (item.action || '').includes('Nhập') || (item.action || '').includes('Đầu kỳ');
         document.getElementById('inputCustomSlipTitle').value = isImport ? "PHIẾU NHẬP KHO VẬT TƯ / MỰC IN" : "PHIẾU XUẤT KHO / CẤP PHÁT";
         capNhatTieuDePhieuIn();
-        document.getElementById('previewSlipNoDate').innerText = `Mã phiếu: ${item.code} | Ngày ${new Date().getDate()} tháng ${new Date().getMonth()+1} năm ${new Date().getFullYear()}`;
-        document.getElementById('pYear').innerText = new Date().getFullYear();
-        document.getElementById('pMonth').innerText = new Date().getMonth()+1;
-        document.getElementById('pDay').innerText = new Date().getDate();
+        let nowObj = new Date();
+        document.getElementById('previewSlipNoDate').innerText = `Mã phiếu: ${item.code} | Ngày ${nowObj.getDate()} tháng ${nowObj.getMonth()+1} năm ${nowObj.getFullYear()}`;
+        document.getElementById('pYear').innerText = nowObj.getFullYear();
+        document.getElementById('pMonth').innerText = nowObj.getMonth()+1;
+        document.getElementById('pDay').innerText = nowObj.getDate();
         document.getElementById('pFrom').innerText = isImport ? (item.receiver || "Nhà cung cấp") : "Thủ kho Văn phòng TCT";
         document.getElementById('signFromName').innerText = isImport ? "Nhà cung cấp" : "Thủ kho TCT";
         document.getElementById('pTo').innerText = isImport ? "Thủ kho Văn phòng TCT" : (item.receiver || "Đơn vị sử dụng");
@@ -2133,9 +2138,10 @@
     function moModalInPhieuGiao(idx) {
         let s = dsPhieuGiaoNhan[idx];
         if (!s) return;
+        let nowObj = new Date();
         document.getElementById('inputCustomSlipTitle').value = "BIÊN BẢN BÀN GIAO & GIAO NHẬN THIẾT BỊ";
         capNhatTieuDePhieuIn();
-        document.getElementById('previewSlipNoDate').innerText = `Số: ${s.slipNo} | Ngày 25 tháng 08 năm 2026`;
+        document.getElementById('previewSlipNoDate').innerText = `Số: ${s.slipNo} | Ngày ${nowObj.getDate()} tháng ${nowObj.getMonth()+1} năm ${nowObj.getFullYear()}`;
         document.getElementById('pFrom').innerText = s.from;
         document.getElementById('signFromName').innerText = s.from.split('-')[0].trim();
         document.getElementById('pTo').innerText = s.to;
@@ -2904,15 +2910,30 @@
     window.onload = function() {
         khoiTaoDanhSachNamTuSinh();
         doiThangHoSoLuong();
+
+        let now = new Date();
+        ngayLichDangChon = { d: now.getDate(), m: now.getMonth() + 1, y: now.getFullYear() };
+
         setInterval(() => {
-            let now = new Date();
+            let n = new Date();
             let clockEl = document.getElementById('liveClockDisplay');
-            if (clockEl) clockEl.innerText = now.toLocaleTimeString('vi-VN');
+            if (clockEl) clockEl.innerText = n.toLocaleTimeString('vi-VN');
         }, 1000);
-        capNhatThoiTiet(cachedWeatherCoords.lat, cachedWeatherCoords.lon, cachedWeatherCoords.cityName);
-        let lunar = convertSolar2LunarPro(25, 8, 2026);
+
+        let daysOfWeek = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
+        let dayName = daysOfWeek[now.getDay()];
+        let dd = String(now.getDate()).padStart(2, '0');
+        let mm = String(now.getMonth() + 1).padStart(2, '0');
+        let yy = now.getFullYear();
+        
+        let dateEl = document.getElementById('liveDateDisplay');
+        if (dateEl) dateEl.innerText = `${dayName}, ${dd}/${mm}/${yy}`;
+
+        let lunar = convertSolar2LunarPro(now.getDate(), now.getMonth() + 1, now.getFullYear());
         let lunarEl = document.getElementById('lunarWidgetText');
         if (lunarEl) lunarEl.innerHTML = `<b>${lunar.day}/${lunar.month}/${lunar.year}</b><br>Ngày ${lunar.canChiNgay} (${lunar.hoangDaoName})`;
+
+        capNhatThoiTiet(cachedWeatherCoords.lat, cachedWeatherCoords.lon, cachedWeatherCoords.cityName);
     };
 </script>
 </body>

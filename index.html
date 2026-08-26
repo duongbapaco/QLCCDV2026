@@ -1098,7 +1098,6 @@
         "2030": generateYearMonthsData({ ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 })
     };
 
-    // Khởi tạo dữ liệu an toàn tránh lỗi sập script bằng try...catch
     let coSoDuLieuNamThang;
     try {
         coSoDuLieuNamThang = JSON.parse(localStorage.getItem('vinapaco_data_namthang')) || defaultCoSoDuLieuNamThang;

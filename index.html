@@ -205,7 +205,6 @@
         </div>
         <div style="padding: 18px; background: #f8fafc; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; max-height: 82vh;">
             
-            <!-- THANH TÌM KIẾM ĐỊA ĐIỂM TRONG MODAL -->
             <div style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; display: flex; gap: 8px; align-items: center;">
                 <input type="text" id="inputModalSearchLocation" placeholder="🔍 Nhập tên Tỉnh/Thành phố hoặc Quận/Huyện (VD: Hà Nội, Việt Trì)..." style="flex: 1; height: 38px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--border-color); font-weight: bold; font-size: 13px;" onkeypress="if(event.key==='Enter') timKiemDiaDiemModal()">
                 <button class="btn btn-blue" style="height: 38px;" onclick="timKiemDiaDiemModal()"><i class="fa-solid fa-magnifying-glass"></i> Tìm Kiếm</button>
@@ -380,7 +379,6 @@
         </div>
     </div>
 
-    <!-- THANH TRẠNG THÁI UP DRIVE -->
     <div id="driveUploadStatusBar" class="upload-status-bar hidden">
         <div class="upload-status-header">
             <span id="uploadStatusTitle"><i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> Đang chuẩn bị tải file lên Google Drive...</span>
@@ -391,7 +389,6 @@
         </div>
     </div>
 
-    <!-- CẤU HÌNH LIÊN KẾT DRIVER & GAS -->
     <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 12px 16px; border-radius: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; align-items: center;">
         <div style="display: flex; gap: 8px; align-items: center;">
             <span style="font-size: 11px; font-weight: 900; color: #0369a1; text-transform: uppercase; white-space: nowrap;"><i class="fa-solid fa-link"></i> GAS Webhook URL:</span>
@@ -404,7 +401,6 @@
         </div>
     </div>
 
-    <!-- WIDGET THỜI GIAN & THỜI TIẾT -->
     <div class="top-info-bar">
         <div class="info-widget-card">
             <div style="font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase;"><i class="fa-solid fa-clock"></i> Đồng Hồ Số</div>
@@ -423,7 +419,6 @@
                     <button class="btn btn-blue" style="padding: 4px 8px; font-size: 10px;" onclick="layThoiTietTheoGPS()">GPS Chuẩn</button>
                 </div>
             </div>
-            <!-- Ô TÌM KIẾM NHANH ĐỊA ĐIỂM -->
             <div style="display: flex; gap: 4px; margin-bottom: 4px;">
                 <input type="text" id="inputWidgetSearchLocation" placeholder="🔍 Nhập địa điểm (Hà Nội, Việt Trì...)" style="flex: 1; height: 30px; padding: 0 8px; font-size: 11px; font-weight: bold; border: 1px solid var(--border-color); border-radius: 6px;" onkeypress="if(event.key==='Enter') timKiemDiaDiemWidget()">
                 <button class="btn btn-blue" style="padding: 2px 8px; font-size: 10px; height: 30px;" onclick="timKiemDiaDiemWidget()">Tìm</button>
@@ -432,7 +427,6 @@
         </div>
     </div>
 
-    <!-- CẤU HÌNH LƯƠNG & THỜI GIAN -->
     <div class="config-bar">
         <div class="config-item"><label>Năm Lưu Trữ</label><select id="cfgNamChon" onchange="doiThangHoSoLuong()"></select></div>
         <div class="config-item"><label>Tháng Nhập / Lưu Trữ</label><select id="cfgThangChon" onchange="doiThangHoSoLuong()">
@@ -451,7 +445,6 @@
         <div class="config-item"><label>Mức Lương Công Việc</label><input type="text" id="cfgMucLCV" onchange="dinhDangOOCurrency(this)"></div>
     </div>
 
-    <!-- KPI TỔNG QUAN -->
     <div class="kpi-grid">
         <div class="kpi-card"><div class="kpi-title">Quỹ Lương NET (Năm)</div><div class="kpi-value" style="color: #15803d;" id="kpiTotalNet">0</div><div class="kpi-sub">Lũy kế cả năm</div></div>
         <div class="kpi-card"><div class="kpi-title">Tổng Chuyển Khoản NH</div><div class="kpi-value" style="color: #0284c7;" id="kpiTotalBankTransfer">0</div><div class="kpi-sub">Tổng thực lĩnh STK</div></div>
@@ -460,7 +453,6 @@
         <div class="kpi-card"><div class="kpi-title">Tạm Ứng Đã Trừ</div><div class="kpi-value" style="color: #dc2626;" id="kpiTotalTamUng">0</div><div class="kpi-sub">Toàn đơn vị</div></div>
     </div>
 
-    <!-- THANH CHUYỂN TAB -->
     <div class="tab-nav">
         <button class="tab-btn-nav active" onclick="switchTab('dashboardTab', this)"><i class="fa-solid fa-chart-pie"></i> DB Tổng Quan</button>
         <button class="tab-btn-nav" onclick="switchTab('monthlySalaryDashboardTab', this)"><i class="fa-solid fa-money-bill-trend-up"></i> DB Lương Tháng</button>
@@ -657,7 +649,7 @@
         </table>
     </div>
 
-    <!-- TAB THANH TOÁN VĂN PHÒNG -->
+    <!-- TAB THANH TOÁN VĂN PHÒNG (Đã mở khóa các ô Trước thuế, VAT, Tổng thanh toán để sửa linh hoạt) -->
     <div id="officePaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
@@ -679,11 +671,14 @@
                 </select>
             </div>
             <div class="form-group"><label>Số Lượng</label><input type="number" id="inputOfficeQty" value="1" min="1" oninput="tinhToanTienVPP()"></div>
-            <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputOfficePrice" placeholder="0" oninput="tinhToanTienVPP()"></div>
+            <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputOfficePrice" placeholder="0" oninput="dinhDangOOCurrency(this); tinhToanTienVPP()"></div>
             <div class="form-group"><label>VAT</label><select id="inputOfficeVatRate" onchange="tinhToanTienVPP()"><option value="0.1" selected>10% VAT</option><option value="0.08">8% VAT</option><option value="0">0% Không thuế</option></select></div>
-            <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputOfficeTruocThue" placeholder="0" readonly style="background:#f1f5f9;"></div>
-            <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputOfficeVAT" placeholder="0" readonly style="background:#f1f5f9;"></div>
-            <div class="form-group"><label>Tổng Thanh Toán</label><input type="text" id="previewOfficeTotal" placeholder="0" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;"></div>
+            
+            <!-- CÁC Ô ĐÃ MỞ KHÓA ĐỂ SỬA LINH HOẠT -->
+            <div class="form-group"><label>Trước Thuế (Sửa linh hoạt)</label><input type="text" id="inputOfficeTruocThue" placeholder="0" oninput="dinhDangOOCurrency(this)"></div>
+            <div class="form-group"><label>Thuế VAT (Sửa linh hoạt)</label><input type="text" id="inputOfficeVAT" placeholder="0" oninput="dinhDangOOCurrency(this)"></div>
+            <div class="form-group"><label>Tổng Thanh Toán (Sửa linh hoạt)</label><input type="text" id="previewOfficeTotal" placeholder="0" oninput="dinhDangOOCurrency(this)"></div>
+            
             <div class="form-group"><label>Ngày CT</label><input type="date" id="inputOfficeDate"></div>
             <div class="form-group">
                 <label>Đính Kèm Nhiều Tệp (Drive)</label>
@@ -734,7 +729,7 @@
             <div class="form-group"><label>Tên Mực In / Vật Tư</label><input type="text" id="inputInkName" placeholder="VD: Hộp mực Canon 337"></div>
             <div class="form-group"><label>Máy In Sử Dụng</label><input type="text" id="inputInkPrinter" placeholder="VD: Canon LBP 151dw"></div>
             <div class="form-group"><label>Số Lượng</label><input type="number" id="inputInkQty" value="1" min="1"></div>
-            <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputInkPrice" placeholder="0"></div>
+            <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputInkPrice" placeholder="0" oninput="dinhDangOOCurrency(this)"></div>
             <div class="form-group"><label>Người Nhận / NCC</label><input type="text" id="inputInkReceiver" placeholder="Tên NCC hoặc Cán bộ nhận..."></div>
             <div class="form-group"><label>Định Mức Min / Max</label><input type="text" id="inputInkMinMax" value="2 / 10"></div>
             <div class="form-group"><label>Ngày Chứng Từ</label><input type="date" id="inputInkDate"></div>
@@ -785,7 +780,7 @@
         <table><thead><tr><th>Số Phiếu</th><th>Bên Giao</th><th>Bên Nhận</th><th>Bộ Phận</th><th>Tên Thiết Bị</th><th>Tình Trạng</th><th>Ngày Giao</th><th class="action-col">Thao Tác</th></tr></thead><tbody id="deliveryTableBody"></tbody></table>
     </div>
 
-    <!-- TAB CƯỚC VIỄN THÔNG -->
+    <!-- TAB CƯỚC VIỄN THÔNG (Đã mở khóa Trước thuế & VAT để sửa linh hoạt) -->
     <div id="telecomPaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-wifi"></i> CƯỚC MẠNG & INTERNET (NĂM <span id="telecomYearTitle">2026</span>)</div>
@@ -806,9 +801,12 @@
             <div class="form-group"><label>Tháng</label><select id="inputTelecomThangChon">
                 <option value="Tháng 01">Tháng 01</option><option value="Tháng 02">Tháng 02</option><option value="Tháng 03">Tháng 03</option><option value="Tháng 04">Tháng 04</option><option value="Tháng 05">Tháng 05</option><option value="Tháng 06">Tháng 06</option><option value="Tháng 07">Tháng 07</option><option value="Tháng 08" selected>Tháng 08</option><option value="Tháng 09">Tháng 09</option><option value="Tháng 10">Tháng 10</option><option value="Tháng 11">Tháng 11</option><option value="Tháng 12">Tháng 12</option>
             </select></div>
-            <div class="form-group"><label>Tổng Cước (VAT)</label><input type="text" id="inputTelecomTongVat" placeholder="2.500.000" oninput="tinhTienTelecomTuTong()"></div>
-            <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
-            <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
+            <div class="form-group"><label>Tổng Cước (VAT)</label><input type="text" id="inputTelecomTongVat" placeholder="2.500.000" oninput="dinhDangOOCurrency(this); tinhTienTelecomTuTong()"></div>
+            
+            <!-- CÁC Ô ĐÃ MỞ KHÓA ĐỂ SỬA LINH HOẠT -->
+            <div class="form-group"><label>Trước Thuế (Sửa linh hoạt)</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" oninput="dinhDangOOCurrency(this)"></div>
+            <div class="form-group"><label>Thuế VAT (Sửa linh hoạt)</label><input type="text" id="inputTelecomVatInput" placeholder="0" oninput="dinhDangOOCurrency(this)"></div>
+            
             <div class="form-group">
                 <label>Đính Kèm Nhiều Hóa Đơn (Drive)</label>
                 <input type="file" id="telecomFileUpload" multiple onchange="taiNhieuTepLenThuMucChinhXac(this, 'Cước Viễn Thông', 'inputTelecomFileUrl')">
@@ -1879,6 +1877,8 @@
         document.getElementById('inputOfficeBankAccount').value = '';
         document.getElementById('inputOfficeQty').value = '1';
         document.getElementById('inputOfficePrice').value = '';
+        document.getElementById('inputOfficeTruocThue').value = '';
+        document.getElementById('inputOfficeVAT').value = '';
         document.getElementById('previewOfficeTotal').value = '';
         document.getElementById('inputOfficeFileUrl').value = '';
         document.getElementById('btnVppText').innerText = "LƯU CHỨNG TỪ";
@@ -1893,6 +1893,8 @@
         if (!content || !beneficiary) { alert("Vui lòng nhập đủ nội dung chi và đơn vị thụ hưởng!"); return; }
         
         let total = parseVNDMoney(document.getElementById('previewOfficeTotal').value);
+        let truocThue = parseVNDMoney(document.getElementById('inputOfficeTruocThue').value);
+        let vat = parseVNDMoney(document.getElementById('inputOfficeVAT').value);
         let editKey = document.getElementById('editOfficeKey').value;
         let editIdx = parseInt(document.getElementById('editOfficeIndex').value);
         let key = currentNamKey + "_" + currentThangKey;
@@ -1905,8 +1907,8 @@
             unit: document.getElementById('inputOfficeUnit').value,
             qty: parseFloat(document.getElementById('inputOfficeQty').value)||1,
             price: parseVNDMoney(document.getElementById('inputOfficePrice').value),
-            truocThue: parseVNDMoney(document.getElementById('inputOfficeTruocThue').value),
-            vat: parseVNDMoney(document.getElementById('inputOfficeVAT').value),
+            truocThue: truocThue,
+            vat: vat,
             total: total, 
             date: document.getElementById('inputOfficeDate').value || new Date().toISOString().split('T')[0],
             fileUrl: document.getElementById('inputOfficeFileUrl').value || rootDriveFolderUrl
@@ -2226,8 +2228,9 @@
         document.getElementById('inputTelecomType').value = item.type;
         document.getElementById('inputTelecomThangChon').value = item.thangHachToan || currentThangKey;
         document.getElementById('inputTelecomTongVat').value = item.tong.toLocaleString('vi-VN');
+        document.getElementById('inputTelecomTruocThueInput').value = item.truocThue.toLocaleString('vi-VN');
+        document.getElementById('inputTelecomVatInput').value = item.vat.toLocaleString('vi-VN');
         if (item.fileUrl) document.getElementById('inputTelecomFileUrl').value = item.fileUrl;
-        tinhTienTelecomTuTong();
         document.getElementById('btnTelecomText').innerText = "CẬP NHẬT";
         document.getElementById('btnCancelTelecom').classList.remove('hidden');
         document.getElementById('formCardTelecom').scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -2249,8 +2252,12 @@
         let typeEl = document.getElementById('inputTelecomType');
         let type = typeEl ? typeEl.value.trim() : "";
         let tong = parseVNDMoney(document.getElementById('inputTelecomTongVat').value);
+        let truocThue = parseVNDMoney(document.getElementById('inputTelecomTruocThueInput').value);
+        let vat = parseVNDMoney(document.getElementById('inputTelecomVatInput').value);
         let thangChon = document.getElementById('inputTelecomThangChon').value;
-        if (!type || tong <= 0) { alert("Nhập đủ thông tin cước!"); return; }
+        if (!type || (tong <= 0 && truocThue <= 0)) { alert("Nhập đủ thông tin cước!"); return; }
+
+        if (tong <= 0) tong = truocThue + vat;
 
         let editKey = document.getElementById('editTelecomKey').value;
         let editIdx = parseInt(document.getElementById('editTelecomIndex').value);
@@ -2259,7 +2266,7 @@
         let telecomItem = {
             id: "VT-01", supplier: document.getElementById('inputTelecomSupplier').value,
             type: type, kyCuoc: thangChon + "/" + currentNamKey, thangHachToan: thangChon,
-            tong: tong, truocThue: Math.round(tong/1.1), vat: tong - Math.round(tong/1.1),
+            tong: tong, truocThue: truocThue, vat: vat,
             fileUrl: document.getElementById('inputTelecomFileUrl').value || rootDriveFolderUrl
         };
 
@@ -2279,8 +2286,8 @@
         let tong = parseVNDMoney(document.getElementById('inputTelecomTongVat').value);
         let truocThue = Math.round(tong / 1.1);
         let vat = tong - truocThue;
-        document.getElementById('inputTelecomTruocThueInput').value = truocThue.toLocaleString('vi-VN');
-        document.getElementById('inputTelecomVatInput').value = vat.toLocaleString('vi-VN');
+        document.getElementById('inputTelecomTruocThueInput').value = truocThue > 0 ? truocThue.toLocaleString('vi-VN') : '';
+        document.getElementById('inputTelecomVatInput').value = vat > 0 ? vat.toLocaleString('vi-VN') : '';
     }
 
     function renderSurveyTable() {
@@ -2511,9 +2518,11 @@
         let vatRate = parseFloat(document.getElementById('inputOfficeVatRate').value) || 0.1;
         let vat = Math.round(truocThue * vatRate);
         let total = truocThue + vat;
-        document.getElementById('inputOfficeTruocThue').value = truocThue.toLocaleString('vi-VN');
-        document.getElementById('inputOfficeVAT').value = vat.toLocaleString('vi-VN');
-        document.getElementById('previewOfficeTotal').value = total.toLocaleString('vi-VN');
+        
+        // Chỉ tự động điền gợi ý, người dùng có thể tự gõ sửa đè bất cứ lúc nào
+        document.getElementById('inputOfficeTruocThue').value = truocThue > 0 ? truocThue.toLocaleString('vi-VN') : '';
+        document.getElementById('inputOfficeVAT').value = vat > 0 ? vat.toLocaleString('vi-VN') : '';
+        document.getElementById('previewOfficeTotal').value = total > 0 ? total.toLocaleString('vi-VN') : '';
     }
 
     function xuatToanBoHeThongExcel() {

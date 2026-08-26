@@ -2918,7 +2918,6 @@
         await capNhatThoiTiet10Ngay(cachedWeatherCoords.lat, cachedWeatherCoords.lon, cachedWeatherCoords.cityName);
     }
 
-    // TÍNH NĂNG ĐỊNH VỊ CHÍNH XÁC (GPS + REVERSE GEOCODING TÊN ĐỊA DANH)
     async function layThoiTietTheoGPS() {
         if (!navigator.geolocation) {
             alert("Trình duyệt của bạn không hỗ trợ định vị Geolocation.");
@@ -2933,7 +2932,6 @@
             let lon = pos.coords.longitude;
             let resolvedName = "Vị trí GPS của bạn";
 
-            // Dùng dịch vụ tra cứu ngược (Reverse Geocoding) để lấy tên Tỉnh/Thành/Huyện chính xác
             try {
                 let revRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=vi`);
                 let revData = await revRes.json();
@@ -2958,7 +2956,6 @@
         }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
     }
 
-    // TÌM KIẾM ĐỊA ĐIỂM CHÍNH XÁC (Dùng Open-Meteo Geocoding API)
     async function timKiemDiaDiemThoiTiet(query) {
         if (!query || !query.trim()) return;
         let cleanQ = query.trim();

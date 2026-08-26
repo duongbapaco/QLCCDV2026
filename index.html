@@ -1173,6 +1173,7 @@
         window.open(driveUrl, '_blank');
     }
 
+    // Hàm tải tệp lên sử dụng fetch mode no-cors để tránh lỗi Webhook / CORS
     function taiTepLenThuMucChinhXac(inputElement, categoryName, hiddenUrlInputId) {
         let file = inputElement.files[0];
         if (!file) return;
@@ -1183,8 +1184,8 @@
         let progressFill = document.getElementById('uploadProgressFillBar');
 
         statusBar.classList.remove('hidden');
-        progressFill.style.width = '10%';
-        statusPercent.innerText = '10%';
+        progressFill.style.width = '30%';
+        statusPercent.innerText = '30%';
         statusTitle.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang đọc file "${file.name}"...`;
 
         let reader = new FileReader();
@@ -1200,45 +1201,34 @@
                 fileData: base64Content
             };
 
-            statusTitle.innerHTML = `<i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> Đang tải file lên Google Drive...`;
-            progressFill.style.width = '50%';
-            statusPercent.innerText = '50%';
+            statusTitle.innerHTML = `<i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> Đang đẩy file lên Google Cloud...`;
+            progressFill.style.width = '70%';
+            statusPercent.innerText = '70%';
 
-            let xhr = new XMLHttpRequest();
-            xhr.open("POST", gasWebhookUrl, true);
-            xhr.setRequestHeader("Content-Type", "text/plain;charset=utf-8");
-
-            xhr.upload.onprogress = function(event) {
-                if (event.lengthComputable) {
-                    let percent = 50 + Math.round((event.loaded / event.total) * 45);
-                    progressFill.style.width = percent + '%';
-                    statusPercent.innerText = percent + '%';
-                }
-            };
-
-            xhr.onload = function() {
+            fetch(gasWebhookUrl, {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "text/plain;charset=utf-8"
+                },
+                body: JSON.stringify(payload)
+            }).then(() => {
                 progressFill.style.width = '100%';
                 statusPercent.innerText = '100%';
-                let generatedLink = rootDriveFolderUrl;
-                try {
-                    let response = JSON.parse(xhr.responseText);
-                    if (response && response.fileUrl) generatedLink = response.fileUrl;
-                } catch(err) {}
-
-                statusTitle.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#22c55e;"></i> Đã lưu file lên Google Drive thành công!`;
-                if (hiddenUrlInputId && document.getElementById(hiddenUrlInputId)) document.getElementById(hiddenUrlInputId).value = generatedLink;
+                statusTitle.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#22c55e;"></i> Đã lưu file lên thư mục Drive thành công!`;
+                
+                if (hiddenUrlInputId && document.getElementById(hiddenUrlInputId)) {
+                    document.getElementById(hiddenUrlInputId).value = rootDriveFolderUrl;
+                }
                 setTimeout(() => { statusBar.classList.add('hidden'); }, 2500);
-            };
-
-            xhr.onerror = function() {
-                statusTitle.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi Webhook! Gán link Drive mặc định.`;
-                if (hiddenUrlInputId && document.getElementById(hiddenUrlInputId)) document.getElementById(hiddenUrlInputId).value = rootDriveFolderUrl;
+            }).catch(err => {
+                statusTitle.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi kết nối Webhook.`;
+                if (hiddenUrlInputId && document.getElementById(hiddenUrlInputId)) {
+                    document.getElementById(hiddenUrlInputId).value = rootDriveFolderUrl;
+                }
                 setTimeout(() => { statusBar.classList.add('hidden'); }, 2500);
-            };
-
-            xhr.send(JSON.stringify(payload));
+            });
         };
-
         reader.readAsDataURL(file);
     }
 

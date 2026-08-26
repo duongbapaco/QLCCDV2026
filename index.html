@@ -1098,13 +1098,7 @@
         "2030": generateYearMonthsData({ ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 })
     };
 
-    // Khởi tạo dữ liệu an toàn tránh lỗi sập script bằng try...catch
-    let coSoDuLieuNamThang;
-    try {
-        coSoDuLieuNamThang = JSON.parse(localStorage.getItem('vinapaco_data_namthang')) || defaultCoSoDuLieuNamThang;
-    } catch (e) {
-        coSoDuLieuNamThang = defaultCoSoDuLieuNamThang;
-    }
+    let coSoDuLieuNamThang = JSON.parse(localStorage.getItem('vinapaco_data_namthang')) || defaultCoSoDuLieuNamThang;
     
     Object.keys(coSoDuLieuNamThang).forEach(yKey => {
         let yData = coSoDuLieuNamThang[yKey];
@@ -1122,64 +1116,37 @@
         }
     });
 
-    let dsThanhToanVanPhongProByMonth;
-    try {
-        dsThanhToanVanPhongProByMonth = JSON.parse(localStorage.getItem('vinapaco_vpp')) || {
-            "2025_Tháng 12": [
-                { id: "VP-2025-01", beneficiary: "Công ty Văn phòng phẩm Hồng Hà", bankName: "Vietcombank", bankAccount: "0011001234567", content: "Mua sổ nhật ký công tác năm 2025 TCT", unit: "Quyển", qty: 100, price: 45000, truocThue: 4500000, vat: 45000, total: 4950000, date: "2025-12-20", fileUrl: rootDriveFolderUrl }
-            ],
-            "2026_Tháng 08": [
-                { id: "VP-01", beneficiary: "Công ty Văn phòng phẩm Hồng Hà", bankName: "Vietcombank", bankAccount: "0011001234567", content: "Mua giấy A4 và vật tư văn phòng TCT", unit: "Ram (Ream)", qty: 50, price: 65000, truocThue: 3250000, vat: 325000, total: 3575000, date: "2026-08-15", fileUrl: rootDriveFolderUrl }
-            ]
-        };
-    } catch (e) { dsThanhToanVanPhongProByMonth = {}; }
-
-    let dsThanhToanTelecombyMonth;
-    try {
-        dsThanhToanTelecombyMonth = JSON.parse(localStorage.getItem('vinapaco_telecom')) || {
-            "2025_Tháng 12": [
-                { id: "VT-2025-12", supplier: "VNPT", type: "Cáp quang Internet leased line năm 2025", kyCuoc: "Tháng 12/2025", thangHachToan: "Tháng 12", truocThue: 2272727, vat: 227273, tong: 2500000, fileUrl: rootDriveFolderUrl }
-            ],
-            "2026_Tháng 08": [
-                { id: "VT-01", supplier: "VNPT", type: "Cáp quang Internet leased line", kyCuoc: "Tháng 08/2026", thangHachToan: "Tháng 08", truocThue: 2272727, vat: 227273, tong: 2500000, fileUrl: rootDriveFolderUrl }
-            ]
-        };
-    } catch (e) { dsThanhToanTelecombyMonth = {}; }
-
-    let dsKhoMucIn;
-    try {
-        dsKhoMucIn = JSON.parse(localStorage.getItem('vinapaco_ink')) || [
-            { code: "MUC001", name: "Mực in HP 26A", printer: "HP Pro M402dn", action: "Nhập kho", qty: 10, price: 850000, receiver: "Nhà cung cấp", minMax: "2 / 10", date: "2026-08-10", fileUrl: rootDriveFolderUrl }
-        ];
-    } catch (e) { dsKhoMucIn = []; }
-
-    let dsPhieuGiaoNhan;
-    try {
-        dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('vinapaco_delivery')) || [
-            { slipNo: "PGN-2026/08-01", from: "Trần Bình Dương", to: "Nguyễn Minh Ngọc", dept: "Kế toán", item: "Laptop Dell Latitude", status: "Mới 100%", date: "2026-08-26" }
-        ];
-    } catch (e) { dsPhieuGiaoNhan = []; }
-
-    let dsKhaoSatChuyenSau;
-    try {
-        dsKhaoSatChuyenSau = JSON.parse(localStorage.getItem('vinapaco_survey')) || [
-            { code: "KS-01", user: "Trần Bình Dương", dept: "Văn phòng TCT", device: "Laptop doanh nghiệp", os: "Windows 11 Pro", osLicense: "✅ Có bản quyền chính hãng", office: "Microsoft 365 (Cloud)", officeLicense: "✅ Bản quyền Tổng công ty", bizSoft: "Cloudoffice (Văn thư)", bizLicense: "✅ Có bản quyền chính hãng", specs: "Core i7, RAM 16GB, SSD 512GB" }
-        ];
-    } catch (e) { dsKhaoSatChuyenSau = []; }
-
-    let danhSachCongViec;
-    try {
-        danhSachCongViec = JSON.parse(localStorage.getItem('vinapaco_tasks')) || [
-            { id: 1, name: "Hoàn thiện báo cáo điều hành Tháng 08", assignee: "Trần Bình Dương", dueDate: "2026-08-31", status: "Đang làm" }
-        ];
-    } catch (e) { danhSachCongViec = []; }
-
-    let danhSachTaiKhoanHeThong;
-    try {
-        danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('vinapaco_accounts')) || [
-            { email: "admin@vinapaco.com.vn", password: "123", fullName: "Trần Bình Dương", role: "Admin", status: "Active" }
-        ];
-    } catch (e) { danhSachTaiKhoanHeThong = []; }
+    let dsThanhToanVanPhongProByMonth = JSON.parse(localStorage.getItem('vinapaco_vpp')) || {
+        "2025_Tháng 12": [
+            { id: "VP-2025-01", beneficiary: "Công ty Văn phòng phẩm Hồng Hà", bankName: "Vietcombank", bankAccount: "0011001234567", content: "Mua sổ nhật ký công tác năm 2025 TCT", unit: "Quyển", qty: 100, price: 45000, truocThue: 4500000, vat: 45000, total: 4950000, date: "2025-12-20", fileUrl: rootDriveFolderUrl }
+        ],
+        "2026_Tháng 08": [
+            { id: "VP-01", beneficiary: "Công ty Văn phòng phẩm Hồng Hà", bankName: "Vietcombank", bankAccount: "0011001234567", content: "Mua giấy A4 và vật tư văn phòng TCT", unit: "Ram (Ream)", qty: 50, price: 65000, truocThue: 3250000, vat: 325000, total: 3575000, date: "2026-08-15", fileUrl: rootDriveFolderUrl }
+        ]
+    };
+    let dsThanhToanTelecombyMonth = JSON.parse(localStorage.getItem('vinapaco_telecom')) || {
+        "2025_Tháng 12": [
+            { id: "VT-2025-12", supplier: "VNPT", type: "Cáp quang Internet leased line năm 2025", kyCuoc: "Tháng 12/2025", thangHachToan: "Tháng 12", truocThue: 2272727, vat: 227273, tong: 2500000, fileUrl: rootDriveFolderUrl }
+        ],
+        "2026_Tháng 08": [
+            { id: "VT-01", supplier: "VNPT", type: "Cáp quang Internet leased line", kyCuoc: "Tháng 08/2026", thangHachToan: "Tháng 08", truocThue: 2272727, vat: 227273, tong: 2500000, fileUrl: rootDriveFolderUrl }
+        ]
+    };
+    let dsKhoMucIn = JSON.parse(localStorage.getItem('vinapaco_ink')) || [
+        { code: "MUC001", name: "Mực in HP 26A", printer: "HP Pro M402dn", action: "Nhập kho", qty: 10, price: 850000, receiver: "Nhà cung cấp", minMax: "2 / 10", date: "2026-08-10", fileUrl: rootDriveFolderUrl }
+    ];
+    let dsPhieuGiaoNhan = JSON.parse(localStorage.getItem('vinapaco_delivery')) || [
+        { slipNo: "PGN-2026/08-01", from: "Trần Bình Dương", to: "Nguyễn Minh Ngọc", dept: "Kế toán", item: "Laptop Dell Latitude", status: "Mới 100%", date: "2026-08-26" }
+    ];
+    let dsKhaoSatChuyenSau = JSON.parse(localStorage.getItem('vinapaco_survey')) || [
+        { code: "KS-01", user: "Trần Bình Dương", dept: "Văn phòng TCT", device: "Laptop doanh nghiệp", os: "Windows 11 Pro", osLicense: "✅ Có bản quyền chính hãng", office: "Microsoft 365 (Cloud)", officeLicense: "✅ Bản quyền Tổng công ty", bizSoft: "Cloudoffice (Văn thư)", bizLicense: "✅ Có bản quyền chính hãng", specs: "Core i7, RAM 16GB, SSD 512GB" }
+    ];
+    let danhSachCongViec = JSON.parse(localStorage.getItem('vinapaco_tasks')) || [
+        { id: 1, name: "Hoàn thiện báo cáo điều hành Tháng 08", assignee: "Trần Bình Dương", dueDate: "2026-08-31", status: "Đang làm" }
+    ];
+    let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('vinapaco_accounts')) || [
+        { email: "admin@vinapaco.com.vn", password: "123", fullName: "Trần Bình Dương", role: "Admin", status: "Active" }
+    ];
 
     function parseVNDMoney(val) {
         if (!val) return 0;

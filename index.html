@@ -649,7 +649,7 @@
         </table>
     </div>
 
-    <!-- TAB THANH TOÁN VĂN PHÒNG (Đã mở khóa các ô Trước thuế, VAT, Tổng thanh toán để sửa linh hoạt) -->
+    <!-- TAB THANH TOÁN VĂN PHÒNG -->
     <div id="officePaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
@@ -674,7 +674,6 @@
             <div class="form-group"><label>Đơn Giá (VNĐ)</label><input type="text" id="inputOfficePrice" placeholder="0" oninput="dinhDangOOCurrency(this); tinhToanTienVPP()"></div>
             <div class="form-group"><label>VAT</label><select id="inputOfficeVatRate" onchange="tinhToanTienVPP()"><option value="0.1" selected>10% VAT</option><option value="0.08">8% VAT</option><option value="0">0% Không thuế</option></select></div>
             
-            <!-- CÁC Ô ĐÃ MỞ KHÓA ĐỂ SỬA LINH HOẠT -->
             <div class="form-group"><label>Trước Thuế (Sửa linh hoạt)</label><input type="text" id="inputOfficeTruocThue" placeholder="0" oninput="dinhDangOOCurrency(this)"></div>
             <div class="form-group"><label>Thuế VAT (Sửa linh hoạt)</label><input type="text" id="inputOfficeVAT" placeholder="0" oninput="dinhDangOOCurrency(this)"></div>
             <div class="form-group"><label>Tổng Thanh Toán (Sửa linh hoạt)</label><input type="text" id="previewOfficeTotal" placeholder="0" oninput="dinhDangOOCurrency(this)"></div>
@@ -780,7 +779,7 @@
         <table><thead><tr><th>Số Phiếu</th><th>Bên Giao</th><th>Bên Nhận</th><th>Bộ Phận</th><th>Tên Thiết Bị</th><th>Tình Trạng</th><th>Ngày Giao</th><th class="action-col">Thao Tác</th></tr></thead><tbody id="deliveryTableBody"></tbody></table>
     </div>
 
-    <!-- TAB CƯỚC VIỄN THÔNG (Đã mở khóa Trước thuế & VAT để sửa linh hoạt) -->
+    <!-- TAB CƯỚC VIỄN THÔNG -->
     <div id="telecomPaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-wifi"></i> CƯỚC MẠNG & INTERNET (NĂM <span id="telecomYearTitle">2026</span>)</div>
@@ -803,7 +802,6 @@
             </select></div>
             <div class="form-group"><label>Tổng Cước (VAT)</label><input type="text" id="inputTelecomTongVat" placeholder="2.500.000" oninput="dinhDangOOCurrency(this); tinhTienTelecomTuTong()"></div>
             
-            <!-- CÁC Ô ĐÃ MỞ KHÓA ĐỂ SỬA LINH HOẠT -->
             <div class="form-group"><label>Trước Thuế (Sửa linh hoạt)</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" oninput="dinhDangOOCurrency(this)"></div>
             <div class="form-group"><label>Thuế VAT (Sửa linh hoạt)</label><input type="text" id="inputTelecomVatInput" placeholder="0" oninput="dinhDangOOCurrency(this)"></div>
             
@@ -2519,7 +2517,6 @@
         let vat = Math.round(truocThue * vatRate);
         let total = truocThue + vat;
         
-        // Chỉ tự động điền gợi ý, người dùng có thể tự gõ sửa đè bất cứ lúc nào
         document.getElementById('inputOfficeTruocThue').value = truocThue > 0 ? truocThue.toLocaleString('vi-VN') : '';
         document.getElementById('inputOfficeVAT').value = vat > 0 ? vat.toLocaleString('vi-VN') : '';
         document.getElementById('previewOfficeTotal').value = total > 0 ? total.toLocaleString('vi-VN') : '';

@@ -672,7 +672,11 @@
             <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputOfficeVAT" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Tổng Thanh Toán</label><input type="text" id="previewOfficeTotal" placeholder="0" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;"></div>
             <div class="form-group"><label>Ngày CT</label><input type="date" id="inputOfficeDate"></div>
-            <div class="form-group"><label>Tải Tệp lên Drive</label><input type="file" id="vppFileUpload" onchange="taiTepLenThuMucChinhXac(this, 'Thanh Toán Văn Phòng', 'inputOfficeFileUrl')"></div>
+            <!-- BỔ SUNG: Cho phép chọn nhiều file (multiple) -->
+            <div class="form-group">
+                <label>Đính Kèm Nhiều Tệp (Drive)</label>
+                <input type="file" id="vppFileUpload" multiple onchange="taiNhieuTepLenThuMucChinhXac(this, 'Thanh Toán Văn Phòng', 'inputOfficeFileUrl')">
+            </div>
             <div class="form-group" style="display: flex; gap: 6px; grid-column: span 2;">
                 <button class="btn btn-green btn-lg" id="btnSaveVpp" onclick="luuHoacCapNhatVPP()"><i class="fas fa-save"></i> <span id="btnVppText">LƯU CHỨNG TỪ</span></button>
                 <button class="btn btn-red btn-lg hidden" id="btnCancelVpp" onclick="huyBoCapNhatVPP()"><i class="fa-solid fa-xmark"></i> Hủy</button>
@@ -680,7 +684,7 @@
         </div>
         <table>
             <thead>
-                <tr><th>Mã HS</th><th>Tháng</th><th>Thụ Hưởng</th><th>Ngân Hàng / STK</th><th>Nội Dung</th><th>ĐVT</th><th>SL x Đơn Giá</th><th>Trước Thuế</th><th>VAT</th><th>Tổng TT</th><th>Ngày CT</th><th style="text-align:center;">Drive File</th><th class="action-col">Thao Tác</th></tr>
+                <tr><th>Mã HS</th><th>Tháng</th><th>Thụ Hưởng</th><th>Ngân Hàng / STK</th><th>Nội Dung</th><th>ĐVT</th><th>SL x Đơn Giá</th><th>Trước Thuế</th><th>VAT</th><th>Tổng TT</th><th>Ngày CT</th><th style="text-align:center;">Drive Files</th><th class="action-col">Thao Tác</th></tr>
             </thead>
             <tbody id="officePaymentTableBody"></tbody>
         </table>
@@ -722,7 +726,11 @@
             <div class="form-group"><label>Người Nhận / NCC</label><input type="text" id="inputInkReceiver" placeholder="Tên NCC hoặc Cán bộ nhận..."></div>
             <div class="form-group"><label>Định Mức Min / Max</label><input type="text" id="inputInkMinMax" value="2 / 10"></div>
             <div class="form-group"><label>Ngày Chứng Từ</label><input type="date" id="inputInkDate"></div>
-            <div class="form-group"><label>Đính Kèm Phiếu lên Drive</label><input type="file" id="inkFileUpload" onchange="taiTepLenThuMucChinhXac(this, 'Kho Mực In', 'inputInkFileUrl')"></div>
+            <!-- BỔ SUNG: Cho phép chọn nhiều file (multiple) -->
+            <div class="form-group">
+                <label>Đính Kèm Nhiều Phiếu (Drive)</label>
+                <input type="file" id="inkFileUpload" multiple onchange="taiNhieuTepLenThuMucChinhXac(this, 'Kho Mực In', 'inputInkFileUrl')">
+            </div>
             <div class="form-group" style="display: flex; gap: 6px; grid-column: span 2;">
                 <button class="btn btn-green btn-lg" id="btnSaveInk" onclick="luuHoacCapNhatKhoMuc()"><i class="fas fa-warehouse"></i> <span id="btnInkText">GHI SỔ KHO</span></button>
                 <button class="btn btn-red btn-lg hidden" id="btnCancelInk" onclick="huyBoCapNhatKhoMuc()"><i class="fa-solid fa-xmark"></i> Hủy</button>
@@ -790,7 +798,11 @@
             <div class="form-group"><label>Tổng Cước (VAT)</label><input type="text" id="inputTelecomTongVat" placeholder="2.500.000" oninput="tinhTienTelecomTuTong()"></div>
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
-            <div class="form-group"><label>Đính Kèm Hóa Đơn lên Drive</label><input type="file" id="telecomFileUpload" onchange="taiTepLenThuMucChinhXac(this, 'Cước Viễn Thông', 'inputTelecomFileUrl')"></div>
+            <!-- BỔ SUNG: Cho phép chọn nhiều file (multiple) -->
+            <div class="form-group">
+                <label>Đính Kèm Nhiều Hóa Đơn (Drive)</label>
+                <input type="file" id="telecomFileUpload" multiple onchange="taiNhieuTepLenThuMucChinhXac(this, 'Cước Viễn Thông', 'inputTelecomFileUrl')">
+            </div>
             <div class="form-group" style="display: flex; gap: 6px; grid-column: span 2;">
                 <button class="btn btn-green btn-lg" id="btnSaveTelecom" onclick="luuHoacCapNhatTelecom()"><i class="fas fa-plus-circle"></i> <span id="btnTelecomText">THÊM CƯỚC</span></button>
                 <button class="btn btn-red btn-lg hidden" id="btnCancelTelecom" onclick="huyBoCapNhatTelecom()"><i class="fa-solid fa-xmark"></i> Hủy</button>
@@ -798,7 +810,7 @@
         </div>
         <table>
             <thead>
-                <tr><th>Mã HS</th><th>Tháng</th><th>Nhà Mạng</th><th>Loại Cước</th><th>Kỳ Cước</th><th>Trước Thuế</th><th>VAT</th><th>Tổng TT</th><th style="text-align:center;">Drive File</th><th class="action-col">Thao Tác</th></tr>
+                <tr><th>Mã HS</th><th>Tháng</th><th>Nhà Mạng</th><th>Loại Cước</th><th>Kỳ Cước</th><th>Trước Thuế</th><th>VAT</th><th>Tổng TT</th><th style="text-align:center;">Drive Files</th><th class="action-col">Thao Tác</th></tr>
             </thead>
             <tbody id="telecomPaymentTableBody"></tbody>
         </table>
@@ -1172,9 +1184,10 @@
         window.open(driveUrl, '_blank');
     }
 
-    function taiTepLenThuMucChinhXac(inputElement, categoryName, hiddenUrlInputId) {
-        let file = inputElement.files[0];
-        if (!file) return;
+    // HÀM XỬ LÝ CHỌN VÀ TẢI LÊN NHIỀU FILE ĐỒNG THỜI LÊN DRIVE
+    async function taiNhieuTepLenThuMucChinhXac(inputElement, categoryName, hiddenUrlInputId) {
+        let files = inputElement.files;
+        if (!files || files.length === 0) return;
 
         let statusBar = document.getElementById('driveUploadStatusBar');
         let statusTitle = document.getElementById('uploadStatusTitle');
@@ -1182,52 +1195,54 @@
         let progressFill = document.getElementById('uploadProgressFillBar');
 
         statusBar.classList.remove('hidden');
-        progressFill.style.width = '30%';
-        statusPercent.innerText = '30%';
-        statusTitle.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang đọc file "${file.name}"...`;
+        let totalFiles = files.length;
+        let uploadedCount = 0;
 
-        let reader = new FileReader();
-        reader.onload = function(e) {
-            let base64Content = e.target.result.split(',')[1];
-            let payload = {
-                action: "uploadFile",
-                year: currentNamKey,
-                month: currentThangKey,
-                category: categoryName,
-                fileName: file.name,
-                mimeType: file.type,
-                fileData: base64Content
-            };
+        for (let i = 0; i < totalFiles; i++) {
+            let file = files[i];
+            let percentBase = Math.round((i / totalFiles) * 100);
+            progressFill.style.width = percentBase + '%';
+            statusPercent.innerText = percentBase + '%';
+            statusTitle.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang tải file (${i+1}/${totalFiles}): "${file.name}"...`;
 
-            statusTitle.innerHTML = `<i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> Đang đẩy file lên Google Cloud...`;
-            progressFill.style.width = '70%';
-            statusPercent.innerText = '70%';
+            await new Promise((resolve) => {
+                let reader = new FileReader();
+                reader.onload = async function(e) {
+                    let base64Content = e.target.result.split(',')[1];
+                    let payload = {
+                        action: "uploadFile",
+                        year: currentNamKey,
+                        month: currentThangKey,
+                        category: categoryName,
+                        fileName: file.name,
+                        mimeType: file.type,
+                        fileData: base64Content
+                    };
 
-            fetch(gasWebhookUrl, {
-                method: "POST",
-                mode: "no-cors",
-                headers: {
-                    "Content-Type": "text/plain;charset=utf-8"
-                },
-                body: JSON.stringify(payload)
-            }).then(() => {
-                progressFill.style.width = '100%';
-                statusPercent.innerText = '100%';
-                statusTitle.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#22c55e;"></i> Đã lưu file lên thư mục Drive thành công!`;
-                
-                if (hiddenUrlInputId && document.getElementById(hiddenUrlInputId)) {
-                    document.getElementById(hiddenUrlInputId).value = rootDriveFolderUrl;
-                }
-                setTimeout(() => { statusBar.classList.add('hidden'); }, 2500);
-            }).catch(err => {
-                statusTitle.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi kết nối Webhook.`;
-                if (hiddenUrlInputId && document.getElementById(hiddenUrlInputId)) {
-                    document.getElementById(hiddenUrlInputId).value = rootDriveFolderUrl;
-                }
-                setTimeout(() => { statusBar.classList.add('hidden'); }, 2500);
+                    try {
+                        await fetch(gasWebhookUrl, {
+                            method: "POST",
+                            mode: "no-cors",
+                            headers: { "Content-Type": "text/plain;charset=utf-8" },
+                            body: JSON.stringify(payload)
+                        });
+                    } catch (err) {}
+                    resolve();
+                };
+                reader.readAsDataURL(file);
             });
-        };
-        reader.readAsDataURL(file);
+            uploadedCount++;
+        }
+
+        progressFill.style.width = '100%';
+        statusPercent.innerText = '100%';
+        statusTitle.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#22c55e;"></i> Đã tải lên thành công ${uploadedCount} tệp tin lên thư mục Drive!`;
+        
+        if (hiddenUrlInputId && document.getElementById(hiddenUrlInputId)) {
+            let fileNamesStr = Array.from(files).map(f => f.name).join(', ');
+            document.getElementById(hiddenUrlInputId).value = rootDriveFolderUrl + " (" + fileNamesStr + ")";
+        }
+        setTimeout(() => { statusBar.classList.add('hidden'); }, 3000);
     }
 
     async function thuCongDongBoLenDrive() {
@@ -1334,7 +1349,6 @@
         };
     }
 
-    // Cập nhật lấy ngày hiện tại động thay vì fix cứng 25/08/2026
     let _nowInit = new Date();
     let ngayLichDangChon = { d: _nowInit.getDate(), m: _nowInit.getMonth() + 1, y: _nowInit.getFullYear() };
 
@@ -1805,7 +1819,7 @@
         let tbody = document.getElementById('officePaymentTableBody');
         if(!tbody) return; tbody.innerHTML = '';
         layTatCaDanhSachVPPTheoNam().forEach(item => {
-            let driveBtn = item.fileUrl ? `<a href="${item.fileUrl}" target="_blank" class="btn btn-blue" style="padding:3px 6px; font-size:10px;"><i class="fa-brands fa-google-drive"></i> File Drive</a>` : '--';
+            let driveBtn = item.fileUrl ? `<a href="${rootDriveFolderUrl}" target="_blank" class="btn btn-blue" style="padding:3px 6px; font-size:10px;" title="${item.fileUrl}"><i class="fa-brands fa-google-drive"></i> Files Drive</a>` : '--';
             tbody.innerHTML += `<tr>
                 <td style="text-align:center;">${item.id}</td><td style="text-align:center;">${item.thangHachToan}</td>
                 <td><b>${item.beneficiary}</b></td><td>${item.bankName || '--'} / ${item.bankAccount || '--'}</td><td>${item.content}</td>
@@ -2174,7 +2188,7 @@
         if(!tbody) return; tbody.innerHTML = '';
         let yearTelecom = layTatCaDanhSachTelecomTheoNam();
         yearTelecom.forEach(item => {
-            let driveBtn = item.fileUrl ? `<a href="${item.fileUrl}" target="_blank" class="btn btn-blue" style="padding:3px 6px; font-size:10px;"><i class="fa-brands fa-google-drive"></i> Hóa Đơn</a>` : '--';
+            let driveBtn = item.fileUrl ? `<a href="${rootDriveFolderUrl}" target="_blank" class="btn btn-blue" style="padding:3px 6px; font-size:10px;" title="${item.fileUrl}"><i class="fa-brands fa-google-drive"></i> Files Hóa Đơn</a>` : '--';
             tbody.innerHTML += `<tr>
                 <td style="text-align:center;">${item.id || 'VT-01'}</td><td style="text-align:center;">${item.thangHachToan}</td>
                 <td style="text-align:center;">${item.supplier}</td><td>${item.type}</td><td style="text-align:center;">${item.kyCuoc}</td>

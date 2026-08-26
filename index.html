@@ -204,6 +204,14 @@
             <button class="btn btn-red" style="padding: 4px 8px;" onclick="document.getElementById('modalWeather10DaysPreview').classList.add('hidden')"><i class="fa-solid fa-xmark"></i> Đóng</button>
         </div>
         <div style="padding: 18px; background: #f8fafc; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; max-height: 82vh;">
+            
+            <!-- THANH TÌM KIẾM ĐỊA ĐIỂM TRONG MODAL -->
+            <div style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; display: flex; gap: 8px; align-items: center;">
+                <input type="text" id="inputModalSearchLocation" placeholder="🔍 Nhập tên Tỉnh/Thành phố hoặc Quận/Huyện (VD: Hà Nội, Việt Trì)..." style="flex: 1; height: 38px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--border-color); font-weight: bold; font-size: 13px;" onkeypress="if(event.key==='Enter') timKiemDiaDiemModal()">
+                <button class="btn btn-blue" style="height: 38px;" onclick="timKiemDiaDiemModal()"><i class="fa-solid fa-magnifying-glass"></i> Tìm Kiếm</button>
+                <button class="btn btn-green" style="height: 38px;" onclick="layThoiTietTheoGPS()"><i class="fa-solid fa-location-crosshairs"></i> GPS Chính Xác</button>
+            </div>
+
             <div id="weatherCurrentOverviewBox" style="background: white; border: 2px solid var(--border-color); border-radius: 14px; padding: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
                 <div style="display: flex; gap: 14px; align-items: center;">
                     <div id="wMainIcon" style="font-size: 44px; color: #f59e0b;"><i class="fa-solid fa-sun"></i></div>
@@ -409,11 +417,16 @@
         </div>
         <div class="info-widget-card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                <div style="font-size: 11px; font-weight: 900; color: #0369a1; text-transform: uppercase;"><i class="fa-solid fa-cloud-sun"></i> Khí Tượng Phú Thọ</div>
+                <div style="font-size: 11px; font-weight: 900; color: #0369a1; text-transform: uppercase;"><i class="fa-solid fa-cloud-sun"></i> Khí Tượng & Vị Trí</div>
                 <div style="display: flex; gap: 4px;">
                     <button class="btn btn-purple" style="padding: 4px 8px; font-size: 10px;" onclick="moModalDuBaoThoiTiet10Ngay()">10 Ngày</button>
-                    <button class="btn btn-blue" style="padding: 4px 8px; font-size: 10px;" onclick="layThoiTietTheoGPS()">GPS</button>
+                    <button class="btn btn-blue" style="padding: 4px 8px; font-size: 10px;" onclick="layThoiTietTheoGPS()">GPS Chuẩn</button>
                 </div>
+            </div>
+            <!-- Ô TÌM KIẾM NHANH ĐỊA ĐIỂM -->
+            <div style="display: flex; gap: 4px; margin-bottom: 4px;">
+                <input type="text" id="inputWidgetSearchLocation" placeholder="🔍 Nhập địa điểm (Hà Nội, Việt Trì...)" style="flex: 1; height: 30px; padding: 0 8px; font-size: 11px; font-weight: bold; border: 1px solid var(--border-color); border-radius: 6px;" onkeypress="if(event.key==='Enter') timKiemDiaDiemWidget()">
+                <button class="btn btn-blue" style="padding: 2px 8px; font-size: 10px; height: 30px;" onclick="timKiemDiaDiemWidget()">Tìm</button>
             </div>
             <div id="weatherWidgetText" style="font-size: 13px; font-weight: 700; color: #0f172a;">Đang tải thời tiết...</div>
         </div>
@@ -672,7 +685,6 @@
             <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputOfficeVAT" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Tổng Thanh Toán</label><input type="text" id="previewOfficeTotal" placeholder="0" readonly style="background: #f1f5f9; color: #dc2626; font-weight: bold;"></div>
             <div class="form-group"><label>Ngày CT</label><input type="date" id="inputOfficeDate"></div>
-            <!-- BỔ SUNG: Cho phép chọn nhiều file (multiple) -->
             <div class="form-group">
                 <label>Đính Kèm Nhiều Tệp (Drive)</label>
                 <input type="file" id="vppFileUpload" multiple onchange="taiNhieuTepLenThuMucChinhXac(this, 'Thanh Toán Văn Phòng', 'inputOfficeFileUrl')">
@@ -726,7 +738,6 @@
             <div class="form-group"><label>Người Nhận / NCC</label><input type="text" id="inputInkReceiver" placeholder="Tên NCC hoặc Cán bộ nhận..."></div>
             <div class="form-group"><label>Định Mức Min / Max</label><input type="text" id="inputInkMinMax" value="2 / 10"></div>
             <div class="form-group"><label>Ngày Chứng Từ</label><input type="date" id="inputInkDate"></div>
-            <!-- BỔ SUNG: Cho phép chọn nhiều file (multiple) -->
             <div class="form-group">
                 <label>Đính Kèm Nhiều Phiếu (Drive)</label>
                 <input type="file" id="inkFileUpload" multiple onchange="taiNhieuTepLenThuMucChinhXac(this, 'Kho Mực In', 'inputInkFileUrl')">
@@ -798,7 +809,6 @@
             <div class="form-group"><label>Tổng Cước (VAT)</label><input type="text" id="inputTelecomTongVat" placeholder="2.500.000" oninput="tinhTienTelecomTuTong()"></div>
             <div class="form-group"><label>Trước Thuế</label><input type="text" id="inputTelecomTruocThueInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
             <div class="form-group"><label>Thuế VAT</label><input type="text" id="inputTelecomVatInput" placeholder="0" readonly style="background:#f1f5f9;"></div>
-            <!-- BỔ SUNG: Cho phép chọn nhiều file (multiple) -->
             <div class="form-group">
                 <label>Đính Kèm Nhiều Hóa Đơn (Drive)</label>
                 <input type="file" id="telecomFileUpload" multiple onchange="taiNhieuTepLenThuMucChinhXac(this, 'Cước Viễn Thông', 'inputTelecomFileUrl')">
@@ -1184,7 +1194,6 @@
         window.open(driveUrl, '_blank');
     }
 
-    // HÀM XỬ LÝ CHỌN VÀ TẢI LÊN NHIỀU FILE ĐỒNG THỜI LÊN DRIVE
     async function taiNhieuTepLenThuMucChinhXac(inputElement, categoryName, hiddenUrlInputId) {
         let files = inputElement.files;
         if (!files || files.length === 0) return;
@@ -2852,7 +2861,7 @@
                 let info = getWeatherInfo(data.current_weather.weathercode);
                 
                 let wText = document.getElementById('weatherWidgetText');
-                if (wText) wText.innerHTML = `<b>${cityName}</b>: ${temp}°C, ${info.text}`;
+                if (wText) wText.innerHTML = `<b>📍 ${cityName}</b>: ${temp}°C, ${info.text}`;
                 
                 let wLoc = document.getElementById('wLocationTitle');
                 if (wLoc) wLoc.innerText = `Khu vực: ${cityName}`;
@@ -2909,16 +2918,80 @@
         await capNhatThoiTiet10Ngay(cachedWeatherCoords.lat, cachedWeatherCoords.lon, cachedWeatherCoords.cityName);
     }
 
+    // TÍNH NĂNG ĐỊNH VỊ CHÍNH XÁC (GPS + REVERSE GEOCODING TÊN ĐỊA DANH)
     async function layThoiTietTheoGPS() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(async (pos) => {
-                await capNhatThoiTiet(pos.coords.latitude, pos.coords.longitude, "Vị trí GPS");
-            }, (error) => {
-                alert("Không thể lấy vị trí GPS: " + error.message);
-            });
-        } else {
-            alert("Trình duyệt không hỗ trợ Geolocation.");
+        if (!navigator.geolocation) {
+            alert("Trình duyệt của bạn không hỗ trợ định vị Geolocation.");
+            return;
         }
+        
+        let wText = document.getElementById('weatherWidgetText');
+        if (wText) wText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang lấy tọa độ GPS chính xác...`;
+
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+            let lat = pos.coords.latitude;
+            let lon = pos.coords.longitude;
+            let resolvedName = "Vị trí GPS của bạn";
+
+            // Dùng dịch vụ tra cứu ngược (Reverse Geocoding) để lấy tên Tỉnh/Thành/Huyện chính xác
+            try {
+                let revRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=vi`);
+                let revData = await revRes.json();
+                if (revData && revData.address) {
+                    let addr = revData.address;
+                    let district = addr.county || addr.city_district || addr.town || addr.village || "";
+                    let city = addr.city || addr.province || addr.state || "";
+                    if (district && city) resolvedName = `${district}, ${city}`;
+                    else if (city) resolvedName = city;
+                    else if (revData.display_name) resolvedName = revData.display_name.split(',')[0];
+                }
+            } catch (e) {}
+
+            await capNhatThoiTiet(lat, lon, resolvedName);
+            if (!document.getElementById('modalWeather10DaysPreview').classList.contains('hidden')) {
+                await capNhatThoiTiet10Ngay(lat, lon, resolvedName);
+            }
+            alert(`✅ Đã định vị chính xác: ${resolvedName}`);
+        }, (error) => {
+            alert("⚠️ Không thể truy cập vị trí GPS: " + error.message + ". Vui lòng kiểm tra lại quyền cấp phép vị trí trên trình duyệt.");
+            if (wText) wText.innerHTML = `Không thể lấy tọa độ GPS.`;
+        }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+    }
+
+    // TÌM KIẾM ĐỊA ĐIỂM CHÍNH XÁC (Dùng Open-Meteo Geocoding API)
+    async function timKiemDiaDiemThoiTiet(query) {
+        if (!query || !query.trim()) return;
+        let cleanQ = query.trim();
+        try {
+            let res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cleanQ)}&count=1&language=vi&format=json`);
+            let data = await res.json();
+            if (data && data.results && data.results.length > 0) {
+                let loc = data.results[0];
+                let lat = loc.latitude;
+                let lon = loc.longitude;
+                let fullName = `${loc.name}, ${loc.admin1 || loc.country || ''}`;
+
+                await capNhatThoiTiet(lat, lon, fullName);
+                if (!document.getElementById('modalWeather10DaysPreview').classList.contains('hidden')) {
+                    await capNhatThoiTiet10Ngay(lat, lon, fullName);
+                }
+                alert(`✅ Đã tìm thấy và cập nhật thời tiết cho: ${fullName}`);
+            } else {
+                alert(`⚠️ Không tìm thấy địa điểm "${cleanQ}". Vui lòng thử lại với tên khác (VD: Hà Nội, Hồ Chí Minh, Việt Trì...).`);
+            }
+        } catch (err) {
+            alert("❌ Lỗi tìm kiếm địa điểm: " + err.message);
+        }
+    }
+
+    function timKiemDiaDiemWidget() {
+        let val = document.getElementById('inputWidgetSearchLocation').value;
+        timKiemDiaDiemThoiTiet(val);
+    }
+
+    function timKiemDiaDiemModal() {
+        let val = document.getElementById('inputModalSearchLocation').value;
+        timKiemDiaDiemThoiTiet(val);
     }
 
     window.onload = function() {

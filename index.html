@@ -2587,42 +2587,91 @@
     }
 
     function updateStaffField(idx, field, value) {
-        let ds = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey]) ? coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu : [];
-        if (ds && ds[idx]) {
-            let targetName = ds[idx].hoTen;
-            let cleanedVal = String(value).trim();
+        const currentYear = coSoDuLieuNamThang[currentNamKey];
+        const currentMonth = currentYear && currentYear[currentThangKey];
+        const ds = currentMonth && Array.isArray(currentMonth.nhansu) ? currentMonth.nhansu : [];
 
-            if (field === 'sdt' || field === 'stk' || field === 'nganHang') {
-                for (let yKey in coSoDuLieuNamThang) {
-                    for (let mKey in coSoDuLieuNamThang[yKey]) {
-                        let monthNhansu = coSoDuLieuNamThang[yKey][mKey].nhansu;
-                        if (monthNhansu) {
-                            let foundStaff = monthNhansu.find(i => i.hoTen === targetName);
-                            if (foundStaff) {
-                                foundStaff[field] = cleanedVal;
-                            }
+        if (!ds[idx]) return;
+
+        const targetName = ds[idx].hoTen;
+        const cleanedVal = String(value ?? '').trim();
+
+        // THÔNG TIN DÙNG CHUNG:
+        // HSL.CB, HSL.CV, SĐT/Zalo, tên ngân hàng, số tài khoản
+        // sửa ở bất kỳ tháng nào => cập nhật cho toàn bộ năm/tháng hiện có.
+        const updateAllPeriods = ['sdt', 'stk', 'nganHang', 'hsl_cb', 'hsl_cv'];
+
+        if (updateAllPeriods.includes(field)) {
+            let updatedCount = 0;
+
+            for (const yKey of Object.keys(coSoDuLieuNamThang || {})) {
+                const yearData = coSoDuLieuNamThang[yKey];
+                if (!yearData || typeof yearData !== 'object') continue;
+
+                for (const mKey of Object.keys(yearData)) {
+                    const monthData = yearData[mKey];
+                    if (!monthData || !Array.isArray(monthData.nhansu)) continue;
+
+                    const foundStaff = monthData.nhansu.find(item => item && item.hoTen === targetName);
+                    if (!foundStaff) continue;
+
+                    if (field === 'sdt' || field === 'stk' || field === 'nganHang') {
+                        foundStaff[field] = cleanedVal;
+                    } else {
+                        // HSL.CB/HSL.CV cho phép số thập phân.
+                        const num = parseFloat(cleanedVal.replace(',', '.'));
+                        if (!Number.isFinite(num) || num < 0 || num > 100) {
+                            alert('⚠️ Hệ số lương phải là số từ 0 đến 100.');
+                            return;
                         }
+                        foundStaff[field] = num;
                     }
-                }
-            } else {
-                if (field === 'hsl_cb' || field === 'hsl_cv' || field === 'k_ht') {
-                    // Cho phép nhập cả dấu phẩy thập phân kiểu Việt Nam: 1,94 -> 1.94
-                    let heSo = parseFloat(String(value ?? '').trim().replace(',', '.'));
-                    if (!Number.isFinite(heSo)) heSo = (field === 'k_ht') ? 1.0 : 0;
-                    heSo = Math.max(0, Math.min(100, heSo));
-                    ds[idx][field] = Math.round(heSo * 100) / 100;
-                } else if (field === 'tam_ung') {
-                    ds[idx][field] = parseVNDMoney(value);
-                } else {
-                    ds[idx][field] = parseFloat(value) || 0;
+                    updatedCount++;
                 }
             }
-            saveToLocalStorage();
-            markCloudDirty();
-            capNhat();
-        }
-    }
 
+            // Đảm bảo tháng hiện tại cũng được cập nhật ngay cả khi dữ liệu vừa tạo.
+            const currentStaff = ds.find(item => item && item.hoTen === targetName);
+            if (currentStaff) {
+                if (field === 'sdt' || field === 'stk' || field === 'nganHang') {
+                    currentStaff[field] = cleanedVal;
+                } else {
+                    currentStaff[field] = parseFloat(cleanedVal.replace(',', '.'));
+                }
+            }
+
+            if (updatedCount > 0) {
+                saveToLocalStorage();
+                if (typeof markCloudDirty === 'function') markCloudDirty();
+            }
+
+        } else if (field === 'k_ht') {
+            // HỆ SỐ K LÀ HỆ SỐ THEO TỪNG THÁNG:
+            // chỉ sửa nhân sự trong tháng đang chọn, không lan sang tháng/năm khác.
+            const numK = parseFloat(cleanedVal.replace(',', '.'));
+            if (!Number.isFinite(numK) || numK < 0 || numK > 100) {
+                alert('⚠️ Hệ số K phải là số từ 0 đến 100.');
+                return;
+            }
+
+            ds[idx].k_ht = numK;
+            saveToLocalStorage();
+            if (typeof markCloudDirty === 'function') markCloudDirty();
+
+        } else if (field === 'tam_ung') {
+            ds[idx][field] = parseVNDMoney(cleanedVal);
+            saveToLocalStorage();
+            if (typeof markCloudDirty === 'function') markCloudDirty();
+
+        } else {
+            const num = parseFloat(cleanedVal.replace(',', '.'));
+            ds[idx][field] = Number.isFinite(num) ? num : 0;
+            saveToLocalStorage();
+            if (typeof markCloudDirty === 'function') markCloudDirty();
+        }
+
+        capNhat();
+    }
     function capNhat() {
         let monthData = coSoDuLieuNamThang[currentNamKey] ? coSoDuLieuNamThang[currentNamKey][currentThangKey] : null;
         if (!monthData) return;

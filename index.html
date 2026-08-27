@@ -368,6 +368,36 @@
         .staff-master-table th:not(:nth-child(-n+5)), .staff-master-table td:not(:nth-child(-n+5)) { text-align:right; }
         .staff-master-table th { text-align:center !important; }
         .staff-master-table td:nth-child(1), .staff-master-table td:nth-child(6), .staff-master-table td:nth-child(7), .staff-master-table td:nth-child(8), .staff-master-table td:nth-child(9), .staff-master-table td:nth-child(10), .staff-master-table td:nth-child(11), .staff-master-table td:nth-child(12), .staff-master-table td:nth-child(13) { text-align:center; }
+        /* ===== HỆ SỐ LƯƠNG CÓ THỂ CHỈNH SỬA TRỰC TIẾP ===== */
+        .salary-factor-edit {
+            width:100% !important;
+            min-width:58px !important;
+            height:34px !important;
+            padding:4px 6px !important;
+            border:1px solid #93c5fd !important;
+            border-radius:7px !important;
+            background:#eff6ff !important;
+            color:#0f3d63 !important;
+            font-size:13px !important;
+            font-weight:900 !important;
+            text-align:center !important;
+            outline:none !important;
+        }
+        .salary-factor-edit:hover { background:#e0f2fe !important; border-color:#0284c7 !important; }
+        .salary-factor-edit:focus {
+            background:#fff !important;
+            border-color:#0284c7 !important;
+            box-shadow:0 0 0 3px rgba(2,132,199,.14) !important;
+        }
+        .salary-factor-edit::-webkit-inner-spin-button,
+        .salary-factor-edit::-webkit-outer-spin-button { opacity:1; }
+        .staff-master-factor-note {
+            display:inline-flex; align-items:center; gap:6px; flex-wrap:wrap;
+            color:#075985; font-weight:800;
+        }
+        .staff-master-factor-note .factor-help {
+            color:#64748b; font-weight:700;
+        }
         .staff-standard-card { width:min(720px,calc(100vw - 28px)); max-width:720px; padding:0; overflow:hidden; }
         .staff-standard-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; padding:16px 18px; background:#f8fafc; border-bottom:1px solid #dbe4ee; }
         .staff-standard-title { font-size:17px; font-weight:900; color:#0f3d63; }.staff-standard-subtitle{margin-top:5px;color:#64748b;font-size:12px;line-height:1.5}
@@ -1207,7 +1237,11 @@
         </div>
         <div class="staff-master-toolbar">
             <div><b id="staffMasterCount">0 nhân sự</b> · <span id="staffMasterMonthLabel">Tháng 08/2026</span> · Bảng có thanh cuộn ngang để không ép chữ.</div>
-            <div class="staff-master-note"><i class="fa-solid fa-shield-halved"></i> Bổ sung chỉ thêm người còn thiếu, không ghi đè dữ liệu lương/chấm công.</div>
+            <div class="staff-master-note staff-master-factor-note">
+                <i class="fa-solid fa-sliders"></i>
+                <span>HSL.CB, HSL.CV & Hệ số K có thể sửa trực tiếp.</span>
+                <span class="factor-help">Thay đổi chỉ áp dụng tháng đang chọn và tự tính lại lương.</span>
+            </div>
         </div>
         <div class="staff-master-scroll">
             <table class="salary-table staff-master-table" id="staffMasterTable">
@@ -1226,8 +1260,8 @@
                     </tr>
                     <tr>
                         <th>STT</th><th>HỌ VÀ TÊN</th><th>SĐT / ZALO</th><th>NGÂN HÀNG</th><th>STK</th>
-                        <th>HSL.CB</th><th>PC.CB</th><th>HSL.CV</th><th>PC.CV</th>
-                        <th>NC(TG)</th><th>PHÉP</th><th>LỄ</th><th>HỆ SỐ K</th><th>TẠM ỨNG</th>
+                        <th title="Có thể chỉnh sửa trực tiếp">HSL.CB ✎</th><th>PC.CB</th><th title="Có thể chỉnh sửa trực tiếp">HSL.CV ✎</th><th>PC.CV</th>
+                        <th>NC(TG)</th><th>PHÉP</th><th>LỄ</th><th title="Có thể chỉnh sửa trực tiếp">HỆ SỐ K ✎</th><th>TẠM ỨNG</th>
                         <th>LƯƠNG CB</th><th>LƯƠNG CV</th><th>TỔNG LCB + CV</th><th>BHTN</th><th>BHXH</th><th>THỰC LĨNH NET</th>
                     </tr>
                 </thead>
@@ -2443,16 +2477,38 @@
         const ds = monthData.nhansu || [];
         const countEl=document.getElementById('staffMasterCount'); if(countEl) countEl.innerText=`${ds.length} nhân sự`;
         const monthEl=document.getElementById('staffMasterMonthLabel'); if(monthEl) monthEl.innerText=`${currentThangKey}/${currentNamKey}`;
+
+        const factorInput = (idx, field, value, title) => {
+            const n = Number(value);
+            const safe = Number.isFinite(n) ? n : (field === 'k_ht' ? 1 : 0);
+            return `<input
+                class="cell-input salary-factor-edit"
+                type="number"
+                inputmode="decimal"
+                min="0"
+                max="100"
+                step="0.01"
+                value="${safe}"
+                title="${title}"
+                aria-label="${title}"
+                onchange="updateStaffField(${idx}, '${field}', this.value)"
+                onkeydown="if(event.key==='Enter'){this.blur();}"
+            >`;
+        };
+
         body.innerHTML = ds.map((i, idx) => {
             const money = n => Number(n || 0).toLocaleString('vi-VN');
             return `<tr>
                 <td style="text-align:center">${idx+1}</td>
                 <td style="font-weight:800">${i.hoTen || ''}</td>
                 <td>${i.sdt || ''}</td><td>${i.nganHang || ''}</td><td>${i.stk || ''}</td>
-                <td style="text-align:right">${i.hsl_cb ?? ''}</td><td style="text-align:right">${i.pc_cb ?? ''}</td>
-                <td style="text-align:right">${i.hsl_cv ?? ''}</td><td style="text-align:right">${i.pc_cv ?? ''}</td>
+                <td>${factorInput(idx, 'hsl_cb', i.hsl_cb, 'Hệ số lương cơ bản - có thể chỉnh sửa')}</td>
+                <td style="text-align:right">${i.pc_cb ?? 0}</td>
+                <td>${factorInput(idx, 'hsl_cv', i.hsl_cv, 'Hệ số lương công việc - có thể chỉnh sửa')}</td>
+                <td style="text-align:right">${i.pc_cv ?? 0}</td>
                 <td style="text-align:center">${i.nc_tg ?? 0}</td><td style="text-align:center">${i.nc_p ?? 0}</td><td style="text-align:center">${i.nc_l ?? 0}</td>
-                <td style="text-align:center">${i.k_ht ?? 1}</td><td style="text-align:right">${money(i.tam_ung)}</td>
+                <td>${factorInput(idx, 'k_ht', i.k_ht ?? 1, 'Hệ số K - có thể chỉnh sửa')}</td>
+                <td style="text-align:right">${money(i.tam_ung)}</td>
                 <td style="text-align:right">${money(i.thucLinhLCB)}</td><td style="text-align:right">${money(i.thucLinhCV)}</td>
                 <td style="text-align:right;font-weight:900">${money(i.tongCbCv)}</td>
                 <td style="text-align:right">${money(i.bhtn)}</td><td style="text-align:right">${money(i.bhxh)}</td>
@@ -2468,7 +2524,7 @@
         const rows = ds.map((i, idx) => ({
             "STT": idx + 1, "Họ và Tên": i.hoTen || "", "SĐT/Zalo": i.sdt || "",
             "Ngân hàng": i.nganHang || "", "Số tài khoản": i.stk || "",
-            "HSL.CB": i.hsl_cb || 0, "PC.CB": i.pc_cb || 0, "HSL.CV": i.hsl_cv || 0, "PC.CV": i.pc_cv || 0,
+            "HSL.CB (có thể sửa)": i.hsl_cb || 0, "PC.CB": i.pc_cb || 0, "HSL.CV (có thể sửa)": i.hsl_cv || 0, "PC.CV": i.pc_cv || 0,
             "NC(TG)": i.nc_tg || 0, "Phép": i.nc_p || 0, "Lễ": i.nc_l || 0, "Hệ số K": i.k_ht || 1,
             "Tạm ứng": i.tam_ung || 0, "Lương CB thực lĩnh": i.thucLinhLCB || 0,
             "Lương CV thực lĩnh": i.thucLinhCV || 0, "Tổng LCB+CV": i.tongCbCv || 0,
@@ -2549,10 +2605,20 @@
                     }
                 }
             } else {
-                if (field === 'k_ht') ds[idx][field] = parseFloat(value) || 1.0;
-                else if (field === 'tam_ung') ds[idx][field] = parseVNDMoney(value);
-                else ds[idx][field] = parseFloat(value) || 0;
+                if (field === 'hsl_cb' || field === 'hsl_cv' || field === 'k_ht') {
+                    // Cho phép nhập cả dấu phẩy thập phân kiểu Việt Nam: 1,94 -> 1.94
+                    let heSo = parseFloat(String(value ?? '').trim().replace(',', '.'));
+                    if (!Number.isFinite(heSo)) heSo = (field === 'k_ht') ? 1.0 : 0;
+                    heSo = Math.max(0, Math.min(100, heSo));
+                    ds[idx][field] = Math.round(heSo * 100) / 100;
+                } else if (field === 'tam_ung') {
+                    ds[idx][field] = parseVNDMoney(value);
+                } else {
+                    ds[idx][field] = parseFloat(value) || 0;
+                }
             }
+            saveToLocalStorage();
+            markCloudDirty();
             capNhat();
         }
     }

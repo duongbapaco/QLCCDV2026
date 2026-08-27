@@ -283,7 +283,8 @@
         }
         body.tab-focus-mode .tab-pane.active > .table-card { margin-bottom:18px; }
         body.tab-focus-mode .table-card { overflow-x:auto; overflow-y:visible; }
-        body.tab-focus-mode .table-header-bar { position:relative; }
+        body.tab-focus-mode .table-header-bar { position:relative; padding-right:175px; }
+        body.tab-focus-mode .staff-master-actions { padding-right:0; }
         body.tab-focus-mode .table-title { font-size:19px !important; }
         body.tab-focus-mode table { width:max-content; min-width:100%; font-size:14px; }
         body.tab-focus-mode th { font-size:13px; white-space:nowrap; }
@@ -347,6 +348,66 @@
         .salary-cv-table td:nth-child(1), .salary-cv-table td:nth-child(5), .salary-cv-table td:nth-child(6), .salary-cv-table td:nth-child(8), .salary-cv-table td:nth-child(9), .salary-cv-table td:nth-child(10), .salary-cv-table td:nth-child(11), .salary-cv-table td:nth-child(17) { text-align:center; }
         .salary-cv-table td:nth-child(n+7):nth-child(-n+16) { text-align:right; }
         .salary-cv-table td:nth-child(2), .salary-cb-table td:nth-child(2) { font-weight:800; text-align:left; }
+
+        /* ===== BẢNG NHÂN SỰ ĐẦY ĐỦ: CỘT CÂN ĐỐI, KHÔNG ÉP CHỮ ===== */
+        #staffMasterTab { min-width:0; }
+        .staff-master-header { align-items:flex-start !important; }
+        .staff-master-header .table-title { flex:1 1 480px; min-width:320px; line-height:1.35; }
+        .staff-master-actions { flex:0 0 auto; display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; padding-right:175px; }
+        .staff-master-toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; padding:10px 12px; margin-bottom:12px; background:#f8fafc; border:1px solid #dbe4ee; border-radius:10px; color:#334155; font-size:13px; }
+        .staff-master-note { color:#166534; font-weight:800; }
+        .staff-master-scroll { width:100%; overflow-x:auto; overflow-y:visible; border:1px solid #cbd5e1; border-radius:10px; background:#fff; -webkit-overflow-scrolling:touch; }
+        .staff-master-table { min-width:2180px !important; width:2180px !important; table-layout:fixed !important; margin:0 !important; }
+        .staff-master-table th, .staff-master-table td { white-space:nowrap; box-sizing:border-box; }
+        .staff-master-table th { height:42px; padding:7px 8px !important; font-size:11px !important; }
+        .staff-master-table td { height:42px; padding:7px 8px !important; font-size:13px !important; }
+        .staff-master-table .staff-group-row th { background:#e8f3fb !important; color:#075985 !important; font-size:11px !important; letter-spacing:.3px; border-bottom:2px solid #93c5fd; }
+        .staff-master-table .sm-stt{width:52px}.staff-master-table .sm-name{width:190px}.staff-master-table .sm-phone{width:125px}.staff-master-table .sm-bank{width:135px}.staff-master-table .sm-account{width:165px}
+        .staff-master-table .sm-factor{width:78px}.staff-master-table .sm-day{width:72px}.staff-master-table .sm-money{width:112px}.staff-master-table .sm-money-lg{width:130px}.staff-master-table .sm-money-xl{width:145px}
+        .staff-master-table th:nth-child(-n+5), .staff-master-table td:nth-child(-n+5) { text-align:left; }
+        .staff-master-table th:not(:nth-child(-n+5)), .staff-master-table td:not(:nth-child(-n+5)) { text-align:right; }
+        .staff-master-table th { text-align:center !important; }
+        .staff-master-table td:nth-child(1), .staff-master-table td:nth-child(6), .staff-master-table td:nth-child(7), .staff-master-table td:nth-child(8), .staff-master-table td:nth-child(9), .staff-master-table td:nth-child(10), .staff-master-table td:nth-child(11), .staff-master-table td:nth-child(12), .staff-master-table td:nth-child(13) { text-align:center; }
+        .staff-standard-card { width:min(720px,calc(100vw - 28px)); max-width:720px; padding:0; overflow:hidden; }
+        .staff-standard-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; padding:16px 18px; background:#f8fafc; border-bottom:1px solid #dbe4ee; }
+        .staff-standard-title { font-size:17px; font-weight:900; color:#0f3d63; }.staff-standard-subtitle{margin-top:5px;color:#64748b;font-size:12px;line-height:1.5}
+        .staff-standard-summary { margin:14px 18px 10px; padding:11px 13px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:9px; font-size:13px; font-weight:800; color:#1e3a8a; }
+        .staff-standard-selectbar { display:flex; justify-content:space-between; gap:10px; padding:8px 18px; font-size:13px; font-weight:800; border-bottom:1px solid #e2e8f0; }
+        .staff-standard-list { max-height:390px; overflow:auto; padding:8px 18px; }
+        .staff-standard-item { display:grid; grid-template-columns:28px 1fr auto; gap:9px; align-items:center; padding:10px 8px; border-bottom:1px solid #edf2f7; }
+        .staff-standard-item:last-child{border-bottom:0}.staff-standard-item strong{font-size:13px}.staff-standard-item small{color:#64748b;display:block;margin-top:2px}
+        .staff-standard-actions { display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap; padding:13px 18px; border-top:1px solid #dbe4ee; background:#f8fafc; }
+        @media(max-width:900px){.staff-master-actions{padding-right:0;width:100%;justify-content:flex-start}.staff-master-header .table-title{flex-basis:100%}.staff-master-toolbar{align-items:flex-start}.staff-master-table{min-width:2180px !important}.staff-standard-actions .btn{flex:1 1 100%}}
+
+        /* ===== QUẢN TRỊ TÀI KHOẢN - PHONG CÁCH DOANH NGHIỆP ===== */
+        .account-dashboard{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 16px}
+        .account-kpi{background:#fff;border:1px solid #dbe4ee;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 3px 12px rgba(15,23,42,.05)}
+        .account-kpi-icon{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:#eff6ff;color:#0369a1;font-size:17px}
+        .account-kpi b{display:block;font-size:20px;color:#0f172a}.account-kpi span{display:block;font-size:10px;font-weight:900;color:#64748b;text-transform:uppercase;margin-top:2px}
+        .account-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 14px;background:#f8fafc;border:1px solid #dbe4ee;border-radius:10px;margin-bottom:12px}
+        .account-search{flex:1 1 300px;max-width:480px;position:relative}.account-search input{width:100%;box-sizing:border-box;padding:10px 12px 10px 36px;border:1px solid #cbd5e1;border-radius:9px;font-size:13px}.account-search i{position:absolute;left:12px;top:11px;color:#64748b}
+        .account-filter{display:flex;gap:8px;align-items:center}.account-filter select{padding:9px 10px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font-weight:700}
+        .account-table-wrap{overflow:auto;border:1px solid #cbd5e1;border-radius:10px}.account-table{min-width:980px;width:100%;border-collapse:collapse}
+        .account-table th{background:#eef4f8;color:#0f3d63;font-size:11px;font-weight:900;text-transform:uppercase;padding:11px 10px;border-bottom:2px solid #cbd5e1;white-space:nowrap}
+        .account-table td{padding:11px 10px;border-bottom:1px solid #e2e8f0;font-size:13px;vertical-align:middle}.account-table tr:last-child td{border-bottom:0}.account-table tr:hover td{background:#f8fbfd}
+        .account-user{display:flex;align-items:center;gap:10px}.account-avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#e0f2fe;color:#0369a1;font-weight:900}.account-user b{display:block;color:#0f172a}.account-user small{display:block;color:#64748b;margin-top:2px}
+        .account-role{display:inline-flex;padding:5px 9px;border-radius:999px;background:#e0f2fe;color:#075985;font-size:10px;font-weight:900}
+        .account-status{display:inline-flex;align-items:center;gap:5px;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:900}.account-status.active{background:#dcfce7;color:#166534}.account-status.locked{background:#fee2e2;color:#991b1b}
+        .account-perms{display:flex;gap:4px;flex-wrap:wrap}.account-perms span{font-size:9px;font-weight:800;background:#f1f5f9;color:#475569;padding:3px 6px;border-radius:5px}
+        .account-actions{display:flex;justify-content:flex-end;gap:5px;flex-wrap:wrap}.account-actions .btn{min-height:30px;padding:5px 8px;font-size:11px}
+        .account-modal-card{width:min(760px,calc(100vw - 28px));padding:0!important;overflow:hidden}.account-modal-head{padding:18px 20px;background:linear-gradient(135deg,#0f3d63,#0284c7);color:#fff;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+        .account-modal-head h2{margin:2px 0;font-size:19px}.account-modal-head p{margin:5px 0 0;font-size:12px;opacity:.9}.account-modal-body{padding:20px}
+        .account-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.account-form-grid .full{grid-column:1/-1}.account-form-grid label{display:block;font-size:12px;font-weight:900;color:#334155;margin-bottom:6px}
+        .account-form-grid input,.account-form-grid select{width:100%;box-sizing:border-box;padding:10px 11px;border:1px solid #cbd5e1;border-radius:8px;font-size:13px;background:#fff}.account-form-grid input:focus,.account-form-grid select:focus{outline:none;border-color:#0284c7;box-shadow:0 0 0 3px rgba(2,132,199,.12)}
+        .account-password{position:relative}.account-password input{padding-right:40px}.account-password button{position:absolute;right:5px;top:5px;border:0;background:transparent;width:32px;height:32px;color:#64748b;cursor:pointer}
+        .account-permission-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.account-permission-item{border:1px solid #dbe4ee;border-radius:8px;padding:9px;background:#f8fafc;font-size:11px;font-weight:800}.account-permission-item input{width:auto;margin-right:6px}
+        .account-modal-actions{display:flex;justify-content:flex-end;gap:8px;padding:13px 20px;border-top:1px solid #e2e8f0;background:#f8fafc}.account-security-note{margin-top:14px;padding:10px 12px;border:1px solid #fde68a;background:#fffbeb;color:#92400e;border-radius:8px;font-size:11px;line-height:1.45}
+        @media(max-width:900px){.account-dashboard{grid-template-columns:repeat(2,minmax(0,1fr))}.account-form-grid{grid-template-columns:1fr}.account-form-grid .full{grid-column:auto}.account-permission-grid{grid-template-columns:1fr 1fr}}
+        @media(max-width:520px){.account-dashboard{grid-template-columns:1fr}.account-toolbar{align-items:stretch}.account-search{max-width:none}.account-filter{width:100%}.account-filter select{flex:1}.account-permission-grid{grid-template-columns:1fr}}
+
+        .admin-location-status { font-size:11px; font-weight:800; color:#475569; margin-top:3px; }
+        .admin-location-status.ok { color:#15803d; }
+        .admin-location-status.warn { color:#b45309; }
         .salary-table .badge-net { display:inline-flex; justify-content:center; min-width:100%; padding:5px 4px; font-size:11px; white-space:nowrap; }
 
         /* Mọi bảng trong chế độ toàn màn hình: rộng hợp lý, không ép chữ vào nhau */
@@ -396,7 +457,252 @@
             a { text-decoration:none !important; }
         }
 
-    </style>
+    
+        /* ===== PHIẾU LƯƠNG A4: luôn cân giữa trang, 1 trang, không lệch ===== */
+        @media print {
+            @page { size: A4 portrait; margin: 8mm !important; }
+            html, body { width:auto !important; min-width:0 !important; max-width:none !important; margin:0 !important; padding:0 !important; background:#fff !important; }
+            body { overflow:hidden !important; }
+            #previewModal { position:static !important; inset:auto !important; width:100% !important; min-height:0 !important; margin:0 !important; padding:0 !important; background:#fff !important; }
+            #previewModal .modal-card { width:100% !important; max-width:none !important; margin:0 auto !important; padding:0 !important; }
+            #previewModal .modal-card > div:nth-child(2) { width:100% !important; max-width:none !important; margin:0 !important; padding:0 !important; }
+            #payslip-capture {
+                box-sizing:border-box !important;
+                width:194mm !important;
+                max-width:194mm !important;
+                min-height:0 !important;
+                height:auto !important;
+                margin:0 auto !important;
+                padding:5mm !important;
+                border:0 !important;
+                border-radius:0 !important;
+                box-shadow:none !important;
+                font-family:"Times New Roman", Times, serif !important;
+                font-size:9.5pt !important;
+                line-height:1.18 !important;
+                overflow:visible !important;
+                page-break-inside:avoid !important;
+                break-inside:avoid !important;
+            }
+            #payslip-capture > div:first-child { padding-bottom:3mm !important; margin-bottom:3mm !important; }
+            #payslip-capture h2 { font-size:15pt !important; margin:2mm 0 !important; }
+            #payslip-capture table { width:100% !important; table-layout:fixed !important; border-collapse:collapse !important; font-size:8.8pt !important; }
+            #payslip-capture th, #payslip-capture td { padding:2.2mm 2mm !important; line-height:1.12 !important; word-break:break-word !important; }
+            #payslip-capture .salary-signature-footer { margin-top:4mm !important; padding-top:2mm !important; font-size:9pt !important; }
+            #payslip-capture .salary-signature-footer .sign-space { height:15mm !important; }
+            #payslip-capture [style*="padding: 18px"], #payslip-capture [style*="padding:18px"] { padding:3mm !important; }
+            #payslip-capture [style*="margin-bottom: 20px"], #payslip-capture [style*="margin-bottom:20px"] { margin-bottom:3mm !important; }
+            #payslip-capture [style*="gap: 14px"], #payslip-capture [style*="gap:14px"] { gap:5mm !important; }
+            #payslip-capture [style*="font-size: 16px"], #payslip-capture [style*="font-size:16px"] { font-size:12pt !important; }
+            #payslip-capture [style*="font-size: 15px"], #payslip-capture [style*="font-size:15px"] { font-size:10pt !important; }
+            #payslip-capture [style*="font-size: 14px"], #payslip-capture [style*="font-size:14px"] { font-size:9.5pt !important; }
+            #payslip-capture * { overflow:visible !important; }
+        }
+
+/* ===== PHÉP NĂM - GIAO DIỆN DOANH NGHIỆP ===== */
+.leave-dashboard-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(360px,.95fr);gap:18px;align-items:stretch;margin:0 0 18px}
+.leave-chart-card{min-width:0;padding:16px 18px!important;border:1px solid #d7e0ea!important;border-radius:14px!important;background:#fff!important;box-shadow:0 4px 16px rgba(15,23,42,.06)!important}
+.leave-chart-card .chart-title{font-size:16px!important;line-height:1.3;margin-bottom:4px!important}
+.chart-subtitle{font-size:12px;color:#64748b;font-weight:600;margin-bottom:8px}
+.leave-chart-wrap{position:relative;width:100%}.leave-bar-wrap{height:500px}.leave-pie-wrap{height:300px;max-width:420px;margin:0 auto}
+.leave-summary-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:8px}.leave-summary-item{border:1px solid #e2e8f0;border-radius:10px;padding:10px;background:#f8fafc;text-align:center}.leave-summary-item b{display:block;font-size:19px;line-height:1.2}.leave-summary-item span{font-size:11px;color:#64748b;font-weight:800;text-transform:uppercase}
+.leave-request-section{margin-top:18px;border:1px solid #dbe3ec;border-radius:14px;background:#fff;padding:14px}.section-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;font-size:14px;font-weight:900;color:#0f172a}.section-count{font-size:11px;background:#e0f2fe;color:#0369a1;border-radius:999px;padding:5px 9px}.leave-request-table-wrap{overflow:auto}.leave-request-table{min-width:1200px}.leave-request-table td,.leave-request-table th{font-size:12px!important;white-space:nowrap}.leave-request-table td:nth-child(7){white-space:normal;min-width:220px;max-width:300px}.leave-request-table td:nth-child(8){white-space:normal;min-width:150px;max-width:220px}
+.leave-request-modal-card{max-width:900px!important;width:min(900px,calc(100vw - 28px));padding:0!important;overflow:hidden}.leave-modal-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:18px 20px;background:linear-gradient(135deg,#075985,#0284c7);color:#fff}.leave-modal-header h2{margin:3px 0;font-size:20px}.leave-modal-kicker{font-size:10px;font-weight:900;letter-spacing:1px;opacity:.85}.leave-modal-subtitle{font-size:12px;opacity:.9;font-weight:700}.leave-request-modal-card form{padding:20px}.leave-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.leave-form-grid .full{grid-column:1/-1}.leave-form-grid label{font-weight:900;font-size:12px;color:#334155;margin-bottom:6px;display:block}.leave-form-grid label span{color:#dc2626}.leave-form-grid input,.leave-form-grid select,.leave-form-grid textarea{width:100%;border:1px solid #cbd5e1;border-radius:9px;padding:10px 11px;font-size:13px;background:#fff}.leave-form-grid input:focus,.leave-form-grid select:focus,.leave-form-grid textarea:focus{outline:none;border-color:#0284c7;box-shadow:0 0 0 3px rgba(2,132,199,.12)}.leave-policy-note{display:flex;gap:10px;margin-top:16px;padding:12px 14px;border:1px solid #bae6fd;background:#f0f9ff;border-radius:10px;color:#075985;font-size:12px;line-height:1.5}.leave-form-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px;padding-top:14px;border-top:1px solid #e2e8f0}.leave-status{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:900}.leave-status.pending{background:#fef3c7;color:#92400e}.leave-status.approved{background:#dcfce7;color:#166534}.leave-status.rejected{background:#fee2e2;color:#991b1b}
+@media(max-width:900px){.leave-dashboard-grid{grid-template-columns:1fr}.leave-bar-wrap{height:440px}.leave-pie-wrap{height:260px}.leave-form-grid{grid-template-columns:1fr}.leave-form-grid .full{grid-column:auto}}
+
+/* ===== DASHBOARD PHÉP NĂM + QUỸ LƯƠNG: CÂN ĐỐI / KHÔNG CHỒNG LẤN ===== */
+.leave-dashboard-grid{
+    display:grid!important;
+    grid-template-columns:minmax(0,1.62fr) minmax(390px,.98fr)!important;
+    gap:18px!important;
+    align-items:stretch!important;
+    margin:0 0 18px!important;
+}
+.leave-chart-card{
+    min-width:0!important;
+    min-height:500px!important;
+    height:auto!important;
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+}
+.leave-chart-card.leave-pie-card{
+    min-height:500px!important;
+}
+.chart-card-heading{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    min-height:48px;
+}
+.chart-badge{
+    flex:0 0 auto;
+    padding:5px 9px;
+    border-radius:999px;
+    background:#eff6ff;
+    border:1px solid #bfdbfe;
+    color:#0369a1;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.35px;
+}
+.leave-chart-wrap{
+    width:100%!important;
+    position:relative!important;
+    box-sizing:border-box!important;
+}
+.leave-bar-wrap{
+    height:410px!important;
+    margin-top:8px!important;
+}
+.leave-pie-wrap{
+    height:285px!important;
+    max-width:430px!important;
+    margin:4px auto 0!important;
+}
+.leave-summary-cards{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+    margin:9px 0 0!important;
+}
+.leave-summary-item{
+    min-height:58px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:center!important;
+    box-sizing:border-box!important;
+    padding:8px!important;
+}
+.leave-summary-item b{font-size:18px!important;line-height:1.15!important}
+.leave-summary-item span{font-size:10px!important;line-height:1.2!important}
+.leave-table-section{
+    margin-top:0!important;
+    border:1px solid #dbe3ec;
+    border-radius:14px;
+    background:#fff;
+    overflow:hidden;
+}
+.leave-table-heading{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:11px 14px;
+    border-bottom:1px solid #e2e8f0;
+    background:#f8fafc;
+    font-size:13px;
+    font-weight:900;
+}
+.leave-table-wrap{
+    width:100%;
+    overflow-x:auto;
+}
+.leave-table-wrap table{
+    min-width:980px;
+    margin:0!important;
+}
+.leave-table-wrap th,.leave-table-wrap td{
+    white-space:nowrap;
+}
+.leave-request-section{
+    margin-top:18px!important;
+}
+
+/* ===== QUỸ LƯƠNG: 4 CHỈ SỐ + BIỂU ĐỒ SO SÁNH ===== */
+.salary-fund-dashboard{
+    display:grid;
+    grid-template-columns:minmax(0,2.15fr) minmax(320px,.85fr);
+    gap:16px;
+    margin:0 0 16px;
+    align-items:stretch;
+}
+.salary-fund-chart-card{
+    min-width:0;
+    padding:16px!important;
+    overflow:hidden;
+}
+.salary-fund-chart-wrap{
+    position:relative;
+    height:370px;
+    width:100%;
+    margin-top:8px;
+}
+.salary-fund-summary{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+}
+.salary-summary-card{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-width:0;
+    padding:14px;
+    border:1px solid #dbe3ec;
+    border-radius:13px;
+    background:#fff;
+    box-shadow:0 3px 12px rgba(15,23,42,.05);
+}
+.salary-summary-card .salary-summary-icon{
+    width:42px;height:42px;flex:0 0 42px;
+    display:grid;place-items:center;
+    border-radius:11px;
+    font-size:18px;
+}
+.salary-summary-card span{
+    display:block;
+    font-size:10px;
+    font-weight:900;
+    color:#64748b;
+    line-height:1.25;
+}
+.salary-summary-card b{
+    display:block;
+    font-size:18px;
+    line-height:1.3;
+    margin-top:3px;
+    white-space:nowrap;
+}
+.salary-summary-card small{
+    display:block;
+    font-size:10px;
+    color:#94a3b8;
+    font-weight:700;
+    margin-top:2px;
+}
+.salary-summary-card.transfer .salary-summary-icon{background:#dcfce7;color:#15803d}
+.salary-summary-card.transfer b{color:#15803d}
+.salary-summary-card.lcv .salary-summary-icon{background:#fef3c7;color:#b45309}
+.salary-summary-card.lcv b{color:#b45309}
+.salary-summary-card.bh .salary-summary-icon{background:#fee2e2;color:#dc2626}
+.salary-summary-card.bh b{color:#dc2626}
+.salary-summary-card.advance .salary-summary-icon{background:#dbeafe;color:#1d4ed8}
+.salary-summary-card.advance b{color:#1d4ed8}
+
+@media (max-width:1100px){
+    .leave-dashboard-grid{grid-template-columns:1fr!important}
+    .leave-chart-card,.leave-chart-card.leave-pie-card{min-height:0!important}
+    .leave-bar-wrap{height:420px!important}
+    .salary-fund-dashboard{grid-template-columns:1fr}
+    .salary-fund-summary{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:650px){
+    .leave-bar-wrap{height:430px!important}
+    .leave-pie-wrap{height:250px!important}
+    .salary-fund-summary{grid-template-columns:1fr}
+    .salary-fund-chart-wrap{height:330px}
+    .salary-summary-card b{font-size:16px}
+}
+
+
+.salary-annual-total-row td{
+    background:#f1f5f9!important;
+    border-top:2px solid #94a3b8!important;
+    padding-top:11px!important;
+    padding-bottom:11px!important;
+}
+</style>
 </head>
 <body>
 
@@ -410,10 +716,11 @@
         <div style="padding: 18px; background: #f8fafc; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; max-height: 82vh;">
             
             <div style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; display: flex; gap: 8px; align-items: center;">
-                <input type="text" id="inputModalSearchLocation" placeholder="🔍 Nhập tên Tỉnh/Thành phố hoặc Quận/Huyện (VD: Hà Nội, Việt Trì)..." style="flex: 1; height: 38px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--border-color); font-weight: bold; font-size: 13px;" onkeypress="if(event.key==='Enter') timKiemDiaDiemModal()">
+                <input type="text" id="inputModalSearchLocation" placeholder="🔍 Nhập Tỉnh/Thành phố hoặc Xã/Phường mới (VD: Phú Thọ, Việt Trì, Hy Cương)..." style="flex: 1; height: 38px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--border-color); font-weight: bold; font-size: 13px;" onkeypress="if(event.key==='Enter') timKiemDiaDiemModal()">
                 <button class="btn btn-blue" style="height: 38px;" onclick="timKiemDiaDiemModal()"><i class="fa-solid fa-magnifying-glass"></i> Tìm Kiếm</button>
                 <button class="btn btn-green" style="height: 38px;" onclick="layThoiTietTheoGPS()"><i class="fa-solid fa-location-crosshairs"></i> GPS Chính Xác</button>
             </div>
+            <div id="weatherLocationResults" style="display:none;background:#fff;border:1px solid #bfdbfe;border-radius:10px;padding:8px;gap:6px;flex-direction:column;"></div>
 
             <div id="weatherCurrentOverviewBox" style="background: white; border: 2px solid var(--border-color); border-radius: 14px; padding: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
                 <div style="display: flex; gap: 14px; align-items: center;">
@@ -566,6 +873,31 @@
     </div>
 </div>
 
+<!-- MODAL ĐĂNG KÝ NGHỈ PHÉP CHUYÊN NGHIỆP -->
+<div class="modal-overlay hidden" id="leaveRequestModal">
+  <div class="modal-card leave-request-modal-card">
+    <div class="leave-modal-header">
+      <div><div class="leave-modal-kicker">VINAPACO • PHÒNG NHÂN SỰ</div><h2><i class="fa-solid fa-calendar-check"></i> PHIẾU ĐĂNG KÝ NGHỈ PHÉP</h2><div class="leave-modal-subtitle" id="leaveModalPeriod">Tháng 08/2026</div></div>
+      <button class="btn btn-red" onclick="dongFormDangKyPhep()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="leaveRequestForm" onsubmit="event.preventDefault(); luuDangKyPhep();">
+      <input type="hidden" id="leaveEditIndex" value="-1">
+      <div class="leave-form-grid">
+        <div class="form-group"><label>Người đăng ký <span>*</span></label><select id="leaveEmployee" required></select></div>
+        <div class="form-group"><label>Loại nghỉ <span>*</span></label><select id="leaveType" required><option value="Nghỉ phép năm">Nghỉ phép năm</option><option value="Nghỉ phép nửa ngày">Nghỉ phép nửa ngày</option><option value="Nghỉ không hưởng lương">Nghỉ không hưởng lương</option><option value="Nghỉ việc riêng">Nghỉ việc riêng</option></select></div>
+        <div class="form-group"><label>Từ ngày <span>*</span></label><input type="date" id="leaveFromDate" required onchange="tinhSoNgayNghiForm()"></div>
+        <div class="form-group"><label>Đến ngày <span>*</span></label><input type="date" id="leaveToDate" required onchange="tinhSoNgayNghiForm()"></div>
+        <div class="form-group"><label>Số ngày nghỉ</label><input type="number" id="leaveDays" value="1" min="0.5" step="0.5" readonly></div>
+        <div class="form-group"><label>Người nhận bàn giao <span>*</span></label><select id="leaveHandover" required></select></div>
+        <div class="form-group full"><label>Lý do nghỉ <span>*</span></label><textarea id="leaveReason" rows="3" required placeholder="Nhập rõ lý do nghỉ phép..."></textarea></div>
+        <div class="form-group full"><label>Ghi chú / yêu cầu bổ sung</label><textarea id="leaveNote" rows="2" placeholder="Ví dụ: đã bàn giao công việc, lịch họp cần thay thế..."></textarea></div>
+      </div>
+      <div class="leave-policy-note"><i class="fa-solid fa-circle-info"></i><div><b>Quy trình xử lý:</b> Nhân sự lập phiếu → kiểm tra số ngày phép → Trưởng bộ phận xem xét → Phê duyệt. Phiếu được lưu theo đúng năm/tháng đang quản lý.</div></div>
+      <div class="leave-form-actions"><button type="button" class="btn btn-red" onclick="dongFormDangKyPhep()">Hủy</button><button type="submit" class="btn btn-blue" id="btnSaveLeave"><i class="fa-solid fa-paper-plane"></i> GỬI ĐĂNG KÝ</button></div>
+    </form>
+  </div>
+</div>
+
 <!-- GIAO DIỆN CHÍNH -->
 <div class="container" id="appMainContainer">
     <div class="banner">
@@ -628,6 +960,7 @@
                 <button class="btn btn-blue" style="padding: 2px 8px; font-size: 10px; height: 30px;" onclick="timKiemDiaDiemWidget()">Tìm</button>
             </div>
             <div id="weatherWidgetText" style="font-size: 13px; font-weight: 700; color: #0f172a;">Đang tải thời tiết...</div>
+            <div id="weatherWidgetResults" style="display:none;background:#fff;border:1px solid #bfdbfe;border-radius:8px;padding:6px;margin-top:6px;"></div>
         </div>
     </div>
 
@@ -676,6 +1009,7 @@
         <button class="tab-btn-nav" onclick="switchTab('monthlySalaryDashboardTab', this)"><i class="fa-solid fa-money-bill-trend-up"></i> Lương tháng</button>
         <button class="tab-btn-nav" onclick="switchTab('accountManagerTab', this)"><i class="fa-solid fa-users-gear"></i> Tài khoản</button>
         <button class="tab-btn-nav" onclick="switchTab('timekeepingDetailTab', this)"><i class="fa-solid fa-business-time"></i> Chấm công</button>
+        <button class="tab-btn-nav" onclick="switchTab('staffMasterTab', this)"><i class="fa-solid fa-users"></i> Nhân sự đầy đủ</button>
         <button class="tab-btn-nav" onclick="switchTab('salaryCBTab', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Lương CB</button>
         <button class="tab-btn-nav" onclick="switchTab('salaryCVTab', this)"><i class="fa-solid fa-briefcase"></i> Lương CV</button>
         <button class="tab-btn-nav" onclick="switchTab('leaveTab', this)"><i class="fa-solid fa-calendar-days"></i> Phép năm</button>
@@ -755,12 +1089,24 @@
             </div>
         </div>
 
-        <div class="charts-multi-grid" style="margin-bottom: 14px;">
-            <div class="chart-card">
-                <div class="chart-title"><i class="fa-solid fa-chart-column" style="color: #16a34a;"></i> Biến Động Quỹ Lương NET Theo 12 Tháng</div>
-                <div style="position: relative; height: 280px;"><canvas id="monthlySalaryBarChart"></canvas></div>
+        <section class="salary-fund-dashboard">
+            <div class="salary-fund-chart-card chart-card">
+                <div class="chart-card-heading">
+                    <div>
+                        <div class="chart-title"><i class="fa-solid fa-chart-line"></i> BIẾN ĐỘNG QUỸ LƯƠNG & CÁC KHOẢN LIÊN QUAN THEO 12 THÁNG</div>
+                        <div class="chart-subtitle">So sánh tổng chuyển khoản, lương công việc thực tế, BHXH và tạm ứng trong cùng một biểu đồ</div>
+                    </div>
+                    <span class="chart-badge">NĂM <span id="salaryChartYearBadge">2026</span></span>
+                </div>
+                <div class="salary-fund-chart-wrap"><canvas id="monthlySalaryBarChart"></canvas></div>
             </div>
-        </div>
+            <div class="salary-fund-summary">
+                <div class="salary-summary-card transfer"><div class="salary-summary-icon"><i class="fa-solid fa-building-columns"></i></div><div><span>TỔNG CHUYỂN KHOẢN</span><b id="yearTotalBankTransfer">0 VNĐ</b><small>Lũy kế cả năm</small></div></div>
+                <div class="salary-summary-card lcv"><div class="salary-summary-icon"><i class="fa-solid fa-briefcase"></i></div><div><span>TỔNG LƯƠNG CV THỰC TẾ</span><b id="yearTotalLCVActual">0 VNĐ</b><small>Lũy kế cả năm</small></div></div>
+                <div class="salary-summary-card bh"><div class="salary-summary-icon"><i class="fa-solid fa-shield-halved"></i></div><div><span>TỔNG TRỪ BHXH + BHTN</span><b id="yearTotalBH">0 VNĐ</b><small>Khoản khấu trừ bảo hiểm</small></div></div>
+                <div class="salary-summary-card advance"><div class="salary-summary-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div><div><span>TỔNG TẠM ỨNG</span><b id="yearTotalTamUng">0 VNĐ</b><small>Khoản đã tạm ứng</small></div></div>
+            </div>
+        </section>
 
         <div class="table-card">
             <div class="table-title" style="font-size: 13px; margin-bottom: 8px;"><i class="fa-solid fa-list-ol"></i> CHI TIẾT BIẾN ĐỘNG QUỸ LƯƠNG QUA CÁC THÁNG</div>
@@ -777,16 +1123,45 @@
 
     <!-- TAB QUẢN LÝ TÀI KHOẢN -->
     <div id="accountManagerTab" class="tab-pane table-card">
-        <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-users-gear"></i> QUẢN LÝ TÀI KHOẢN & PHÂN QUYỀN HỆ THỐNG</div>
-            <button class="btn btn-green" onclick="moModalThemTaiKhoan()"><i class="fa-solid fa-user-plus"></i> Thêm</button>
+        <div class="table-header-bar" style="align-items:flex-start;">
+            <div><div class="table-title"><i class="fa-solid fa-user-shield"></i> QUẢN TRỊ TÀI KHOẢN & PHÂN QUYỀN</div><div style="font-size:12px;color:#64748b;font-weight:700;margin-top:4px;">Quản lý tài khoản cán bộ, vai trò, trạng thái và phạm vi sử dụng hệ thống.</div></div>
+            <button class="btn btn-green" onclick="moModalThemTaiKhoan()"><i class="fa-solid fa-user-plus"></i> TẠO TÀI KHOẢN</button>
         </div>
-        <table>
-            <thead>
-                <tr><th style="width: 35px;">STT</th><th>Email / Tài Khoản</th><th>Họ và Tên Cán Bộ</th><th style="text-align: center;">Vai Trò</th><th style="text-align: center;">Trạng Thái</th><th class="action-col">Thao Tác</th></tr>
-            </thead>
-            <tbody id="accountTableBody"></tbody>
-        </table>
+        <div class="account-dashboard">
+            <div class="account-kpi"><div class="account-kpi-icon"><i class="fa-solid fa-users"></i></div><div><b id="accountKpiTotal">0</b><span>Tổng tài khoản</span></div></div>
+            <div class="account-kpi"><div class="account-kpi-icon"><i class="fa-solid fa-user-check"></i></div><div><b id="accountKpiActive">0</b><span>Đang hoạt động</span></div></div>
+            <div class="account-kpi"><div class="account-kpi-icon"><i class="fa-solid fa-user-lock"></i></div><div><b id="accountKpiLocked">0</b><span>Đang khóa</span></div></div>
+            <div class="account-kpi"><div class="account-kpi-icon"><i class="fa-solid fa-user-tie"></i></div><div><b id="accountKpiAdmin">0</b><span>Quản trị viên</span></div></div>
+        </div>
+        <div class="account-toolbar">
+            <div class="account-search"><i class="fa-solid fa-magnifying-glass"></i><input id="accountSearchInput" type="search" placeholder="Tìm email, họ tên hoặc vai trò..." oninput="renderAccountTable()"></div>
+            <div class="account-filter"><select id="accountRoleFilter" onchange="renderAccountTable()"><option value="">Tất cả vai trò</option><option>Admin</option><option>Manager</option><option>Editor</option><option>Viewer</option></select><select id="accountStatusFilter" onchange="renderAccountTable()"><option value="">Tất cả trạng thái</option><option value="Active">Đang hoạt động</option><option value="Locked">Đang khóa</option></select></div>
+        </div>
+        <div class="account-table-wrap">
+          <table class="account-table"><thead><tr><th style="width:55px;text-align:center">STT</th><th>Tài khoản cán bộ</th><th>Vai trò</th><th>Trạng thái</th><th>Phạm vi quyền</th><th style="width:230px;text-align:right">Thao tác</th></tr></thead><tbody id="accountTableBody"></tbody></table>
+        </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="accountEditModal">
+      <div class="modal-card account-modal-card">
+        <div class="account-modal-head"><div><div style="font-size:10px;font-weight:900;letter-spacing:1px;opacity:.85">VINAPACO • QUẢN TRỊ HỆ THỐNG</div><h2 id="accountModalTitle"><i class="fa-solid fa-user-plus"></i> TẠO TÀI KHOẢN</h2><p>Cấp tài khoản và phân quyền sử dụng theo vị trí công việc.</p></div><button class="btn btn-red" style="padding:5px 9px" onclick="dongModalTaiKhoan()"><i class="fa-solid fa-xmark"></i></button></div>
+        <div class="account-modal-body">
+          <input type="hidden" id="accountEditIndex" value="-1">
+          <div class="account-form-grid">
+            <div><label>Email / Tên đăng nhập <span style="color:#dc2626">*</span></label><input id="accountFormEmail" type="email" placeholder="vd: nguyenvana@vinapaco.com.vn"></div>
+            <div><label>Họ và tên cán bộ <span style="color:#dc2626">*</span></label><input id="accountFormName" type="text" placeholder="Nguyễn Văn A"></div>
+            <div><label>Mật khẩu <span style="color:#dc2626">*</span></label><div class="account-password"><input id="accountFormPassword" type="password" placeholder="Tối thiểu 6 ký tự"><button type="button" onclick="toggleAccountPassword()"><i id="accountPasswordIcon" class="fa-solid fa-eye"></i></button></div></div>
+            <div><label>Vai trò</label><select id="accountFormRole"><option value="Admin">Admin – Quản trị toàn hệ thống</option><option value="Manager">Manager – Quản lý nghiệp vụ</option><option value="Editor" selected>Editor – Nhập & cập nhật dữ liệu</option><option value="Viewer">Viewer – Chỉ xem báo cáo</option></select></div>
+            <div><label>Trạng thái</label><select id="accountFormStatus"><option value="Active">Đang hoạt động</option><option value="Locked">Đang khóa</option></select></div>
+            <div><label>Bộ phận</label><input id="accountFormDept" type="text" placeholder="Văn phòng / Nhân sự / Kế toán..."></div>
+            <div class="full"><label>Phạm vi quyền truy cập</label><div class="account-permission-grid">
+              <label class="account-permission-item"><input type="checkbox" value="dashboard">Dashboard</label><label class="account-permission-item"><input type="checkbox" value="salary">Bảng lương</label><label class="account-permission-item"><input type="checkbox" value="leave">Phép năm</label><label class="account-permission-item"><input type="checkbox" value="inventory">Kho mực</label><label class="account-permission-item"><input type="checkbox" value="payment">Thanh toán</label><label class="account-permission-item"><input type="checkbox" value="system">Cấu hình hệ thống</label>
+            </div></div>
+          </div>
+          <div class="account-security-note"><i class="fa-solid fa-shield-halved"></i> Tài khoản bị khóa sẽ không được coi là tài khoản hoạt động trong quản trị. Không dùng cùng một mật khẩu cho nhiều tài khoản.</div>
+        </div>
+        <div class="account-modal-actions"><button class="btn btn-red" onclick="dongModalTaiKhoan()">Hủy</button><button class="btn btn-green" onclick="luuTaiKhoanForm()"><i class="fa-solid fa-floppy-disk"></i> Lưu tài khoản</button></div>
+      </div>
     </div>
 
     <!-- TAB CÔNG VIỆC -->
@@ -818,6 +1193,71 @@
             <button class="btn btn-green" onclick="xuatExcelCongChiTiet()"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
         </div>
         <table><thead><tr><th>STT</th><th>Họ và Tên</th><th>NCD Chuẩn</th><th>Thực Tế</th><th>Phép (P)</th><th>Lễ (L)</th><th>Hệ Số (K)</th><th>Ghi Chú</th></tr></thead><tbody id="timekeepingDetailTableBody"></tbody></table>
+    </div>
+
+
+    <!-- TAB DANH SÁCH NHÂN SỰ ĐẦY ĐỦ -->
+    <div id="staffMasterTab" class="tab-pane table-card">
+        <div class="table-header-bar staff-master-header">
+            <div class="table-title"><i class="fa-solid fa-users"></i> DANH SÁCH NHÂN SỰ & BẢNG LƯƠNG ĐẦY ĐỦ (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
+            <div class="staff-master-actions">
+                <button class="btn btn-blue" id="btnOpenStaffStandard" onclick="moBoSungNhanSuChuan()"><i class="fa-solid fa-user-plus"></i> Bổ sung nhân sự chuẩn</button>
+                <button class="btn btn-green" onclick="xuatExcelDanhSachNhanSuDayDu()"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
+            </div>
+        </div>
+        <div class="staff-master-toolbar">
+            <div><b id="staffMasterCount">0 nhân sự</b> · <span id="staffMasterMonthLabel">Tháng 08/2026</span> · Bảng có thanh cuộn ngang để không ép chữ.</div>
+            <div class="staff-master-note"><i class="fa-solid fa-shield-halved"></i> Bổ sung chỉ thêm người còn thiếu, không ghi đè dữ liệu lương/chấm công.</div>
+        </div>
+        <div class="staff-master-scroll">
+            <table class="salary-table staff-master-table" id="staffMasterTable">
+                <colgroup>
+                    <col class="sm-stt"><col class="sm-name"><col class="sm-phone"><col class="sm-bank"><col class="sm-account">
+                    <col class="sm-factor"><col class="sm-factor"><col class="sm-factor"><col class="sm-factor">
+                    <col class="sm-day"><col class="sm-day"><col class="sm-day"><col class="sm-factor"><col class="sm-money">
+                    <col class="sm-money"><col class="sm-money"><col class="sm-money-lg"><col class="sm-money"><col class="sm-money"><col class="sm-money-xl">
+                </colgroup>
+                <thead>
+                    <tr class="staff-group-row">
+                        <th colspan="5">THÔNG TIN NHÂN SỰ</th>
+                        <th colspan="4">HỆ SỐ & PHỤ CẤP</th>
+                        <th colspan="5">CHẤM CÔNG & KHẤU TRỪ</th>
+                        <th colspan="6">KẾT QUẢ TÍNH LƯƠNG</th>
+                    </tr>
+                    <tr>
+                        <th>STT</th><th>HỌ VÀ TÊN</th><th>SĐT / ZALO</th><th>NGÂN HÀNG</th><th>STK</th>
+                        <th>HSL.CB</th><th>PC.CB</th><th>HSL.CV</th><th>PC.CV</th>
+                        <th>NC(TG)</th><th>PHÉP</th><th>LỄ</th><th>HỆ SỐ K</th><th>TẠM ỨNG</th>
+                        <th>LƯƠNG CB</th><th>LƯƠNG CV</th><th>TỔNG LCB + CV</th><th>BHTN</th><th>BHXH</th><th>THỰC LĨNH NET</th>
+                    </tr>
+                </thead>
+                <tbody id="staffMasterTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- MODAL BỔ SUNG NHÂN SỰ CHUẨN -->
+    <div class="modal-overlay hidden" id="staffStandardModal">
+        <div class="modal-card staff-standard-card">
+            <div class="staff-standard-head">
+                <div>
+                    <div class="staff-standard-title"><i class="fa-solid fa-user-check"></i> BỔ SUNG NHÂN SỰ CHUẨN</div>
+                    <div class="staff-standard-subtitle">Kiểm tra danh sách chuẩn của hệ thống trước khi thêm vào <b><span id="staffStandardMonth"></span></b>.</div>
+                </div>
+                <button class="btn btn-red" onclick="dongBoSungNhanSuChuan()"><i class="fa-solid fa-xmark"></i> Đóng</button>
+            </div>
+            <div class="staff-standard-summary" id="staffStandardSummary"></div>
+            <div class="staff-standard-selectbar">
+                <label><input type="checkbox" id="staffStandardSelectAll" onchange="chonTatCaNhanSuChuan(this.checked)"> Chọn tất cả người còn thiếu</label>
+                <span id="staffStandardSelectedCount">0 đã chọn</span>
+            </div>
+            <div class="staff-standard-list" id="staffStandardList"></div>
+            <div class="staff-standard-actions">
+                <button class="btn btn-blue" onclick="themNhanSuChuanDaChon()"><i class="fa-solid fa-user-plus"></i> Bổ sung người đã chọn</button>
+                <button class="btn btn-green" onclick="themTatCaNhanSuChuan()"><i class="fa-solid fa-users"></i> Bổ sung tất cả còn thiếu</button>
+                <button class="btn btn-gray" onclick="dongBoSungNhanSuChuan()">Hủy</button>
+            </div>
+        </div>
     </div>
 
     <!-- TAB LƯƠNG CƠ BẢN -->
@@ -858,16 +1298,49 @@
     <div id="leaveTab" class="tab-pane table-card">
         <div class="table-header-bar">
             <div class="table-title"><i class="fa-solid fa-calendar-days"></i> QUẢN LÝ PHÉP NĂM (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
-            <button class="btn btn-blue" onclick="alert('📝 Đăng ký phép trực tuyến.')"><i class="fa-solid fa-file-pen"></i> Đăng Ký</button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
+                <button class="btn btn-blue" onclick="moFormDangKyPhep()"><i class="fa-solid fa-file-pen"></i> ĐĂNG KÝ NGHỈ PHÉP</button>
+                <button class="btn btn-green" onclick="xuatExcelDangKyPhep()"><i class="fa-solid fa-file-excel"></i> XUẤT ĐĂNG KÝ</button>
+            </div>
         </div>
-        <div class="charts-multi-grid" style="margin-bottom: 14px;">
-            <div class="chart-card" style="padding: 10px;"><div class="chart-title"><i class="fa-solid fa-chart-column"></i> Ngày Nghỉ Phép Nhân Sự</div><div style="position: relative; height: 280px;"><canvas id="overviewLeaveBarChart"></canvas></div></div>
-            <div class="chart-card" style="padding: 10px;"><div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Tỷ Trọng Phép Đã Dùng (%)</div><div style="position: relative; height: 280px;"><canvas id="leavePieChart"></canvas></div></div>
+        <div class="leave-dashboard-grid">
+            <section class="chart-card leave-chart-card leave-bar-card">
+                <div class="chart-card-heading">
+                    <div>
+                        <div class="chart-title"><i class="fa-solid fa-chart-column"></i> TÌNH HÌNH SỬ DỤNG PHÉP THEO NHÂN SỰ</div>
+                        <div class="chart-subtitle">So sánh trực tiếp số ngày đã dùng và số ngày còn lại của từng nhân sự</div>
+                    </div>
+                    <span class="chart-badge">THEO NĂM</span>
+                </div>
+                <div class="leave-chart-wrap leave-bar-wrap"><canvas id="overviewLeaveBarChart"></canvas></div>
+            </section>
+            <section class="chart-card leave-chart-card leave-pie-card">
+                <div class="chart-card-heading">
+                    <div>
+                        <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> TỶ TRỌNG PHÉP ĐÃ DÙNG</div>
+                        <div class="chart-subtitle">Tổng hợp toàn bộ nhân sự trong năm đang chọn</div>
+                    </div>
+                    <span class="chart-badge">TỔNG HỢP</span>
+                </div>
+                <div class="leave-chart-wrap leave-pie-wrap"><canvas id="leavePieChart"></canvas></div>
+                <div id="leaveSummaryCards" class="leave-summary-cards"></div>
+            </section>
         </div>
-        <table>
+        <div class="leave-table-section">
+        <div class="leave-table-heading"><span><i class="fa-solid fa-table-list"></i> CHI TIẾT TÌNH HÌNH PHÉP NĂM</span><span class="chart-badge">CẬP NHẬT TỰ ĐỘNG</span></div>
+        <div class="leave-table-wrap"><table>
             <thead><tr><th>STT</th><th>Họ và Tên</th><th>Tổng Phép Cấp</th><th>Nghỉ Tháng Này</th><th>Nghỉ Lễ</th><th>Đã Dùng Lũy Kế</th><th>Phép Còn Lại</th><th>Trạng Thái</th></tr></thead>
             <tbody id="leaveTableBody"></tbody>
-        </table>
+        </table></div></div>
+        <div class="leave-request-section">
+            <div class="section-heading"><span><i class="fa-solid fa-file-signature"></i> PHIẾU ĐĂNG KÝ NGHỈ PHÉP</span><span id="leaveRequestCount" class="section-count">0 phiếu</span></div>
+            <div class="leave-request-table-wrap">
+                <table class="leave-request-table">
+                    <thead><tr><th>STT</th><th>Nhân sự</th><th>Loại phép</th><th>Từ ngày</th><th>Đến ngày</th><th>Số ngày</th><th>Lý do</th><th>Bàn giao</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+                    <tbody id="leaveRequestTableBody"></tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <!-- TAB THANH TOÁN VĂN PHÒNG -->
@@ -1292,7 +1765,7 @@
     let gasWebhookUrl = localStorage.getItem('vinapaco_gas_webhook_url') || 'https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec';
 
     // ===== CLOUD SYNC ENGINE: Google Sheets = dữ liệu chuẩn, Google Drive = tệp đính kèm/backup =====
-    const SYNC_SCHEMA = 2;
+    const SYNC_SCHEMA = 3;
     const DEVICE_ID = localStorage.getItem('vinapaco_device_id') || ('DEV-' + cryptoRandomId());
     localStorage.setItem('vinapaco_device_id', DEVICE_ID);
     let syncTimer = null, syncDebounceTimer = null, syncInProgress = false, suppressCloudSync = true;
@@ -1301,6 +1774,46 @@
     let lastSyncedSnapshot = safeJsonParse(localStorage.getItem('vinapaco_sync_base'), null);
     let pendingSync = Number(localStorage.getItem('vinapaco_pending_sync') || 0);
     let syncConflicts = JSON.parse(localStorage.getItem('vinapaco_sync_conflicts') || '[]');
+
+
+    // ===== GOOGLE DRIVE: tự động chuẩn hóa thư mục Năm/Tháng =====
+    function getDriveRootIdFromUrl(url) {
+        const m = String(url || '').match(/\/folders\/([a-zA-Z0-9_-]+)/);
+        return m ? m[1] : String(url || '').trim();
+    }
+    function getDriveMonthFolderName(yearKey=currentNamKey, monthKey=currentThangKey) {
+        const m = String(monthKey || '').match(/(\d{1,2})/);
+        return `${yearKey} / Tháng ${(m ? Number(m[1]) : 1).toString().padStart(2,'0')}`;
+    }
+    async function tuDongTaoThuMucDriveNamThang(showAlert=false) {
+        const rootId = getDriveRootIdFromUrl(rootDriveFolderUrl);
+        if (!rootId || rootId.length < 10 || !gasWebhookUrl) return false;
+        const year = String(currentNamKey);
+        const monthMatch = String(currentThangKey).match(/(\d{1,2})/);
+        const month = (monthMatch ? Number(monthMatch[1]) : new Date().getMonth()+1);
+        try {
+            // GAS cần hỗ trợ action=ensureFolders để tạo/đảm bảo cấu trúc:
+            // VINAPACO_Drive / Năm / Tháng XX
+            const data = await jsonpGet(
+                gasWebhookUrl +
+                (gasWebhookUrl.includes('?') ? '&' : '?') +
+                `action=ensureFolders&rootId=${encodeURIComponent(rootId)}&year=${encodeURIComponent(year)}&month=${encodeURIComponent(month)}`
+            );
+            if (data && data.ok) {
+                const path = data.path || `VINAPACO_Drive / ${year} / Tháng ${String(month).padStart(2,'0')}`;
+                const pathEl = document.getElementById('cfgDrivePath');
+                if (pathEl) pathEl.value = path;
+                localStorage.setItem('vinapaco_drive_month_folder_id', data.monthFolderId || '');
+                localStorage.setItem('vinapaco_drive_month_path', path);
+                if (showAlert) alert(`✅ Đã kiểm tra/tạo thư mục Drive:\n${path}`);
+                return true;
+            }
+            if (showAlert) alert('⚠️ GAS chưa hỗ trợ action ensureFolders. Hãy cập nhật phần Apps Script đi kèm.');
+        } catch (e) {
+            if (showAlert) alert('⚠️ Không thể tự tạo thư mục Drive: ' + e.message);
+        }
+        return false;
+    }
 
     function cryptoRandomId() {
         try { return crypto.randomUUID(); } catch(e) { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
@@ -1342,6 +1855,19 @@
         if (!snap || !snap.dataNamThang) return false;
         suppressCloudSync = true;
         coSoDuLieuNamThang = snap.dataNamThang;
+        // Cloud cũ có thể thiếu nhân sự mới; bổ sung theo mẫu mà không ghi đè dữ liệu đã có.
+        Object.keys(coSoDuLieuNamThang || {}).forEach(y => {
+            Object.keys(coSoDuLieuNamThang[y] || {}).forEach(m => {
+                const md = coSoDuLieuNamThang[y][m];
+                if (md && Array.isArray(md.nhansu)) {
+                    defaultNhansuTemplate.forEach(tpl => {
+                        const found = md.nhansu.find(x => String(x.hoTen||'').trim() === String(tpl.hoTen).trim());
+                        if (!found) md.nhansu.push(JSON.parse(JSON.stringify(tpl)));
+                        else Object.keys(tpl).forEach(k => { if (found[k] === undefined || found[k] === null || found[k] === '') found[k] = tpl[k]; });
+                    });
+                }
+            });
+        });
         if (snap.dataVpp) dsThanhToanVanPhongProByMonth = snap.dataVpp;
         if (snap.dataTelecom) dsThanhToanTelecombyMonth = snap.dataTelecom;
         if (snap.dataInk) dsKhoMucIn = snap.dataInk;
@@ -1490,11 +2016,20 @@
         } finally { syncInProgress = false; }
     }
     async function taiDuLieuTuDongTuGas(showAlert=false) { return pullCloudSnapshot(showAlert); }
-    async function thuCongDongBoLenDrive() { pendingSync=1; localStorage.setItem('vinapaco_pending_sync','1'); return dongBoThongMinh(true); }
+    async function thuCongDongBoLenDrive() {
+        pendingSync=1; localStorage.setItem('vinapaco_pending_sync','1');
+        await tuDongTaoThuMucDriveNamThang(false);
+        return dongBoThongMinh(true);
+    }
     function startAutoCloudSync() {
         clearInterval(syncTimer);
         syncTimer = setInterval(() => { if (!document.hidden) dongBoThongMinh(false); }, 30000);
         setTimeout(() => dongBoThongMinh(false), 1200);
+        setTimeout(() => {
+            tuDongTaoThuMucDriveNamThang(false);
+            capNhatThoiTiet(cachedWeatherCoords.lat, cachedWeatherCoords.lon, cachedWeatherCoords.cityName);
+            capNhatThoiTiet10Ngay(cachedWeatherCoords.lat, cachedWeatherCoords.lon, cachedWeatherCoords.cityName);
+        }, 1800);
     }
 
     const defaultNhansuTemplate = [
@@ -1834,6 +2369,116 @@
         el.innerHTML = html;
     }
 
+
+    function layNhanSuChuanConThieu() {
+        const md = coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey];
+        if (!md) return [];
+        const ds = Array.isArray(md.nhansu) ? md.nhansu : [];
+        return defaultNhansuTemplate.filter(tpl => !ds.some(x => String(x.hoTen||'').trim().toLowerCase() === String(tpl.hoTen||'').trim().toLowerCase()));
+    }
+
+    function moBoSungNhanSuChuan() {
+        const modal = document.getElementById('staffStandardModal');
+        if (!modal) return;
+        document.getElementById('staffStandardMonth').innerText = `${currentThangKey}/${currentNamKey}`;
+        const missing = layNhanSuChuanConThieu();
+        const summary = document.getElementById('staffStandardSummary');
+        const list = document.getElementById('staffStandardList');
+        const selectAll = document.getElementById('staffStandardSelectAll');
+        selectAll.checked = false;
+        if (!missing.length) {
+            summary.innerHTML = '✅ Danh sách hiện tại đã đủ toàn bộ nhân sự chuẩn. Không có người nào cần bổ sung.';
+            list.innerHTML = '<div style="padding:24px;text-align:center;font-weight:800;color:#15803d;">Không có nhân sự còn thiếu.</div>';
+        } else {
+            summary.innerHTML = `⚠️ Đang thiếu <b>${missing.length}</b> nhân sự chuẩn. Hãy chọn người cần bổ sung; dữ liệu người đã có sẽ không bị ghi đè.`;
+            list.innerHTML = missing.map((x,i) => `<label class="staff-standard-item"><input type="checkbox" class="staff-standard-check" value="${i}"><span><strong>${x.hoTen}</strong><small>${x.nganHang||'Chưa có ngân hàng'} · HSL.CB ${x.hsl_cb ?? 0} · HSL.CV ${x.hsl_cv ?? 0}</small></span><span style="font-weight:800;color:#64748b">#${i+1}</span></label>`).join('');
+        }
+        capNhatSoNguoiChonNhanSuChuan();
+        modal.classList.remove('hidden');
+    }
+
+    document.addEventListener('change', function(e){ if(e.target && e.target.classList.contains('staff-standard-check')) capNhatSoNguoiChonNhanSuChuan(); });
+
+    function dongBoSungNhanSuChuan() { const m=document.getElementById('staffStandardModal'); if(m) m.classList.add('hidden'); }
+    function chonTatCaNhanSuChuan(checked) { document.querySelectorAll('.staff-standard-check').forEach(x=>x.checked=checked); capNhatSoNguoiChonNhanSuChuan(); }
+    function capNhatSoNguoiChonNhanSuChuan() { const n=document.querySelectorAll('.staff-standard-check:checked').length; const el=document.getElementById('staffStandardSelectedCount'); if(el) el.innerText=`${n} đã chọn`; }
+
+    function themNhanSuChuanTheoDanhSach(missing, showAlert=true) {
+        const md = coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey];
+        if (!md) return 0;
+        if (!Array.isArray(md.nhansu)) md.nhansu=[];
+        let added=0;
+        missing.forEach(tpl=>{
+            const found=md.nhansu.find(x=>String(x.hoTen||'').trim().toLowerCase()===String(tpl.hoTen||'').trim().toLowerCase());
+            if(!found){ md.nhansu.push(JSON.parse(JSON.stringify(tpl))); added++; }
+            else Object.keys(tpl).forEach(k=>{ if(found[k]===undefined || found[k]===null || found[k]==='') found[k]=tpl[k]; });
+        });
+        md.nhansu.forEach((x,i)=>x.stt=i+1);
+        capNhat();
+        if(showAlert) alert(`✅ Đã bổ sung ${added} nhân sự vào ${currentThangKey}/${currentNamKey}. Dữ liệu nhân sự đã có được giữ nguyên.`);
+        return added;
+    }
+    function themNhanSuChuanDaChon() {
+        const missing=layNhanSuChuanConThieu();
+        const indexes=[...document.querySelectorAll('.staff-standard-check:checked')].map(x=>Number(x.value));
+        if(!indexes.length){alert('Hãy chọn ít nhất một nhân sự cần bổ sung.');return;}
+        themNhanSuChuanTheoDanhSach(indexes.map(i=>missing[i]).filter(Boolean));
+        moBoSungNhanSuChuan();
+    }
+    function themTatCaNhanSuChuan() {
+        const missing=layNhanSuChuanConThieu();
+        if(!missing.length){alert('✅ Danh sách đã đủ nhân sự chuẩn.');return;}
+        if(confirm(`Bổ sung toàn bộ ${missing.length} nhân sự còn thiếu vào ${currentThangKey}/${currentNamKey}?\n\nDữ liệu của người đã có sẽ không bị ghi đè.`)) {
+            themNhanSuChuanTheoDanhSach(missing);
+            dongBoSungNhanSuChuan();
+        }
+    }
+    // Tương thích với nút/call cũ trong hệ thống.
+    function boSungDayDuNhanSuTheoMau(showAlert=false) { return themNhanSuChuanTheoDanhSach(layNhanSuChuanConThieu(), showAlert); }
+
+    function renderStaffMasterTable() {
+        const body = document.getElementById('staffMasterTableBody');
+        const monthData = coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey];
+        if (!body || !monthData) return;
+        const ds = monthData.nhansu || [];
+        const countEl=document.getElementById('staffMasterCount'); if(countEl) countEl.innerText=`${ds.length} nhân sự`;
+        const monthEl=document.getElementById('staffMasterMonthLabel'); if(monthEl) monthEl.innerText=`${currentThangKey}/${currentNamKey}`;
+        body.innerHTML = ds.map((i, idx) => {
+            const money = n => Number(n || 0).toLocaleString('vi-VN');
+            return `<tr>
+                <td style="text-align:center">${idx+1}</td>
+                <td style="font-weight:800">${i.hoTen || ''}</td>
+                <td>${i.sdt || ''}</td><td>${i.nganHang || ''}</td><td>${i.stk || ''}</td>
+                <td style="text-align:right">${i.hsl_cb ?? ''}</td><td style="text-align:right">${i.pc_cb ?? ''}</td>
+                <td style="text-align:right">${i.hsl_cv ?? ''}</td><td style="text-align:right">${i.pc_cv ?? ''}</td>
+                <td style="text-align:center">${i.nc_tg ?? 0}</td><td style="text-align:center">${i.nc_p ?? 0}</td><td style="text-align:center">${i.nc_l ?? 0}</td>
+                <td style="text-align:center">${i.k_ht ?? 1}</td><td style="text-align:right">${money(i.tam_ung)}</td>
+                <td style="text-align:right">${money(i.thucLinhLCB)}</td><td style="text-align:right">${money(i.thucLinhCV)}</td>
+                <td style="text-align:right;font-weight:900">${money(i.tongCbCv)}</td>
+                <td style="text-align:right">${money(i.bhtn)}</td><td style="text-align:right">${money(i.bhxh)}</td>
+                <td style="text-align:right;font-weight:900;color:#15803d">${money(i.thucLinhCuoiCung)}</td>
+            </tr>`;
+        }).join('');
+    }
+
+    function xuatExcelDanhSachNhanSuDayDu() {
+        if (typeof XLSX === 'undefined') return;
+        const ds = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey]) ?
+            coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu : [];
+        const rows = ds.map((i, idx) => ({
+            "STT": idx + 1, "Họ và Tên": i.hoTen || "", "SĐT/Zalo": i.sdt || "",
+            "Ngân hàng": i.nganHang || "", "Số tài khoản": i.stk || "",
+            "HSL.CB": i.hsl_cb || 0, "PC.CB": i.pc_cb || 0, "HSL.CV": i.hsl_cv || 0, "PC.CV": i.pc_cv || 0,
+            "NC(TG)": i.nc_tg || 0, "Phép": i.nc_p || 0, "Lễ": i.nc_l || 0, "Hệ số K": i.k_ht || 1,
+            "Tạm ứng": i.tam_ung || 0, "Lương CB thực lĩnh": i.thucLinhLCB || 0,
+            "Lương CV thực lĩnh": i.thucLinhCV || 0, "Tổng LCB+CV": i.tongCbCv || 0,
+            "BHTN": i.bhtn || 0, "BHXH": i.bhxh || 0, "THỰC LĨNH NET": i.thucLinhCuoiCung || 0
+        }));
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows), "NhanSu_BangLuong");
+        XLSX.writeFile(wb, `Danh_Sach_Nhan_Su_Bang_Luong_${currentThangKey}_${currentNamKey}.xlsx`);
+    }
+
     function doiThangHoSoLuong() {
         let elNam = document.getElementById('cfgNamChon');
         let elThang = document.getElementById('cfgThangChon');
@@ -1842,6 +2487,8 @@
         document.querySelectorAll('.thangHienTaiTitle').forEach(el => el.innerText = `${currentThangKey}/${currentNamKey}`);
         let pathInput = document.getElementById('cfgDrivePath');
         if(pathInput) pathInput.value = `VINAPACO_Drive / ${currentNamKey} / ${currentThangKey}`;
+        // Không chặn giao diện; GAS sẽ tạo/đảm bảo thư mục Năm/Tháng ở nền.
+        setTimeout(() => tuDongTaoThuMucDriveNamThang(false), 50);
 
         if (!coSoDuLieuNamThang[currentNamKey]) {
             coSoDuLieuNamThang[currentNamKey] = generateYearMonthsData({ ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 });
@@ -1852,6 +2499,7 @@
                 nhansu: JSON.parse(JSON.stringify(defaultNhansuTemplate))
             };
         } else {
+            boSungDayDuNhanSuTheoMau(false);
             coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.forEach((ns, index) => {
                 let templateDefault = defaultNhansuTemplate[index] || defaultNhansuTemplate[0];
                 if (!ns.sdt) ns.sdt = templateDefault.sdt;
@@ -1935,22 +2583,24 @@
             i.tongCbCv = i.tongLCB + i.luongCVTT;
         });
 
-        renderTimekeepingDetailTable();
-        renderTableCB();
-        renderTableCV();
-        renderLeaveTable();
-        renderOfficePaymentTable();
-        renderInkInventoryTable();
-        renderDeliveryTable();
-        renderTelecomPaymentTable();
-        renderSurveyTable();
-        renderTaskTable();
-        renderAccountTable();
-        renderMonthlySalaryDashboard();
-        khoiTaoDanhSachNhanSuModalSelect();
-        capNhatKPI();
-        veTatCaBieuDoDashboard();
-        saveToLocalStorage();
+        const safeRender = (fn, name) => { try { fn(); } catch(e) { console.error(name + ':', e); } };
+        safeRender(renderTimekeepingDetailTable, 'Chấm công');
+        safeRender(renderStaffMasterTable, 'Nhân sự');
+        safeRender(renderTableCB, 'Lương CB');
+        safeRender(renderTableCV, 'Lương CV');
+        safeRender(renderLeaveTable, 'Phép năm');
+        safeRender(renderOfficePaymentTable, 'Thanh toán VP');
+        safeRender(renderInkInventoryTable, 'Kho mực');
+        safeRender(renderDeliveryTable, 'Giao nhận');
+        safeRender(renderTelecomPaymentTable, 'Viễn thông');
+        safeRender(renderSurveyTable, 'Khảo sát');
+        safeRender(renderTaskTable, 'Công việc');
+        safeRender(renderAccountTable, 'Tài khoản');
+        safeRender(renderMonthlySalaryDashboard, 'Quỹ lương');
+        safeRender(khoiTaoDanhSachNhanSuModalSelect, 'Chọn nhân sự');
+        safeRender(capNhatKPI, 'KPI');
+        safeRender(veTatCaBieuDoDashboard, 'Biểu đồ');
+        safeRender(saveToLocalStorage, 'Lưu cục bộ');
     }
 
     function layTatCaDanhSachVPPTheoNam() {
@@ -2049,69 +2699,170 @@
     }
 
     function renderMonthlySalaryDashboard() {
-        let yearData = coSoDuLieuNamThang[currentNamKey] || {};
-        let monthsList = ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"];
-        let tbody = document.getElementById('monthlySalaryTableBody');
-        if (!tbody) return; tbody.innerHTML = '';
-        if (document.getElementById('monthlySalaryYearTitle')) document.getElementById('monthlySalaryYearTitle').innerText = currentNamKey;
+        try {
+            const yearData = coSoDuLieuNamThang[currentNamKey] || {};
+            const monthsList = ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"];
+            const tbody = document.getElementById('monthlySalaryTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            const title = document.getElementById('monthlySalaryYearTitle');
+            if (title) title.innerText = currentNamKey;
 
-        let selMonthData = yearData[currentThangKey] ? yearData[currentThangKey].nhansu : [];
-        let totalNetSel = selMonthData.reduce((sum, i) => sum + (i.thucLinhCuoiCung || 0), 0);
-        let totalLcvSel = selMonthData.reduce((sum, i) => sum + (i.luongCVTT || 0), 0);
-        let totalDeductSel = selMonthData.reduce((sum, i) => sum + (i.bhxh || 0) + (i.bhtn || 0) + (i.tam_ung || 0), 0);
+            const selMonthData = yearData[currentThangKey]?.nhansu || [];
+            const totalNetSel = selMonthData.reduce((sum, i) => sum + Number(i.thucLinhCuoiCung || 0), 0);
+            const totalLcvSel = selMonthData.reduce((sum, i) => sum + Number(i.luongCVTT || 0), 0);
+            const totalDeductSel = selMonthData.reduce((sum, i) => sum + Number(i.bhxh || 0) + Number(i.bhtn || 0) + Number(i.tam_ung || 0), 0);
+            const setText = (id, value) => { const el=document.getElementById(id); if(el) el.innerText=value; };
+            setText('kpiMonthNetSelected', totalNetSel.toLocaleString('vi-VN') + ' VNĐ');
+            setText('kpiMonthBankTransferSelected', totalNetSel.toLocaleString('vi-VN') + ' VNĐ');
+            setText('kpiMonthLCVSelected', totalLcvSel.toLocaleString('vi-VN') + ' VNĐ');
+            setText('kpiMonthDeductionsSelected', totalDeductSel.toLocaleString('vi-VN') + ' VNĐ');
 
-        if(document.getElementById('kpiMonthNetSelected')) document.getElementById('kpiMonthNetSelected').innerText = totalNetSel.toLocaleString('vi-VN') + " VNĐ";
-        if(document.getElementById('kpiMonthBankTransferSelected')) document.getElementById('kpiMonthBankTransferSelected').innerText = totalNetSel.toLocaleString('vi-VN') + " VNĐ";
-        if(document.getElementById('kpiMonthLCVSelected')) document.getElementById('kpiMonthLCVSelected').innerText = totalLcvSel.toLocaleString('vi-VN') + " VNĐ";
-        if(document.getElementById('kpiMonthDeductionsSelected')) document.getElementById('kpiMonthDeductionsSelected').innerText = totalDeductSel.toLocaleString('vi-VN') + " VNĐ";
-
-        monthsList.forEach((mName, idx) => {
-            let mData = yearData[mName] ? yearData[mName].nhansu : [];
-            let countStaff = mData.length;
-            let sumLCB = mData.reduce((s, i) => s + (i.tongLCB || 0), 0);
-            let sumLCV = mData.reduce((s, i) => s + (i.luongCVTT || 0), 0);
-            let sumBH = mData.reduce((s, i) => s + (i.bhxh || 0) + (i.bhtn || 0), 0);
-            let sumTU = mData.reduce((s, i) => s + (i.tam_ung || 0), 0);
-            let sumNet = mData.reduce((s, i) => s + (i.thucLinhCuoiCung || 0), 0);
-            let statusBadge = sumNet > 0 ? '<span class="badge-net">Đã chốt</span>' : '<span class="badge-danger">Chưa chốt</span>';
-
-            tbody.innerHTML += `<tr>
-                <td style="text-align:center;">${idx + 1}</td><td><b>${mName} (${currentNamKey})</b></td><td style="text-align:center;">${countStaff}</td>
-                <td style="text-align:right;">${sumLCB.toLocaleString('vi-VN')}</td><td style="text-align:right;">${sumLCV.toLocaleString('vi-VN')}</td>
-                <td style="text-align:right; color:#dc2626;">-${sumBH.toLocaleString('vi-VN')}</td><td style="text-align:right; color:#dc2626;">-${sumTU.toLocaleString('vi-VN')}</td>
-                <td style="text-align:right; font-weight:bold; color:#15803d; background:#f0fdf4;">${sumNet.toLocaleString('vi-VN')}</td>
-                <td style="text-align:center;">${statusBadge}</td>
-            </tr>`;
-        });
-    }
-
-    function renderAccountTable() {
-        let tbody = document.getElementById('accountTableBody');
-        if(!tbody) return; tbody.innerHTML = '';
-        danhSachTaiKhoanHeThong.forEach((acc, idx) => {
-            tbody.innerHTML += `<tr>
-                <td style="text-align:center;">${idx + 1}</td>
-                <td><b>${acc.email}</b></td>
-                <td>${acc.fullName}</td>
-                <td style="text-align:center;"><span class="badge-net">${acc.role}</span></td>
-                <td style="text-align:center;"><span class="badge-net">${acc.status}</span></td>
-                <td class="action-col">
-                    <div class="action-cell-inner">
-                        <button class="btn btn-red" onclick="xoaTaiKhoan(${idx})"><i class="fa-solid fa-trash"></i> Xóa</button>
-                    </div>
-                </td>
-            </tr>`;
-        });
-    }
-
-    function moModalThemTaiKhoan() {
-        let email = prompt("Nhập email tài khoản mới:");
-        if (email) {
-            danhSachTaiKhoanHeThong.push({ email: email, password: "123", fullName: "Cán bộ VINAPACO", role: "Editor", status: "Active" });
-            renderAccountTable(); saveToLocalStorage(); alert("✅ Thêm thành công!");
+            let yearLCB=0, yearLCV=0, yearBH=0, yearTamUng=0, yearNet=0, populatedMonths=0;
+            monthsList.forEach((mName, idx) => {
+                const mData = yearData[mName]?.nhansu || [];
+                if (yearData[mName]) populatedMonths++;
+                const countStaff = mData.length;
+                const sumLCB = mData.reduce((a,i)=>a+Number(i.tongLCB||0),0);
+                const sumLCV = mData.reduce((a,i)=>a+Number(i.luongCVTT||0),0);
+                const sumBH = mData.reduce((a,i)=>a+Number(i.bhxh||0)+Number(i.bhtn||0),0);
+                const sumTU = mData.reduce((a,i)=>a+Number(i.tam_ung||0),0);
+                const sumNet = mData.reduce((a,i)=>a+Number(i.thucLinhCuoiCung||0),0);
+                yearLCB += sumLCB; yearLCV += sumLCV; yearBH += sumBH; yearTamUng += sumTU; yearNet += sumNet;
+                const statusBadge = sumNet > 0 ? '<span class="badge-net">Đã chốt</span>' : '<span class="badge-danger">Chưa chốt</span>';
+                tbody.insertAdjacentHTML('beforeend', `<tr>
+                    <td style="text-align:center;">${idx+1}</td><td><b>${mName} (${currentNamKey})</b></td><td style="text-align:center;">${countStaff}</td>
+                    <td style="text-align:right;">${sumLCB.toLocaleString('vi-VN')}</td><td style="text-align:right;">${sumLCV.toLocaleString('vi-VN')}</td>
+                    <td style="text-align:right;color:#dc2626;">-${sumBH.toLocaleString('vi-VN')}</td><td style="text-align:right;color:#dc2626;">-${sumTU.toLocaleString('vi-VN')}</td>
+                    <td style="text-align:right;font-weight:800;color:#15803d;background:#f0fdf4;">${sumNet.toLocaleString('vi-VN')}</td><td style="text-align:center;">${statusBadge}</td>
+                </tr>`);
+            });
+            tbody.insertAdjacentHTML('beforeend', `<tr class="salary-annual-total-row">
+                <td colspan="2" style="font-weight:900;text-align:right;">TỔNG CẢ NĂM</td>
+                <td style="text-align:center;font-weight:900;">${populatedMonths}</td>
+                <td style="text-align:right;font-weight:900;">${yearLCB.toLocaleString('vi-VN')}</td>
+                <td style="text-align:right;font-weight:900;">${yearLCV.toLocaleString('vi-VN')}</td>
+                <td style="text-align:right;font-weight:900;color:#dc2626;">-${yearBH.toLocaleString('vi-VN')}</td>
+                <td style="text-align:right;font-weight:900;color:#1d4ed8;">-${yearTamUng.toLocaleString('vi-VN')}</td>
+                <td style="text-align:right;font-weight:900;color:#15803d;">${yearNet.toLocaleString('vi-VN')}</td>
+                <td style="text-align:center;"><span class="badge-net">TỔNG NĂM</span></td>
+            </tr>`);
+        } catch (e) {
+            console.error('renderMonthlySalaryDashboard:', e);
+            const tbody=document.getElementById('monthlySalaryTableBody');
+            if(tbody) tbody.innerHTML='<tr><td colspan="9" style="text-align:center;padding:20px;color:#b91c1c;font-weight:800;">Không thể dựng bảng biến động quỹ lương. Dữ liệu gốc vẫn được giữ nguyên.</td></tr>';
         }
     }
-    function xoaTaiKhoan(idx) { danhSachTaiKhoanHeThong.splice(idx, 1); renderAccountTable(); saveToLocalStorage(); }
+
+    function accountEsc(v){
+        return String(v ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+    }
+    function accountPermissionsForRole(role){
+        if(role === 'Admin') return ['dashboard','salary','leave','inventory','payment','system'];
+        if(role === 'Manager') return ['dashboard','salary','leave','inventory','payment'];
+        if(role === 'Editor') return ['dashboard','salary','leave','inventory'];
+        return ['dashboard'];
+    }
+    function accountPermLabel(k){ return ({dashboard:'Dashboard',salary:'Bảng lương',leave:'Phép năm',inventory:'Kho mực',payment:'Thanh toán',system:'Hệ thống'})[k] || k; }
+
+    function renderAccountTable() {
+        const tbody=document.getElementById('accountTableBody'); if(!tbody) return;
+        const q=(document.getElementById('accountSearchInput')?.value||'').trim().toLowerCase();
+        const role=(document.getElementById('accountRoleFilter')?.value||'').trim();
+        const status=(document.getElementById('accountStatusFilter')?.value||'').trim();
+        const active=danhSachTaiKhoanHeThong.filter(a=>a.status==='Active').length;
+        const locked=danhSachTaiKhoanHeThong.filter(a=>a.status!=='Active').length;
+        const admins=danhSachTaiKhoanHeThong.filter(a=>a.role==='Admin').length;
+        document.getElementById('accountKpiTotal')?.replaceChildren(document.createTextNode(danhSachTaiKhoanHeThong.length));
+        document.getElementById('accountKpiActive')?.replaceChildren(document.createTextNode(active));
+        document.getElementById('accountKpiLocked')?.replaceChildren(document.createTextNode(locked));
+        document.getElementById('accountKpiAdmin')?.replaceChildren(document.createTextNode(admins));
+        const rows=danhSachTaiKhoanHeThong.map((acc,idx)=>({acc,idx})).filter(({acc})=>{
+            const hay=[acc.email,acc.fullName,acc.role,acc.dept].join(' ').toLowerCase();
+            return (!q||hay.includes(q))&&(!role||acc.role===role)&&(!status||acc.status===status);
+        });
+        tbody.innerHTML=rows.length?rows.map(({acc,idx})=>{
+            const perms=Array.isArray(acc.permissions)&&acc.permissions.length?acc.permissions:accountPermissionsForRole(acc.role);
+            const initial=accountEsc((acc.fullName||acc.email||'?').trim().charAt(0).toUpperCase());
+            const st=acc.status==='Active';
+            return `<tr>
+              <td style="text-align:center;font-weight:900">${idx+1}</td>
+              <td><div class="account-user"><div class="account-avatar">${initial}</div><div><b>${accountEsc(acc.fullName||'Chưa khai báo')}</b><small>${accountEsc(acc.email||'')} ${acc.dept?`• ${accountEsc(acc.dept)}`:''}</small></div></div></td>
+              <td><span class="account-role">${accountEsc(acc.role||'Viewer')}</span></td>
+              <td><span class="account-status ${st?'active':'locked'}"><i class="fa-solid ${st?'fa-circle-check':'fa-lock'}"></i>${st?'Đang hoạt động':'Đang khóa'}</span></td>
+              <td><div class="account-perms">${perms.map(k=>`<span>${accountEsc(accountPermLabel(k))}</span>`).join('')}</div></td>
+              <td><div class="account-actions">
+                <button class="btn btn-blue" onclick="moModalSuaTaiKhoan(${idx})"><i class="fa-solid fa-pen"></i> Sửa</button>
+                <button class="btn ${st?'btn-red':'btn-green'}" onclick="doiTrangThaiTaiKhoan(${idx})"><i class="fa-solid ${st?'fa-lock':'fa-unlock'}"></i> ${st?'Khóa':'Mở'}</button>
+                <button class="btn btn-red" onclick="xoaTaiKhoan(${idx})"><i class="fa-solid fa-trash"></i></button>
+              </div></td>
+            </tr>`;
+        }).join(''):`<tr><td colspan="6" style="text-align:center;padding:28px;color:#64748b;font-weight:800">Không tìm thấy tài khoản phù hợp.</td></tr>`;
+    }
+
+    function resetAccountForm(){
+        ['accountFormEmail','accountFormName','accountFormDept'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+        const pw=document.getElementById('accountFormPassword'); if(pw){pw.value='';pw.type='password';}
+        document.getElementById('accountFormRole').value='Editor'; document.getElementById('accountFormStatus').value='Active';
+        document.querySelectorAll('#accountEditModal .account-permission-item input').forEach(x=>x.checked=false);
+    }
+    function moModalThemTaiKhoan(){
+        resetAccountForm();
+        document.getElementById('accountEditIndex').value='-1';
+        document.getElementById('accountModalTitle').innerHTML='<i class="fa-solid fa-user-plus"></i> TẠO TÀI KHOẢN';
+        document.getElementById('accountEditModal').classList.remove('hidden');
+        setTimeout(()=>document.getElementById('accountFormEmail')?.focus(),50);
+    }
+    function moModalSuaTaiKhoan(idx){
+        const a=danhSachTaiKhoanHeThong[idx]; if(!a)return;
+        document.getElementById('accountEditIndex').value=idx;
+        document.getElementById('accountModalTitle').innerHTML='<i class="fa-solid fa-user-pen"></i> CẬP NHẬT TÀI KHOẢN';
+        document.getElementById('accountFormEmail').value=a.email||'';
+        document.getElementById('accountFormName').value=a.fullName||'';
+        document.getElementById('accountFormPassword').value=a.password||'';
+        document.getElementById('accountFormPassword').type='password';
+        document.getElementById('accountFormRole').value=a.role||'Viewer';
+        document.getElementById('accountFormStatus').value=a.status||'Active';
+        document.getElementById('accountFormDept').value=a.dept||'';
+        const perms=Array.isArray(a.permissions)&&a.permissions.length?a.permissions:accountPermissionsForRole(a.role);
+        document.querySelectorAll('#accountEditModal .account-permission-item input').forEach(x=>x.checked=perms.includes(x.value));
+        document.getElementById('accountEditModal').classList.remove('hidden');
+    }
+    function dongModalTaiKhoan(){document.getElementById('accountEditModal')?.classList.add('hidden');}
+    function toggleAccountPassword(){
+        const e=document.getElementById('accountFormPassword'),i=document.getElementById('accountPasswordIcon'); if(!e)return;
+        e.type=e.type==='password'?'text':'password'; if(i)i.className=e.type==='password'?'fa-solid fa-eye':'fa-solid fa-eye-slash';
+    }
+    function luuTaiKhoanForm(){
+        const idx=Number(document.getElementById('accountEditIndex').value);
+        const email=document.getElementById('accountFormEmail').value.trim().toLowerCase();
+        const fullName=document.getElementById('accountFormName').value.trim();
+        const password=document.getElementById('accountFormPassword').value;
+        const role=document.getElementById('accountFormRole').value;
+        const status=document.getElementById('accountFormStatus').value;
+        const dept=document.getElementById('accountFormDept').value.trim();
+        const permissions=[...document.querySelectorAll('#accountEditModal .account-permission-item input:checked')].map(x=>x.value);
+        if(!email||!fullName){alert('⚠️ Vui lòng nhập Email/Tên đăng nhập và Họ tên cán bộ.');return;}
+        if(password.length<6){alert('⚠️ Mật khẩu phải có ít nhất 6 ký tự.');return;}
+        const duplicate=danhSachTaiKhoanHeThong.some((a,i)=>i!==idx&&String(a.email||'').toLowerCase()===email);
+        if(duplicate){alert('⚠️ Email/Tên đăng nhập đã tồn tại.');return;}
+        const obj={email, password, fullName, role, status, dept, permissions};
+        if(idx>=0) danhSachTaiKhoanHeThong[idx]=Object.assign({},danhSachTaiKhoanHeThong[idx],obj);
+        else danhSachTaiKhoanHeThong.push(obj);
+        renderAccountTable(); saveToLocalStorage(); dongModalTaiKhoan();
+        alert(idx>=0?'✅ Đã cập nhật tài khoản.':'✅ Đã tạo tài khoản mới.');
+    }
+    function doiTrangThaiTaiKhoan(idx){
+        const a=danhSachTaiKhoanHeThong[idx]; if(!a)return;
+        a.status=a.status==='Active'?'Locked':'Active';
+        renderAccountTable(); saveToLocalStorage();
+    }
+    function xoaTaiKhoan(idx){
+        const a=danhSachTaiKhoanHeThong[idx]; if(!a)return;
+        if(String(a.role)==='Admin' && danhSachTaiKhoanHeThong.filter(x=>x.role==='Admin').length<=1){alert('⚠️ Không thể xóa Admin cuối cùng của hệ thống.');return;}
+        if(!confirm(`Xóa tài khoản "${a.email}"?`))return;
+        danhSachTaiKhoanHeThong.splice(idx,1); renderAccountTable(); saveToLocalStorage();
+    }
 
     function renderTimekeepingDetailTable() {
         let tbody = document.getElementById("timekeepingDetailTableBody");
@@ -2181,6 +2932,58 @@
         });
     }
 
+
+    function getLeaveMonthData() {
+        if (!coSoDuLieuNamThang[currentNamKey]) coSoDuLieuNamThang[currentNamKey] = {};
+        if (!coSoDuLieuNamThang[currentNamKey][currentThangKey]) {
+            coSoDuLieuNamThang[currentNamKey][currentThangKey] = {config:{ncd:22,mucLCB:2530000,mucTTV:4140000,mucLCV:2087970},nhansu:[]};
+        }
+        const md=coSoDuLieuNamThang[currentNamKey][currentThangKey];
+        if(!Array.isArray(md.phepDangKy)) md.phepDangKy=[];
+        return md;
+    }
+    function moFormDangKyPhep(editIndex=-1) {
+        const md=getLeaveMonthData(), modal=document.getElementById('leaveRequestModal'); if(!modal)return;
+        const sel=document.getElementById('leaveEmployee'), hand=document.getElementById('leaveHandover');
+        const ds=md.nhansu||[]; sel.innerHTML=ds.map((x,i)=>`<option value="${String(x.hoTen).replace(/"/g,'&quot;')}">${i+1}. ${x.hoTen}</option>`).join('');
+        hand.innerHTML=ds.map((x,i)=>`<option value="${String(x.hoTen).replace(/"/g,'&quot;')}">${i+1}. ${x.hoTen}</option>`).join('');
+        document.getElementById('leaveEditIndex').value=editIndex;
+        document.getElementById('leaveModalPeriod').textContent=`Tháng ${String(currentThangKey).replace(/^Tháng /,'')}/${currentNamKey}`;
+        if(editIndex>=0 && md.phepDangKy[editIndex]){
+            const r=md.phepDangKy[editIndex]; ['leaveEmployee','leaveType','leaveFromDate','leaveToDate','leaveDays','leaveHandover','leaveReason','leaveNote'].forEach((id)=>{const e=document.getElementById(id),k={leaveEmployee:'employee',leaveType:'type',leaveFromDate:'from',leaveToDate:'to',leaveDays:'days',leaveHandover:'handover',leaveReason:'reason',leaveNote:'note'}[id];if(e)e.value=r[k]??'';});
+            document.getElementById('btnSaveLeave').innerHTML='<i class="fa-solid fa-floppy-disk"></i> CẬP NHẬT PHIẾU';
+        }else{
+            document.getElementById('leaveRequestForm').reset(); document.getElementById('leaveEditIndex').value='-1'; document.getElementById('leaveDays').value='1';
+            if(ds[0]) sel.value=ds[0].hoTen; if(ds[1]) hand.value=ds[1].hoTen; else if(ds[0]) hand.value=ds[0].hoTen;
+            document.getElementById('btnSaveLeave').innerHTML='<i class="fa-solid fa-paper-plane"></i> GỬI ĐĂNG KÝ';
+        }
+        modal.classList.remove('hidden');
+    }
+    function dongFormDangKyPhep(){document.getElementById('leaveRequestModal')?.classList.add('hidden');}
+    function tinhSoNgayNghiForm(){
+        const a=document.getElementById('leaveFromDate')?.value,b=document.getElementById('leaveToDate')?.value;
+        if(!a||!b)return; const d1=new Date(a+'T00:00:00'),d2=new Date(b+'T00:00:00');
+        const days=Math.floor((d2-d1)/86400000)+1; document.getElementById('leaveDays').value=days>0?days:0;
+    }
+    function luuDangKyPhep(){
+        const md=getLeaveMonthData(), idx=Number(document.getElementById('leaveEditIndex').value), employee=document.getElementById('leaveEmployee').value;
+        const from=document.getElementById('leaveFromDate').value,to=document.getElementById('leaveToDate').value,days=Number(document.getElementById('leaveDays').value||0);
+        if(!employee||!from||!to||days<=0||new Date(to)<new Date(from)){alert('⚠️ Vui lòng kiểm tra người đăng ký, thời gian nghỉ và số ngày.');return;}
+        const nv=md.nhansu.find(x=>x.hoTen===employee), phepCap=nv?.phep_cap||12, used=layTongLuyKePhepDaNghi(employee).totalP;
+        if(document.getElementById('leaveType').value==='Nghỉ phép năm' && idx<0 && used+days>phepCap){alert(`⚠️ ${employee} chỉ còn ${Math.max(0,phepCap-used)} ngày phép năm. Không thể đăng ký ${days} ngày.`);return;}
+        const r={employee,type:document.getElementById('leaveType').value,from,to,days,handover:document.getElementById('leaveHandover').value,reason:document.getElementById('leaveReason').value.trim(),note:document.getElementById('leaveNote').value.trim(),status:'Chờ duyệt',createdAt:new Date().toISOString()};
+        if(idx>=0) md.phepDangKy[idx]=Object.assign({},md.phepDangKy[idx],r); else md.phepDangKy.push(r);
+        saveToLocalStorage(); capNhat(); dongFormDangKyPhep(); alert(idx>=0?'✅ Đã cập nhật phiếu đăng ký nghỉ phép.':'✅ Đã lập phiếu đăng ký nghỉ phép và chuyển trạng thái Chờ duyệt.');
+    }
+    function xoaDangKyPhep(idx){const md=getLeaveMonthData();if(!md.phepDangKy[idx])return;if(!confirm('Xóa phiếu đăng ký này?'))return;md.phepDangKy.splice(idx,1);saveToLocalStorage();capNhat();}
+    function capNhatTrangThaiPhep(idx,status){const md=getLeaveMonthData();const r=md.phepDangKy[idx];if(!r)return;r.status=status;saveToLocalStorage();capNhat();}
+    function renderLeaveRequestTable(){
+        const body=document.getElementById('leaveRequestTableBody'),count=document.getElementById('leaveRequestCount');if(!body)return;const rs=getLeaveMonthData().phepDangKy||[];if(count)count.textContent=`${rs.length} phiếu`;if(!rs.length){body.innerHTML='<tr><td colspan="10" style="text-align:center;padding:22px;color:#64748b;font-weight:700;">Chưa có phiếu đăng ký nghỉ phép trong tháng này.</td></tr>';return;}
+        const statusCls={'Chờ duyệt':'pending','Đã duyệt':'approved','Từ chối':'rejected'};
+        body.innerHTML=rs.map((r,i)=>`<tr><td style="text-align:center">${i+1}</td><td><b>${r.employee}</b></td><td>${r.type}</td><td>${formatVNDate(r.from)}</td><td>${formatVNDate(r.to)}</td><td style="text-align:center;font-weight:900">${r.days}</td><td title="${(r.reason||'').replace(/"/g,'&quot;')}">${r.reason||'--'}</td><td>${r.handover||'--'}</td><td><span class="leave-status ${statusCls[r.status]||'pending'}">${r.status||'Chờ duyệt'}</span></td><td><div class="action-cell-inner"><button class="btn btn-blue" onclick="moFormDangKyPhep(${i})">Sửa</button><button class="btn btn-green" onclick="capNhatTrangThaiPhep(${i},'Đã duyệt')">Duyệt</button><button class="btn btn-red" onclick="capNhatTrangThaiPhep(${i},'Từ chối')">Từ chối</button><button class="btn btn-red" onclick="xoaDangKyPhep(${i})">Xóa</button></div></td></tr>`).join('');
+    }
+    function xuatExcelDangKyPhep(){if(typeof XLSX==='undefined')return;const rs=getLeaveMonthData().phepDangKy||[];const rows=rs.map((r,i)=>({'STT':i+1,'Nhân sự':r.employee,'Loại phép':r.type,'Từ ngày':r.from,'Đến ngày':r.to,'Số ngày':r.days,'Lý do':r.reason,'Bàn giao':r.handover,'Trạng thái':r.status}));const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),'DangKyPhep');XLSX.writeFile(wb,`Dang_Ky_Phep_${currentThangKey}_${currentNamKey}.xlsx`);}
+
     function renderLeaveTable() {
         let tbody = document.getElementById("leaveTableBody");
         if(!tbody) return; tbody.innerHTML = "";
@@ -2197,6 +3000,7 @@
                 <td style="text-align:center; font-weight:bold;">${conLai}</td><td style="text-align:center;"><span class="badge-net">Còn ${conLai}</span></td>
             </tr>`;
         });
+        renderLeaveRequestTable();
     }
 
     function renderOfficePaymentTable() {
@@ -3035,29 +3839,93 @@
             createOrUpdateChart('taskBarChart', 'bar', taskData);
 
             let months = ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"];
-            let monthlyNetList = months.map(m => {
+            let monthlyTransferList = months.map(m => {
                 let mData = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][m]) ? coSoDuLieuNamThang[currentNamKey][m].nhansu : [];
-                return mData.reduce((s, i) => s + (i.thucLinhCuoiCung || 0), 0);
+                return mData.reduce((s, i) => s + Number(i.thucLinhCuoiCung || 0), 0);
+            });
+            let monthlyLCVList = months.map(m => {
+                let mData = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][m]) ? coSoDuLieuNamThang[currentNamKey][m].nhansu : [];
+                return mData.reduce((s, i) => s + Number(i.luongCVTT || 0), 0);
+            });
+            let monthlyBHList = months.map(m => {
+                let mData = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][m]) ? coSoDuLieuNamThang[currentNamKey][m].nhansu : [];
+                return mData.reduce((s, i) => s + Number(i.bhxh || 0) + Number(i.bhtn || 0), 0);
+            });
+            let monthlyTamUngList = months.map(m => {
+                let mData = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][m]) ? coSoDuLieuNamThang[currentNamKey][m].nhansu : [];
+                return mData.reduce((s, i) => s + Number(i.tam_ung || 0), 0);
             });
 
+            let yearTransfer = monthlyTransferList.reduce((a,b)=>a+b,0);
+            let yearLCV = monthlyLCVList.reduce((a,b)=>a+b,0);
+            let yearBH = monthlyBHList.reduce((a,b)=>a+b,0);
+            let yearTamUng = monthlyTamUngList.reduce((a,b)=>a+b,0);
+            const moneyVN = n => Number(n||0).toLocaleString('vi-VN') + ' VNĐ';
+
+            if(document.getElementById('yearTotalBankTransfer')) document.getElementById('yearTotalBankTransfer').innerText=moneyVN(yearTransfer);
+            if(document.getElementById('yearTotalLCVActual')) document.getElementById('yearTotalLCVActual').innerText=moneyVN(yearLCV);
+            if(document.getElementById('yearTotalBH')) document.getElementById('yearTotalBH').innerText=moneyVN(yearBH);
+            if(document.getElementById('yearTotalTamUng')) document.getElementById('yearTotalTamUng').innerText=moneyVN(yearTamUng);
+            if(document.getElementById('salaryChartYearBadge')) document.getElementById('salaryChartYearBadge').innerText=currentNamKey;
+
             createOrUpdateChart('monthlySalaryBarChart', 'bar', {
-                labels: months, datasets: [{ label: `Quỹ Lương NET Năm ${currentNamKey} (VNĐ)`, data: monthlyNetList, backgroundColor: '#0284c7' }]
+                labels: months,
+                datasets: [
+                    {label:'Tổng chuyển khoản',data:monthlyTransferList,type:'bar',borderRadius:7,barPercentage:.72},
+                    {label:'Lương CV thực tế',data:monthlyLCVList,type:'bar',borderRadius:7,barPercentage:.72},
+                    {label:'BHXH + BHTN',data:monthlyBHList,type:'line',yAxisID:'y2',tension:.3,pointRadius:4,pointHoverRadius:6,fill:false},
+                    {label:'Tạm ứng',data:monthlyTamUngList,type:'line',yAxisID:'y2',tension:.3,pointRadius:4,pointHoverRadius:6,fill:false}
+                ]
+            }, {
+                interaction:{mode:'index',intersect:false},
+                plugins:{
+                    legend:{position:'bottom',labels:{boxWidth:20,padding:15,font:{size:11,weight:'bold'}}},
+                    datalabels:{display:false},
+                    tooltip:{callbacks:{label:(ctx)=>` ${ctx.dataset.label}: ${Number(ctx.raw||0).toLocaleString('vi-VN')} VNĐ`}}
+                },
+                scales:{
+                    y:{beginAtZero:true,position:'left',ticks:{font:{size:10,weight:'bold'},callback:v=>v>=1000000?(v/1000000).toFixed(0)+' tr':v.toLocaleString('vi-VN')},grid:{color:'rgba(148,163,184,.18)'}},
+                    y2:{beginAtZero:true,position:'right',grid:{drawOnChartArea:false},ticks:{font:{size:10,weight:'bold'},callback:v=>v>=1000000?(v/1000000).toFixed(0)+' tr':v.toLocaleString('vi-VN')}},
+                    x:{ticks:{font:{size:10,weight:'bold'}}}
+                }
             });
 
             let nsList = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey]) ? coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu : [];
             let names = nsList.map(i => i.hoTen);
             let usedLeaves = nsList.map(i => layTongLuyKePhepDaNghi(i.hoTen).totalP);
-            let remainingLeaves = nsList.map(i => (i.phep_cap || 12) - layTongLuyKePhepDaNghi(i.hoTen).totalP);
-
+            let remainingLeaves = nsList.map(i => Math.max(0,(i.phep_cap || 12) - layTongLuyKePhepDaNghi(i.hoTen).totalP));
+            let totalUsed = usedLeaves.reduce((a,b)=>a+b,0), totalRemaining = remainingLeaves.reduce((a,b)=>a+b,0), totalGranted=totalUsed+totalRemaining;
             createOrUpdateChart('overviewLeaveBarChart', 'bar', {
-                labels: names,
-                datasets: [{ label: 'Đã Dùng', data: usedLeaves, backgroundColor: '#d97706' }, { label: 'Còn Lại', data: remainingLeaves, backgroundColor: '#16a34a' }]
+                labels:names,
+                datasets:[
+                    {label:'Đã dùng',data:usedLeaves,borderRadius:6,barThickness:9},
+                    {label:'Còn lại',data:remainingLeaves,borderRadius:6,barThickness:9}
+                ]
+            }, {
+                indexAxis:'y',
+                interaction:{mode:'index',intersect:false},
+                plugins:{
+                    legend:{position:'bottom',labels:{boxWidth:22,padding:16,font:{size:11,weight:'bold'}}},
+                    datalabels:{display:false},
+                    tooltip:{callbacks:{label:(ctx)=>` ${ctx.dataset.label}: ${ctx.raw} ngày`}}
+                },
+                scales:{
+                    x:{beginAtZero:true,max:Math.max(12,...usedLeaves,...remainingLeaves),ticks:{stepSize:1,font:{size:10,weight:'bold'}},grid:{color:'rgba(148,163,184,.18)'}},
+                    y:{ticks:{font:{size:10,weight:'bold'}},grid:{display:false}}
+                }
             });
-
-            createOrUpdateChart('leavePieChart', 'pie', {
-                labels: ['Đã Dùng', 'Còn Lại'],
-                datasets: [{ data: [usedLeaves.reduce((a,b)=>a+b,0), remainingLeaves.reduce((a,b)=>a+b,0)], backgroundColor: ['#d97706', '#16a34a'] }]
+            createOrUpdateChart('leavePieChart', 'doughnut', {
+                labels:['Đã dùng','Còn lại'],
+                datasets:[{data:[totalUsed,totalRemaining],borderWidth:3,hoverOffset:6}]
+            }, {
+                cutout:'64%',
+                plugins:{
+                    legend:{position:'bottom',labels:{boxWidth:20,padding:15,font:{size:11,weight:'bold'}}},
+                    datalabels:{display:true,font:{weight:'bold',size:12},formatter:(value)=>totalGranted?((value*100/totalGranted).toFixed(1)+'%'):'0%'},
+                    tooltip:{callbacks:{label:(ctx)=>` ${ctx.label}: ${ctx.raw} ngày`}}
+                }
             });
+            const sumEl=document.getElementById('leaveSummaryCards'); if(sumEl) sumEl.innerHTML=`<div class="leave-summary-item"><b>${totalGranted}</b><span>Tổng phép cấp</span></div><div class="leave-summary-item"><b>${totalUsed}</b><span>Đã dùng</span></div><div class="leave-summary-item"><b>${totalRemaining}</b><span>Còn lại</span></div><div class="leave-summary-item"><b>${totalGranted?((totalUsed*100/totalGranted).toFixed(1)):'0'}%</b><span>Tỷ lệ đã dùng</span></div>`;
         } catch (e) {}
     }
 
@@ -3193,6 +4061,7 @@
         enterTabFocusMode();
 
         if (tabId === 'accountManagerTab') renderAccountTable();
+        else if (tabId === 'staffMasterTab') renderStaffMasterTable();
         else setTimeout(() => veTatCaBieuDoDashboard(), 50);
     }
 
@@ -3262,144 +4131,188 @@
         }
     }
 
+
+    function weatherCodeText(code) {
+        const map = {
+            0:"Trời quang",1:"Trời quang từng phần",2:"Mây rải rác",3:"Nhiều mây",
+            45:"Sương mù",48:"Sương mù đóng băng",51:"Mưa phùn nhẹ",53:"Mưa phùn vừa",55:"Mưa phùn dày",
+            61:"Mưa nhẹ",63:"Mưa vừa",65:"Mưa to",71:"Tuyết nhẹ",73:"Tuyết vừa",75:"Tuyết to",
+            80:"Mưa rào nhẹ",81:"Mưa rào vừa",82:"Mưa rào mạnh",95:"Dông",96:"Dông có mưa đá nhẹ",99:"Dông có mưa đá mạnh"
+        };
+        return map[code] || "Thời tiết đang cập nhật";
+    }
+    function getWeatherInfo(code) {
+        const text = weatherCodeText(code);
+        const rain = [51,53,55,61,63,65,80,81,82,95,96,99].includes(Number(code));
+        return { text, icon: rain ? "fa-cloud-rain" : (Number(code) === 0 ? "fa-sun" : "fa-cloud-sun"), color: rain ? "#2563eb" : "#f59e0b" };
+    }
+
     async function capNhatThoiTiet(lat, lon, cityName) {
         try {
-            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=relativehumidity_2m,windspeed_10m`);
-            let data = await res.json();
-            if (data && data.current_weather) {
-                cachedWeatherCoords = { lat: lat, lon: lon, cityName: cityName };
-                let temp = data.current_weather.temperature;
-                let info = getWeatherInfo(data.current_weather.weathercode);
-                
-                let wText = document.getElementById('weatherWidgetText');
-                if (wText) wText.innerHTML = `<b>📍 ${cityName}</b>: ${temp}°C, ${info.text}`;
-                
-                let wLoc = document.getElementById('wLocationTitle');
-                if (wLoc) wLoc.innerText = `Khu vực: ${cityName}`;
-                
-                let wTemp = document.getElementById('wCurrentTemp');
-                if (wTemp) wTemp.innerText = `${temp}°C`;
-                
-                let wCond = document.getElementById('wCurrentCondition');
-                if (wCond) wCond.innerText = info.text;
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&timezone=Asia%2FBangkok`;
+            const res = await fetch(url, {cache:"no-store"});
+            const data = await res.json();
+            if (!data || !data.current) throw new Error("Không có dữ liệu hiện tại");
+            cachedWeatherCoords = { lat:Number(lat), lon:Number(lon), cityName:String(cityName || "Vị trí hiện tại") };
+            const temp = data.current.temperature_2m;
+            const humidity = data.current.relative_humidity_2m;
+            const wind = data.current.wind_speed_10m;
+            const info = getWeatherInfo(data.current.weather_code);
 
-                let wHum = document.getElementById('wHumidity');
-                if (wHum && data.hourly && data.hourly.relativehumidity_2m) {
-                    wHum.innerText = data.hourly.relativehumidity_2m[0] + '%';
-                }
-                let wWind = document.getElementById('wWind');
-                if (wWind) {
-                    wWind.innerText = data.current_weather.windspeed + ' km/h';
-                }
-            }
+            const wText = document.getElementById('weatherWidgetText');
+            if (wText) wText.innerHTML = `<b>📍 ${cityName}</b>: ${temp}°C, ${info.text}`;
+            const wLoc = document.getElementById('wLocationTitle');
+            if (wLoc) wLoc.innerText = `Khu vực: ${cityName}`;
+            const wTemp = document.getElementById('wCurrentTemp');
+            if (wTemp) wTemp.innerText = `${temp}°C`;
+            const wCond = document.getElementById('wCurrentCondition');
+            if (wCond) wCond.innerText = info.text;
+            const wHum = document.getElementById('wHumidity');
+            if (wHum) wHum.innerText = `${humidity ?? '--'}%`;
+            const wWind = document.getElementById('wWind');
+            if (wWind) wWind.innerText = `${wind ?? '--'} km/h`;
         } catch (err) {
-            let wText = document.getElementById('weatherWidgetText');
+            const wText = document.getElementById('weatherWidgetText');
             if (wText) wText.innerText = "Không thể tải thời tiết trực tuyến.";
         }
     }
 
     async function capNhatThoiTiet10Ngay(lat, lon, cityName) {
         try {
-            let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia/Bangkok`);
-            let data = await res.json();
-            if (data && data.daily) {
-                let container = document.getElementById('weather10DaysContainer');
-                if (!container) return;
-                container.innerHTML = '';
-                for (let i = 0; i < data.daily.time.length; i++) {
-                    let dateStr = formatVNDate(data.daily.time[i]);
-                    let tMax = data.daily.temperature_2m_max[i];
-                    let tMin = data.daily.temperature_2m_min[i];
-                    let info = getWeatherInfo(data.daily.weathercode[i]);
-                    container.innerHTML += `
-                        <div class="weather-day-card">
-                            <div style="font-size:11px; font-weight:800; color:#475569;">${dateStr}</div>
-                            <div style="font-size:24px; color:${info.color};"><i class="fa-solid ${info.icon}"></i></div>
-                            <div style="font-size:11px; font-weight:900; color:#0f172a;">${tMin}°C - ${tMax}°C</div>
-                            <div style="font-size:10px; font-weight:700; color:#0284c7;">${info.text}</div>
-                        </div>
-                    `;
-                }
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max&forecast_days=10&timezone=Asia%2FBangkok`;
+            const res = await fetch(url, {cache:"no-store"});
+            const data = await res.json();
+            if (!data || !data.daily) throw new Error("Không có dự báo");
+            const c = document.getElementById('weather10DaysContainer');
+            if (!c) return;
+            c.innerHTML = data.daily.time.map((date, idx) => {
+                const d = new Date(date + 'T00:00:00+07:00');
+                const label = idx === 0 ? "Hôm nay" : d.toLocaleDateString('vi-VN', {weekday:'short', day:'2-digit', month:'2-digit'});
+                const info = getWeatherInfo(data.daily.weather_code[idx]);
+                const rain = data.daily.precipitation_probability_max?.[idx];
+                const wind = data.daily.wind_speed_10m_max?.[idx];
+                return `<div class="weather-day-card">
+                    <div style="font-weight:900;color:#0369a1;">${label}</div>
+                    <div style="font-size:22px;"><i class="fa-solid ${info.icon}" style="color:${info.color};"></i></div>
+                    <div style="font-size:11px;font-weight:800;min-height:28px;">${info.text}</div>
+                    <div><b>${data.daily.temperature_2m_max[idx]}°</b> / ${data.daily.temperature_2m_min[idx]}°C</div>
+                    <div style="font-size:11px;">💧 Mưa: ${rain ?? '--'}%</div>
+                    <div style="font-size:11px;">💨 Gió: ${wind ?? '--'} km/h</div>
+                </div>`;
+            }).join('');
+        } catch (err) {
+            const c = document.getElementById('weather10DaysContainer');
+            if (c) c.innerHTML = `<div style="padding:12px;font-weight:800;color:#b91c1c;">Không tải được dự báo 10 ngày.</div>`;
+        }
+    }
+
+    function taoTenDiaDiem(address) {
+        if (!address) return "Vị trí GPS";
+        const commune = address.village || address.town || address.municipality || address.city_district || "";
+        const province = address.province || address.state || address.city || "";
+        if (commune && province) return `${commune}, ${province}`;
+        return commune || province || "Vị trí GPS";
+    }
+
+    async function reverseGeocodeVietNam(lat, lon) {
+        try {
+            const u = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&accept-language=vi&zoom=18`;
+            const r = await fetch(u, {headers:{'Accept':'application/json'}, cache:"no-store"});
+            const d = await r.json();
+            if (d && d.address) {
+                const a=d.address;
+                const commune=a.village || a.town || a.municipality || a.city_district || a.suburb || '';
+                const province=a.province || a.state || a.city || '';
+                return [commune,province].filter(Boolean).join(', ') || d.display_name || 'Vị trí GPS';
             }
-        } catch (err) {}
+        } catch(e) {}
+        return "Vị trí GPS";
+    }
+
+    function hienThiKetQuaDiaDiem(results, targetId) {
+        const box=document.getElementById(targetId);
+        if(!box) return;
+        if(!results.length){ box.style.display='none'; box.innerHTML=''; return; }
+        box.style.display='flex';
+        box.innerHTML = results.slice(0,6).map((r,i)=>{
+            const lat=Number(r.lat ?? r.latitude), lon=Number(r.lon ?? r.longitude);
+            const name=(r.display_name || `${r.name || 'Địa điểm'}${r.admin1 ? ', '+r.admin1 : ''}`).replace(/</g,'&lt;');
+            return `<button type="button" onclick="chonDiaDiemThoiTiet(${lat},${lon},${JSON.stringify(name)})" style="text-align:left;border:1px solid #dbeafe;background:#f8fafc;border-radius:8px;padding:8px 10px;cursor:pointer;font-weight:700;color:#0f172a;">${i+1}. ${name}<br><small style="color:#64748b;font-weight:600;">Tọa độ: ${lat.toFixed(6)}, ${lon.toFixed(6)}</small></button>`;
+        }).join('');
+    }
+    async function chonDiaDiemThoiTiet(lat,lon,name){
+        document.getElementById('weatherLocationResults')?.style && (document.getElementById('weatherLocationResults').style.display='none');
+        document.getElementById('weatherWidgetResults')?.style && (document.getElementById('weatherWidgetResults').style.display='none');
+        await capNhatThoiTiet(lat,lon,name);
+        await capNhatThoiTiet10Ngay(lat,lon,name);
+    }
+    async function timKiemDiaDiemThoiTiet(query, targetId='weatherLocationResults') {
+        if (!query || !query.trim()) return;
+        const cleanQ=query.trim();
+        try {
+            let results=[];
+            // Tìm Việt Nam trước, có addressdetails để giữ được cấp xã/phường/tỉnh.
+            const nUrl=`https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=10&countrycodes=vn&accept-language=vi&q=${encodeURIComponent(cleanQ)}`;
+            try{
+                const nr=await fetch(nUrl,{headers:{'Accept':'application/json'},cache:'no-store'});
+                const nd=await nr.json();
+                if(Array.isArray(nd)) results=nd;
+            }catch(e){}
+            // Bổ sung Open-Meteo geocoder nếu Nominatim không có kết quả.
+            if(results.length<3){
+                try{
+                    const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cleanQ)}&count=10&language=vi&format=json`,{cache:'no-store'});
+                    const d=await r.json();
+                    if(Array.isArray(d.results)) results=results.concat(d.results.filter(x=>Number(x.country_code)==='' || x.country_code==='VN'));
+                }catch(e){}
+            }
+            // Loại trùng theo tọa độ và ưu tiên kết quả có tên khớp.
+            const seen=new Set();
+            results=results.filter(r=>{
+                const key=`${Number(r.lat??r.latitude).toFixed(5)},${Number(r.lon??r.longitude).toFixed(5)}`;
+                if(seen.has(key)) return false; seen.add(key); return true;
+            });
+            if(!results.length){ alert(`⚠️ Không tìm thấy địa điểm "${cleanQ}". Hãy nhập tên xã/phường, tỉnh/thành hoặc tên địa danh đầy đủ.`); return; }
+            // Nếu có nhiều kết quả, bắt buộc chọn để tránh lấy nhầm xã/tỉnh trùng tên.
+            hienThiKetQuaDiaDiem(results,targetId);
+            if(results.length===1){
+                const r=results[0];
+                await chonDiaDiemThoiTiet(Number(r.lat??r.latitude),Number(r.lon??r.longitude),r.display_name || r.name || cleanQ);
+            }
+        }catch(err){ alert('❌ Lỗi tìm kiếm địa điểm: '+err.message); }
+    }
+
+    function timKiemDiaDiemWidget() {
+        const val = document.getElementById('inputWidgetSearchLocation')?.value || "";
+        timKiemDiaDiemThoiTiet(val,'weatherWidgetResults');
+    }
+    function timKiemDiaDiemModal() {
+        const val = document.getElementById('inputModalSearchLocation')?.value || "";
+        timKiemDiaDiemThoiTiet(val,'weatherLocationResults');
+    }
+
+    async function layThoiTietTheoGPS() {
+        if (!navigator.geolocation) {
+            alert("Trình duyệt không hỗ trợ định vị GPS.");
+            return;
+        }
+        const wText = document.getElementById('weatherWidgetText');
+        if (wText) wText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang lấy GPS độ chính xác cao...`;
+        navigator.geolocation.getCurrentPosition(async pos => {
+            const lat = pos.coords.latitude, lon = pos.coords.longitude, accuracy = pos.coords.accuracy;
+            const resolvedName = await reverseGeocodeVietNam(lat, lon);
+            await capNhatThoiTiet(lat, lon, resolvedName);
+            await capNhatThoiTiet10Ngay(lat, lon, resolvedName);
+            alert(`✅ Định vị chính xác:\n${resolvedName}\n${lat.toFixed(6)}, ${lon.toFixed(6)}`);
+        }, error => {
+            if (wText) wText.innerHTML = "Không thể lấy tọa độ GPS.";
+            alert("⚠️ Không thể truy cập GPS: " + error.message + ". Hãy cấp quyền vị trí cho trình duyệt.");
+        }, {enableHighAccuracy:true, timeout:15000, maximumAge:0});
     }
 
     async function moModalDuBaoThoiTiet10Ngay() {
         document.getElementById('modalWeather10DaysPreview').classList.remove('hidden');
         await capNhatThoiTiet10Ngay(cachedWeatherCoords.lat, cachedWeatherCoords.lon, cachedWeatherCoords.cityName);
-    }
-
-    async function layThoiTietTheoGPS() {
-        if (!navigator.geolocation) {
-            alert("Trình duyệt của bạn không hỗ trợ định vị Geolocation.");
-            return;
-        }
-        
-        let wText = document.getElementById('weatherWidgetText');
-        if (wText) wText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang lấy tọa độ GPS chính xác...`;
-
-        navigator.geolocation.getCurrentPosition(async (pos) => {
-            let lat = pos.coords.latitude;
-            let lon = pos.coords.longitude;
-            let resolvedName = "Vị trí GPS của bạn";
-
-            try {
-                let revRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=vi`);
-                let revData = await revRes.json();
-                if (revData && revData.address) {
-                    let addr = revData.address;
-                    let district = addr.county || addr.city_district || addr.town || addr.village || "";
-                    let city = addr.city || addr.province || addr.state || "";
-                    if (district && city) resolvedName = `${district}, ${city}`;
-                    else if (city) resolvedName = city;
-                    else if (revData.display_name) resolvedName = revData.display_name.split(',')[0];
-                }
-            } catch (e) {}
-
-            await capNhatThoiTiet(lat, lon, resolvedName);
-            if (!document.getElementById('modalWeather10DaysPreview').classList.contains('hidden')) {
-                await capNhatThoiTiet10Ngay(lat, lon, resolvedName);
-            }
-            alert(`✅ Đã định vị chính xác: ${resolvedName}`);
-        }, (error) => {
-            alert("⚠️ Không thể truy cập vị trí GPS: " + error.message + ". Vui lòng kiểm tra lại quyền cấp phép vị trí trên trình duyệt.");
-            if (wText) wText.innerHTML = `Không thể lấy tọa độ GPS.`;
-        }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
-    }
-
-    async function timKiemDiaDiemThoiTiet(query) {
-        if (!query || !query.trim()) return;
-        let cleanQ = query.trim();
-        try {
-            let res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cleanQ)}&count=1&language=vi&format=json`);
-            let data = await res.json();
-            if (data && data.results && data.results.length > 0) {
-                let loc = data.results[0];
-                let lat = loc.latitude;
-                let lon = loc.longitude;
-                let fullName = `${loc.name}, ${loc.admin1 || loc.country || ''}`;
-
-                await capNhatThoiTiet(lat, lon, fullName);
-                if (!document.getElementById('modalWeather10DaysPreview').classList.contains('hidden')) {
-                    await capNhatThoiTiet10Ngay(lat, lon, fullName);
-                }
-                alert(`✅ Đã tìm thấy và cập nhật thời tiết cho: ${fullName}`);
-            } else {
-                alert(`⚠️ Không tìm thấy địa điểm "${cleanQ}". Vui lòng thử lại với tên khác (VD: Hà Nội, Hồ Chí Minh, Việt Trì...).`);
-            }
-        } catch (err) {
-            alert("❌ Lỗi tìm kiếm địa điểm: " + err.message);
-        }
-    }
-
-    function timKiemDiaDiemWidget() {
-        let val = document.getElementById('inputWidgetSearchLocation').value;
-        timKiemDiaDiemThoiTiet(val);
-    }
-
-    function timKiemDiaDiemModal() {
-        let val = document.getElementById('inputModalSearchLocation').value;
-        timKiemDiaDiemThoiTiet(val);
     }
 
     document.addEventListener('keydown', function(e) {
@@ -3409,37 +4322,40 @@
     });
 
     window.onload = function() {
-        khoiTaoDanhSachNamTuSinh();
-        doiThangHoSoLuong();
+        // Khởi động các thành phần độc lập trước; một lỗi ở nghiệp vụ không được làm chết đồng hồ/thời tiết.
+        try {
+            const now = new Date();
+            ngayLichDangChon = { d: now.getDate(), m: now.getMonth() + 1, y: now.getFullYear() };
+            const clockEl = document.getElementById('liveClockDisplay');
+            const dateEl = document.getElementById('liveDateDisplay');
+            const tickClock = () => {
+                const n = new Date();
+                if (clockEl) clockEl.innerText = n.toLocaleTimeString('vi-VN');
+                if (dateEl) dateEl.innerText = `${['Chủ Nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy'][n.getDay()]}, ${String(n.getDate()).padStart(2,'0')}/${String(n.getMonth()+1).padStart(2,'0')}/${n.getFullYear()}`;
+            };
+            tickClock();
+            setInterval(tickClock, 1000);
+            const lunar = convertSolar2LunarPro(now.getDate(), now.getMonth()+1, now.getFullYear());
+            const lunarEl = document.getElementById('lunarWidgetText');
+            if (lunarEl && lunar) lunarEl.innerHTML = `<b>${lunar.day}/${lunar.month}/${lunar.year}</b><br>Ngày ${lunar.canChiNgay} (${lunar.hoangDaoName})`;
+        } catch(e) { console.error('Clock/Lunar init:', e); }
 
-        let now = new Date();
-        ngayLichDangChon = { d: now.getDate(), m: now.getMonth() + 1, y: now.getFullYear() };
+        try { khoiTaoDanhSachNamTuSinh(); } catch(e) { console.error('Year init:', e); }
+        try { doiThangHoSoLuong(); } catch(e) { console.error('Month init:', e); }
 
-        setInterval(() => {
-            let n = new Date();
-            let clockEl = document.getElementById('liveClockDisplay');
-            if (clockEl) clockEl.innerText = n.toLocaleTimeString('vi-VN');
-        }, 1000);
+        // Thời tiết luôn khởi động độc lập với đồng bộ Cloud.
+        setTimeout(() => {
+            try { capNhatThoiTiet(cachedWeatherCoords.lat, cachedWeatherCoords.lon, cachedWeatherCoords.cityName); } catch(e) { console.error('Weather init:', e); }
+            try { capNhatThoiTiet10Ngay(cachedWeatherCoords.lat, cachedWeatherCoords.lon, cachedWeatherCoords.cityName); } catch(e) { console.error('Forecast init:', e); }
+        }, 200);
 
-        let daysOfWeek = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
-        let dayName = daysOfWeek[now.getDay()];
-        let dd = String(now.getDate()).padStart(2, '0');
-        let mm = String(now.getMonth() + 1).padStart(2, '0');
-        let yy = now.getFullYear();
-        
-        let dateEl = document.getElementById('liveDateDisplay');
-        if (dateEl) dateEl.innerText = `${dayName}, ${dd}/${mm}/${yy}`;
-
-        let lunar = convertSolar2LunarPro(now.getDate(), now.getMonth() + 1, now.getFullYear());
-        let lunarEl = document.getElementById('lunarWidgetText');
-        if (lunarEl) lunarEl.innerHTML = `<b>${lunar.day}/${lunar.month}/${lunar.year}</b><br>Ngày ${lunar.canChiNgay} (${lunar.hoangDaoName})`;
-
-        capNhatThoiTiet(cachedWeatherCoords.lat, cachedWeatherCoords.lon, cachedWeatherCoords.cityName);
         suppressCloudSync = false;
-        startAutoCloudSync();
-        setSyncState(pendingSync ? 'syncing' : 'online', pendingSync ? 'Có dữ liệu chờ đồng bộ' : 'Đang kiểm tra Cloud', lastSyncAt ? `lần cuối ${new Date(lastSyncAt).toLocaleString('vi-VN')}` : 'chờ xác nhận kết nối');
+        try { startAutoCloudSync(); } catch(e) { console.error('Cloud sync init:', e); }
+        try { setSyncState(pendingSync ? 'syncing' : 'online', pendingSync ? 'Có dữ liệu chờ đồng bộ' : 'Đang kiểm tra Cloud', lastSyncAt ? `lần cuối ${new Date(lastSyncAt).toLocaleString('vi-VN')}` : 'chờ xác nhận kết nối'); } catch(e) {}
 
-        // Mở lại đúng tab người dùng đang làm việc ở lần trước
+        // Tự kiểm tra kết nối Drive/GAS ở nền; không chặn giao diện.
+        setTimeout(() => { try { tuDongTaoThuMucDriveNamThang(false); } catch(e) {} }, 1500);
+
         try {
             const savedTab = localStorage.getItem('vinapaco_active_tab');
             if (savedTab) {
@@ -3448,12 +4364,17 @@
                 if (savedBtn && savedPane) {
                     document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
                     document.querySelectorAll('.tab-btn-nav').forEach(b => b.classList.remove('active'));
-                    savedPane.classList.add('active');
-                    savedBtn.classList.add('active');
+                    savedPane.classList.add('active'); savedBtn.classList.add('active');
                 }
             }
-        } catch(e) {}
+        } catch(e) { console.error('Restore tab:', e); }
     };
+
+    window.addEventListener('error', function(e) {
+        console.error('VINAPACO runtime error:', e.error || e.message);
+        const el=document.getElementById('syncStatusTitle');
+        if(el && !syncInProgress) el.title='Có lỗi giao diện: '+(e.message||'Unknown error');
+    });
 </script>
 <button id="showTabsBtn" class="show-tabs-btn hidden" type="button" onclick="showTabMenu()" title="Hiển thị menu chức năng"><i class="fa-solid fa-bars"></i><span>HIỆN MENU</span></button>
 </body>

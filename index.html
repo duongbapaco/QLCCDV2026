@@ -17,7 +17,7 @@
             --green-badge: #dcfce7; --green-text: #15803d;
             --yellow-badge: #fef9c3; --yellow-text: #854d0e;
             --red-badge: #fee2e2; --red-text: #991b1b;
-            font-size: 14px;
+            font-size: 15px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -66,9 +66,45 @@
             .charts-multi-grid, .chart-card { display: none !important; }
         }
 
-        .tab-nav { display: flex; gap: 6px; border-bottom: 3px solid var(--border-color); padding-bottom: 8px; margin-top: 6px; overflow-x: auto; white-space: nowrap; }
-        .tab-btn-nav { padding: 9px 16px; border-radius: 8px 8px 0 0; background: #e2e8f0; border: none; font-weight: 800; font-size: 12px; cursor: pointer; color: var(--text-muted); flex-shrink: 0; transition: all 0.2s; }
-        .tab-btn-nav.active { background: var(--primary); color: white; box-shadow: 0 -2px 6px rgba(2,132,199,0.2); }
+        /* ===== MENU TRÁI + NỘI DUNG PHẢI ===== */
+        .app-layout { display:grid; grid-template-columns:245px minmax(0,1fr); gap:18px; align-items:start; margin-top:16px; }
+        .tab-nav-shell { position:sticky; top:14px; z-index:900; background:#fff; border:1px solid #cbd5e1; border-radius:16px; box-shadow:0 10px 28px rgba(15,23,42,.10); padding:10px; overflow:hidden; }
+        .tab-nav { display:flex; flex-direction:column; gap:5px; max-height:calc(100vh - 32px); overflow-y:auto; overflow-x:hidden; scrollbar-width:thin; padding-right:2px; }
+        .tab-btn-nav { position:relative; min-height:48px; width:100%; padding:0 15px; border:0; border-radius:10px; background:transparent; font-weight:800; font-size:15px; cursor:pointer; color:#334155; transition:background .16s ease,color .16s ease,box-shadow .16s ease,transform .16s ease; display:flex; align-items:center; justify-content:flex-start; gap:11px; text-align:left; flex:0 0 auto; }
+        .tab-btn-nav i { width:22px; text-align:center; font-size:15px; flex:0 0 22px; }
+        .tab-btn-nav:hover { background:#eff8ff; color:#0369a1; transform:translateX(2px); }
+        .tab-btn-nav.active { background:linear-gradient(90deg,#0284c7,#0ea5e9); color:#fff; box-shadow:0 6px 15px rgba(2,132,199,.22); }
+        .tab-btn-nav.active::before { content:''; position:absolute; left:0; top:8px; bottom:8px; width:4px; border-radius:0 5px 5px 0; background:#fff; }
+        .tab-section-label { display:block; padding:9px 10px 5px; color:#94a3b8; font-size:11px; font-weight:900; letter-spacing:.5px; text-transform:uppercase; }
+        .tab-content-area { min-width:0; }
+        .cloud-sync-panel { background:linear-gradient(135deg,#0f172a,#1e3a5f); color:#fff; border-radius:14px; padding:12px 15px; display:flex; gap:14px; align-items:center; justify-content:space-between; flex-wrap:wrap; box-shadow:0 8px 22px rgba(15,23,42,.14); }
+        .cloud-sync-main { display:flex; align-items:center; gap:11px; min-width:280px; flex:1; }
+        .cloud-sync-dot { width:12px; height:12px; border-radius:50%; background:#94a3b8; box-shadow:0 0 0 4px rgba(148,163,184,.15); flex:0 0 auto; }
+        .cloud-sync-dot.online { background:#22c55e; box-shadow:0 0 0 4px rgba(34,197,94,.15); }
+        .cloud-sync-dot.syncing { background:#f59e0b; animation:pulseSync 1s infinite; }
+        .cloud-sync-dot.error { background:#ef4444; box-shadow:0 0 0 4px rgba(239,68,68,.15); }
+        @keyframes pulseSync { 50% { opacity:.35; transform:scale(.75); } }
+        .cloud-sync-title { font-weight:900; font-size:14px; }
+        .cloud-sync-meta { font-size:12px; opacity:.82; margin-top:3px; }
+        .cloud-sync-actions { display:flex; gap:8px; flex-wrap:wrap; }
+        .cloud-sync-actions .btn { padding:9px 13px; font-size:12px; }
+        .table-title { font-size:16px !important; }
+        table { font-size:14px; }
+        th { font-size:12px; }
+        th, td { padding:10px 11px; }
+        .config-item label, .form-group label { font-size:12px; }
+        .config-item input, .config-item select, .form-group input, .form-group select, .form-group textarea { font-size:14px; height:42px; }
+        .kpi-title { font-size:12px; }
+        .kpi-value { font-size:21px; }
+        .kpi-sub { font-size:12px; }
+        @media (max-width: 900px) {
+            .app-layout { grid-template-columns:1fr; gap:12px; }
+            .tab-nav-shell { position:sticky; top:0; border-radius:12px; padding:6px; }
+            .tab-nav { flex-direction:row; max-height:none; overflow-x:auto; overflow-y:hidden; }
+            .tab-btn-nav { width:auto; min-height:46px; padding:0 14px; font-size:14px; flex:0 0 auto; }
+            .tab-btn-nav.active::before { display:none; }
+        }
+        @media (max-width: 768px) { .cloud-sync-main { min-width:100%; } .cloud-sync-actions { width:100%; } .cloud-sync-actions .btn { flex:1; min-height:42px; } }
 
         .tab-pane { display: none; }
         .tab-pane.active { display: block; }
@@ -192,6 +228,174 @@
                 display: none !important; 
             }
         }
+            /* Đọc rõ hơn: nội dung bên phải */
+        .tab-content-area .table-card { font-size:14px; }
+        .tab-content-area .table-title { font-size:17px !important; }
+        .tab-content-area table { font-size:14px; }
+        .tab-content-area th { font-size:12px; }
+        .tab-content-area td { font-size:14px; }
+        .tab-content-area .btn { font-size:13px; }
+        @media (max-width:900px){ .app-layout{margin-top:10px;} .tab-content-area .table-title{font-size:16px !important;} }
+
+        /* ===== CHẾ ĐỘ TẬP TRUNG: CHỌN TAB -> ẨN MENU, NỘI DUNG TOÀN MÀN HÌNH ===== */
+        .show-tabs-btn {
+            position: fixed;
+            right: 18px;
+            top: 18px;
+            z-index: 12000;
+            min-height: 46px;
+            padding: 0 16px;
+            border: 0;
+            border-radius: 12px;
+            background: linear-gradient(135deg,#0284c7,#0369a1);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: .2px;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(2,132,199,.28);
+        }
+        .show-tabs-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(2,132,199,.35); }
+        .show-tabs-btn.hidden { display:none !important; }
+        body.tab-focus-mode { padding: 0; overflow-x: hidden; }
+        body.tab-focus-mode .container { max-width: none; width: 100%; margin: 0; gap: 0; }
+        body.tab-focus-mode .banner,
+        body.tab-focus-mode #systemConfigBar,
+        body.tab-focus-mode .top-info-bar,
+        body.tab-focus-mode .config-bar,
+        body.tab-focus-mode .kpi-grid,
+        body.tab-focus-mode .cloud-sync-panel { display: none !important; }
+        body.tab-focus-mode .app-layout { display:block; margin:0; width:100%; min-height:100vh; }
+        body.tab-focus-mode .tab-nav-shell { display:none !important; }
+        body.tab-focus-mode .tab-content-area { width:100%; min-width:0; margin:0; padding:0; }
+        body.tab-focus-mode .tab-pane.active {
+            display:block;
+            width:100%;
+            min-height:100vh;
+            padding:24px 26px 40px !important;
+            border:0 !important;
+            border-radius:0 !important;
+            box-shadow:none !important;
+            background:var(--bg-body) !important;
+        }
+        body.tab-focus-mode .tab-pane.active > .table-card { margin-bottom:18px; }
+        body.tab-focus-mode .table-card { overflow-x:auto; overflow-y:visible; }
+        body.tab-focus-mode .table-header-bar { position:relative; }
+        body.tab-focus-mode .table-title { font-size:19px !important; }
+        body.tab-focus-mode table { width:max-content; min-width:100%; font-size:14px; }
+        body.tab-focus-mode th { font-size:13px; white-space:nowrap; }
+        body.tab-focus-mode td { font-size:14px; }
+        body.tab-focus-mode th, body.tab-focus-mode td { padding:11px 13px; }
+        body.tab-focus-mode .form-card { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+        body.tab-focus-mode .kpi-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+        body.tab-focus-mode .charts-multi-grid { grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); }
+        body.tab-focus-mode .chart-card { min-width:0; }
+        body.tab-focus-mode input,
+        body.tab-focus-mode select,
+        body.tab-focus-mode textarea { font-size:14px; }
+        body.tab-focus-mode .btn { font-size:13px; }
+        @media (max-width: 900px) {
+            body.tab-focus-mode .tab-pane.active { padding:16px 12px 30px !important; }
+            .show-tabs-btn { right:12px; top:12px; min-height:44px; }
+        }
+        @media (max-width: 640px) {
+            .show-tabs-btn span { display:none; }
+            .show-tabs-btn { width:46px; padding:0; justify-content:center; border-radius:50%; }
+            body.tab-focus-mode table { min-width:700px; }
+        }
+
+
+        /* ===== BẢNG BIỂU CÂN ĐỐI - PHIÊN BẢN 5 ===== */
+        .table-card { overflow: hidden; }
+        .table-card > .salary-table,
+        .table-card > table { width: 100%; }
+        .table-card { min-width: 0; }
+        .table-card table { border-spacing: 0; }
+        .table-card table th { background: #f1f5f9; color:#1e293b; font-weight:900; vertical-align:middle; }
+        .table-card table td, .table-card table th { line-height:1.3; vertical-align:middle; }
+        .table-card table tbody tr:nth-child(even) { background:#fbfdff; }
+        .table-card table tbody tr:hover { background:#f0f9ff; }
+
+        /* Lương: cố định tỷ lệ cột để số liệu không tự phình/co theo nội dung */
+        .salary-table { table-layout:fixed !important; min-width:1500px !important; width:1500px !important; }
+        .salary-table th, .salary-table td { overflow:hidden; text-overflow:ellipsis; }
+        .salary-table th { white-space:normal !important; word-break:normal; padding:9px 7px !important; font-size:11.5px !important; }
+        .salary-table td { padding:8px 7px !important; font-size:13px !important; }
+        .salary-table td input.cell-input { width:100% !important; min-width:0 !important; height:34px !important; padding:0 7px !important; font-size:12px !important; }
+        .salary-table .c-stt { width:45px; }
+        .salary-table .c-name { width:145px; }
+        .salary-table .c-phone { width:105px; }
+        .salary-table .c-bank { width:125px; }
+        .salary-table .c-account { width:145px; }
+        .salary-table .c-small { width:60px; }
+        .salary-table .c-money-md { width:95px; }
+        .salary-table .c-money-lg { width:108px; }
+        .salary-table .c-money-xl { width:135px; }
+        .salary-table .c-action { width:72px; }
+        .salary-table td:nth-child(n+6):nth-child(-n+19) { text-align:right; }
+        .salary-table td:nth-child(1), .salary-table td:nth-child(6), .salary-table td:nth-child(7), .salary-table td:nth-child(10), .salary-table td:nth-child(11), .salary-table td:nth-child(12), .salary-table td:nth-child(13) { text-align:center; }
+        .salary-cv-table { min-width:1500px !important; width:1500px !important; }
+        .salary-cv-table .c-name { width:145px; }
+        .salary-cv-table .c-bank { width:125px; }
+        .salary-cv-table .c-account { width:145px; }
+        .salary-cv-table .c-money-lg { width:105px; }
+        .salary-cv-table .c-money-xl { width:140px; }
+        .salary-cv-table .c-action { width:72px; }
+        .salary-cv-table td:nth-child(1), .salary-cv-table td:nth-child(5), .salary-cv-table td:nth-child(6), .salary-cv-table td:nth-child(8), .salary-cv-table td:nth-child(9), .salary-cv-table td:nth-child(10), .salary-cv-table td:nth-child(11), .salary-cv-table td:nth-child(17) { text-align:center; }
+        .salary-cv-table td:nth-child(n+7):nth-child(-n+16) { text-align:right; }
+        .salary-cv-table td:nth-child(2), .salary-cb-table td:nth-child(2) { font-weight:800; text-align:left; }
+        .salary-table .badge-net { display:inline-flex; justify-content:center; min-width:100%; padding:5px 4px; font-size:11px; white-space:nowrap; }
+
+        /* Mọi bảng trong chế độ toàn màn hình: rộng hợp lý, không ép chữ vào nhau */
+        body.tab-focus-mode .table-card { overflow-x:auto; overflow-y:visible; }
+        body.tab-focus-mode .salary-table { margin:0 auto; }
+        body.tab-focus-mode .table-header-bar { padding-bottom:4px; }
+        body.tab-focus-mode .table-header-bar .table-title { max-width:calc(100% - 170px); line-height:1.35; }
+
+        /* Biểu đồ: các thẻ bằng nhau, khoảng thở đều, không méo */
+        .charts-multi-grid { grid-template-columns:repeat(3,minmax(0,1fr)) !important; align-items:stretch; gap:16px !important; }
+        .chart-card { min-width:0 !important; height:330px; padding:16px !important; display:flex; flex-direction:column; }
+        .chart-title { min-height:34px; margin-bottom:8px !important; line-height:1.35; }
+        .chart-card > div[style*="position: relative"] { flex:1 1 auto !important; height:auto !important; min-height:220px; }
+        .chart-card canvas { max-width:100% !important; max-height:100% !important; }
+        body.tab-focus-mode .charts-multi-grid { grid-template-columns:repeat(3,minmax(0,1fr)) !important; }
+        body.tab-focus-mode .chart-card { height:340px; }
+        @media (max-width:1200px) {
+            .charts-multi-grid, body.tab-focus-mode .charts-multi-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; }
+        }
+        @media (max-width:760px) {
+            .charts-multi-grid, body.tab-focus-mode .charts-multi-grid { grid-template-columns:1fr !important; }
+            .chart-card { height:300px; }
+        }
+
+        /* ===== IN/XEM TRƯỚC PHIẾU LƯƠNG: A4 sạch như văn bản hành chính ===== */
+        @page { size:A4 portrait; margin:12mm 13mm 12mm 13mm; }
+        @media print {
+            html, body { width:210mm !important; min-width:210mm !important; margin:0 !important; padding:0 !important; background:#fff !important; }
+            body { font-family:"Times New Roman", Times, serif !important; color:#000 !important; }
+            body * { visibility:hidden !important; }
+            #previewModal, #previewModal * { visibility:visible !important; }
+            #previewModal { position:static !important; width:100% !important; height:auto !important; background:#fff !important; display:block !important; }
+            #previewModal .modal-card { width:100% !important; max-width:none !important; max-height:none !important; margin:0 !important; padding:0 !important; border:0 !important; border-radius:0 !important; box-shadow:none !important; overflow:visible !important; }
+            #previewModal .modal-card > div:nth-child(1), #previewModal .modal-actions { display:none !important; }
+            #previewModal .modal-card > div:nth-child(2) { padding:0 !important; margin:0 !important; background:#fff !important; max-height:none !important; overflow:visible !important; }
+            #payslip-capture { width:100% !important; max-width:none !important; min-height:0 !important; padding:0 !important; margin:0 !important; border:0 !important; border-radius:0 !important; box-shadow:none !important; background:#fff !important; font-size:12pt !important; overflow:visible !important; }
+            #payslip-capture > div:first-child { padding-bottom:10px !important; margin-bottom:12px !important; border-bottom:1.2pt solid #000 !important; }
+            #payslip-capture h2 { font-size:16pt !important; color:#000 !important; margin:5px 0 !important; }
+            #payslip-capture table { width:100% !important; min-width:0 !important; table-layout:fixed !important; border-collapse:collapse !important; font-size:10.5pt !important; }
+            #payslip-capture th, #payslip-capture td { padding:5px 6px !important; border:0.6pt solid #555 !important; color:#000 !important; }
+            #payslip-capture th { background:#f2f2f2 !important; font-weight:bold !important; }
+            #payslip-capture .salary-signature-footer { color:#000 !important; }
+            #payslip-capture [style*="background: linear-gradient"] { background:#fff !important; border:1pt solid #000 !important; color:#000 !important; }
+            #payslip-capture [style*="background:#f8fafc"], #payslip-capture [style*="background: #f8fafc"], #payslip-capture [style*="background:#f0f9ff"] { background:#fff !important; }
+            #payslip-capture ::-webkit-scrollbar { display:none !important; }
+            #payslip-capture, #payslip-capture * { overflow:visible !important; scrollbar-width:none !important; }
+            a { text-decoration:none !important; }
+        }
+
     </style>
 </head>
 <body>
@@ -389,7 +593,7 @@
         </div>
     </div>
 
-    <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 12px 16px; border-radius: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; align-items: center;">
+    <div id="systemConfigBar" style="background: #ffffff; border: 1px solid var(--border-color); padding: 12px 16px; border-radius: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; align-items: center;">
         <div style="display: flex; gap: 8px; align-items: center;">
             <span style="font-size: 11px; font-weight: 900; color: #0369a1; text-transform: uppercase; white-space: nowrap;"><i class="fa-solid fa-link"></i> GAS Webhook URL:</span>
             <input type="text" id="inputGasUrlSetting" style="flex: 1; height: 36px; padding: 0 10px; border-radius: 8px; border: 1.5px solid var(--border-color); font-size: 12px; font-weight: bold; background: #f8fafc;" value="https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec">
@@ -453,21 +657,38 @@
         <div class="kpi-card"><div class="kpi-title">Tạm Ứng Đã Trừ</div><div class="kpi-value" style="color: #dc2626;" id="kpiTotalTamUng">0</div><div class="kpi-sub">Toàn đơn vị</div></div>
     </div>
 
-    <div class="tab-nav">
-        <button class="tab-btn-nav active" onclick="switchTab('dashboardTab', this)"><i class="fa-solid fa-chart-pie"></i> DB Tổng Quan</button>
-        <button class="tab-btn-nav" onclick="switchTab('monthlySalaryDashboardTab', this)"><i class="fa-solid fa-money-bill-trend-up"></i> DB Lương Tháng</button>
-        <button class="tab-btn-nav" onclick="switchTab('accountManagerTab', this)"><i class="fa-solid fa-users-gear"></i> Tài Khoản</button>
-        <button class="tab-btn-nav" onclick="switchTab('taskTab', this)"><i class="fa-solid fa-list-check"></i> Công Việc</button>
-        <button class="tab-btn-nav" onclick="switchTab('timekeepingDetailTab', this)"><i class="fa-solid fa-business-time"></i> Chấm Công</button>
+    <div class="cloud-sync-panel" id="cloudSyncPanel">
+        <div class="cloud-sync-main">
+            <span id="cloudSyncDot" class="cloud-sync-dot"></span>
+            <div><div class="cloud-sync-title" id="cloudSyncTitle">Đang kiểm tra kết nối dữ liệu...</div><div class="cloud-sync-meta" id="cloudSyncMeta">Thiết bị: -- · Phiên bản Cloud: -- · Chờ đồng bộ: 0</div></div>
+        </div>
+        <div class="cloud-sync-actions">
+            <button class="btn btn-blue" onclick="dongBoThongMinh(true)"><i class="fa-solid fa-arrows-rotate"></i> ĐỒNG BỘ NGAY</button>
+            <button class="btn btn-green" onclick="taiDuLieuTuDongTuGas(true)"><i class="fa-solid fa-cloud-arrow-down"></i> LẤY BẢN MỚI NHẤT</button>
+            <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-brands fa-google-drive"></i> DRIVE</button>
+        </div>
+    </div>
+
+    <div class="app-layout">
+    <aside class="tab-nav-shell" aria-label="Điều hướng hệ thống">
+      <nav class="tab-nav" id="mainTabNav">
+        <button class="tab-btn-nav active" onclick="switchTab('dashboardTab', this)"><i class="fa-solid fa-chart-pie"></i> Tổng quan</button>
+        <button class="tab-btn-nav" onclick="switchTab('monthlySalaryDashboardTab', this)"><i class="fa-solid fa-money-bill-trend-up"></i> Lương tháng</button>
+        <button class="tab-btn-nav" onclick="switchTab('accountManagerTab', this)"><i class="fa-solid fa-users-gear"></i> Tài khoản</button>
+        <button class="tab-btn-nav" onclick="switchTab('timekeepingDetailTab', this)"><i class="fa-solid fa-business-time"></i> Chấm công</button>
         <button class="tab-btn-nav" onclick="switchTab('salaryCBTab', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Lương CB</button>
         <button class="tab-btn-nav" onclick="switchTab('salaryCVTab', this)"><i class="fa-solid fa-briefcase"></i> Lương CV</button>
-        <button class="tab-btn-nav" onclick="switchTab('leaveTab', this)"><i class="fa-solid fa-calendar-days"></i> Phép Năm</button>
-        <button class="tab-btn-nav" onclick="switchTab('officePaymentTab', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Thanh Toán VP</button>
-        <button class="tab-btn-nav" onclick="switchTab('inkInventoryTab', this)"><i class="fa-solid fa-warehouse"></i> Kho Mực</button>
-        <button class="tab-btn-nav" onclick="switchTab('deliverySlipTab', this)"><i class="fa-solid fa-file-contract"></i> Giao Nhận</button>
+        <button class="tab-btn-nav" onclick="switchTab('leaveTab', this)"><i class="fa-solid fa-calendar-days"></i> Phép năm</button>
+        <button class="tab-btn-nav" onclick="switchTab('officePaymentTab', this)"><i class="fa-solid fa-file-invoice"></i> Thanh toán VP</button>
         <button class="tab-btn-nav" onclick="switchTab('telecomPaymentTab', this)"><i class="fa-solid fa-wifi"></i> Cước VT</button>
-        <button class="tab-btn-nav" onclick="switchTab('surveyTab', this)"><i class="fa-solid fa-clipboard-check"></i> Khảo Sát</button>
-    </div>
+        <button class="tab-btn-nav" onclick="switchTab('inkInventoryTab', this)"><i class="fa-solid fa-warehouse"></i> Kho mực</button>
+        <button class="tab-btn-nav" onclick="switchTab('deliverySlipTab', this)"><i class="fa-solid fa-file-contract"></i> Giao nhận</button>
+        <button class="tab-btn-nav" onclick="switchTab('surveyTab', this)"><i class="fa-solid fa-clipboard-check"></i> Khảo sát</button>
+        <button class="tab-btn-nav" onclick="switchTab('taskTab', this)"><i class="fa-solid fa-list-check"></i> Công việc</button>
+      </nav>
+    </aside>
+
+    <main class="tab-content-area">
 
     <!-- TAB DASHBOARD TỔNG QUAN -->
     <div id="dashboardTab" class="tab-pane table-card" style="background: transparent; border: none; padding: 0;">
@@ -605,7 +826,7 @@
             <div class="table-title"><i class="fa-solid fa-table-list"></i> BẢNG LƯƠNG CƠ BẢN & NGÂN HÀNG (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
             <button class="btn btn-green" onclick="xuatExcelCB()"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
         </div>
-        <table><thead><tr><th>STT</th><th>Họ và Tên</th><th>SĐT / Zalo</th><th>Tên Ngân Hàng</th><th>Số Tài Khoản (STK)</th><th>HSL.CB</th><th>PC.CB</th><th>L.HĐLĐ</th><th>L.CB</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>Ki</th><th>L.TG</th><th>L.Lễ/Phép</th><th>Tổng Tiền</th><th>BHTN(1%)</th><th>BHXH</th><th>Thực Lĩnh LCB</th></tr></thead><tbody id="tableBodyCB"></tbody></table>
+        <table class="salary-table salary-cb-table"><colgroup><col class="c-stt"><col class="c-name"><col class="c-phone"><col class="c-bank"><col class="c-account"><col class="c-small"><col class="c-small"><col class="c-money-md"><col class="c-money-lg"><col class="c-small"><col class="c-small"><col class="c-small"><col class="c-small"><col class="c-money-md"><col class="c-money-lg"><col class="c-money-lg"><col class="c-money-md"><col class="c-money-md"><col class="c-money-lg"></colgroup><thead><tr><th>STT</th><th>Họ và Tên</th><th>SĐT / Zalo</th><th>Tên Ngân Hàng</th><th>Số Tài Khoản (STK)</th><th>HSL.CB</th><th>PC.CB</th><th>L.HĐLĐ</th><th>L.CB</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>Ki</th><th>L.TG</th><th>L.Lễ/Phép</th><th>Tổng Tiền</th><th>BHTN(1%)</th><th>BHXH</th><th>Thực Lĩnh LCB</th></tr></thead><tbody id="tableBodyCB"></tbody></table>
         <div class="salary-signature-footer">
             <div class="sign-col"><div>PHÒNG NHÂN SỰ</div><div class="sign-space"></div></div>
             <div class="sign-col"><div>THỦ TRƯỞNG ĐƠN VỊ</div><div class="sign-space"></div></div>
@@ -622,7 +843,7 @@
         <div style="background: #f8fafc; border: 2px solid var(--primary); padding: 14px; border-radius: 12px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px;">
             <button class="btn btn-blue btn-lg" onclick="moModalPhiieuLuongDauTien()"><i class="fa-solid fa-file-invoice-dollar"></i> Mở Phiếu Lương Tổng Hợp Nhân Sự</button>
         </div>
-        <table>
+        <table class="salary-table salary-cv-table"><colgroup><col class="c-stt"><col class="c-name"><col class="c-bank"><col class="c-account"><col class="c-small"><col class="c-small"><col class="c-money-md"><col class="c-small"><col class="c-small"><col class="c-small"><col class="c-small"><col class="c-money-lg"><col class="c-money-lg"><col class="c-money-lg"><col class="c-money-lg"><col class="c-money-xl"><col class="c-action"></colgroup>
             <thead><tr><th>STT</th><th>Họ và Tên</th><th>Tên Ngân Hàng</th><th>Số Tài Khoản (STK)</th><th>HSL.CV</th><th>PC.CV</th><th>L.CV Gốc</th><th>NC(TG)</th><th>Phép</th><th>Lễ</th><th>Ki</th><th>L.CV TT</th><th>Tổng LCB+CV</th><th>Tạm Ứng</th><th>Thực Lĩnh CV</th><th>THỰC LĨNH NET (CHUYỂN KHOẢN)</th><th class="action-col">Zalo</th></tr></thead>
             <tbody id="tableBodyCV"></tbody>
         </table>
@@ -975,7 +1196,9 @@
             <tbody id="surveyTableBody"></tbody>
         </table>
     </div>
-</div>
+
+    </main>
+    </div>
 
 <!-- MODAL PHIẾU LƯƠNG NHÂN SỰ -->
 <div class="modal-overlay hidden" id="previewModal">
@@ -991,7 +1214,7 @@
             </div>
         </div>
         <div style="padding: 24px; background: #e2e8f0; max-height: 82vh; overflow-y: auto;">
-            <div id="payslip-capture" style="background: white; padding: 32px; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); color: #0f172a; font-size: 15px;">
+            <div id="payslip-capture" class="payslip-print-sheet" style="background: white; padding: 32px; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); color: #0f172a; font-size: 15px;">
                 <div style="text-align: center; border-bottom: 3px solid #0f172a; padding-bottom: 18px; margin-bottom: 22px;">
                     <div style="font-size: 12px; text-transform: uppercase; font-weight: 900; letter-spacing: 1px; color: #475569;">TỔNG CÔNG TY GIẤY VIỆT NAM (VINAPACO)</div>
                     <h2 style="font-size: 22px; font-weight: 900; text-transform: uppercase; margin: 8px 0; color: #0369a1;">PHIẾU THANH TOÁN LƯƠNG & CHUYỂN KHOẢN</h2>
@@ -1067,6 +1290,212 @@
 
     let rootDriveFolderUrl = localStorage.getItem('vinapaco_drive_root_url') || 'https://drive.google.com/drive/u/0/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m';
     let gasWebhookUrl = localStorage.getItem('vinapaco_gas_webhook_url') || 'https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec';
+
+    // ===== CLOUD SYNC ENGINE: Google Sheets = dữ liệu chuẩn, Google Drive = tệp đính kèm/backup =====
+    const SYNC_SCHEMA = 2;
+    const DEVICE_ID = localStorage.getItem('vinapaco_device_id') || ('DEV-' + cryptoRandomId());
+    localStorage.setItem('vinapaco_device_id', DEVICE_ID);
+    let syncTimer = null, syncDebounceTimer = null, syncInProgress = false, suppressCloudSync = true;
+    let cloudRevision = Number(localStorage.getItem('vinapaco_cloud_revision') || 0);
+    let lastSyncAt = localStorage.getItem('vinapaco_last_sync_at') || '';
+    let lastSyncedSnapshot = safeJsonParse(localStorage.getItem('vinapaco_sync_base'), null);
+    let pendingSync = Number(localStorage.getItem('vinapaco_pending_sync') || 0);
+    let syncConflicts = JSON.parse(localStorage.getItem('vinapaco_sync_conflicts') || '[]');
+
+    function cryptoRandomId() {
+        try { return crypto.randomUUID(); } catch(e) { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+    }
+    function safeJsonParse(v, fallback) { try { return v ? JSON.parse(v) : fallback; } catch(e) { return fallback; } }
+    function cloudSnapshot() {
+        return {
+            schema: SYNC_SCHEMA,
+            dataNamThang: coSoDuLieuNamThang,
+            dataVpp: dsThanhToanVanPhongProByMonth,
+            dataTelecom: dsThanhToanTelecombyMonth,
+            dataInk: dsKhoMucIn,
+            dataDelivery: dsPhieuGiaoNhan,
+            dataSurvey: dsKhaoSatChuyenSau,
+            dataTasks: danhSachCongViec,
+            dataAccounts: danhSachTaiKhoanHeThong,
+            config: { rootDriveFolderUrl, gasWebhookUrl },
+            updatedAt: new Date().toISOString(),
+            updatedBy: DEVICE_ID
+        };
+    }
+    function setSyncState(state, title, meta) {
+        const dot = document.getElementById('cloudSyncDot');
+        const t = document.getElementById('cloudSyncTitle');
+        const m = document.getElementById('cloudSyncMeta');
+        if (dot) dot.className = 'cloud-sync-dot ' + (state || '');
+        if (t) t.innerText = title || 'Cloud';
+        if (m) m.innerText = `Thiết bị: ${DEVICE_ID.slice(0,12)} · Phiên bản Cloud: ${cloudRevision || '--'} · Chờ đồng bộ: ${pendingSync}` + (meta ? ` · ${meta}` : '');
+    }
+    function markCloudDirty() {
+        if (suppressCloudSync) return;
+        pendingSync = 1;
+        localStorage.setItem('vinapaco_pending_sync', '1');
+        setSyncState('syncing', 'Có dữ liệu mới trên thiết bị', 'sẽ đồng bộ tự động');
+        clearTimeout(syncDebounceTimer);
+        syncDebounceTimer = setTimeout(() => dongBoThongMinh(false), 2500);
+    }
+    function applyCloudSnapshot(snap) {
+        if (!snap || !snap.dataNamThang) return false;
+        suppressCloudSync = true;
+        coSoDuLieuNamThang = snap.dataNamThang;
+        if (snap.dataVpp) dsThanhToanVanPhongProByMonth = snap.dataVpp;
+        if (snap.dataTelecom) dsThanhToanTelecombyMonth = snap.dataTelecom;
+        if (snap.dataInk) dsKhoMucIn = snap.dataInk;
+        if (snap.dataDelivery) dsPhieuGiaoNhan = snap.dataDelivery;
+        if (snap.dataSurvey) dsKhaoSatChuyenSau = snap.dataSurvey;
+        if (snap.dataTasks) danhSachCongViec = snap.dataTasks;
+        if (snap.dataAccounts) danhSachTaiKhoanHeThong = snap.dataAccounts;
+        if (snap.config) {
+            if (snap.config.rootDriveFolderUrl) rootDriveFolderUrl = snap.config.rootDriveFolderUrl;
+            if (snap.config.gasWebhookUrl) gasWebhookUrl = snap.config.gasWebhookUrl;
+        }
+        saveToLocalStorage();
+        suppressCloudSync = false;
+        capNhat();
+        return true;
+    }
+    function deepEqual(a,b) { try { return JSON.stringify(a) === JSON.stringify(b); } catch(e) { return false; } }
+    function mergeThreeWay(base, local, remote, path, conflicts) {
+        if (deepEqual(local, base)) return remote;
+        if (deepEqual(remote, base)) return local;
+        if (local && remote && typeof local === 'object' && typeof remote === 'object' && !Array.isArray(local) && !Array.isArray(remote)) {
+            const out = {};
+            const keys = new Set([...Object.keys(base||{}), ...Object.keys(local||{}), ...Object.keys(remote||{})]);
+            keys.forEach(k => out[k] = mergeThreeWay(base ? base[k] : undefined, local[k], remote[k], path ? path+'.'+k : k, conflicts));
+            return out;
+        }
+        conflicts.push(path || 'root');
+        return local; // dữ liệu thay đổi đồng thời: ưu tiên thiết bị hiện tại, nhưng ghi nhận xung đột
+    }
+    async function jsonpGet(url) {
+        return await new Promise((resolve, reject) => {
+            const cb = '__vinapaco_cb_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+            const script = document.createElement('script');
+            const timer = setTimeout(() => { cleanup(); reject(new Error('Cloud timeout')); }, 20000);
+            function cleanup(){ clearTimeout(timer); try{delete window[cb];}catch(e){} script.remove(); }
+            window[cb] = data => { cleanup(); resolve(data); };
+            script.onerror = () => { cleanup(); reject(new Error('Không đọc được Google Apps Script')); };
+            script.src = url + (url.includes('?')?'&':'?') + 'action=getSync&callback=' + encodeURIComponent(cb) + '&schema=' + SYNC_SCHEMA;
+            document.head.appendChild(script);
+        });
+    }
+    async function postNoCors(payload) {
+        let lastErr;
+        for (let attempt=1; attempt<=3; attempt++) {
+            try {
+                await fetch(gasWebhookUrl, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload), keepalive:false });
+                return true;
+            } catch(e) {
+                lastErr=e;
+                await new Promise(r=>setTimeout(r,500*attempt));
+            }
+        }
+        throw lastErr || new Error('Không gửi được dữ liệu lên Google Apps Script');
+    }
+    async function readCloudState() {
+        const data = await jsonpGet(gasWebhookUrl);
+        if (!data || data.ok === false) throw new Error(data && data.message ? data.message : 'Cloud không trả dữ liệu');
+        return data;
+    }
+    async function pullCloudSnapshot(showAlert=false) {
+        setSyncState('syncing','Đang đọc phiên bản mới nhất từ Google Sheets','');
+        const cloud = await readCloudState();
+        const remoteRev = Number(cloud.revision || 0);
+        if (!cloud.snapshot) { setSyncState('online','Cloud đã kết nối nhưng chưa có dữ liệu','hãy đồng bộ lần đầu'); return false; }
+        const local = cloudSnapshot();
+        if (remoteRev === cloudRevision && lastSyncedSnapshot) { setSyncState('online','Dữ liệu đã đồng bộ','không có thay đổi'); return true; }
+        let merged = cloud.snapshot;
+        let conflicts = [];
+        if (lastSyncedSnapshot && pendingSync) {
+            merged = mergeThreeWay(lastSyncedSnapshot, local, cloud.snapshot, '', conflicts);
+        }
+        applyCloudSnapshot(merged);
+        cloudRevision = remoteRev;
+        lastSyncedSnapshot = JSON.parse(JSON.stringify(merged));
+        pendingSync = conflicts.length ? 1 : 0;
+        lastSyncAt = new Date().toISOString();
+        localStorage.setItem('vinapaco_cloud_revision', cloudRevision);
+        localStorage.setItem('vinapaco_sync_base', JSON.stringify(lastSyncedSnapshot));
+        localStorage.setItem('vinapaco_last_sync_at', lastSyncAt);
+        localStorage.setItem('vinapaco_pending_sync', String(pendingSync));
+        if (conflicts.length) { syncConflicts.push({at:lastSyncAt, paths:conflicts.slice(0,50), device:DEVICE_ID}); syncConflicts=syncConflicts.slice(-20); localStorage.setItem('vinapaco_sync_conflicts',JSON.stringify(syncConflicts)); }
+        setSyncState(conflicts.length ? 'error':'online', conflicts.length ? 'Đã hợp nhất, có xung đột cần kiểm tra':'Đồng bộ từ Cloud thành công', `lúc ${new Date(lastSyncAt).toLocaleTimeString('vi-VN')}`);
+        if (showAlert) alert(conflicts.length ? `⚠️ Đã lấy dữ liệu mới nhất và tự hợp nhất. Có ${conflicts.length} điểm xung đột; dữ liệu trên thiết bị hiện tại được ưu tiên.` : '✅ Đã lấy đúng phiên bản dữ liệu mới nhất từ Google Sheets.');
+        return true;
+    }
+    async function pushCloudSnapshot(force=false) {
+        if (!force && !pendingSync) return true;
+        for (let round=0; round<2; round++) {
+            const before = await readCloudState();
+            const remoteRev = Number(before.revision || 0);
+            if (!force && remoteRev !== cloudRevision && lastSyncedSnapshot) {
+                await pullCloudSnapshot(false);
+                if (!pendingSync) return true;
+            } else if (!force && remoteRev !== cloudRevision && !lastSyncedSnapshot && remoteRev > 0) {
+                await pullCloudSnapshot(false);
+                if (!pendingSync) return true;
+            }
+            const snap = cloudSnapshot();
+            const text = JSON.stringify(snap);
+            const chunkSize = 30000;
+            const syncId = cryptoRandomId();
+            const total = Math.ceil(text.length / chunkSize) || 1;
+            setSyncState('syncing','Đang ghi dữ liệu lên Google Sheets',`${total} gói dữ liệu · phiên bản ${cloudRevision}`);
+            for (let i=0;i<total;i++) {
+                await postNoCors({action:'syncChunk', syncId, index:i, total, chunk:text.slice(i*chunkSize,(i+1)*chunkSize), deviceId:DEVICE_ID});
+            }
+            await postNoCors({action:'commitSync', syncId, total, expectedRevision:cloudRevision, deviceId:DEVICE_ID, updatedAt:snap.updatedAt});
+            let confirmed = null;
+            for (let attempt=0; attempt<10; attempt++) {
+                await new Promise(r=>setTimeout(r,650 + attempt*200));
+                try {
+                    confirmed = await readCloudState();
+                    if (Number(confirmed.revision||0) > cloudRevision) break;
+                } catch(e) {}
+            }
+            if (confirmed && Number(confirmed.revision||0) > cloudRevision) {
+                cloudRevision = Number(confirmed.revision);
+                lastSyncedSnapshot = JSON.parse(JSON.stringify(confirmed.snapshot || snap));
+                pendingSync = 0; lastSyncAt = new Date().toISOString();
+                localStorage.setItem('vinapaco_cloud_revision',cloudRevision);
+                localStorage.setItem('vinapaco_sync_base',JSON.stringify(lastSyncedSnapshot));
+                localStorage.setItem('vinapaco_last_sync_at',lastSyncAt);
+                localStorage.setItem('vinapaco_pending_sync','0');
+                setSyncState('online','Đồng bộ 2 chiều hoàn tất','Cloud đã xác nhận phiên bản ' + cloudRevision);
+                return true;
+            }
+            const latest = await readCloudState();
+            if (Number(latest.revision||0) !== cloudRevision) {
+                cloudRevision = Number(latest.revision||0);
+                await pullCloudSnapshot(false);
+                if (!pendingSync) return true;
+            }
+        }
+        throw new Error('Cloud không xác nhận được phiên bản mới sau khi ghi dữ liệu. Hãy kiểm tra URL / quyền triển khai Web App GAS.');
+    }
+    async function dongBoThongMinh(showAlert=false) {
+        if (syncInProgress) return;
+        syncInProgress = true;
+        try {
+            if (pendingSync) await pushCloudSnapshot(false);
+            else await pullCloudSnapshot(false);
+            if (showAlert) alert('✅ Đồng bộ 2 chiều hoàn tất. Dữ liệu đã được xác nhận lại từ Cloud.');
+        } catch(e) {
+            setSyncState('error','Không đồng bộ được Cloud',e.message);
+            if (showAlert) alert('❌ Đồng bộ thất bại: ' + e.message + '\nDữ liệu vẫn được giữ an toàn trên thiết bị và sẽ tự thử lại.');
+        } finally { syncInProgress = false; }
+    }
+    async function taiDuLieuTuDongTuGas(showAlert=false) { return pullCloudSnapshot(showAlert); }
+    async function thuCongDongBoLenDrive() { pendingSync=1; localStorage.setItem('vinapaco_pending_sync','1'); return dongBoThongMinh(true); }
+    function startAutoCloudSync() {
+        clearInterval(syncTimer);
+        syncTimer = setInterval(() => { if (!document.hidden) dongBoThongMinh(false); }, 30000);
+        setTimeout(() => dongBoThongMinh(false), 1200);
+    }
 
     const defaultNhansuTemplate = [
         {"stt": 1, "hoTen": "Nguyễn Minh Ngọc", "sdt": "0988123456", "nganHang": "Vietcombank", "stk": "105.005.712.499", "hsl_cb": 1.94, "pc_cb": 0.25, "hsl_cv": 5.2, "pc_cv": 0.6, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 5000000, "phep_cap": 12},
@@ -1183,6 +1612,7 @@
         localStorage.setItem('vinapaco_accounts', JSON.stringify(danhSachTaiKhoanHeThong));
         localStorage.setItem('vinapaco_drive_root_url', rootDriveFolderUrl);
         localStorage.setItem('vinapaco_gas_webhook_url', gasWebhookUrl);
+        markCloudDirty();
     }
 
     function luuCauHinhDriveUrl() {
@@ -1258,67 +1688,6 @@
             document.getElementById(hiddenUrlInputId).value = rootDriveFolderUrl + " (" + fileNamesStr + ")";
         }
         setTimeout(() => { statusBar.classList.add('hidden'); }, 3000);
-    }
-
-    async function thuCongDongBoLenDrive() {
-        let gasUrl = document.getElementById('inputGasUrlSetting').value.trim() || gasWebhookUrl;
-        let statusBar = document.getElementById('driveUploadStatusBar');
-        let statusTitle = document.getElementById('uploadStatusTitle');
-        let statusPercent = document.getElementById('uploadStatusPercentText');
-        let progressFill = document.getElementById('uploadProgressFillBar');
-        statusBar.classList.remove('hidden');
-
-        statusTitle.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang đóng gói dữ liệu toàn hệ thống...`;
-        progressFill.style.width = "20%";
-        statusPercent.innerText = "20%";
-
-        let payload = {
-            action: "syncData", namKey: currentNamKey, thangKey: currentThangKey,
-            dataNamThang: coSoDuLieuNamThang, dataVpp: dsThanhToanVanPhongProByMonth,
-            dataTelecom: dsThanhToanTelecombyMonth, dataInk: dsKhoMucIn,
-            dataDelivery: dsPhieuGiaoNhan, dataSurvey: dsKhaoSatChuyenSau,
-            dataTasks: danhSachCongViec, timestamp: new Date().toISOString()
-        };
-
-        setTimeout(() => {
-            statusTitle.innerHTML = `<i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> Đang đẩy dữ liệu lên Google Cloud...`;
-            progressFill.style.width = "65%";
-            statusPercent.innerText = "65%";
-        }, 400);
-
-        try {
-            await fetch(gasUrl, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
-            progressFill.style.width = "100%";
-            statusPercent.innerText = "100%";
-            statusTitle.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#22c55e;"></i> Đồng bộ dữ liệu thành công!`;
-            setTimeout(() => { statusBar.classList.add('hidden'); }, 2500);
-        } catch (error) { 
-            statusTitle.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi đồng bộ: ${error.message}`; 
-            setTimeout(() => { statusBar.classList.add('hidden'); }, 2500);
-        }
-    }
-
-    async function taiDuLieuTuDongTuGas() {
-        let gasUrl = document.getElementById('inputGasUrlSetting').value.trim() || gasWebhookUrl;
-        try {
-            let res = await fetch(gasUrl + "?action=getData");
-            let data = await res.json();
-            if (data) {
-                if (data.dataNamThang) coSoDuLieuNamThang = data.dataNamThang;
-                if (data.dataVpp) dsThanhToanVanPhongProByMonth = data.dataVpp;
-                if (data.dataTelecom) dsThanhToanTelecombyMonth = data.dataTelecom;
-                if (data.dataInk) dsKhoMucIn = data.dataInk;
-                if (data.dataDelivery) dsPhieuGiaoNhan = data.dataDelivery;
-                if (data.dataSurvey) dsKhaoSatChuyenSau = data.dataSurvey;
-                if (data.dataTasks) danhSachCongViec = data.dataTasks;
-                
-                saveToLocalStorage();
-                capNhat();
-                alert("✅ Đã tải dữ liệu mới nhất từ Cloud thành công!");
-            }
-        } catch(err) {
-            alert("⚠️ Không thể tải từ GAS, đang dùng dữ liệu lưu tạm trên máy.");
-        }
     }
 
     const canList = ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"];
@@ -2810,12 +3179,38 @@
     function switchTab(tabId, btnEl) {
         document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.tab-btn-nav').forEach(b => b.classList.remove('active'));
-        let targetTab = document.getElementById(tabId);
-        if (targetTab) targetTab.classList.add('active');
-        if (btnEl) btnEl.classList.add('active');
+        const targetTab = document.getElementById(tabId);
+        if (!targetTab) return;
+
+        targetTab.classList.add('active');
+        if (btnEl) {
+            btnEl.classList.add('active');
+            try { btnEl.scrollIntoView({behavior:'smooth', block:'nearest'}); } catch(e) {}
+        }
+        try { localStorage.setItem('vinapaco_active_tab', tabId); } catch(e) {}
+
+        // Khi chọn một tab: đóng hoàn toàn menu và đưa nội dung lên toàn màn hình.
+        enterTabFocusMode();
+
         if (tabId === 'accountManagerTab') renderAccountTable();
         else setTimeout(() => veTatCaBieuDoDashboard(), 50);
     }
+
+    function enterTabFocusMode() {
+        document.body.classList.add('tab-focus-mode');
+        const btn = document.getElementById('showTabsBtn');
+        if (btn) btn.classList.remove('hidden');
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    function showTabMenu() {
+        document.body.classList.remove('tab-focus-mode');
+        const btn = document.getElementById('showTabsBtn');
+        if (btn) btn.classList.add('hidden');
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    function exitTabFocusMode() { showTabMenu(); }
 
     function chonNhanSuXemPhieuLuong(hoTen) { moModalPhiieuLuongTheoTen(hoTen); }
     function chuyenNhanSuModal(step) {
@@ -3007,6 +3402,12 @@
         timKiemDiaDiemThoiTiet(val);
     }
 
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && document.body.classList.contains('tab-focus-mode')) {
+            showTabMenu();
+        }
+    });
+
     window.onload = function() {
         khoiTaoDanhSachNamTuSinh();
         doiThangHoSoLuong();
@@ -3034,7 +3435,26 @@
         if (lunarEl) lunarEl.innerHTML = `<b>${lunar.day}/${lunar.month}/${lunar.year}</b><br>Ngày ${lunar.canChiNgay} (${lunar.hoangDaoName})`;
 
         capNhatThoiTiet(cachedWeatherCoords.lat, cachedWeatherCoords.lon, cachedWeatherCoords.cityName);
+        suppressCloudSync = false;
+        startAutoCloudSync();
+        setSyncState(pendingSync ? 'syncing' : 'online', pendingSync ? 'Có dữ liệu chờ đồng bộ' : 'Đang kiểm tra Cloud', lastSyncAt ? `lần cuối ${new Date(lastSyncAt).toLocaleString('vi-VN')}` : 'chờ xác nhận kết nối');
+
+        // Mở lại đúng tab người dùng đang làm việc ở lần trước
+        try {
+            const savedTab = localStorage.getItem('vinapaco_active_tab');
+            if (savedTab) {
+                const savedBtn = Array.from(document.querySelectorAll('.tab-btn-nav')).find(b => (b.getAttribute('onclick') || '').includes(`switchTab('${savedTab}'`));
+                const savedPane = document.getElementById(savedTab);
+                if (savedBtn && savedPane) {
+                    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+                    document.querySelectorAll('.tab-btn-nav').forEach(b => b.classList.remove('active'));
+                    savedPane.classList.add('active');
+                    savedBtn.classList.add('active');
+                }
+            }
+        } catch(e) {}
     };
 </script>
+<button id="showTabsBtn" class="show-tabs-btn hidden" type="button" onclick="showTabMenu()" title="Hiển thị menu chức năng"><i class="fa-solid fa-bars"></i><span>HIỆN MENU</span></button>
 </body>
 </html>

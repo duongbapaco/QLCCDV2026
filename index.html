@@ -297,7 +297,6 @@
         body.tab-focus-mode { padding: 0; overflow-x: hidden; }
         body.tab-focus-mode .container { max-width: none; width: 100%; margin: 0; gap: 0; }
         body.tab-focus-mode .banner,
-        body.tab-focus-mode #systemConfigBar,
         body.tab-focus-mode .top-info-bar,
         body.tab-focus-mode .kpi-grid,
         body.tab-focus-mode .cloud-sync-panel { display: none !important; }
@@ -934,6 +933,34 @@
     }
 }
 </style>
+
+<script>
+/* ===== KHỐI AN TOÀN TÀI NGUYÊN NGOÀI =====
+   Nếu CDN/FontAwesome/Chart/XLSX/html2canvas không tải được,
+   giao diện chính vẫn phải hoạt động và không bị "chết" toàn trang. */
+(function () {
+    window.VINAPACO_RESOURCE_STATUS = {
+        chart: typeof window.Chart !== 'undefined',
+        xlsx: typeof window.XLSX !== 'undefined',
+        html2canvas: typeof window.html2canvas !== 'undefined'
+    };
+
+    window.addEventListener('error', function (ev) {
+        var t = ev && ev.target;
+        if (!t || t === window) return;
+        var tag = String(t.tagName || '').toLowerCase();
+        if (tag === 'script' || tag === 'link' || tag === 'img') {
+            t.setAttribute('data-vinapaco-resource-error', '1');
+            console.warn('VINAPACO: tài nguyên ngoài không tải được:', t.src || t.href || '');
+        }
+    }, true);
+
+    // Các trình duyệt khác nhau xử lý file:// khác nhau.
+    // Không để lỗi mạng làm mất phần giao diện HTML/CSS nội bộ.
+    window.VINAPACO_IS_LOCAL_FILE = location.protocol === 'file:';
+})();
+</script>
+
 </head>
 <body>
 
@@ -1156,7 +1183,7 @@
         </div>
     </div>
 
-    <div id="systemConfigBar" style="background: #ffffff; border: 1px solid var(--border-color); padding: 12px 16px; border-radius: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; align-items: center;">
+    <div id="systemConfigBar" class="config-bar" style="background: #ffffff; border: 1px solid var(--border-color); padding: 12px 16px; border-radius: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; align-items: center;">
         <div style="display: flex; gap: 8px; align-items: center;">
             <span style="font-size: 11px; font-weight: 900; color: #0369a1; text-transform: uppercase; white-space: nowrap;"><i class="fa-solid fa-link"></i> GAS Webhook URL:</span>
             <input type="text" id="inputGasUrlSetting" style="flex: 1; height: 36px; padding: 0 10px; border-radius: 8px; border: 1.5px solid var(--border-color); font-size: 12px; font-weight: bold; background: #f8fafc;" value="https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec">
@@ -1989,8 +2016,8 @@
 </div>
 
 <script>
-    if (typeof ChartDataLabels !== 'undefined') {
-        Chart.register(ChartDataLabels);
+    if (typeof ChartDataLabels !== 'undefined' && typeof Chart !== 'undefined' && Chart.register) {
+        try { Chart.register(ChartDataLabels); } catch(e) { console.warn('Chart plugin:', e); }
     }
 
     let currentNamKey = "2026";
@@ -2000,6 +2027,8 @@
 
     let rootDriveFolderUrl = localStorage.getItem('vinapaco_drive_root_url') || 'https://drive.google.com/drive/u/0/folders/1gEHVMcIby9eXxQvDiDROyno48_vYik_m';
     let gasWebhookUrl = localStorage.getItem('vinapaco_gas_webhook_url') || 'https://script.google.com/macros/s/AKfycbzJ1A_yPUcMEUW44MLHEAVlRlfT9OH4_VtWcMQL1Gv1-MHlxvXkbqOjfxLy7-Pj8B4W8w/exec';
+    let cloudEndpointDisabled = false;
+    let cloudEndpointErrorCount = 0;
 
     // ===== CLOUD SYNC ENGINE: Google Sheets = dữ liệu chuẩn, Google Drive = tệp đính kèm/backup =====
     const SYNC_SCHEMA = 3;
@@ -2135,13 +2164,24 @@
         return local; // dữ liệu thay đổi đồng thời: ưu tiên thiết bị hiện tại, nhưng ghi nhận xung đột
     }
     async function jsonpGet(url) {
+        if (cloudEndpointDisabled || !String(url || '').trim()) {
+            throw new Error('Cloud chưa được cấu hình hoặc endpoint không khả dụng.');
+        }
         return await new Promise((resolve, reject) => {
             const cb = '__vinapaco_cb_' + Date.now() + '_' + Math.random().toString(36).slice(2);
             const script = document.createElement('script');
             const timer = setTimeout(() => { cleanup(); reject(new Error('Cloud timeout')); }, 20000);
             function cleanup(){ clearTimeout(timer); try{delete window[cb];}catch(e){} script.remove(); }
             window[cb] = data => { cleanup(); resolve(data); };
-            script.onerror = () => { cleanup(); reject(new Error('Không đọc được Google Apps Script')); };
+            script.onerror = () => {
+                cleanup();
+                cloudEndpointErrorCount++;
+                if (cloudEndpointErrorCount >= 2) {
+                    cloudEndpointDisabled = true;
+                    setSyncState('error', 'Không kết nối được Cloud', 'Kiểm tra lại GAS Webhook URL trong phần thiết lập');
+                }
+                reject(new Error('Không đọc được Google Apps Script (có thể endpoint trả 404 hoặc chưa được triển khai)'));
+            };
             script.src = url + (url.includes('?')?'&':'?') + 'action=getSync&callback=' + encodeURIComponent(cb) + '&schema=' + SYNC_SCHEMA;
             document.head.appendChild(script);
         });
@@ -2384,6 +2424,8 @@
         localStorage.setItem('vinapaco_accounts', JSON.stringify(danhSachTaiKhoanHeThong));
         localStorage.setItem('vinapaco_drive_root_url', rootDriveFolderUrl);
         localStorage.setItem('vinapaco_gas_webhook_url', gasWebhookUrl);
+        cloudEndpointDisabled = false;
+        cloudEndpointErrorCount = 0;
         markCloudDirty();
     }
 
@@ -4701,7 +4743,13 @@
                     document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
                     document.querySelectorAll('.tab-btn-nav').forEach(b => b.classList.remove('active'));
                     savedPane.classList.add('active'); savedBtn.classList.add('active');
-                    try { document.body.classList.add('tab-focus-mode'); } catch(e) {}
+                    // Không tự bật chế độ toàn màn hình khi mở lại trên máy khác.
+                    // Giữ nguyên banner + khu vực thiết lập để giao diện nhất quán giữa các máy.
+                    try {
+                        document.body.classList.remove('tab-focus-mode');
+                        const menuBtn = document.getElementById('showTabsBtn');
+                        if (menuBtn) menuBtn.classList.add('hidden');
+                    } catch(e) {}
                 }
             }
         } catch(e) { console.error('Restore tab:', e); }

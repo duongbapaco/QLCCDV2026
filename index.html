@@ -973,6 +973,156 @@
           #modalHandoverSlipPreview .handover-slip-container .handover-signatures{display:none!important}
         }
 
+
+/* ==========================================================
+   VINAPACO – CÂN ĐỐI LẠI GIAO DIỆN DESKTOP
+   Mục tiêu: giảm khoảng trống, tăng khả năng đọc, giữ nguyên dữ liệu
+   ========================================================== */
+
+/* Khung tổng thể */
+body{font-size:14px!important;}
+.app-layout{margin-top:8px!important;}
+.tab-nav-shell{padding:7px 9px 6px!important;border-radius:14px!important;box-shadow:0 6px 18px rgba(15,23,42,.08)!important;}
+.tab-nav{grid-template-columns:repeat(14,minmax(0,1fr))!important;gap:5px!important;}
+.tab-btn-nav{min-height:46px!important;padding:5px 5px!important;font-size:12px!important;gap:5px!important;line-height:1.1!important;}
+.tab-btn-nav i{width:17px!important;flex-basis:17px!important;font-size:13px!important;}
+.data-check-toolbar{margin-top:5px!important;}
+.data-check-btn{min-height:36px!important;padding:0 12px!important;font-size:12px!important;}
+.data-check-count{height:20px!important;min-width:20px!important;}
+
+/* Nội dung tab: sát và cân với menu */
+.tab-content-area{margin-top:8px!important;}
+.tab-content-area>.table-card{padding:14px!important;border-radius:12px!important;}
+.table-header-bar{margin-bottom:9px!important;align-items:center!important;}
+.table-title{font-size:17px!important;line-height:1.25!important;}
+.table-header-bar>.btn{min-height:36px!important;font-size:12px!important;padding:8px 12px!important;}
+
+/* Riêng bảng Lương CV: bố cục thoáng, cột có tỷ lệ hợp lý */
+#salaryCVTab{overflow-x:auto!important;}
+#salaryCVTab>.table-header-bar{padding:1px 1px 2px!important;}
+#salaryCVTab>.table-header-bar .table-title{font-size:17px!important;}
+#salaryCVTab>div[style*="background: #f8fafc"]{
+    min-height:56px!important;
+    box-sizing:border-box!important;
+    padding:8px 10px!important;
+    margin-bottom:10px!important;
+    border-width:1px!important;
+    border-radius:10px!important;
+}
+#salaryCVTab>div[style*="background: #f8fafc"] .btn{min-height:38px!important;font-size:12px!important;padding:8px 13px!important;}
+
+.salary-cv-table{
+    width:100%!important;
+    min-width:1450px!important;
+    table-layout:fixed!important;
+    margin:0!important;
+}
+.salary-cv-table th{
+    height:46px!important;
+    padding:7px 6px!important;
+    font-size:11px!important;
+    line-height:1.15!important;
+    letter-spacing:.05px!important;
+}
+.salary-cv-table td{
+    height:42px!important;
+    padding:7px 7px!important;
+    font-size:12.5px!important;
+    line-height:1.2!important;
+}
+.salary-cv-table td:nth-child(2){font-size:13px!important;font-weight:900!important;}
+.salary-cv-table td:nth-child(16){font-weight:900!important;}
+.salary-cv-table .c-stt{width:42px!important;}
+.salary-cv-table .c-name{width:150px!important;}
+.salary-cv-table .c-bank{width:112px!important;}
+.salary-cv-table .c-account{width:135px!important;}
+.salary-cv-table .c-small{width:55px!important;}
+.salary-cv-table .c-money-md{width:90px!important;}
+.salary-cv-table .c-money-lg{width:101px!important;}
+.salary-cv-table .c-money-xl{width:126px!important;}
+.salary-cv-table .c-action{width:65px!important;}
+.salary-cv-table .badge-net{min-width:0!important;width:100%!important;box-sizing:border-box!important;padding:5px 4px!important;font-size:10.5px!important;}
+
+/* Chữ và nút Zalo không làm lệch hàng */
+#salaryCVTab .action-cell-inner{gap:3px!important;}
+#salaryCVTab .action-cell-inner .btn{padding:5px 7px!important;font-size:10.5px!important;min-height:30px!important;}
+
+/* Chân bảng: gọn, cân và không tạo khoảng trắng lớn */
+#salaryCVTab .salary-signature-footer{
+    margin-top:12px!important;
+    padding:8px 8px 2px!important;
+    font-size:11px!important;
+    border-top:1px solid #dbe4ee!important;
+    background:#fafcff!important;
+    border-radius:8px!important;
+}
+#salaryCVTab .salary-signature-footer .sign-space{height:34px!important;}
+#salaryCVTab .salary-signature-footer .sign-name{font-size:11px!important;}
+
+/* Các bảng còn lại cũng đồng bộ chiều cao chữ */
+#salaryCBTab .salary-table th,#salaryCVTab .salary-table th{vertical-align:middle!important;}
+
+/* Desktop rộng: dùng khoảng ngang tốt hơn, không phóng đại bảng */
+@media(min-width:1450px){
+    .tab-content-area>.table-card{padding:14px 15px!important;}
+    .salary-cv-table{min-width:1450px!important;}
+}
+
+/* Laptop */
+@media(max-width:1250px){
+    .tab-nav{grid-template-columns:repeat(7,minmax(0,1fr))!important;}
+    .tab-btn-nav{min-height:43px!important;font-size:11.5px!important;}
+    .salary-cv-table{min-width:1450px!important;}
+}
+
+/* Mobile: giữ ngang cuộn bảng, không bóp chữ */
+@media(max-width:900px){
+    .app-layout{margin-top:6px!important;}
+    .tab-nav-shell{position:sticky!important;top:0!important;padding:6px!important;}
+    .tab-nav{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:4px!important;}
+    .tab-btn-nav{min-height:43px!important;font-size:11px!important;}
+    .tab-content-area{margin-top:6px!important;}
+    #salaryCVTab>.table-header-bar{align-items:flex-start!important;}
+    #salaryCVTab>.table-header-bar .table-title{font-size:15px!important;max-width:calc(100% - 100px)!important;}
+}
+@media(max-width:560px){
+    .tab-nav{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+    .salary-cv-table{min-width:1450px!important;}
+}
+
+/* ==========================================================
+   PHIẾU LƯƠNG – căn trên và gọn đúng 1 trang A4 khi in
+   ========================================================== */
+@media print{
+    @page{size:A4 portrait;margin:5mm 7mm 5mm 7mm!important;}
+    html,body{height:297mm!important;min-height:297mm!important;overflow:hidden!important;}
+    #previewModal{position:static!important;display:block!important;margin:0!important;padding:0!important;}
+    #previewModal .modal-card{margin:0!important;padding:0!important;width:100%!important;max-width:none!important;}
+    #previewModal .modal-card>div:nth-child(2){padding:0!important;margin:0!important;}
+    #payslip-capture{
+        width:196mm!important;
+        max-width:196mm!important;
+        max-height:286mm!important;
+        min-height:0!important;
+        margin:0 auto!important;
+        padding:2.5mm 4mm!important;
+        box-sizing:border-box!important;
+        transform:none!important;
+        font-size:8.5pt!important;
+        line-height:1.02!important;
+        overflow:hidden!important;
+        page-break-before:avoid!important;
+        page-break-after:avoid!important;
+        page-break-inside:avoid!important;
+        break-inside:avoid-page!important;
+    }
+    #payslip-capture table{font-size:7.8pt!important;}
+    #payslip-capture th,#payslip-capture td{padding:1.1mm 1.2mm!important;line-height:1.02!important;}
+    #payslip-capture h2{font-size:13pt!important;margin:0.8mm 0!important;}
+    #payslip-capture .salary-signature-footer{margin-top:1.5mm!important;padding-top:1mm!important;}
+    #payslip-capture .salary-signature-footer .sign-space{height:7mm!important;}
+}
+
 </style>
 
 <script>

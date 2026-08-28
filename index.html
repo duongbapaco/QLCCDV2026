@@ -1069,7 +1069,7 @@
     <!-- TAB DASHBOARD LƯƠNG TỪNG THÁNG -->
     <div id="monthlySalaryDashboardTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-money-bill-trend-up"></i> QUỸ LƯƠNG & CHUYỂN KHOẢN HÀNG THÁNG (<span id="monthlySalaryYearTitle">2026</span>)</div>
+            <div class="table-title"><i class="fa-solid fa-money-bill-trend-up"></i> QUỸ LƯƠNG & CHUYỂN KHOẢN HÀNG THÁNG (<span id="monthlySalaryYearTitle" data-year-label="current">2026</span>)</div>
             <button class="btn btn-green" onclick="xuatBaoCaoLuongCacThangExcel()"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
         </div>
 
@@ -1103,7 +1103,7 @@
                         <div class="chart-title"><i class="fa-solid fa-chart-line"></i> BIẾN ĐỘNG QUỸ LƯƠNG & CÁC KHOẢN LIÊN QUAN THEO 12 THÁNG</div>
                         <div class="chart-subtitle">So sánh tổng chuyển khoản, lương công việc thực tế, BHXH và tạm ứng trong cùng một biểu đồ</div>
                     </div>
-                    <span class="chart-badge">NĂM <span id="salaryChartYearBadge">2026</span></span>
+                    <span class="chart-badge">NĂM <span id="salaryChartYearBadge" data-year-label="current">2026</span></span>
                 </div>
                 <div class="salary-fund-chart-wrap"><canvas id="monthlySalaryBarChart"></canvas></div>
             </div>
@@ -1483,7 +1483,7 @@
     <!-- TAB CƯỚC VIỄN THÔNG -->
     <div id="telecomPaymentTab" class="tab-pane table-card">
         <div class="table-header-bar">
-            <div class="table-title"><i class="fa-solid fa-wifi"></i> CƯỚC MẠNG & INTERNET (NĂM <span id="telecomYearTitle">2026</span>)</div>
+            <div class="table-title"><i class="fa-solid fa-wifi"></i> CƯỚC MẠNG & INTERNET (NĂM <span id="telecomYearTitle" data-year-label="current">2026</span>)</div>
             <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-brands fa-google-drive"></i> Mở Drive</button>
         </div>
         <div class="kpi-grid" style="margin-bottom: 14px;">
@@ -2491,7 +2491,7 @@
         let elThang = document.getElementById('cfgThangChon');
         if (elNam) currentNamKey = elNam.value;
         if (elThang) currentThangKey = elThang.value;
-        document.querySelectorAll('.thangHienTaiTitle').forEach(el => el.innerText = `${currentThangKey}/${currentNamKey}`);
+        capNhatNhanDienNamLuuTru();
         let pathInput = document.getElementById('cfgDrivePath');
         if(pathInput) pathInput.value = `VINAPACO_Drive / ${currentNamKey} / ${currentThangKey}`;
         // Không chặn giao diện; GAS sẽ tạo/đảm bảo thư mục Năm/Tháng ở nền.
@@ -2564,7 +2564,45 @@
         }
     }
 
+    function capNhatNhanDienNamLuuTru() {
+        const year = String(currentNamKey || new Date().getFullYear());
+        const month = String(currentThangKey || 'Tháng 01');
+
+        // Tất cả tiêu đề/nhãn phụ thuộc năm đang chọn phải lấy từ currentNamKey.
+        const yearOnlyIds = [
+            'monthlySalaryYearTitle',
+            'telecomYearTitle',
+            'salaryChartYearBadge'
+        ];
+        yearOnlyIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = year;
+        });
+
+        document.querySelectorAll('.thangHienTaiTitle').forEach(el => {
+            el.textContent = `${month}/${year}`;
+        });
+
+        const staffMonth = document.getElementById('staffMasterMonthLabel');
+        if (staffMonth) staffMonth.textContent = `${month}/${year}`;
+
+        const leavePeriod = document.getElementById('leaveModalPeriod');
+        if (leavePeriod) leavePeriod.textContent = `${month}/${year}`;
+
+        const slipMonth = document.getElementById('slipMonthSub');
+        if (slipMonth) slipMonth.textContent = `${month}/${year} - Văn phòng TCT`;
+
+        const drivePath = document.getElementById('cfgDrivePath');
+        if (drivePath) drivePath.value = `VINAPACO_Drive / ${year} / ${month}`;
+
+        // Cập nhật tiêu đề tab/section nếu có phần tử tương ứng.
+        document.querySelectorAll('[data-year-label="current"]').forEach(el => {
+            el.textContent = year;
+        });
+    }
+
     function capNhat() {
+        capNhatNhanDienNamLuuTru();
         let monthData = coSoDuLieuNamThang[currentNamKey] ? coSoDuLieuNamThang[currentNamKey][currentThangKey] : null;
         if (!monthData) return;
         let cfg = monthData.config;
@@ -2618,11 +2656,25 @@
                 let items = dsThanhToanVanPhongProByMonth[key];
                 if (Array.isArray(items)) {
                     items.forEach((item, index) => {
-                        allVpp.push(Object.assign({}, item, { namHachToan: parts[0], thangHachToan: parts[1], originalKey: key, originalIndex: index }));
+                        allVpp.push(Object.assign({}, item, {
+                            namHachToan: parts[0],
+                            thangHachToan: parts[1] || "Tháng 01",
+                            originalKey: key,
+                            originalIndex: index,
+                            __monthNumber: parseInt(String(parts[1] || '').replace(/\D/g,''), 10) || 1
+                        }));
                     });
                 }
             }
         }
+        // Sắp xếp đúng thứ tự Tháng 01 -> Tháng 12.
+        // Chứng từ trong cùng tháng vẫn giữ nguyên thứ tự nhập.
+        allVpp.sort((a, b) => {
+            const ma = Number(a.__monthNumber) || 1;
+            const mb = Number(b.__monthNumber) || 1;
+            return ma !== mb ? ma - mb : (a.originalIndex || 0) - (b.originalIndex || 0);
+        });
+        allVpp.forEach(item => delete item.__monthNumber);
         return allVpp;
     }
 
@@ -2634,11 +2686,24 @@
                 let items = dsThanhToanTelecombyMonth[key];
                 if (Array.isArray(items)) {
                     items.forEach((item, index) => {
-                        allTelecom.push(Object.assign({}, item, { namHachToan: parts[0], thangHachToan: parts[1] || "Tháng 01", originalKey: key, originalIndex: index }));
+                        allTelecom.push(Object.assign({}, item, {
+                            namHachToan: parts[0],
+                            thangHachToan: parts[1] || "Tháng 01",
+                            originalKey: key,
+                            originalIndex: index,
+                            __monthNumber: parseInt(String(parts[1] || '').replace(/\D/g,''), 10) || 1
+                        }));
                     });
                 }
             }
         }
+        // Sắp xếp đúng thứ tự Tháng 01 -> Tháng 12.
+        allTelecom.sort((a, b) => {
+            const ma = Number(a.__monthNumber) || 1;
+            const mb = Number(b.__monthNumber) || 1;
+            return ma !== mb ? ma - mb : (a.originalIndex || 0) - (b.originalIndex || 0);
+        });
+        allTelecom.forEach(item => delete item.__monthNumber);
         return allTelecom;
     }
 

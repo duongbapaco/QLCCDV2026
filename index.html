@@ -67,14 +67,14 @@
         }
 
         /* ===== MENU TRÁI + NỘI DUNG PHẢI ===== */
-        .app-layout { display:grid; grid-template-columns:245px minmax(0,1fr); gap:18px; align-items:start; margin-top:16px; }
-        .tab-nav-shell { position:sticky; top:14px; z-index:900; background:#fff; border:1px solid #cbd5e1; border-radius:16px; box-shadow:0 10px 28px rgba(15,23,42,.10); padding:10px; overflow:hidden; }
-        .tab-nav { display:flex; flex-direction:column; gap:5px; max-height:calc(100vh - 32px); overflow-y:auto; overflow-x:hidden; scrollbar-width:thin; padding-right:2px; }
-        .tab-btn-nav { position:relative; min-height:48px; width:100%; padding:0 15px; border:0; border-radius:10px; background:transparent; font-weight:800; font-size:15px; cursor:pointer; color:#334155; transition:background .16s ease,color .16s ease,box-shadow .16s ease,transform .16s ease; display:flex; align-items:center; justify-content:flex-start; gap:11px; text-align:left; flex:0 0 auto; }
-        .tab-btn-nav i { width:22px; text-align:center; font-size:15px; flex:0 0 22px; }
-        .tab-btn-nav:hover { background:#eff8ff; color:#0369a1; transform:translateX(2px); }
-        .tab-btn-nav.active { background:linear-gradient(90deg,#0284c7,#0ea5e9); color:#fff; box-shadow:0 6px 15px rgba(2,132,199,.22); }
-        .tab-btn-nav.active::before { content:''; position:absolute; left:0; top:8px; bottom:8px; width:4px; border-radius:0 5px 5px 0; background:#fff; }
+        .app-layout { display:block; width:100%; margin-top:14px; }
+        .tab-nav-shell { position:sticky; top:10px; z-index:900; width:100%; background:rgba(255,255,255,.98); border:1px solid #cbd5e1; border-radius:16px; box-shadow:0 10px 28px rgba(15,23,42,.10); padding:8px; overflow:visible; backdrop-filter:blur(8px); }
+        .tab-nav { display:grid; grid-template-columns:repeat(14,minmax(0,1fr)); gap:6px; width:100%; overflow:visible; padding:0; }
+        .tab-btn-nav { position:relative; min-height:50px; width:100%; padding:6px 8px; border:0; border-radius:10px; background:transparent; font-weight:800; font-size:13px; cursor:pointer; color:#334155; transition:background .16s ease,color .16s ease,box-shadow .16s ease,transform .16s ease; display:flex; align-items:center; justify-content:center; gap:7px; text-align:center; white-space:normal; line-height:1.15; min-width:0; }
+        .tab-btn-nav i { width:20px; text-align:center; font-size:14px; flex:0 0 20px; }
+        .tab-btn-nav:hover { background:#eff8ff; color:#0369a1; transform:translateY(-1px); }
+        .tab-btn-nav.active { background:linear-gradient(135deg,#0284c7,#0ea5e9); color:#fff; box-shadow:0 6px 15px rgba(2,132,199,.22); }
+        .tab-btn-nav.active::before { content:''; position:absolute; left:7px; right:7px; bottom:3px; height:3px; border-radius:5px; background:#fff; }
         .tab-section-label { display:block; padding:9px 10px 5px; color:#94a3b8; font-size:11px; font-weight:900; letter-spacing:.5px; text-transform:uppercase; }
         .tab-content-area { min-width:0; }
         .cloud-sync-panel { background:linear-gradient(135deg,#0f172a,#1e3a5f); color:#fff; border-radius:14px; padding:12px 15px; display:flex; gap:14px; align-items:center; justify-content:space-between; flex-wrap:wrap; box-shadow:0 8px 22px rgba(15,23,42,.14); }
@@ -97,12 +97,19 @@
         .kpi-title { font-size:12px; }
         .kpi-value { font-size:21px; }
         .kpi-sub { font-size:12px; }
+        @media (max-width: 1250px) {
+            .tab-nav { grid-template-columns:repeat(7,minmax(0,1fr)); }
+        }
         @media (max-width: 900px) {
-            .app-layout { grid-template-columns:1fr; gap:12px; }
             .tab-nav-shell { position:sticky; top:0; border-radius:12px; padding:6px; }
-            .tab-nav { flex-direction:row; max-height:none; overflow-x:auto; overflow-y:hidden; }
-            .tab-btn-nav { width:auto; min-height:46px; padding:0 14px; font-size:14px; flex:0 0 auto; }
+            .tab-nav { grid-template-columns:repeat(4,minmax(0,1fr)); gap:5px; }
+            .tab-btn-nav { min-height:46px; padding:6px 5px; font-size:12px; }
+            .tab-btn-nav i { font-size:13px; }
             .tab-btn-nav.active::before { display:none; }
+        }
+        @media (max-width: 560px) {
+            .tab-nav { grid-template-columns:repeat(2,minmax(0,1fr)); }
+            .tab-btn-nav { min-height:44px; font-size:11.5px; }
         }
         @media (max-width: 768px) { .cloud-sync-main { min-width:100%; } .cloud-sync-actions { width:100%; } .cloud-sync-actions .btn { flex:1; min-height:42px; } }
 
@@ -185,6 +192,33 @@
         .salary-signature-footer .sign-col { display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
         .salary-signature-footer .sign-space { height: 50px; }
         .salary-signature-footer .sign-name { text-transform: none; font-weight: 800; font-size: 12px; color: #0f172a; }
+
+
+        /* ===== KIỂM TRA DỮ LIỆU & CHÍNH TẢ ===== */
+        .data-check-toolbar { display:flex; align-items:center; justify-content:flex-end; gap:8px; margin-top:8px; }
+        .data-check-btn { min-height:42px; padding:0 14px; border:1px solid #bfdbfe; border-radius:10px; background:#eff6ff; color:#075985; font-weight:900; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:7px; box-shadow:0 2px 6px rgba(15,23,42,.06); }
+        .data-check-btn:hover { background:#dbeafe; transform:translateY(-1px); }
+        .data-check-count { min-width:22px; height:22px; padding:0 6px; border-radius:999px; display:inline-grid; place-items:center; background:#ef4444; color:#fff; font-size:11px; font-weight:900; }
+        .data-check-count.ok { background:#16a34a; }
+        .data-check-modal { width:min(980px,calc(100vw - 28px)); max-height:90vh; }
+        .data-check-head { padding:16px 20px; background:linear-gradient(135deg,#075985,#0284c7); color:#fff; display:flex; align-items:flex-start; justify-content:space-between; gap:14px; }
+        .data-check-head h2 { font-size:19px; margin:0; }
+        .data-check-head p { margin-top:4px; font-size:12px; opacity:.9; }
+        .data-check-summary { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; padding:14px 18px 8px; }
+        .data-check-stat { padding:10px 12px; border:1px solid #dbe4ee; border-radius:10px; background:#f8fafc; text-align:center; }
+        .data-check-stat b { display:block; font-size:20px; }
+        .data-check-stat span { font-size:10px; font-weight:900; color:#64748b; text-transform:uppercase; }
+        .data-check-list { max-height:50vh; overflow:auto; padding:8px 18px 16px; }
+        .data-check-item { border:1px solid #e2e8f0; border-left:4px solid #f59e0b; border-radius:10px; padding:10px 12px; margin-bottom:8px; background:#fff; }
+        .data-check-item.fixed { border-left-color:#16a34a; background:#f0fdf4; }
+        .data-check-item-title { font-weight:900; font-size:12px; color:#0f3d63; margin-bottom:5px; }
+        .data-check-before { color:#991b1b; text-decoration:line-through; }
+        .data-check-after { color:#166534; font-weight:900; }
+        .data-check-arrow { color:#64748b; padding:0 6px; }
+        .data-check-actions { display:flex; justify-content:flex-end; gap:8px; padding:12px 18px; border-top:1px solid #e2e8f0; background:#f8fafc; flex-wrap:wrap; }
+        .field-check-error { border-color:#f59e0b !important; background:#fffbeb !important; box-shadow:0 0 0 2px rgba(245,158,11,.12) !important; }
+        .field-check-ok { border-color:#22c55e !important; background:#f0fdf4 !important; }
+        @media(max-width:600px){ .data-check-summary{grid-template-columns:1fr 1fr}.data-check-summary .data-check-stat:last-child{grid-column:1/-1}.data-check-actions .btn{flex:1 1 100%} }
 
         @media print {
             body * { visibility: hidden; }
@@ -269,7 +303,7 @@
         body.tab-focus-mode .kpi-grid,
         body.tab-focus-mode .cloud-sync-panel { display: none !important; }
         body.tab-focus-mode .app-layout { display:block; margin:0; width:100%; min-height:100vh; }
-        body.tab-focus-mode .tab-nav-shell { display:none !important; }
+        body.tab-focus-mode .tab-nav-shell { display:block !important; position:sticky; top:8px; }
         body.tab-focus-mode .tab-content-area { width:100%; min-width:0; margin:0; padding:0; }
         body.tab-focus-mode .tab-pane.active {
             display:block;
@@ -1208,6 +1242,12 @@
         <button class="tab-btn-nav" onclick="switchTab('surveyTab', this)"><i class="fa-solid fa-clipboard-check"></i> Khảo sát</button>
         <button class="tab-btn-nav" onclick="switchTab('taskTab', this)"><i class="fa-solid fa-list-check"></i> Công việc</button>
       </nav>
+      <div class="data-check-toolbar">
+        <button type="button" class="data-check-btn" onclick="moKiemTraDuLieu()" title="Kiểm tra dữ liệu và lỗi chính tả trên toàn hệ thống">
+          <i class="fa-solid fa-spell-check"></i> KIỂM TRA DỮ LIỆU
+          <span id="dataCheckCount" class="data-check-count ok">0</span>
+        </button>
+      </div>
     </aside>
 
     <main class="tab-content-area">
@@ -4354,7 +4394,7 @@
     function enterTabFocusMode() {
         document.body.classList.add('tab-focus-mode');
         const btn = document.getElementById('showTabsBtn');
-        if (btn) btn.classList.remove('hidden');
+        if (btn) btn.classList.add('hidden');
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
@@ -4628,6 +4668,7 @@
 
         try { khoiTaoDanhSachNamTuSinh(); } catch(e) { console.error('Year init:', e); }
         try { doiThangHoSoLuong(); } catch(e) { console.error('Month init:', e); }
+        try { setTimeout(() => { kiemTraDuLieuTatCaTabs(false); danhDauTruongNhapSai(); }, 700); } catch(e) { console.error('Data checker init:', e); }
 
         // Thời tiết luôn khởi động độc lập với đồng bộ Cloud.
         setTimeout(() => {
@@ -4651,10 +4692,180 @@
                     document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
                     document.querySelectorAll('.tab-btn-nav').forEach(b => b.classList.remove('active'));
                     savedPane.classList.add('active'); savedBtn.classList.add('active');
+                    try { document.body.classList.add('tab-focus-mode'); } catch(e) {}
                 }
             }
         } catch(e) { console.error('Restore tab:', e); }
     };
+
+    /* ===== KIỂM TRA DỮ LIỆU & CHÍNH TẢ TOÀN HỆ THỐNG ===== */
+    const VN_TYPO_RULES = [
+        [/\bvăn\s*phòn\s*phẩm\b/gi, 'văn phòng phẩm'],
+        [/\bvăn\s*phòng\s*phẩ\b/gi, 'văn phòng phẩm'],
+        [/\bngân\s*hàn\b/gi, 'ngân hàng'],
+        [/\bthanh\s*toán\s*vp\b/gi, 'thanh toán VP'],
+        [/\bthanh\s*toan\b/gi, 'thanh toán'],
+        [/\bchứng\s*từ\b/gi, 'chứng từ'],
+        [/\bchung\s*tu\b/gi, 'chứng từ'],
+        [/\bcông\s*nghê\b/gi, 'công nghệ'],
+        [/\bcông\s*nghệ\s*thông\s*tin\s*\b/gi, 'công nghệ thông tin'],
+        [/\bthiêt\s*bị\b/gi, 'thiết bị'],
+        [/\bthiết\s*bi\b/gi, 'thiết bị'],
+        [/\bnhân\s*sư\b/gi, 'nhân sự'],
+        [/\bnhân\s*sự\s*đầy\s*đủ\b/gi, 'nhân sự đầy đủ'],
+        [/\bphong\s*ban\b/gi, 'phòng ban'],
+        [/\bphòng\s*ban\s*\s*\b/gi, 'phòng ban'],
+        [/\bthang\s*(\d{1,2})\b/gi, 'Tháng $1'],
+        [/\bcuoc\s*vt\b/gi, 'cước VT'],
+        [/\bcước\s*viên\s*thông\s*\b/gi, 'cước viễn thông'],
+        [/\bviễn\s*thông\s*\s*\b/gi, 'viễn thông'],
+        [/\bgiao\s*nhan\b/gi, 'giao nhận'],
+        [/\bgiao\s*nhận\s*thiet\s*bi\b/gi, 'giao nhận thiết bị'],
+        [/\bkho\s*muc\b/gi, 'kho mực'],
+        [/\bmuc\s*in\b/gi, 'mực in'],
+        [/\bso\s*tai\s*khoan\b/gi, 'số tài khoản'],
+        [/\bso\s*luong\b/gi, 'số lượng'],
+        [/\bdon\s*gia\b/gi, 'đơn giá'],
+        [/\btruo[ć]\s*thue\b/gi, 'trước thuế'],
+        [/\bthue\s*vat\b/gi, 'thuế VAT'],
+        [/\btong\s*thanh\s*toan\b/gi, 'tổng thanh toán'],
+        [/\bbo\s*phan\b/gi, 'bộ phận'],
+        [/\bnguoi\s*su\s*dung\b/gi, 'người sử dụng'],
+        [/\bhoan\s*thanh\b/gi, 'Hoàn thành'],
+        [/\bdang\s*lam\b/gi, 'Đang làm'],
+        [/\bchua\s*lam\b/gi, 'Chưa làm'],
+        [/\bky\s*cuoc\b/gi, 'kỳ cước'],
+        [/\bhach\s*toan\b/gi, 'hạch toán']
+    ];
+    const VN_NAME_KEYS = /^(hoTen|user|assignee|from|to|receiver|employee|handover|name)$/i;
+    let dataCheckIssues = [];
+
+    function suaLoiVanBan(text) {
+        if (typeof text !== 'string' || !text.trim()) return {text, changed:false};
+        let out = text;
+        VN_TYPO_RULES.forEach(([rx,repl]) => { out = out.replace(rx,repl); });
+        out = out.replace(/[ \t]{2,}/g,' ').replace(/\s+([,.;:])/g,'$1');
+        return {text:out, changed:out !== text};
+    }
+
+    function getFieldLabel(el) {
+        if (!el) return 'Trường dữ liệu';
+        if (el.id) {
+            const label = document.querySelector(`label[for="${el.id}"]`);
+            if (label) return label.textContent.trim();
+        }
+        const parent = el.closest('.form-group,.config-item');
+        const lab = parent?.querySelector('label');
+        return lab?.textContent?.trim() || el.getAttribute('aria-label') || el.placeholder || el.id || 'Trường dữ liệu';
+    }
+
+    function addDataCheckIssue(source, location, before, after, applyFn=null) {
+        if (!before || before === after) return;
+        dataCheckIssues.push({id:dataCheckIssues.length+1, source, location, before, after, applyFn, fixed:false});
+    }
+
+    function scanVisibleInputs() {
+        document.querySelectorAll('input[type="text"], input[type="search"], textarea').forEach(el => {
+            if (el.disabled || el.readOnly || !el.value || el.closest('#dataCheckModal')) return;
+            const result = suaLoiVanBan(el.value);
+            if (result.changed) addDataCheckIssue('Trường nhập liệu', `${getFieldLabel(el)}${el.id?' · '+el.id:''}`, el.value, result.text, () => {
+                el.value = result.text;
+                el.dispatchEvent(new Event('change',{bubbles:true}));
+                el.classList.remove('field-check-error'); el.classList.add('field-check-ok');
+            });
+        });
+    }
+
+    function scanStoredObject(obj, path, rootKey) {
+        if (!obj || typeof obj !== 'object') return;
+        Object.keys(obj).forEach(key => {
+            const value = obj[key];
+            const currentPath = `${path}.${key}`;
+            if (typeof value === 'string' && !VN_NAME_KEYS.test(key)) {
+                const result = suaLoiVanBan(value);
+                if (result.changed) addDataCheckIssue('Dữ liệu đã lưu', currentPath, value, result.text, () => {
+                    obj[key] = result.text;
+                    try { saveToLocalStorage(); } catch(e) {}
+                });
+            } else if (value && typeof value === 'object') scanStoredObject(value,currentPath,rootKey);
+        });
+    }
+
+    function scanAllStoredData() {
+        try { scanStoredObject(coSoDuLieuNamThang,'Lương / Nhân sự','coSoDuLieuNamThang'); } catch(e) { console.warn('scan salary:',e); }
+        try { scanStoredObject(dsThanhToanVanPhongProByMonth,'Thanh toán VP','dsThanhToanVanPhongProByMonth'); } catch(e) {}
+        try { scanStoredObject(dsThanhToanTelecombyMonth,'Cước VT','dsThanhToanTelecombyMonth'); } catch(e) {}
+        try { scanStoredObject(dsKhoMucIn,'Kho mực','dsKhoMucIn'); } catch(e) {}
+        try { scanStoredObject(dsPhieuGiaoNhan,'Giao nhận','dsPhieuGiaoNhan'); } catch(e) {}
+        try { scanStoredObject(dsKhaoSatChuyenSau,'Khảo sát','dsKhaoSatChuyenSau'); } catch(e) {}
+        try { scanStoredObject(danhSachCongViec,'Công việc','danhSachCongViec'); } catch(e) {}
+        try { if (typeof dsTaiKhoan !== 'undefined') scanStoredObject(dsTaiKhoan,'Tài khoản','dsTaiKhoan'); } catch(e) {}
+    }
+
+    function renderDataCheckList() {
+        const list = document.getElementById('dataCheckList');
+        if (!list) return;
+        const openIssues = dataCheckIssues.filter(x => !x.fixed);
+        document.getElementById('dataCheckTotal').textContent = dataCheckIssues.length;
+        document.getElementById('dataCheckFixable').textContent = openIssues.length;
+        document.getElementById('dataCheckFixed').textContent = dataCheckIssues.filter(x=>x.fixed).length;
+        const count = document.getElementById('dataCheckCount');
+        if (count) { count.textContent = openIssues.length; count.classList.toggle('ok', openIssues.length===0); }
+        if (!dataCheckIssues.length) {
+            list.innerHTML = `<div style="padding:35px 15px;text-align:center;color:#166534;font-weight:900;"><i class="fa-solid fa-circle-check" style="font-size:36px;margin-bottom:10px;"></i><div>Không phát hiện lỗi chính tả thuộc bộ quy tắc kiểm tra hiện tại.</div><small style="display:block;margin-top:6px;color:#64748b;font-weight:600;">Hệ thống không tự sửa tên riêng hoặc nội dung có thể là chủ ý của người nhập.</small></div>`;
+            return;
+        }
+        list.innerHTML = dataCheckIssues.map(x => `
+          <div class="data-check-item ${x.fixed?'fixed':''}">
+            <div class="data-check-item-title"><i class="fa-solid ${x.fixed?'fa-circle-check':'fa-triangle-exclamation'}"></i> ${x.source} · ${x.location}</div>
+            <div><span class="data-check-before">${escapeHtml(x.before)}</span><span class="data-check-arrow">→</span><span class="data-check-after">${escapeHtml(x.after)}</span>${x.fixed?' <b style="color:#166534;float:right;">ĐÃ SỬA</b>':''}</div>
+          </div>`).join('');
+    }
+
+    function escapeHtml(v) { return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
+
+    function kiemTraDuLieuTatCaTabs(openModal=false) {
+        dataCheckIssues = [];
+        scanVisibleInputs();
+        scanAllStoredData();
+        renderDataCheckList();
+        if (openModal) {
+            const modal=document.getElementById('dataCheckModal');
+            if(modal){modal.classList.remove('hidden');modal.setAttribute('aria-hidden','false');}
+        }
+        return dataCheckIssues.length;
+    }
+
+    function moKiemTraDuLieu() { kiemTraDuLieuTatCaTabs(true); }
+    function dongKiemTraDuLieu() { const m=document.getElementById('dataCheckModal'); if(m){m.classList.add('hidden');m.setAttribute('aria-hidden','true');} }
+
+    function suaTatCaLoiChinhTa() {
+        let fixed=0;
+        dataCheckIssues.forEach(issue => {
+            if (issue.fixed || typeof issue.applyFn !== 'function') return;
+            try { issue.applyFn(); issue.fixed=true; fixed++; } catch(e) { console.warn('Không thể sửa:',issue.location,e); }
+        });
+        try { capNhat(); } catch(e) {}
+        try { saveToLocalStorage(); } catch(e) {}
+        renderDataCheckList();
+        alert(fixed ? `✅ Đã sửa ${fixed} lỗi chính tả/chuẩn hóa chắc chắn. Hệ thống đã cập nhật lại dữ liệu.` : 'ℹ️ Không có lỗi chắc chắn để sửa.');
+    }
+
+    function danhDauTruongNhapSai() {
+        document.querySelectorAll('input[type="text"], input[type="search"], textarea').forEach(el => {
+            if (el.disabled || el.readOnly || !el.value) return;
+            const r=suaLoiVanBan(el.value);
+            el.classList.toggle('field-check-error',r.changed);
+        });
+    }
+
+    document.addEventListener('input', function(e){
+        const el=e.target;
+        if(el && (el.matches('input[type="text"],input[type="search"],textarea'))) {
+            const r=suaLoiVanBan(el.value);
+            el.classList.toggle('field-check-error',r.changed);
+        }
+    });
 
     window.addEventListener('error', function(e) {
         console.error('VINAPACO runtime error:', e.error || e.message);
@@ -4663,5 +4874,25 @@
     });
 </script>
 <button id="showTabsBtn" class="show-tabs-btn hidden" type="button" onclick="showTabMenu()" title="Hiển thị menu chức năng"><i class="fa-solid fa-bars"></i><span>HIỆN MENU</span></button>
+
+<div id="dataCheckModal" class="modal-overlay hidden" aria-hidden="true">
+  <div class="modal-card data-check-modal">
+    <div class="data-check-head">
+      <div><h2><i class="fa-solid fa-shield-check"></i> KIỂM TRA DỮ LIỆU & CHÍNH TẢ</h2><p>Rà soát các trường nhập liệu và dữ liệu đã lưu trên các tab. Hệ thống chỉ tự đề xuất các lỗi từ điển chắc chắn, không tự ý đổi tên riêng.</p></div>
+      <button type="button" class="btn btn-red" onclick="dongKiemTraDuLieu()"><i class="fa-solid fa-xmark"></i> Đóng</button>
+    </div>
+    <div class="data-check-summary">
+      <div class="data-check-stat"><b id="dataCheckTotal">0</b><span>Tổng phát hiện</span></div>
+      <div class="data-check-stat"><b id="dataCheckFixable">0</b><span>Có thể sửa</span></div>
+      <div class="data-check-stat"><b id="dataCheckFixed">0</b><span>Đã sửa</span></div>
+    </div>
+    <div id="dataCheckList" class="data-check-list"></div>
+    <div class="data-check-actions">
+      <button type="button" class="btn btn-green btn-lg" onclick="suaTatCaLoiChinhTa()"><i class="fa-solid fa-wand-magic-sparkles"></i> SỬA CÁC LỖI CHẮC CHẮN</button>
+      <button type="button" class="btn btn-blue btn-lg" onclick="kiemTraDuLieuTatCaTabs(true)"><i class="fa-solid fa-rotate"></i> KIỂM TRA LẠI</button>
+      <button type="button" class="btn btn-red btn-lg" onclick="dongKiemTraDuLieu()"><i class="fa-solid fa-xmark"></i> ĐÓNG</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>

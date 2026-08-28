@@ -710,6 +710,187 @@
 #inkOutboundTableBody td:nth-child(4){text-align:center!important}
 #inkOutboundTableBody .action-cell-inner{display:flex;justify-content:center;align-items:center;gap:5px}
 </style>
+
+<style id="vpp-layout-balanced-v2">
+/* =========================================================
+   THANH TOÁN VĂN PHÒNG — CĂN CHỈNH TRÊN / DƯỚI
+   Form và bảng dùng chung đúng chiều rộng của tab.
+   ========================================================= */
+#officePaymentTab{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
+    padding-left:20px;
+    padding-right:20px;
+    box-sizing:border-box;
+}
+
+#officePaymentTab .table-header-bar{
+    width:100%;
+    margin:0 0 12px 0;
+    box-sizing:border-box;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+}
+
+#officePaymentTab #formCardVpp{
+    width:100%;
+    max-width:100%;
+    box-sizing:border-box;
+    margin:0 0 12px 0;
+    padding:14px 14px 12px;
+    display:grid;
+    grid-template-columns:repeat(7,minmax(0,1fr));
+    column-gap:10px;
+    row-gap:10px;
+    align-items:end;
+}
+
+#officePaymentTab #formCardVpp .form-group{
+    min-width:0;
+    width:100%;
+    margin:0;
+}
+
+#officePaymentTab #formCardVpp .form-group label{
+    min-height:27px;
+    display:flex;
+    align-items:flex-start;
+    line-height:1.25;
+    margin:0;
+    white-space:normal;
+}
+
+#officePaymentTab #formCardVpp .form-group input,
+#officePaymentTab #formCardVpp .form-group select{
+    width:100%;
+    min-width:0;
+    height:38px;
+    box-sizing:border-box;
+}
+
+#officePaymentTab #formCardVpp .form-group[style*="grid-column"]{
+    grid-column:span 2 !important;
+}
+
+#officePaymentTab #formCardVpp #btnSaveVpp,
+#officePaymentTab #formCardVpp #btnCancelVpp{
+    width:100%;
+    min-width:0;
+    height:38px;
+    margin:0;
+}
+
+#officePaymentTab > table{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    table-layout:fixed !important;
+    border-collapse:collapse;
+    margin:0;
+    box-sizing:border-box;
+}
+
+#officePaymentTab > table th,
+#officePaymentTab > table td{
+    box-sizing:border-box;
+    padding:8px 7px;
+    vertical-align:middle;
+    overflow-wrap:anywhere;
+    word-break:normal;
+    line-height:1.3;
+}
+
+#officePaymentTab > table th{
+    white-space:normal;
+    font-size:11px;
+    line-height:1.2;
+}
+
+#officePaymentTab > table td{
+    font-size:12px;
+}
+
+/* 13 cột — tổng đúng 100%, cân đối theo lượng thông tin */
+#officePaymentTab > table th:nth-child(1),
+#officePaymentTab > table td:nth-child(1){width:4%}
+#officePaymentTab > table th:nth-child(2),
+#officePaymentTab > table td:nth-child(2){width:4%}
+#officePaymentTab > table th:nth-child(3),
+#officePaymentTab > table td:nth-child(3){width:13%}
+#officePaymentTab > table th:nth-child(4),
+#officePaymentTab > table td:nth-child(4){width:16%}
+#officePaymentTab > table th:nth-child(5),
+#officePaymentTab > table td:nth-child(5){width:15%}
+#officePaymentTab > table th:nth-child(6),
+#officePaymentTab > table td:nth-child(6){width:4%}
+#officePaymentTab > table th:nth-child(7),
+#officePaymentTab > table td:nth-child(7){width:8%}
+#officePaymentTab > table th:nth-child(8),
+#officePaymentTab > table td:nth-child(8){width:7%}
+#officePaymentTab > table th:nth-child(9),
+#officePaymentTab > table td:nth-child(9){width:5%}
+#officePaymentTab > table th:nth-child(10),
+#officePaymentTab > table td:nth-child(10){width:7%}
+#officePaymentTab > table th:nth-child(11),
+#officePaymentTab > table td:nth-child(11){width:5%}
+#officePaymentTab > table th:nth-child(12),
+#officePaymentTab > table td:nth-child(12){width:7%}
+#officePaymentTab > table th:nth-child(13),
+#officePaymentTab > table td:nth-child(13){width:5%}
+
+#officePaymentTab > table th:nth-child(1),
+#officePaymentTab > table th:nth-child(2),
+#officePaymentTab > table th:nth-child(6),
+#officePaymentTab > table th:nth-child(7),
+#officePaymentTab > table th:nth-child(8),
+#officePaymentTab > table th:nth-child(9),
+#officePaymentTab > table th:nth-child(10),
+#officePaymentTab > table th:nth-child(11),
+#officePaymentTab > table th:nth-child(12),
+#officePaymentTab > table th:nth-child(13),
+#officePaymentTab > table td:nth-child(1),
+#officePaymentTab > table td:nth-child(2),
+#officePaymentTab > table td:nth-child(6),
+#officePaymentTab > table td:nth-child(7),
+#officePaymentTab > table td:nth-child(8),
+#officePaymentTab > table td:nth-child(9),
+#officePaymentTab > table td:nth-child(10),
+#officePaymentTab > table td:nth-child(11),
+#officePaymentTab > table td:nth-child(12),
+#officePaymentTab > table td:nth-child(13){
+    text-align:center;
+}
+
+@media (max-width:1200px){
+    #officePaymentTab #formCardVpp{
+        grid-template-columns:repeat(4,minmax(0,1fr));
+    }
+}
+
+@media (max-width:760px){
+    #officePaymentTab{
+        padding-left:10px;
+        padding-right:10px;
+    }
+    #officePaymentTab #formCardVpp{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        padding:12px;
+    }
+    #officePaymentTab #formCardVpp .form-group[style*="grid-column"]{
+        grid-column:1/-1 !important;
+    }
+    #officePaymentTab > table{
+        min-width:980px !important;
+        table-layout:fixed !important;
+    }
+    #officePaymentTab .table-header-bar{
+        align-items:flex-start;
+    }
+}
+</style>
 </head>
 <body>
 

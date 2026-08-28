@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Hệ Thống Quản Lý VINAPACO - Full Pro Edition 2025-2026</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
@@ -731,6 +731,48 @@
     border-top:2px solid #94a3b8!important;
     padding-top:11px!important;
     padding-bottom:11px!important;
+}
+</style>
+<style id="vinapaco-mobile-iphone">
+@media (max-width:768px){
+html,body{width:100%;min-width:0!important;overflow-x:hidden!important;-webkit-text-size-adjust:100%}
+body{font-size:14px!important;line-height:1.45!important}
+*,*:before,*:after{box-sizing:border-box}
+.container,.app-container,.main-container,main,.content,.page-content{width:100%!important;max-width:100%!important;margin:0!important;padding-left:12px!important;padding-right:12px!important}
+h1{font-size:20px!important}h2{font-size:18px!important}h3{font-size:16px!important}
+button,.btn,input,select,textarea{font-size:14px!important;min-height:42px!important;border-radius:10px!important}
+input,select,textarea{max-width:100%!important}
+.card,.panel,.section,.box,.module-card{width:100%!important;margin:0 0 12px!important;padding:12px!important;border-radius:14px!important}
+.grid,.row,.form-grid,.dashboard-grid,.stats-grid{grid-template-columns:1fr!important;gap:10px!important}
+.toolbar,.actions,.button-group{display:flex!important;flex-wrap:wrap!important;gap:8px!important}
+.table-responsive,.table-wrap,.data-table-wrap,.table-container{width:100%!important;max-width:100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}
+table{min-width:720px;font-size:13px!important}
+th,td{padding:8px 7px!important;white-space:nowrap!important}
+#weatherWidget,.weather-widget,.weather-card,#weatherContainer,#weather10DaysContainer{width:100%!important;max-width:100%!important;overflow:hidden!important}
+.weather-search,.location-search,.weather-controls{display:grid!important;grid-template-columns:1fr!important;gap:8px!important}
+.weather-result,.location-result{max-height:42vh!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important}
+.modal,.dialog,.modal-content{width:calc(100vw - 20px)!important;max-width:calc(100vw - 20px)!important;max-height:90vh!important;overflow-y:auto!important;border-radius:16px!important}
+}
+</style>
+<style id="mobile-weather-fix">
+@media (max-width:768px){
+  #weatherWidgetResults, #weatherLocationResults{
+    max-height:46vh!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  #weatherWidgetResults button, #weatherLocationResults button{
+    width:100%!important;
+    min-height:52px!important;
+    margin-bottom:6px!important;
+    padding:9px 10px!important;
+    font-size:13px!important;
+    line-height:1.35!important;
+  }
+  #inputWidgetSearchLocation, #inputModalSearchLocation{
+    min-height:44px!important;
+    font-size:15px!important;
+  }
 }
 </style>
 </head>
@@ -4331,17 +4373,22 @@
 
     async function reverseGeocodeVietNam(lat, lon) {
         try {
-            const u = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&accept-language=vi&zoom=18`;
-            const r = await fetch(u, {headers:{'Accept':'application/json'}, cache:"no-store"});
+            const u = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&namedetails=1&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&accept-language=vi&zoom=18`;
+            const r = await fetch(u, {headers:{'Accept':'application/json'}, cache:'no-store'});
+            if (!r.ok) throw new Error('Reverse geocoding HTTP ' + r.status);
             const d = await r.json();
-            if (d && d.address) {
-                const a=d.address;
-                const commune=a.village || a.town || a.municipality || a.city_district || a.suburb || '';
-                const province=a.province || a.state || a.city || '';
-                return [commune,province].filter(Boolean).join(', ') || d.display_name || 'Vị trí GPS';
-            }
-        } catch(e) {}
-        return "Vị trí GPS";
+            const a = d.address || {};
+            const clean = s => String(s || '').replace(/^Tỉnh\s+/i,'').trim();
+            const locality = clean(a.village || a.town || a.municipality || a.city_district || a.suburb || a.quarter || a.hamlet || a.city);
+            const district = clean(a.county || a.district || a.state_district);
+            const province = clean(a.province || a.state || a.city);
+            const parts = [locality, district, province].filter((v,i,arr)=>v && arr.indexOf(v)===i);
+            return {name: parts.join(', ') || d.display_name || 'Vị trí hiện tại',
+                    locality, district, province, lat:Number(lat), lon:Number(lon), raw:d};
+        } catch(e) {
+            return {name:'Vị trí hiện tại', locality:'', district:'', province:'',
+                    lat:Number(lat), lon:Number(lon), error:e.message};
+        }
     }
 
     function hienThiKetQuaDiaDiem(results, targetId) {
@@ -4351,7 +4398,13 @@
         box.style.display='flex';
         box.innerHTML = results.slice(0,6).map((r,i)=>{
             const lat=Number(r.lat ?? r.latitude), lon=Number(r.lon ?? r.longitude);
-            const name=(r.display_name || `${r.name || 'Địa điểm'}${r.admin1 ? ', '+r.admin1 : ''}`).replace(/</g,'&lt;');
+            const a = r.address || {};
+            const clean = s => String(s || '').replace(/^Tỉnh\s+/i,'').trim();
+            const locality = clean(a.village || a.town || a.municipality || a.city_district || a.suburb || a.quarter || a.hamlet || r.name);
+            const district = clean(a.county || a.district || a.state_district);
+            const province = clean(a.province || a.state);
+            const preciseName = [locality, district, province].filter((v,i,arr)=>v && arr.indexOf(v)===i).join(', ') || r.display_name || r.name || 'Địa điểm';
+            const name=preciseName.replace(/</g,'&lt;');
             return `<button type="button" onclick="chonDiaDiemThoiTiet(${lat},${lon},${JSON.stringify(name)})" style="text-align:left;border:1px solid #dbeafe;background:#f8fafc;border-radius:8px;padding:8px 10px;cursor:pointer;font-weight:700;color:#0f172a;">${i+1}. ${name}<br><small style="color:#64748b;font-weight:600;">Tọa độ: ${lat.toFixed(6)}, ${lon.toFixed(6)}</small></button>`;
         }).join('');
     }
@@ -4414,11 +4467,15 @@
         const wText = document.getElementById('weatherWidgetText');
         if (wText) wText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang lấy GPS độ chính xác cao...`;
         navigator.geolocation.getCurrentPosition(async pos => {
-            const lat = pos.coords.latitude, lon = pos.coords.longitude, accuracy = pos.coords.accuracy;
-            const resolvedName = await reverseGeocodeVietNam(lat, lon);
+            const lat = pos.coords.latitude;
+            const lon = pos.coords.longitude;
+            const accuracy = Number(pos.coords.accuracy || 0);
+            const resolved = await reverseGeocodeVietNam(lat, lon);
+            const resolvedName = resolved && resolved.name ? resolved.name : 'Vị trí hiện tại';
             await capNhatThoiTiet(lat, lon, resolvedName);
             await capNhatThoiTiet10Ngay(lat, lon, resolvedName);
-            alert(`✅ Định vị chính xác:\n${resolvedName}\n${lat.toFixed(6)}, ${lon.toFixed(6)}`);
+            const accText = accuracy ? `Độ chính xác GPS: ±${Math.round(accuracy)} m` : 'Độ chính xác GPS: không xác định';
+            alert(`✅ Định vị GPS chính xác\n${resolvedName}\n${lat.toFixed(6)}, ${lon.toFixed(6)}\n${accText}`);
         }, error => {
             if (wText) wText.innerHTML = "Không thể lấy tọa độ GPS.";
             alert("⚠️ Không thể truy cập GPS: " + error.message + ". Hãy cấp quyền vị trí cho trình duyệt.");

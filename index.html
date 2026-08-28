@@ -299,9 +299,18 @@
         body.tab-focus-mode .banner,
         body.tab-focus-mode #systemConfigBar,
         body.tab-focus-mode .top-info-bar,
-        body.tab-focus-mode .config-bar,
         body.tab-focus-mode .kpi-grid,
         body.tab-focus-mode .cloud-sync-panel { display: none !important; }
+        /* Giữ nguyên khu vực THIẾT LẬP NĂM/THÁNG/DRIVE/LƯƠNG khi chuyển tab */
+        body.tab-focus-mode .config-bar {
+            display:grid !important;
+            margin:0 0 12px 0 !important;
+            width:100%;
+            position:sticky;
+            top:0;
+            z-index:890;
+            box-sizing:border-box;
+        }
         body.tab-focus-mode .app-layout { display:block; margin:0; width:100%; min-height:100vh; }
         body.tab-focus-mode .tab-nav-shell { display:block !important; position:sticky; top:8px; }
         body.tab-focus-mode .tab-content-area { width:100%; min-width:0; margin:0; padding:0; }

@@ -932,6 +932,47 @@
         align-items:flex-start;
     }
 }
+
+        /* ===== BẢN SỬA CUỐI: CHỮ DỄ ĐỌC + BIỂU ĐỒ PHÉP ĐỨNG + PHIẾU LƯƠNG 1 TRANG ===== */
+        #officePaymentTab .table-title,#telecomPaymentTab .table-title,#inkInventoryTab .table-title{font-size:20px!important}
+        #officePaymentTab table,#telecomPaymentTab table,#inkInventoryTab table{font-size:15px!important}
+        #officePaymentTab th,#telecomPaymentTab th,#inkInventoryTab th{font-size:13px!important;padding:11px 12px!important}
+        #officePaymentTab td,#telecomPaymentTab td,#inkInventoryTab td{font-size:15px!important;padding:11px 12px!important}
+        #officePaymentTab .form-group label,#telecomPaymentTab .form-group label,#inkInventoryTab .form-group label{font-size:13px!important}
+        #officePaymentTab .form-group input,#officePaymentTab .form-group select,#telecomPaymentTab .form-group input,#telecomPaymentTab .form-group select,#inkInventoryTab .form-group input,#inkInventoryTab .form-group select{font-size:15px!important}
+        #inkInventoryTab .badge-net,#inkInventoryTab .badge-warning,#inkInventoryTab .badge-danger{font-size:13px!important;padding:6px 10px!important;line-height:1.2!important;font-weight:900!important}
+        #inkInventoryTab .action-cell-inner .btn{font-size:13px!important;min-height:34px}
+        .leave-chart-card.leave-bar-card{min-height:660px!important}
+        .leave-bar-wrap{height:600px!important;margin-top:10px!important}
+        @media(max-width:1100px){.leave-chart-card.leave-bar-card{min-height:560px!important}.leave-bar-wrap{height:520px!important}}
+        @media(max-width:650px){.leave-chart-card.leave-bar-card{min-height:0!important}.leave-bar-wrap{height:500px!important}}
+        @media print{
+          @page{size:A4 portrait;margin:6mm 8mm!important}
+          html,body{width:210mm!important;min-width:0!important;height:297mm!important;min-height:297mm!important;margin:0!important;padding:0!important;overflow:hidden!important;background:#fff!important}
+          body *{visibility:hidden!important}
+          #previewModal,#previewModal *{visibility:visible!important}
+          #previewModal{position:static!important;inset:auto!important;display:block!important;width:100%!important;height:auto!important;margin:0!important;padding:0!important;background:#fff!important}
+          #previewModal .modal-card{width:100%!important;max-width:none!important;height:auto!important;max-height:none!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;overflow:visible!important}
+          #previewModal .modal-card>div:nth-child(1),#previewModal .modal-actions{display:none!important}
+          #previewModal .modal-card>div:nth-child(2){width:100%!important;height:auto!important;max-height:none!important;margin:0!important;padding:0!important;overflow:visible!important;background:#fff!important}
+          #payslip-capture{box-sizing:border-box!important;width:194mm!important;max-width:194mm!important;height:auto!important;min-height:0!important;max-height:284mm!important;margin:0 auto!important;padding:4mm 5mm!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#fff!important;font-family:"Times New Roman",Times,serif!important;font-size:9pt!important;line-height:1.08!important;overflow:hidden!important;page-break-before:avoid!important;page-break-after:avoid!important;page-break-inside:avoid!important;break-inside:avoid!important}
+          #payslip-capture>div:first-child{padding-bottom:2.5mm!important;margin-bottom:2.5mm!important;border-bottom:1pt solid #000!important}
+          #payslip-capture h2{font-size:14pt!important;margin:1mm 0!important}
+          #payslip-capture table{width:100%!important;min-width:0!important;table-layout:fixed!important;border-collapse:collapse!important;font-size:8.3pt!important}
+          #payslip-capture th,#payslip-capture td{padding:1.5mm!important;line-height:1.05!important;word-break:break-word!important}
+          #payslip-capture .salary-signature-footer{margin-top:2.5mm!important;padding-top:1mm!important;font-size:8.2pt!important}
+          #payslip-capture .salary-signature-footer .sign-space{height:10mm!important}
+          #payslip-capture [style*="padding: 18px"],#payslip-capture [style*="padding:18px"],#payslip-capture [style*="padding: 16px"],#payslip-capture [style*="padding:16px"]{padding:2mm!important}
+          #payslip-capture [style*="margin-bottom: 20px"],#payslip-capture [style*="margin-bottom:20px"],#payslip-capture [style*="margin-bottom: 14px"],#payslip-capture [style*="margin-bottom:14px"]{margin-bottom:2mm!important}
+          #payslip-capture [style*="font-size: 22px"],#payslip-capture [style*="font-size:22px"]{font-size:14pt!important}
+          #payslip-capture [style*="font-size: 16px"],#payslip-capture [style*="font-size:16px"]{font-size:11pt!important}
+          #payslip-capture [style*="font-size: 15px"],#payslip-capture [style*="font-size:15px"]{font-size:9.5pt!important}
+          #payslip-capture [style*="font-size: 14px"],#payslip-capture [style*="font-size:14px"]{font-size:9pt!important}
+          #payslip-capture table,#payslip-capture tr,#payslip-capture .salary-signature-footer{page-break-inside:avoid!important;break-inside:avoid!important}
+          /* Phần cuối của phiếu bàn giao không in để phiếu gọn hơn. */
+          #modalHandoverSlipPreview .handover-slip-container .handover-signatures{display:none!important}
+        }
+
 </style>
 
 <script>
@@ -1710,7 +1751,7 @@
             <div style="background: white; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px;">
                 <div style="font-weight: 900; font-size: 13px; color: #dc2626; margin-bottom: 8px;"><i class="fa-solid fa-cart-arrow-up"></i> LỊCH SỬ XUẤT KHO / CẤP PHÁT</div>
                 <table>
-                    <thead><tr><th>Tên Mực / Vật Tư</th><th style="text-align: center;">SL Xuất</th><th>Người Nhận</th><th class="action-col">Thao Tác</th></tr></thead>
+                    <thead><tr><th>Tên Mực / Vật Tư</th><th style="text-align: center;">Nghiệp Vụ</th><th style="text-align: center;">SL Xuất</th><th>Người Nhận</th><th class="action-col">Thao Tác</th></tr></thead>
                     <tbody id="inkOutboundTableBody"></tbody>
                 </table>
             </div>
@@ -3492,6 +3533,7 @@
             if (isOutbound) {
                 tbodyOut.innerHTML += `<tr>
                     ${commonName}
+                    <td style="text-align:center;">${badgeAct}</td>
                     <td style="text-align:center;font-weight:900;color:#dc2626;">${esc(item.qty)}</td>
                     <td>${esc(item.receiver || '--')}</td>
                     ${actions}
@@ -4279,16 +4321,19 @@
                     {label:'Còn lại',data:remainingLeaves,borderRadius:6,barThickness:9}
                 ]
             }, {
-                indexAxis:'y',
+                indexAxis:'x',
                 interaction:{mode:'index',intersect:false},
+                maintainAspectRatio:false,
+                categoryPercentage:0.72,
+                barPercentage:0.82,
                 plugins:{
-                    legend:{position:'bottom',labels:{boxWidth:22,padding:16,font:{size:11,weight:'bold'}}},
+                    legend:{position:'bottom',labels:{boxWidth:22,padding:16,font:{size:12,weight:'bold'}}},
                     datalabels:{display:false},
                     tooltip:{callbacks:{label:(ctx)=>` ${ctx.dataset.label}: ${ctx.raw} ngày`}}
                 },
                 scales:{
-                    x:{beginAtZero:true,max:Math.max(12,...usedLeaves,...remainingLeaves),ticks:{stepSize:1,font:{size:10,weight:'bold'}},grid:{color:'rgba(148,163,184,.18)'}},
-                    y:{ticks:{font:{size:10,weight:'bold'}},grid:{display:false}}
+                    x:{beginAtZero:true,ticks:{autoSkip:false,maxRotation:55,minRotation:35,font:{size:10,weight:'bold'}},grid:{display:false}},
+                    y:{beginAtZero:true,max:Math.max(12,...usedLeaves,...remainingLeaves),ticks:{stepSize:1,font:{size:11,weight:'bold'}},grid:{color:'rgba(148,163,184,.18)'}}
                 }
             });
             createOrUpdateChart('leavePieChart', 'doughnut', {
@@ -4882,16 +4927,29 @@
     function escapeHtml(v) { return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
 
     function kiemTraDuLieuTatCaTabs(openModal=false) {
-        dataCheckIssues = [];
-        scanVisibleInputs();
-        scanAllStoredData();
-        renderDataCheckList();
-        if (openModal) {
-            const modal=document.getElementById('dataCheckModal');
-            if(modal){modal.classList.remove('hidden');modal.setAttribute('aria-hidden','false');}
+        const btn = document.querySelector('#dataCheckModal .data-check-actions .btn-blue');
+        const oldText = btn ? btn.innerHTML : '';
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG KIỂM TRA...';
         }
+        const runScan = () => {
+            dataCheckIssues = [];
+            try { scanVisibleInputs(); } catch(e) { console.warn('Kiểm tra trường nhập liệu:', e); }
+            try { scanAllStoredData(); } catch(e) { console.warn('Kiểm tra dữ liệu đã lưu:', e); }
+            try { renderDataCheckList(); } catch(e) {
+                console.error('Render kiểm tra dữ liệu:', e);
+                const list=document.getElementById('dataCheckList');
+                if(list) list.innerHTML='<div style="padding:30px;text-align:center;color:#b45309;font-weight:800;">Không thể hiển thị kết quả kiểm tra. Vui lòng bấm KIỂM TRA LẠI.</div>';
+            }
+            if(openModal){ const modal=document.getElementById('dataCheckModal'); if(modal){modal.classList.remove('hidden');modal.setAttribute('aria-hidden','false');} }
+            if(btn){ btn.disabled=false; btn.innerHTML=oldText || '<i class="fa-solid fa-rotate"></i> KIỂM TRA LẠI'; }
+            return dataCheckIssues.length;
+        };
+        if(typeof requestAnimationFrame==='function') requestAnimationFrame(runScan); else setTimeout(runScan,30);
         return dataCheckIssues.length;
     }
+    window.kiemTraDuLieuTatCaTabs = kiemTraDuLieuTatCaTabs;
 
     function moKiemTraDuLieu() { kiemTraDuLieuTatCaTabs(true); }
     function dongKiemTraDuLieu() { const m=document.getElementById('dataCheckModal'); if(m){m.classList.add('hidden');m.setAttribute('aria-hidden','true');} }
@@ -4929,6 +4987,8 @@
         const el=document.getElementById('syncStatusTitle');
         if(el && !syncInProgress) el.title='Có lỗi giao diện: '+(e.message||'Unknown error');
     });
+
+    try { window.kiemTraDuLieuTatCaTabs=kiemTraDuLieuTatCaTabs; window.suaTatCaLoiChinhTa=suaTatCaLoiChinhTa; window.dongKiemTraDuLieu=dongKiemTraDuLieu; } catch(e) {}
 </script>
 <button id="showTabsBtn" class="show-tabs-btn hidden" type="button" onclick="showTabMenu()" title="Hiển thị menu chức năng"><i class="fa-solid fa-bars"></i><span>HIỆN MENU</span></button>
 

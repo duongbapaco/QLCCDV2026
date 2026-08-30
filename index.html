@@ -744,6 +744,111 @@
     padding-top:11px!important;
     padding-bottom:11px!important;
 }
+
+/* ==========================================================
+   VINAPACO MOBILE PRO 2026 – KHÔNG CHE DỮ LIỆU / KHÔNG VỠ BẢNG
+   - Mobile ưu tiên đọc dữ liệu, không ép bảng vào chiều rộng màn hình.
+   - Bảng dài cuộn ngang bằng ngón tay, không cắt cột.
+   - Modal, form, KPI và menu tự co theo màn hình.
+   ========================================================== */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { min-width: 0 !important; }
+img, canvas, svg { max-width: 100%; height: auto; }
+button, input, select, textarea { max-width: 100%; }
+.modal-overlay { overflow: auto !important; overscroll-behavior: contain; }
+.modal-card { max-width: calc(100vw - 20px) !important; }
+.table-card,
+.account-table-wrap,
+.staff-master-scroll,
+.leave-request-table-wrap,
+.table-scroll,
+[data-table-scroll] {
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    width: 100%;
+    max-width: 100%;
+}
+.table-card > table { width: max-content; min-width: 100%; }
+.table-card table { margin: 0; }
+.table-card td, .table-card th { word-break: normal; }
+@media (max-width: 768px) {
+    body { padding: 7px !important; font-size: 14px !important; }
+    .container { gap: 8px !important; }
+    .banner { padding: 12px !important; border-radius: 10px !important; }
+    .banner h1 { font-size: 15px !important; line-height: 1.3 !important; }
+    .banner p { font-size: 11px !important; line-height: 1.4 !important; }
+    .btn-group-header { width: 100%; gap: 6px !important; }
+    .btn-group-header .btn { flex: 1 1 calc(50% - 6px); min-height: 40px; font-size: 11px !important; }
+    .config-bar { grid-template-columns: 1fr !important; padding: 10px !important; gap: 8px !important; }
+    .config-item.drive-path-box { grid-column: auto !important; }
+    .form-card { grid-template-columns: 1fr !important; padding: 11px !important; gap: 9px !important; }
+    .form-group input, .form-group select, .form-group textarea,
+    .config-item input, .config-item select { min-height: 42px !important; font-size: 15px !important; }
+    .kpi-grid { grid-template-columns: repeat(2, minmax(0,1fr)) !important; gap: 7px !important; }
+    .kpi-card { padding: 11px !important; }
+    .kpi-value { font-size: 18px !important; }
+    .tab-nav-shell { padding: 5px !important; }
+    .tab-nav { grid-template-columns: repeat(2, minmax(0,1fr)) !important; gap: 5px !important; }
+    .tab-btn-nav { min-height: 48px !important; font-size: 12px !important; }
+    .tab-content-area > .table-card { padding: 9px !important; border-radius: 10px !important; }
+    .table-header-bar { align-items: stretch !important; }
+    .table-header-bar > * { max-width: 100% !important; }
+    .table-title { font-size: 16px !important; }
+    .table-card table { font-size: 13px !important; min-width: 680px; }
+    .table-card th { font-size: 11px !important; }
+    .table-card td { font-size: 13px !important; }
+    .salary-table, .salary-cv-table, .staff-master-table { min-width: 1000px !important; width: max-content !important; }
+    .account-table { min-width: 900px !important; }
+    .leave-request-table { min-width: 1050px !important; }
+    .staff-master-table { min-width: 1700px !important; }
+    .cloud-sync-panel { padding: 10px !important; gap: 8px !important; }
+    .cloud-sync-main { min-width: 0 !important; width: 100%; }
+    .cloud-sync-actions .btn { min-height: 40px; }
+    .modal-overlay { align-items: flex-start !important; padding: 8px !important; }
+    .modal-card { margin: 0 auto !important; max-height: calc(100dvh - 16px) !important; }
+    .modal-card > div { max-width: 100%; }
+    .weather-10day-grid { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
+    .leave-dashboard-grid { grid-template-columns: 1fr !important; }
+    .account-dashboard { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
+    .account-form-grid { grid-template-columns: 1fr !important; }
+    .account-permission-grid { grid-template-columns: 1fr 1fr !important; }
+    .charts-multi-grid { display: grid !important; grid-template-columns: 1fr !important; }
+    .chart-card { height: 290px !important; }
+    .lich-mobile-detail { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 430px) {
+    body { padding: 5px !important; }
+    .btn-group-header .btn { flex-basis: 100%; }
+    .kpi-grid, .account-dashboard { grid-template-columns: 1fr !important; }
+    .tab-btn-nav { font-size: 11.5px !important; }
+    .table-card table { min-width: 720px; }
+    .account-permission-grid { grid-template-columns: 1fr !important; }
+    .weather-10day-grid { grid-template-columns: 1fr 1fr !important; }
+}
+/* Lịch vạn niên responsive */
+.lich-modal-body { overflow:auto !important; }
+.lich-mobile-detail { display:grid; grid-template-columns:minmax(0,1fr) 420px; gap:14px; align-items:start; }
+.lich-detail-panel { min-width:0; }
+.lich-toolbar { display:grid; grid-template-columns:1fr 1fr auto auto; gap:8px; align-items:end; }
+.lich-toolbar .form-group { min-width:0; }
+.lich-day-tile { min-width:0; }
+.lich-day-tile .lich-day-greg { font-size:13px !important; }
+.lich-day-tile .lich-day-lunar { font-size:10px !important; line-height:1.25; }
+.lich-day-tile .lich-day-meta { font-size:9px !important; }
+@media(max-width:768px){
+  .lich-toolbar { grid-template-columns:1fr 1fr; }
+  .lich-toolbar .btn { width:100%; min-height:42px; }
+  .lich-mobile-detail { grid-template-columns:1fr; }
+  .lich-grid-header { font-size:10px !important; }
+  .lich-day-tile { min-height:64px !important; padding:6px 4px !important; }
+  .lich-day-tile .lich-day-greg { font-size:13px !important; }
+  .lich-day-tile .lich-day-lunar { font-size:9px !important; }
+  .fengshui-label { min-width:105px !important; font-size:10px !important; }
+  .fengshui-val { font-size:11px !important; }
+}
+
 </style>
 
 <style id="fix-ink-outbound-columns">
@@ -1152,6 +1257,45 @@ body{font-size:14px!important;}
 })();
 </script>
 
+
+<style id="vinapaco-location-pro-css">
+/* Định vị chuyên nghiệp: không che dữ liệu trên mobile */
+#weatherLocationResults, #weatherWidgetResults {
+    max-height: min(46vh, 420px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    z-index: 9999;
+}
+.location-result-item {
+    min-height: 58px;
+    touch-action: manipulation;
+}
+.location-result-item:hover,
+.location-result-item:focus-visible {
+    background:#eff6ff !important;
+    border-color:#93c5fd !important;
+    outline:none;
+}
+@media (max-width: 640px) {
+    #inputModalSearchLocation, #inputWidgetSearchLocation {
+        min-width:0 !important;
+        font-size:14px !important;
+        height:44px !important;
+    }
+    #weatherLocationResults, #weatherWidgetResults {
+        max-height: 48vh;
+        padding:6px !important;
+        border-radius:10px !important;
+    }
+    .location-result-item {
+        padding:11px 10px !important;
+        min-height:64px;
+        font-size:13px !important;
+    }
+}
+</style>
+
 </head>
 <body>
 
@@ -1229,13 +1373,15 @@ body{font-size:14px!important;}
             <b style="text-transform: uppercase; font-size: 14px;"><i class="fa-solid fa-calendar-days"></i> Lịch Vạn Niên & Phong Thủy VINAPACO (Pro Edition)</b>
             <button class="btn btn-red" style="padding: 4px 8px;" onclick="document.getElementById('modalLichVanNien').classList.add('hidden')"><i class="fa-solid fa-xmark"></i> Đóng</button>
         </div>
-        <div style="padding: 16px; background: #f8fafc; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; max-height: 82vh;">
-            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; background: white; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color);">
-                <div class="form-group" style="flex: 1;"><label>Tháng</label><select id="lichThangSelect" onchange="renderLichGridPro()"></select></div>
-                <div class="form-group" style="flex: 1;"><label>Năm</label><select id="lichNamSelect" onchange="renderLichGridPro()"></select></div>
-                <button class="btn btn-green btn-lg" style="margin-top: 16px;" onclick="troVeHomNayLich()"><i class="fa-solid fa-clock-rotate-left"></i> Hôm Nay</button>
+        <div class="lich-modal-body" style="padding: 16px; background: #f8fafc; display: flex; flex-direction: column; gap: 14px; max-height: 82vh;">
+            <div class="lich-toolbar" style="background: white; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color);">
+                <div class="form-group"><label>Tháng</label><select id="lichThangSelect" onchange="renderLichGridPro()"></select></div>
+                <div class="form-group"><label>Năm</label><select id="lichNamSelect" onchange="renderLichGridPro()"></select></div>
+                <button class="btn btn-blue btn-lg" onclick="lichThangTruoc()"><i class="fa-solid fa-chevron-left"></i> Tháng trước</button>
+                <button class="btn btn-green btn-lg" onclick="troVeHomNayLich()"><i class="fa-solid fa-calendar-day"></i> Hôm nay</button>
+                <button class="btn btn-blue btn-lg" onclick="lichThangSau()"><i class="fa-solid fa-chevron-right"></i> Tháng sau</button>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 420px; gap: 14px; align-items: start;">
+            <div class="lich-mobile-detail">
                 <div style="background: white; border: 1px solid var(--border-color); border-radius: 12px; padding: 10px;">
                     <div class="lich-grid-header"><div>CN</div><div>T2</div><div>T3</div><div>T4</div><div>T5</div><div>T6</div><div>T7</div></div>
                     <div id="lichGridContainer" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 6px;"></div>
@@ -2222,7 +2368,7 @@ body{font-size:14px!important;}
     let cloudEndpointErrorCount = 0;
 
     // ===== CLOUD SYNC ENGINE: Google Sheets = dữ liệu chuẩn, Google Drive = tệp đính kèm/backup =====
-    const SYNC_SCHEMA = 3;
+    const SYNC_SCHEMA = 4;
     const DEVICE_ID = localStorage.getItem('vinapaco_device_id') || ('DEV-' + cryptoRandomId());
     localStorage.setItem('vinapaco_device_id', DEVICE_ID);
     let syncTimer = null, syncDebounceTimer = null, syncInProgress = false, suppressCloudSync = true;
@@ -2231,6 +2377,58 @@ body{font-size:14px!important;}
     let lastSyncedSnapshot = safeJsonParse(localStorage.getItem('vinapaco_sync_base'), null);
     let pendingSync = Number(localStorage.getItem('vinapaco_pending_sync') || 0);
     let syncConflicts = JSON.parse(localStorage.getItem('vinapaco_sync_conflicts') || '[]');
+    const VINAPACO_DATA_KEYS = [
+        'vinapaco_data_namthang','vinapaco_vpp','vinapaco_telecom','vinapaco_ink',
+        'vinapaco_delivery','vinapaco_survey','vinapaco_tasks','vinapaco_accounts'
+    ];
+    const VINAPACO_HAS_LOCAL_CACHE = VINAPACO_DATA_KEYS.some(k => !!localStorage.getItem(k));
+    function markPersistentCacheReady() {
+        try { localStorage.setItem('vinapaco_persistent_cache_ready','1'); } catch(e) {}
+    }
+    function saveEmergencyLocalSnapshot(reason='before-cloud-change') {
+        try {
+            const emergency = {
+                version: 1, reason, at: new Date().toISOString(),
+                schema: SYNC_SCHEMA, snapshot: cloudSnapshot()
+            };
+            localStorage.setItem('vinapaco_emergency_snapshot', JSON.stringify(emergency));
+        } catch(e) { console.warn('Emergency snapshot:', e); }
+    }
+    function mergeObjectsPreserveBoth(remote, local) {
+        if (Array.isArray(remote) && Array.isArray(local)) {
+            const keyOf = x => x && typeof x === 'object'
+                ? String(x.id ?? x.code ?? x.slipNo ?? x.hoTen ?? x.email ?? '').trim()
+                : '';
+            const r = remote.slice();
+            local.forEach(li => {
+                const lk = keyOf(li);
+                if (!lk) { if (!r.some(x => JSON.stringify(x)===JSON.stringify(li))) r.push(li); return; }
+                const idx = r.findIndex(x => keyOf(x) === lk);
+                if (idx < 0) r.push(li);
+                else if (li && typeof li === 'object' && r[idx] && typeof r[idx] === 'object') r[idx] = mergeObjectsPreserveBoth(r[idx], li);
+                else r[idx] = li;
+            });
+            return r;
+        }
+        if (remote && local && typeof remote==='object' && typeof local==='object') {
+            const out = JSON.parse(JSON.stringify(remote));
+            Object.keys(local).forEach(k => {
+                if (!(k in out)) out[k] = local[k];
+                else out[k] = mergeObjectsPreserveBoth(out[k], local[k]);
+            });
+            return out;
+        }
+        return local !== undefined && local !== null && local !== '' ? local : remote;
+    }
+    function mergeBootstrapSnapshots(remote, local) {
+        const out = mergeObjectsPreserveBoth(remote, local);
+        if (out && out.config) {
+            out.config.rootDriveFolderUrl = local?.config?.rootDriveFolderUrl || out.config.rootDriveFolderUrl;
+            out.config.gasWebhookUrl = local?.config?.gasWebhookUrl || out.config.gasWebhookUrl;
+        }
+        return out;
+    }
+
 
 
     // ===== GOOGLE DRIVE: tự động chuẩn hóa thư mục Năm/Tháng =====
@@ -2310,6 +2508,7 @@ body{font-size:14px!important;}
     }
     function applyCloudSnapshot(snap) {
         if (!snap || !snap.dataNamThang) return false;
+        try { saveEmergencyLocalSnapshot('before-cloud-apply'); } catch(e) {}
         suppressCloudSync = true;
         coSoDuLieuNamThang = snap.dataNamThang;
         // Cloud cũ có thể thiếu nhân sự mới; bổ sung theo mẫu mà không ghi đè dữ liệu đã có.
@@ -2406,6 +2605,11 @@ body{font-size:14px!important;}
         let conflicts = [];
         if (lastSyncedSnapshot && pendingSync) {
             merged = mergeThreeWay(lastSyncedSnapshot, local, cloud.snapshot, '', conflicts);
+        } else if (!lastSyncedSnapshot && pendingSync && VINAPACO_HAS_LOCAL_CACHE) {
+            // Thiết bị có thay đổi chưa xác nhận nhưng chưa có sync-base (ví dụ sau khi đổi code/xóa cache phụ).
+            // Hợp nhất hai phía thay vì ghi đè dữ liệu cục bộ.
+            merged = mergeBootstrapSnapshots(cloud.snapshot, local);
+            conflicts.push('bootstrap-merge');
         }
         applyCloudSnapshot(merged);
         cloudRevision = remoteRev;
@@ -2491,7 +2695,7 @@ body{font-size:14px!important;}
     }
     function startAutoCloudSync() {
         clearInterval(syncTimer);
-        syncTimer = setInterval(() => { if (!document.hidden) dongBoThongMinh(false); }, 30000);
+        syncTimer = setInterval(() => { if (!document.hidden) dongBoThongMinh(false); }, 10000);
         setTimeout(() => dongBoThongMinh(false), 1200);
         setTimeout(() => {
             tuDongTaoThuMucDriveNamThang(false);
@@ -2605,6 +2809,7 @@ body{font-size:14px!important;}
     }
 
     function saveToLocalStorage() {
+        // localStorage chỉ là bộ nhớ đệm/offline; Google Sheets/Drive mới là kho dữ liệu dùng chung.
         localStorage.setItem('vinapaco_data_namthang', JSON.stringify(coSoDuLieuNamThang));
         localStorage.setItem('vinapaco_vpp', JSON.stringify(dsThanhToanVanPhongProByMonth));
         localStorage.setItem('vinapaco_telecom', JSON.stringify(dsThanhToanTelecombyMonth));
@@ -2613,6 +2818,7 @@ body{font-size:14px!important;}
         localStorage.setItem('vinapaco_survey', JSON.stringify(dsKhaoSatChuyenSau));
         localStorage.setItem('vinapaco_tasks', JSON.stringify(danhSachCongViec));
         localStorage.setItem('vinapaco_accounts', JSON.stringify(danhSachTaiKhoanHeThong));
+        markPersistentCacheReady();
         localStorage.setItem('vinapaco_drive_root_url', rootDriveFolderUrl);
         localStorage.setItem('vinapaco_gas_webhook_url', gasWebhookUrl);
         cloudEndpointDisabled = false;
@@ -2701,122 +2907,242 @@ body{font-size:14px!important;}
     const nhiThapBatTu = ["Giác", "Cang", "Đê", "Phòng", "Tâm", "Vĩ", "Cơ", "Đẩu", "Ngưu", "Nữ", "Hư", "Nguy", "Thất", "Bích", "Khuê", "Lâu", "Vị", "Mão", "Tất", "Chủy", "Sâm", "Tinh", "Quỷ", "Liễu", "Tinh", "Trương", "Dực", "Cẩn"];
     const nguHanhList = ["Kim (Đại Trạch)", "Mộc (Bình Địa Mộc)", "Thủy (Tuyền Trung Thủy)", "Hỏa (Sơn Hạ Hỏa)", "Thổ (Bích Thượng Thổ)"];
     
-    function convertSolar2LunarPro(dd, mm, yy) {
-        let baseDate = new Date(yy, mm - 1, dd);
-        let timeDiff = baseDate.getTime() - new Date(2026, 7, 26).getTime();
-        let dayDiff = Math.round(timeDiff / (1000 * 3600 * 24));
-        
-        let lunarDay = 14 + dayDiff;
-        let lunarMonth = 7;
-        let lunarYear = 2026;
+    /* ==========================================================
+       LỊCH VẠN NIÊN CHUẨN – ÂM LỊCH VIỆT NAM (GMT+7)
+       Thuật toán thiên văn: Julian day + sóc + kinh độ Mặt Trời.
+       Có tháng nhuận, Can-Chi năm/tháng/ngày, tiết khí và giờ HĐ/Hắc.
+       ========================================================== */
+    const VN_TZ = 7.0;
+    const TIET_KHI = [
+        "Xuân Phân","Thanh Minh","Cốc Vũ","Lập Hạ","Tiểu Mãn","Mang Chủng",
+        "Hạ Chí","Tiểu Thử","Đại Thử","Lập Thu","Xử Thử","Bạch Lộ",
+        "Thu Phân","Hàn Lộ","Sương Giáng","Lập Đông","Tiểu Tuyết","Đại Tuyết",
+        "Đông Chí","Tiểu Hàn","Đại Hàn","Lập Xuân","Vũ Thủy","Kinh Trập"
+    ];
+    const TIET_KHI_DEG = TIET_KHI.map((name,i)=>({name,deg:i*15}));
 
-        while (lunarDay > 29) { lunarDay -= 29; lunarMonth++; if (lunarMonth > 12) { lunarMonth = 1; lunarYear++; } }
-        while (lunarDay < 1) { lunarDay += 29; lunarMonth--; if (lunarMonth < 1) { lunarMonth = 12; lunarYear--; } }
+    function INT(v){ return Math.floor(v); }
+    function jdFromDate(dd,mm,yy){
+        const a=INT((14-mm)/12), y=yy+4800-a, m=mm+12*a-3;
+        let jd=dd+INT((153*m+2)/5)+365*y+INT(y/4)-INT(y/100)+INT(y/400)-32045;
+        if(jd<2299161){ jd=dd+INT((153*m+2)/5)+365*y+INT(y/4)-32083; }
+        return jd;
+    }
+    function NewMoon(k){
+        const T=k/1236.85, T2=T*T, T3=T2*T, dr=Math.PI/180;
+        let Jd1=2415020.75933+29.53058868*k+0.0001178*T2-0.000000155*T3;
+        Jd1 += 0.00033*Math.sin((166.56+132.87*T-0.009173*T2)*dr);
+        const M=359.2242+29.10535608*k-0.0000333*T2-0.00000347*T3;
+        const Mpr=306.0253+385.81691806*k+0.0107306*T2+0.00001236*T3;
+        const F=21.2964+390.67050646*k-0.0016528*T2-0.00000239*T3;
+        let C1=(0.1734-0.000393*T)*Math.sin(M*dr)
+            +0.0021*Math.sin(2*M*dr)
+            -0.4068*Math.sin(Mpr*dr)
+            +0.0161*Math.sin(2*Mpr*dr)
+            -0.0004*Math.sin(3*Mpr*dr)
+            +0.0104*Math.sin(2*F*dr)
+            -0.0051*Math.sin((M+Mpr)*dr)
+            -0.0074*Math.sin((M-Mpr)*dr)
+            +0.0004*Math.sin((2*F+M)*dr)
+            -0.0004*Math.sin((2*F-M)*dr)
+            -0.0006*Math.sin((2*F+Mpr)*dr)
+            +0.0010*Math.sin((2*F-Mpr)*dr)
+            +0.0005*Math.sin((2*Mpr+M)*dr);
+        let deltat;
+        if(T < -11) deltat=0.001+0.000839*T+0.0002261*T2-0.00000845*T3-0.000000081*T*T3;
+        else deltat=-0.000278+0.000265*T+0.000262*T2;
+        return Jd1+C1-deltat;
+    }
+    function getNewMoonDay(k,tz=VN_TZ){ return INT(NewMoon(k)+0.5+tz/24); }
+    function SunLongitude(jdn){
+        const T=(jdn-2451545.0)/36525, T2=T*T, dr=Math.PI/180;
+        const M=357.52910+35999.05030*T-0.0001559*T2-0.00000048*T*T2;
+        const L0=280.46645+36000.76983*T+0.0003032*T2;
+        let DL=(1.914600-0.004817*T-0.000014*T2)*Math.sin(dr*M)
+              +(0.019993-0.000101*T)*Math.sin(2*dr*M)
+              +0.000290*Math.sin(3*dr*M);
+        let L=L0+DL; L=(L*dr)% (2*Math.PI); if(L<0)L+=2*Math.PI;
+        return L;
+    }
+    function getSunLongitude(jdn,tz=VN_TZ){ return INT(SunLongitude(jdn-tz/24)/Math.PI*6); }
+    function getLunarMonth11(yy,tz=VN_TZ){
+        const off=jdFromDate(31,12,yy)-2415021;
+        const k=INT(off/29.530588853);
+        let nm=getNewMoonDay(k,tz);
+        if(getSunLongitude(nm,tz)>=9) nm=getNewMoonDay(k-1,tz);
+        return nm;
+    }
+    function getLeapMonthOffset(a11,tz=VN_TZ){
+        const k=INT(0.5+(a11-2415021.076998695)/29.530588853);
+        let last=0, i=1, arc=getSunLongitude(getNewMoonDay(k+i,tz),tz);
+        do { last=arc; i++; arc=getSunLongitude(getNewMoonDay(k+i,tz),tz); } while(arc!==last && i<15);
+        return i-1;
+    }
+    function convertSolar2LunarPro(dd,mm,yy){
+        const dayNumber=jdFromDate(dd,mm,yy);
+        const k=INT((dayNumber-2415021.076998695)/29.530588853);
+        let monthStart=getNewMoonDay(k+1,VN_TZ);
+        if(monthStart>dayNumber) monthStart=getNewMoonDay(k,VN_TZ);
+        let a11=getLunarMonth11(yy,VN_TZ), b11=a11, lunarYear;
+        if(a11>=monthStart){ lunarYear=yy; a11=getLunarMonth11(yy-1,VN_TZ); }
+        else { lunarYear=yy+1; b11=getLunarMonth11(yy+1,VN_TZ); }
+        const lunarDay=dayNumber-monthStart+1;
+        const diff=INT((monthStart-a11)/29);
+        let lunarMonth=diff+11, lunarLeap=0;
+        if(b11-a11>365){
+            const leapMonthDiff=getLeapMonthOffset(a11,VN_TZ);
+            if(diff>=leapMonthDiff){ lunarMonth=diff+10; if(diff===leapMonthDiff) lunarLeap=1; }
+        }
+        if(lunarMonth>12) lunarMonth-=12;
+        if(lunarMonth>=11 && diff<4) lunarYear--;
 
-        let canYear = canList[(yy + 6) % 10] + " " + chiList[(yy + 8) % 12];
-        let dayOfYear = Math.floor((baseDate - new Date(yy, 0, 1)) / 86400000);
-        let canDay = canList[(dayOfYear + 4) % 10] + " " + chiList[(dayOfYear + 2) % 12];
-        let chiDayIdx = (dayOfYear + 2) % 12;
-        let isHoangDao = (dd + mm) % 2 === 0;
+        const canYear=canList[(lunarYear+6)%10], chiYear=chiList[(lunarYear+8)%12];
+        const canMonth=canList[(lunarYear*12+lunarMonth+3)%10], chiMonth=chiList[(lunarMonth+1)%12];
+        const canDay=canList[(dayNumber+9)%10], chiDay=chiList[(dayNumber+1)%12];
+        const dayChiIndex=(dayNumber+1)%12;
+        const dayCanIndex=(dayNumber+9)%10;
 
-        let trucNgay = trucList[(dayOfYear + 3) % 11];
-        let saoChieuMenh = nhiThapBatTu[(dayOfYear * 3) % nhiThapBatTu.length];
-        let nguHanhNgay = nguHanhList[(dd + mm + yy) % nguHanhList.length];
-        let huongTaiThan = chiDayIdx % 2 === 0 ? "Tây Nam (Đông Nam)" : "Đông Bắc (Chính Bắc)";
-        let huongHuyThan = chiDayIdx % 3 === 0 ? "Tây Bắc" : "Đông Nam";
-
+        const hoangMap={
+            0:[0,1,3,6,8,9], 6:[0,1,3,6,8,9], // Tý/Ngọ
+            1:[2,3,5,8,9,11], 7:[2,3,5,8,9,11], // Sửu/Mùi
+            2:[0,1,4,5,7,10], 8:[0,1,4,5,7,10], // Dần/Thân
+            3:[0,2,3,6,7,9], 9:[0,2,3,6,7,9], // Mão/Dậu
+            4:[2,4,5,8,9,11], 10:[2,4,5,8,9,11], // Thìn/Tuất
+            5:[1,4,6,7,10,11], 11:[1,4,6,7,10,11] // Tỵ/Hợi
+        };
+        const hoangHours=hoangMap[dayChiIndex] || [];
+        const hourNames=["Tý","Sửu","Dần","Mão","Thìn","Tỵ","Ngọ","Mùi","Thân","Dậu","Tuất","Hợi"];
+        const hourRanges=["23-01","01-03","03-05","05-07","07-09","09-11","11-13","13-15","15-17","17-19","19-21","21-23"];
+        const hourCanBase=(dayCanIndex%5)*2;
+        const hours=hourNames.map((chi,i)=>({
+            chi, range:hourRanges[i], hoang:hoangHours.includes(i),
+            can:canList[(hourCanBase+i)%10],
+            canChi:canList[(hourCanBase+i)%10]+" "+chi
+        }));
+        const solarDeg=((SunLongitude(dayNumber-0.5-VN_TZ/24)*180/Math.PI)%360+360)%360;
+        const tietIndex=Math.floor(solarDeg/15)%24;
+        const tietName=TIET_KHI[tietIndex];
+        // Trực ngày: lấy Chi ngày so với Chi tháng âm lịch (12 Trực).
+        const monthChiIndex=(lunarMonth===1?2:(lunarMonth===2?3:(lunarMonth===3?4:(lunarMonth===4?5:(lunarMonth===5?6:(lunarMonth===6?7:(lunarMonth===7?8:(lunarMonth===8?9:(lunarMonth===9?10:(lunarMonth===10?11:(lunarMonth===11?0:1)))))))))));
+        const truc=trucList[(dayChiIndex-monthChiIndex+12)%12];
+        const zodiacXung=chiList[(dayChiIndex+6)%12];
+        const weekday=["Chủ Nhật","Thứ Hai","Thứ Ba","Thứ Tư","Thứ Năm","Thứ Sáu","Thứ Bảy"][new Date(yy,mm-1,dd).getDay()];
+        // Ngày Hoàng/Hắc đạo phụ thuộc cả tháng âm và Chi ngày.
+        const hoangDayGroups=[
+            [0,1,4,5,7,10], [0,2,3,6,7,9], [2,4,5,8,9,11],
+            [1,4,6,7,10,11], [0,1,3,6,8,9], [2,3,5,8,10,11]
+        ];
+        const groupIndex=[1,2,3,4,5,6,1,2,3,4,5,6][lunarMonth-1];
+        const isHoangDaoDay=hoangDayGroups[groupIndex-1].includes(dayChiIndex);
         return {
-            day: lunarDay, month: lunarMonth, year: lunarYear,
-            canChiNam: canYear, canChiNgay: canDay,
-            trucNgay: trucNgay, saoChieuMenh: saoChieuMenh, nguHanhNgay: nguHanhNgay,
-            huongTaiThan: huongTaiThan, huongHuyThan: huongHuyThan,
-            hoangDaoName: isHoangDao ? "Hoàng Đạo (Cát Khánh)" : "Hắc Đạo (Hung Sát)",
-            isHoangDao: isHoangDao,
-            goodHours: isHoangDao ? "Tý (23-1), Sửu (1-3), Mão (5-7), Ngọ (11-13)" : "Dần (3-5), Thìn (7-9), Thân (15-17)",
-            doList: isHoangDao ? "Ký kết hợp đồng, giao dịch tài chính, khai trương, xuất hành, nhận việc, cưới hỏi." : "Bảo trì thiết bị, dọn dẹp kho tàng, tu sửa văn phòng, kiểm kê.",
-            dontList: isHoangDao ? "Tranh chấp, kiện tụng lớn, an táng." : "Khai trương quy mô lớn, đầu tư rủi ro cao, xuất hành xa."
+            day:lunarDay, month:lunarMonth, year:lunarYear, leap:lunarLeap,
+            canChiNam:canYear+" "+chiYear, canChiThang:canMonth+" "+chiMonth, canChiNgay:canDay+" "+chiDay,
+            canDay, chiDay, chiDayIndex:dayChiIndex, weekday,
+            tietKhi:tietName, tietKhiIndex:tietIndex, trucNgay:truc,
+            isHoangDao:isHoangDaoDay, hoangDaoName:isHoangDaoDay?"Hoàng Đạo":"Hắc Đạo",
+            zodiacXung, hours,
+            goodHours:hours.filter(h=>h.hoang).map(h=>`${h.canChi} (${h.range}h)`).join(", "),
+            goodHourNames:hours.filter(h=>h.hoang).map(h=>h.chi).join(", "),
+            lunarText:`${lunarDay===1?"Mùng 1":lunarDay+" ngày"} / Tháng ${lunarMonth}${lunarLeap?" nhuận":""} / Năm ${canYear+" "+chiYear}`,
+            doList:isHoangDaoDay?"Công việc hành chính, giao dịch, ký kết, khởi sự có tính chất phù hợp; vẫn nên đối chiếu tính chất công việc và tuổi người thực hiện.":"Ưu tiên công việc thường nhật, kiểm tra, sửa chữa, sắp xếp; hạn chế dùng nhãn 'ngày xấu' như một quyết định tuyệt đối.",
+            dontList:"Không nên coi Hoàng/Hắc đạo là tiêu chí duy nhất; với việc quan trọng cần đối chiếu thêm tuổi, sao, trực và điều kiện thực tế."
         };
     }
 
+    function getNgayTotXauLabel(lunar){
+        return lunar.isHoangDao ? "HOÀNG ĐẠO" : "HẮC ĐẠO";
+    }
+    function renderLichMonthOptions(){
+        const selThang=document.getElementById('lichThangSelect'), selNam=document.getElementById('lichNamSelect');
+        if(!selThang||!selNam)return;
+        const now=new Date(), currentY=now.getFullYear();
+        if(!selThang.children.length) for(let m=1;m<=12;m++) selThang.insertAdjacentHTML('beforeend',`<option value="${m}">Tháng ${m}</option>`);
+        if(!selNam.children.length) for(let y=2000;y<=currentY+20;y++) selNam.insertAdjacentHTML('beforeend',`<option value="${y}">Năm ${y}</option>`);
+        selThang.value=String(ngayLichDangChon.m);
+        selNam.value=String(ngayLichDangChon.y);
+    }
     let _nowInit = new Date();
-    let ngayLichDangChon = { d: _nowInit.getDate(), m: _nowInit.getMonth() + 1, y: _nowInit.getFullYear() };
+    let ngayLichDangChon = {d:_nowInit.getDate(),m:_nowInit.getMonth()+1,y:_nowInit.getFullYear()};
 
-    function moModalLichVanNien() {
-        let selThang = document.getElementById('lichThangSelect');
-        let selNam = document.getElementById('lichNamSelect');
-        if (selThang && selThang.children.length === 0) {
-            let currentM = new Date().getMonth() + 1;
-            let currentY = new Date().getFullYear();
-            for (let m = 1; m <= 12; m++) selThang.innerHTML += `<option value="${m}" ${m===currentM?'selected':''}>Tháng ${m}</option>`;
-            for (let y = 2025; y <= 2035; y++) selNam.innerHTML += `<option value="${y}" ${y===currentY?'selected':''}>Năm ${y}</option>`;
-        }
-        document.getElementById('modalLichVanNien').classList.remove('hidden');
+    function moModalLichVanNien(){
+        renderLichMonthOptions();
+        const modal=document.getElementById('modalLichVanNien');
+        if(modal)modal.classList.remove('hidden');
         renderLichGridPro();
     }
-
-    function troVeHomNayLich() {
-        let now = new Date();
-        ngayLichDangChon = { d: now.getDate(), m: now.getMonth() + 1, y: now.getFullYear() };
-        document.getElementById('lichThangSelect').value = ngayLichDangChon.m;
-        document.getElementById('lichNamSelect').value = ngayLichDangChon.y;
-        renderLichGridPro();
+    function troVeHomNayLich(){
+        const now=new Date();
+        ngayLichDangChon={d:now.getDate(),m:now.getMonth()+1,y:now.getFullYear()};
+        renderLichMonthOptions(); renderLichGridPro();
     }
-
-    function renderLichGridPro() {
-        let grid = document.getElementById('lichGridContainer');
-        if (!grid) return; grid.innerHTML = "";
-        let nowReal = new Date();
-        let m = parseInt(document.getElementById('lichThangSelect').value) || (nowReal.getMonth() + 1);
-        let y = parseInt(document.getElementById('lichNamSelect').value) || nowReal.getFullYear();
-        let daysInMonth = new Date(y, m, 0).getDate();
-        let firstDay = new Date(y, m - 1, 1).getDay();
-
-        for (let i = 0; i < firstDay; i++) grid.innerHTML += '<div></div>';
-
-        let _todayObj = new Date();
-        for (let d = 1; d <= daysInMonth; d++) {
-            let lunar = convertSolar2LunarPro(d, m, y);
-            let isToday = (d === _todayObj.getDate() && m === (_todayObj.getMonth() + 1) && y === _todayObj.getFullYear());
-            let isSelected = (d === ngayLichDangChon.d && m === ngayLichDangChon.m && y === ngayLichDangChon.y);
-            let classes = "lich-day-tile" + (isToday ? " today" : "") + (isSelected ? " selected" : "");
-
-            grid.innerHTML += `<div class="${classes}" onclick="chonNgayLichPro(${d}, ${m}, ${y})">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:12px; color:#0f172a;">${d}</b>
-                    <span style="font-size:9px; color:${lunar.isHoangDao?'#15803d':'#dc2626'}; font-weight:800;">${lunar.isHoangDao?'Tốt':'Xấu'}</span>
-                </div>
-                <div style="color:#16a34a; font-weight:800; font-size:9px;">Âm: ${lunar.day}/${lunar.month}</div>
-            </div>`;
-        }
-        hienThiPhongThuyNgayPro(ngayLichDangChon.d, ngayLichDangChon.m, ngayLichDangChon.y);
+    function lichThangTruoc(){
+        let m=Number(document.getElementById('lichThangSelect')?.value||ngayLichDangChon.m), y=Number(document.getElementById('lichNamSelect')?.value||ngayLichDangChon.y);
+        m--; if(m<1){m=12;y--;} ngayLichDangChon={d:1,m,y}; renderLichMonthOptions(); renderLichGridPro();
     }
-
-    function chonNgayLichPro(d, m, y) { ngayLichDangChon = { d: d, m: m, y: y }; renderLichGridPro(); }
-
-    function hienThiPhongThuyNgayPro(d, m, y) {
-        let lunar = convertSolar2LunarPro(d, m, y);
-        let box = document.getElementById('chiTietNgayNoiDung');
-        let badgeEl = document.getElementById('labelNgayDangChonBadge');
-        if (badgeEl) badgeEl.innerText = `${d}/${m}/${y}`;
-        if (box) {
-            box.innerHTML = `
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-sun"></i> Dương Lịch:</div><div class="fengshui-val"><b>Thứ ${new Date(y, m-1, d).getDay()===0?'Chủ Nhật':new Date(y, m-1, d).getDay()+1}, Ngày ${d}/${m}/${y}</b></div></div>
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-moon"></i> Âm Lịch:</div><div class="fengshui-val"><b style="color:#0284c7;">Ngày ${lunar.day} Tháng ${lunar.month} (${lunar.canChiNam})</b></div></div>
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-yin-yang"></i> Can Chi Ngày:</div><div class="fengshui-val"><b style="color:#8B0000;">${lunar.canChiNgay}</b></div></div>
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-shield-halved"></i> Cát / Hung:</div><div class="fengshui-val" style="color:${lunar.isHoangDao?'#15803d':'#dc2626'}; font-weight:bold;">${lunar.hoangDaoName}</div></div>
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-star"></i> Trực / Sao:</div><div class="fengshui-val">Trực <b>${lunar.trucNgay}</b> - Sao <b>${lunar.saoChieuMenh} Tú</b></div></div>
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-fire"></i> Ngũ Hành Ngày:</div><div class="fengshui-val">${lunar.nguHanhNgay}</div></div>
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-compass"></i> Hướng Xuất Hành:</div><div class="fengshui-val">Tài thần: <b>${lunar.huongTaiThan}</b> | Hỷ thần: <b>${lunar.huongHuyThan}</b></div></div>
-                <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-clock"></i> Giờ Hoàng Đạo:</div><div class="fengshui-val" style="color:#0284c7;">${lunar.goodHours}</div></div>
-                <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; padding:8px; margin-top:4px;">
-                    <div style="font-weight:900; color:#166534; font-size:11px; margin-bottom:2px;"><i class="fa-solid fa-circle-check"></i> VIỆC NÊN LÀM:</div>
-                    <div style="font-size:11px; color:#15803d; line-height:1.4;">${lunar.doList}</div>
+    function lichThangSau(){
+        let m=Number(document.getElementById('lichThangSelect')?.value||ngayLichDangChon.m), y=Number(document.getElementById('lichNamSelect')?.value||ngayLichDangChon.y);
+        m++; if(m>12){m=1;y++;} ngayLichDangChon={d:1,m,y}; renderLichMonthOptions(); renderLichGridPro();
+    }
+    function renderLichGridPro(){
+        const grid=document.getElementById('lichGridContainer'); if(!grid)return;
+        const m=Number(document.getElementById('lichThangSelect')?.value||new Date().getMonth()+1);
+        const y=Number(document.getElementById('lichNamSelect')?.value||new Date().getFullYear());
+        const daysInMonth=new Date(y,m,0).getDate(), firstDay=new Date(y,m-1,1).getDay();
+        grid.innerHTML='';
+        for(let i=0;i<firstDay;i++)grid.insertAdjacentHTML('beforeend','<div aria-hidden="true"></div>');
+        const today=new Date();
+        for(let d=1;d<=daysInMonth;d++){
+            const lunar=convertSolar2LunarPro(d,m,y);
+            const isToday=d===today.getDate()&&m===today.getMonth()+1&&y===today.getFullYear();
+            const isSelected=d===ngayLichDangChon.d&&m===ngayLichDangChon.m&&y===ngayLichDangChon.y;
+            const cls=`lich-day-tile${isToday?' today':''}${isSelected?' selected':''}`;
+            grid.insertAdjacentHTML('beforeend',`<div class="${cls}" onclick="chonNgayLichPro(${d},${m},${y})" title="Xem chi tiết ngày ${d}/${m}/${y}">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:3px">
+                  <b class="lich-day-greg" style="color:#0f172a">${d}</b>
+                  <span style="font-size:8px;color:${lunar.isHoangDao?'#15803d':'#dc2626'};font-weight:900">${lunar.isHoangDao?'HĐ':'Hắc'}</span>
                 </div>
-                <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:6px; padding:8px; margin-top:6px;">
-                    <div style="font-weight:900; color:#991b1b; font-size:11px; margin-bottom:2px;"><i class="fa-solid fa-circle-xmark"></i> VIỆC KIÊNG KỴ:</div>
-                    <div style="font-size:11px; color:#dc2626; line-height:1.4;">${lunar.dontList}</div>
-                </div>`;
+                <div class="lich-day-lunar" style="color:#0369a1;font-weight:900">${lunar.day}${lunar.leap?'*':''}/${lunar.month}</div>
+                <div class="lich-day-meta" style="color:#64748b">${lunar.canChiNgay}</div>
+                <div class="lich-day-meta" style="color:#8b0000">${lunar.tietKhi}</div>
+            </div>`);
         }
+        if(!ngayLichDangChon || ngayLichDangChon.m!==m || ngayLichDangChon.y!==y){
+            ngayLichDangChon={d:1,m,y};
+        }
+        hienThiPhongThuyNgayPro(ngayLichDangChon.d,ngayLichDangChon.m,ngayLichDangChon.y);
+    }
+    function chonNgayLichPro(d,m,y){ngayLichDangChon={d,m,y};renderLichGridPro();}
+    function hienThiPhongThuyNgayPro(d,m,y){
+        const lunar=convertSolar2LunarPro(d,m,y), box=document.getElementById('chiTietNgayNoiDung'), badge=document.getElementById('labelNgayDangChonBadge');
+        if(badge)badge.innerText=`${d}/${m}/${y}`;
+        if(!box)return;
+        const jd=jdFromDate(d,m,y), sunDeg=((SunLongitude(jd-VN_TZ/24)*180/Math.PI)%360+360)%360;
+        const lunarDayText=lunar.day===1?"Mùng 1":`Ngày ${lunar.day}`;
+        const monthText=`Tháng ${lunar.month}${lunar.leap?' (nhuận)':''}`;
+        const dayElement=lunar.isHoangDao?'#15803d':'#dc2626';
+        box.innerHTML=`
+          <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-calendar-day"></i> Dương lịch:</div><div class="fengshui-val"><b>${lunar.weekday}, ${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}/${y}</b></div></div>
+          <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-moon"></i> Âm lịch:</div><div class="fengshui-val"><b style="color:#0369a1">${lunarDayText}, ${monthText}, năm ${lunar.canChiNam}</b></div></div>
+          <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-yin-yang"></i> Can Chi:</div><div class="fengshui-val"><b style="color:#8b0000">Ngày ${lunar.canChiNgay}</b> · Tháng ${lunar.canChiThang} · Năm ${lunar.canChiNam}</div></div>
+          <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-sun"></i> Tiết khí:</div><div class="fengshui-val"><b>${lunar.tietKhi}</b> · Kinh độ Mặt Trời ≈ ${sunDeg.toFixed(1)}°</div></div>
+          <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-shield-halved"></i> Cát / Hung:</div><div class="fengshui-val" style="color:${dayElement};font-weight:900">${getNgayTotXauLabel(lunar)}</div></div>
+          <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-compass"></i> Tuổi xung:</div><div class="fengshui-val"><b>${lunar.zodiacXung}</b> · Đây là thông tin tham khảo theo Địa Chi ngày.</div></div>
+          <div class="fengshui-item"><div class="fengshui-label"><i class="fa-solid fa-star"></i> Trực:</div><div class="fengshui-val"><b>${lunar.trucNgay}</b></div></div>
+          <div style="margin-top:5px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:9px">
+             <div style="font-weight:900;color:#166534;font-size:11px;margin-bottom:4px"><i class="fa-solid fa-clock"></i> 6 GIỜ HOÀNG ĐẠO</div>
+             <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px">
+             ${lunar.hours.filter(h=>h.hoang).map(h=>`<div style="background:#fff;border:1px solid #bbf7d0;border-radius:6px;padding:6px;font-size:11px"><b>${h.canChi}</b><br><span>${h.range}h</span></div>`).join('')}
+             </div>
+          </div>
+          <div style="margin-top:5px;background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:9px">
+             <div style="font-weight:900;color:#9a3412;font-size:11px;margin-bottom:4px">12 GIỜ TRONG NGÀY</div>
+             <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px">
+             ${lunar.hours.map(h=>`<div style="padding:4px 5px;border-radius:5px;background:${h.hoang?'#f0fdf4':'#fff'};border:1px solid ${h.hoang?'#bbf7d0':'#e2e8f0'};font-size:10px"><b>${h.canChi}</b> · ${h.range}h ${h.hoang?'✓':''}</div>`).join('')}
+             </div>
+          </div>
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:8px;margin-top:5px"><b style="color:#166534;font-size:11px">NÊN LÀM</b><div style="font-size:11px;line-height:1.45;color:#166534;margin-top:3px">${lunar.doList}</div></div>
+          <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:8px;margin-top:5px"><b style="color:#991b1b;font-size:11px">LƯU Ý / KIÊNG KỴ</b><div style="font-size:11px;line-height:1.45;color:#991b1b;margin-top:3px">${lunar.dontList}</div></div>
+          <div style="margin-top:5px;padding:7px 8px;border-radius:7px;background:#f8fafc;color:#64748b;font-size:10px;line-height:1.4">Thông tin ngày tốt/xấu và phong tục là nội dung tham khảo văn hóa, không thay thế quyết định chuyên môn.</div>`;
     }
 
     function formatVNDate(dateString) {
@@ -4801,57 +5127,239 @@ body{font-size:14px!important;}
         return "Vị trí GPS";
     }
 
-    function hienThiKetQuaDiaDiem(results, targetId) {
-        const box=document.getElementById(targetId);
-        if(!box) return;
-        if(!results.length){ box.style.display='none'; box.innerHTML=''; return; }
-        box.style.display='flex';
-        box.innerHTML = results.slice(0,6).map((r,i)=>{
-            const lat=Number(r.lat ?? r.latitude), lon=Number(r.lon ?? r.longitude);
-            const name=(r.display_name || `${r.name || 'Địa điểm'}${r.admin1 ? ', '+r.admin1 : ''}`).replace(/</g,'&lt;');
-            return `<button type="button" onclick="chonDiaDiemThoiTiet(${lat},${lon},${JSON.stringify(name)})" style="text-align:left;border:1px solid #dbeafe;background:#f8fafc;border-radius:8px;padding:8px 10px;cursor:pointer;font-weight:700;color:#0f172a;">${i+1}. ${name}<br><small style="color:#64748b;font-weight:600;">Tọa độ: ${lat.toFixed(6)}, ${lon.toFixed(6)}</small></button>`;
-        }).join('');
+    // ============================================================
+    // ĐỊNH VỊ & TÌM KIẾM ĐỊA ĐIỂM PRO
+    // - GPS độ chính xác cao, thử nhiều lần để lấy tọa độ ổn định hơn
+    // - Tìm kiếm gợi ý khi đang gõ
+    // - Người dùng BẮT BUỘC chọn kết quả nếu có nhiều địa điểm
+    // - Hiển thị đầy đủ xã/phường → quận/huyện → tỉnh/thành → quốc gia
+    // - Không tự chọn nhầm địa điểm trùng tên
+    // ============================================================
+    let locationSearchTimer = null;
+    let locationSearchAbort = null;
+    let locationSearchSeq = 0;
+    let gpsWatchId = null;
+
+    function escapeLocationHtml(v) {
+        return String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;')
+            .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
     }
+
+    function normalizeLocationResult(r) {
+        const lat = Number(r.lat ?? r.latitude);
+        const lon = Number(r.lon ?? r.longitude);
+        const a = r.address || {};
+        const display = r.display_name || r.name || 'Địa điểm';
+        const commune = a.village || a.town || a.suburb || a.city_district ||
+                        a.municipality || a.quarter || a.neighbourhood || '';
+        const district = a.city_district || a.district || a.county || '';
+        const province = a.province || a.state || a.city || '';
+        const country = a.country || 'Việt Nam';
+        const parts = [...new Set([commune, district, province, country].filter(Boolean))];
+        return {
+            raw: r, lat, lon,
+            name: r.name || display.split(',')[0] || 'Địa điểm',
+            display,
+            shortAddress: parts.length ? parts.join(' · ') : display,
+            type: r.type || r.class || '',
+            importance: Number(r.importance || 0)
+        };
+    }
+
+    function setLocationSearchBusy(targetId, busy, text='Đang tìm địa điểm...') {
+        const box = document.getElementById(targetId);
+        if (!box) return;
+        if (busy) {
+            box.style.display = 'flex';
+            box.innerHTML = `<div style="padding:10px 12px;color:#475569;font-weight:800;">
+                <i class="fa-solid fa-spinner fa-spin"></i> ${escapeLocationHtml(text)}
+            </div>`;
+        }
+    }
+
+    function hienThiKetQuaDiaDiem(results, targetId, queryText='') {
+        const box = document.getElementById(targetId);
+        if (!box) return;
+
+        const items = (results || []).map(normalizeLocationResult)
+            .filter(x => Number.isFinite(x.lat) && Number.isFinite(x.lon))
+            .slice(0, 8);
+
+        if (!items.length) {
+            box.style.display = 'flex';
+            box.innerHTML = `<div style="padding:12px;color:#b45309;font-weight:800;">
+                <i class="fa-solid fa-location-dot"></i>
+                Không tìm thấy địa điểm phù hợp với “${escapeLocationHtml(queryText)}”.
+            </div>`;
+            return;
+        }
+
+        box.style.display = 'flex';
+        box.setAttribute('role','listbox');
+        box.innerHTML = items.map((x,i) => `
+            <button type="button"
+                class="location-result-item"
+                role="option"
+                data-index="${i}"
+                onclick="chonDiaDiemThoiTiet(${x.lat},${x.lon},${JSON.stringify(x.display).replace(/</g,'\\u003c')})"
+                style="width:100%;text-align:left;border:1px solid #dbeafe;background:#fff;border-radius:10px;
+                       padding:10px 12px;cursor:pointer;font-weight:800;color:#0f172a;
+                       box-shadow:0 1px 2px rgba(15,23,42,.04);">
+                <span style="display:flex;gap:8px;align-items:flex-start;">
+                    <span style="min-width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;
+                                 justify-content:center;background:#eff6ff;color:#2563eb;font-size:12px;">${i+1}</span>
+                    <span style="min-width:0;flex:1;">
+                        <span style="display:block;font-size:13px;line-height:1.35;">${escapeLocationHtml(x.name)}</span>
+                        <small style="display:block;margin-top:3px;color:#475569;font-weight:650;line-height:1.35;">
+                            ${escapeLocationHtml(x.shortAddress)}
+                        </small>
+                        <small style="display:block;margin-top:3px;color:#94a3b8;font-weight:650;">
+                            Tọa độ: ${x.lat.toFixed(6)}, ${x.lon.toFixed(6)}
+                        </small>
+                    </span>
+                    <i class="fa-solid fa-chevron-right" style="color:#94a3b8;margin-top:5px;"></i>
+                </span>
+            </button>`).join('');
+
+        // Bấm ra ngoài sẽ đóng danh sách gợi ý.
+        if (!box.dataset.outsideBound) {
+            box.dataset.outsideBound = '1';
+            document.addEventListener('click', function(e) {
+                if (!box.contains(e.target) &&
+                    e.target?.id !== 'inputModalSearchLocation' &&
+                    e.target?.id !== 'inputWidgetSearchLocation') {
+                    box.style.display = 'none';
+                }
+            });
+        }
+    }
+
+    async function reverseGeocodeVietNam(lat, lon) {
+        try {
+            const u = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&accept-language=vi&zoom=18`;
+            const r = await fetch(u, {headers:{'Accept':'application/json'}, cache:"no-store"});
+            const d = await r.json();
+            if (d && d.address) {
+                const a=d.address;
+                const commune=a.village || a.town || a.suburb || a.city_district || a.municipality || '';
+                const district=a.city_district || a.district || a.county || '';
+                const province=a.province || a.state || a.city || '';
+                const country=a.country || 'Việt Nam';
+                return {
+                    name: [commune, district, province].filter(Boolean).join(', ') || d.display_name || 'Vị trí GPS',
+                    full: d.display_name || '',
+                    address: a
+                };
+            }
+        } catch(e) {}
+        return {name:"Vị trí GPS", full:"", address:{}};
+    }
+
     async function chonDiaDiemThoiTiet(lat,lon,name){
-        document.getElementById('weatherLocationResults')?.style && (document.getElementById('weatherLocationResults').style.display='none');
-        document.getElementById('weatherWidgetResults')?.style && (document.getElementById('weatherWidgetResults').style.display='none');
-        await capNhatThoiTiet(lat,lon,name);
-        await capNhatThoiTiet10Ngay(lat,lon,name);
+        lat = Number(lat); lon = Number(lon);
+        if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
+
+        ['weatherLocationResults','weatherWidgetResults'].forEach(id => {
+            const el=document.getElementById(id);
+            if(el) { el.style.display='none'; el.innerHTML=''; }
+        });
+
+        cachedWeatherCoords = {lat, lon, cityName:name || 'Địa điểm đã chọn'};
+
+        // Cập nhật ngay lập tức, sau đó reverse-geocode lại để tên hiển thị chuẩn hơn.
+        await capNhatThoiTiet(lat,lon,name || 'Địa điểm đã chọn');
+        await capNhatThoiTiet10Ngay(lat,lon,name || 'Địa điểm đã chọn');
+
+        try {
+            const rg = await reverseGeocodeVietNam(lat,lon);
+            if (rg && rg.name && rg.name !== 'Vị trí GPS') {
+                cachedWeatherCoords.cityName = rg.name;
+                await capNhatThoiTiet(lat,lon,rg.name);
+                await capNhatThoiTiet10Ngay(lat,lon,rg.name);
+            }
+        } catch(e) {}
     }
-    async function timKiemDiaDiemThoiTiet(query, targetId='weatherLocationResults') {
-        if (!query || !query.trim()) return;
-        const cleanQ=query.trim();
+
+    async function timKiemDiaDiemThoiTiet(query, targetId='weatherLocationResults', silent=false) {
+        const cleanQ=String(query || '').trim();
+        if (!cleanQ) {
+            const box=document.getElementById(targetId);
+            if(box){box.style.display='none';box.innerHTML='';}
+            return;
+        }
+
+        const seq=++locationSearchSeq;
+        if (locationSearchAbort) { try{locationSearchAbort.abort();}catch(e){} }
+        locationSearchAbort = new AbortController();
+        setLocationSearchBusy(targetId,true,'Đang tìm địa điểm chính xác...');
+
         try {
             let results=[];
-            // Tìm Việt Nam trước, có addressdetails để giữ được cấp xã/phường/tỉnh.
-            const nUrl=`https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=10&countrycodes=vn&accept-language=vi&q=${encodeURIComponent(cleanQ)}`;
-            try{
-                const nr=await fetch(nUrl,{headers:{'Accept':'application/json'},cache:'no-store'});
+            const signal=locationSearchAbort.signal;
+
+            // Nominatim: ưu tiên kết quả Việt Nam và addressdetails.
+            try {
+                const nUrl=`https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=12&countrycodes=vn&accept-language=vi&q=${encodeURIComponent(cleanQ)}`;
+                const nr=await fetch(nUrl,{headers:{'Accept':'application/json'},cache:'no-store',signal});
                 const nd=await nr.json();
                 if(Array.isArray(nd)) results=nd;
-            }catch(e){}
-            // Bổ sung Open-Meteo geocoder nếu Nominatim không có kết quả.
-            if(results.length<3){
-                try{
-                    const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cleanQ)}&count=10&language=vi&format=json`,{cache:'no-store'});
-                    const d=await r.json();
-                    if(Array.isArray(d.results)) results=results.concat(d.results.filter(x=>Number(x.country_code)==='' || x.country_code==='VN'));
-                }catch(e){}
+            } catch(e) {
+                if (e.name === 'AbortError') return;
             }
-            // Loại trùng theo tọa độ và ưu tiên kết quả có tên khớp.
+
+            // Open-Meteo geocoder làm nguồn bổ sung.
+            if(results.length<5 && seq===locationSearchSeq){
+                try {
+                    const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cleanQ)}&count=12&language=vi&format=json`,{cache:'no-store',signal});
+                    const d=await r.json();
+                    if(Array.isArray(d.results)) {
+                        results=results.concat(d.results.filter(x=>!x.country_code || x.country_code==='VN'));
+                    }
+                } catch(e) {
+                    if (e.name === 'AbortError') return;
+                }
+            }
+
+            if(seq!==locationSearchSeq) return;
+
+            // Loại trùng theo tọa độ.
             const seen=new Set();
             results=results.filter(r=>{
-                const key=`${Number(r.lat??r.latitude).toFixed(5)},${Number(r.lon??r.longitude).toFixed(5)}`;
-                if(seen.has(key)) return false; seen.add(key); return true;
+                const lat=Number(r.lat??r.latitude), lon=Number(r.lon??r.longitude);
+                if(!Number.isFinite(lat)||!Number.isFinite(lon)) return false;
+                const key=`${lat.toFixed(5)},${lon.toFixed(5)}`;
+                if(seen.has(key)) return false;
+                seen.add(key);
+                return true;
             });
-            if(!results.length){ alert(`⚠️ Không tìm thấy địa điểm "${cleanQ}". Hãy nhập tên xã/phường, tỉnh/thành hoặc tên địa danh đầy đủ.`); return; }
-            // Nếu có nhiều kết quả, bắt buộc chọn để tránh lấy nhầm xã/tỉnh trùng tên.
-            hienThiKetQuaDiaDiem(results,targetId);
-            if(results.length===1){
-                const r=results[0];
-                await chonDiaDiemThoiTiet(Number(r.lat??r.latitude),Number(r.lon??r.longitude),r.display_name || r.name || cleanQ);
+
+            if(!results.length){
+                hienThiKetQuaDiaDiem([],targetId,cleanQ);
+                if(!silent) {
+                    const box=document.getElementById(targetId);
+                    if(box) box.scrollIntoView({block:'nearest'});
+                }
+                return;
             }
-        }catch(err){ alert('❌ Lỗi tìm kiếm địa điểm: '+err.message); }
+
+            hienThiKetQuaDiaDiem(results,targetId,cleanQ);
+
+            // Chỉ tự chọn khi đúng một kết quả duy nhất.
+            // Nếu có từ 2 kết quả trở lên, người dùng phải bấm chọn để tránh nhầm địa danh.
+            if(results.length===1){
+                const x=normalizeLocationResult(results[0]);
+                await chonDiaDiemThoiTiet(x.lat,x.lon,x.display || x.name || cleanQ);
+            }
+        }catch(err){
+            if(err?.name==='AbortError') return;
+            const box=document.getElementById(targetId);
+            if(box){
+                box.style.display='flex';
+                box.innerHTML=`<div style="padding:12px;color:#b91c1c;font-weight:800;">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Không thể tìm địa điểm lúc này. Hãy thử lại.
+                </div>`;
+            }
+        }
     }
 
     function timKiemDiaDiemWidget() {
@@ -4863,24 +5371,92 @@ body{font-size:14px!important;}
         timKiemDiaDiemThoiTiet(val,'weatherLocationResults');
     }
 
+    // Gợi ý tự động khi người dùng đang nhập; debounce để không gọi API liên tục.
+    function batAutocompleteDiaDiem(inputId,targetId) {
+        const input=document.getElementById(inputId);
+        if(!input || input.dataset.locationAutocomplete==='1') return;
+        input.dataset.locationAutocomplete='1';
+
+        input.addEventListener('input', function(){
+            const q=this.value.trim();
+            clearTimeout(locationSearchTimer);
+            if(q.length<2){
+                const box=document.getElementById(targetId);
+                if(box){box.style.display='none';box.innerHTML='';}
+                return;
+            }
+            locationSearchTimer=setTimeout(()=>timKiemDiaDiemThoiTiet(q,targetId,true),450);
+        });
+
+        input.addEventListener('keydown', function(e){
+            if(e.key==='Escape'){
+                const box=document.getElementById(targetId);
+                if(box) box.style.display='none';
+            }
+            if(e.key==='Enter'){
+                e.preventDefault();
+                clearTimeout(locationSearchTimer);
+                timKiemDiaDiemThoiTiet(this.value,targetId);
+            }
+        });
+    }
+
     async function layThoiTietTheoGPS() {
         if (!navigator.geolocation) {
             alert("Trình duyệt không hỗ trợ định vị GPS.");
             return;
         }
+
         const wText = document.getElementById('weatherWidgetText');
-        if (wText) wText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang lấy GPS độ chính xác cao...`;
-        navigator.geolocation.getCurrentPosition(async pos => {
-            const lat = pos.coords.latitude, lon = pos.coords.longitude, accuracy = pos.coords.accuracy;
-            const resolvedName = await reverseGeocodeVietNam(lat, lon);
-            await capNhatThoiTiet(lat, lon, resolvedName);
-            await capNhatThoiTiet10Ngay(lat, lon, resolvedName);
-            alert(`✅ Định vị chính xác:\n${resolvedName}\n${lat.toFixed(6)}, ${lon.toFixed(6)}`);
-        }, error => {
+        if (wText) wText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang lấy vị trí GPS độ chính xác cao...`;
+
+        // getCurrentPosition với enableHighAccuracy; thử lại một lần nếu độ chính xác ban đầu thấp.
+        const getPos = options => new Promise((resolve,reject)=>{
+            navigator.geolocation.getCurrentPosition(resolve,reject,options);
+        });
+
+        try {
+            let pos = await getPos({enableHighAccuracy:true, timeout:20000, maximumAge:0});
+            let accuracy = Number(pos.coords.accuracy || 999999);
+
+            // Nếu sai số > 50 m, thử lại để lấy tín hiệu tốt hơn.
+            if(accuracy > 50){
+                try{
+                    const better = await getPos({enableHighAccuracy:true, timeout:20000, maximumAge:0});
+                    if(Number(better.coords.accuracy || 999999) < accuracy) pos=better;
+                }catch(e){}
+            }
+
+            const lat=Number(pos.coords.latitude), lon=Number(pos.coords.longitude);
+            const rg=await reverseGeocodeVietNam(lat,lon);
+            const resolvedName=rg.name || 'Vị trí GPS';
+
+            cachedWeatherCoords={lat,lon,cityName:resolvedName};
+            await capNhatThoiTiet(lat,lon,resolvedName);
+            await capNhatThoiTiet10Ngay(lat,lon,resolvedName);
+
+            const acc=Math.round(Number(pos.coords.accuracy || 0));
+            if (wText) wText.innerHTML =
+                `<i class="fa-solid fa-location-dot"></i> ${escapeLocationHtml(resolvedName)}
+                 <br><small style="font-weight:700;color:#15803d;">GPS ±${acc} m · ${lat.toFixed(6)}, ${lon.toFixed(6)}</small>`;
+
+            alert(`✅ Đã định vị GPS chính xác\n\n${resolvedName}\nTọa độ: ${lat.toFixed(6)}, ${lon.toFixed(6)}\nĐộ chính xác thiết bị báo: ±${acc} m`);
+        } catch(error) {
             if (wText) wText.innerHTML = "Không thể lấy tọa độ GPS.";
-            alert("⚠️ Không thể truy cập GPS: " + error.message + ". Hãy cấp quyền vị trí cho trình duyệt.");
-        }, {enableHighAccuracy:true, timeout:15000, maximumAge:0});
+            let msg="Không thể truy cập GPS.";
+            if(error?.code===1) msg="Bạn chưa cấp quyền vị trí cho trình duyệt.";
+            else if(error?.code===2) msg="Thiết bị chưa xác định được vị trí. Hãy bật GPS/Location.";
+            else if(error?.code===3) msg="GPS phản hồi quá lâu. Hãy thử lại ở nơi có tín hiệu tốt hơn.";
+            alert(`⚠️ ${msg}\n\nHãy kiểm tra quyền Vị trí của trình duyệt và thử lại.`);
+        }
     }
+
+    // Khởi tạo autocomplete sau khi DOM sẵn sàng.
+    function khoiTaoAutocompleteDiaDiem() {
+        batAutocompleteDiaDiem('inputModalSearchLocation','weatherLocationResults');
+        batAutocompleteDiaDiem('inputWidgetSearchLocation','weatherWidgetResults');
+    }
+    document.addEventListener('DOMContentLoaded', khoiTaoAutocompleteDiaDiem);
 
     async function moModalDuBaoThoiTiet10Ngay() {
         document.getElementById('modalWeather10DaysPreview').classList.remove('hidden');
@@ -4892,6 +5468,18 @@ body{font-size:14px!important;}
             showTabMenu();
         }
     });
+    document.addEventListener('visibilitychange', function(){
+        if (!document.hidden) {
+            try { dongBoThongMinh(false); } catch(e) {}
+        }
+    });
+    window.addEventListener('online', function(){
+        try { cloudEndpointDisabled=false; cloudEndpointErrorCount=0; dongBoThongMinh(false); } catch(e) {}
+    });
+
+
+    // Fallback: đảm bảo autocomplete hoạt động ngay cả khi ứng dụng được nạp trong WebView.
+    try { khoiTaoAutocompleteDiaDiem(); } catch(e) {}
 
     window.onload = function() {
         // Khởi động các thành phần độc lập trước; một lỗi ở nghiệp vụ không được làm chết đồng hồ/thời tiết.
@@ -4923,6 +5511,7 @@ body{font-size:14px!important;}
         }, 200);
 
         suppressCloudSync = false;
+        markPersistentCacheReady();
         try { startAutoCloudSync(); } catch(e) { console.error('Cloud sync init:', e); }
         try { setSyncState(pendingSync ? 'syncing' : 'online', pendingSync ? 'Có dữ liệu chờ đồng bộ' : 'Đang kiểm tra Cloud', lastSyncAt ? `lần cuối ${new Date(lastSyncAt).toLocaleString('vi-VN')}` : 'chờ xác nhận kết nối'); } catch(e) {}
 

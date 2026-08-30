@@ -2728,7 +2728,17 @@ html,body,body *{word-spacing:normal!important;letter-spacing:normal!important}
             <div class="table-title"><i class="fa-solid fa-file-invoice"></i> THANH TOÁN VĂN PHÒNG (<span class="thangHienTaiTitle">Tháng 08/2026</span>)</div>
             <button class="btn btn-purple" onclick="moThuThucDriveChung()"><i class="fa-brands fa-google-drive"></i> Mở Drive</button>
         </div>
-        <div class="form-card" id="formCardVpp">
+        <div class="vnp-invoice-extract-mini" id="vnpOfficeInvoiceExtract">
+  <div class="vnp-extract-mini-head"><div><b>📄 TRÍCH XUẤT HÓA ĐƠN – THANH TOÁN VĂN PHÒNG</b><small>Upload hóa đơn để tự động lấy đúng 04 trường: Số hóa đơn, Ngày hóa đơn, MST NCC, Địa chỉ NCC.</small></div><span id="vnpOfficeExtractStatus">Sẵn sàng</span></div>
+  <div class="vnp-extract-mini-grid">
+    <div><label>Số hóa đơn</label><input id="vnpOfficeInvoiceNo" readonly></div>
+    <div><label>Ngày hóa đơn</label><input id="vnpOfficeInvoiceDate" type="date" readonly></div>
+    <div><label>Mã số thuế NCC</label><input id="vnpOfficeInvoiceTax" readonly></div>
+    <div><label>Địa chỉ NCC</label><input id="vnpOfficeInvoiceAddress" readonly></div>
+  </div>
+  <input type="file" id="vnpOfficeInvoiceUpload" accept="image/*,.pdf,.xml,.xlsx,.xls,.csv,.txt,.docx" multiple>
+</div>
+<div class="form-card" id="formCardVpp">
             <input type="hidden" id="editOfficeKey" value="">
             <input type="hidden" id="editOfficeIndex" value="-1">
             <input type="hidden" id="inputOfficeFileUrl" value="">
@@ -2760,6 +2770,7 @@ html,body,body *{word-spacing:normal!important;letter-spacing:normal!important}
                 <button class="btn btn-red btn-lg hidden" id="btnCancelVpp" onclick="huyBoCapNhatVPP()"><i class="fa-solid fa-xmark"></i> Hủy</button>
             </div>
         </div>
+        <div class="vnp-invoice-log"><div class="vnp-invoice-log-title">BẢNG HÓA ĐƠN ĐÃ TRÍCH XUẤT – THANH TOÁN VĂN PHÒNG</div><div class="vnp-invoice-log-scroll"><table><thead><tr><th>STT</th><th>Số hóa đơn</th><th>Ngày hóa đơn</th><th>MST NCC</th><th>Địa chỉ NCC</th><th>Tệp nguồn</th><th>Thao tác</th></tr></thead><tbody id="vnpOfficeInvoiceLogBody"></tbody></table></div></div>
         <table>
             <thead>
                 <tr><th>Mã HS</th><th>Tháng</th><th>Thụ Hưởng</th><th>Ngân Hàng / STK</th><th>Nội Dung</th><th>ĐVT</th><th>SL x Đơn Giá</th><th>Trước Thuế</th><th>VAT</th><th>Tổng TT</th><th>Ngày CT</th><th style="text-align:center;">Drive Files</th><th class="action-col">Thao Tác</th></tr>
@@ -2865,7 +2876,17 @@ html,body,body *{word-spacing:normal!important;letter-spacing:normal!important}
             <div class="kpi-card" style="border-left: 5px solid #0284c7;"><div class="kpi-title">Cước Trước Thuế (Cả Năm)</div><div class="kpi-value" style="color: #0284c7;" id="telecomKpiTruocThue">0</div><div class="kpi-sub">Lũy kế cả năm</div></div>
             <div class="kpi-card" style="border-left: 5px solid #ef4444;"><div class="kpi-title">Thuế VAT (Cả Năm)</div><div class="kpi-value" style="color: #ef4444;" id="telecomKpiVAT">0</div><div class="kpi-sub">Lũy kế cả năm</div></div>
             <div class="kpi-card" style="border-left: 5px solid #16a34a;"><div class="kpi-title">Tổng Thanh Toán (Cả Năm)</div><div class="kpi-value" style="color: #15803d;" id="telecomKpiTongThanhToan">0</div><div class="kpi-sub">Lũy kế cả năm</div></div>
-        </div><div class="form-card" id="formCardTelecom">
+        </div><div class="vnp-invoice-extract-mini" id="vnpTelecomInvoiceExtract">
+  <div class="vnp-extract-mini-head"><div><b>📄 TRÍCH XUẤT HÓA ĐƠN – CƯỚC VIỄN THÔNG</b><small>Upload hóa đơn để tự động lấy đúng 04 trường và bổ sung vào bảng theo dõi bên dưới.</small></div><span id="vnpTelecomExtractStatus">Sẵn sàng</span></div>
+  <div class="vnp-extract-mini-grid">
+    <div><label>Số hóa đơn</label><input id="vnpTelecomInvoiceNoExtract" readonly></div>
+    <div><label>Ngày hóa đơn</label><input id="vnpTelecomInvoiceDateExtract" type="date" readonly></div>
+    <div><label>Mã số thuế NCC</label><input id="vnpTelecomInvoiceTaxExtract" readonly></div>
+    <div><label>Địa chỉ NCC</label><input id="vnpTelecomInvoiceAddressExtract" readonly></div>
+  </div>
+  <input type="file" id="vnpTelecomInvoiceUpload" accept="image/*,.pdf,.xml,.xlsx,.xls,.csv,.txt,.docx" multiple>
+</div>
+<div class="form-card" id="formCardTelecom">
             <input type="hidden" id="editTelecomKey" value="">
             <input type="hidden" id="editTelecomIndex" value="-1">
             <input type="hidden" id="inputTelecomFileUrl" value="">
@@ -2904,6 +2925,7 @@ html,body,body *{word-spacing:normal!important;letter-spacing:normal!important}
                 <button class="btn btn-red btn-lg hidden" id="btnCancelTelecom" onclick="huyBoCapNhatTelecom()"><i class="fa-solid fa-xmark"></i> Hủy</button>
             </div>
         </div>
+        <div class="vnp-invoice-log"><div class="vnp-invoice-log-title">BẢNG HÓA ĐƠN ĐÃ TRÍCH XUẤT – CƯỚC VIỄN THÔNG</div><div class="vnp-invoice-log-scroll"><table><thead><tr><th>STT</th><th>Số hóa đơn</th><th>Ngày hóa đơn</th><th>MST NCC</th><th>Địa chỉ NCC</th><th>Tệp nguồn</th><th>Thao tác</th></tr></thead><tbody id="vnpTelecomInvoiceLogBody"></tbody></table></div></div>
         <table>
             <thead>
                 <tr><th>Mã HS</th><th>Tháng</th><th>Nhà Mạng</th><th>Loại Cước</th><th>Kỳ Cước</th><th>Trước Thuế</th><th>VAT</th><th>Tổng TT</th><th style="text-align:center;">Drive Files</th><th class="action-col">Thao Tác</th></tr>
@@ -8567,5 +8589,64 @@ setTimeout(syncButton,300);setTimeout(syncButton,1000);
   }
 }
 </style>
+
+
+<!-- V26 FINAL: TYPOGRAPHY KHÔNG GIÃN + UPLOAD HÓA ĐƠN 04 TRƯỜNG CHO VP/VIỄN THÔNG -->
+<style id="vinapaco-v26-final-css">
+#vnpLoginGate .vnp-login-form h3,#vnpLoginGate .vnp-login-brand h1,#vnpLoginGate .vnp-login-kicker{display:flex!important;flex-wrap:nowrap!important;align-items:baseline!important;justify-content:flex-start!important;width:100%!important;max-width:100%!important;box-sizing:border-box!important;text-align:left!important;text-align-last:auto!important;white-space:nowrap!important;word-break:normal!important;overflow-wrap:normal!important;hyphens:none!important;letter-spacing:0!important;word-spacing:0!important;font-kerning:normal!important}
+#vnpLoginGate .vnp-login-brand h1{justify-content:center!important;text-align:center!important;font-size:clamp(18px,2.35vw,27px)!important}
+#vnpLoginGate .vnp-login-form h3{font-size:clamp(23px,2.8vw,30px)!important}
+#vnpLoginGate .vnp-login-kicker{font-size:11px!important}
+#vnpLoginGate .vnp-word{display:inline-block!important;flex:0 0 auto!important;white-space:nowrap!important;letter-spacing:0!important;word-spacing:0!important}
+#vnpLoginGate .vnp-login-form h3 .vnp-word + .vnp-word{margin-left:.30em!important}
+#vnpLoginGate .vnp-login-brand h1 .vnp-word + .vnp-word{margin-left:.18em!important}
+#vnpLoginGate .vnp-login-kicker .vnp-word + .vnp-word{margin-left:.25em!important}
+#vnpLoginGate h1,#vnpLoginGate h2,#vnpLoginGate h3,#vnpLoginGate p,#vnpLoginGate label,#vnpLoginGate button{font-kerning:normal!important;font-variant-ligatures:normal!important;text-justify:none!important}
+.vnp-invoice-extract-mini{margin:0 0 12px;padding:12px;border:1.5px solid #93c5fd;border-radius:12px;background:linear-gradient(180deg,#f8fbff,#fff);box-shadow:0 3px 12px rgba(15,23,42,.05)}
+.vnp-extract-mini-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}.vnp-extract-mini-head b{font-size:13px;color:#075985}.vnp-extract-mini-head small{display:block;margin-top:3px;color:#64748b;font-size:11px;font-weight:700}.vnp-extract-mini-head span{font-size:11px;font-weight:900;padding:5px 9px;border-radius:999px;background:#dcfce7;color:#166534}.vnp-extract-mini-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.vnp-extract-mini-grid label{display:block;font-size:11px;font-weight:900;color:#334155;margin-bottom:4px}.vnp-extract-mini-grid input{width:100%;height:38px;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:0 10px;background:#fff;font-weight:700}.vnp-invoice-extract-mini>input[type=file]{margin-top:10px;width:100%;box-sizing:border-box;padding:7px;border:1px dashed #60a5fa;border-radius:8px;background:#eff6ff;color:#075985;font-weight:700}
+.vnp-invoice-log{margin:0 0 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;overflow:hidden}.vnp-invoice-log-title{padding:9px 12px;background:#eef6ff;color:#0f3d63;font-size:12px;font-weight:1000}.vnp-invoice-log-scroll{overflow:auto}.vnp-invoice-log table{width:100%;min-width:850px;border-collapse:collapse}.vnp-invoice-log th,.vnp-invoice-log td{border:1px solid #dbe4ee;padding:7px 8px;font-size:11px}.vnp-invoice-log th{background:#f1f5f9;color:#0f3d63;text-align:center}.vnp-invoice-log td:nth-child(1),.vnp-invoice-log td:nth-child(3),.vnp-invoice-log td:nth-child(4){text-align:center}.vnp-invoice-log td:nth-child(6){max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(max-width:900px){.vnp-extract-mini-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.vnp-extract-mini-grid{grid-template-columns:1fr}.vnp-invoice-extract-mini{padding:10px}.vnp-invoice-log table{min-width:760px}#vnpLoginGate .vnp-login-form h3{font-size:23px!important}#vnpLoginGate .vnp-login-brand h1{font-size:17px!important}}
+</style>
+<script id="vinapaco-v26-final-js">
+(function(){
+'use strict';
+const KEY='vinapaco_invoice_extract_4fields_v26';
+function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]})}
+function norm(s){return String(s||'').replace(/\u00a0/g,' ').replace(/[ \t]+/g,' ').replace(/\r/g,'').trim()}
+function lines(s){return String(s||'').split('\n').map(norm).filter(Boolean)}
+function digits(s){return String(s||'').replace(/[^0-9]/g,'')}
+function dateISO(s){s=String(s||'');let m=s.match(/\b(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})\b/);if(m)return m[3]+'-'+String(m[2]).padStart(2,'0')+'-'+String(m[1]).padStart(2,'0');m=s.match(/\b(\d{4})[\/.-](\d{1,2})[\/.-](\d{1,2})\b/);if(m)return m[1]+'-'+String(m[2]).padStart(2,'0')+'-'+String(m[3]).padStart(2,'0');m=s.match(/\b(\d{1,2})\s+tháng\s+(\d{1,2})\s+năm\s+(\d{4})\b/i);return m?m[3]+'-'+String(m[2]).padStart(2,'0')+'-'+String(m[1]).padStart(2,'0'):''}
+function fieldAfter(raw,labelRe,nextRe){const re=new RegExp(labelRe+'\\s*[:：-]?\\s*([^\\n]+)','i');const m=raw.match(re);if(!m)return '';let v=norm(m[1]);if(nextRe)v=v.split(nextRe)[0];return v.replace(/^[:：\-]+\s*/,'').trim()}
+function extract4(raw){
+ raw=String(raw||'').replace(/\u00a0/g,' ');const ls=lines(raw);let invoiceNo='',date='',taxCode='',address='',supplier='';
+ invoiceNo=(raw.match(/(?:Số\s*(?:hóa\s*đơn|HĐ|HD)|Invoice\s*(?:No\.?|Number)|No\.?\s*hóa\s*đơn)\s*[:：#-]?\s*([0-9]{4,20})/i)||[])[1]||'';
+ if(!invoiceNo){for(let i=0;i<ls.length;i++){if(/^(?:Số\s*(?:hóa\s*đơn|HĐ|HD)|Invoice\s*(?:No\.?|Number)|No\.?\s*hóa\s*đơn)\b/i.test(ls[i])){const m=ls[i].match(/\b([0-9]{4,20})\b/);if(m){invoiceNo=m[1];break}const n=(ls[i+1]||'').match(/^([0-9]{4,20})$/);if(n){invoiceNo=n[1];break}}}}
+ for(let i=0;i<ls.length&&!date;i++){const l=ls[i];if(/(?:Ngày\s*(?:hóa\s*đơn|lập)|Invoice\s*Date|Issue\s*Date)/i.test(l))date=dateISO(l);}
+ if(!date){const m=raw.match(/(?:Ngày\s*(?:hóa\s*đơn|lập)|Invoice\s*Date|Issue\s*Date)\s*[:：-]?\s*([^\n]{1,50})/i);if(m)date=dateISO(m[1])}
+ const sp=raw.search(/(?:người\s*bán|đơn\s*vị\s*bán|nhà\s*cung\s*cấp|seller|supplier)/i),bp=raw.search(/(?:người\s*mua|đơn\s*vị\s*mua|buyer)/i);const block=sp>=0?raw.slice(sp,bp>sp?bp:Math.min(raw.length,sp+2500)):raw;
+ taxCode=(block.match(/(?:Mã\s*số\s*thuế|MST|Tax\s*(?:code|ID)|Seller\s*Tax\s*Code)\s*[:：-]?\s*([0-9]{10}(?:-[0-9]{3})?)/i)||[])[1]||'';if(!taxCode){const m=block.match(/\b([0-9]{10}(?:-[0-9]{3})?)\b/);taxCode=m?m[1]:''}taxCode=digits(taxCode);
+ address=fieldAfter(block,'(?:Địa\\s*chỉ\\s*(?:người\\s*bán|bên\\s*bán|NCC|nhà\\s*cung\\s*cấp)|Seller\\s*Address|Supplier\\s*Address)');
+ if(!address){const m=block.match(/(?:Địa\s*chỉ)\s*[:：-]\s*([^\n]+)/i);if(m)address=norm(m[1])}
+ supplier=fieldAfter(block,'(?:Tên\\s*(?:đơn\\s*vị\\s*bán\\s*hàng|người\\s*bán|người\\s*bán\\s*hàng)|Đơn\\s*vị\\s*bán\\s*hàng|Seller\\s*Name|Supplier\\s*Name)');
+ return {invoiceNo:digits(invoiceNo),date:dateISO(date),taxCode,supplierAddress:norm(address),supplier:norm(supplier),rawText:raw};
+}
+function xml4(raw){const doc=new DOMParser().parseFromString(raw,'text/xml');const val=names=>{for(const name of names){const e=[...doc.getElementsByTagName('*')].find(x=>(x.localName||x.nodeName||'').split(':').pop().toLowerCase()===name.toLowerCase()&&x.textContent.trim());if(e)return e.textContent.trim()}return ''};return {invoiceNo:digits(val(['InvoiceNumber','InvoiceNo','InvoiceID'])),date:dateISO(val(['InvoiceDate','IssueDate','IssueDateTime'])),taxCode:digits(val(['SellerTaxCode','TaxCode','TaxIdentificationNumber'])),supplierAddress:norm(val(['SellerAddress','SupplierAddress','SellerAddressLine'])),supplier:norm(val(['SellerLegalName','SellerName','SupplierName'])),rawText:doc.documentElement?.textContent||''}}
+async function read(f){const e=String(f.name||'').split('.').pop().toLowerCase();if(e==='xml'){const raw=await f.text();return xml4(raw)}if(['jpg','jpeg','png','webp','bmp','gif','tif','tiff'].includes(e)){if(!window.Tesseract)throw Error('OCR chưa sẵn sàng');const r=await Tesseract.recognize(f,'vie+eng');return extract4(r.data.text||'')}if(typeof window.invoiceReadFile==='function')return extract4(await window.invoiceReadFile(f));if(typeof window.readFile==='function'){const r=await window.readFile(f);return r.xml?xml4(r.rawXml||''):extract4(r.text||'')}throw Error('Bộ đọc hóa đơn chưa sẵn sàng')}
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'{"office":[],"telecom":[]}')}catch(e){return {office:[],telecom:[]}}}
+function save(o){localStorage.setItem(KEY,JSON.stringify(o))}
+function render(kind){const id=kind==='office'?'vnpOfficeInvoiceLogBody':'vnpTelecomInvoiceLogBody',tb=document.getElementById(id);if(!tb)return;const arr=load()[kind]||[];tb.innerHTML=arr.map((x,i)=>'<tr><td>'+(i+1)+'</td><td><b>'+esc(x.invoiceNo)+'</b></td><td>'+esc(x.date?x.date.split('-').reverse().join('/'):'' )+'</td><td>'+esc(x.taxCode)+'</td><td>'+esc(x.supplierAddress)+'</td><td title="'+esc(x.fileName)+'">'+esc(x.fileName)+'</td><td><button type="button" class="btn btn-red" data-vnp-del="'+kind+'" data-vnp-idx="'+i+'"><i class="fa-solid fa-trash"></i></button></td></tr>').join('')||'<tr><td colspan="7" style="text-align:center;color:#64748b;padding:15px">Chưa có hóa đơn được trích xuất.</td></tr>'}
+function fill(kind,x,fileName){const p=kind==='office'?['vnpOfficeInvoiceNo','vnpOfficeInvoiceDate','vnpOfficeInvoiceTax','vnpOfficeInvoiceAddress']:['vnpTelecomInvoiceNoExtract','vnpTelecomInvoiceDateExtract','vnpTelecomInvoiceTaxExtract','vnpTelecomInvoiceAddressExtract'];[x.invoiceNo,x.date,x.taxCode,x.supplierAddress].forEach((v,i)=>{const e=document.getElementById(p[i]);if(e)e.value=v||''});
+ if(kind==='office'){const ids=[['invoiceNo',x.invoiceNo],['invoiceDate',x.date],['invoiceTaxCode',x.taxCode],['invoiceSupplierAddress',x.supplierAddress]];ids.forEach(([id,v])=>{const e=document.getElementById(id);if(e)e.value=v||''});}
+ else {const ids=[['inputTelecomInvoiceNo',x.invoiceNo],['inputTelecomInvoiceDate',x.date],['inputTelecomTaxCode',x.taxCode],['inputTelecomSupplierAddress',x.supplierAddress]];ids.forEach(([id,v])=>{const e=document.getElementById(id);if(e)e.value=v||''});}
+ const st=document.getElementById(kind==='office'?'vnpOfficeExtractStatus':'vnpTelecomExtractStatus');if(st){st.textContent='✓ '+fileName;st.style.background='#dcfce7';st.style.color='#166534'}
+}
+function append(kind,x,fileName){if(!x.invoiceNo&&!x.date&&!x.taxCode&&!x.supplierAddress)throw Error('Không nhận diện được 04 trường yêu cầu.');const o=load(),arr=o[kind]||[], key=(x.invoiceNo||'')+'|'+(x.date||'')+'|'+(x.taxCode||'');const idx=arr.findIndex(r=>((r.invoiceNo||'')+'|'+(r.date||'')+'|'+(r.taxCode||''))===key&&key!=='||');const rec={invoiceNo:x.invoiceNo||'',date:x.date||'',taxCode:x.taxCode||'',supplierAddress:x.supplierAddress||'',supplier:x.supplier||'',fileName:fileName||'',createdAt:new Date().toISOString()};if(idx>=0)arr[idx]=Object.assign({},arr[idx],rec);else arr.push(rec);o[kind]=arr;save(o);render(kind)}
+async function process(kind,files){if(!files||!files.length)return;for(const f of [...files]){try{const x=await read(f);fill(kind,x,f.name);append(kind,x,f.name)}catch(e){console.error(e);alert('Không thể trích xuất '+f.name+'\n\n'+e.message)}}}
+function words(){const items=[['.vnp-login-form h3',['Đăng','nhập','hệ','thống']],['.vnp-login-brand h1',['TỔNG','CÔNG','TY','GIẤY','VIỆT','NAM']],['.vnp-login-kicker',['VINAPACO','•','XÁC','THỰC','TÀI','KHOẢN']]];items.forEach(([sel,ws])=>{const e=document.querySelector('#vnpLoginGate '+sel);if(!e||e.dataset.vnp26==='1')return;e.textContent='';ws.forEach(w=>{const s=document.createElement('span');s.className='vnp-word';s.textContent=w;e.appendChild(s)});e.dataset.vnp26='1'})}
+function bind(){words();render('office');render('telecom');document.getElementById('vnpOfficeInvoiceUpload')?.addEventListener('change',e=>process('office',e.target.files));document.getElementById('vnpTelecomInvoiceUpload')?.addEventListener('change',e=>process('telecom',e.target.files));document.addEventListener('click',e=>{const b=e.target.closest('[data-vnp-del]');if(!b)return;const o=load(),k=b.dataset.vnpDel,i=Number(b.dataset.vnpIdx);if(o[k]){o[k].splice(i,1);save(o);render(k)}});}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();setTimeout(words,300);setTimeout(words,1000);
+})();
+</script>
 
 </body></html>

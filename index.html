@@ -2737,15 +2737,11 @@ html,body,body *{word-spacing:normal!important;letter-spacing:normal!important}
         </div>
         <div class="vnp-invoice-extract-mini" id="vnpOfficeInvoiceExtract">
   <div class="vnp-extract-mini-head"><div><b>📄 TRÍCH XUẤT HÓA ĐƠN – THANH TOÁN VĂN PHÒNG</b><small>Upload hóa đơn để tự động lấy đúng 04 trường: Số hóa đơn, Ngày hóa đơn, MST NCC, Địa chỉ NCC.</small></div><span id="vnpOfficeExtractStatus">Sẵn sàng</span></div>
-  <div class="vnp-extract-mini-grid" style="grid-template-columns:repeat(7,minmax(0,1fr));">
+  <div class="vnp-extract-mini-grid">
     <div><label>Số hóa đơn</label><input id="vnpOfficeInvoiceNo" readonly></div>
     <div><label>Ngày hóa đơn</label><input id="vnpOfficeInvoiceDate" type="date" readonly></div>
-    <div><label>Tên nhà cung cấp</label><input id="vnpOfficeInvoiceSupplier" readonly></div>
     <div><label>Mã số thuế NCC</label><input id="vnpOfficeInvoiceTax" readonly></div>
     <div><label>Địa chỉ NCC</label><input id="vnpOfficeInvoiceAddress" readonly></div>
-    <div><label>Trước thuế</label><input id="vnpOfficeInvoiceBeforeTax" readonly></div>
-    <div><label>VAT</label><input id="vnpOfficeInvoiceVat" readonly></div>
-    <div><label>Tổng tiền</label><input id="vnpOfficeInvoiceTotal" readonly></div>
   </div>
   <input type="file" id="vnpOfficeInvoiceUpload" accept="image/*,.pdf,.xml,.xlsx,.xls,.csv,.txt,.docx" multiple>
 </div>
@@ -2753,11 +2749,6 @@ html,body,body *{word-spacing:normal!important;letter-spacing:normal!important}
             <input type="hidden" id="editOfficeKey" value="">
             <input type="hidden" id="editOfficeIndex" value="-1">
             <input type="hidden" id="inputOfficeFileUrl" value="">
-            <input type="hidden" id="inputOfficeInvoiceNo" value="">
-            <input type="hidden" id="inputOfficeInvoiceSeries" value="">
-            <input type="hidden" id="inputOfficeInvoiceTaxCode" value="">
-            <input type="hidden" id="inputOfficeSupplierAddress" value="">
-            <input type="hidden" id="inputOfficeSupplierName" value="">
             <div class="form-group"><label>Mã HS</label><input type="text" id="autoOfficeId" readonly style="background: #e2e8f0; font-weight: bold;" value="VP-01"></div>
             <div class="form-group"><label>Đơn Vị Thụ Hưởng</label><input type="text" id="inputOfficeBeneficiary" placeholder="VD: Công ty TNHH Hồng Hà..."></div>
             <div class="form-group"><label>Tên Ngân Hàng</label><input type="text" id="inputOfficeBankName" placeholder="VD: Vietcombank"></div>
@@ -2789,7 +2780,7 @@ html,body,body *{word-spacing:normal!important;letter-spacing:normal!important}
         <div class="vnp-invoice-log"><div class="vnp-invoice-log-title">BẢNG HÓA ĐƠN ĐÃ TRÍCH XUẤT – THANH TOÁN VĂN PHÒNG</div><div class="vnp-invoice-log-scroll"><table><thead><tr><th>STT</th><th>Số hóa đơn</th><th>Ngày hóa đơn</th><th>MST NCC</th><th>Địa chỉ NCC</th><th>Tệp nguồn</th><th>Thao tác</th></tr></thead><tbody id="vnpOfficeInvoiceLogBody"></tbody></table></div></div>
         <table>
             <thead>
-                <tr><th>Mã HS</th><th>Tháng</th><th>Tên NCC / Thụ Hưởng</th><th>Số HĐ</th><th>MST NCC</th><th>Địa chỉ NCC</th><th>Ngân Hàng / STK</th><th>Nội Dung</th><th>ĐVT</th><th>SL x Đơn Giá</th><th>Trước Thuế</th><th>VAT</th><th>Tổng TT</th><th>Ngày CT</th><th style="text-align:center;">Drive Files</th><th class="action-col">Thao Tác</th></tr>
+                <tr><th>Mã HS</th><th>Tháng</th><th>Thụ Hưởng</th><th>Ngân Hàng / STK</th><th>Nội Dung</th><th>ĐVT</th><th>SL x Đơn Giá</th><th>Trước Thuế</th><th>VAT</th><th>Tổng TT</th><th>Ngày CT</th><th style="text-align:center;">Drive Files</th><th class="action-col">Thao Tác</th></tr>
             </thead>
             <tbody id="officePaymentTableBody"></tbody>
         </table>
@@ -4911,37 +4902,24 @@ html,body,body *{word-spacing:normal!important;letter-spacing:normal!important}
     }
 
     function renderOfficePaymentTable() {
-        const tbody=document.getElementById('officePaymentTableBody');
-        if(!tbody)return;
-        tbody.innerHTML='';
-        const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
-        layTatCaDanhSachVPPTheoNam().forEach(item=>{
-            const before=Number(item.truocThue)||0, vat=Number(item.vat)||0, total=Number(item.total)||before+vat;
-            const driveBtn=item.fileUrl?`<a href="${esc(item.fileUrl||rootDriveFolderUrl)}" target="_blank" rel="noopener" class="btn btn-blue" style="padding:3px 6px;font-size:10px;"><i class="fa-brands fa-google-drive"></i> Files</a>`:'--';
-            const supplier=item.supplierName||item.beneficiary||'';
-            const invoiceNo=item.invoiceNo||'';
-            const tax=item.supplierTaxCode||item.taxCode||'';
-            const addr=item.supplierAddress||'';
-            tbody.innerHTML+=`<tr>
-              <td style="text-align:center;">${esc(item.id)}</td>
-              <td style="text-align:center;">${esc(item.thangHachToan)}</td>
-              <td><b>${esc(supplier)}</b>${item.supplierName&&item.beneficiary&&item.beneficiary!==item.supplierName?`<br><small>Thụ hưởng: ${esc(item.beneficiary)}</small>`:''}</td>
-              <td style="text-align:center;font-weight:800;">${esc(invoiceNo||'--')}</td>
-              <td style="text-align:center;white-space:nowrap;">${esc(tax||'--')}</td>
-              <td>${esc(addr||'--')}</td>
-              <td>${esc(item.bankName||'--')} / ${esc(item.bankAccount||'--')}</td>
-              <td>${esc(item.content||'')}</td>
-              <td style="text-align:center;">${esc(item.unit||'')}</td>
-              <td style="text-align:center;">${esc(item.qty||1)} x ${Number(item.price||0).toLocaleString('vi-VN')}</td>
-              <td style="text-align:right;font-weight:700;">${before.toLocaleString('vi-VN')}</td>
-              <td style="text-align:right;color:#dc2626;font-weight:700;">${vat.toLocaleString('vi-VN')}</td>
-              <td style="text-align:right;font-weight:900;color:#15803d;">${total.toLocaleString('vi-VN')}</td>
-              <td style="text-align:center;">${formatVNDate(item.date)}</td>
-              <td style="text-align:center;">${driveBtn}</td>
-              <td class="action-cell"><div class="action-cell-inner">
-                <button class="btn btn-blue" title="Sửa" onclick="suaVPP('${esc(item.originalKey)}',${item.originalIndex})"><i class="fa-solid fa-pen"></i></button>
-                <button class="btn btn-red" title="Xóa" onclick="xoaVPP('${esc(item.originalKey)}',${item.originalIndex})"><i class="fa-solid fa-trash"></i></button>
-              </div></td>
+        let tbody = document.getElementById('officePaymentTableBody');
+        if(!tbody) return; tbody.innerHTML = '';
+        layTatCaDanhSachVPPTheoNam().forEach(item => {
+            let driveBtn = item.fileUrl ? `<a href="${rootDriveFolderUrl}" target="_blank" class="btn btn-blue" style="padding:3px 6px; font-size:10px;" title="${item.fileUrl}"><i class="fa-brands fa-google-drive"></i> Files Drive</a>` : '--';
+            tbody.innerHTML += `<tr>
+                <td style="text-align:center;">${item.id}</td><td style="text-align:center;">${item.thangHachToan}</td>
+                <td><b>${item.beneficiary}</b></td><td>${item.bankName || '--'} / ${item.bankAccount || '--'}</td><td>${item.content}</td>
+                <td style="text-align:center;">${item.unit}</td><td style="text-align:center;">${item.qty} x ${item.price.toLocaleString()}</td>
+                <td style="text-align:right;">${item.truocThue.toLocaleString()}</td><td style="text-align:right; color:#dc2626;">${item.vat.toLocaleString()}</td>
+                <td style="text-align:right; font-weight:bold; color:#15803d;">${item.total.toLocaleString()}</td>
+                <td style="text-align:center;">${formatVNDate(item.date)}</td>
+                <td style="text-align:center;">${driveBtn}</td>
+                <td class="action-cell">
+                    <div class="action-cell-inner">
+                        <button class="btn btn-blue" title="Sửa" onclick="suaVPP('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn btn-red" title="Xóa" onclick="xoaVPP('${item.originalKey}', ${item.originalIndex})"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </td>
             </tr>`;
         });
     }
@@ -4953,11 +4931,6 @@ html,body,body *{word-spacing:normal!important;letter-spacing:normal!important}
         document.getElementById('editOfficeIndex').value = idx;
         document.getElementById('autoOfficeId').value = item.id;
         document.getElementById('inputOfficeBeneficiary').value = item.beneficiary;
-        document.getElementById('inputOfficeInvoiceNo').value = item.invoiceNo || '';
-        document.getElementById('inputOfficeInvoiceSeries').value = item.invoiceSeries || '';
-        document.getElementById('inputOfficeInvoiceTaxCode').value = item.supplierTaxCode || item.taxCode || '';
-        document.getElementById('inputOfficeSupplierAddress').value = item.supplierAddress || '';
-        document.getElementById('inputOfficeSupplierName').value = item.supplierName || item.beneficiary || '';
         document.getElementById('inputOfficeBankName').value = item.bankName || '';
         document.getElementById('inputOfficeBankAccount').value = item.bankAccount || '';
         document.getElementById('inputOfficeContent').value = item.content;
@@ -4992,34 +4965,44 @@ html,body,body *{word-spacing:normal!important;letter-spacing:normal!important}
     }
 
     function luuHoacCapNhatVPP() {
-        const contentEl=document.getElementById('inputOfficeContent'), beneficiaryEl=document.getElementById('inputOfficeBeneficiary');
-        const content=(contentEl?.value||'').trim(), beneficiary=(beneficiaryEl?.value||'').trim();
-        if(!content||!beneficiary){alert('Vui lòng nhập đủ nội dung chi và đơn vị thụ hưởng!');return;}
-        const total=parseVNDMoney(document.getElementById('previewOfficeTotal')?.value);
-        const truocThue=parseVNDMoney(document.getElementById('inputOfficeTruocThue')?.value);
-        const vat=parseVNDMoney(document.getElementById('inputOfficeVAT')?.value);
-        const editKey=document.getElementById('editOfficeKey')?.value||'';
-        const editIdx=parseInt(document.getElementById('editOfficeIndex')?.value,-1);
-        const key=currentNamKey+'_'+currentThangKey;
-        const old=(editIdx>=0&&dsThanhToanVanPhongProByMonth[editKey])?dsThanhToanVanPhongProByMonth[editKey][editIdx]:null;
-        const vppItem={
-          id:old?.id||'VP-0'+((dsThanhToanVanPhongProByMonth[key]||[]).length+1),content,beneficiary,
-          supplierName:document.getElementById('inputOfficeSupplierName')?.value||beneficiary,
-          supplierTaxCode:document.getElementById('inputOfficeInvoiceTaxCode')?.value||'',
-          taxCode:document.getElementById('inputOfficeInvoiceTaxCode')?.value||'',
-          supplierAddress:document.getElementById('inputOfficeSupplierAddress')?.value||'',
-          invoiceNo:document.getElementById('inputOfficeInvoiceNo')?.value||'',
-          invoiceSeries:document.getElementById('inputOfficeInvoiceSeries')?.value||'',
-          bankName:document.getElementById('inputOfficeBankName').value,bankAccount:document.getElementById('inputOfficeBankAccount').value,
-          unit:document.getElementById('inputOfficeUnit').value,qty:parseFloat(document.getElementById('inputOfficeQty').value)||1,
-          price:parseVNDMoney(document.getElementById('inputOfficePrice').value),truocThue,vat,total:total||truocThue+vat,
-          date:document.getElementById('inputOfficeDate').value||new Date().toISOString().split('T')[0],
-          fileUrl:document.getElementById('inputOfficeFileUrl').value||rootDriveFolderUrl,
-          invoiceSourceFile:old?.invoiceSourceFile||'',paymentMethod:old?.paymentMethod||'',updatedAt:new Date().toISOString()
+        let contentEl = document.getElementById('inputOfficeContent');
+        let beneficiaryEl = document.getElementById('inputOfficeBeneficiary');
+        let content = contentEl ? contentEl.value.trim() : "";
+        let beneficiary = beneficiaryEl ? beneficiaryEl.value.trim() : "";
+        if (!content || !beneficiary) { alert("Vui lòng nhập đủ nội dung chi và đơn vị thụ hưởng!"); return; }
+        
+        let total = parseVNDMoney(document.getElementById('previewOfficeTotal').value);
+        let truocThue = parseVNDMoney(document.getElementById('inputOfficeTruocThue').value);
+        let vat = parseVNDMoney(document.getElementById('inputOfficeVAT').value);
+        let editKey = document.getElementById('editOfficeKey').value;
+        let editIdx = parseInt(document.getElementById('editOfficeIndex').value);
+        let key = currentNamKey + "_" + currentThangKey;
+
+        let vppItem = {
+            id: editIdx >= 0 && dsThanhToanVanPhongProByMonth[editKey] ? dsThanhToanVanPhongProByMonth[editKey][editIdx].id : "VP-0" + ((dsThanhToanVanPhongProByMonth[key]||[]).length + 1),
+            content: content, beneficiary: beneficiary, 
+            bankName: document.getElementById('inputOfficeBankName').value,
+            bankAccount: document.getElementById('inputOfficeBankAccount').value,
+            unit: document.getElementById('inputOfficeUnit').value,
+            qty: parseFloat(document.getElementById('inputOfficeQty').value)||1,
+            price: parseVNDMoney(document.getElementById('inputOfficePrice').value),
+            truocThue: truocThue,
+            vat: vat,
+            total: total, 
+            date: document.getElementById('inputOfficeDate').value || new Date().toISOString().split('T')[0],
+            fileUrl: document.getElementById('inputOfficeFileUrl').value || rootDriveFolderUrl
         };
-        if(editIdx>=0&&editKey&&dsThanhToanVanPhongProByMonth[editKey]){dsThanhToanVanPhongProByMonth[editKey][editIdx]=vppItem;huyBoCapNhatVPP();}
-        else{if(!dsThanhToanVanPhongProByMonth[key])dsThanhToanVanPhongProByMonth[key]=[];dsThanhToanVanPhongProByMonth[key].push(vppItem);if(contentEl)contentEl.value='';if(beneficiaryEl)beneficiaryEl.value='';}
-        capNhat();alert('✅ Lưu/cập nhật thanh toán văn phòng thành công!');
+
+        if (editIdx >= 0 && editKey && dsThanhToanVanPhongProByMonth[editKey]) {
+            dsThanhToanVanPhongProByMonth[editKey][editIdx] = vppItem;
+            huyBoCapNhatVPP();
+        } else {
+            if (!dsThanhToanVanPhongProByMonth[key]) dsThanhToanVanPhongProByMonth[key] = [];
+            dsThanhToanVanPhongProByMonth[key].push(vppItem);
+            if(contentEl) contentEl.value = '';
+            if(beneficiaryEl) beneficiaryEl.value = '';
+        }
+        capNhat(); alert("✅ Lưu/cập nhật thành công!");
     }
     function xoaVPP(key, idx) { if (dsThanhToanVanPhongProByMonth[key]) dsThanhToanVanPhongProByMonth[key].splice(idx, 1); capNhat(); }
 
@@ -7535,91 +7518,6 @@ window.xemTruocInPhieuLuong=function(){
   
 
 
-<style id="v32-office-invoice-ui">#vnpOfficeInvoiceExtract .vnp-extract-mini-grid{grid-template-columns:repeat(4,minmax(0,1fr));}#vnpOfficeInvoiceExtract input{font-weight:700;}#officePaymentTab{overflow-x:auto!important;}#officePaymentTab>table{min-width:1700px!important;}@media(max-width:900px){#vnpOfficeInvoiceExtract .vnp-extract-mini-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}}</style>
-<script id="vinapaco-v32-office-invoice-engine">
-(function(){
-'use strict';
-const $=id=>document.getElementById(id);
-const money=v=>Math.round(Number(v)||0).toLocaleString('vi-VN');
-const N=v=>{if(typeof v==='number')return Math.round(v)||0;let z=String(v??'').replace(/[^0-9.,-]/g,'');if(!z)return 0;if(z.includes('.')&&z.includes(','))return Math.round(Number(z.replace(/\./g,'').replace(',','.'))||0);if(/^\d{1,3}(?:[.,]\d{3})+$/.test(z))return Math.round(Number(z.replace(/[.,]/g,''))||0);return Math.round(Number(z.replace(/,/g,''))||0)};
-const clean=v=>String(v||'').replace(/\u00a0/g,' ').replace(/[ \t]+/g,' ').trim();
-const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-function set(id,v){const e=$(id);if(e){e.value=v??'';e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}))}}
-function dateISO(v){let s=String(v||'');let m=s.match(/(\d{1,2})\s*[\/.-]\s*(\d{1,2})\s*[\/.-]\s*(\d{4})/);if(m)return `${m[3]}-${String(m[2]).padStart(2,'0')}-${String(m[1]).padStart(2,'0')}`;m=s.match(/(\d{4})\s*[\/.-]\s*(\d{1,2})\s*[\/.-]\s*(\d{1,2})/);if(m)return `${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`;m=s.match(/ngày\s*(\d{1,2})\s*tháng\s*(\d{1,2})\s*năm\s*(\d{4})/i);return m?`${m[3]}-${String(m[2]).padStart(2,'0')}-${String(m[1]).padStart(2,'0')}`:''}
-function afterLabel(t,rx){let m=String(t||'').match(rx);return m?clean(m[1]||''):''}
-function genericOfficeParse(raw){
- let t=String(raw||'').replace(/\u00a0/g,' '), one=t.replace(/\r/g,'\n');
- let x={invoiceNo:'',series:'',date:'',supplier:'',taxCode:'',supplierAddress:'',beforeTax:0,vat:0,total:0,paymentMethod:'',content:'',unit:'Cái',qty:1,price:0,rawText:t};
- x.invoiceNo=afterLabel(t,/(?:Số\s*(?:hóa\s*đơn|HĐ|HD)|Invoice\s*(?:No\.?|Number)|Số\s*\(No\.\))\s*[:：#-]?\s*([A-Za-z0-9\/-]{3,30})/i);
- if(!x.invoiceNo){let m=t.match(/Số\s*\(No\.\)\s*[:：]?\s*([0-9]{3,20})/i);x.invoiceNo=m?m[1]:''}
- x.series=afterLabel(t,/(?:Ký\s*hiệu(?:\s*\(Serial\))?|Serial|Series|Invoice\s*Series)\s*[:：]?\s*([A-Za-z0-9\/-]{2,40})/i);
- x.date=dateISO(afterLabel(t,/(?:Ngày\s*(?:hóa\s*đơn|lập)?|Ngày\s*\(Date\)|Invoice\s*Date|Issue\s*Date)\s*[:：]?\s*([^\n]{5,60})/i))||dateISO(t);
- x.supplier=afterLabel(t,/(?:Tên\s*(?:người\s*bán|đơn\s*vị\s*bán\s*hàng)(?:\s*\(Seller\))?|Tên\s*nhà\s*cung\s*cấp|Seller(?:\s*Name)?|Supplier(?:\s*Name)?)\s*[:：]?\s*([^\n]{2,180})/i);
- if(!x.supplier){let m=t.match(/Tên\s*người\s*bán\s*\(Seller\)\s*[:：]?\s*([^\n]+?)(?=\s*Mã\s*số\s*thuế|\s*Taxcode|\n)/i)||t.match(/(?:Seller|Supplier)\s*(?:Name)?\s*[:：]?\s*([^\n]+?)(?=\s*Mã\s*số\s*thuế|\s*Taxcode|\n)/i);x.supplier=clean(m?.[1]||'')}
- x.taxCode=(afterLabel(t,/(?:Mã\s*số\s*thuế(?:\s*\(Taxcode\))?|MST\s*NCC|Seller\s*Tax\s*Code|Tax\s*code)\s*[:：]?\s*([^\n\s]{10,20})/i).match(/\d{10}(?:-?\d{3})?/)||[])[0]||((t.match(/\b\d{10}(?:-?\d{3})?\b/)||[])[0]||'');
- x.supplierAddress=afterLabel(t,/(?:Địa\s*chỉ(?:\s*\(Address\)|\s*NCC|\s*nhà\s*cung\s*cấp)?|Seller\s*Address|Supplier\s*Address)\s*[:：]?\s*([^\n]{5,250})/i);
- x.supplierAddress=x.supplierAddress.split(/\s*(?:Số\s*tài\s*khoản|STK|Ngân\s*hàng|Điện\s*thoại|Tel|Email|Mã\s*số\s*thuế|Taxcode)\s*[:：]?/i)[0].trim();
- x.paymentMethod=afterLabel(t,/(?:Hình\s*thức\s*thanh\s*toán|Phương\s*thức\s*thanh\s*toán|Payment\s*method)\s*[:：]?\s*([^\n]{2,80})/i);
- // Mẫu VNPT và nhiều hóa đơn điện tử: trước thuế -> dòng VAT -> tổng tiền.
- let vatLine=t.match(/(?:Thuế\s*suất\s*thuế\s*GTGT|VAT\s*rate)[^\n]*?(?:\d+\s*%|\d+%)\s+([\d.,]+)/i);
- if(vatLine){x.vat=N(vatLine[1]);let pre=t.slice(0,vatLine.index).match(/(\d{1,3}(?:[.,]\d{3})+|\d{4,})\s*$/);if(pre)x.beforeTax=N(pre[1]);let aft=t.slice(vatLine.index+vatLine[0].length).match(/(?:\s|\n)+([\d.,]{4,})/);if(aft)x.total=N(aft[1])}
- // Ưu tiên nhãn tổng tiền rõ ràng.
- const beforeCandidates=[/(?:Cộng\s*tiền\s*hàng|Tiền\s*hàng\s*trước\s*thuế|Giá\s*trị\s*hàng\s*hóa|Subtotal|Amount\s*without\s*VAT)[^\d]{0,100}([\d.,]+)/i,/(?:Tổng\s*tiền\s*trước\s*thuế|Total\s*before\s*VAT)[^\d]{0,100}([\d.,]+)/i];
- for(const r of beforeCandidates){const m=t.match(r);if(m&&N(m[1])){x.beforeTax=N(m[1]);break}}
- const vatCandidates=[/(?:Tiền\s*thuế\s*GTGT|VAT\s*amount|Tax\s*amount)[^\d]{0,100}([\d.,]+)/i];for(const r of vatCandidates){const m=t.match(r);if(m&&N(m[1])){x.vat=N(m[1]);break}}
- const totalCandidates=[/(?:Tổng\s*cộng\s*tiền\s*thanh\s*toán|Tổng\s*tiền\s*thanh\s*toán|Tổng\s*thanh\s*toán|Grand\s*Total|Amount\s*to\s*Pay)[^\d]{0,100}([\d.,]+)/i];for(const r of totalCandidates){const m=t.match(r);if(m&&N(m[1])){x.total=N(m[1]);break}}
- if(!x.total&&x.beforeTax)x.total=x.beforeTax+x.vat;
- if(!x.beforeTax&&x.total)x.beforeTax=Math.max(0,x.total-x.vat);
- // Lấy nội dung dịch vụ/hàng hóa nếu có.
- let cm=t.match(/(?:Tên\s*hàng\s*hóa,\s*dịch\s*vụ|Description)\s*[^\n]*\n?[^\n]*?\s+(.{5,180}?)(?:\s+Tháng\s+\d+|\s+\d+(?:[.,]\d{3})+\s*$)/i);if(cm)x.content=clean(cm[1]);
- if(!x.content){let m=t.match(/(?:Cước dịch vụ[^\n]+|Mua[^\n]+|dịch vụ[^\n]+)/i);if(m)x.content=clean(m[0])}
- if(!x.content)x.content=x.supplier||'Thanh toán theo hóa đơn';
- x.price=x.beforeTax;x.unit=x.content.toLowerCase().includes('tháng')?'Tháng':'Cái';
- return x;
-}
-function show(x,source){
- set('vnpOfficeInvoiceNo',x.invoiceNo);set('vnpOfficeInvoiceDate',x.date);set('vnpOfficeInvoiceSupplier',x.supplier);set('vnpOfficeInvoiceTax',x.taxCode);set('vnpOfficeInvoiceAddress',x.supplierAddress);set('vnpOfficeInvoiceBeforeTax',money(x.beforeTax));set('vnpOfficeInvoiceVat',money(x.vat));set('vnpOfficeInvoiceTotal',money(x.total));
- set('inputOfficeInvoiceNo',x.invoiceNo);set('inputOfficeInvoiceSeries',x.series);set('inputOfficeInvoiceTaxCode',x.taxCode);set('inputOfficeSupplierName',x.supplier);set('inputOfficeSupplierAddress',x.supplierAddress);
- set('inputOfficeBeneficiary',x.supplier);set('inputOfficeContent',x.content);set('inputOfficeUnit',x.unit||'Cái');set('inputOfficeQty',x.qty||1);set('inputOfficePrice',money(x.price||x.beforeTax));set('inputOfficeTruocThue',money(x.beforeTax));set('inputOfficeVAT',money(x.vat));set('previewOfficeTotal',money(x.total));set('inputOfficeDate',x.date||new Date().toISOString().slice(0,10));
- window.__officeInvoiceExtract={...x,sourceFile:source};
- const st=$('vnpOfficeExtractStatus');if(st){st.textContent=`✓ ${x.invoiceNo||'Hóa đơn'} • ${money(x.total)} VNĐ`;st.style.background='#dcfce7';st.style.color='#166534'}
-}
-function saveExtracted(records,files){
- if(!records.length)return 0;
- const y=(records[0].date||'').slice(0,4)||String(new Date().getFullYear()),m=(records[0].date||'').slice(5,7)||String(new Date().getMonth()+1).padStart(2,'0'),key=y+'_Tháng '+m;
- if(!window.dsThanhToanVanPhongProByMonth[key])window.dsThanhToanVanPhongProByMonth[key]=[];
- const arr=window.dsThanhToanVanPhongProByMonth[key];let added=0;
- records.forEach(x=>{
-   if(!x.invoiceNo&&!x.total)return;
-   const match=arr.findIndex(o=>String(o.invoiceNo||'')===String(x.invoiceNo||'')&&String(o.supplierTaxCode||o.taxCode||'')===String(x.taxCode||''));
-   const item={id:match>=0?arr[match].id:'VP-'+String(arr.length+1).padStart(2,'0'),content:x.content||x.supplier||'Thanh toán theo hóa đơn',beneficiary:x.supplier||'NCC',supplierName:x.supplier||'',supplierTaxCode:x.taxCode||'',taxCode:x.taxCode||'',supplierAddress:x.supplierAddress||'',invoiceNo:x.invoiceNo||'',invoiceSeries:x.series||'',bankName:match>=0?arr[match].bankName||'':'',bankAccount:match>=0?arr[match].bankAccount||'':'',unit:x.unit||'Cái',qty:x.qty||1,price:x.price||x.beforeTax||0,truocThue:x.beforeTax||0,vat:x.vat||0,total:x.total||((x.beforeTax||0)+(x.vat||0)),date:x.date||new Date().toISOString().slice(0,10),fileUrl:match>=0?arr[match].fileUrl||'':(window.rootDriveFolderUrl||''),invoiceSourceFile:x.sourceFile||files.map(f=>f.name).join(', '),paymentMethod:x.paymentMethod||'',invoiceCount:1,updatedAt:new Date().toISOString()};
-   if(match>=0)arr[match]=Object.assign({},arr[match],item);else{arr.push(item);added++}
- });
- try{window.saveToLocalStorage?.()}catch(_){localStorage.setItem('vinapaco_vpp',JSON.stringify(window.dsThanhToanVanPhongProByMonth))}
- return added;
-}
-async function processOffice(files){
- if(!files?.length)return;const fs=[...files],st=$('vnpOfficeExtractStatus');try{
-   if(st){st.textContent='Đang bóc tách toàn bộ hóa đơn...';st.style.background='#e0f2fe';st.style.color='#075985'}
-   const records=[];
-   for(const f of fs){
-     const rr=await window.readText(f,st);const pages=Array.isArray(rr.pages)&&rr.pages.length?rr.pages:[rr.text||''];
-     pages.forEach((pt,idx)=>{let x=genericOfficeParse(pt);x.sourceFile=f.name;x.page=idx+1;if(rr.direct&&idx===0){x=Object.assign(x,Object.fromEntries(Object.entries(rr.direct).filter(([,v])=>String(v||'').trim())));x.date=dateISO(x.date)||x.date;x.invoiceNo=(String(x.invoiceNo||'').match(/[A-Za-z0-9\/-]{3,30}/)||[])[0]||x.invoiceNo}if(x.invoiceNo||x.total||x.taxCode)records.push(x)})
-   }
-   if(!records.length)throw new Error('Không nhận diện được hóa đơn. Hãy kiểm tra file PDF/XML/ảnh.');
-   show(records[0],fs.map(f=>f.name).join(', '));
-   const added=saveExtracted(records,fs);
-   if(typeof window.renderOfficePaymentTable==='function')window.renderOfficePaymentTable();
-   if(typeof window.capNhat==='function')window.capNhat();
-   if(st){st.textContent=`✓ Đã tách ${records.length} hóa đơn • thêm/cập nhật ${added} dòng bảng`;st.style.background='#dcfce7';st.style.color='#166534'}
-   alert(`ĐÃ TRÍCH XUẤT ${records.length} HÓA ĐƠN\n\nHóa đơn đầu: ${records[0].invoiceNo||'--'}\nNhà cung cấp: ${records[0].supplier||'--'}\nMST: ${records[0].taxCode||'--'}\nTrước thuế: ${money(records.reduce((a,x)=>a+(x.beforeTax||0),0))} VNĐ\nVAT: ${money(records.reduce((a,x)=>a+(x.vat||0),0))} VNĐ\nTổng tất cả hóa đơn: ${money(records.reduce((a,x)=>a+(x.total||0),0))} VNĐ\n\nĐã tự động cập nhật bảng Thanh toán Văn phòng.`)
- }catch(e){console.error('[VINAPACO V32 Office Invoice]',e);if(st){st.textContent='⚠ '+e.message;st.style.background='#fee2e2';st.style.color='#991b1b'}alert('Không thể trích xuất hóa đơn:\n\n'+e.message)}
-}
-function bind(){const el=$('vnpOfficeInvoiceUpload');if(!el||el.dataset.v32OfficeBound==='1')return;el.dataset.v32OfficeBound='1';el.addEventListener('change',e=>{e.stopImmediatePropagation();processOffice(e.target.files)},{capture:true})}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();setTimeout(bind,500);
-window.trichXuatHoaDonThanhToanVP=processOffice;
-})();
-</script>
 </body></html>`;
   w.document.open();
   w.document.write(html.replace('window.__PAYSLIP__','document.body.__placeholder__'));
@@ -9150,7 +9048,7 @@ async function readText(file, statusEl){
   }
   if(ext==='pdf'){
     if(!window.pdfjsLib)throw new Error('Bộ đọc PDF chưa sẵn sàng.');
-    const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise; let text=''; const pages=[];
+    const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise; let text='';
     for(let p=1;p<=pdf.numPages;p++){
       setStatus(`Đang đọc PDF ${p}/${pdf.numPages} • ${file.name}`);
       const page=await pdf.getPage(p), tc=await page.getTextContent();
@@ -9186,70 +9084,19 @@ function apply(kind,x,fileName){
     if(x.supplier) setVal('inputOfficeBeneficiary',x.supplier);
   }
 }
-function vnpMoney(v){
-  const z=String(v||'').replace(/[^0-9.,-]/g,''); if(!z)return 0;
-  if(z.includes('.')&&z.includes(',')) return z.lastIndexOf(',')>z.lastIndexOf('.')?Number(z.replace(/\./g,'').replace(',','.')):Number(z.replace(/,/g,''));
-  if(/^\d{1,3}(?:[.,]\d{3})+$/.test(z)) return Number(z.replace(/[.,]/g,''));
-  return Number(z)||0;
-}
-function parseVNPTMoneySummary(pageText){
-  const t=String(pageText||'').replace(/\u00a0/g,' ');
-  const marker=/Số\s*tiền\s*viết\s*bằng\s*chữ/i.exec(t);
-  const pre=marker?t.slice(Math.max(0,marker.index-500),marker.index):t.slice(-700);
-  const nums=[...pre.matchAll(/(?<!\d)(\d{1,3}(?:[.]\d{3})+|\d{1,3}(?:,\d{3})+|\d{4,})(?!\d)/g)].map(m=>vnpMoney(m[1])).filter(n=>n>0);
-  const unique=[]; for(const n of nums) if(!unique.length||unique[unique.length-1]!==n)unique.push(n);
-  let vat=0,total=0,before=0;
-  const vatLine=(pre.match(/Thuế\s*suất[^\n]*?10%[^\d]*([\d.,]{4,})/i)||[])[1];
-  if(vatLine)vat=vnpMoney(vatLine);
-  if(unique.length>=3){before=unique[unique.length-3];vat=vat||unique[unique.length-2];total=unique[unique.length-1];}
-  else if(unique.length>=2){before=unique[unique.length-2];total=unique[unique.length-1];vat=vat||Math.max(0,total-before);}
-  if(!total&&before)total=before+vat;
-  return {beforeTax:before,vat,total};
-}
-function extractVNPTPeriod(t){
-  const m=String(t||'').match(/Tháng\s*(\d{1,2})\s*\/\s*(\d{4})/i); if(!m)return '';
-  const mo=Number(m[1]),y=Number(m[2]),last=new Date(y,mo,0).getDate();
-  return `01/${String(mo).padStart(2,'0')}/${y} - ${String(last).padStart(2,'0')}/${String(mo).padStart(2,'0')}/${y}`;
-}
 async function enhancedProcess(kind,files){
   if(!files?.length)return; const st=$(kind==='telecom'?'vnpTelecomExtractStatus':'vnpOfficeExtractStatus');
-  try{
-    const all=[];
-    for(const f of [...files]){
-      if(st){st.textContent='Đang bóc tách toàn bộ hóa đơn • '+f.name;st.style.background='#e0f2fe';st.style.color='#075985'}
-      const rr=await readText(f,st);
-      const pageTexts=Array.isArray(rr.pages)&&rr.pages.length?rr.pages:[rr.text||''];
-      pageTexts.forEach((pt,i)=>{
-        let x=parseEnhanced(pt); const sm=parseVNPTMoneySummary(pt);
-        x.beforeTax=sm.beforeTax; x.vat=sm.vat; x.total=sm.total; x.billingPeriod=extractVNPTPeriod(pt); x.page=i+1; x.sourceFile=f.name; x.rawText=pt;
-        if(rr.direct&&i===0)x=Object.assign(x,Object.fromEntries(Object.entries(rr.direct).filter(([,v])=>norm(v))));
-        x.invoiceNo=(String(x.invoiceNo||'').match(/[0-9]{3,20}/)||[])[0]||'';x.date=dateISO(x.date)||x.date;
-        if(x.invoiceNo||x.total||x.taxCode)all.push(x);
-      });
-    }
-    if(!all.length)throw new Error('Không nhận diện được hóa đơn trong tệp đã chọn.');
-    const first=all[0];
-    const beforeTax=all.reduce((s,x)=>s+(Number(x.beforeTax)||0),0);
-    const vat=all.reduce((s,x)=>s+(Number(x.vat)||0),0);
-    const total=all.reduce((s,x)=>s+(Number(x.total)||0),0);
-    const x={...first,beforeTax,vat,total:total||beforeTax+vat,invoiceCount:all.length,invoices:all,sourceFile:[...new Set(all.map(a=>a.sourceFile).filter(Boolean))].join(', '),billingPeriod:first.billingPeriod||extractVNPTPeriod(all.map(a=>a.rawText||'').join('\n'))};
-    apply(kind,x,x.sourceFile);
-    if(kind==='telecom'){
-      // Một PDF ghép nhiều hóa đơn = MỘT kỳ cước. Tổng Cước (VAT) phải bằng tổng TỔNG THANH TOÁN của tất cả trang.
-      setVal('inputTelecomTongVat',x.total.toLocaleString('vi-VN'));
-      setVal('inputTelecomTruocThueInput',x.beforeTax.toLocaleString('vi-VN'));
-      setVal('inputTelecomVatInput',x.vat.toLocaleString('vi-VN'));
-      setVal('inputTelecomBillingPeriod',x.billingPeriod||'');
-      setVal('inputTelecomExtractedFiles',x.sourceFile);
-      window.__VINAPACO_LAST_TELECOM_MERGED=x;
-      window.__VINAPACO_TELECOM_MERGED_TOTAL=x.total;
-      if(st){st.textContent=`✓ ${all.length} hóa đơn • Tổng kỳ cước: ${x.total.toLocaleString('vi-VN')} VNĐ`;st.style.background='#dcfce7';st.style.color='#166534'}
-      try{window.renderTelecomPaymentTable?.();window.capNhat?.()}catch(_){ }
-    }else if(st){
-      st.textContent=`✓ Đã bóc tách ${all.length} hóa đơn • ${x.sourceFile}`;st.style.background='#dcfce7';st.style.color='#166534';
-    }
-    alert(`ĐÃ TRÍCH XUẤT ${all.length} HÓA ĐƠN\n\nKỳ cước: ${x.billingPeriod||'Không xác định'}\nTrước thuế: ${beforeTax.toLocaleString('vi-VN')} VNĐ\nVAT: ${vat.toLocaleString('vi-VN')} VNĐ\nTỔNG CƯỚC (VAT): ${x.total.toLocaleString('vi-VN')} VNĐ`);
-  }catch(e){console.error('[VINAPACO V30 telecom merged]',e);if(st){st.textContent='⚠ '+e.message;st.style.background='#fee2e2';st.style.color='#991b1b'}alert('Không thể bóc tách hóa đơn:\n\n'+e.message)}
+  for(const f of [...files]){
+    try{
+      if(st){st.textContent='Đang bóc tách • '+f.name;st.style.background='#e0f2fe';st.style.color='#075985'}
+      const rr=await readText(f,st); let x=parseEnhanced(rr.text||'');
+      if(rr.direct)x=Object.assign(x,Object.fromEntries(Object.entries(rr.direct).filter(([,v])=>norm(v))));
+      x.invoiceNo=(String(x.invoiceNo||'').match(/[0-9]{3,20}/)||[])[0]||'';x.date=dateISO(x.date)||x.date;
+      const score=[x.invoiceNo,x.date,x.taxCode,x.supplierAddress].filter(Boolean).length;
+      apply(kind,x,f.name);
+      if(st){st.textContent=`✓ Đã bóc tách ${score}/4 trường • ${f.name}`;st.style.background=score===4?'#dcfce7':'#fef3c7';st.style.color=score===4?'#166534':'#92400e'}
+    }catch(e){console.error('[V27 invoice extract]',e);if(st){st.textContent='⚠ '+e.message;st.style.background='#fee2e2';st.style.color='#991b1b'}alert('Không thể bóc tách '+f.name+'\\n\\n'+e.message)}
+  }
 }
 function bindOne(id,kind){const el=$(id);if(!el||el.dataset.v27Bound==='1')return;el.dataset.v27Bound='1';el.addEventListener('change',e=>{e.stopImmediatePropagation();enhancedProcess(kind,e.target.files);},{capture:true});}
 function bind(){bindOne('vnpTelecomInvoiceUpload','telecom');bindOne('vnpOfficeInvoiceUpload','office');}

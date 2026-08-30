@@ -9,6 +9,13 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2712%27 fill=%270284c7%27/%3E%3Ctext x=%2732%27 y=%2744%27 text-anchor=%27middle%27 font-size=%2734%27 fill=%27white%27%3EV%3C/text%3E%3C/svg%3E">
+    <script>
+      // PDF.js: khai báo Worker ngay sau khi thư viện tải, tránh Deprecated API usage.
+      if (window.pdfjsLib && window.pdfjsLib.GlobalWorkerOptions) {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -7510,6 +7517,7 @@ window.xemTruocInPhieuLuong=function(){
   </div>
   
 
+
 </body></html>`;
   w.document.open();
   w.document.write(html.replace('window.__PAYSLIP__','document.body.__placeholder__'));
@@ -7528,6 +7536,327 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 </script>
 
+<script id="vinapaco-final-invoice-engine-v29">
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const clean=v=>String(v??'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim();
+const money=v=>{
+  let s=clean(v).replace(/[^\d,.-]/g,'');
+  if(!s)return 0;
+  if(s.includes('.')&&s.includes(',')){
+    if(s.lastIndexOf(',')>s.lastIndexOf('.')) s=s.replace(/\./g,'').replace(',','.');
+    else s=s.replace(/,/g,'');
+  }else if((s.match(/\./g)||[]).length>1 || /^\d{1,3}(\.\d{3})+$/.test(s)) s=s.replace(/\./g,'');
+  else if((s.match(/,/g)||[]).length>1 || /^\d{1,3}(,\d{3})+$/.test(s)) s=s.replace(/,/g,'');
+  return Math.round(Number(s)||0);
+};
+const fmt=v=>Number(v||0).toLocaleString('vi-VN');
+const isoDate=v=>{
+  const s=clean(v);
+  let m=s.match(/(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{4})/);
+  if(m)return `${m[3]}-${String(m[2]).padStart(2,'0')}-${String(m[1]).padStart(2,'0')}`;
+  m=s.match(/(\d{4})[\/.\-](\d{1,2})[\/.\-](\d{1,2})/);
+  return m?`${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`:'';
+};
+const setVal=(id,v)=>{
+  const e=$(id); if(!e)return;
+  e.value=v==null?'':String(v);
+  try{e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));}catch(_){}
+};
+const setText=(id,v)=>{const e=$(id);if(e)e.textContent=v==null?'':String(v)};
+function status(msg,ok=false){
+  ['invoiceOcrStatus','telecomExtractStatus','vnpTelecomExtractStatus'].forEach(id=>{
+    const e=$(id);if(e){e.textContent=msg;e.style.background=ok?'#dcfce7':'#e0f2fe';e.style.color=ok?'#166534':'#075985';}
+  });
+}
+function groupPdfLines(items){
+  const rows=[];
+  for(const it of items){
+    const str=clean(it.str||''); if(!str)continue;
+    const y=Number(it.transform?.[5]||0);
+    let row=rows.find(r=>Math.abs(r.y-y)<=3.5);
+    if(!row){row={y,items:[]};rows.push(row);}
+    row.items.push({x:Number(it.transform?.[4]||0),str});
+  }
+  return rows.sort((a,b)=>b.y-a.y).map(r=>r.items.sort((a,b)=>a.x-b.x).map(x=>x.str).join(' '));
+}
+function first(re,s){const m=String(s||'').match(re);return m?clean(m[1]):''}
+function parseVNPTPage(lines,pageNo){
+  const text=lines.join('\n'), joined=lines.join(' ');
+  const x={page:pageNo,invoiceNo:'',series:'',date:'',taxCode:'',supplier:'',supplierAddress:'',
+    buyer:'',buyerTaxCode:'',buyerAddress:'',paymentMethod:'',billingPeriod:'',beforeTax:0,vat:0,total:0,
+    lookupCode:'',amountInWords:'',itemName:'',qty:0,unit:'',price:0,amount:0};
+  x.series=first(/Ký\s*hiệu\s*\(Serial\)\s*[:：]?\s*([A-Z0-9][A-Z0-9./_-]{2,})/i,joined);
+  x.invoiceNo=first(/Số\s*\(No\.?\)\s*[:：]?\s*([0-9]{3,20})/i,joined)||first(/(?:Số\s*hóa\s*đơn|Số\s*hoá\s*đơn|Invoice\s*(?:No|Number))\s*[:：#-]?\s*([0-9]{3,20})/i,joined);
+  let dm=joined.match(/Ngày\s*\(Date\)\s*(\d{1,2})\s*Tháng\s*\(Month\)\s*(\d{1,2})\s*Năm\s*\(Year\)\s*(\d{4})/i);
+  if(dm)x.date=`${dm[3]}-${String(dm[2]).padStart(2,'0')}-${String(dm[1]).padStart(2,'0')}`;
+  else x.date=isoDate(first(/(?:Ngày\s*(?:hóa\s*đơn|hoá\s*đơn|lập)|Invoice\s*Date|Issue\s*Date)\s*[:：-]?\s*([^\n]+)/i,text));
+  x.taxCode=first(/Mã\s*số\s*thuế\s*\(Tax\s*code\)\s*[:：]?\s*([0-9]{8,14})/i,joined)||first(/(?:Mã\s*số\s*thuế|MST|Tax\s*Code)\s*[:：]?\s*([0-9]{8,14})/i,joined);
+  const sellerIdx=lines.findIndex(l=>/Tên\s*người\s*bán\s*\(Seller\)/i.test(l));
+  if(sellerIdx>=0)x.supplier=clean(lines[sellerIdx+1]||'');
+  x.supplier=x.supplier||first(/Tên\s*người\s*bán\s*\(Seller\)\s*[:：]?\s*([^\n]+)/i,text);
+  const addrIdx=lines.findIndex(l=>/Địa\s*chỉ\s*\(Address\)/i.test(l));
+  if(addrIdx>=0){
+    const a=clean(lines[addrIdx]);
+    x.supplierAddress=a.replace(/^.*?Địa\s*chỉ\s*\(Address\)\s*[:：]?\s*/i,'').trim();
+    if(!x.supplierAddress && lines[addrIdx+1])x.supplierAddress=clean(lines[addrIdx+1]);
+  }
+  x.supplierAddress=x.supplierAddress||first(/Địa\s*chỉ\s*\(Address\)\s*[:：]?\s*([^\n]+)/i,text);
+  const bi=lines.findIndex(l=>/Tên\s*người\s*mua\s*\(Buyer\)/i.test(l));
+  if(bi>=0)x.buyer=clean(lines[bi].replace(/^.*?Tên\s*người\s*mua\s*\(Buyer\)\s*[:：]?\s*/i,''));
+  x.buyer=x.buyer||first(/Tên\s*người\s*mua\s*\(Buyer\)\s*[:：]?\s*([^\n]+)/i,text);
+  const bti=lines.findIndex((l,i)=>i>bi && /Mã\s*số\s*thuế\s*\(Tax\s*code\)/i.test(l));
+  if(bti>=0)x.buyerTaxCode=first(/Mã\s*số\s*thuế\s*\(Tax\s*code\)\s*[:：]?\s*([0-9]{8,14})/i,lines[bti]);
+  if(!x.buyerTaxCode){
+    const taxs=[...joined.matchAll(/Mã\s*số\s*thuế\s*\(Tax\s*code\)\s*[:：]?\s*([0-9]{8,14})/ig)].map(m=>m[1]);
+    if(taxs[1])x.buyerTaxCode=taxs[1];
+  }
+  const bai=lines.findIndex((l,i)=>i>bi && /Địa\s*chỉ\s*\(Address\)/i.test(l));
+  if(bai>=0)x.buyerAddress=clean(lines[bai].replace(/^.*?Địa\s*chỉ\s*\(Address\)\s*[:：]?\s*/i,''));
+  x.paymentMethod=first(/Hình\s*thức\s*thanh\s*toán\s*\(Payment\s*method\)\s*[:：]?\s*([^\n]+)/i,text)||first(/(?:Hình\s*thức|Phương\s*thức)\s*thanh\s*toán\s*[:：-]?\s*([^\n]+)/i,text);
+  const monthM=joined.match(/Tháng\s*(\d{1,2})\/(\d{4})/i);
+  if(monthM)x.billingPeriod=`01/${monthM[1].padStart(2,'0')}/${monthM[2]} - ${new Date(Number(monthM[2]),Number(monthM[1]),0).getDate().toString().padStart(2,'0')}/${monthM[1].padStart(2,'0')}/${monthM[2]}`;
+  x.lookupCode=first(/Mã\s*tra\s*cứu\s*\(Lookup\s*code\)\s*[:：]?\s*([A-Z0-9_-]+)/i,joined);
+  x.amountInWords=first(/Số\s*tiền\s*viết\s*bằng\s*chữ\s*\(In\s*words\)\s*[:：]?\s*([^\n]+)/i,text);
+  // VNPT layout: amount before VAT, VAT amount, total appear in sequence immediately before "Số tiền viết bằng chữ".
+  const wordIdx=lines.findIndex(l=>/Số\s*tiền\s*viết\s*bằng\s*chữ/i.test(l));
+  let summaryLines=(wordIdx>0?lines.slice(Math.max(0,wordIdx-8),wordIdx):lines).filter(Boolean);
+  let nums=[];
+  for(const l of summaryLines){
+    if(/Thuế\s*suất|VAT\s*rate/i.test(l)){
+      const ns=[...l.matchAll(/(?<!\d)(\d{1,3}(?:[.,]\d{3})+|\d{4,})(?!\d)/g)].map(m=>money(m[1]));
+      if(ns.length){x.beforeTax=x.beforeTax||ns[0]; if(ns.length>1)x.vat=ns[ns.length-1];}
+    }else if(/^\s*\d{1,3}(?:[.,]\d{3})+\s*$/.test(l)||/^\s*\d{4,}\s*$/.test(l)){
+      nums.push(money(l));
+    }
+  }
+  if(!x.beforeTax && nums.length>=2)x.beforeTax=nums[0];
+  if(!x.vat && nums.length>=2)x.vat=nums[1];
+  if(!x.total && nums.length>=3)x.total=nums[2];
+  // If "Số tiền thanh toán" is present later, it is not used to override the VAT-invoice total.
+  const itemIdx=lines.findIndex(l=>/Cước\s*dịch\s*vụ\s*Viễn\s*thông-Công\s*nghệ\s*thông\s*tin/i.test(l));
+  if(itemIdx>=0){
+    x.itemName=clean(lines[itemIdx]);
+    const rest=lines.slice(itemIdx,itemIdx+4).join(' ');
+    const m=rest.match(/Tháng\s+(\d+)\s+([\d.,]+)\s+([\d.,]+)/i);
+    if(m){x.qty=money(m[1]);x.price=money(m[2]);x.amount=money(m[3]);x.unit='Tháng';}
+  }
+  if(!x.total && x.beforeTax)x.total=x.beforeTax+(x.vat||0);
+  return x;
+}
+async function readPDF(file){
+  if(!window.pdfjsLib)throw new Error('Bộ đọc PDF chưa sẵn sàng.');
+  const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
+  const pages=[]; let allText='';
+  for(let p=1;p<=pdf.numPages;p++){
+    status(`Đang bóc tách hóa đơn PDF: trang ${p}/${pdf.numPages} • ${file.name}`);
+    const page=await pdf.getPage(p),tc=await page.getTextContent();
+    let lines=groupPdfLines(tc.items||[]);
+    let raw=lines.join('\n');
+    // Text-layer PDF như hóa đơn VNPT này không cần OCR. Scan PDF sẽ được OCR từng trang khi thiếu dữ liệu.
+    let probe=parseVNPTPage(lines,p);
+    const score=[probe.invoiceNo,probe.series,probe.date,probe.taxCode,probe.supplierAddress,probe.total].filter(Boolean).length;
+    if((score<5||raw.length<180)&&window.Tesseract){
+      const vp=page.getViewport({scale:2.25}),cv=document.createElement('canvas');
+      cv.width=Math.ceil(vp.width);cv.height=Math.ceil(vp.height);
+      await page.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
+      const r=await Tesseract.recognize(cv,'vie+eng',{logger:m=>{
+        if(m.status==='recognizing text')status(`OCR PDF trang ${p}/${pdf.numPages} • ${Math.round((m.progress||0)*100)}%`);
+      }});
+      const ocr=String(r.data.text||'').split(/\r?\n/).map(clean).filter(Boolean);
+      const ox=parseVNPTPage(ocr,p);
+      // OCR only replaces missing fields; text layer remains authoritative when it has the field.
+      for(const k of ['invoiceNo','series','date','taxCode','supplier','supplierAddress','buyer','buyerTaxCode','buyerAddress','paymentMethod','billingPeriod','beforeTax','vat','total','lookupCode','amountInWords','itemName','qty','unit','price','amount']){
+        if(!probe[k]&&ox[k])probe[k]=ox[k];
+      }
+      raw+='\\n'+ocr.join('\\n');
+    }
+    probe.rawText=raw;
+    pages.push(probe);allText+='\\n'+raw;
+  }
+  return {pages,text:allText};
+}
+function aggregate(pdfResult,file){
+  const pages=pdfResult.pages.filter(x=>x.invoiceNo||x.total||x.taxCode);
+  if(!pages.length)throw new Error('Không nhận diện được hóa đơn trong PDF.');
+  const firstPage=pages[0];
+  const before=pages.reduce((s,x)=>s+(Number(x.beforeTax)||0),0);
+  const vat=pages.reduce((s,x)=>s+(Number(x.vat)||0),0);
+  const total=pages.reduce((s,x)=>s+(Number(x.total)||0),0);
+  const explicit=pages.every(x=>x.total>0);
+  return {
+    ...firstPage,
+    beforeTax:before||firstPage.beforeTax||0,
+    vat:vat||firstPage.vat||0,
+    total:explicit?total:(before+vat),
+    invoiceCount:pages.length,
+    invoices:pages,
+    sourceFile:file.name,
+    rawText:pdfResult.text
+  };
+}
+function chooseSupplier(s){
+  const v=String(s||'').toLowerCase(),el=$('inputTelecomSupplier');
+  if(!el)return;
+  if(/vnpt|viễn\s*thông\s*phú\s*thọ/.test(v))el.value='VNPT';
+  else if(/viettel/.test(v))el.value='Viettel';
+  else if(/mobifone|mobi/.test(v))el.value='Mobifone';
+}
+function fillAll(x){
+  // Form trích xuất hóa đơn chung: đủ 4 trường chuẩn + dữ liệu bổ sung.
+  setVal('invoiceNo',x.invoiceNo);
+  setVal('invoiceSeries',x.series);
+  setVal('invoiceDate',x.date);
+  setVal('invoiceTaxCode',x.taxCode);
+  setVal('invoiceSupplier',x.supplier);
+  setVal('invoiceSupplierAddress',x.supplierAddress);
+  setVal('invoiceBuyer',x.buyer);
+  setVal('invoiceBuyerTaxCode',x.buyerTaxCode);
+  setVal('invoiceBuyerAddress',x.buyerAddress);
+  setVal('invoicePaymentMethod',x.paymentMethod);
+  setVal('invoiceBeforeTax',fmt(x.beforeTax));
+  setVal('invoiceVat',fmt(x.vat));
+  setVal('invoiceTotal',fmt(x.total));
+  setVal('invoiceLookupCode',x.lookupCode);
+  setVal('invoiceAmountInWords',x.amountInWords);
+  setVal('invoiceNote',`TRÍCH XUẤT TỰ ĐỘNG • ${x.invoiceCount||1} hóa đơn • ${x.sourceFile||''}`);
+  setVal('inputTelecomInvoiceNo',x.invoiceNo);
+  setVal('inputTelecomInvoiceSeries',x.series);
+  setVal('inputTelecomInvoiceDate',x.date);
+  setVal('inputTelecomTaxCode',x.taxCode);
+  setVal('inputTelecomSupplierAddress',x.supplierAddress);
+  setVal('inputTelecomPaymentMethod',x.paymentMethod||'TM/CK');
+  setVal('inputTelecomBillingPeriod',x.billingPeriod||'');
+  setVal('inputTelecomTruocThueInput',fmt(x.beforeTax));
+  setVal('inputTelecomVatInput',fmt(x.vat));
+  setVal('inputTelecomTongVat',fmt(x.total));
+  setVal('inputTelecomType','Cước dịch vụ Viễn thông - Công nghệ thông tin');
+  setVal('inputTelecomExtractedFiles',x.sourceFile||'');
+  setVal('inputTelecomFileUrl','');
+  chooseSupplier(x.supplier);
+  // Một số giao diện VNP có 4 ô trích xuất riêng.
+  setVal('vnpTelecomInvoiceNoExtract',x.invoiceNo);
+  setVal('vnpTelecomInvoiceDateExtract',x.date);
+  setVal('vnpTelecomInvoiceTaxExtract',x.taxCode);
+  setVal('vnpTelecomInvoiceAddressExtract',x.supplierAddress);
+  const month=x.date?.slice(5,7),year=x.date?.slice(0,4);
+  const sel=$('inputTelecomThangChon');
+  if(sel&&month){
+    const opt=[...sel.options].find(o=>String(o.value).includes(month)||String(o.textContent).includes(`Tháng ${Number(month)}`));
+    if(opt)sel.value=opt.value;
+  }
+  // Nếu bảng mặt hàng hóa đơn chung tồn tại, đưa dòng dịch vụ đầu tiên xuống.
+  window.invoiceWorkingItems=(x.invoices||[]).map((r,i)=>({
+    stt:i+1,name:r.itemName||'Cước dịch vụ Viễn thông-Công nghệ thông tin',
+    code:'',unit:r.unit||'Tháng',qty:r.qty||1,price:r.price||r.beforeTax||0,
+    amount:r.amount||r.beforeTax||0,vatRate:r.vat?10:0,vatAmount:r.vat||0,total:r.total||((r.beforeTax||0)+(r.vat||0))
+  }));
+  try{window.renderInvoiceItems?.()}catch(_){}
+}
+function saveAggregate(x,file,url){
+  const y=x.date?.slice(0,4)||String(new Date().getFullYear());
+  const m=x.date?.slice(5,7)||String(new Date().getMonth()+1).padStart(2,'0');
+  const key=`${y}_Tháng ${m}`;
+  window.dsThanhToanTelecombyMonth=window.dsThanhToanTelecombyMonth||{};
+  const arr=Array.isArray(window.dsThanhToanTelecombyMonth[key])?window.dsThanhToanTelecombyMonth[key]:(window.dsThanhToanTelecombyMonth[key]=[]);
+  const src=x.sourceFile||'';
+  // Cập nhật bản ghi cùng tệp, không tạo bản sao khi người dùng upload lại.
+  let idx=arr.findIndex(r=>String(r.sourceFile||'')===src);
+  const rec={
+    id:idx>=0?(arr[idx].id||`VT-${String(idx+1).padStart(2,'0')}`):`VT-${String(arr.length+1).padStart(2,'0')}`,
+    supplier:/vnpt/i.test(x.supplier)?'VNPT':x.supplier||'Khác',
+    type:'Cước dịch vụ Viễn thông - Công nghệ thông tin',
+    kyCuoc:x.billingPeriod||`Tháng ${m}/${y}`,
+    thangHachToan:`Tháng ${m}`,
+    tong:Number(x.total)||0,truocThue:Number(x.beforeTax)||0,vat:Number(x.vat)||0,
+    fileUrl:url||arr[idx]?.fileUrl||'',
+    invoiceNo:x.invoiceNo||'',
+    invoiceSeries:x.series||'',
+    invoiceDate:x.date||'',
+    taxCode:x.taxCode||'',
+    supplierAddress:x.supplierAddress||'',
+    paymentMethod:x.paymentMethod||'',
+    billingPeriod:x.billingPeriod||'',
+    sourceFile:src,
+    invoiceCount:Number(x.invoiceCount)||1,
+    invoiceNumbers:(x.invoices||[]).map(r=>r.invoiceNo).filter(Boolean).join(', '),
+    invoiceDetails:(x.invoices||[]).map(r=>({
+      invoiceNo:r.invoiceNo,series:r.series,date:r.date,beforeTax:r.beforeTax,vat:r.vat,total:r.total,
+      supplier:r.supplier,taxCode:r.taxCode,supplierAddress:r.supplierAddress,lookupCode:r.lookupCode
+    })),
+    updatedAt:new Date().toISOString()
+  };
+  if(idx>=0)arr[idx]=rec;else arr.push(rec);
+  try{
+    if(typeof window.saveToLocalStorage==='function')window.saveToLocalStorage();
+    else localStorage.setItem('vinapaco_telecom',JSON.stringify(window.dsThanhToanTelecombyMonth));
+  }catch(e){console.warn('Không lưu localStorage được',e)}
+  return rec;
+}
+async function processTelecom(files){
+  if(!files?.length)return;
+  const fs=[...files];
+  try{
+    status('Đang đọc và bóc tách toàn bộ hóa đơn...',false);
+    // Khi chọn nhiều file, mỗi file được xử lý; tổng cộng được đưa vào form/bảng.
+    let allPages=[],allText='';
+    for(const f of fs){
+      const ext=String(f.name||'').split('.').pop().toLowerCase();
+      if(ext==='pdf'){
+        const r=await readPDF(f);allPages.push(...r.pages);allText+=r.text;
+      }else if(ext==='xml'){
+        const raw=await f.text();
+        const t=clean(raw.replace(/<[^>]+>/g,' '));
+        allPages.push(parseVNPTPage(t.split(/\n/),1));allText+='\n'+t;
+      }else if(['jpg','jpeg','png','webp','bmp','gif','tif','tiff'].includes(ext)){
+        if(!window.Tesseract)throw new Error('OCR ảnh chưa sẵn sàng.');
+        const r=await Tesseract.recognize(f,'vie+eng',{logger:m=>{if(m.status==='recognizing text')status(`OCR ${f.name} • ${Math.round((m.progress||0)*100)}%`)}}); 
+        allPages.push(parseVNPTPage(String(r.data.text||'').split(/\r?\n/),1));allText+='\n'+r.data.text;
+      }else throw new Error('Chưa hỗ trợ định dạng .'+ext);
+    }
+    if(!allPages.length)throw new Error('Không có hóa đơn để trích xuất.');
+    const first=allPages[0],valid=allPages.filter(x=>x.invoiceNo||x.total||x.taxCode);
+    const x={...first,invoiceCount:valid.length||1,invoices:valid,sourceFile:fs.map(f=>f.name).join(', '),rawText:allText};
+    x.beforeTax=valid.reduce((s,r)=>s+(Number(r.beforeTax)||0),0)||first.beforeTax||0;
+    x.vat=valid.reduce((s,r)=>s+(Number(r.vat)||0),0)||first.vat||0;
+    const explicitTotals=valid.filter(r=>Number(r.total)>0);
+    x.total=explicitTotals.length?explicitTotals.reduce((s,r)=>s+(Number(r.total)||0),0):x.beforeTax+x.vat;
+    fillAll(x);
+    let url='';
+    try{
+      if(typeof window.uploadFilesDrive==='function'&&window.gasWebhookUrl)url=await window.uploadFilesDrive(fs,{date:x.date,sourceFile:x.sourceFile,total:x.total});
+    }catch(e){console.warn('Upload Drive bỏ qua, vẫn lưu dữ liệu:',e)}
+    const rec=saveAggregate(x, url);
+    setVal('inputTelecomFileUrl',url);
+    try{window.renderTelecomPaymentTable?.();window.capNhat?.()}catch(_){}
+    const detail=valid.map(r=>`${r.invoiceNo}: ${fmt(r.total)}`).join(' | ');
+    status(`✓ Đã bóc tách ${valid.length} hóa đơn • Tổng thanh toán ${fmt(x.total)} VNĐ • đã điền Form và cập nhật bảng`,true);
+    alert(`ĐÃ TRÍCH XUẤT THÀNH CÔNG\n\nSố hóa đơn: ${valid.length}\nNhà cung cấp: ${x.supplier||'VIỄN THÔNG PHÚ THỌ'}\nKý hiệu: ${x.series}\nNgày: ${x.date}\nMST NCC: ${x.taxCode}\n\nTrước thuế: ${fmt(x.beforeTax)} VNĐ\nThuế VAT: ${fmt(x.vat)} VNĐ\nTỔNG THANH TOÁN: ${fmt(x.total)} VNĐ\n\nĐã tự điền Form và cập nhật bảng dữ liệu.\n\n${detail}`);
+    return rec;
+  }catch(e){
+    console.error('[VINAPACO V29]',e);status('⚠ '+e.message,false);alert('Không thể trích xuất hóa đơn:\n\n'+e.message);throw e;
+  }
+}
+window.trichXuatHoaDonCuocVietThong=processTelecom;
+window.xuLyOCRHoaDon=processTelecom;
+window.__VINAPACO_V29_invoiceEngine=true;
+// Chặn handler cũ trên đúng input của form cước, tránh chạy song song hai bộ trích xuất.
+function bind(){
+  ['telecomFileUpload','vnpTelecomInvoiceUpload'].forEach(id=>{
+    const el=$(id);if(!el||el.dataset.v29Bound==='1')return;
+    el.dataset.v29Bound='1';
+    el.addEventListener('change',ev=>{
+      ev.stopImmediatePropagation();
+      processTelecom(ev.target.files);
+    },true);
+  });
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});
+else bind();
+setTimeout(bind,300);setTimeout(bind,1000);
+})();
+</script>
 
 <script>
 /* ===== CHỨNG TỪ KHO THEO MẪU 01-VT / 02-VT - THÔNG TƯ 99/2025/TT-BTC ===== */

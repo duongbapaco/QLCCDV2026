@@ -19,7 +19,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    
 <script>
 /* ===== KHỐI AN TOÀN TÀI NGUYÊN NGOÀI =====
    Nếu CDN/FontAwesome/Chart/XLSX/html2canvas không tải được,
@@ -69,7 +68,6 @@
   };
 })();
 </script>
-
 
 <script id="vinapaco-kho-telecom-extract-js">
 (function(){
@@ -134,9 +132,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 window.inPhieuGiaoNhanKhoTongHop=function(){const src=(window.dsKhoMucIn||[]).slice();if(!src.length)return alert('Kho chưa có dữ liệu để lập phiếu giao nhận tổng hợp.');const groups=new Map();src.forEach(x=>{const k=[x.name||'Vật tư',x.printer||'',x.action||''].join('|');const r=groups.get(k)||{name:x.name||'Vật tư',printer:x.printer||'',action:x.action||'',qty:0,price:Number(x.price)||0,total:0,receivers:new Set()};r.qty+=Number(x.qty)||0;r.total+=Number(x.total)||((Number(x.qty)||0)*(Number(x.price)||0));if(x.receiver)r.receivers.add(x.receiver);groups.set(k,r)});const rows=[...groups.values()],total=rows.reduce((a,r)=>a+r.total,0),d=new Date(),fmt=n=>String(n).padStart(2,'0');const html='<div class="warehouse-handover-print"><div class="wh-head"><div><b>TỔNG CÔNG TY GIẤY VIỆT NAM</b><br>Văn phòng Tổng công ty</div><div style="text-align:center"><b>PHIẾU GIAO NHẬN TỔNG HỢP</b><br>Kho vật tư / mực in</div><div class="wh-national">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM<br><span>Độc lập - Tự do - Hạnh phúc</span></div></div><div class="wh-sub">Số: PGN-KHO-'+d.getFullYear()+'-'+fmt(d.getMonth()+1)+'-'+fmt(d.getDate())+' • Ngày '+fmt(d.getDate())+' tháng '+fmt(d.getMonth()+1)+' năm '+d.getFullYear()+'</div><div class="wh-info"><b>Căn cứ:</b> Sổ theo dõi nhập - xuất - cấp phát vật tư, mực in của Kho Văn phòng Tổng công ty.<br><b>Nội dung:</b> Tổng hợp các nghiệp vụ giao nhận đang có trong sổ kho tại thời điểm lập phiếu.</div><table><thead><tr><th>STT</th><th>Tên hàng hóa / vật tư</th><th>Máy / Quy cách</th><th>Nghiệp vụ</th><th>ĐVT</th><th>SL</th><th>Đơn giá</th><th>Thành tiền</th><th>Người giao / nhận</th></tr></thead><tbody>'+rows.map((r,i)=>'<tr><td>'+ (i+1) +'</td><td><b>'+escHtml(r.name)+'</b></td><td>'+escHtml(r.printer)+'</td><td>'+escHtml(r.action)+'</td><td>Hộp</td><td>'+r.qty.toLocaleString('vi-VN')+'</td><td>'+money(r.price)+'</td><td>'+money(r.total)+'</td><td>'+escHtml([...r.receivers].join(', '))+'</td></tr>').join('')+'</tbody><tfoot><tr><th colspan="5">TỔNG CỘNG</th><th>'+rows.reduce((a,r)=>a+r.qty,0).toLocaleString('vi-VN')+'</th><th></th><th>'+money(total)+'</th><th></th></tr></tfoot></table><div class="wh-amount">Tổng giá trị: <b>'+money(total)+' VNĐ</b></div><div class="wh-sign"><div><b>NGƯỜI LẬP PHIẾU</b><br><small>(Ký, ghi rõ họ tên)</small><br><br><br>________________</div><div><b>THỦ KHO</b><br><small>(Ký, ghi rõ họ tên)</small><br><br><br>________________</div><div><b>NGƯỜI NHẬN / ĐƠN VỊ</b><br><small>(Ký, ghi rõ họ tên)</small><br><br><br>________________</div></div></div>';if(typeof moCuaSoIn==='function')moCuaSoIn(html)};
 </script>
 
-
 <!-- V21 TYPOGRAPHY HARDENING: khóa giãn chữ trên toàn bộ màn hình đăng nhập -->
-
 
 <style>
         :root {
@@ -2100,18 +2096,14 @@ html,body,body *{word-spacing:normal!important;letter-spacing:normal!important}
 }
 </style><style>
     *{box-sizing:border-box}html,body{margin:0;padding:0;background:#e5e7eb;color:#111827;font-family:Arial,sans-serif}
-    #salaryPrintPreviewToolbar{position:sticky;top:0;z-index:10;background:#0f4c81;color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 2px 10px rgba(0,0,0,.18)}
-    .toolbar-title{font-weight:800;font-size:15px}.toolbar-sub{font-size:12px;opacity:.9;margin-top:2px}
-    .toolbar-actions{display:flex;gap:8px;flex-wrap:wrap}.toolbar-actions button{border:0;border-radius:8px;padding:9px 15px;font-weight:800;cursor:pointer;font-size:13px}.btn-print{background:#7c3aed;color:#fff}.btn-close{background:#fff;color:#0f4c81}
     #salaryPrintPreviewPaper{padding:24px 18px 40px;display:flex;justify-content:center;align-items:flex-start}
     .payslip-print-sheet{box-sizing:border-box;background:#fff;color:#111827;width:190mm;min-height:267mm;margin:0 auto;padding:10mm 11mm;font-family:"Times New Roman",Times,serif;font-size:10.5pt;line-height:1.22;box-shadow:0 8px 30px rgba(15,23,42,.22);border-radius:2px}
     .payslip-print-sheet *{box-sizing:border-box}.payslip-print-sheet img{max-width:100%}
     .payslip-print-sheet table{page-break-inside:avoid}.payslip-print-sheet tr{page-break-inside:avoid}
-    @media(max-width:800px){#salaryPrintPreviewPaper{overflow:auto;justify-content:flex-start}.payslip-print-sheet{flex:none}.toolbar-title{font-size:13px}}
+    @media(max-width:800px){#salaryPrintPreviewPaper{overflow:auto;justify-content:flex-start}.payslip-print-sheet{flex:none}}
     @media print{
       @page{size:A4 portrait;margin:10mm 11mm}
       html,body{background:#fff!important}
-      #salaryPrintPreviewToolbar{display:none!important}
       #salaryPrintPreviewPaper{padding:0!important;display:block!important}
       .payslip-print-sheet{width:188mm!important;min-height:277mm!important;margin:0 auto!important;padding:8mm 9mm!important;box-shadow:none!important;border-radius:0!important;font-size:10.2pt!important;line-height:1.18!important}
       .payslip-print-sheet img{opacity:1!important}
@@ -3791,7 +3783,26 @@ body.vnp-workspace-mode #invoiceManagerTab{padding:10px 12px 28px!important;marg
           <div><label>Sản phẩm</label><input id="vnpAllocProduct" readonly></div>
           <div><label>Người sử dụng *</label><input id="vnpAllocUser" placeholder="Họ và tên cán bộ"></div>
           <div><label>Đơn vị / phòng ban *</label><input id="vnpAllocDept" placeholder="Đơn vị / phòng / ban"></div>
-          <div><label>Mã tài sản / tên máy</label><input id="vnpAllocAsset" placeholder="VIN-PC-001 / LAP-001"></div>
+          <div>
+  <label>Mã tài sản / tên máy</label>
+  <input id="vnpAllocAsset" list="vnpAssetTypeList" autocomplete="off"
+         placeholder="Chọn loại từ danh sách hoặc nhập mã/tên máy tự do">
+  <datalist id="vnpAssetTypeList">
+    <option value="Máy tính để bàn (PC)"></option>
+    <option value="Máy tính All-in-One (AIO)"></option>
+    <option value="Máy tính xách tay (Laptop)"></option>
+    <option value="Máy trạm (Workstation)"></option>
+    <option value="Máy chủ (Server)"></option>
+    <option value="Máy ảo (Virtual Machine)"></option>
+    <option value="Thin Client"></option>
+    <option value="Mac / MacBook"></option>
+    <option value="Thiết bị chuyên dụng"></option>
+    <option value="Khác / nhập tự do"></option>
+  </datalist>
+  <small style="display:block;margin-top:5px;color:#64748b">
+    Có thể chọn loại máy từ danh sách hoặc nhập trực tiếp mã tài sản / tên máy.
+  </small>
+</div>
           <div><label>Ngày cấp *</label><input id="vnpAllocDate" type="date"></div>
           <div><label>Ngày hết hạn / thời hạn <span class="vnp-permanent-hint">(có thể nhập Vĩnh viễn)</span></label><input id="vnpAllocExpiry" type="text" placeholder="Nhập tự do hoặc Vĩnh viễn"></div>
           <div><label>Trạng thái</label><select id="vnpAllocStatus"><option>Đang sử dụng</option><option>Đã thu hồi</option><option>Tạm ngưng</option><option>Chuyển thiết bị</option></select></div>
@@ -8045,7 +8056,7 @@ window.xemTruocInPhieuLuong=function(){
 
 </head><body>
   <div id="salaryPrintPreviewRoot">
-    <div id="salaryPrintPreviewToolbar"><div><div class="toolbar-title">XEM TRƯỚC PHIẾU LƯƠNG — VINAPACO</div><div class="toolbar-sub">${ten} • Kỳ lương ${ky} • Kiểm tra nội dung trước khi in</div></div><div class="toolbar-actions"><button class="btn-print" onclick="window.print()">🖨 IN PHIẾU</button><button class="btn-close" onclick="window.close()">✕ ĐÓNG</button></div></div>
+    
     <div id="salaryPrintPreviewPaper"></div>
   </div>
   
@@ -9271,11 +9282,32 @@ window.vnpCloseLicenseModal=()=> $('vnpLicenseFormModal')?.classList.add('hidden
 window.vnpSaveLicense=function(){const idx=Number($('vnpLicEditIndex').value),l={id:$('vnpLicCode').value.trim(),type:$('vnpLicType').value,product:$('vnpLicProduct').value.trim(),model:$('vnpLicModel').value,seats:Number($('vnpLicSeats').value)||0,purchaseDate:$('vnpLicPurchase').value,expiryDate:$('vnpLicExpiry').value,vendor:$('vnpLicVendor').value.trim(),contract:$('vnpLicContract').value.trim(),invoice:$('vnpLicInvoice').value.trim(),keyRef:$('vnpLicKeyRef').value.trim(),note:$('vnpLicNote').value.trim()};if(!l.id||!l.product||l.seats<1)return alert('Vui lòng nhập Mã license, Sản phẩm và số seat hợp lệ.');if(licenses.some((x,i)=>x.id===l.id&&i!==idx))return alert('Mã license đã tồn tại.');if(idx>=0){const old=licenses[idx];l.id=old.id;licenses[idx]=l;log('Cập nhật','Bản quyền',l.id+' - '+l.product)}else{licenses.push(l);log('Thêm mới','Bản quyền',l.id+' - '+l.product)}save();vnpCloseLicenseModal();vnpRenderLicenses();vnpRenderOverview();alert(idx>=0?'Đã cập nhật bản quyền.':'Đã thêm bản quyền vào kho.');}
 window.vnpEditLicense=id=>{const idx=licenses.findIndex(l=>l.id===id);if(idx>=0)vnpOpenLicenseForm(idx)};
 window.vnpDeleteLicense=id=>{const idx=licenses.findIndex(l=>l.id===id);if(idx<0)return;if(allocatedCount(id)>0)return alert('Không thể xóa bản quyền đang có cấp phát. Hãy thu hồi cấp phát trước.');if(confirm('Xóa bản quyền '+id+' khỏi kho?')){licenses.splice(idx,1);log('Xóa','Bản quyền',id);save();vnpRenderLicenses();vnpRenderOverview()}}
+function vnpRefreshAssetTypeList(){
+  const dl=$('vnpAssetTypeList');
+  if(!dl)return;
+  const standard=[
+    'Máy tính để bàn (PC)',
+    'Máy tính All-in-One (AIO)',
+    'Máy tính xách tay (Laptop)',
+    'Máy trạm (Workstation)',
+    'Máy chủ (Server)',
+    'Máy ảo (Virtual Machine)',
+    'Thin Client',
+    'Mac / MacBook',
+    'Thiết bị chuyên dụng',
+    'Khác / nhập tự do'
+  ];
+  const existing=(allocations||[])
+    .map(a=>String(a.asset||'').trim())
+    .filter(Boolean);
+  const values=[...new Set([...standard,...existing])];
+  dl.innerHTML=values.map(v=>`<option value="${esc(v)}"></option>`).join('');
+}
 function fillAllocLicense(selected){$('vnpAllocLicense').innerHTML=licenses.map(l=>`<option value="${esc(l.id)}">${esc(l.id)} • ${esc(l.product)} • còn ${available(l)}</option>`).join('');if(selected)$('vnpAllocLicense').value=selected;const l=licenses.find(x=>x.id===$('vnpAllocLicense').value);if(l){$('vnpAllocType').value=l.type;$('vnpAllocProduct').value=l.product;$('vnpAllocExpiry').value=l.expiryDate||''}}
 $('vnpAllocLicense')?.addEventListener('change',()=>fillAllocLicense());
-window.vnpOpenAllocationForm=function(idx=-1){$('vnpAllocEditIndex').value=idx;fillAllocLicense(idx>=0?allocations[idx]?.licenseId:'');if(idx>=0){const a=allocations[idx];$('vnpAllocUser').value=a.user||'';$('vnpAllocDept').value=a.dept||'';$('vnpAllocAsset').value=a.asset||'';$('vnpAllocDate').value=a.date||'';$('vnpAllocExpiry').value=a.expiryDate||'';$('vnpAllocStatus').value=a.status||'Đang sử dụng';$('vnpAllocApprover').value=a.approver||'';$('vnpAllocNote').value=a.note||'';$('vnpAllocModalTitle').textContent='CẬP NHẬT CẤP PHÁT'}else{['vnpAllocUser','vnpAllocDept','vnpAllocAsset','vnpAllocDate','vnpAllocExpiry','vnpAllocApprover','vnpAllocNote'].forEach(id=>$(id).value='');$('vnpAllocDate').value=today();$('vnpAllocStatus').value='Đang sử dụng';$('vnpAllocModalTitle').textContent='CẤP PHÁT OS / OFFICE'}$('vnpAllocationFormModal').classList.remove('hidden')}
+window.vnpOpenAllocationForm=function(idx=-1){vnpRefreshAssetTypeList();$('vnpAllocEditIndex').value=idx;fillAllocLicense(idx>=0?allocations[idx]?.licenseId:'');if(idx>=0){const a=allocations[idx];$('vnpAllocUser').value=a.user||'';$('vnpAllocDept').value=a.dept||'';$('vnpAllocAsset').value=a.asset||'';$('vnpAllocDate').value=a.date||'';$('vnpAllocExpiry').value=a.expiryDate||'';$('vnpAllocStatus').value=a.status||'Đang sử dụng';$('vnpAllocApprover').value=a.approver||'';$('vnpAllocNote').value=a.note||'';$('vnpAllocModalTitle').textContent='CẬP NHẬT CẤP PHÁT'}else{['vnpAllocUser','vnpAllocDept','vnpAllocAsset','vnpAllocDate','vnpAllocExpiry','vnpAllocApprover','vnpAllocNote'].forEach(id=>$(id).value='');$('vnpAllocDate').value=today();$('vnpAllocStatus').value='Đang sử dụng';$('vnpAllocModalTitle').textContent='CẤP PHÁT OS / OFFICE'}$('vnpAllocationFormModal').classList.remove('hidden')}
 window.vnpCloseAllocationModal=()=> $('vnpAllocationFormModal')?.classList.add('hidden');
-window.vnpSaveAllocation=function(){const idx=Number($('vnpAllocEditIndex').value),licenseId=$('vnpAllocLicense').value,l=licenses.find(x=>x.id===licenseId),a={id:idx>=0?allocations[idx].id:'CAP-'+new Date().getTime(),licenseId,type:l?.type||'',product:l?.product||'',user:$('vnpAllocUser').value.trim(),dept:$('vnpAllocDept').value.trim(),asset:$('vnpAllocAsset').value.trim(),date:$('vnpAllocDate').value,expiryDate:$('vnpAllocExpiry').value,status:$('vnpAllocStatus').value,approver:$('vnpAllocApprover').value.trim(),note:$('vnpAllocNote').value.trim()};if(!l||!a.user||!a.dept||!a.date)return alert('Vui lòng chọn bản quyền và nhập Người sử dụng, Đơn vị, Ngày cấp.');const old=idx>=0?allocations[idx]:null;if(a.status==='Đang sử dụng'){const used=allocatedCount(licenseId)-(old&&old.status==='Đang sử dụng'&&old.licenseId===licenseId?1:0);if(used>=Number(l.seats)||available(l)<=0&&!(old&&old.status==='Đang sử dụng'&&old.licenseId===licenseId))return alert('Không đủ seat còn lại để cấp phát. Hãy bổ sung bản quyền hoặc thu hồi một cấp phát.')}if(idx>=0)allocations[idx]=a;else allocations.unshift(a);log(idx>=0?'Cập nhật':'Cấp phát','Cấp phát',a.id+' • '+a.user+' • '+a.dept);save();vnpCloseAllocationModal();vnpRenderAllocations();vnpRenderOverview();alert(idx>=0?'Đã cập nhật cấp phát.':'Đã cấp phát bản quyền thành công.');}
+window.vnpSaveAllocation=function(){vnpRefreshAssetTypeList();const idx=Number($('vnpAllocEditIndex').value),licenseId=$('vnpAllocLicense').value,l=licenses.find(x=>x.id===licenseId),a={id:idx>=0?allocations[idx].id:'CAP-'+new Date().getTime(),licenseId,type:l?.type||'',product:l?.product||'',user:$('vnpAllocUser').value.trim(),dept:$('vnpAllocDept').value.trim(),asset:$('vnpAllocAsset').value.trim(),date:$('vnpAllocDate').value,expiryDate:$('vnpAllocExpiry').value,status:$('vnpAllocStatus').value,approver:$('vnpAllocApprover').value.trim(),note:$('vnpAllocNote').value.trim()};if(!l||!a.user||!a.dept||!a.date)return alert('Vui lòng chọn bản quyền và nhập Người sử dụng, Đơn vị, Ngày cấp.');const old=idx>=0?allocations[idx]:null;if(a.status==='Đang sử dụng'){const used=allocatedCount(licenseId)-(old&&old.status==='Đang sử dụng'&&old.licenseId===licenseId?1:0);if(used>=Number(l.seats)||available(l)<=0&&!(old&&old.status==='Đang sử dụng'&&old.licenseId===licenseId))return alert('Không đủ seat còn lại để cấp phát. Hãy bổ sung bản quyền hoặc thu hồi một cấp phát.')}if(idx>=0)allocations[idx]=a;else allocations.unshift(a);log(idx>=0?'Cập nhật':'Cấp phát','Cấp phát',a.id+' • '+a.user+' • '+a.dept);save();vnpCloseAllocationModal();vnpRenderAllocations();vnpRenderOverview();alert(idx>=0?'Đã cập nhật cấp phát.':'Đã cấp phát bản quyền thành công.');}
 window.vnpRenderAllocations=function(){const q=($('vnpAllocSearch')?.value||'').toLowerCase(),f=$('vnpAllocTypeFilter')?.value||'';const rows=allocations.filter(a=>(!f||a.type===f)&&JSON.stringify(a).toLowerCase().includes(q));$('vnpLicAllocBody').innerHTML=rows.length?rows.map(a=>`<tr><td><b>${esc(a.id)}</b></td><td style="text-align:center"><span class="vnp-pill">${esc(a.type)}</span></td><td><b>${esc(a.product)}</b></td><td><b>${esc(a.user)}</b></td><td>${esc(a.dept)}</td><td>${esc(a.asset||'')}</td><td>${a.date||''}</td><td>${esc(a.expiryDate||'Theo license / Vĩnh viễn')}</td><td><span class="${a.status==='Đang sử dụng'?'badge-net':'badge-warning'}">${esc(a.status)}</span></td><td>${esc(a.note||'')}</td><td class="action-cell"><div class="action-cell-inner"><button class="btn btn-blue" onclick="vnpEditAllocation('${esc(a.id)}')"><i class="fa-solid fa-pen"></i></button><button class="btn btn-yellow" onclick="vnpRecallAllocation('${esc(a.id)}')" title="Thu hồi"><i class="fa-solid fa-arrow-rotate-left"></i></button><button class="btn btn-red" onclick="vnpDeleteAllocation('${esc(a.id)}')"><i class="fa-solid fa-trash"></i></button></div></td></tr>`).join(''):'<tr><td colspan="11" style="text-align:center;color:#64748b;padding:25px">Chưa có cấp phát.</td></tr>'}
 window.vnpEditAllocation=id=>{const idx=allocations.findIndex(a=>a.id===id);if(idx>=0)vnpOpenAllocationForm(idx)};
 window.vnpRecallAllocation=id=>{const a=allocations.find(x=>x.id===id);if(!a)return;if(confirm('Thu hồi bản quyền khỏi '+a.user+'?')){a.status='Đã thu hồi';log('Thu hồi','Cấp phát',a.id+' • '+a.user);save();vnpRenderAllocations();vnpRenderOverview()}};
@@ -9283,6 +9315,10 @@ window.vnpDeleteAllocation=id=>{const idx=allocations.findIndex(a=>a.id===id);if
 window.vnpPrintAllocationReport=function(){const rows=allocations.filter(a=>a.status==='Đang sử dụng');const now=new Date();const body=rows.map((a,i)=>`<tr><td>${i+1}</td><td>${esc(a.type)}</td><td>${esc(a.product)}</td><td><b>${esc(a.user)}</b></td><td>${esc(a.dept)}</td><td>${esc(a.asset||'')}</td><td>${esc(a.date||'')}</td><td>${esc(a.expiryDate||'Theo license / Vĩnh viễn')}</td><td>${esc(a.status)}</td><td>${esc(a.approver||'')}</td></tr>`).join('')||'<tr><td colspan=10 style="text-align:center">Chưa có bản ghi đang sử dụng.</td></tr>';const w=window.open('','_blank','width=1400,height=900');if(!w)return alert('Trình duyệt đang chặn cửa sổ báo cáo. Hãy cho phép pop-up.');w.document.write(`<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Báo cáo cấp phát OS & Office - VINAPACO</title>
 <style id="vinapaco-permanent-license-style">
 .vnp-permanent-hint{font-size:12px;font-weight:600;color:#15803d}
+</style>
+<style id="vinapaco-asset-list-style">
+#vnpAllocAsset{min-width:0}
+#vnpAssetTypeList{}
 </style>
 </head><body><b>TỔNG CÔNG TY GIẤY VIỆT NAM</b><h2>BÁO CÁO CẤP PHÁT BẢN QUYỀN OS & OFFICE</h2><p>Danh sách đang sử dụng — lập ngày ${now.toLocaleDateString('vi-VN')}</p><table><thead><tr><th>STT</th><th>Loại</th><th>Sản phẩm</th><th>Người sử dụng</th><th>Đơn vị</th><th>Mã tài sản / máy</th><th>Ngày cấp</th><th>Hết hạn</th><th>Trạng thái</th><th>Người duyệt</th></tr></thead><tbody>${body}</tbody></table><div class="sign"><div><b>NGƯỜI LẬP</b><span>(Ký, ghi rõ họ tên)</span></div><div><b>PHỤ TRÁCH CNTT</b><span>(Ký, ghi rõ họ tên)</span></div><div><b>THỦ TRƯỞNG ĐƠN VỊ</b><span>(Ký, ghi rõ họ tên)</span></div></div>
 

@@ -6279,7 +6279,7 @@ html,body,body *{word-spacing:normal!important;letter-spacing:normal!important}
             const info = getWeatherInfo(data.current.weather_code);
 
             const wText = document.getElementById('weatherWidgetText');
-            if (wText) wText.innerHTML = `<div style="font-size:17px;font-weight:950;color:#0f172a;"><i class="fa-solid ${info.icon}" style="color:${info.color};margin-right:7px;"></i>${escapeLocationHtml(cityName)} · ${temp}°C · ${info.text}</div><div style="font-size:13px;color:#475569;font-weight:800;margin-top:4px;">💧 Độ ẩm ${humidity ?? '--'}% · 💨 Gió ${wind ?? '--'} km/h · 📍 ${Number(lat).toFixed(5)}, ${Number(lon).toFixed(5)}</div>`;
+            if (wText) wText.innerHTML = `<div style="font-size:17px;font-weight:950;color:#0f172a;"><i class="fa-solid ${info.icon}" style="color:${info.color};margin-right:7px;"></i>${escapeLocationHtml(cityName)} · ${temp}°C · ${info.text}</div><div style="font-size:13px;color:#475569;font-weight:800;margin-top:4px;">💧 Độ ẩm ${humidity ?? '--'}% · 💨 Gió ${wind ?? '--'} km/h · 📍 ${Number(lat).toFixed(6)}, ${Number(lon).toFixed(6)}</div>`;
             const wLoc = document.getElementById('wLocationTitle');
             if (wLoc) wLoc.innerText = `Khu vực: ${cityName}`;
             const wTemp = document.getElementById('wCurrentTemp');
@@ -6346,6 +6346,8 @@ html,body,body *{word-spacing:normal!important;letter-spacing:normal!important}
     let locationSearchAbort = null;
     let locationSearchSeq = 0;
     let gpsWatchId = null;
+    // Chế độ vị trí thời tiết: manual = vị trí người dùng chọn, gps = vị trí thiết bị.
+    let weatherLocationMode = 'manual';
 
     function escapeLocationHtml(v) {
         return String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;')
@@ -6509,23 +6511,43 @@ html,body,body *{word-spacing:normal!important;letter-spacing:normal!important}
         lat = Number(lat); lon = Number(lon);
         if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
 
+        // Người dùng đã chọn địa điểm cụ thể: tuyệt đối giữ nguyên tọa độ đã chọn,
+        // không để GPS nền tự động ghi đè lại vị trí này.
+        weatherLocationMode = 'manual';
+        const exactLat = lat;
+        const exactLon = lon;
+        const exactName = String(name || 'Địa điểm đã chọn');
+        cachedWeatherCoords = {lat: exactLat, lon: exactLon, cityName: exactName};
+
         ['weatherLocationResults','weatherWidgetResults'].forEach(id => {
             const el=document.getElementById(id);
             if(el) { el.style.display='none'; el.innerHTML=''; }
         });
 
-        cachedWeatherCoords = {lat, lon, cityName:name || 'Địa điểm đã chọn'};
+        // Hiển thị NGAY lập tức đúng địa điểm + đúng tọa độ người dùng vừa chọn.
+        const immediate = document.getElementById('weatherWidgetText');
+        if (immediate) {
+            immediate.innerHTML = `<div style="font-size:17px;font-weight:950;color:#0f172a;"><i class="fa-solid fa-location-dot" style="color:#2563eb;margin-right:7px;"></i>${escapeLocationHtml(exactName)}</div><div style="font-size:13px;color:#475569;font-weight:800;margin-top:4px;">📍 ${exactLat.toFixed(6)}, ${exactLon.toFixed(6)} · Đang cập nhật thời tiết...</div>`;
+        }
+        const title = document.getElementById('wLocationTitle');
+        if (title) title.innerText = `Khu vực: ${exactName}`;
 
-        // Cập nhật ngay lập tức, sau đó reverse-geocode lại để tên hiển thị chuẩn hơn.
-        await capNhatThoiTiet(lat,lon,name || 'Địa điểm đã chọn');
-        await capNhatThoiTiet10Ngay(lat,lon,name || 'Địa điểm đã chọn');
+        // API thời tiết dùng chính xác cặp lat/lon đã chọn; không thay đổi tọa độ sau reverse-geocode.
+        await Promise.allSettled([
+            capNhatThoiTiet(exactLat, exactLon, exactName),
+            capNhatThoiTiet10Ngay(exactLat, exactLon, exactName)
+        ]);
 
+        // Chỉ bổ sung tên địa điểm chuẩn hơn từ reverse-geocode; TUYỆT ĐỐI không thay lat/lon.
         try {
-            const rg = await reverseGeocodeVietNam(lat,lon);
-            if (rg && rg.name && rg.name !== 'Vị trí GPS') {
+            const rg = await reverseGeocodeVietNam(exactLat, exactLon);
+            if (weatherLocationMode === 'manual' &&
+                cachedWeatherCoords.lat === exactLat && cachedWeatherCoords.lon === exactLon &&
+                rg && rg.name && rg.name !== 'Vị trí GPS') {
                 cachedWeatherCoords.cityName = rg.areaName || rg.name;
-                await capNhatThoiTiet(lat,lon,rg.areaName || rg.name);
-                await capNhatThoiTiet10Ngay(lat,lon,rg.areaName || rg.name);
+                // Cập nhật lại tên nhưng giữ nguyên exactLat/exactLon.
+                await capNhatThoiTiet(exactLat, exactLon, cachedWeatherCoords.cityName);
+                await capNhatThoiTiet10Ngay(exactLat, exactLon, cachedWeatherCoords.cityName);
             }
         } catch(e) {}
     }
@@ -6652,6 +6674,7 @@ html,body,body *{word-spacing:normal!important;letter-spacing:normal!important}
     }
 
     async function layThoiTietTheoGPS() {
+        weatherLocationMode = 'gps';
         if (!navigator.geolocation) {
             alert("Trình duyệt không hỗ trợ định vị GPS.");
             return;
@@ -6775,6 +6798,9 @@ html,body,body *{word-spacing:normal!important;letter-spacing:normal!important}
         try {
             if(navigator.geolocation) {
                 navigator.geolocation.watchPosition(async pos => {
+                    // Chỉ theo dõi GPS khi người dùng đã bấm lấy vị trí GPS.
+                    // Khi người dùng chọn địa điểm thủ công, không được ghi đè vị trí đã chọn.
+                    if (weatherLocationMode !== 'gps') return;
                     const lat=Number(pos.coords.latitude), lon=Number(pos.coords.longitude);
                     if(!Number.isFinite(lat)||!Number.isFinite(lon)) return;
                     try {
@@ -9280,7 +9306,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   #vnpLoginGate #vnpLoginTitle{font-size:23px!important}
 }
 </style>
-</body></html>');w.document.close();setTimeout(function(){w.focus();w.print()},400)}})();
+\n<script id="VINAPACO_ENTER_KEY_SUPPORT">\n(function(){\n  'use strict';\n  function visible(el){\n    if(!el) return false;\n    const st=getComputedStyle(el);\n    return st.display!=='none' && st.visibility!=='hidden' && !el.disabled;\n  }\n  function clickSearchFor(input){\n    const root=input.closest('.modal-card, .modal, .card, .section-card, .table-card, .panel, form, section, [role="dialog"]') || document;\n    const btns=[...root.querySelectorAll('button,[role="button"],input[type="button"],input[type="submit"]')];\n    const b=btns.find(x=>visible(x) && /tìm|search|tra cứu|lọc|kiểm tra/i.test((x.innerText||x.value||x.title||'')));\n    if(b){b.click();return true;}\n    return false;\n  }\n  function submitNearest(input){\n    const form=input.closest('form');\n    if(form){\n      if(typeof form.requestSubmit==='function') form.requestSubmit(); else form.submit();\n      return true;\n    }\n    return false;\n  }\n  document.addEventListener('keydown',function(e){\n    if(e.key!=='Enter' || e.isComposing) return;\n    const el=e.target;\n    if(!el || !['INPUT','SELECT','TEXTAREA'].includes(el.tagName)) return;\n\n    // Đăng nhập: Enter ở cả ô tài khoản hoặc mật khẩu đều đăng nhập ngay.\n    if(el.id==='vnpLoginEmail' || el.id==='vnpLoginPassword'){\n      e.preventDefault();\n      Promise.resolve(window.vnpDoLogin?.()).catch(err=>console.warn('Login Enter:',err));\n      return;\n    }\n\n    // Ô tìm kiếm: Enter thực hiện tìm kiếm/lọc ngay.\n    const text=(el.placeholder||el.getAttribute('aria-label')||el.name||'').toLowerCase();\n    if(/tìm|search|tra cứu|lọc|mã|tên|người|đơn vị|tài sản|license|office|os/.test(text)){\n      e.preventDefault();\n      if(clickSearchFor(el)) return;\n      if(submitNearest(el)) return;\n      return;\n    }\n\n    // Các form nhập liệu một dòng: Enter hoàn tất bằng nút lưu/thêm/cập nhật gần nhất.\n    if(el.tagName==='INPUT' && !/^(checkbox|radio|file|button|submit)$/i.test(el.type)){\n      const root=el.closest('.modal-card, .modal, .card, .section-card, .table-card, form, section, [role="dialog"]') || document;\n      const buttons=[...root.querySelectorAll('button,[role="button"],input[type="submit"],input[type="button"]')].filter(visible);\n      const save=buttons.find(x=>/lưu|thêm|cập nhật|ghi|xác nhận|hoàn tất|tạo mới|cấp phát|nhập kho/i.test((x.innerText||x.value||x.title||'')) && !/hủy|đóng|xóa|thu hồi/i.test((x.innerText||x.value||x.title||'')));\n      if(save){e.preventDefault();save.click();}\n    }\n  },true);\n\n  // Bổ sung Enter trực tiếp cho các form có form submit nhưng chưa khai báo.\n  document.addEventListener('submit',function(e){\n    // Không can thiệp nếu ứng dụng đã có handler hợp lệ.\n  },true);\n})();\n</script>\n<!-- /VINAPACO_ENTER_KEY_SUPPORT -->\n</body></html>');w.document.close();setTimeout(function(){w.focus();w.print()},400)}})();
 </script>
 
 <style id="vinapaco-user-final-ui-fix">

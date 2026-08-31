@@ -6681,46 +6681,78 @@ html,body,body *{word-spacing:normal!important;letter-spacing:normal!important}
         }
 
         const wText = document.getElementById('weatherWidgetText');
-        if (wText) wText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang lấy vị trí GPS độ chính xác cao...`;
+        if (wText) wText.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lấy tọa độ GPS chính xác nhất...';
 
-        // getCurrentPosition với enableHighAccuracy; thử lại một lần nếu độ chính xác ban đầu thấp.
-        const getPos = options => new Promise((resolve,reject)=>{
-            navigator.geolocation.getCurrentPosition(resolve,reject,options);
-        });
+        // Không dùng vị trí cũ của trình duyệt. Lấy nhiều mẫu GPS và chọn mẫu
+        // có sai số (accuracy) nhỏ nhất để hạn chế trường hợp desktop/Wi-Fi trả về vị trí gần đúng.
+        const samples = [];
+        const addSample = (pos) => {
+            const lat = Number(pos?.coords?.latitude);
+            const lon = Number(pos?.coords?.longitude);
+            const accuracy = Number(pos?.coords?.accuracy);
+            if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
+            samples.push({ lat, lon, accuracy: Number.isFinite(accuracy) ? accuracy : 999999, ts: Date.now() });
+        };
+        const bestSample = () => samples.reduce((best, x) => !best || x.accuracy < best.accuracy ? x : best, null);
+        const getPos = options => new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, options));
 
+        let watchId = null;
         try {
-            let pos = await getPos({enableHighAccuracy:true, timeout:20000, maximumAge:0});
-            let accuracy = Number(pos.coords.accuracy || 999999);
+            // Lấy mẫu đầu tiên, tuyệt đối không dùng cache.
+            try { addSample(await getPos({ enableHighAccuracy:true, timeout:30000, maximumAge:0 })); } catch(e) {}
 
-            // Nếu sai số > 50 m, thử lại để lấy tín hiệu tốt hơn.
-            if(accuracy > 50){
-                try{
-                    const better = await getPos({enableHighAccuracy:true, timeout:20000, maximumAge:0});
-                    if(Number(better.coords.accuracy || 999999) < accuracy) pos=better;
-                }catch(e){}
+            // Thu thập thêm mẫu trong tối đa 12 giây; dừng sớm nếu đạt <= 10 m.
+            await new Promise(resolve => {
+                const finish = () => { if (watchId !== null) { try { navigator.geolocation.clearWatch(watchId); } catch(e) {} watchId = null; } resolve(); };
+                const deadline = setTimeout(finish, 12000);
+                watchId = navigator.geolocation.watchPosition(pos => {
+                    addSample(pos);
+                    const best = bestSample();
+                    if (best && best.accuracy <= 10) {
+                        clearTimeout(deadline);
+                        finish();
+                    }
+                }, () => {}, { enableHighAccuracy:true, timeout:30000, maximumAge:0 });
+            });
+
+            // Nếu chưa có mẫu, thử lần cuối với timeout dài hơn.
+            if (!samples.length) {
+                try { addSample(await getPos({ enableHighAccuracy:true, timeout:45000, maximumAge:0 })); } catch(e) {}
             }
+            const best = bestSample();
+            if (!best) throw new Error('NO_POSITION');
 
-            const lat=Number(pos.coords.latitude), lon=Number(pos.coords.longitude);
-            const rg=await reverseGeocodeVietNam(lat,lon);
-            const resolvedName=rg.areaName || rg.name || 'Vị trí GPS';
+            const lat = best.lat, lon = best.lon;
+            const acc = Math.round(best.accuracy);
+            // Giữ nguyên tọa độ GPS; reverse-geocode chỉ dùng để lấy tên địa điểm.
+            let resolvedName = 'Vị trí GPS';
+            try {
+                const rg = await reverseGeocodeVietNam(lat, lon);
+                resolvedName = rg.areaName || rg.name || resolvedName;
+            } catch(e) {}
 
-            cachedWeatherCoords={lat,lon,cityName:resolvedName};
-            await capNhatThoiTiet(lat,lon,resolvedName);
-            await capNhatThoiTiet10Ngay(lat,lon,resolvedName);
+            cachedWeatherCoords = { lat, lon, cityName: resolvedName };
+            await capNhatThoiTiet(lat, lon, resolvedName);
+            await capNhatThoiTiet10Ngay(lat, lon, resolvedName);
 
-            const acc=Math.round(Number(pos.coords.accuracy || 0));
             if (wText) wText.innerHTML =
-                `<i class="fa-solid fa-location-dot"></i> ${escapeLocationHtml(resolvedName)}
-                 <br><small style="font-weight:700;color:#15803d;">GPS ±${acc} m · ${lat.toFixed(6)}, ${lon.toFixed(6)}</small>`;
+                `<i class="fa-solid fa-location-dot"></i> ${escapeLocationHtml(resolvedName)}<br>` +
+                `<small style="font-weight:800;color:#15803d;">GPS: ${lat.toFixed(6)}, ${lon.toFixed(6)} · Sai số thiết bị báo ±${acc} m</small>`;
 
-            alert(`✅ Đã định vị GPS chính xác\n\n${resolvedName}\nTọa độ: ${lat.toFixed(6)}, ${lon.toFixed(6)}\nĐộ chính xác thiết bị báo: ±${acc} m`);
+            if (acc > 100) {
+                alert(`⚠️ Đã lấy được vị trí GPS nhưng độ chính xác hiện tại còn thấp.\n\n${resolvedName}\nTọa độ: ${lat.toFixed(6)}, ${lon.toFixed(6)}\nSai số thiết bị báo: ±${acc} m\n\nĐể đạt độ chính xác cao hơn trên máy tính, hãy bật Location/GPS và cho phép Chrome truy cập vị trí; nếu có thể, sử dụng Wi‑Fi/GPS thay vì mạng LAN/VPN.`);
+            } else {
+                alert(`✅ Đã lấy vị trí GPS tốt nhất\n\n${resolvedName}\nTọa độ: ${lat.toFixed(6)}, ${lon.toFixed(6)}\nSai số thiết bị báo: ±${acc} m`);
+            }
         } catch(error) {
-            if (wText) wText.innerHTML = "Không thể lấy tọa độ GPS.";
-            let msg="Không thể truy cập GPS.";
-            if(error?.code===1) msg="Bạn chưa cấp quyền vị trí cho trình duyệt.";
-            else if(error?.code===2) msg="Thiết bị chưa xác định được vị trí. Hãy bật GPS/Location.";
-            else if(error?.code===3) msg="GPS phản hồi quá lâu. Hãy thử lại ở nơi có tín hiệu tốt hơn.";
-            alert(`⚠️ ${msg}\n\nHãy kiểm tra quyền Vị trí của trình duyệt và thử lại.`);
+            if (watchId !== null) { try { navigator.geolocation.clearWatch(watchId); } catch(e) {} }
+            if (wText) wText.innerHTML = 'Không thể lấy tọa độ GPS.';
+            let msg = "Không thể truy cập GPS.";
+            if (error?.code === 1) msg = "Bạn chưa cấp quyền vị trí cho trình duyệt.";
+            else if (error?.code === 2) msg = "Thiết bị chưa xác định được vị trí. Hãy bật Location/GPS và kiểm tra Wi‑Fi.";
+            else if (error?.code === 3) msg = "GPS phản hồi quá lâu. Hãy thử lại ở nơi có tín hiệu tốt hơn.";
+            else if (error?.message === 'NO_POSITION') msg = "Không nhận được tọa độ từ thiết bị.";
+            alert(`⚠️ ${msg}\n\nTrên máy tính để bàn, độ chính xác phụ thuộc vào phần cứng GPS/Wi‑Fi và quyền vị trí của Chrome; hệ thống không thể tự tạo tọa độ chính xác hơn dữ liệu trình duyệt cung cấp.`);
         }
     }
 

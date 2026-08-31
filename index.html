@@ -9306,8 +9306,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   #vnpLoginGate #vnpLoginTitle{font-size:23px!important}
 }
 </style>
-\n<script id="VINAPACO_ENTER_KEY_SUPPORT">\n(function(){\n  'use strict';\n  function visible(el){\n    if(!el) return false;\n    const st=getComputedStyle(el);\n    return st.display!=='none' && st.visibility!=='hidden' && !el.disabled;\n  }\n  function clickSearchFor(input){\n    const root=input.closest('.modal-card, .modal, .card, .section-card, .table-card, .panel, form, section, [role="dialog"]') || document;\n    const btns=[...root.querySelectorAll('button,[role="button"],input[type="button"],input[type="submit"]')];\n    const b=btns.find(x=>visible(x) && /tìm|search|tra cứu|lọc|kiểm tra/i.test((x.innerText||x.value||x.title||'')));\n    if(b){b.click();return true;}\n    return false;\n  }\n  function submitNearest(input){\n    const form=input.closest('form');\n    if(form){\n      if(typeof form.requestSubmit==='function') form.requestSubmit(); else form.submit();\n      return true;\n    }\n    return false;\n  }\n  document.addEventListener('keydown',function(e){\n    if(e.key!=='Enter' || e.isComposing) return;\n    const el=e.target;\n    if(!el || !['INPUT','SELECT','TEXTAREA'].includes(el.tagName)) return;\n\n    // Đăng nhập: Enter ở cả ô tài khoản hoặc mật khẩu đều đăng nhập ngay.\n    if(el.id==='vnpLoginEmail' || el.id==='vnpLoginPassword'){\n      e.preventDefault();\n      Promise.resolve(window.vnpDoLogin?.()).catch(err=>console.warn('Login Enter:',err));\n      return;\n    }\n\n    // Ô tìm kiếm: Enter thực hiện tìm kiếm/lọc ngay.\n    const text=(el.placeholder||el.getAttribute('aria-label')||el.name||'').toLowerCase();\n    if(/tìm|search|tra cứu|lọc|mã|tên|người|đơn vị|tài sản|license|office|os/.test(text)){\n      e.preventDefault();\n      if(clickSearchFor(el)) return;\n      if(submitNearest(el)) return;\n      return;\n    }\n\n    // Các form nhập liệu một dòng: Enter hoàn tất bằng nút lưu/thêm/cập nhật gần nhất.\n    if(el.tagName==='INPUT' && !/^(checkbox|radio|file|button|submit)$/i.test(el.type)){\n      const root=el.closest('.modal-card, .modal, .card, .section-card, .table-card, form, section, [role="dialog"]') || document;\n      const buttons=[...root.querySelectorAll('button,[role="button"],input[type="submit"],input[type="button"]')].filter(visible);\n      const save=buttons.find(x=>/lưu|thêm|cập nhật|ghi|xác nhận|hoàn tất|tạo mới|cấp phát|nhập kho/i.test((x.innerText||x.value||x.title||'')) && !/hủy|đóng|xóa|thu hồi/i.test((x.innerText||x.value||x.title||'')));\n      if(save){e.preventDefault();save.click();}\n    }\n  },true);\n\n  // Bổ sung Enter trực tiếp cho các form có form submit nhưng chưa khai báo.\n  document.addEventListener('submit',function(e){\n    // Không can thiệp nếu ứng dụng đã có handler hợp lệ.\n  },true);\n})();\n</script>\n<!-- /VINAPACO_ENTER_KEY_SUPPORT -->\n</body></html>');w.document.close();setTimeout(function(){w.focus();w.print()},400)}})();
-</script>
+
 
 <style id="vinapaco-user-final-ui-fix">
 /* Sửa dứt điểm lỗi giãn chữ trên màn hình đăng nhập */
@@ -9464,5 +9463,56 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     const bt=document.getElementById('btnTelecomText');if(bt)bt.textContent='CẬP NHẬT';document.getElementById('btnCancelTelecom')?.classList.remove('hidden');
     document.getElementById('formCardTelecom')?.scrollIntoView({behavior:'smooth',block:'start'});
   };
+})();
+</script>
+
+<script id="VINAPACO_ENTER_KEY_SUPPORT_FIXED">
+(function(){
+  'use strict';
+  function visible(el){
+    if(!el) return false;
+    const st=getComputedStyle(el);
+    return st.display !== 'none' && st.visibility !== 'hidden' && !el.disabled;
+  }
+  function textOf(el){ return String(el?.innerText || el?.value || el?.title || '').trim(); }
+  function findAction(root, patterns){
+    const nodes = Array.from(root.querySelectorAll('button,[role="button"],input[type="button"],input[type="submit"]'));
+    return nodes.find(function(b){
+      return visible(b) && patterns.test(textOf(b)) && !/hủy|đóng|xóa|thu hồi|quay lại/i.test(textOf(b));
+    });
+  }
+  function searchAction(input){
+    const root = input.closest('.modal-card,.modal,.card,.section-card,.table-card,.panel,form,section,[role="dialog"]') || document;
+    return findAction(root,/tìm|search|tra cứu|lọc|kiểm tra/i);
+  }
+  document.addEventListener('keydown', function(e){
+    if(e.key !== 'Enter' || e.isComposing) return;
+    const el = e.target;
+    if(!el || !['INPUT','SELECT','TEXTAREA'].includes(el.tagName)) return;
+
+    if(el.id === 'vnpLoginEmail' || el.id === 'vnpLoginPassword'){
+      e.preventDefault();
+      if(typeof window.vnpDoLogin === 'function') window.vnpDoLogin();
+      else {
+        const btn = document.querySelector('#vnpLoginGate button[type="submit"],#vnpLoginGate button');
+        if(btn) btn.click();
+      }
+      return;
+    }
+
+    const hint = (el.placeholder || el.getAttribute('aria-label') || el.name || '').toLowerCase();
+    if(/tìm|search|tra cứu|lọc|mã|tên|người|đơn vị|tài sản|license|office|os/.test(hint)){
+      const btn = searchAction(el);
+      if(btn){ e.preventDefault(); btn.click(); }
+      return;
+    }
+
+    // Với ô nhập liệu một dòng trong form/modal, Enter kích hoạt nút lưu/thêm/cập nhật gần nhất.
+    if(el.tagName === 'INPUT' && !/^(checkbox|radio|file|button|submit|reset|hidden)$/i.test(el.type)){
+      const root = el.closest('.modal-card,.modal,.card,.section-card,.table-card,form,section,[role="dialog"]') || document;
+      const btn = findAction(root,/lưu|thêm|cập nhật|ghi|xác nhận|hoàn tất|tạo mới|cấp phát|nhập kho/i);
+      if(btn){ e.preventDefault(); btn.click(); }
+    }
+  }, true);
 })();
 </script>

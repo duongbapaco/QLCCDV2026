@@ -18,16 +18,6 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    
-
-
-
-
-
-
-
-
 <script>
 /* ===== KHỐI AN TOÀN TÀI NGUYÊN NGOÀI =====
    Nếu CDN/FontAwesome/Chart/XLSX/html2canvas không tải được,
@@ -54,36 +44,7 @@
     window.VINAPACO_IS_LOCAL_FILE = location.protocol === 'file:';
 })();
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-
-
-
 <script id="vinapaco-final-tab-position-fix">
 (function(){
   const oldSwitchTab=window.switchTab;
@@ -104,9 +65,6 @@
   };
 })();
 </script>
-
-
-
 <script id="vinapaco-kho-telecom-extract-js">
 (function(){
 'use strict';
@@ -170,27 +128,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 window.inPhieuGiaoNhanKhoTongHop=function(){const src=(window.dsKhoMucIn||[]).slice();if(!src.length)return alert('Kho chưa có dữ liệu để lập phiếu giao nhận tổng hợp.');const groups=new Map();src.forEach(x=>{const k=[x.name||'Vật tư',x.printer||'',x.action||''].join('|');const r=groups.get(k)||{name:x.name||'Vật tư',printer:x.printer||'',action:x.action||'',qty:0,price:Number(x.price)||0,total:0,receivers:new Set()};r.qty+=Number(x.qty)||0;r.total+=Number(x.total)||((Number(x.qty)||0)*(Number(x.price)||0));if(x.receiver)r.receivers.add(x.receiver);groups.set(k,r)});const rows=[...groups.values()],total=rows.reduce((a,r)=>a+r.total,0),d=new Date(),fmt=n=>String(n).padStart(2,'0');const html='<div class="warehouse-handover-print"><div class="wh-head"><div><b>TỔNG CÔNG TY GIẤY VIỆT NAM</b><br>Văn phòng Tổng công ty</div><div style="text-align:center"><b>PHIẾU GIAO NHẬN TỔNG HỢP</b><br>Kho vật tư / mực in</div><div class="wh-national">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM<br><span>Độc lập - Tự do - Hạnh phúc</span></div></div><div class="wh-sub">Số: PGN-KHO-'+d.getFullYear()+'-'+fmt(d.getMonth()+1)+'-'+fmt(d.getDate())+' • Ngày '+fmt(d.getDate())+' tháng '+fmt(d.getMonth()+1)+' năm '+d.getFullYear()+'</div><div class="wh-info"><b>Căn cứ:</b> Sổ theo dõi nhập - xuất - cấp phát vật tư, mực in của Kho Văn phòng Tổng công ty.<br><b>Nội dung:</b> Tổng hợp các nghiệp vụ giao nhận đang có trong sổ kho tại thời điểm lập phiếu.</div><table><thead><tr><th>STT</th><th>Tên hàng hóa / vật tư</th><th>Máy / Quy cách</th><th>Nghiệp vụ</th><th>ĐVT</th><th>SL</th><th>Đơn giá</th><th>Thành tiền</th><th>Người giao / nhận</th></tr></thead><tbody>'+rows.map((r,i)=>'<tr><td>'+ (i+1) +'</td><td><b>'+escHtml(r.name)+'</b></td><td>'+escHtml(r.printer)+'</td><td>'+escHtml(r.action)+'</td><td>Hộp</td><td>'+r.qty.toLocaleString('vi-VN')+'</td><td>'+money(r.price)+'</td><td>'+money(r.total)+'</td><td>'+escHtml([...r.receivers].join(', '))+'</td></tr>').join('')+'</tbody><tfoot><tr><th colspan="5">TỔNG CỘNG</th><th>'+rows.reduce((a,r)=>a+r.qty,0).toLocaleString('vi-VN')+'</th><th></th><th>'+money(total)+'</th><th></th></tr></tfoot></table><div class="wh-amount">Tổng giá trị: <b>'+money(total)+' VNĐ</b></div><div class="wh-sign"><div><b>NGƯỜI LẬP PHIẾU</b><br><small>(Ký, ghi rõ họ tên)</small><br><br><br>________________</div><div><b>THỦ KHO</b><br><small>(Ký, ghi rõ họ tên)</small><br><br><br>________________</div><div><b>NGƯỜI NHẬN / ĐƠN VỊ</b><br><small>(Ký, ghi rõ họ tên)</small><br><br><br>________________</div></div></div>';if(typeof moCuaSoIn==='function')moCuaSoIn(html)};
 </script>
 
-
-
-
-
-
-
-
-
-
-
 <!-- V21 TYPOGRAPHY HARDENING: khóa giãn chữ trên toàn bộ màn hình đăng nhập -->
-
-
-
-
-
-
-
-
-
-
 <style>
         :root {
             --primary: #0284c7; --primary-dark: #0369a1; --bg-body: #f1f5f9; --card-bg: #ffffff;
@@ -9282,18 +9220,10 @@ setTimeout(syncButton,300);setTimeout(syncButton,1000);
 })();
 </script>
 <!-- V23: TYPOGRAPHY IMMUTABLE LOGIN - chữ không giãn, không bẻ từ, không justify -->
-
-
-
-
 <!-- V26 FINAL: TYPOGRAPHY KHÔNG GIÃN + UPLOAD HÓA ĐƠN 04 TRƯỜNG CHO VP/VIỄN THÔNG -->
-
-
 <script id="vinapaco-phieu-tong-hop-final">
 (function(){function esc(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}function n(v){return Number(v)||0}window.inPhieuGiaoNhanKhoTongHop=function(){const src=(window.dsKhoMucIn||[]).filter(x=>String(x.action||'').trim());if(!src.length)return alert('Chưa có dữ liệu kho để lập phiếu tổng hợp.');const groups=new Map();src.forEach(x=>{const k=[x.action||'',x.receiver||'',x.department||'',x.name||'',x.printer||'',x.unit||'Hộp'].join('|');const r=groups.get(k)||{action:x.action||'',receiver:x.receiver||'',department:x.department||'',name:x.name||'',printer:x.printer||'',unit:x.unit||'Hộp',qty:0,total:0,price:n(x.price)};r.qty+=n(x.qty);r.total+=n(x.total)||n(x.qty)*n(x.price);if(!r.price&&r.qty)r.price=r.total/r.qty;groups.set(k,r)});const rows=[...groups.values()],qty=rows.reduce((a,r)=>a+r.qty,0),total=rows.reduce((a,r)=>a+r.total,0),now=new Date();const body=rows.map((r,i)=>'<tr><td>'+ (i+1) +'</td><td>'+esc(r.action)+'</td><td>'+esc(r.name)+'</td><td>'+esc(r.printer)+'</td><td>'+esc(r.receiver)+'</td><td>'+esc(r.department)+'</td><td>'+esc(r.unit)+'</td><td class="num">'+r.qty.toLocaleString('vi-VN')+'</td><td class="num">'+Math.round(r.price).toLocaleString('vi-VN')+'</td><td class="num">'+Math.round(r.total).toLocaleString('vi-VN')+'</td></tr>').join('');const html='<div class="sheet"><div class="head"><div><b>TỔNG CÔNG TY GIẤY VIỆT NAM</b><br><b>VĂN PHÒNG TỔNG CÔNG TY</b></div><div class="right"><b>PHIẾU TỔNG HỢP KHO MỰC IN</b><br>Ngày '+now.getDate()+' tháng '+(now.getMonth()+1)+' năm '+now.getFullYear()+'</div></div><h1>PHIẾU GIAO NHẬN / XUẤT NHẬP KHO TỔNG HỢP</h1><p class="period">Tổng hợp toàn bộ chứng từ kho hiện có trong hệ thống</p><table><thead><tr><th>STT</th><th>Nghiệp vụ</th><th>Mặt hàng</th><th>Máy in</th><th>Đơn vị/NCC</th><th>Bộ phận</th><th>ĐVT</th><th>SL</th><th>Đơn giá</th><th>Thành tiền</th></tr></thead><tbody>'+body+'</tbody><tfoot><tr><td colspan="7"><b>TỔNG CỘNG</b></td><td class="num"><b>'+qty.toLocaleString('vi-VN')+'</b></td><td></td><td class="num"><b>'+Math.round(total).toLocaleString('vi-VN')+' VNĐ</b></td></tr></tfoot></table><div class="sign"><div><b>NGƯỜI LẬP PHIẾU</b><span>(Ký, ghi rõ họ tên)</span></div><div><b>THỦ KHO</b><span>(Ký, ghi rõ họ tên)</span></div><div><b>TRƯỞNG BỘ PHẬN</b><span>(Ký, ghi rõ họ tên)</span></div><div><b>NGƯỜI DUYỆT</b><span>(Ký, ghi rõ họ tên)</span></div></div></div>';const css='@page{size:A4 landscape;margin:10mm}*{box-sizing:border-box}body{margin:0;font-family:"Times New Roman",serif;color:#000;font-size:10pt}.sheet{width:100%}.head{display:grid;grid-template-columns:1fr 1fr;line-height:1.35}.right{text-align:right}h1{text-align:center;font-size:17pt;margin:7mm 0 2mm}.period{text-align:center;margin:0 0 5mm}.sheet table{width:100%;border-collapse:collapse;table-layout:fixed}.sheet th,.sheet td{border:1px solid #000;padding:4px 5px;vertical-align:middle}.sheet th{text-align:center;font-weight:bold}.sheet .num{text-align:right;white-space:nowrap}.sheet tfoot td{font-weight:bold}.sign{display:grid;grid-template-columns:repeat(4,1fr);text-align:center;margin-top:12mm}.sign span{display:block;margin-top:2mm;font-weight:normal}.sign div{min-height:28mm}';const w=window.open('','_blank','width=1200,height=900');if(!w)return alert('Trình duyệt đang chặn cửa sổ in. Hãy cho phép pop-up.');w.document.write('<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Phiếu tổng hợp kho VINAPACO</title>\n</head><body>'+html+'\n\n');w.document.close();w.focus();setTimeout(()=>w.print(),300)};})();
 </script>
-
-
 
 <script id="vinapaco-license-module-js">
 (function(){
@@ -9348,13 +9278,6 @@ window.vnpInitLicenseModule=function(){vnpRenderOverview();vnpRenderCatalog();};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',vnpInitLicenseModule);else setTimeout(vnpInitLicenseModule,100);
 })();
 </script>
-
-
-
-
-
-
-
 <script id="vinapaco-user-final-ui-fix-js">
 (function(){
   function clean(){
@@ -9524,71 +9447,117 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 const $=id=>document.getElementById(id);
 const OS_PRODUCTS=['Windows 11 Pro','Windows 11 Enterprise','Windows 10 Pro','Windows 10 Enterprise','Windows Server Standard','Windows Server Datacenter','Windows Server Essentials','Khác / nhập tự do'];
 const OFFICE_PRODUCTS=['Microsoft 365 Business Basic','Microsoft 365 Business Standard','Microsoft 365 Business Premium','Microsoft 365 Apps for business','Office LTSC Standard','Office LTSC Professional Plus','Office Home & Business','Office Professional','Office 2024','Office 2021','Office 2019','Khác / nhập tự do'];
+const LICENSE_MODELS=['OEM','Retail','Volume / MAK / KMS','Subscription','Microsoft 365 Tenant','License theo hợp đồng doanh nghiệp','Khác'];
+window.VINAPACO_LICENSE_CATALOG={OS:[...OS_PRODUCTS],Office:[...OFFICE_PRODUCTS],models:[...LICENSE_MODELS]};
 function esc(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function pad(n){return String(n).padStart(2,'0');}
+function localISODate(){const d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function validDate(y,m,d){const dt=new Date(y,m-1,d);return dt.getFullYear()===y&&dt.getMonth()===m-1&&dt.getDate()===d;}
 function toVNDate(v){
   const x=String(v??'').trim(); if(!x)return '';
   if(/^\d{2}\/\d{2}\/\d{4}$/.test(x))return x;
-  let m=x.match(/^(\d{4})-(\d{2})-(\d{2})$/); if(m)return m[3]+'/'+m[2]+'/'+m[1];
+  let m=x.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/); if(m)return pad(m[3])+'/'+pad(m[2])+'/'+m[1];
   m=x.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/); if(m)return pad(m[3])+'/'+pad(m[2])+'/'+m[1];
   m=x.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/); if(m)return pad(m[1])+'/'+pad(m[2])+'/'+m[3];
+  m=x.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/); if(m)return pad(m[1])+'/'+pad(m[2])+'/'+m[3];
   return x;
 }
 function isoDate(v){
   const x=String(v??'').trim(); if(!x)return '';
-  let m=x.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/); if(m){const d=Number(m[1]),mo=Number(m[2]),y=Number(m[3]);const dt=new Date(y,mo-1,d);if(dt.getFullYear()!==y||dt.getMonth()!==mo-1||dt.getDate()!==d)throw new Error('Ngày không hợp lệ');return y+'-'+pad(mo)+'-'+pad(d);}
-  m=x.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/); if(m){const y=Number(m[1]),mo=Number(m[2]),d=Number(m[3]);const dt=new Date(y,mo-1,d);if(dt.getFullYear()!==y||dt.getMonth()!==mo-1||dt.getDate()!==d)throw new Error('Ngày không hợp lệ');return y+'-'+pad(mo)+'-'+pad(d);}
-  return x;
+  let m=x.match(/^(\d{1,2})[\/\.\-](\d{1,2})[\/\.\-](\d{4})$/);
+  if(m){const d=Number(m[1]),mo=Number(m[2]),y=Number(m[3]);if(!validDate(y,mo,d))throw new Error('Ngày không hợp lệ');return y+'-'+pad(mo)+'-'+pad(d);}
+  m=x.match(/^(\d{4})[\/\.\-](\d{1,2})[\/\.\-](\d{1,2})$/);
+  if(m){const y=Number(m[1]),mo=Number(m[2]),d=Number(m[3]);if(!validDate(y,mo,d))throw new Error('Ngày không hợp lệ');return y+'-'+pad(mo)+'-'+pad(d);}
+  throw new Error('Định dạng ngày không hợp lệ');
 }
-function bindDate(id,required){
-  const el=$(id); if(!el)return;
-  el.type='text'; el.inputMode='numeric'; el.placeholder='DD/MM/YYYY'; el.autocomplete='off';
-  el.addEventListener('blur',()=>{const v=el.value.trim();if(!v)return;if(/vĩnh\s*viễn|không\s*thời\s*hạn|perpetual/i.test(v))return;try{el.value=toVNDate(isoDate(v));el.setCustomValidity('')}catch(e){el.setCustomValidity(e.message);el.title=e.message;}});
+function isPermanent(v){return /vĩnh\s*viễn|không\s*thời\s*hạn|perpetual|lifetime|forever/i.test(String(v||''));}
+function normalizeDateField(v,allowPermanent){const x=String(v??'').trim();if(!x)return '';if(allowPermanent&&isPermanent(x))return 'Vĩnh viễn';return isoDate(x);}
+function bindDate(id,required,allowPermanent){
+  const el=$(id); if(!el||el.dataset.vnpDateBound==='1')return;
+  el.dataset.vnpDateBound='1';el.type='text';el.inputMode='numeric';el.placeholder=allowPermanent?'DD/MM/YYYY hoặc Vĩnh viễn':'DD/MM/YYYY';el.autocomplete='off';
+  el.addEventListener('blur',()=>{const v=el.value.trim();if(!v){el.setCustomValidity(required?'Vui lòng nhập ngày.':'');return;}if(allowPermanent&&isPermanent(v)){el.value='Vĩnh viễn';el.setCustomValidity('');return;}try{el.value=toVNDate(isoDate(v));el.setCustomValidity('');}catch(e){el.setCustomValidity('Ngày không hợp lệ. Vui lòng nhập DD/MM/YYYY.');el.title=e.message;}});
   el.addEventListener('input',()=>el.setCustomValidity(''));
 }
 function setProductCatalog(type,current){
-  const sel=$('vnpLicProduct'); if(!sel)return;
-  const list=type==='Office'?OFFICE_PRODUCTS:OS_PRODUCTS;
-  const cur=String(current??'').trim();
-  sel.innerHTML='<option value="">— Chọn '+type+' —</option>'+list.map(x=>'<option value="'+esc(x)+'">'+esc(x)+'</option>').join('');
-  const known=list.includes(cur); if(cur&&!known){const o=document.createElement('option');o.value=cur;o.textContent=cur;sel.appendChild(o)}
+  const sel=$('vnpLicProduct');if(!sel)return;
+  const list=type==='Office'?OFFICE_PRODUCTS:OS_PRODUCTS;const cur=String(current??'').trim();
+  sel.innerHTML='<option value="">— Chọn '+esc(type)+' —</option>'+list.map(x=>'<option value="'+esc(x)+'">'+esc(x)+'</option>').join('');
+  const known=list.includes(cur);
+  if(cur&&!known){const o=document.createElement('option');o.value=cur;o.textContent=cur;sel.appendChild(o)}
   sel.value=cur||'';
-  const custom=$('vnpLicProductCustom'); if(custom){custom.value=known?'':cur;custom.classList.toggle('hidden',known||!cur);}
+  const custom=$('vnpLicProductCustom');if(custom){custom.value=known?'':(cur&&!known?cur:'');custom.classList.toggle('hidden',sel.value!=='Khác / nhập tự do');}
 }
 function ensureProductControls(){
-  const old=$('vnpLicProduct'); if(!old||old.tagName==='SELECT')return;
-  const sel=document.createElement('select');sel.id='vnpLicProduct';sel.className=old.className;sel.required=true;old.replaceWith(sel);
-  const custom=document.createElement('input');custom.id='vnpLicProductCustom';custom.placeholder='Nếu chọn Khác: nhập chính xác tên phiên bản / gói';custom.className=old.className;custom.style.marginTop='6px';custom.classList.add('hidden');sel.parentElement.appendChild(custom);
-  sel.addEventListener('change',()=>{custom.classList.toggle('hidden',sel.value!=='Khác / nhập tự do');if(sel.value!=='Khác / nhập tự do')custom.value='';});
-  custom.addEventListener('input',()=>{if(sel.value==='Khác / nhập tự do')sel.dataset.custom=custom.value.trim()});
-  const type=$('vnpLicType');if(type)type.addEventListener('change',()=>setProductCatalog(type.value,''));
-  setProductCatalog(type?.value||'OS','');
+  const old=$('vnpLicProduct');if(!old)return;
+  if(old.tagName!=='SELECT'){
+    const sel=document.createElement('select');sel.id='vnpLicProduct';sel.className=old.className;sel.required=true;old.replaceWith(sel);
+    const custom=document.createElement('input');custom.id='vnpLicProductCustom';custom.placeholder='Nếu chọn Khác: nhập chính xác tên phiên bản / gói';custom.className=old.className;custom.style.marginTop='6px';custom.classList.add('hidden');sel.parentElement.appendChild(custom);
+    sel.addEventListener('change',()=>{custom.classList.toggle('hidden',sel.value!=='Khác / nhập tự do');if(sel.value!=='Khác / nhập tự do')custom.value='';});
+    custom.addEventListener('input',()=>{if(sel.value==='Khác / nhập tự do')sel.dataset.custom=custom.value.trim();});
+  }
+  const type=$('vnpLicType');if(type&&!type.dataset.catalogBound){type.dataset.catalogBound='1';type.addEventListener('change',()=>setProductCatalog(type.value,''));}
+  setProductCatalog(type?.value||'OS',$('vnpLicProduct')?.value||'');
 }
-function selectedProduct(){const sel=$('vnpLicProduct');if(!sel)return '';return sel.value==='Khác / nhập tự do'?String($('vnpLicProductCustom')?.value||'').trim():sel.value;}
+function selectedProduct(){const sel=$('vnpLicProduct');if(!sel)return '';return sel.value==='Khác / nhập tự do'?String($('vnpLicProductCustom')?.value||'').trim():String(sel.value||'').trim();}
 function enhance(){
   ensureProductControls();
-  bindDate('vnpAllocDate',true); bindDate('vnpLicPurchase',false);
-  const allocDate=$('vnpAllocDate'); if(allocDate)allocDate.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();allocDate.blur();}});
+  bindDate('vnpAllocDate',true,false);bindDate('vnpLicPurchase',false,false);bindDate('vnpLicExpiry',false,true);bindDate('vnpAllocExpiry',false,true);
+  const d=$('vnpAllocDate');if(d&&!d.dataset.enterBound){d.dataset.enterBound='1';d.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();d.blur();}});}
 }
 const oldOpenLicense=window.vnpOpenLicenseForm;
-window.vnpOpenLicenseForm=function(idx=-1){oldOpenLicense?.(idx);const l=idx>=0?((window.licenses||[])[idx]):null;ensureProductControls();const type=$('vnpLicType')?.value||'OS';setProductCatalog(type,l?.product||$('vnpLicProduct')?.value||'');$('vnpLicPurchase').value=toVNDate($('vnpLicPurchase')?.value||'');bindDate('vnpLicPurchase',false);};
+window.vnpOpenLicenseForm=function(idx=-1){
+  oldOpenLicense?.(idx);ensureProductControls();
+  const current=$('vnpLicProduct')?.value||'';const type=$('vnpLicType')?.value||'OS';setProductCatalog(type,current);
+  bindDate('vnpLicPurchase',false,false);bindDate('vnpLicExpiry',false,true);
+  if($('vnpLicPurchase'))$('vnpLicPurchase').value=toVNDate($('vnpLicPurchase').value||'');
+  if($('vnpLicExpiry'))$('vnpLicExpiry').value=isPermanent($('vnpLicExpiry').value)?'Vĩnh viễn':toVNDate($('vnpLicExpiry').value||'');
+};
 const oldSaveLicense=window.vnpSaveLicense;
 window.vnpSaveLicense=function(){
-  const prod=selectedProduct(); if($('vnpLicProduct')&&prod){$('vnpLicProduct').value=prod;}
-  try{$('vnpLicPurchase').value=isoDate($('vnpLicPurchase').value);}catch(e){alert('Ngày mua/kích hoạt không hợp lệ. Vui lòng nhập DD/MM/YYYY.');return;}
+  const prod=selectedProduct();if(!prod)return alert('Vui lòng chọn phiên bản OS/Office từ Danh mục chuẩn hoặc chọn Khác để nhập.');
+  const p=$('vnpLicPurchase'),e=$('vnpLicExpiry');
+  try{if(p&&p.value.trim())p.value=isoDate(p.value);if(e&&e.value.trim()&&!isPermanent(e.value))e.value=isoDate(e.value);}
+  catch(err){alert('Ngày bản quyền không hợp lệ. Vui lòng nhập đúng DD/MM/YYYY.');return;}
+  const sel=$('vnpLicProduct');if(sel)sel.value=prod;
   oldSaveLicense?.();
-  if($('vnpLicPurchase'))$('vnpLicPurchase').value=toVNDate($('vnpLicPurchase').value);
+  if(p)p.value=toVNDate(p.value||'');if(e)e.value=isPermanent(e.value)?'Vĩnh viễn':toVNDate(e.value||'');
 };
 const oldOpenAlloc=window.vnpOpenAllocationForm;
-window.vnpOpenAllocationForm=function(idx=-1){oldOpenAlloc?.(idx);bindDate('vnpAllocDate',true);if($('vnpAllocDate'))$('vnpAllocDate').value=toVNDate($('vnpAllocDate').value||'');};
+window.vnpOpenAllocationForm=function(idx=-1){
+  oldOpenAlloc?.(idx);bindDate('vnpAllocDate',true,false);bindDate('vnpAllocExpiry',false,true);
+  if($('vnpAllocDate'))$('vnpAllocDate').value=toVNDate($('vnpAllocDate').value||localISODate());
+  if($('vnpAllocExpiry'))$('vnpAllocExpiry').value=isPermanent($('vnpAllocExpiry').value)?'Vĩnh viễn':toVNDate($('vnpAllocExpiry').value||'');
+};
 const oldSaveAlloc=window.vnpSaveAllocation;
-window.vnpSaveAllocation=function(){const el=$('vnpAllocDate');if(el){try{el.value=isoDate(el.value);el.setCustomValidity('')}catch(e){alert('Ngày cấp không hợp lệ. Vui lòng nhập đúng định dạng DD/MM/YYYY.');el.focus();return;}}oldSaveAlloc?.();if(el)el.value=toVNDate(el.value);};
-const oldRenderAlloc=window.vnpRenderAllocations;
-if(oldRenderAlloc)window.vnpRenderAllocations=function(){oldRenderAlloc();document.querySelectorAll('#vnpLicAllocBody tr').forEach(tr=>{const td=tr.children[6];if(td)td.textContent=toVNDate(td.textContent)});};
-const oldRenderRenew=window.vnpRenderRenewals;
-if(oldRenderRenew)window.vnpRenderRenewals=function(){oldRenderRenew();};
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',enhance);else setTimeout(enhance,50);
-setTimeout(enhance,500);
+window.vnpSaveAllocation=function(){
+  const d=$('vnpAllocDate'),e=$('vnpAllocExpiry');
+  try{if(d)d.value=isoDate(d.value);if(e&&e.value.trim()&&!isPermanent(e.value))e.value=isoDate(e.value);}
+  catch(err){alert('Ngày cấp / ngày hết hạn không hợp lệ. Vui lòng nhập DD/MM/YYYY.');return;}
+  oldSaveAlloc?.();
+  if(d)d.value=toVNDate(d.value||'');if(e)e.value=isPermanent(e.value)?'Vĩnh viễn':toVNDate(e.value||'');
+};
+function formatLicenseDates(){
+  document.querySelectorAll('#vnpLicLicenseBody tr').forEach(tr=>{const td=tr.children[7];if(td)td.textContent=toVNDate(td.textContent);});
+  document.querySelectorAll('#vnpLicRenewBody tr').forEach(tr=>{const td=tr.children[6];if(td)td.textContent=toVNDate(td.textContent);});
+  document.querySelectorAll('#vnpLicAllocBody tr').forEach(tr=>{const d=tr.children[6],e=tr.children[7];if(d)d.textContent=toVNDate(d.textContent);if(e)e.textContent=isPermanent(e.textContent)?'Vĩnh viễn':toVNDate(e.textContent);});
+}
+const oldRenderLic=window.vnpRenderLicenses;if(oldRenderLic)window.vnpRenderLicenses=function(){oldRenderLic();formatLicenseDates();};
+const oldRenderAlloc=window.vnpRenderAllocations;if(oldRenderAlloc)window.vnpRenderAllocations=function(){oldRenderAlloc();formatLicenseDates();};
+const oldRenderRenew=window.vnpRenderRenewals;if(oldRenderRenew)window.vnpRenderRenewals=function(){oldRenderRenew();formatLicenseDates();};
+const oldRenderCatalog=window.vnpRenderCatalog;
+window.vnpRenderCatalog=function(){
+  if($('vnpOsCatalogList'))$('vnpOsCatalogList').innerHTML=OS_PRODUCTS.map(x=>'<li>'+esc(x)+'</li>').join('');
+  if($('vnpOfficeCatalogList'))$('vnpOfficeCatalogList').innerHTML=OFFICE_PRODUCTS.map(x=>'<li>'+esc(x)+'</li>').join('');
+  if($('vnpLicenseTypeCatalog'))$('vnpLicenseTypeCatalog').innerHTML=LICENSE_MODELS.map(x=>'<li>'+esc(x)+'</li>').join('');
+  oldRenderCatalog?.();
+  if($('vnpOsCatalogList'))$('vnpOsCatalogList').innerHTML=OS_PRODUCTS.map(x=>'<li>'+esc(x)+'</li>').join('');
+  if($('vnpOfficeCatalogList'))$('vnpOfficeCatalogList').innerHTML=OFFICE_PRODUCTS.map(x=>'<li>'+esc(x)+'</li>').join('');
+  if($('vnpLicenseTypeCatalog'))$('vnpLicenseTypeCatalog').innerHTML=LICENSE_MODELS.map(x=>'<li>'+esc(x)+'</li>').join('');
+};
+function upgradeExpiryInputs(){bindDate('vnpLicExpiry',false,true);bindDate('vnpAllocExpiry',false,true);}
+function boot(){enhance();upgradeExpiryInputs();formatLicenseDates();}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else setTimeout(boot,50);
+setTimeout(boot,500);setTimeout(boot,1200);
 })();
 </script>
 </body>

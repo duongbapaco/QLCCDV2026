@@ -6279,7 +6279,7 @@ html,body,body *{word-spacing:normal!important;letter-spacing:normal!important}
             const info = getWeatherInfo(data.current.weather_code);
 
             const wText = document.getElementById('weatherWidgetText');
-            if (wText) wText.innerHTML = `<div style="font-size:17px;font-weight:950;color:#0f172a;"><i class="fa-solid ${info.icon}" style="color:${info.color};margin-right:7px;"></i>${escapeLocationHtml(cityName)} · ${temp}°C · ${info.text}</div><div style="font-size:13px;color:#475569;font-weight:800;margin-top:4px;">💧 Độ ẩm ${humidity ?? '--'}% · 💨 Gió ${wind ?? '--'} km/h · 📍 ${Number(lat).toFixed(5)}, ${Number(lon).toFixed(5)}</div><div class="weather-timestamp-line">Cập nhật thời tiết: <b id="weatherUpdatedAt">${new Date().toLocaleString('vi-VN')}</b> · Đồng hồ hệ thống cập nhật từng giây</div>`;
+            if (wText) wText.innerHTML = `<div style="font-size:17px;font-weight:950;color:#0f172a;"><i class="fa-solid ${info.icon}" style="color:${info.color};margin-right:7px;"></i>${escapeLocationHtml(cityName)} · ${temp}°C · ${info.text}</div><div style="font-size:13px;color:#475569;font-weight:800;margin-top:4px;">💧 Độ ẩm ${humidity ?? '--'}% · 💨 Gió ${wind ?? '--'} km/h · 📍 ${Number(lat).toFixed(5)}, ${Number(lon).toFixed(5)}</div>`;
             const wLoc = document.getElementById('wLocationTitle');
             if (wLoc) wLoc.innerText = `Khu vực: ${cityName}`;
             const wTemp = document.getElementById('wCurrentTemp');

@@ -3727,7 +3727,7 @@ body.vnp-workspace-mode #invoiceManagerTab{padding:10px 12px 28px!important;marg
         <div class="vnp-license-toolbar">
           <div class="vnp-license-search"><i class="fa-solid fa-magnifying-glass"></i><input id="vnpAllocSearch" oninput="vnpRenderAllocations()" placeholder="Tìm người sử dụng, đơn vị, máy tính, mã tài sản..."></div>
           <select id="vnpAllocTypeFilter" onchange="vnpRenderAllocations()"><option value="">Tất cả</option><option value="OS">OS</option><option value="Office">Office</option></select>
-          <button class="btn btn-purple" onclick="vnpOpenAllocationForm()"><i class="fa-solid fa-user-plus"></i> Cấp phát</button> <button class="btn btn-green" onclick="vnpPrintAllocationReport()"><i class="fa-solid fa-print"></i> Báo cáo cấp phát</button>
+          <button class="btn btn-purple" onclick="vnpOpenAllocationForm()"><i class="fa-solid fa-user-plus"></i> Cấp phát</button> <button class="btn btn-green" onclick="vnpOpenAllocationReport()"><i class="fa-solid fa-file-lines"></i> Lập báo cáo</button> <button class="btn btn-blue" onclick="vnpPrintAllocationReport()"><i class="fa-solid fa-print"></i> In nhanh</button>
         </div>
         <div class="vnp-license-note"><i class="fa-solid fa-circle-info"></i> Mỗi dòng thể hiện <b>một lần cấp phát</b>, có đầy đủ người dùng, đơn vị và thiết bị để đối soát khi kiểm kê hoặc thu hồi.</div>
         <div class="vnp-table-scroll"><table class="vnp-license-table"><thead><tr><th>Mã cấp phát</th><th>Loại</th><th>Sản phẩm</th><th>Người sử dụng</th><th>Đơn vị</th><th>Mã tài sản / máy</th><th>Ngày cấp</th><th>Hết hạn</th><th>Trạng thái</th><th>Ghi chú</th><th class="action-col">Thao tác</th></tr></thead><tbody id="vnpLicAllocBody"></tbody></table></div>
@@ -3774,10 +3774,85 @@ body.vnp-workspace-mode #invoiceManagerTab{padding:10px 12px 28px!important;marg
       </div>
     </div>
 
+
+    <div class="modal-overlay hidden" id="vnpAllocationReportModal">
+      <div class="modal-card vnp-report-modal">
+        <div class="vnp-license-modal-head">
+          <div>
+            <div class="vnp-modal-kicker">VINAPACO • BÁO CÁO QUẢN LÝ BẢN QUYỀN</div>
+            <h2>BÁO CÁO CẤP PHÁT OS & OFFICE</h2>
+            <p>Lập báo cáo theo thể thức văn bản hành chính/doanh nghiệp, xem trước trước khi in và chia sẻ cho lãnh đạo.</p>
+          </div>
+          <button class="btn btn-red" onclick="vnpCloseAllocationReport()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="vnp-report-form">
+          <div class="vnp-report-grid">
+            <div><label>Phạm vi báo cáo</label>
+              <select id="vnpReportScope" onchange="vnpRefreshAllocationReportPreview()">
+                <option value="active">Đang sử dụng</option>
+                <option value="all">Tất cả cấp phát</option>
+                <option value="OS">Chỉ cấp phát OS</option>
+                <option value="Office">Chỉ cấp phát Office</option>
+              </select>
+            </div>
+            <div><label>Đơn vị / phòng ban</label>
+              <select id="vnpReportDept" onchange="vnpRefreshAllocationReportPreview()">
+                <option value="">Tất cả đơn vị</option>
+              </select>
+            </div>
+            <div><label>Tên báo cáo</label>
+              <input id="vnpReportTitle" value="BÁO CÁO TÌNH HÌNH CẤP PHÁT VÀ QUẢN LÝ BẢN QUYỀN OS & OFFICE">
+            </div>
+            <div><label>Người nhận Zalo (số điện thoại, nếu có)</label>
+              <input id="vnpReportZaloPhone" inputmode="tel" placeholder="Nhập số Zalo lãnh đạo">
+            </div>
+            <div><label>Người lập báo cáo</label>
+              <input id="vnpReportCreator" placeholder="Họ và tên người lập">
+            </div>
+            <div><label>Chức danh người lập</label>
+              <input id="vnpReportCreatorRole" value="Phụ trách CNTT">
+            </div>
+          </div>
+          <div class="vnp-report-preview-wrap">
+            <div class="vnp-report-preview-head"><b>XEM TRƯỚC</b><span id="vnpReportPreviewCount">0 bản ghi</span></div>
+            <div id="vnpAllocationReportPreview" class="vnp-report-preview"></div>
+          </div>
+        </div>
+        <div class="modal-actions vnp-report-actions">
+          <button class="btn btn-red" onclick="vnpCloseAllocationReport()">Đóng</button>
+          <button class="btn btn-blue" onclick="vnpRefreshAllocationReportPreview(true)"><i class="fa-solid fa-arrows-rotate"></i> Cập nhật</button>
+          <button class="btn btn-green" onclick="vnpPrintAllocationReportPreview()"><i class="fa-solid fa-print"></i> In báo cáo</button>
+          <button class="btn btn-blue" onclick="vnpSendAllocationReportZalo()"><i class="fa-brands fa-zalo"></i> Gửi Zalo lãnh đạo</button>
+        </div>
+      </div>
+    </div>
+
     <div class="modal-overlay hidden" id="vnpAllocationFormModal">
       <div class="modal-card vnp-license-modal">
         <div class="vnp-license-modal-head"><div><div class="vnp-modal-kicker">VINAPACO • CẤP PHÁT BẢN QUYỀN</div><h2 id="vnpAllocModalTitle">CẤP PHÁT OS / OFFICE</h2><p>Ghi rõ cá nhân, đơn vị và thiết bị để có thể kiểm kê và thu hồi.</p></div><button class="btn btn-red" onclick="vnpCloseAllocationModal()"><i class="fa-solid fa-xmark"></i></button></div>
-        <div class="vnp-license-form"><input type="hidden" id="vnpAllocEditIndex" value="-1"><div class="vnp-form-grid">
+        <div class="vnp-license-form"><input type="hidden" id="vnpAllocEditIndex" value="-1">
+          <div class="vnp-alloc-type-switch" id="vnpAllocTypeSwitch">
+            <button type="button" class="vnp-alloc-type-btn active" data-type="OS" onclick="vnpSelectAllocationType('OS')"><i class="fa-brands fa-windows"></i><span>Cấp phát OS</span></button>
+            <button type="button" class="vnp-alloc-type-btn" data-type="Office" onclick="vnpSelectAllocationType('Office')"><i class="fa-solid fa-file-word"></i><span>Cấp phát OFFICE</span></button>
+          </div>
+          <div id="vnpOfficeFields" class="vnp-office-fields hidden">
+            <div class="vnp-form-grid">
+              <div><label>Sản phẩm Office *</label><select id="vnpAllocOfficeProduct"></select></div>
+              <div><label>Phân loại Office *</label><select id="vnpAllocOfficeCategory"><option>Microsoft Office (Mua vĩnh viễn)</option><option>Microsoft 365 (Thuê bao)</option><option>Office LTSC (Vĩnh viễn)</option></select></div>
+              <div><label>Phiên bản / Edition</label><select id="vnpAllocOfficeEdition"></select></div>
+              <div><label>Ngôn ngữ</label><select id="vnpAllocOfficeLanguage"><option>Tiếng Việt</option><option>English</option><option>Tiếng Việt + English</option><option>Khác</option></select></div>
+              <div><label>Loại giấy phép *</label><select id="vnpAllocOfficeLicenseType"><option>Retail (Mua lẻ)</option><option>Volume / MAK</option><option>Volume / KMS</option><option>Microsoft 365 Subscription</option><option>OEM</option></select></div>
+              <div><label>Số lượng / Seat *</label><input id="vnpAllocOfficeSeats" type="number" min="1" step="1" value="1"></div>
+              <div><label>Email người dùng</label><input id="vnpAllocOfficeEmail" type="email" placeholder="Email Microsoft 365 (nếu có)"></div>
+            </div>
+          </div>
+          <div id="vnpOsFields" class="vnp-os-fields">
+            <div class="vnp-form-grid">
+              <div><label>Phiên bản / Edition OS</label><select id="vnpAllocOsEdition"></select></div>
+              <div><label>Kiểu cấp phép OS</label><select id="vnpAllocOsLicenseType"><option>OEM</option><option>Retail</option><option>Volume / MAK</option><option>Volume / KMS</option></select></div>
+            </div>
+          </div>
+          <div class="vnp-form-grid">
           <div><label>Kho bản quyền *</label><select id="vnpAllocLicense"></select></div>
           <div><label>Loại</label><input id="vnpAllocType" readonly></div>
           <div><label>Sản phẩm</label><input id="vnpAllocProduct" readonly></div>
@@ -9312,17 +9387,110 @@ window.vnpRenderAllocations=function(){const q=($('vnpAllocSearch')?.value||'').
 window.vnpEditAllocation=id=>{const idx=allocations.findIndex(a=>a.id===id);if(idx>=0)vnpOpenAllocationForm(idx)};
 window.vnpRecallAllocation=id=>{const a=allocations.find(x=>x.id===id);if(!a)return;if(confirm('Thu hồi bản quyền khỏi '+a.user+'?')){a.status='Đã thu hồi';log('Thu hồi','Cấp phát',a.id+' • '+a.user);save();vnpRenderAllocations();vnpRenderOverview()}};
 window.vnpDeleteAllocation=id=>{const idx=allocations.findIndex(a=>a.id===id);if(idx<0)return;if(confirm('Xóa bản ghi cấp phát '+id+'?')){allocations.splice(idx,1);log('Xóa','Cấp phát',id);save();vnpRenderAllocations();vnpRenderOverview()}}
-window.vnpPrintAllocationReport=function(){const rows=allocations.filter(a=>a.status==='Đang sử dụng');const now=new Date();const body=rows.map((a,i)=>`<tr><td>${i+1}</td><td>${esc(a.type)}</td><td>${esc(a.product)}</td><td><b>${esc(a.user)}</b></td><td>${esc(a.dept)}</td><td>${esc(a.asset||'')}</td><td>${esc(a.date||'')}</td><td>${esc(a.expiryDate||'Theo license / Vĩnh viễn')}</td><td>${esc(a.status)}</td><td>${esc(a.approver||'')}</td></tr>`).join('')||'<tr><td colspan=10 style="text-align:center">Chưa có bản ghi đang sử dụng.</td></tr>';const w=window.open('','_blank','width=1400,height=900');if(!w)return alert('Trình duyệt đang chặn cửa sổ báo cáo. Hãy cho phép pop-up.');w.document.write(`<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Báo cáo cấp phát OS & Office - VINAPACO</title>
-<style id="vinapaco-permanent-license-style">
-.vnp-permanent-hint{font-size:12px;font-weight:600;color:#15803d}
-</style>
-<style id="vinapaco-asset-list-style">
-#vnpAllocAsset{min-width:0}
-#vnpAssetTypeList{}
-</style>
-</head><body><b>TỔNG CÔNG TY GIẤY VIỆT NAM</b><h2>BÁO CÁO CẤP PHÁT BẢN QUYỀN OS & OFFICE</h2><p>Danh sách đang sử dụng — lập ngày ${now.toLocaleDateString('vi-VN')}</p><table><thead><tr><th>STT</th><th>Loại</th><th>Sản phẩm</th><th>Người sử dụng</th><th>Đơn vị</th><th>Mã tài sản / máy</th><th>Ngày cấp</th><th>Hết hạn</th><th>Trạng thái</th><th>Người duyệt</th></tr></thead><tbody>${body}</tbody></table><div class="sign"><div><b>NGƯỜI LẬP</b><span>(Ký, ghi rõ họ tên)</span></div><div><b>PHỤ TRÁCH CNTT</b><span>(Ký, ghi rõ họ tên)</span></div><div><b>THỦ TRƯỞNG ĐƠN VỊ</b><span>(Ký, ghi rõ họ tên)</span></div></div>
-
-`);w.document.close();setTimeout(()=>w.print(),300)}
+function vnpAllocationReportRows(){
+  const scope=$('vnpReportScope')?.value||'active';
+  const dept=$('vnpReportDept')?.value||'';
+  return (allocations||[]).filter(a=>{
+    if(scope==='active' && a.status!=='Đang sử dụng') return false;
+    if(scope==='OS' && a.type!=='OS') return false;
+    if(scope==='Office' && a.type!=='Office') return false;
+    if(dept && String(a.dept||'')!==dept) return false;
+    return true;
+  });
+}
+function vnpFillReportDepts(){
+  const sel=$('vnpReportDept'); if(!sel)return;
+  const cur=sel.value;
+  const depts=[...new Set((allocations||[]).map(a=>String(a.dept||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'vi'));
+  sel.innerHTML='<option value="">Tất cả đơn vị</option>'+depts.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');
+  if(depts.includes(cur))sel.value=cur;
+}
+function vnpReportDateVN(v){
+  if(!v)return '';
+  if(isPermanent(v))return 'Vĩnh viễn';
+  const m=String(v).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  return m?`${m[3]}/${m[2]}/${m[1]}`:String(v);
+}
+function vnpBuildAllocationReportHtml(){
+  const rows=vnpAllocationReportRows(), now=new Date(), dd=String(now.getDate()).padStart(2,'0'), mm=String(now.getMonth()+1).padStart(2,'0'), yy=now.getFullYear();
+  const title=($('vnpReportTitle')?.value||'BÁO CÁO TÌNH HÌNH CẤP PHÁT VÀ QUẢN LÝ BẢN QUYỀN OS & OFFICE').trim();
+  const creator=($('vnpReportCreator')?.value||'').trim()||'Người lập báo cáo';
+  const role=($('vnpReportCreatorRole')?.value||'Phụ trách CNTT').trim();
+  const total=rows.length, os=rows.filter(a=>a.type==='OS').length, office=rows.filter(a=>a.type==='Office').length, active=rows.filter(a=>a.status==='Đang sử dụng').length;
+  const body=rows.length?rows.map((a,i)=>`<tr>
+    <td class="num">${i+1}</td><td>${esc(a.type||'')}</td><td><b>${esc(a.product||'')}</b></td>
+    <td>${esc(a.user||'')}</td><td>${esc(a.dept||'')}</td><td>${esc(a.asset||'')}</td>
+    <td class="num">${esc(vnpReportDateVN(a.date||''))}</td><td class="num">${esc(vnpReportDateVN(a.expiryDate||'Theo license / Vĩnh viễn'))}</td>
+    <td>${esc(a.status||'')}</td><td>${esc(a.approver||'')}</td>
+  </tr>`).join(''):`<tr><td colspan="10" style="text-align:center;padding:18px">Không có dữ liệu phù hợp với phạm vi báo cáo.</td></tr>`;
+  return `<div class="vnp-report-paper" id="vnpAllocationReportPaper">
+    <div class="r-head">
+      <div><b>TỔNG CÔNG TY GIẤY VIỆT NAM</b><br><b>VĂN PHÒNG TỔNG CÔNG TY</b></div>
+      <div class="r-center">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM<br><span style="font-weight:400">Độc lập - Tự do - Hạnh phúc</span></div>
+      <div class="r-national"><b>Số: ……/BC-CNTT</b></div>
+    </div>
+    <div class="r-center"><div class="r-title">${esc(title)}</div><div class="r-meta">Ngày lập báo cáo: ${dd}/${mm}/${yy}</div></div>
+    <div class="r-intro"><b>Kính gửi:</b> Lãnh đạo Tổng công ty Giấy Việt Nam.<br>
+      Báo cáo tình hình quản lý, cấp phát và sử dụng bản quyền hệ điều hành (OS) và Microsoft Office tại đơn vị, phục vụ công tác kiểm kê, theo dõi thời hạn và thu hồi khi cần thiết.
+    </div>
+    <div class="r-summary">
+      <div class="r-box">TỔNG CẤP PHÁT<b>${total}</b></div>
+      <div class="r-box">OS<b>${os}</b></div>
+      <div class="r-box">OFFICE<b>${office}</b></div>
+      <div class="r-box">ĐANG SỬ DỤNG<b>${active}</b></div>
+    </div>
+    <table><thead><tr><th>STT</th><th>Loại</th><th>Sản phẩm / phiên bản</th><th>Người sử dụng</th><th>Đơn vị / phòng ban</th><th>Mã tài sản / tên máy</th><th>Ngày cấp</th><th>Ngày hết hạn</th><th>Trạng thái</th><th>Người phê duyệt</th></tr></thead><tbody>${body}</tbody></table>
+    <div class="r-note"><b>Nhận xét / kiến nghị:</b> Đề nghị các đơn vị tiếp tục sử dụng đúng đối tượng được cấp phát; trường hợp thay đổi thiết bị, người sử dụng hoặc chấm dứt nhu cầu phải cập nhật để thực hiện thu hồi/chuyển cấp phát. Đối với bản quyền sắp hết hạn, chủ động lập kế hoạch gia hạn theo nhu cầu sử dụng thực tế.</div>
+    <div class="r-sign"><div><b>NGƯỜI LẬP BÁO CÁO</b><div class="r-space"></div><span>(Ký, ghi rõ họ tên)</span><br><b>${esc(creator)}</b></div>
+      <div><b>PHỤ TRÁCH CNTT</b><div class="r-space"></div><span>(Ký, ghi rõ họ tên)</span><br>${esc(role)}</div>
+      <div><b>THỦ TRƯỞNG ĐƠN VỊ</b><div class="r-space"></div><span>(Ký, ghi rõ họ tên)</span></div></div>
+  </div>`;
+}
+window.vnpRefreshAllocationReportPreview=function(){
+  const box=$('vnpAllocationReportPreview'); if(!box)return;
+  const rows=vnpAllocationReportRows();
+  box.innerHTML=vnpBuildAllocationReportHtml();
+  const c=$('vnpReportPreviewCount'); if(c)c.textContent=rows.length+' bản ghi';
+};
+window.vnpOpenAllocationReport=function(){
+  vnpFillReportDepts();
+  const modal=$('vnpAllocationReportModal');
+  if(modal){modal.classList.remove('hidden');document.body.classList.add('vnp-modal-open');}
+  vnpRefreshAllocationReportPreview();
+};
+window.vnpCloseAllocationReport=function(){
+  $('vnpAllocationReportModal')?.classList.add('hidden');
+  document.body.classList.remove('vnp-modal-open');
+};
+window.vnpPrintAllocationReportPreview=function(){
+  vnpRefreshAllocationReportPreview();
+  const paper=$('vnpAllocationReportPaper'); if(!paper)return;
+  const w=window.open('','_blank','width=1400,height=950');
+  if(!w)return alert('Trình duyệt đang chặn cửa sổ in. Hãy cho phép pop-up.');
+  w.document.write(`<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Báo cáo cấp phát OS & Office - VINAPACO</title>
+  <style>@page{size:A4 landscape;margin:12mm}body{margin:0;font-family:"Times New Roman",serif;color:#111}.vnp-report-paper{width:100%}
+  .r-head{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:12px;align-items:start;font-size:11pt;line-height:1.35}.r-national{text-align:center;font-weight:700}.r-center{text-align:center;font-weight:700}.r-title{font-size:15pt;margin-top:10px;text-transform:uppercase}.r-meta{text-align:center;margin:8px 0 14px;font-size:10.5pt}.r-intro{font-size:11pt;line-height:1.5;margin-bottom:10px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #222;padding:5px 4px;font-size:8.8pt;vertical-align:middle}th{text-align:center}.num{text-align:center}.r-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}.r-box{border:1px solid #777;padding:7px;text-align:center}.r-box b{display:block;font-size:14pt}.r-note{font-size:10.5pt;line-height:1.5;margin-top:10px}.r-sign{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:center;margin-top:34px;page-break-inside:avoid}.r-sign span{display:block;font-size:10pt;font-style:italic;margin-top:5px}.r-space{height:62px}</style></head><body>${paper.outerHTML}</body></html>`);
+  w.document.close();setTimeout(()=>{w.focus();w.print();},350);
+};
+window.vnpSendAllocationReportZalo=async function(){
+  vnpRefreshAllocationReportPreview();
+  const rows=vnpAllocationReportRows(), phone=String($('vnpReportZaloPhone')?.value||'').replace(/\D/g,'');
+  const os=rows.filter(a=>a.type==='OS').length, office=rows.filter(a=>a.type==='Office').length;
+  const text=`VINAPACO - BÁO CÁO CẤP PHÁT BẢN QUYỀN OS & OFFICE\nNgày ${new Date().toLocaleDateString('vi-VN')}\nTổng: ${rows.length} bản ghi | OS: ${os} | Office: ${office}\nBáo cáo đã được lập trên hệ thống quản lý bản quyền.`;
+  try{await navigator.clipboard?.writeText(text);}catch(e){}
+  // On supported mobile/browser share sheets, Zalo can be selected directly.
+  if(navigator.share){
+    try{
+      await navigator.share({title:'Báo cáo cấp phát OS & Office - VINAPACO',text});
+      return;
+    }catch(e){}
+  }
+  // Desktop fallback: open Zalo chat if a phone number was supplied; otherwise open Zalo Web.
+  const url=phone?`https://chat.zalo.me/?phone=${phone}`:'https://chat.zalo.me/';
+  window.open(url,'_blank','noopener');
+  alert('Đã sao chép nội dung tóm tắt báo cáo. Zalo đã được mở; hãy chọn lãnh đạo và gửi. Bạn có thể in/lưu báo cáo PDF để gửi kèm.');
+};
+window.vnpPrintAllocationReport=function(){vnpOpenAllocationReport();};
 window.vnpRenderRenewals=function(){const f=Number($('vnpRenewFilter')?.value||90);const rows=licenses.map(l=>({...l,d:days(l.expiryDate)})).filter(l=>l.d!==null&&(f===0?l.d<0:l.d>=0&&l.d<=f)).sort((a,b)=>a.d-b.d);$('vnpLicRenewBody').innerHTML=rows.length?rows.map(l=>`<tr><td>${l.type}</td><td><b>${esc(l.product)}</b></td><td>${esc(l.id)}</td><td style="text-align:center">${l.seats}</td><td style="text-align:center">${allocatedCount(l.id)}</td><td style="text-align:center">${available(l)}</td><td>${l.expiryDate}</td><td style="text-align:center;font-weight:900;color:${l.d<0?'#dc2626':l.d<=30?'#d97706':'#334155'}">${l.d<0?'Đã quá '+Math.abs(l.d)+' ngày':l.d}</td><td>${esc(l.vendor||'')}</td><td>${esc(l.contract||'')}</td><td><span class="${l.d<0?'badge-danger':'badge-warning'}">${l.d<0?'Gia hạn ngay':l.d<=30?'Ưu tiên cao':'Lập kế hoạch'}</span></td></tr>`).join(''):'<tr><td colspan="11" style="text-align:center;color:#64748b;padding:25px">Không có bản quyền cần gia hạn trong khoảng đã chọn.</td></tr>'}
 window.vnpCreateRenewalTask=function(){const rows=licenses.filter(l=>{const d=days(l.expiryDate);return d!==null&&d<=90});if(!rows.length)return alert('Không có bản quyền sắp hết hạn trong 90 ngày.');const msg=rows.map(l=>`- ${l.type}: ${l.product} | ${l.id} | hết hạn ${l.expiryDate} | ${l.seats} seat`).join('\n');try{navigator.clipboard?.writeText(msg)}catch(e){}alert('Đã tạo danh sách đề xuất gia hạn và sao chép vào clipboard (nếu trình duyệt cho phép).\n\n'+msg)}
 window.vnpRenderCatalog=function(){$('vnpOsCatalogList').innerHTML=['Windows 11 Pro','Windows 11 Enterprise','Windows 10 Pro (nếu còn sử dụng)','Windows Server Standard / Datacenter (nếu có)','Khác / theo thực tế doanh nghiệp'].map(x=>`<li>${x}</li>`).join('');$('vnpOfficeCatalogList').innerHTML=['Microsoft 365 Business Basic','Microsoft 365 Business Standard','Microsoft 365 Business Premium','Office LTSC Standard / Professional Plus','Office Home & Business / Retail','Khác / theo thực tế doanh nghiệp'].map(x=>`<li>${x}</li>`).join('');$('vnpLicenseTypeCatalog').innerHTML=['OEM','Retail','Volume / MAK / KMS','Subscription','Microsoft 365 Tenant','License theo hợp đồng doanh nghiệp','Khác'].map(x=>`<li>${x}</li>`).join('')}
@@ -9672,18 +9840,87 @@ window.vnpSaveLicense=function(){
   if(p) p.value=purchaseISO?toVNDate(purchaseISO):'';
   if(e) e.value=expiryValue==='Vĩnh viễn'?'Vĩnh viễn':(expiryValue?toVNDate(expiryValue):'');
 };
+function vnpGetLicenseTypeFromForm(){
+  const l=licenses.find(x=>x.id===$('vnpAllocLicense')?.value);
+  return l?.type==='Office'?'Office':'OS';
+}
+function vnpPopulateAllocationOfficeOptions(selectedProduct, selectedEdition){
+  const products=(typeof OFFICE_PRODUCTS!=='undefined'?OFFICE_PRODUCTS:[]);
+  const editions=[...new Set(products.length?products:['Microsoft 365','Office 2024','Office 2021','Office 2019','Office LTSC 2024'])];
+  const ps=$('vnpAllocOfficeProduct'), es=$('vnpAllocOfficeEdition');
+  if(ps) ps.innerHTML=editions.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');
+  if(es) es.innerHTML=editions.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');
+  if(ps && selectedProduct && editions.includes(selectedProduct)) ps.value=selectedProduct;
+  if(es && selectedEdition && editions.includes(selectedEdition)) es.value=selectedEdition;
+}
+function vnpPopulateAllocationOsOptions(selected){
+  const products=(typeof OS_PRODUCTS!=='undefined'?OS_PRODUCTS:[]);
+  const es=$('vnpAllocOsEdition');
+  if(es){const vals=[...new Set(products.length?products:['Windows 11 Pro','Windows 11 Enterprise','Windows 10 Pro','Windows Server'])];es.innerHTML=vals.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');if(selected&&vals.includes(selected))es.value=selected;}
+}
+window.vnpSelectAllocationType=function(type){
+  const isOffice=type==='Office';
+  document.querySelectorAll('#vnpAllocTypeSwitch .vnp-alloc-type-btn').forEach(b=>b.classList.toggle('active',b.dataset.type===type));
+  $('vnpOfficeFields')?.classList.toggle('hidden',!isOffice);
+  $('vnpOsFields')?.classList.toggle('hidden',isOffice);
+  const list=licenses.filter(l=>l.type===type);
+  const sel=$('vnpAllocLicense');
+  const current=sel?.value;
+  if(sel){sel.innerHTML=list.map(l=>`<option value="${esc(l.id)}">${esc(l.id)} • ${esc(l.product)} • còn ${available(l)}</option>`).join('');if(list.some(l=>l.id===current))sel.value=current;}
+  fillAllocLicense();
+  const l=licenses.find(x=>x.id===sel?.value);
+  if(isOffice){vnpPopulateAllocationOfficeOptions(l?.product,'');}
+  else vnpPopulateAllocationOsOptions(l?.product);
+  if($('vnpAllocType'))$('vnpAllocType').value=isOffice?'Office':'OS';
+  if($('vnpAllocProduct'))$('vnpAllocProduct').value=l?.product||'';
+};
+function vnpSyncAllocationTypeFields(a){
+  const type=a?.type||vnpGetLicenseTypeFromForm();
+  vnpSelectAllocationType(type);
+  if(type==='Office'){
+    vnpPopulateAllocationOfficeOptions(a?.officeProduct||a?.product,a?.officeEdition||a?.product);
+    if($('vnpAllocOfficeCategory'))$('vnpAllocOfficeCategory').value=a?.officeCategory||'Microsoft Office (Mua vĩnh viễn)';
+    if($('vnpAllocOfficeLanguage'))$('vnpAllocOfficeLanguage').value=a?.officeLanguage||'Tiếng Việt';
+    if($('vnpAllocOfficeLicenseType'))$('vnpAllocOfficeLicenseType').value=a?.officeLicenseType||'Retail (Mua lẻ)';
+    if($('vnpAllocOfficeSeats'))$('vnpAllocOfficeSeats').value=a?.officeSeats||1;
+    if($('vnpAllocOfficeEmail'))$('vnpAllocOfficeEmail').value=a?.officeEmail||'';
+  }else{
+    vnpPopulateAllocationOsOptions(a?.osEdition||a?.product);
+    if($('vnpAllocOsLicenseType'))$('vnpAllocOsLicenseType').value=a?.osLicenseType||'OEM';
+  }
+}
+$('vnpAllocLicense')?.addEventListener('change',()=>{
+  fillAllocLicense();
+  vnpSelectAllocationType(vnpGetLicenseTypeFromForm());
+});
 const oldOpenAlloc=window.vnpOpenAllocationForm;
 window.vnpOpenAllocationForm=function(idx=-1){
   oldOpenAlloc?.(idx);bindDate('vnpAllocDate',true,false);bindDate('vnpAllocExpiry',false,true);
   if($('vnpAllocDate'))$('vnpAllocDate').value=toVNDate($('vnpAllocDate').value||localISODate());
   if($('vnpAllocExpiry'))$('vnpAllocExpiry').value=isPermanent($('vnpAllocExpiry').value)?'Vĩnh viễn':toVNDate($('vnpAllocExpiry').value||'');
+  const a=idx>=0?allocations[idx]:null; vnpSyncAllocationTypeFields(a||{});
 };
 const oldSaveAlloc=window.vnpSaveAllocation;
 window.vnpSaveAllocation=function(){
-  const d=$('vnpAllocDate'),e=$('vnpAllocExpiry');
+  const d=$('vnpAllocDate'),e=$('vnpAllocExpiry'),idx=Number($('vnpAllocEditIndex')?.value||-1);
   try{if(d)d.value=isoDate(d.value);if(e&&e.value.trim()&&!isPermanent(e.value))e.value=isoDate(e.value);}
-  catch(err){alert('Ngày cấp / ngày hết hạn không hợp lệ. Hãy nhập DD/MM/YYYY hoặc chọn bằng biểu tượng lịch.');d?.focus();return;}
+  catch(err){alert('Ngày cấp / ngày hết hạn không hợp lệ. Hãy nhập DD/MM/YYYY hoặc nhập Vĩnh viễn cho bản quyền không thời hạn.');d?.focus();return;}
+  const type=vnpGetLicenseTypeFromForm();
+  const extra={
+    type,
+    officeProduct:type==='Office'?($('vnpAllocOfficeProduct')?.value||$('vnpAllocProduct')?.value||''):'',
+    officeCategory:type==='Office'?($('vnpAllocOfficeCategory')?.value||''):'',
+    officeEdition:type==='Office'?($('vnpAllocOfficeEdition')?.value||''):'',
+    officeLanguage:type==='Office'?($('vnpAllocOfficeLanguage')?.value||''):'',
+    officeLicenseType:type==='Office'?($('vnpAllocOfficeLicenseType')?.value||''):'',
+    officeSeats:type==='Office'?Math.max(1,Number($('vnpAllocOfficeSeats')?.value)||1):1,
+    officeEmail:type==='Office'?($('vnpAllocOfficeEmail')?.value||'').trim():'',
+    osEdition:type==='OS'?($('vnpAllocOsEdition')?.value||$('vnpAllocProduct')?.value||''):'',
+    osLicenseType:type==='OS'?($('vnpAllocOsLicenseType')?.value||''):' '
+  };
   oldSaveAlloc?.();
+  const saved=idx>=0?allocations[idx]:allocations[0];
+  if(saved){Object.assign(saved,extra);save();vnpRenderAllocations();vnpRenderOverview();}
   if(d)d.value=toVNDate(d.value||'');if(e)e.value=isPermanent(e.value)?'Vĩnh viễn':toVNDate(e.value||'');
 };
 function formatLicenseDates(){

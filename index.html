@@ -19,6 +19,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    
 <script>
 /* ===== KHỐI AN TOÀN TÀI NGUYÊN NGOÀI =====
    Nếu CDN/FontAwesome/Chart/XLSX/html2canvas không tải được,
@@ -68,6 +69,7 @@
   };
 })();
 </script>
+
 
 <script id="vinapaco-kho-telecom-extract-js">
 (function(){
@@ -132,7 +134,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 window.inPhieuGiaoNhanKhoTongHop=function(){const src=(window.dsKhoMucIn||[]).slice();if(!src.length)return alert('Kho chưa có dữ liệu để lập phiếu giao nhận tổng hợp.');const groups=new Map();src.forEach(x=>{const k=[x.name||'Vật tư',x.printer||'',x.action||''].join('|');const r=groups.get(k)||{name:x.name||'Vật tư',printer:x.printer||'',action:x.action||'',qty:0,price:Number(x.price)||0,total:0,receivers:new Set()};r.qty+=Number(x.qty)||0;r.total+=Number(x.total)||((Number(x.qty)||0)*(Number(x.price)||0));if(x.receiver)r.receivers.add(x.receiver);groups.set(k,r)});const rows=[...groups.values()],total=rows.reduce((a,r)=>a+r.total,0),d=new Date(),fmt=n=>String(n).padStart(2,'0');const html='<div class="warehouse-handover-print"><div class="wh-head"><div><b>TỔNG CÔNG TY GIẤY VIỆT NAM</b><br>Văn phòng Tổng công ty</div><div style="text-align:center"><b>PHIẾU GIAO NHẬN TỔNG HỢP</b><br>Kho vật tư / mực in</div><div class="wh-national">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM<br><span>Độc lập - Tự do - Hạnh phúc</span></div></div><div class="wh-sub">Số: PGN-KHO-'+d.getFullYear()+'-'+fmt(d.getMonth()+1)+'-'+fmt(d.getDate())+' • Ngày '+fmt(d.getDate())+' tháng '+fmt(d.getMonth()+1)+' năm '+d.getFullYear()+'</div><div class="wh-info"><b>Căn cứ:</b> Sổ theo dõi nhập - xuất - cấp phát vật tư, mực in của Kho Văn phòng Tổng công ty.<br><b>Nội dung:</b> Tổng hợp các nghiệp vụ giao nhận đang có trong sổ kho tại thời điểm lập phiếu.</div><table><thead><tr><th>STT</th><th>Tên hàng hóa / vật tư</th><th>Máy / Quy cách</th><th>Nghiệp vụ</th><th>ĐVT</th><th>SL</th><th>Đơn giá</th><th>Thành tiền</th><th>Người giao / nhận</th></tr></thead><tbody>'+rows.map((r,i)=>'<tr><td>'+ (i+1) +'</td><td><b>'+escHtml(r.name)+'</b></td><td>'+escHtml(r.printer)+'</td><td>'+escHtml(r.action)+'</td><td>Hộp</td><td>'+r.qty.toLocaleString('vi-VN')+'</td><td>'+money(r.price)+'</td><td>'+money(r.total)+'</td><td>'+escHtml([...r.receivers].join(', '))+'</td></tr>').join('')+'</tbody><tfoot><tr><th colspan="5">TỔNG CỘNG</th><th>'+rows.reduce((a,r)=>a+r.qty,0).toLocaleString('vi-VN')+'</th><th></th><th>'+money(total)+'</th><th></th></tr></tfoot></table><div class="wh-amount">Tổng giá trị: <b>'+money(total)+' VNĐ</b></div><div class="wh-sign"><div><b>NGƯỜI LẬP PHIẾU</b><br><small>(Ký, ghi rõ họ tên)</small><br><br><br>________________</div><div><b>THỦ KHO</b><br><small>(Ký, ghi rõ họ tên)</small><br><br><br>________________</div><div><b>NGƯỜI NHẬN / ĐƠN VỊ</b><br><small>(Ký, ghi rõ họ tên)</small><br><br><br>________________</div></div></div>';if(typeof moCuaSoIn==='function')moCuaSoIn(html)};
 </script>
 
+
 <!-- V21 TYPOGRAPHY HARDENING: khóa giãn chữ trên toàn bộ màn hình đăng nhập -->
+
 
 <style>
         :root {
@@ -3768,7 +3772,7 @@ body.vnp-workspace-mode #invoiceManagerTab{padding:10px 12px 28px!important;marg
           <div><label>Hình thức bản quyền</label><select id="vnpLicModel"><option>Volume</option><option>OEM</option><option>Retail</option><option>Subscription</option><option>Microsoft 365 Tenant</option><option>Khác</option></select></div>
           <div><label>Tổng số seat *</label><input id="vnpLicSeats" type="number" min="1" value="1"></div>
           <div><label>Ngày mua / kích hoạt</label><input id="vnpLicPurchase" type="date"></div>
-          <div><label>Ngày hết hạn / thời hạn <span class="vnp-permanent-hint">(có thể nhập Vĩnh viễn)</span></label><input id="vnpLicExpiry" type="text" placeholder="Nhập tự do: 31/12/2027, 2027-12-31 hoặc Vĩnh viễn"></div>
+          <div><label>Ngày hết hạn / thời hạn <span class="vnp-permanent-hint">(có thể nhập Vĩnh viễn)</span></label><input id="vnpLicExpiry" type="text" placeholder="DD/MM/YYYY hoặc nhập Vĩnh viễn"></div>
           <div><label>Nhà cung cấp</label><input id="vnpLicVendor" placeholder="Tên nhà cung cấp / đại lý"></div>
           <div><label>Số hợp đồng / đơn hàng</label><input id="vnpLicContract"></div>
           <div><label>Số hóa đơn / chứng từ</label><input id="vnpLicInvoice"></div>
@@ -9505,9 +9509,11 @@ function isoDate(v){
   throw new Error('Định dạng ngày không hợp lệ');
 }
 function isPermanent(v){
-  return /^(?:vĩnh\s*viễn|vinh\s*vien|không\s*thời\s*hạn|khong\s*thoi\s*han|perpetual|lifetime|forever)$/i.test(
-    String(v||'').trim()
-  );
+  const x=String(v??'')
+    .normalize('NFC')
+    .trim()
+    .replace(/\s+/g,' ');
+  return /^(?:vĩnh viễn|vinh vien|không thời hạn|khong thoi han|perpetual|lifetime|forever)$/i.test(x);
 }
 function normalizeDateField(v,allowPermanent){
   const x=String(v??'').trim();
@@ -9571,13 +9577,64 @@ window.vnpOpenLicenseForm=function(idx=-1){
 };
 const oldSaveLicense=window.vnpSaveLicense;
 window.vnpSaveLicense=function(){
-  const prod=selectedProduct();if(!prod)return alert('Vui lòng chọn phiên bản OS/Office từ Danh mục chuẩn hoặc chọn Khác để nhập.');
-  const p=$('vnpLicPurchase'),e=$('vnpLicExpiry');
-  try{if(p&&p.value.trim())p.value=isoDate(p.value);if(e&&e.value.trim()&&!isPermanent(e.value))e.value=isoDate(e.value);}
-  catch(err){alert('Ngày mua/kích hoạt hoặc ngày hết hạn không hợp lệ. Hãy nhập theo DD/MM/YYYY (ví dụ 31/08/2026) hoặc chọn bằng biểu tượng lịch.');p?.focus();return;}
-  const sel=$('vnpLicProduct');if(sel)sel.value=prod;
-  oldSaveLicense?.();
-  if(p)p.value=toVNDate(p.value||'');if(e)e.value=isPermanent(e.value)?'Vĩnh viễn':toVNDate(e.value||'');
+  const prod=selectedProduct();
+  if(!prod)return alert('Vui lòng chọn phiên bản OS/Office từ Danh mục chuẩn hoặc chọn Khác để nhập.');
+
+  const p=$('vnpLicPurchase'), e=$('vnpLicExpiry');
+  const purchaseRaw=(p?.value||'').trim();
+  const expiryRaw=(e?.value||'').trim();
+  let purchaseISO='', expiryValue='';
+
+  try{
+    // Ngày mua/kích hoạt: để trống vẫn được phép; nếu nhập thì phải là ngày hợp lệ.
+    if(purchaseRaw) purchaseISO=isoDate(purchaseRaw);
+
+    // Ngày hết hạn: cho phép ngày cụ thể HOẶC bản quyền vĩnh viễn.
+    if(expiryRaw){
+      if(isPermanent(expiryRaw)){
+        expiryValue='Vĩnh viễn';
+      }else{
+        expiryValue=isoDate(expiryRaw);
+      }
+    }
+  }catch(err){
+    if(p && purchaseRaw && !expiryRaw){
+      p.focus();
+      alert('Ngày mua/kích hoạt không hợp lệ. Hãy nhập DD/MM/YYYY (ví dụ 31/08/2026) hoặc chọn bằng biểu tượng lịch.');
+    }else{
+      e?.focus();
+      alert('Ngày hết hạn không hợp lệ. Hãy nhập DD/MM/YYYY hoặc nhập Vĩnh viễn nếu bản quyền không thời hạn.');
+    }
+    return;
+  }
+
+  // oldSaveLicense dùng trực tiếp giá trị input. Đưa ngày về ISO để hàm cũ
+  // không gặp lỗi, nhưng giữ "Vĩnh viễn" đúng nghĩa không thời hạn.
+  if(p) p.value=purchaseISO;
+  if(e) e.value=expiryValue;
+
+  const sel=$('vnpLicProduct');
+  if(sel){
+    if(sel.value!=='Khác / nhập tự do') sel.value=prod;
+    else {
+      sel.dataset.custom=prod;
+      sel.value='Khác / nhập tự do';
+    }
+  }
+
+  try{
+    oldSaveLicense?.();
+  }catch(err){
+    console.error('Lỗi lưu bản quyền:',err);
+    alert('Không thể lưu bản quyền. Vui lòng kiểm tra lại thông tin.');
+    if(p) p.value=purchaseRaw;
+    if(e) e.value=expiryRaw;
+    return;
+  }
+
+  // Sau khi lưu, hiển thị lại theo chuẩn Việt Nam.
+  if(p) p.value=purchaseISO?toVNDate(purchaseISO):'';
+  if(e) e.value=expiryValue==='Vĩnh viễn'?'Vĩnh viễn':(expiryValue?toVNDate(expiryValue):'');
 };
 const oldOpenAlloc=window.vnpOpenAllocationForm;
 window.vnpOpenAllocationForm=function(idx=-1){

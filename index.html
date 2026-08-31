@@ -18,6 +18,7 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
 <script>
 /* ===== KHỐI AN TOÀN TÀI NGUYÊN NGOÀI =====
    Nếu CDN/FontAwesome/Chart/XLSX/html2canvas không tải được,
@@ -44,7 +45,9 @@
     window.VINAPACO_IS_LOCAL_FILE = location.protocol === 'file:';
 })();
 </script>
+
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
 <script id="vinapaco-final-tab-position-fix">
 (function(){
   const oldSwitchTab=window.switchTab;
@@ -65,6 +68,7 @@
   };
 })();
 </script>
+
 <script id="vinapaco-kho-telecom-extract-js">
 (function(){
 'use strict';
@@ -129,6 +133,7 @@ window.inPhieuGiaoNhanKhoTongHop=function(){const src=(window.dsKhoMucIn||[]).sl
 </script>
 
 <!-- V21 TYPOGRAPHY HARDENING: khóa giãn chữ trên toàn bộ màn hình đăng nhập -->
+
 <style>
         :root {
             --primary: #0284c7; --primary-dark: #0369a1; --bg-body: #f1f5f9; --card-bg: #ffffff;
@@ -8927,9 +8932,6 @@ window.trichXuatHoaDonThanhToanVP=async function(files){if(!files?.length)return
 <script id="vinapaco-v12-auth-js">
 (function(){'use strict';const P='vinapaco_workspace_v13_';let U=null;const K=['coSoDuLieuNamThang','dsThanhToanVanPhongProByMonth','dsThanhToanTelecombyMonth','dsKhoMucIn','dsPhieuGiaoNhan','dsKhaoSatChuyenSau','danhSachCongViec'];const key=u=>P+String(u.email||'').trim().toLowerCase().replace(/[^a-z0-9@._-]+/g,'_');const accs=()=>Array.isArray(window.danhSachTaiKhoanHeThong)?window.danhSachTaiKhoanHeThong:[];const perms=u=>(Array.isArray(u?.permissions)&&u.permissions.length)?u.permissions:accountPermissionsForRole(u?.role||'Viewer');function snap(){const o={};K.forEach(k=>{try{o[k]=JSON.parse(JSON.stringify(window[k]))}catch(e){}});return o}function apply(o){if(!o)return;K.forEach(k=>{if(o[k]!==undefined)try{window[k]=JSON.parse(JSON.stringify(o[k]))}catch(e){}})}function saveWS(){if(U)try{localStorage.setItem(key(U),JSON.stringify(snap()))}catch(e){}}function loadWS(u){try{const r=localStorage.getItem(key(u));if(r){apply(JSON.parse(r));return true}}catch(e){}return false}function applyRole(){const p=perms(U);document.querySelectorAll('#mainTabNav .tab-btn-nav').forEach(b=>{const m=(b.getAttribute('onclick')||'').match(/switchTab\('([^']+)'/);if(!m)return;const id=m[1];let k='dashboard';if(/salary/i.test(id))k='salary';else if(/leave/i.test(id))k='leave';else if(/inventory/i.test(id))k='inventory';else if(/officePayment|telecomPayment/i.test(id))k='payment';else if(/accountManager/i.test(id))k='system';else if(/licenseManager/i.test(id))k='license';b.style.display=(U?.role==='Admin'||p.includes(k))?'':'none'});if(U?.role==='Viewer')document.querySelectorAll('button').forEach(b=>{if(b.closest('#vnpLoginGate'))return;const oc=b.getAttribute('onclick')||'';if(/(luu|xoa|them|sua|capNhat|ghiSo|save|delete|edit)/i.test(oc))b.style.display='none'})}window.vnpToggleLoginPw=function(){const e=document.getElementById('vnpLoginPassword'),i=document.getElementById('vnpLoginPwIcon');if(!e)return;e.type=e.type==='password'?'text':'password';if(i)i.className=e.type==='password'?'fa-solid fa-eye':'fa-solid fa-eye-slash'};window.vnpDoLogin=function(){const email=(document.getElementById('vnpLoginEmail')?.value||'').trim().toLowerCase(),pw=document.getElementById('vnpLoginPassword')?.value||'',err=document.getElementById('vnpLoginError'),a=accs().find(x=>String(x.email||'').trim().toLowerCase()===email);if(!a){err.textContent='Tài khoản không tồn tại hoặc chưa được cấp.';return}if(String(a.status||'Active')!=='Active'){err.textContent='Tài khoản đang bị khóa.';return}if(String(a.password||'')!==pw){err.textContent='Mật khẩu không chính xác.';return}U=JSON.parse(JSON.stringify(a));sessionStorage.setItem('vinapaco_current_user_v13',JSON.stringify(U));loadWS(U);document.body.classList.remove('vnp-login-locked');document.getElementById('vnpLoginGate').classList.add('hidden');document.getElementById('vnpUserBar').classList.remove('hidden');document.getElementById('vnpCurrentUserName').textContent=U.fullName||U.email;document.getElementById('vnpCurrentUserRole').textContent=U.role||'Viewer';applyRole();try{capNhat()}catch(e){}saveWS();err.textContent=''};window.vnpLogout=function(){saveWS();sessionStorage.removeItem('vinapaco_current_user_v13');U=null;document.getElementById('vnpUserBar')?.classList.add('hidden');document.getElementById('vnpLoginGate')?.classList.remove('hidden');document.body.classList.add('vnp-login-locked');document.getElementById('vnpLoginPassword').value='';document.getElementById('vnpLoginEmail').focus()};window.vnpGetCurrentUser=()=>U?JSON.parse(JSON.stringify(U)):null;window.vnpSaveUserWorkspace=saveWS;window.vnpLoadUserWorkspace=loadWS;window.vnpApplyRole=applyRole;function boot(){let u=null;try{u=JSON.parse(sessionStorage.getItem('vinapaco_current_user_v13')||'null')}catch(e){}if(u){const a=accs().find(x=>String(x.email||'').toLowerCase()===String(u.email||'').toLowerCase());if(a&&String(a.status||'Active')==='Active'){U=JSON.parse(JSON.stringify(a));loadWS(U);document.body.classList.remove('vnp-login-locked');document.getElementById('vnpLoginGate')?.classList.add('hidden');document.getElementById('vnpUserBar')?.classList.remove('hidden');document.getElementById('vnpCurrentUserName').textContent=U.fullName||U.email;document.getElementById('vnpCurrentUserRole').textContent=U.role||'Viewer';applyRole();return}}document.body.classList.add('vnp-login-locked');setTimeout(()=>document.getElementById('vnpLoginEmail')?.focus(),120)}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else setTimeout(boot,50)})();</script>
 
-
-
-
 <script id="vinapaco-v13-security-js">
 (function(){
 'use strict';
@@ -9024,8 +9026,6 @@ window.luuTaiKhoanForm=async function(){
 })();
 </script>
 
-
-
 <script id="vinapaco-menu-overlay-invoice-final-js">
 (function(){
   'use strict';
@@ -9074,7 +9074,6 @@ window.luuTaiKhoanForm=async function(){
 </script>
 
 <!-- V19.1 - SỬA TRIỆT ĐỂ LUỒNG ADMIN BAN ĐẦU + KHÔI PHỤC MẬT KHẨU -->
-
 
 <script id="vnp-v19-security-final-js">
 (function(){
@@ -9278,6 +9277,7 @@ window.vnpInitLicenseModule=function(){vnpRenderOverview();vnpRenderCatalog();};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',vnpInitLicenseModule);else setTimeout(vnpInitLicenseModule,100);
 })();
 </script>
+
 <script id="vinapaco-user-final-ui-fix-js">
 (function(){
   function clean(){
@@ -9441,6 +9441,14 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </script>
 
 </div>
+
+<script id="vinapaco-date-combo-style-fix">
+(function(){
+  const css='.vnp-date-combo{position:relative}.vnp-date-combo input[type=text]{min-width:0}.vnp-date-picker-btn:hover{background:#e0f2fe!important;border-color:#38bdf8!important}.vnp-date-picker-btn:focus{outline:2px solid rgba(2,132,199,.25);outline-offset:1px}@media(max-width:600px){.vnp-date-picker-btn{min-width:46px!important;height:42px!important}}';
+  const style=document.createElement('style'); style.id='vinapaco-date-combo-style'; style.textContent=css;
+  document.head.appendChild(style);
+})();
+</script>
 <script id="vinapaco-license-enhancement-2026">
 (function(){
 'use strict';
@@ -9463,19 +9471,36 @@ function toVNDate(v){
   return x;
 }
 function isoDate(v){
-  const x=String(v??'').trim(); if(!x)return '';
+  let x=String(v??'').trim(); if(!x)return '';
+  x=x.replace(/\s+/g,'/');
   let m=x.match(/^(\d{1,2})[\/\.\-](\d{1,2})[\/\.\-](\d{4})$/);
   if(m){const d=Number(m[1]),mo=Number(m[2]),y=Number(m[3]);if(!validDate(y,mo,d))throw new Error('Ngày không hợp lệ');return y+'-'+pad(mo)+'-'+pad(d);}
   m=x.match(/^(\d{4})[\/\.\-](\d{1,2})[\/\.\-](\d{1,2})$/);
   if(m){const y=Number(m[1]),mo=Number(m[2]),d=Number(m[3]);if(!validDate(y,mo,d))throw new Error('Ngày không hợp lệ');return y+'-'+pad(mo)+'-'+pad(d);}
+  m=x.match(/^(\d{2})(\d{2})(\d{4})$/);
+  if(m){const d=Number(m[1]),mo=Number(m[2]),y=Number(m[3]);if(!validDate(y,mo,d))throw new Error('Ngày không hợp lệ');return y+'-'+pad(mo)+'-'+pad(d);}
   throw new Error('Định dạng ngày không hợp lệ');
 }
 function isPermanent(v){return /vĩnh\s*viễn|không\s*thời\s*hạn|perpetual|lifetime|forever/i.test(String(v||''));}
 function normalizeDateField(v,allowPermanent){const x=String(v??'').trim();if(!x)return '';if(allowPermanent&&isPermanent(x))return 'Vĩnh viễn';return isoDate(x);}
 function bindDate(id,required,allowPermanent){
-  const el=$(id); if(!el||el.dataset.vnpDateBound==='1')return;
-  el.dataset.vnpDateBound='1';el.type='text';el.inputMode='numeric';el.placeholder=allowPermanent?'DD/MM/YYYY hoặc Vĩnh viễn':'DD/MM/YYYY';el.autocomplete='off';
-  el.addEventListener('blur',()=>{const v=el.value.trim();if(!v){el.setCustomValidity(required?'Vui lòng nhập ngày.':'');return;}if(allowPermanent&&isPermanent(v)){el.value='Vĩnh viễn';el.setCustomValidity('');return;}try{el.value=toVNDate(isoDate(v));el.setCustomValidity('');}catch(e){el.setCustomValidity('Ngày không hợp lệ. Vui lòng nhập DD/MM/YYYY.');el.title=e.message;}});
+  const el=$(id); if(!el)return;
+  el.type='text';el.inputMode='numeric';el.placeholder=allowPermanent?'DD/MM/YYYY hoặc Vĩnh viễn':'DD/MM/YYYY';el.autocomplete='off';
+  if(el.dataset.vnpDateBound==='1')return;
+  el.dataset.vnpDateBound='1';
+  const host=el.parentElement;
+  if(host&&!host.querySelector('.vnp-date-picker-btn[data-for="'+id+'"]')){
+    const row=document.createElement('div');row.className='vnp-date-combo';row.style.cssText='display:flex;gap:6px;align-items:center;width:100%';
+    host.insertBefore(row,el);row.appendChild(el);el.style.flex='1';
+    const btn=document.createElement('button');btn.type='button';btn.className='vnp-date-picker-btn';btn.dataset.for=id;btn.title='Chọn ngày từ lịch';btn.setAttribute('aria-label','Chọn ngày từ lịch');
+    btn.style.cssText='height:38px;min-width:42px;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;cursor:pointer;color:#0369a1;font-size:16px';btn.innerHTML='<i class="fa-solid fa-calendar-days"></i>';
+    const picker=document.createElement('input');picker.type='date';picker.tabIndex=-1;picker.setAttribute('aria-hidden','true');picker.style.cssText='position:absolute;width:1px;height:1px;opacity:0;pointer-events:none';
+    row.appendChild(btn);row.appendChild(picker);
+    const openPicker=()=>{try{if(el.value.trim()&&!isPermanent(el.value))picker.value=isoDate(el.value)}catch(e){}if(typeof picker.showPicker==='function')picker.showPicker();else picker.click();};
+    btn.addEventListener('click',openPicker);
+    picker.addEventListener('change',()=>{if(picker.value){el.value=toVNDate(picker.value);el.setCustomValidity('');el.dispatchEvent(new Event('change',{bubbles:true}));}});
+  }
+  el.addEventListener('blur',()=>{const v=el.value.trim();if(!v){el.setCustomValidity(required?'Vui lòng nhập ngày.':'');return;}if(allowPermanent&&isPermanent(v)){el.value='Vĩnh viễn';el.setCustomValidity('');return;}try{el.value=toVNDate(isoDate(v));el.setCustomValidity('');el.title='';}catch(e){el.setCustomValidity('Ngày không hợp lệ. Hãy nhập DD/MM/YYYY hoặc chọn từ biểu tượng lịch.');el.title='Ví dụ: 31/08/2026';}});
   el.addEventListener('input',()=>el.setCustomValidity(''));
 }
 function setProductCatalog(type,current){
@@ -9517,7 +9542,7 @@ window.vnpSaveLicense=function(){
   const prod=selectedProduct();if(!prod)return alert('Vui lòng chọn phiên bản OS/Office từ Danh mục chuẩn hoặc chọn Khác để nhập.');
   const p=$('vnpLicPurchase'),e=$('vnpLicExpiry');
   try{if(p&&p.value.trim())p.value=isoDate(p.value);if(e&&e.value.trim()&&!isPermanent(e.value))e.value=isoDate(e.value);}
-  catch(err){alert('Ngày bản quyền không hợp lệ. Vui lòng nhập đúng DD/MM/YYYY.');return;}
+  catch(err){alert('Ngày mua/kích hoạt hoặc ngày hết hạn không hợp lệ. Hãy nhập theo DD/MM/YYYY (ví dụ 31/08/2026) hoặc chọn bằng biểu tượng lịch.');p?.focus();return;}
   const sel=$('vnpLicProduct');if(sel)sel.value=prod;
   oldSaveLicense?.();
   if(p)p.value=toVNDate(p.value||'');if(e)e.value=isPermanent(e.value)?'Vĩnh viễn':toVNDate(e.value||'');
@@ -9532,7 +9557,7 @@ const oldSaveAlloc=window.vnpSaveAllocation;
 window.vnpSaveAllocation=function(){
   const d=$('vnpAllocDate'),e=$('vnpAllocExpiry');
   try{if(d)d.value=isoDate(d.value);if(e&&e.value.trim()&&!isPermanent(e.value))e.value=isoDate(e.value);}
-  catch(err){alert('Ngày cấp / ngày hết hạn không hợp lệ. Vui lòng nhập DD/MM/YYYY.');return;}
+  catch(err){alert('Ngày cấp / ngày hết hạn không hợp lệ. Hãy nhập DD/MM/YYYY hoặc chọn bằng biểu tượng lịch.');d?.focus();return;}
   oldSaveAlloc?.();
   if(d)d.value=toVNDate(d.value||'');if(e)e.value=isPermanent(e.value)?'Vĩnh viễn':toVNDate(e.value||'');
 };

@@ -3768,7 +3768,7 @@ body.vnp-workspace-mode #invoiceManagerTab{padding:10px 12px 28px!important;marg
           <div><label>Hình thức bản quyền</label><select id="vnpLicModel"><option>Volume</option><option>OEM</option><option>Retail</option><option>Subscription</option><option>Microsoft 365 Tenant</option><option>Khác</option></select></div>
           <div><label>Tổng số seat *</label><input id="vnpLicSeats" type="number" min="1" value="1"></div>
           <div><label>Ngày mua / kích hoạt</label><input id="vnpLicPurchase" type="date"></div>
-          <div><label>Ngày hết hạn / thời hạn</label><input id="vnpLicExpiry" type="text" placeholder="Nhập tự do: 31/12/2027, 2027-12-31 hoặc Vĩnh viễn"></div>
+          <div><label>Ngày hết hạn / thời hạn <span class="vnp-permanent-hint">(có thể nhập Vĩnh viễn)</span></label><input id="vnpLicExpiry" type="text" placeholder="Nhập tự do: 31/12/2027, 2027-12-31 hoặc Vĩnh viễn"></div>
           <div><label>Nhà cung cấp</label><input id="vnpLicVendor" placeholder="Tên nhà cung cấp / đại lý"></div>
           <div><label>Số hợp đồng / đơn hàng</label><input id="vnpLicContract"></div>
           <div><label>Số hóa đơn / chứng từ</label><input id="vnpLicInvoice"></div>
@@ -3789,7 +3789,7 @@ body.vnp-workspace-mode #invoiceManagerTab{padding:10px 12px 28px!important;marg
           <div><label>Đơn vị / phòng ban *</label><input id="vnpAllocDept" placeholder="Đơn vị / phòng / ban"></div>
           <div><label>Mã tài sản / tên máy</label><input id="vnpAllocAsset" placeholder="VIN-PC-001 / LAP-001"></div>
           <div><label>Ngày cấp *</label><input id="vnpAllocDate" type="date"></div>
-          <div><label>Ngày hết hạn / thời hạn</label><input id="vnpAllocExpiry" type="text" placeholder="Nhập tự do hoặc Vĩnh viễn"></div>
+          <div><label>Ngày hết hạn / thời hạn <span class="vnp-permanent-hint">(có thể nhập Vĩnh viễn)</span></label><input id="vnpAllocExpiry" type="text" placeholder="Nhập tự do hoặc Vĩnh viễn"></div>
           <div><label>Trạng thái</label><select id="vnpAllocStatus"><option>Đang sử dụng</option><option>Đã thu hồi</option><option>Tạm ngưng</option><option>Chuyển thiết bị</option></select></div>
           <div><label>Người phê duyệt</label><input id="vnpAllocApprover"></div>
           <div class="full"><label>Ghi chú</label><input id="vnpAllocNote"></div>
@@ -8932,6 +8932,9 @@ window.trichXuatHoaDonThanhToanVP=async function(files){if(!files?.length)return
 <script id="vinapaco-v12-auth-js">
 (function(){'use strict';const P='vinapaco_workspace_v13_';let U=null;const K=['coSoDuLieuNamThang','dsThanhToanVanPhongProByMonth','dsThanhToanTelecombyMonth','dsKhoMucIn','dsPhieuGiaoNhan','dsKhaoSatChuyenSau','danhSachCongViec'];const key=u=>P+String(u.email||'').trim().toLowerCase().replace(/[^a-z0-9@._-]+/g,'_');const accs=()=>Array.isArray(window.danhSachTaiKhoanHeThong)?window.danhSachTaiKhoanHeThong:[];const perms=u=>(Array.isArray(u?.permissions)&&u.permissions.length)?u.permissions:accountPermissionsForRole(u?.role||'Viewer');function snap(){const o={};K.forEach(k=>{try{o[k]=JSON.parse(JSON.stringify(window[k]))}catch(e){}});return o}function apply(o){if(!o)return;K.forEach(k=>{if(o[k]!==undefined)try{window[k]=JSON.parse(JSON.stringify(o[k]))}catch(e){}})}function saveWS(){if(U)try{localStorage.setItem(key(U),JSON.stringify(snap()))}catch(e){}}function loadWS(u){try{const r=localStorage.getItem(key(u));if(r){apply(JSON.parse(r));return true}}catch(e){}return false}function applyRole(){const p=perms(U);document.querySelectorAll('#mainTabNav .tab-btn-nav').forEach(b=>{const m=(b.getAttribute('onclick')||'').match(/switchTab\('([^']+)'/);if(!m)return;const id=m[1];let k='dashboard';if(/salary/i.test(id))k='salary';else if(/leave/i.test(id))k='leave';else if(/inventory/i.test(id))k='inventory';else if(/officePayment|telecomPayment/i.test(id))k='payment';else if(/accountManager/i.test(id))k='system';else if(/licenseManager/i.test(id))k='license';b.style.display=(U?.role==='Admin'||p.includes(k))?'':'none'});if(U?.role==='Viewer')document.querySelectorAll('button').forEach(b=>{if(b.closest('#vnpLoginGate'))return;const oc=b.getAttribute('onclick')||'';if(/(luu|xoa|them|sua|capNhat|ghiSo|save|delete|edit)/i.test(oc))b.style.display='none'})}window.vnpToggleLoginPw=function(){const e=document.getElementById('vnpLoginPassword'),i=document.getElementById('vnpLoginPwIcon');if(!e)return;e.type=e.type==='password'?'text':'password';if(i)i.className=e.type==='password'?'fa-solid fa-eye':'fa-solid fa-eye-slash'};window.vnpDoLogin=function(){const email=(document.getElementById('vnpLoginEmail')?.value||'').trim().toLowerCase(),pw=document.getElementById('vnpLoginPassword')?.value||'',err=document.getElementById('vnpLoginError'),a=accs().find(x=>String(x.email||'').trim().toLowerCase()===email);if(!a){err.textContent='Tài khoản không tồn tại hoặc chưa được cấp.';return}if(String(a.status||'Active')!=='Active'){err.textContent='Tài khoản đang bị khóa.';return}if(String(a.password||'')!==pw){err.textContent='Mật khẩu không chính xác.';return}U=JSON.parse(JSON.stringify(a));sessionStorage.setItem('vinapaco_current_user_v13',JSON.stringify(U));loadWS(U);document.body.classList.remove('vnp-login-locked');document.getElementById('vnpLoginGate').classList.add('hidden');document.getElementById('vnpUserBar').classList.remove('hidden');document.getElementById('vnpCurrentUserName').textContent=U.fullName||U.email;document.getElementById('vnpCurrentUserRole').textContent=U.role||'Viewer';applyRole();try{capNhat()}catch(e){}saveWS();err.textContent=''};window.vnpLogout=function(){saveWS();sessionStorage.removeItem('vinapaco_current_user_v13');U=null;document.getElementById('vnpUserBar')?.classList.add('hidden');document.getElementById('vnpLoginGate')?.classList.remove('hidden');document.body.classList.add('vnp-login-locked');document.getElementById('vnpLoginPassword').value='';document.getElementById('vnpLoginEmail').focus()};window.vnpGetCurrentUser=()=>U?JSON.parse(JSON.stringify(U)):null;window.vnpSaveUserWorkspace=saveWS;window.vnpLoadUserWorkspace=loadWS;window.vnpApplyRole=applyRole;function boot(){let u=null;try{u=JSON.parse(sessionStorage.getItem('vinapaco_current_user_v13')||'null')}catch(e){}if(u){const a=accs().find(x=>String(x.email||'').toLowerCase()===String(u.email||'').toLowerCase());if(a&&String(a.status||'Active')==='Active'){U=JSON.parse(JSON.stringify(a));loadWS(U);document.body.classList.remove('vnp-login-locked');document.getElementById('vnpLoginGate')?.classList.add('hidden');document.getElementById('vnpUserBar')?.classList.remove('hidden');document.getElementById('vnpCurrentUserName').textContent=U.fullName||U.email;document.getElementById('vnpCurrentUserRole').textContent=U.role||'Viewer';applyRole();return}}document.body.classList.add('vnp-login-locked');setTimeout(()=>document.getElementById('vnpLoginEmail')?.focus(),120)}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else setTimeout(boot,50)})();</script>
 
+
+
+
 <script id="vinapaco-v13-security-js">
 (function(){
 'use strict';
@@ -9026,6 +9029,8 @@ window.luuTaiKhoanForm=async function(){
 })();
 </script>
 
+
+
 <script id="vinapaco-menu-overlay-invoice-final-js">
 (function(){
   'use strict';
@@ -9074,6 +9079,7 @@ window.luuTaiKhoanForm=async function(){
 </script>
 
 <!-- V19.1 - SỬA TRIỆT ĐỂ LUỒNG ADMIN BAN ĐẦU + KHÔI PHỤC MẬT KHẨU -->
+
 
 <script id="vnp-v19-security-final-js">
 (function(){
@@ -9219,10 +9225,18 @@ setTimeout(syncButton,300);setTimeout(syncButton,1000);
 })();
 </script>
 <!-- V23: TYPOGRAPHY IMMUTABLE LOGIN - chữ không giãn, không bẻ từ, không justify -->
+
+
+
+
 <!-- V26 FINAL: TYPOGRAPHY KHÔNG GIÃN + UPLOAD HÓA ĐƠN 04 TRƯỜNG CHO VP/VIỄN THÔNG -->
+
+
 <script id="vinapaco-phieu-tong-hop-final">
 (function(){function esc(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}function n(v){return Number(v)||0}window.inPhieuGiaoNhanKhoTongHop=function(){const src=(window.dsKhoMucIn||[]).filter(x=>String(x.action||'').trim());if(!src.length)return alert('Chưa có dữ liệu kho để lập phiếu tổng hợp.');const groups=new Map();src.forEach(x=>{const k=[x.action||'',x.receiver||'',x.department||'',x.name||'',x.printer||'',x.unit||'Hộp'].join('|');const r=groups.get(k)||{action:x.action||'',receiver:x.receiver||'',department:x.department||'',name:x.name||'',printer:x.printer||'',unit:x.unit||'Hộp',qty:0,total:0,price:n(x.price)};r.qty+=n(x.qty);r.total+=n(x.total)||n(x.qty)*n(x.price);if(!r.price&&r.qty)r.price=r.total/r.qty;groups.set(k,r)});const rows=[...groups.values()],qty=rows.reduce((a,r)=>a+r.qty,0),total=rows.reduce((a,r)=>a+r.total,0),now=new Date();const body=rows.map((r,i)=>'<tr><td>'+ (i+1) +'</td><td>'+esc(r.action)+'</td><td>'+esc(r.name)+'</td><td>'+esc(r.printer)+'</td><td>'+esc(r.receiver)+'</td><td>'+esc(r.department)+'</td><td>'+esc(r.unit)+'</td><td class="num">'+r.qty.toLocaleString('vi-VN')+'</td><td class="num">'+Math.round(r.price).toLocaleString('vi-VN')+'</td><td class="num">'+Math.round(r.total).toLocaleString('vi-VN')+'</td></tr>').join('');const html='<div class="sheet"><div class="head"><div><b>TỔNG CÔNG TY GIẤY VIỆT NAM</b><br><b>VĂN PHÒNG TỔNG CÔNG TY</b></div><div class="right"><b>PHIẾU TỔNG HỢP KHO MỰC IN</b><br>Ngày '+now.getDate()+' tháng '+(now.getMonth()+1)+' năm '+now.getFullYear()+'</div></div><h1>PHIẾU GIAO NHẬN / XUẤT NHẬP KHO TỔNG HỢP</h1><p class="period">Tổng hợp toàn bộ chứng từ kho hiện có trong hệ thống</p><table><thead><tr><th>STT</th><th>Nghiệp vụ</th><th>Mặt hàng</th><th>Máy in</th><th>Đơn vị/NCC</th><th>Bộ phận</th><th>ĐVT</th><th>SL</th><th>Đơn giá</th><th>Thành tiền</th></tr></thead><tbody>'+body+'</tbody><tfoot><tr><td colspan="7"><b>TỔNG CỘNG</b></td><td class="num"><b>'+qty.toLocaleString('vi-VN')+'</b></td><td></td><td class="num"><b>'+Math.round(total).toLocaleString('vi-VN')+' VNĐ</b></td></tr></tfoot></table><div class="sign"><div><b>NGƯỜI LẬP PHIẾU</b><span>(Ký, ghi rõ họ tên)</span></div><div><b>THỦ KHO</b><span>(Ký, ghi rõ họ tên)</span></div><div><b>TRƯỞNG BỘ PHẬN</b><span>(Ký, ghi rõ họ tên)</span></div><div><b>NGƯỜI DUYỆT</b><span>(Ký, ghi rõ họ tên)</span></div></div></div>';const css='@page{size:A4 landscape;margin:10mm}*{box-sizing:border-box}body{margin:0;font-family:"Times New Roman",serif;color:#000;font-size:10pt}.sheet{width:100%}.head{display:grid;grid-template-columns:1fr 1fr;line-height:1.35}.right{text-align:right}h1{text-align:center;font-size:17pt;margin:7mm 0 2mm}.period{text-align:center;margin:0 0 5mm}.sheet table{width:100%;border-collapse:collapse;table-layout:fixed}.sheet th,.sheet td{border:1px solid #000;padding:4px 5px;vertical-align:middle}.sheet th{text-align:center;font-weight:bold}.sheet .num{text-align:right;white-space:nowrap}.sheet tfoot td{font-weight:bold}.sign{display:grid;grid-template-columns:repeat(4,1fr);text-align:center;margin-top:12mm}.sign span{display:block;margin-top:2mm;font-weight:normal}.sign div{min-height:28mm}';const w=window.open('','_blank','width=1200,height=900');if(!w)return alert('Trình duyệt đang chặn cửa sổ in. Hãy cho phép pop-up.');w.document.write('<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Phiếu tổng hợp kho VINAPACO</title>\n</head><body>'+html+'\n\n');w.document.close();w.focus();setTimeout(()=>w.print(),300)};})();
 </script>
+
+
 
 <script id="vinapaco-license-module-js">
 (function(){
@@ -9263,6 +9277,9 @@ window.vnpEditAllocation=id=>{const idx=allocations.findIndex(a=>a.id===id);if(i
 window.vnpRecallAllocation=id=>{const a=allocations.find(x=>x.id===id);if(!a)return;if(confirm('Thu hồi bản quyền khỏi '+a.user+'?')){a.status='Đã thu hồi';log('Thu hồi','Cấp phát',a.id+' • '+a.user);save();vnpRenderAllocations();vnpRenderOverview()}};
 window.vnpDeleteAllocation=id=>{const idx=allocations.findIndex(a=>a.id===id);if(idx<0)return;if(confirm('Xóa bản ghi cấp phát '+id+'?')){allocations.splice(idx,1);log('Xóa','Cấp phát',id);save();vnpRenderAllocations();vnpRenderOverview()}}
 window.vnpPrintAllocationReport=function(){const rows=allocations.filter(a=>a.status==='Đang sử dụng');const now=new Date();const body=rows.map((a,i)=>`<tr><td>${i+1}</td><td>${esc(a.type)}</td><td>${esc(a.product)}</td><td><b>${esc(a.user)}</b></td><td>${esc(a.dept)}</td><td>${esc(a.asset||'')}</td><td>${esc(a.date||'')}</td><td>${esc(a.expiryDate||'Theo license / Vĩnh viễn')}</td><td>${esc(a.status)}</td><td>${esc(a.approver||'')}</td></tr>`).join('')||'<tr><td colspan=10 style="text-align:center">Chưa có bản ghi đang sử dụng.</td></tr>';const w=window.open('','_blank','width=1400,height=900');if(!w)return alert('Trình duyệt đang chặn cửa sổ báo cáo. Hãy cho phép pop-up.');w.document.write(`<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Báo cáo cấp phát OS & Office - VINAPACO</title>
+<style id="vinapaco-permanent-license-style">
+.vnp-permanent-hint{font-size:12px;font-weight:600;color:#15803d}
+</style>
 </head><body><b>TỔNG CÔNG TY GIẤY VIỆT NAM</b><h2>BÁO CÁO CẤP PHÁT BẢN QUYỀN OS & OFFICE</h2><p>Danh sách đang sử dụng — lập ngày ${now.toLocaleDateString('vi-VN')}</p><table><thead><tr><th>STT</th><th>Loại</th><th>Sản phẩm</th><th>Người sử dụng</th><th>Đơn vị</th><th>Mã tài sản / máy</th><th>Ngày cấp</th><th>Hết hạn</th><th>Trạng thái</th><th>Người duyệt</th></tr></thead><tbody>${body}</tbody></table><div class="sign"><div><b>NGƯỜI LẬP</b><span>(Ký, ghi rõ họ tên)</span></div><div><b>PHỤ TRÁCH CNTT</b><span>(Ký, ghi rõ họ tên)</span></div><div><b>THỦ TRƯỞNG ĐƠN VỊ</b><span>(Ký, ghi rõ họ tên)</span></div></div>
 
 `);w.document.close();setTimeout(()=>w.print(),300)}
@@ -9277,6 +9294,12 @@ window.vnpInitLicenseModule=function(){vnpRenderOverview();vnpRenderCatalog();};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',vnpInitLicenseModule);else setTimeout(vnpInitLicenseModule,100);
 })();
 </script>
+
+
+
+
+
+
 
 <script id="vinapaco-user-final-ui-fix-js">
 (function(){
@@ -9481,8 +9504,17 @@ function isoDate(v){
   if(m){const d=Number(m[1]),mo=Number(m[2]),y=Number(m[3]);if(!validDate(y,mo,d))throw new Error('Ngày không hợp lệ');return y+'-'+pad(mo)+'-'+pad(d);}
   throw new Error('Định dạng ngày không hợp lệ');
 }
-function isPermanent(v){return /vĩnh\s*viễn|không\s*thời\s*hạn|perpetual|lifetime|forever/i.test(String(v||''));}
-function normalizeDateField(v,allowPermanent){const x=String(v??'').trim();if(!x)return '';if(allowPermanent&&isPermanent(x))return 'Vĩnh viễn';return isoDate(x);}
+function isPermanent(v){
+  return /^(?:vĩnh\s*viễn|vinh\s*vien|không\s*thời\s*hạn|khong\s*thoi\s*han|perpetual|lifetime|forever)$/i.test(
+    String(v||'').trim()
+  );
+}
+function normalizeDateField(v,allowPermanent){
+  const x=String(v??'').trim();
+  if(!x)return '';
+  if(allowPermanent&&isPermanent(x))return 'Vĩnh viễn';
+  return isoDate(x);
+}
 function bindDate(id,required,allowPermanent){
   const el=$(id); if(!el)return;
   el.type='text';el.inputMode='numeric';el.placeholder=allowPermanent?'DD/MM/YYYY hoặc Vĩnh viễn':'DD/MM/YYYY';el.autocomplete='off';

@@ -1809,6 +1809,54 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
   .vinapaco-calendar-modal-body{height:calc(100vh - 64px)!important;padding:8px!important;}
 }
 </style>
+<style id="vinapaco-weather-persistent-ui">
+/* Thời tiết cố định toàn ứng dụng: không phụ thuộc TAB đang mở. */
+#vinapacoGlobalWeatherBar{
+  position:fixed;right:14px;bottom:14px;z-index:9997;
+  max-width:min(430px,calc(100vw - 28px));
+  display:flex;align-items:center;gap:10px;
+  padding:9px 12px;border:1px solid #bfdbfe;border-radius:14px;
+  background:rgba(255,255,255,.97);box-shadow:0 8px 24px rgba(15,23,42,.16);
+  backdrop-filter:blur(8px);cursor:pointer;
+  font-family:Arial,Helvetica,sans-serif;
+}
+#vinapacoGlobalWeatherBar .vwg-icon{font-size:20px;color:#0284c7;flex:0 0 auto;}
+#vinapacoGlobalWeatherBar .vwg-main{min-width:0;line-height:1.25;}
+#vinapacoGlobalWeatherBar .vwg-title{font-size:12px;font-weight:900;color:#0369a1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#vinapacoGlobalWeatherBar .vwg-value{font-size:14px;font-weight:950;color:#0f172a;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#vinapacoGlobalWeatherBar .vwg-sub{font-size:10px;font-weight:750;color:#64748b;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#vinapacoGlobalWeatherBar .vwg-lock{font-size:11px;font-weight:900;color:#15803d;margin-left:3px;}
+@media(max-width:700px){
+  #vinapacoGlobalWeatherBar{right:8px;bottom:8px;max-width:calc(100vw - 16px);padding:8px 10px;border-radius:12px;}
+  #vinapacoGlobalWeatherBar .vwg-sub{display:none;}
+}
+</style>
+
+<script id="vinapaco-weather-persistent-ui-js">
+(function(){
+  function esc(v){ try{return escapeLocationHtml(String(v||''));}catch(e){return String(v||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));} }
+  window.capNhatThanhThoiTietToanCuc=function(){
+    const bar=document.getElementById('vinapacoGlobalWeatherBar');
+    if(!bar) return;
+    const c=window.cachedWeatherCoords || (typeof cachedWeatherCoords!=='undefined' ? cachedWeatherCoords : null);
+    if(!c) return;
+    const t=document.getElementById('wCurrentTemp')?.innerText || '--';
+    const cond=document.getElementById('wCurrentCondition')?.innerText || 'Đang cập nhật';
+    const mode=(typeof weatherLocationMode!=='undefined' ? weatherLocationMode : 'auto');
+    bar.innerHTML=`<i class="fa-solid fa-cloud-sun vwg-icon"></i><div class="vwg-main"><div class="vwg-title">📍 Thời tiết cố định: ${esc(c.cityName || 'Vị trí hiện tại')} <span class="vwg-lock">🔒</span></div><div class="vwg-value">${esc(t)} · ${esc(cond)}</div><div class="vwg-sub">Tọa độ ${Number(c.lat).toFixed(5)}, ${Number(c.lon).toFixed(5)} · ${mode==='manual'?'Địa điểm đã chọn':'GPS/Location'}</div></div>`;
+  };
+  window.moWeatherTuThanhBar=function(){ try{ if(typeof moModalDuBaoThoiTiet10Ngay==='function') moModalDuBaoThoiTiet10Ngay(); }catch(e){} };
+  document.addEventListener('DOMContentLoaded',function(){
+    if(document.getElementById('vinapacoGlobalWeatherBar')) return;
+    const bar=document.createElement('button');
+    bar.type='button'; bar.id='vinapacoGlobalWeatherBar'; bar.title='Bấm để xem dự báo thời tiết 10 ngày tại đúng vị trí đang khóa';
+    bar.onclick=window.moWeatherTuThanhBar;
+    document.body.appendChild(bar);
+    setTimeout(window.capNhatThanhThoiTietToanCuc,350);
+  });
+})();
+</script>
+
 <script id="vinapaco-final-tab-position-fix">
 (function(){
   const oldSwitchTab=window.switchTab;
@@ -5867,6 +5915,7 @@ function xuatBaoCaoXNTExcel() {
             if (wHum) wHum.innerText = `${humidity ?? '--'}%`;
             const wWind = document.getElementById('wWind');
             if (wWind) wWind.innerText = `${wind ?? '--'} km/h`;
+            try { window.capNhatThanhThoiTietToanCuc?.(); } catch(e) {}
         } catch (err) {
             const wText = document.getElementById('weatherWidgetText');
             if (wText) wText.innerText = "Không thể tải thời tiết trực tuyến.";
@@ -5923,8 +5972,59 @@ function xuatBaoCaoXNTExcel() {
     let locationSearchAbort = null;
     let locationSearchSeq = 0;
     let gpsWatchId = null;
+    // Vị trí thời tiết là một "điểm khóa" độc lập với TAB/nội dung đang mở.
+    // Sau khi người dùng chọn GPS hoặc chọn địa điểm thủ công, vị trí được lưu bền vững
+    // vào localStorage và KHÔNG bị watchPosition tự động đổi nữa.
+    const WEATHER_LOCATION_STORAGE_KEY = 'vinapaco_weather_location_v2';
     let weatherLocationMode = 'auto';
     let gpsLastFix = null;
+
+    function taiViTriThoiTietDaLuu() {
+        try {
+            const raw = localStorage.getItem(WEATHER_LOCATION_STORAGE_KEY);
+            if (!raw) return null;
+            const x = JSON.parse(raw);
+            const lat = Number(x?.lat), lon = Number(x?.lon);
+            if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
+            if (lat < -90 || lat > 90 || lon < -180 || lon > 180) return null;
+            return {
+                lat, lon,
+                cityName: String(x.cityName || 'Vị trí đã lưu'),
+                mode: x.mode === 'manual' ? 'manual' : 'gps',
+                accuracy: Number.isFinite(Number(x.accuracy)) ? Number(x.accuracy) : null,
+                savedAt: x.savedAt || null
+            };
+        } catch(e) { return null; }
+    }
+
+    function luuViTriThoiTiet(lat, lon, cityName, mode='gps', accuracy=null) {
+        const item = {
+            lat:Number(lat), lon:Number(lon),
+            cityName:String(cityName || 'Vị trí hiện tại'),
+            mode: mode === 'manual' ? 'manual' : 'gps',
+            accuracy: Number.isFinite(Number(accuracy)) ? Number(accuracy) : null,
+            savedAt: new Date().toISOString()
+        };
+        try { localStorage.setItem(WEATHER_LOCATION_STORAGE_KEY, JSON.stringify(item)); } catch(e) {}
+        return item;
+    }
+
+    // Khôi phục ngay khi ứng dụng mở lại, trước cả khi các TAB được chọn.
+    try {
+        const savedWeatherLocation = taiViTriThoiTietDaLuu();
+        if (savedWeatherLocation) {
+            cachedWeatherCoords = {
+                lat:savedWeatherLocation.lat,
+                lon:savedWeatherLocation.lon,
+                cityName:savedWeatherLocation.cityName
+            };
+            weatherLocationMode = savedWeatherLocation.mode;
+            gpsLastFix = savedWeatherLocation.mode === 'gps' && savedWeatherLocation.accuracy ? {
+                lat:savedWeatherLocation.lat, lon:savedWeatherLocation.lon,
+                accuracy:savedWeatherLocation.accuracy, samples:1, clusterSize:1, spread:0, at:Date.now()
+            } : null;
+        }
+    } catch(e) {}
 
     function escapeLocationHtml(v) {
         return String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;')
@@ -6110,6 +6210,7 @@ function xuatBaoCaoXNTExcel() {
 
         weatherLocationMode = 'manual';
         cachedWeatherCoords = {lat, lon, cityName:name || 'Địa điểm đã chọn'};
+        luuViTriThoiTiet(lat, lon, name || 'Địa điểm đã chọn', 'manual', null);
 
         // Cập nhật ngay lập tức, sau đó reverse-geocode lại để tên hiển thị chuẩn hơn.
         await capNhatThoiTiet(lat,lon,name || 'Địa điểm đã chọn');
@@ -6119,6 +6220,7 @@ function xuatBaoCaoXNTExcel() {
             const rg = await reverseGeocodeVietNam(lat,lon);
             if (rg && rg.name && rg.name !== 'Vị trí GPS') {
                 cachedWeatherCoords.cityName = rg.areaName || rg.name;
+                luuViTriThoiTiet(lat, lon, cachedWeatherCoords.cityName, 'manual', null);
                 await capNhatThoiTiet(lat,lon,rg.areaName || rg.name);
                 await capNhatThoiTiet10Ngay(lat,lon,rg.areaName || rg.name);
             }
@@ -6380,6 +6482,10 @@ function xuatBaoCaoXNTExcel() {
             const rg=await reverseGeocodeVietNam(lat,lon);
             const resolvedName=rg.areaName || rg.name || 'Vị trí GPS hiện tại';
             cachedWeatherCoords={lat,lon,cityName:resolvedName};
+            // Khóa vị trí GPS đã chọn: chuyển TAB, về trang chủ, hoặc mở nội dung khác
+            // cũng không được làm thay đổi điểm thời tiết.
+            weatherLocationMode='gps';
+            luuViTriThoiTiet(lat, lon, resolvedName, 'gps', Number(fix.accuracy));
 
             await Promise.allSettled([
                 capNhatThoiTiet(lat,lon,resolvedName),
@@ -6492,9 +6598,11 @@ function xuatBaoCaoXNTExcel() {
         // Theo dõi vị trí nền nhưng KHÔNG ghi đè địa điểm người dùng đã chọn thủ công.
         // Chỉ nhận fix có độ chính xác hợp lý và thay đổi đủ lớn để tránh gọi API liên tục.
         try {
-            if(navigator.geolocation) {
+            // Chỉ theo dõi vị trí nền khi CHƯA có vị trí khóa do người dùng chọn.
+            // GPS/manual đã lưu sẽ được giữ nguyên qua mọi TAB và cả lần mở lại ứng dụng.
+            if(navigator.geolocation && weatherLocationMode==='auto') {
                 gpsWatchId=navigator.geolocation.watchPosition(async pos => {
-                    if(weatherLocationMode==='manual') return;
+                    if(weatherLocationMode!=='auto') return;
                     const c=pos.coords||{};
                     const lat=Number(c.latitude), lon=Number(c.longitude), acc=Number(c.accuracy)||999999;
                     if(!Number.isFinite(lat)||!Number.isFinite(lon)||acc>250) return;
@@ -6504,6 +6612,8 @@ function xuatBaoCaoXNTExcel() {
                         const name=rg.areaName || rg.name || cachedWeatherCoords.cityName || 'Vị trí hiện tại';
                         gpsLastFix={lat,lon,accuracy:acc,samples:1,clusterSize:1,spread:0,at:Date.now()};
                         cachedWeatherCoords={lat,lon,cityName:name};
+                        // Auto-watch chỉ là fallback lúc chưa chọn vị trí. Không lưu thành vị trí khóa,
+                        // để người dùng vẫn có thể bấm GPS chính xác hoặc chọn địa điểm khác.
                         await Promise.allSettled([capNhatThoiTiet(lat,lon,name), capNhatThoiTiet10Ngay(lat,lon,name)]);
                     } catch(e) { console.warn('GPS watch:',e); }
                 }, ()=>{}, {enableHighAccuracy:true, maximumAge:10000, timeout:20000});

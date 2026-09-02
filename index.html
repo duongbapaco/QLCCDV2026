@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="vi">
 <head><style>
         :root {
@@ -11684,5 +11683,146 @@ setInterval(renderOverview,15000);
     }
   });
 })();
-</script></body>
+</script>
+<script id="vinapaco-license-allocation-fix-2026">
+(function(){
+  'use strict';
+
+  const $ = id => document.getElementById(id);
+  const esc = v => String(v ?? '').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const pad = n => String(n).padStart(2,'0');
+
+  /* Chuẩn hóa ngày nội bộ về YYYY-MM-DD nhưng HIỂN THỊ luôn DD/MM/YYYY. */
+  function normalizeISODate(v){
+    const x=String(v??'').trim();
+    if(!x) return '';
+    if(/^\d{4}-\d{1,2}-\d{1,2}$/.test(x)){
+      const [y,m,d]=x.split('-');
+      return `${y}-${pad(m)}-${pad(d)}`;
+    }
+    let m=x.match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{4})$/);
+    if(m) return `${m[3]}-${pad(m[2])}-${pad(m[1])}`;
+    return x;
+  }
+
+  function dateVN(v){
+    const x=normalizeISODate(v);
+    if(!x || !/^\d{4}-\d{2}-\d{2}$/.test(x)) return String(v??'');
+    const [y,m,d]=x.split('-');
+    return `${d}/${m}/${y}`;
+  }
+
+  function dateVNOrPermanent(v){
+    const x=String(v??'').trim();
+    if(!x) return '';
+    if(/vĩnh\s*viễn|không\s*thời\s*hạn|perpetual|lifetime|forever/i.test(x))
+      return 'Vĩnh viễn';
+    return dateVN(x);
+  }
+
+  /* Ngày hiện tại: giá trị input vẫn đúng chuẩn HTML, còn mọi chỗ hiển thị dùng DD/MM/YYYY. */
+  function todayISO(){
+    const d=new Date();
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  }
+
+  function setTodayAllocationDate(){
+    const el=$('vnpAllocDate');
+    if(el && !el.value) el.value=todayISO();
+  }
+
+  /*
+   * Thay hàm lưu cấp phát bằng phiên bản có kiểm tra lỗi rõ ràng.
+   * Không để lỗi JS âm thầm làm nút "Lưu cấp phát" không phản ứng.
+   */
+  const originalSaveAllocation=window.vnpSaveAllocation;
+  window.vnpSaveAllocation=function(){
+    try{
+      if(typeof originalSaveAllocation!=='function'){
+        alert('Không tìm thấy chức năng lưu cấp phát bản quyền. Vui lòng tải lại trang.');
+        return false;
+      }
+      const result=originalSaveAllocation();
+      setTimeout(()=>{
+        try{
+          formatVisibleLicenseDates();
+          const d=$('vnpAllocDate');
+          if(d && d.value) d.dataset.vnDate=dateVN(d.value);
+        }catch(e){}
+      },50);
+      return result;
+    }catch(err){
+      console.error('VINAPACO vnpSaveAllocation error:',err);
+      alert('Không thể lưu cấp phát bản quyền.\n\nChi tiết: '+(err?.message||err));
+      return false;
+    }
+  };
+
+  /* Render bảng cấp phát: gọi renderer gốc rồi chuẩn hóa toàn bộ ngày hiển thị. */
+  const originalRenderAllocations=window.vnpRenderAllocations;
+  window.vnpRenderAllocations=function(){
+    try{
+      if(typeof originalRenderAllocations==='function') originalRenderAllocations();
+      setTimeout(formatVisibleLicenseDates,0);
+    }catch(err){
+      console.error('VINAPACO render allocations error:',err);
+    }
+  };
+
+  /* Bảng Kho bản quyền: ngày mua/kích hoạt và ngày hết hạn đều DD/MM/YYYY. */
+  const oldRenderLicenses=window.vnpRenderLicenses;
+  window.vnpRenderLicenses=function(){
+    try{
+      if(typeof oldRenderLicenses==='function') oldRenderLicenses();
+      const body=$('vnpLicLicenseBody');
+      if(!body) return;
+      body.querySelectorAll('tr').forEach(tr=>{
+        const cells=tr.querySelectorAll('td');
+        /* Cột hết hạn trong bảng hiện tại là cột 8 (index 7). */
+        if(cells[7]){
+          const txt=cells[7].textContent.trim();
+          if(txt && !/vĩnh\s*viễn|không\s*thời\s*hạn/i.test(txt)) cells[7].textContent=dateVN(txt);
+        }
+      });
+    }catch(e){console.warn('format license table:',e)}
+  };
+
+  /* Các bảng cấp phát/gia hạn/nhật ký sau mỗi lần render đều được chuẩn hóa ngày. */
+  function formatVisibleLicenseDates(){
+    document.querySelectorAll('#vnpLicAllocBody td,#vnpLicRenewBody td,#vnpLicLicenseBody td').forEach(td=>{
+      const text=td.textContent.trim();
+      if(!text) return;
+      if(/^\d{4}-\d{2}-\d{2}$/.test(text)){
+        td.textContent=dateVN(text);
+      }else if(/^\d{1,2}[\/.\-]\d{1,2}[\/.\-]\d{4}$/.test(text)){
+        td.textContent=dateVN(text);
+      }
+    });
+  }
+
+  /* Khi mở form cấp phát, luôn đặt ngày hiện tại nếu chưa có. */
+  const oldOpen=window.vnpOpenAllocationForm;
+  window.vnpOpenAllocationForm=function(idx=-1){
+    if(typeof oldOpen==='function') oldOpen(idx);
+    setTimeout(setTodayAllocationDate,0);
+  };
+
+  /* Chuẩn hóa giá trị ngày ngay trước khi submit/edit. */
+  document.addEventListener('change',e=>{
+    if(e.target?.id==='vnpAllocDate'){
+      e.target.value=normalizeISODate(e.target.value);
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    setTimeout(()=>{
+      setTodayAllocationDate();
+      formatVisibleLicenseDates();
+    },500);
+  });
+
+  setInterval(formatVisibleLicenseDates,1200);
+})();
+</script>
+</body>
 </html>

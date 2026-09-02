@@ -4208,6 +4208,43 @@ body.vnp-fullscreen-module #telecomPaymentTab.active{
   .vnp-ribbon-links button:first-child{min-width:96px!important;font-size:11.5px!important}
 }
 </style>
+<style id="VINAPACO_HOME_MODULES_CLEAR_2026">
+/* ===== TRANG ĐẦU: PHÂN HỆ LỚN, THOÁNG, DỄ ĐỌC ===== */
+#dashboardTab .vnp-overview-hero{margin-bottom:16px!important;padding:20px 24px!important}
+#dashboardTab .vnp-overview-hero h2{font-size:26px!important}
+#dashboardTab .vnp-overview-hero p{font-size:14px!important;max-width:1050px!important}
+#dashboardTab .vnp-overview-section{padding:24px!important;margin-bottom:18px!important;border-radius:18px!important}
+#dashboardTab .vnp-section-head{margin-bottom:18px!important;align-items:center!important}
+#dashboardTab .vnp-section-head>div:first-child>span{font-size:11px!important;letter-spacing:1px!important}
+#dashboardTab .vnp-section-head h3{font-size:22px!important;margin:5px 0!important}
+#dashboardTab .vnp-section-head p{font-size:13px!important;line-height:1.55!important}
+#dashboardTab .vnp-period-badge{font-size:12px!important;padding:10px 13px!important}
+#dashboardTab .vnp-module-dashboard-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:18px!important}
+#dashboardTab .vnp-module-card{min-height:210px!important;padding:20px!important;border-radius:16px!important;border:1px solid #d7e2eb!important;box-shadow:0 5px 16px rgba(15,23,42,.055)!important;overflow:visible!important}
+#dashboardTab .vnp-module-card:hover{transform:translateY(-3px)!important;box-shadow:0 12px 26px rgba(2,132,199,.14)!important}
+#dashboardTab .vnp-module-top{gap:14px!important;margin-bottom:16px!important;align-items:center!important}
+#dashboardTab .vnp-module-icon{width:54px!important;height:54px!important;flex:0 0 54px!important;border-radius:14px!important;font-size:22px!important}
+#dashboardTab .vnp-module-title b{font-size:17px!important;line-height:1.25!important;font-weight:900!important;color:#0f172a!important}
+#dashboardTab .vnp-module-title small{font-size:11.5px!important;line-height:1.35!important;margin-top:4px!important;color:#64748b!important}
+#dashboardTab .vnp-module-arrow{font-size:14px!important}
+#dashboardTab .vnp-module-metrics{gap:9px!important}
+#dashboardTab .vnp-module-metric{padding:10px 9px!important;border-radius:10px!important}
+#dashboardTab .vnp-module-metric b{font-size:15px!important;line-height:1.25!important}
+#dashboardTab .vnp-module-metric span{font-size:9.5px!important;line-height:1.3!important;margin-top:4px!important}
+#dashboardTab .vnp-module-status{margin-top:12px!important;padding:6px 10px!important;font-size:10px!important}
+#dashboardTab .vnp-executive-kpis{margin-top:2px!important;margin-bottom:18px!important}
+/* Lịch công tác tuần đã loại khỏi trang đầu theo yêu cầu. */
+#dashboardTab .office-schedule-workspace{display:none!important}
+@media(max-width:1250px){#dashboardTab .vnp-module-dashboard-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:760px){
+ #dashboardTab .vnp-overview-section{padding:14px!important}
+ #dashboardTab .vnp-module-dashboard-grid{grid-template-columns:1fr!important;gap:12px!important}
+ #dashboardTab .vnp-module-card{min-height:0!important;padding:16px!important}
+ #dashboardTab .vnp-module-title b{font-size:16px!important}
+ #dashboardTab .vnp-module-icon{width:48px!important;height:48px!important;flex-basis:48px!important}
+ #dashboardTab .vnp-module-metrics{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+</style>
 </head>
 <body><script id="vinapaco-v14-brand-setup-script">
 (function(){
@@ -4604,6 +4641,13 @@ body.vnp-fullscreen-module #telecomPaymentTab.active{
 <button class="btn btn-blue btn-lg" onclick="moKiemTraDuLieu()" type="button"><i class="fa-solid fa-shield-check"></i> KIỂM TRA DỮ LIỆU</button>
 </div>
 </section>
+<section class="vnp-overview-section">
+<div class="vnp-section-head">
+<div><span>TRUY CẬP PHÂN HỆ</span><h3><i class="fa-solid fa-table-cells-large"></i> CÁC PHÂN HỆ NGHIỆP VỤ</h3><p>Chọn trực tiếp phân hệ cần làm việc. Giao diện được ưu tiên chữ lớn, khoảng cách thoáng và thao tác nhanh.</p></div>
+<div class="vnp-period-badge">NĂM <b id="ovYear">2026</b> · <b id="ovMonth">Tháng hiện tại</b></div>
+</div>
+<div class="vnp-module-dashboard-grid" id="overviewModuleGrid"></div>
+</section>
 <section aria-label="Chỉ số điều hành tổng hợp" class="vnp-executive-kpis">
 <div class="vnp-exec-kpi"><span class="vnp-exec-icon blue"><i class="fa-solid fa-users"></i></span><div><small>NHÂN SỰ</small><b id="ovStaff">0</b><em id="ovStaffSub">Hồ sơ hiện hành</em></div></div>
 <div class="vnp-exec-kpi"><span class="vnp-exec-icon green"><i class="fa-solid fa-money-bill-transfer"></i></span><div><small>QUỸ LƯƠNG NET</small><b id="ovSalary">0</b><em id="ovSalarySub">Lũy kế năm</em></div></div>
@@ -4612,37 +4656,7 @@ body.vnp-fullscreen-module #telecomPaymentTab.active{
 <div class="vnp-exec-kpi"><span class="vnp-exec-icon cyan"><i class="fa-solid fa-list-check"></i></span><div><small>CÔNG VIỆC</small><b id="ovTask">0%</b><em id="ovTaskSub">Hoàn thành</em></div></div>
 <div class="vnp-exec-kpi"><span class="vnp-exec-icon red"><i class="fa-solid fa-triangle-exclamation"></i></span><div><small>CẦN XỬ LÝ</small><b id="ovAlerts">0</b><em>Hồ sơ / việc cần chú ý</em></div></div>
 </section>
-<section class="vnp-overview-section">
-<div class="vnp-section-head">
-<div><span>PHÂN HỆ QUẢN TRỊ</span><h3><i class="fa-solid fa-table-cells-large"></i> DASHBOARD TOÀN BỘ PHÂN HỆ</h3><p>Mỗi thẻ hiển thị số liệu tổng hợp thực tế và mở thẳng phân hệ khi cần xử lý.</p></div>
-<div class="vnp-period-badge">NĂM <b id="ovYear">2026</b> · <b id="ovMonth">Tháng hiện tại</b></div>
-</div>
-<div class="vnp-module-dashboard-grid" id="overviewModuleGrid"></div>
-</section>
-<section class="office-schedule-workspace">
-<div class="office-schedule-hero">
-<div class="office-schedule-title">
-<span class="office-panel-kicker">VĂN PHÒNG ĐIỆN TỬ VINAPACO</span>
-<h2><i class="fa-solid fa-calendar-check"></i> LỊCH ĐIỀU HÀNH</h2>
-<p>Lịch công tác, cuộc họp, chỉ đạo và nhiệm vụ điều hành theo tuần.</p>
-</div>
-<div class="office-schedule-actions">
-<button class="mini-nav" onclick="officeChangeWeek(-1)" title="Tuần trước"><i class="fa-solid fa-chevron-left"></i></button>
-<div class="office-schedule-period"><b id="officeWeekLabel">Tuần hiện tại</b><span id="officeWeekRange">Đang tải tuần...</span></div>
-<button class="mini-nav" onclick="officeChangeWeek(1)" title="Tuần sau"><i class="fa-solid fa-chevron-right"></i></button>
-<button class="btn btn-green btn-lg" onclick="officeOpenScheduleForm()"><i class="fa-solid fa-calendar-plus"></i> THÊM LỊCH</button>
-<button class="btn btn-blue btn-lg" onclick="officeOpenScheduleList()"><i class="fa-solid fa-list"></i> DANH SÁCH</button>
-</div>
-</div>
-<div class="office-schedule-toolbar">
-<div class="office-schedule-toolbar-left"><span class="office-schedule-count"><i class="fa-solid fa-calendar-days"></i> <b id="officeWeekCount">0 lịch</b></span><span class="office-schedule-hint"><i class="fa-solid fa-circle-info"></i> Tổng hợp từ Lịch điều hành và Công việc.</span></div>
-<div class="office-schedule-legend"><span><i class="schedule-dot planned"></i> Dự kiến</span><span><i class="schedule-dot scheduled"></i> Đã lập lịch</span><span><i class="schedule-dot doing"></i> Đang thực hiện</span><span><i class="schedule-dot done"></i> Hoàn thành</span></div>
-</div>
-<div class="office-schedule-table-wrap">
-<table class="office-schedule-table"><thead><tr><th class="col-day">NGÀY</th><th class="col-time">THỜI GIAN</th><th>NỘI DUNG / CUỘC HỌP</th><th class="col-location">ĐỊA ĐIỂM</th><th class="col-host">CHỦ TRÌ</th><th class="col-participants">THÀNH PHẦN</th><th class="col-priority">MỨC ĐỘ</th><th class="col-status">TRẠNG THÁI</th></tr></thead><tbody id="officeWeeklyScheduleBody"></tbody></table>
-</div>
-<div class="office-schedule-footer"><span><i class="fa-solid fa-shield-halved"></i> Lịch điều hành được lưu theo hồ sơ trên thiết bị.</span><button class="office-text-btn" onclick="officeOpenScheduleList()">Mở toàn bộ lịch công tác <i class="fa-solid fa-arrow-right"></i></button></div>
-</section>
+
 <div aria-hidden="true" class="office-hidden-charts"><canvas id="salaryPieChart"></canvas><canvas id="overviewBarChart"></canvas><canvas id="overviewTaskPieChart"></canvas></div>
 </div>
 <!-- TAB DASHBOARD LƯƠNG TỪNG THÁNG -->
@@ -10560,6 +10574,8 @@ window.vnpPrintAllocationReportPreview=function(){
   const w=window.open('','_blank','width=1400,height=950');
   if(!w)return alert('Trình duyệt đang chặn cửa sổ in. Hãy cho phép pop-up.');
   w.document.write(`<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Báo cáo cấp phát OS & Office - VINAPACO</title>
+
+
 
 </head><body>${paper.outerHTML}
 

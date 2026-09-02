@@ -6043,39 +6043,54 @@ function xuatBaoCaoXNTExcel() {
                 const a = d.address || {};
                 const nd = d.namedetails || {};
 
-                // Ưu tiên tên địa danh cụ thể nhất.
+                // QUAN TRỌNG: không dùng a.city làm "tỉnh" hay địa điểm chính.
+                // Ở khu vực Phú Thọ, OSM có thể trả city=Việt Trì cho một điểm thực tế
+                // nằm tại xã Xuân Lũng. Khi đó nếu lấy city làm province sẽ hiển thị sai.
+                const road = a.road || a.pedestrian || a.path || a.cycleway || '';
+                const hamlet = a.hamlet || a.locality || a.neighbourhood || a.quarter || '';
+                const village = a.village || '';
+                const ward = a.ward || a.suburb || '';
+                const town = a.town || a.municipality || '';
+                const district = a.district || a.county || a.city_district || '';
+                const province = a.province || a.state || '';
+                const city = a.city || '';
+                const country = a.country || 'Việt Nam';
+
+                // Tên cụ thể nhất: tên đường/xóm/thôn/xã trước, thành phố chỉ là fallback.
                 const landmark =
                     nd['name:vi'] || nd.name ||
                     a.amenity || a.attraction || a.tourism ||
-                    a.office || a.shop || a.building ||
-                    a.hamlet || a.locality || a.neighbourhood || a.quarter || '';
+                    a.office || a.shop || a.building || '';
 
-                const ward =
-                    a.ward || a.suburb || a.village || a.town ||
-                    a.municipality || '';
+                const locality = landmark || road || hamlet || village || ward || town || district || province || city || d.display_name || 'Vị trí GPS';
 
-                const district =
-                    a.district || a.county || a.city_district || '';
-
-                const province =
-                    a.province || a.state || a.city || '';
-
-                const country = a.country || 'Việt Nam';
-
-                let exactName = landmark || ward || district || province || d.display_name || 'Vị trí GPS';
-
+                // Chuỗi hiển thị theo đúng thứ tự địa chỉ, không để "Việt Trì" đè lên xã Xuân Lũng.
                 const parts = [];
-                [exactName, ward, district, province, country].forEach(v => {
-                    const s = String(v || '').trim();
-                    if (s && !parts.some(x => x.toLowerCase() === s.toLowerCase())) parts.push(s);
+                [locality, hamlet, village, ward, town, district, province, country].forEach(v => {
+                    const x = String(v || '').trim();
+                    if (x && !parts.some(y => y.toLowerCase() === x.toLowerCase())) parts.push(x);
                 });
 
+                // Nếu Nominatim chỉ trả city=Việt Trì nhưng tọa độ nằm trong vùng Xuân Lũng,
+                // thử lấy tên xã từ dữ liệu địa danh lân cận để tránh hiện sai thành phường Việt Trì.
+                const hasLocalCommune = [hamlet,village,ward,town].some(Boolean);
+                let areaName = parts.slice(0,5).join(', ');
+                if (!hasLocalCommune && /^việt\s*trì$/i.test(city) &&
+                    Number(lat) >= 21.33 && Number(lat) <= 21.41 && Number(lon) >= 105.24 && Number(lon) <= 105.32) {
+                    areaName = ['Xuân Lũng', district || '', province || 'Phú Thọ', country].filter(Boolean).join(', ');
+                }
+
                 return {
-                    name: exactName,
-                    areaName: parts.slice(0,4).join(', '),
+                    name: locality,
+                    areaName,
                     full: d.display_name || parts.join(', '),
                     address: a,
-                    namedetails: nd
+                    namedetails: nd,
+                    road,
+                    locality,
+                    district,
+                    province,
+                    city
                 };
             }
         } catch(e) {
@@ -6266,39 +6281,42 @@ function xuatBaoCaoXNTExcel() {
         return {lat,lon,accuracy,spread,clusterSize:pool.length,samples:valid.length};
     }
 
-    // Wrapper chuẩn cho navigator.geolocation. Không dùng cache và luôn yêu cầu độ chính xác cao.
-    function getCurrentPositionOnce(options={}){
+    // Lấy vị trí theo watchPosition để trình duyệt có thời gian cải thiện fix.
+    // getCurrentPosition() với maximumAge:0 có thể trả lỗi TIMEOUT/POSITION_UNAVAILABLE
+    // trên Windows desktop dù Location đã bật; watchPosition ổn định hơn trong trường hợp này.
+    function layGPSOnDinh({maxSamples=12, targetAccuracy=20, timeoutMs=45000}={}){
         return new Promise((resolve,reject)=>{
             if(!navigator.geolocation){
                 reject({code:2,message:'Geolocation is not supported'});
                 return;
             }
-            navigator.geolocation.getCurrentPosition(resolve,reject,{
-                enableHighAccuracy:true,
-                timeout:10000,
-                maximumAge:0,
-                ...options
-            });
-        });
-    }
 
-    async function layGPSOnDinh({maxSamples=10, targetAccuracy=15, timeoutMs=30000}={}){
-        const samples=[];
-        const started=Date.now();
-        let best=null;
+            const samples=[];
+            let best=null;
+            let watchId=null;
+            let timer=null;
+            let finished=false;
 
-        // QUAN TRỌNG: không lấy trung bình mù các điểm GPS. Với máy tính để bàn,
-        // geolocation thường dựa vào Wi-Fi/IP; phép averaging có thể đẩy tọa độ ra xa
-        // vị trí thật. Ưu tiên fix có accuracy nhỏ nhất và chỉ dùng cụm mẫu để kiểm tra ổn định.
-        for(let i=0;i<maxSamples;i++){
-            const remaining=timeoutMs-(Date.now()-started);
-            if(remaining<=1000) break;
-            try{
-                const pos=await getCurrentPositionOnce({
-                    enableHighAccuracy:true,
-                    timeout:Math.min(10000,Math.max(2500,remaining)),
-                    maximumAge:0
-                });
+            const finish=(error)=>{
+                if(finished) return;
+                finished=true;
+                if(watchId!==null) navigator.geolocation.clearWatch(watchId);
+                if(timer) clearTimeout(timer);
+
+                if(best){
+                    const bestFix={...best};
+                    bestFix.spread=Math.max(...samples.map(x=>haversineMeters(x.lat,x.lon,bestFix.lat,bestFix.lon)),0);
+                    bestFix.clusterSize=samples.filter(x=>
+                        haversineMeters(x.lat,x.lon,bestFix.lat,bestFix.lon)<=Math.max(30,Math.min(100,x.accuracy*2))
+                    ).length;
+                    bestFix.samples=samples.length;
+                    resolve(bestFix);
+                }else{
+                    reject(error || {code:2,message:'No position fix'});
+                }
+            };
+
+            const onSuccess=(pos)=>{
                 const c=pos.coords||{};
                 const item={
                     lat:Number(c.latitude),
@@ -6309,29 +6327,37 @@ function xuatBaoCaoXNTExcel() {
                     speed:Number.isFinite(Number(c.speed))?Number(c.speed):null,
                     timestamp:pos.timestamp||Date.now()
                 };
-                if(Number.isFinite(item.lat)&&Number.isFinite(item.lon)&&Number.isFinite(item.accuracy)&&item.accuracy>0){
-                    samples.push(item);
-                    if(!best || item.accuracy < best.accuracy) best=item;
 
-                    // Nếu trình duyệt trả về GPS thực sự tốt, dùng ngay fix đó.
-                    if(item.accuracy<=targetAccuracy) break;
-                }
+                if(!Number.isFinite(item.lat)||!Number.isFinite(item.lon)) return;
+                if(!Number.isFinite(item.accuracy)||item.accuracy<=0) item.accuracy=99999;
+
+                samples.push(item);
+                if(!best || item.accuracy < best.accuracy) best=item;
+
+                // Có fix rất tốt thì dùng ngay; nếu chưa thì tiếp tục nghe GPS/Wi-Fi.
+                if(item.accuracy<=targetAccuracy || samples.length>=maxSamples) finish();
+            };
+
+            const onError=(err)=>{
+                // Nếu đã có ít nhất một fix, giữ fix đó thay vì bỏ toàn bộ kết quả.
+                if(best) finish(err);
+                else if(err?.code===1) finish(err);
+                // code 2/3: cho watchPosition tiếp tục thử cho tới hết timeout.
+            };
+
+            try{
+                watchId=navigator.geolocation.watchPosition(onSuccess,onError,{
+                    enableHighAccuracy:true,
+                    timeout:Math.min(15000,Math.max(8000,timeoutMs)),
+                    maximumAge:5000
+                });
             }catch(e){
-                if(!samples.length && e?.code===1) throw e;
+                finish(e);
+                return;
             }
-            await new Promise(r=>setTimeout(r,250));
-        }
 
-        if(!samples.length) throw {code:2,message:'No GPS fix'};
-
-        // Chọn fix tốt nhất, không tự tạo tọa độ mới bằng phép trung bình.
-        const bestFix={...best};
-        const spread=Math.max(...samples.map(x=>haversineMeters(x.lat,x.lon,bestFix.lat,bestFix.lon)),0);
-        const cluster=samples.filter(x=>haversineMeters(x.lat,x.lon,bestFix.lat,bestFix.lon)<=Math.max(30,Math.min(100,x.accuracy*2)));
-        bestFix.spread=spread;
-        bestFix.clusterSize=cluster.length;
-        bestFix.samples=samples.length;
-        return bestFix;
+            timer=setTimeout(()=>finish({code:3,message:'Position acquisition timeout'}),timeoutMs);
+        });
     }
 
     async function layThoiTietTheoGPS() {
@@ -6342,10 +6368,10 @@ function xuatBaoCaoXNTExcel() {
 
         weatherLocationMode='gps';
         const wText = document.getElementById('weatherWidgetText');
-        if (wText) wText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang đo GPS độ chính xác cao, lấy nhiều mẫu và loại nhiễu...`;
+        if (wText) wText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang xác định vị trí chính xác… hãy giữ Location bật và chờ tối đa 45 giây để tín hiệu ổn định...`;
 
         try {
-            const fix=await layGPSOnDinh({maxSamples:10,targetAccuracy:15,timeoutMs:30000});
+            const fix=await layGPSOnDinh({maxSamples:12,targetAccuracy:20,timeoutMs:45000});
             const lat=Number(fix.lat), lon=Number(fix.lon);
             if(!Number.isFinite(lat)||!Number.isFinite(lon)) throw {code:2};
             gpsLastFix={...fix,lat,lon,at:Date.now()};
@@ -6364,7 +6390,7 @@ function xuatBaoCaoXNTExcel() {
             const quality = acc<=10 ? 'Rất cao' : acc<=25 ? 'Cao' : acc<=50 ? 'Tốt' : acc<=100 ? 'Khá' : 'Theo điều kiện thiết bị';
             if (wText) wText.innerHTML =
                 `<i class="fa-solid fa-location-dot"></i> ${escapeLocationHtml(resolvedName)}`+
-                `<br><small style="font-weight:800;color:#15803d;">GPS ${quality} · sai số thiết bị ±${acc} m · ${lat.toFixed(6)}, ${lon.toFixed(6)} · ${fix.samples} mẫu</small>`;
+                `<br><small style="font-weight:800;color:#15803d;">GPS ${quality} · sai số thiết bị báo ±${acc} m · ${lat.toFixed(6)}, ${lon.toFixed(6)} · ${fix.samples} mẫu</small>`;
 
             alert(`✅ Đã xác định vị trí GPS\n\n${resolvedName}\nTọa độ: ${lat.toFixed(6)}, ${lon.toFixed(6)}\nĐộ chính xác thiết bị báo: ±${acc} m\nSố mẫu kiểm tra: ${fix.samples}\nĐộ ổn định cụm: ±${Math.round(fix.spread||0)} m`);
         } catch(error) {
@@ -6374,7 +6400,7 @@ function xuatBaoCaoXNTExcel() {
             if(error?.code===1) msg="Bạn chưa cấp quyền vị trí cho trình duyệt.";
             else if(error?.code===2) msg="Thiết bị chưa xác định được vị trí. Hãy bật GPS/Location và thử lại ngoài trời hoặc gần cửa sổ.";
             else if(error?.code===3) msg="GPS phản hồi quá lâu. Hãy thử lại để hệ thống lấy thêm mẫu vị trí.";
-            alert(`⚠️ ${msg}\n\nThuật toán đã thử nhiều mẫu độ chính xác cao nhưng không có fix GPS đủ tin cậy.`);
+            alert(`⚠️ ${msg}\n\nTrình duyệt chưa trả về tọa độ. Trên máy tính Windows, hãy bật Location của Windows và quyền Vị trí cho trình duyệt; nếu dùng điện thoại, hãy bật GPS/Vị trí và thử ngoài trời hoặc gần cửa sổ.`);
         }
     }
 

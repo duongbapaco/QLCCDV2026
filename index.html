@@ -1857,7 +1857,7 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
 .ink-report-paper .sign{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;text-align:center;margin-top:22px;page-break-inside:avoid}
 .ink-report-paper .sign-hint{font-size:11px;font-style:italic;font-weight:400;margin-top:3px}
 .ink-report-paper .sign-space{height:34px}
-.ink-report-paper .sign-name{font-weight:700;font-size:13px;line-height:1.1;min-height:1px}
+.ink-report-paper .sign-name{font-weight:700;font-size:13px;line-height:1.1}
 </style>
 </head>
 <body>
@@ -5530,7 +5530,7 @@ function taoHTMLBaoCaoTongHopKhoMuc(){
       ${rows.length?rows.map(x=>`<tr><td class="center">${x.stt}</td><td><b>${escapeLocationHtml(x.name)}</b></td><td>${escapeLocationHtml(x.printer||'—')}</td><td class="center">${x.dauKy}</td><td class="center">${x.nhap}</td><td class="center">${x.xuat}</td><td class="center"><b>${x.ton}</b></td><td class="center">${x.ton<=0?'Hết hàng':x.ton<=2?'Sắp hết':'Bình thường'}</td></tr>`).join(''):`<tr><td colspan="8" class="center">Chưa có dữ liệu kho.</td></tr>`}
       <tr class="total"><td colspan="3" style="text-align:right;">TỔNG CỘNG</td><td class="center">${tongD}</td><td class="center">${tongN}</td><td class="center">${tongX}</td><td class="center">${tongT}</td><td></td></tr></tbody></table>
       <div style="margin-top:10px;font-size:11pt;"><b>Ghi chú:</b> Tồn kho = Đầu kỳ + Nhập kho - Xuất kho. Phiếu được tổng hợp tự động từ dữ liệu sổ kho hiện có, phục vụ kiểm tra, giao nhận và đối chiếu vật tư.</div>
-      <div class="sign"><div><b>NGƯỜI LẬP PHIẾU</b><div class="sign-hint">(Ký, ghi rõ họ tên)</div><div class="sign-space"></div><div class="sign-name"></div></div><div><b>NGƯỜI GIAO / PHỤ TRÁCH KHO</b><div class="sign-hint">(Ký, ghi rõ họ tên)</div><div class="sign-space"></div><div class="sign-name"></div></div><div><b>NGƯỜI NHẬN / XÁC NHẬN</b><div class="sign-hint">(Ký, ghi rõ họ tên)</div><div class="sign-space"></div><div class="sign-name"></div></div></div>
+      <div class="sign"><div><b>NGƯỜI LẬP PHIẾU</b><div class="sign-hint">(Ký, ghi rõ họ tên)</div><div class="sign-space"></div><div class="sign-name">................................</div></div><div><b>NGƯỜI GIAO / PHỤ TRÁCH KHO</b><div class="sign-hint">(Ký, ghi rõ họ tên)</div><div class="sign-space"></div><div class="sign-name">................................</div></div><div><b>NGƯỜI NHẬN / XÁC NHẬN</b><div class="sign-hint">(Ký, ghi rõ họ tên)</div><div class="sign-space"></div><div class="sign-name">................................</div></div></div>
     </div>`;
 }
 function xemBaoCaoTongHopKhoMuc(){const c=document.getElementById('baoCaoTongHopKhoMucContent');if(c)c.innerHTML=taoHTMLBaoCaoTongHopKhoMuc();document.getElementById('modalBaoCaoTongHopKhoMuc')?.classList.remove('hidden');}
@@ -6266,45 +6266,72 @@ function xuatBaoCaoXNTExcel() {
         return {lat,lon,accuracy,spread,clusterSize:pool.length,samples:valid.length};
     }
 
-    async function layGPSOnDinh({maxSamples=7, targetAccuracy=20, timeoutMs=18000}={}){
+    // Wrapper chuẩn cho navigator.geolocation. Không dùng cache và luôn yêu cầu độ chính xác cao.
+    function getCurrentPositionOnce(options={}){
+        return new Promise((resolve,reject)=>{
+            if(!navigator.geolocation){
+                reject({code:2,message:'Geolocation is not supported'});
+                return;
+            }
+            navigator.geolocation.getCurrentPosition(resolve,reject,{
+                enableHighAccuracy:true,
+                timeout:10000,
+                maximumAge:0,
+                ...options
+            });
+        });
+    }
+
+    async function layGPSOnDinh({maxSamples=10, targetAccuracy=15, timeoutMs=30000}={}){
         const samples=[];
         const started=Date.now();
         let best=null;
 
-        // Lấy mẫu độc lập để không bị phụ thuộc cache vị trí cũ.
+        // QUAN TRỌNG: không lấy trung bình mù các điểm GPS. Với máy tính để bàn,
+        // geolocation thường dựa vào Wi-Fi/IP; phép averaging có thể đẩy tọa độ ra xa
+        // vị trí thật. Ưu tiên fix có accuracy nhỏ nhất và chỉ dùng cụm mẫu để kiểm tra ổn định.
         for(let i=0;i<maxSamples;i++){
-            const remaining=Math.max(2500,timeoutMs-(Date.now()-started));
+            const remaining=timeoutMs-(Date.now()-started);
+            if(remaining<=1000) break;
             try{
                 const pos=await getCurrentPositionOnce({
                     enableHighAccuracy:true,
-                    timeout:Math.min(7000,remaining),
+                    timeout:Math.min(10000,Math.max(2500,remaining)),
                     maximumAge:0
                 });
                 const c=pos.coords||{};
                 const item={
-                    lat:Number(c.latitude),lon:Number(c.longitude),
-                    accuracy:Number(c.accuracy)||999999,
+                    lat:Number(c.latitude),
+                    lon:Number(c.longitude),
+                    accuracy:Number(c.accuracy),
                     altitude:Number.isFinite(Number(c.altitude))?Number(c.altitude):null,
                     heading:Number.isFinite(Number(c.heading))?Number(c.heading):null,
                     speed:Number.isFinite(Number(c.speed))?Number(c.speed):null,
                     timestamp:pos.timestamp||Date.now()
                 };
-                if(Number.isFinite(item.lat)&&Number.isFinite(item.lon)){
+                if(Number.isFinite(item.lat)&&Number.isFinite(item.lon)&&Number.isFinite(item.accuracy)&&item.accuracy>0){
                     samples.push(item);
-                    const consensus=weightedGpsConsensus(samples);
-                    if(consensus && (!best || consensus.accuracy<best.accuracy || consensus.clusterSize>best.clusterSize)) best=consensus;
-                    // Nếu đã có fix rất tốt và các mẫu đang hội tụ, dừng sớm.
-                    if(consensus && consensus.accuracy<=targetAccuracy && consensus.clusterSize>=2 && consensus.spread<=Math.max(30,targetAccuracy*2)) break;
+                    if(!best || item.accuracy < best.accuracy) best=item;
+
+                    // Nếu trình duyệt trả về GPS thực sự tốt, dùng ngay fix đó.
+                    if(item.accuracy<=targetAccuracy) break;
                 }
             }catch(e){
                 if(!samples.length && e?.code===1) throw e;
-                // Một lần timeout/position unavailable không làm hỏng toàn bộ chuỗi lấy mẫu.
             }
-            if(Date.now()-started>=timeoutMs) break;
-            await new Promise(r=>setTimeout(r,180));
+            await new Promise(r=>setTimeout(r,250));
         }
-        if(!samples.length) throw {code:2, message:'No GPS fix'};
-        return weightedGpsConsensus(samples) || best;
+
+        if(!samples.length) throw {code:2,message:'No GPS fix'};
+
+        // Chọn fix tốt nhất, không tự tạo tọa độ mới bằng phép trung bình.
+        const bestFix={...best};
+        const spread=Math.max(...samples.map(x=>haversineMeters(x.lat,x.lon,bestFix.lat,bestFix.lon)),0);
+        const cluster=samples.filter(x=>haversineMeters(x.lat,x.lon,bestFix.lat,bestFix.lon)<=Math.max(30,Math.min(100,x.accuracy*2)));
+        bestFix.spread=spread;
+        bestFix.clusterSize=cluster.length;
+        bestFix.samples=samples.length;
+        return bestFix;
     }
 
     async function layThoiTietTheoGPS() {
@@ -6318,7 +6345,7 @@ function xuatBaoCaoXNTExcel() {
         if (wText) wText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang đo GPS độ chính xác cao, lấy nhiều mẫu và loại nhiễu...`;
 
         try {
-            const fix=await layGPSOnDinh({maxSamples:7,targetAccuracy:20,timeoutMs:18000});
+            const fix=await layGPSOnDinh({maxSamples:10,targetAccuracy:15,timeoutMs:30000});
             const lat=Number(fix.lat), lon=Number(fix.lon);
             if(!Number.isFinite(lat)||!Number.isFinite(lon)) throw {code:2};
             gpsLastFix={...fix,lat,lon,at:Date.now()};

@@ -10434,7 +10434,11 @@ let licenses=JSON.parse(localStorage.getItem(KEY)||'null')||[
 ];
 let allocations=JSON.parse(localStorage.getItem(AKEY)||'null')||[];
 let audit=JSON.parse(localStorage.getItem(HKEY)||'null')||[];
+/* Cầu nối trạng thái cấp phát ra global để các lớp giao diện nâng cấp bên ngoài IIFE không bị lỗi 'licenses is not defined'. */
+window.licenses=licenses;
+window.allocations=allocations;
 function save(){localStorage.setItem(KEY,JSON.stringify(licenses));localStorage.setItem(AKEY,JSON.stringify(allocations));localStorage.setItem(HKEY,JSON.stringify(audit));try{if(typeof window.saveToLocalStorage==='function')window.saveToLocalStorage()}catch(e){}}
+window.vnpLicenseSave=save;
 function actor(){try{return window.vnpGetCurrentUser?.()?.fullName||window.vnpGetCurrentUser?.()?.email||'Người dùng hệ thống'}catch(e){return 'Người dùng hệ thống'}}
 function log(action,obj,detail){audit.unshift({time:new Date().toISOString(),action,obj,detail,actor:actor()});audit=audit.slice(0,500);save()}
 function allocatedCount(licId){return allocations.filter(a=>a.licenseId===licId&&a.status==='Đang sử dụng').length}
@@ -11044,7 +11048,7 @@ window.vnpSaveAllocation=function(){
   };
   oldSaveAlloc?.();
   const saved=idx>=0?allocations[idx]:allocations[0];
-  if(saved){Object.assign(saved,extra);save();vnpRenderAllocations();vnpRenderOverview();}
+  if(saved){Object.assign(saved,extra);window.vnpLicenseSave?.();vnpRenderAllocations();vnpRenderOverview();}
   if(d)d.value=toVNDate(d.value||'');if(e)e.value=isPermanent(e.value)?'Vĩnh viễn':toVNDate(e.value||'');
 };
 function formatLicenseDates(){
@@ -11824,5 +11828,78 @@ setInterval(renderOverview,15000);
   setInterval(formatVisibleLicenseDates,1200);
 })();
 </script>
-</body>
+\n<script id="vinapaco-license-date-final-hardening">
+(function(){
+  'use strict';
+  function pad(n){return String(n).padStart(2,'0')}
+  function vn(v){
+    const x=String(v??'').trim();
+    if(!x)return '';
+    if(/vĩnh\s*viễn|không\s*thời\s*hạn|perpetual|lifetime|forever/i.test(x))return 'Vĩnh viễn';
+    let m=x.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    if(m)return `${pad(m[3])}/${pad(m[2])}/${m[1]}`;
+    m=x.match(/^(\d{4})[/.](\d{1,2})[/.](\d{1,2})$/);
+    if(m)return `${pad(m[3])}/${pad(m[2])}/${m[1]}`;
+    m=x.match(/^(\d{1,2})[/.\-](\d{1,2})[/.\-](\d{4})$/);
+    if(m)return `${pad(m[1])}/${pad(m[2])}/${m[3]}`;
+    return x;
+  }
+  function iso(v){
+    const x=String(v??'').trim();
+    let m=x.match(/^(\d{1,2})[/.\-](\d{1,2})[/.\-](\d{4})$/);
+    if(m)return `${m[3]}-${pad(m[2])}-${pad(m[1])}`;
+    m=x.match(/^(\d{4})[/.\-](\d{1,2})[/.\-](\d{1,2})$/);
+    if(m)return `${m[1]}-${pad(m[2])}-${pad(m[3])}`;
+    return x;
+  }
+  function todayVN(){const d=new Date();return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}`}
+  function formatTables(){
+    document.querySelectorAll('#vnpLicAllocBody tr').forEach(tr=>{
+      if(tr.children[6])tr.children[6].textContent=vn(tr.children[6].textContent);
+      if(tr.children[7])tr.children[7].textContent=vn(tr.children[7].textContent);
+    });
+    document.querySelectorAll('#vnpLicLicenseBody tr').forEach(tr=>{if(tr.children[7])tr.children[7].textContent=vn(tr.children[7].textContent)});
+    document.querySelectorAll('#vnpLicRenewBody tr').forEach(tr=>{if(tr.children[6])tr.children[6].textContent=vn(tr.children[6].textContent)});
+  }
+  function bind(){
+    const d=document.getElementById('vnpAllocDate');
+    const e=document.getElementById('vnpAllocExpiry');
+    if(d){
+      d.type='text'; d.inputMode='numeric'; d.placeholder='DD/MM/YYYY';
+      if(!d.value)d.value=todayVN();
+      if(!d.dataset.vnFinalBound){
+        d.dataset.vnFinalBound='1';
+        d.addEventListener('change',()=>{if(d.value.trim())d.value=vn(d.value)});
+        d.addEventListener('blur',()=>{if(d.value.trim())d.value=vn(d.value)});
+      }
+    }
+    if(e){
+      e.type='text'; e.inputMode='numeric'; e.placeholder='DD/MM/YYYY hoặc Vĩnh viễn';
+      if(!e.dataset.vnFinalBound){
+        e.dataset.vnFinalBound='1';
+        e.addEventListener('change',()=>{if(e.value.trim())e.value=vn(e.value)});
+        e.addEventListener('blur',()=>{if(e.value.trim())e.value=vn(e.value)});
+      }
+    }
+    formatTables();
+  }
+  const oldOpen=window.vnpOpenAllocationForm;
+  window.vnpOpenAllocationForm=function(idx=-1){
+    if(typeof oldOpen==='function')oldOpen(idx);
+    setTimeout(bind,0);
+  };
+  const oldSave=window.vnpSaveAllocation;
+  window.vnpSaveAllocation=function(){
+    const d=document.getElementById('vnpAllocDate'),e=document.getElementById('vnpAllocExpiry');
+    if(d&&d.value.trim())d.value=iso(d.value);
+    if(e&&e.value.trim()&&!/vĩnh\s*viễn|không\s*thời\s*hạn|perpetual|lifetime|forever/i.test(e.value))e.value=iso(e.value);
+    const r=typeof oldSave==='function'?oldSave():false;
+    setTimeout(()=>{bind();formatTables()},20);
+    return r;
+  };
+  function boot(){bind();formatTables()}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(boot,100));
+  else setTimeout(boot,100);
+})();
+</script>\n</body>
 </html>

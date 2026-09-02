@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="vi">
 <head><style>
         :root {
@@ -4244,6 +4245,14 @@ body.vnp-fullscreen-module #telecomPaymentTab.active{
  #dashboardTab .vnp-module-metrics{grid-template-columns:repeat(3,minmax(0,1fr))!important}
 }
 </style>
+
+<style id="VINAPACO_HOME_TASK_GPS_CURRENCY_2026">
+/* ===== TRANG CHỦ: CÔNG VIỆC 3 CHỈ SỐ LỚN, RÕ ===== */
+.vnp-home-task-summary{background:#fff;border:1px solid #d7e0ea;border-radius:18px;padding:22px;margin:0 0 20px;box-shadow:0 6px 22px rgba(15,23,42,.06)}
+.vnp-home-task-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}.vnp-home-task-head span{font-size:11px;font-weight:900;letter-spacing:1px;color:#0284c7}.vnp-home-task-head h3{font-size:21px;font-weight:900;margin:4px 0;color:#0f172a}.vnp-home-task-head p{font-size:13px;color:#64748b;font-weight:600}.vnp-home-task-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.vnp-home-task-card{min-height:150px;border:1px solid #dbe4ee;border-radius:16px;background:#fff;padding:20px;display:flex;align-items:center;gap:16px;text-align:left;cursor:pointer;transition:.18s;box-shadow:0 4px 14px rgba(15,23,42,.05)}.vnp-home-task-card:hover{transform:translateY(-2px);box-shadow:0 9px 22px rgba(15,23,42,.1)}.vnp-home-task-icon{width:62px;height:62px;flex:0 0 62px;border-radius:16px;display:grid;place-items:center;font-size:25px}.vnp-home-task-card small{display:block;font-size:12px;font-weight:900;color:#64748b;letter-spacing:.35px}.vnp-home-task-card b{display:block;font-size:34px;line-height:1.08;margin:6px 0 3px;color:#0f172a}.vnp-home-task-card em{font-size:12px;font-style:normal;font-weight:700;color:#64748b}.vnp-home-task-card.total{border-left:6px solid #0284c7}.vnp-home-task-card.total .vnp-home-task-icon{background:#e0f2fe;color:#0369a1}.vnp-home-task-card.doing{border-left:6px solid #d97706}.vnp-home-task-card.doing .vnp-home-task-icon{background:#fef3c7;color:#b45309}.vnp-home-task-card.done{border-left:6px solid #16a34a}.vnp-home-task-card.done .vnp-home-task-icon{background:#dcfce7;color:#15803d}
+@media(max-width:900px){.vnp-home-task-grid{grid-template-columns:1fr 1fr}.vnp-home-task-card.done{grid-column:1/-1}.vnp-home-task-card{min-height:135px}.vnp-home-task-card b{font-size:30px}}
+@media(max-width:560px){.vnp-home-task-summary{padding:14px}.vnp-home-task-head h3{font-size:17px}.vnp-home-task-head p{font-size:12px}.vnp-home-task-grid{grid-template-columns:1fr}.vnp-home-task-card.done{grid-column:auto}.vnp-home-task-card{min-height:118px;padding:16px}.vnp-home-task-icon{width:52px;height:52px;flex-basis:52px;font-size:21px}.vnp-home-task-card b{font-size:28px}}
+</style>
 </head>
 <body><script id="vinapaco-v14-brand-setup-script">
 (function(){
@@ -4640,6 +4649,13 @@ body.vnp-fullscreen-module #telecomPaymentTab.active{
 <button class="btn btn-blue btn-lg" onclick="moKiemTraDuLieu()" type="button"><i class="fa-solid fa-shield-check"></i> KIỂM TRA DỮ LIỆU</button>
 </div>
 </section>
+<section class="vnp-home-task-summary" aria-label="Tổng quan công việc">
+<div class="vnp-home-task-head"><div><span>CÔNG VIỆC</span><h3><i class="fa-solid fa-list-check"></i> TIẾN ĐỘ CÔNG VIỆC TRÊN TRANG CHỦ</h3><p>Theo dõi ngay tổng số việc, việc đang thực hiện và việc đã hoàn thành.</p></div><button class="btn btn-blue btn-lg" onclick="switchTab('taskTab',document.querySelector('.tab-btn-nav[onclick*=taskTab]'))" type="button"><i class="fa-solid fa-arrow-right"></i> MỞ QUẢN LÝ CÔNG VIỆC</button></div>
+<div class="vnp-home-task-grid">
+<button class="vnp-home-task-card total" type="button" onclick="switchTab('taskTab',document.querySelector('.tab-btn-nav[onclick*=taskTab]'))"><span class="vnp-home-task-icon"><i class="fa-solid fa-layer-group"></i></span><div><small>TỔNG SỐ CÔNG VIỆC</small><b id="homeTaskTotal">0</b><em>Tất cả nhiệm vụ</em></div></button>
+<button class="vnp-home-task-card doing" type="button" onclick="switchTab('taskTab',document.querySelector('.tab-btn-nav[onclick*=taskTab]'))"><span class="vnp-home-task-icon"><i class="fa-solid fa-spinner"></i></span><div><small>ĐANG LÀM</small><b id="homeTaskDoing">0</b><em>Đang thực hiện</em></div></button>
+<button class="vnp-home-task-card done" type="button" onclick="switchTab('taskTab',document.querySelector('.tab-btn-nav[onclick*=taskTab]'))"><span class="vnp-home-task-icon"><i class="fa-solid fa-circle-check"></i></span><div><small>HOÀN THÀNH</small><b id="homeTaskDone">0</b><em>Đã hoàn tất</em></div></button>
+</div></section>
 <section class="vnp-overview-section">
 <div class="vnp-section-head">
 <div><span>TRUY CẬP PHÂN HỆ</span><h3><i class="fa-solid fa-table-cells-large"></i> CÁC PHÂN HỆ NGHIỆP VỤ</h3><p>Chọn trực tiếp phân hệ cần làm việc. Giao diện được ưu tiên chữ lớn, khoảng cách thoáng và thao tác nhanh.</p></div>
@@ -8781,84 +8797,58 @@ body.vnp-fullscreen-module #telecomPaymentTab.active{
 
     async function layThoiTietTheoGPS() {
         weatherLocationMode = 'gps';
-        if (!navigator.geolocation) {
-            alert("Trình duyệt không hỗ trợ định vị GPS.");
-            return;
-        }
-
+        if (!navigator.geolocation) { alert("Trình duyệt không hỗ trợ định vị GPS."); return; }
         const wText = document.getElementById('weatherWidgetText');
-        if (wText) wText.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lấy tọa độ GPS chính xác nhất...';
+        if (wText) wText.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang định vị chính xác nhất…';
 
-        // Không dùng vị trí cũ của trình duyệt. Lấy nhiều mẫu GPS và chọn mẫu
-        // có sai số (accuracy) nhỏ nhất để hạn chế trường hợp desktop/Wi-Fi trả về vị trí gần đúng.
-        const samples = [];
-        const addSample = (pos) => {
-            const lat = Number(pos?.coords?.latitude);
-            const lon = Number(pos?.coords?.longitude);
-            const accuracy = Number(pos?.coords?.accuracy);
-            if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
-            samples.push({ lat, lon, accuracy: Number.isFinite(accuracy) ? accuracy : 999999, ts: Date.now() });
+        // Thuật toán định vị đa mẫu: lấy mẫu mới hoàn toàn, loại ngoại lai theo khoảng cách
+        // và tính tâm có trọng số theo accuracy. Không thể tạo độ chính xác vượt phần cứng.
+        const samples=[]; let watchId=null;
+        const addSample=pos=>{
+            const c=pos?.coords||{},lat=Number(c.latitude),lon=Number(c.longitude),acc=Number(c.accuracy);
+            if(!Number.isFinite(lat)||!Number.isFinite(lon)) return;
+            samples.push({lat,lon,accuracy:Number.isFinite(acc)&&acc>0?acc:999999,ts:Date.now()});
+            if(samples.length>40) samples.shift();
         };
-        const bestSample = () => samples.reduce((best, x) => !best || x.accuracy < best.accuracy ? x : best, null);
-        const getPos = options => new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, options));
-
-        let watchId = null;
+        const getPos=options=>new Promise((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,options));
+        const haversine=(a,b)=>{const R=6371000,toRad=x=>x*Math.PI/180,dLat=toRad(b.lat-a.lat),dLon=toRad(b.lon-a.lon),q=Math.sin(dLat/2)**2+Math.cos(toRad(a.lat))*Math.cos(toRad(b.lat))*Math.sin(dLon/2)**2;return 2*R*Math.asin(Math.sqrt(q));};
+        const median=a=>{if(!a.length)return null;const z=[...a].sort((x,y)=>x-y);return z[Math.floor(z.length/2)];};
+        const estimate=()=>{
+            if(!samples.length)return null;
+            const lat0=median(samples.map(x=>x.lat)),lon0=median(samples.map(x=>x.lon));
+            const center={lat:lat0,lon:lon0};
+            const inliers=samples.filter(x=>haversine(center,x)<=Math.max(30,Math.min(250,x.accuracy*2.5)));
+            const pool=inliers.length>=2?inliers:samples;
+            let sw=0,slat=0,slon=0;
+            pool.forEach(x=>{const a=Math.max(3,Math.min(250,x.accuracy));const w=1/(a*a);sw+=w;slat+=x.lat*w;slon+=x.lon*w;});
+            const lat=slat/sw,lon=slon/sw;
+            const spread=pool.reduce((m,x)=>Math.max(m,haversine({lat,lon},x)),0);
+            const reported=Math.min(...pool.map(x=>x.accuracy));
+            return {lat,lon,accuracy:Math.max(reported,Math.min(spread,reported*2.2)),samples:pool.length};
+        };
+        const show=(p,live=false)=>{if(!p||!wText)return;wText.innerHTML=`<i class="fa-solid fa-location-dot"></i> Đang xác định vị trí…<br><small style="font-weight:800;color:#15803d;">${p.lat.toFixed(6)}, ${p.lon.toFixed(6)} · ±${Math.round(p.accuracy)} m${live?' · đang tinh chỉnh':''}</small>`;};
         try {
-            // Lấy mẫu đầu tiên, tuyệt đối không dùng cache.
-            try { addSample(await getPos({ enableHighAccuracy:true, timeout:30000, maximumAge:0 })); } catch(e) {}
-
-            // Thu thập thêm mẫu trong tối đa 12 giây; dừng sớm nếu đạt <= 10 m.
-            await new Promise(resolve => {
-                const finish = () => { if (watchId !== null) { try { navigator.geolocation.clearWatch(watchId); } catch(e) {} watchId = null; } resolve(); };
-                const deadline = setTimeout(finish, 12000);
-                watchId = navigator.geolocation.watchPosition(pos => {
-                    addSample(pos);
-                    const best = bestSample();
-                    if (best && best.accuracy <= 10) {
-                        clearTimeout(deadline);
-                        finish();
-                    }
-                }, () => {}, { enableHighAccuracy:true, timeout:30000, maximumAge:0 });
+            // Mẫu đầu tiên: hiển thị ngay, không dùng cache.
+            try { const p=await getPos({enableHighAccuracy:true,timeout:15000,maximumAge:0}); addSample(p); show(estimate(),true); } catch(e) {}
+            // Tinh chỉnh liên tục bằng nhiều mẫu trong tối đa 15 giây; dừng sớm khi đạt chất lượng tốt.
+            await new Promise(resolve=>{
+                const deadline=setTimeout(finish,15000);
+                function finish(){clearTimeout(deadline);if(watchId!==null){try{navigator.geolocation.clearWatch(watchId)}catch(e){}watchId=null}resolve();}
+                watchId=navigator.geolocation.watchPosition(pos=>{addSample(pos);const e=estimate();show(e,true);if(e&&e.accuracy<=5&&e.samples>=3)finish()},()=>{}, {enableHighAccuracy:true,timeout:15000,maximumAge:0});
             });
-
-            // Nếu chưa có mẫu, thử lần cuối với timeout dài hơn.
-            if (!samples.length) {
-                try { addSample(await getPos({ enableHighAccuracy:true, timeout:45000, maximumAge:0 })); } catch(e) {}
-            }
-            const best = bestSample();
-            if (!best) throw new Error('NO_POSITION');
-
-            const lat = best.lat, lon = best.lon;
-            const acc = Math.round(best.accuracy);
-            // Giữ nguyên tọa độ GPS; reverse-geocode chỉ dùng để lấy tên địa điểm.
-            let resolvedName = 'Vị trí GPS';
-            try {
-                const rg = await reverseGeocodeVietNam(lat, lon);
-                resolvedName = rg.areaName || rg.name || resolvedName;
-            } catch(e) {}
-
-            cachedWeatherCoords = { lat, lon, cityName: resolvedName };
-            await capNhatThoiTiet(lat, lon, resolvedName);
-            await capNhatThoiTiet10Ngay(lat, lon, resolvedName);
-
-            if (wText) wText.innerHTML =
-                `<i class="fa-solid fa-location-dot"></i> ${escapeLocationHtml(resolvedName)}<br>` +
-                `<small style="font-weight:800;color:#15803d;">GPS: ${lat.toFixed(6)}, ${lon.toFixed(6)} · Sai số thiết bị báo ±${acc} m</small>`;
-
-            if (acc > 100) {
-                alert(`⚠️ Đã lấy được vị trí GPS nhưng độ chính xác hiện tại còn thấp.\n\n${resolvedName}\nTọa độ: ${lat.toFixed(6)}, ${lon.toFixed(6)}\nSai số thiết bị báo: ±${acc} m\n\nĐể đạt độ chính xác cao hơn trên máy tính, hãy bật Location/GPS và cho phép Chrome truy cập vị trí; nếu có thể, sử dụng Wi‑Fi/GPS thay vì mạng LAN/VPN.`);
-            } else {
-                alert(`✅ Đã lấy vị trí GPS tốt nhất\n\n${resolvedName}\nTọa độ: ${lat.toFixed(6)}, ${lon.toFixed(6)}\nSai số thiết bị báo: ±${acc} m`);
-            }
-        } catch(error) {
-            if (watchId !== null) { try { navigator.geolocation.clearWatch(watchId); } catch(e) {} }
-            if (wText) wText.innerHTML = 'Không thể lấy tọa độ GPS.';
-            let msg = "Không thể truy cập GPS.";
-            if (error?.code === 1) msg = "Bạn chưa cấp quyền vị trí cho trình duyệt.";
-            else if (error?.code === 2) msg = "Thiết bị chưa xác định được vị trí. Hãy bật Location/GPS và kiểm tra Wi‑Fi.";
-            else if (error?.code === 3) msg = "GPS phản hồi quá lâu. Hãy thử lại ở nơi có tín hiệu tốt hơn.";
-            else if (error?.message === 'NO_POSITION') msg = "Không nhận được tọa độ từ thiết bị.";
-            alert(`⚠️ ${msg}\n\nTrên máy tính để bàn, độ chính xác phụ thuộc vào phần cứng GPS/Wi‑Fi và quyền vị trí của Chrome; hệ thống không thể tự tạo tọa độ chính xác hơn dữ liệu trình duyệt cung cấp.`);
+            if(!samples.length){const p=await getPos({enableHighAccuracy:true,timeout:30000,maximumAge:0});addSample(p);}
+            const best=estimate(); if(!best) throw new Error('NO_POSITION');
+            const lat=best.lat,lon=best.lon,acc=Math.round(best.accuracy);
+            let resolvedName='Vị trí GPS'; try{const rg=await reverseGeocodeVietNam(lat,lon);resolvedName=rg.areaName||rg.name||resolvedName}catch(e){}
+            cachedWeatherCoords={lat,lon,cityName:resolvedName};
+            await capNhatThoiTiet(lat,lon,resolvedName); await capNhatThoiTiet10Ngay(lat,lon,resolvedName);
+            if(wText)wText.innerHTML=`<i class="fa-solid fa-location-dot"></i> ${escapeLocationHtml(resolvedName)}<br><small style="font-weight:900;color:#15803d;">GPS tối ưu: ${lat.toFixed(6)}, ${lon.toFixed(6)} · Sai số thiết bị ±${acc} m · ${best.samples} mẫu</small>`;
+            if(acc>100) alert(`⚠️ Đã lấy vị trí GPS, nhưng thiết bị đang báo sai số cao.\n\n${resolvedName}\nTọa độ: ${lat.toFixed(6)}, ${lon.toFixed(6)}\nSai số ước tính: ±${acc} m\n\nĐộ chính xác thực tế phụ thuộc GPS/Wi‑Fi và phần cứng thiết bị.`);
+        } catch(error){
+            if(watchId!==null){try{navigator.geolocation.clearWatch(watchId)}catch(e){}}
+            if(wText)wText.innerHTML='Không thể lấy tọa độ GPS.';
+            let msg='Không thể truy cập GPS.';if(error?.code===1)msg='Bạn chưa cấp quyền vị trí cho trình duyệt.';else if(error?.code===2)msg='Thiết bị chưa xác định được vị trí. Hãy bật Location/GPS và Wi‑Fi.';else if(error?.code===3)msg='GPS phản hồi quá lâu. Hãy thử lại ở nơi có tín hiệu tốt hơn.';else if(error?.message==='NO_POSITION')msg='Không nhận được tọa độ từ thiết bị.';
+            alert(`⚠️ ${msg}\n\nHệ thống không thể tự tạo tọa độ chính xác hơn tín hiệu vị trí mà trình duyệt/thiết bị cung cấp.`);
         }
     }
 
@@ -9764,7 +9754,7 @@ document.addEventListener('DOMContentLoaded',function(){
 </script><script>
 /* ===== CHỨNG TỪ KHO THEO MẪU 01-VT / 02-VT - THÔNG TƯ 99/2025/TT-BTC ===== */
 function soTienBangChuVN(n){
-  n=Math.round(Number(n)||0); if(n===0)return 'Không đồng';
+  n=Math.round(Number(n)||0); if(n===0)return 'Không';
   const dv=['','một','hai','ba','bốn','năm','sáu','bảy','tám','chín'];
   const read3=(x)=>{
     let tr=Math.floor(x/100),ch=Math.floor((x%100)/10),dvx=x%10,a=[];
@@ -9775,7 +9765,7 @@ function soTienBangChuVN(n){
   };
   const units=['',' nghìn',' triệu',' tỷ',' nghìn tỷ',' triệu tỷ'];let parts=[],i=0;
   while(n>0){const x=n%1000;if(x)parts.unshift(read3(x)+units[i]);n=Math.floor(n/1000);i++;}
-  return parts.join(' ').replace(/\s+/g,' ').trim()+' đồng';
+  return parts.join(' ').replace(/\s+/g,' ').trim()+' VNĐ';
 }
 
 window.inPhieuNhapKhoTongHop=function(supplierFilter=''){
@@ -11620,19 +11610,19 @@ function renderOverview(){
  $('ovSalary')&&($('ovSalary').textContent=money(sal.annual)); $('ovSalarySub')&&($('ovSalarySub').textContent='Lũy kế '+year());
  $('ovPayment')&&($('ovPayment').textContent=money(pay.total)); $('ovPaymentSub')&&($('ovPaymentSub').textContent=pay.n+' hồ sơ thanh toán');
  $('ovLicense')&&($('ovLicense').textContent=money(lic.ls.length)); $('ovLicenseSub')&&($('ovLicenseSub').textContent=lic.seats+' seat');
- $('ovTask')&&($('ovTask').textContent=tsk.pct+'%'); $('ovTaskSub')&&($('ovTaskSub').textContent=tsk.done+'/'+tsk.n+' hoàn thành');
+ $('ovTask')&&($('ovTask').textContent=tsk.pct+'%'); $('ovTaskSub')&&($('ovTaskSub').textContent=tsk.done+'/'+tsk.n+' hoàn thành'); $('homeTaskTotal')&&($('homeTaskTotal').textContent=money(tsk.n)); $('homeTaskDoing')&&($('homeTaskDoing').textContent=money(tsk.doing)); $('homeTaskDone')&&($('homeTaskDone').textContent=money(tsk.done));
  let alerts=tsk.over+lic.exp+lv.pending+(ink.stock<0?1:0); $('ovAlerts')&&($('ovAlerts').textContent=money(alerts));
 
  const modules=[
- {tab:'monthlySalaryDashboardTab',icon:'fa-solid fa-money-bill-trend-up',name:'Lương tháng',desc:'Quỹ lương & chuyển khoản',metrics:[{v:money(sal.net)+' đ',l:'NET tháng'},{v:money(sal.lcv)+' đ',l:'Lương CV'},{v:money(sal.ded)+' đ',l:'Khấu trừ'}],status:'Đang tổng hợp',statusClass:'good'},
+ {tab:'monthlySalaryDashboardTab',icon:'fa-solid fa-money-bill-trend-up',name:'Lương tháng',desc:'Quỹ lương & chuyển khoản',metrics:[{v:money(sal.net)+' VNĐ',l:'NET tháng'},{v:money(sal.lcv)+' VNĐ',l:'Lương CV'},{v:money(sal.ded)+' VNĐ',l:'Khấu trừ'}],status:'Đang tổng hợp',statusClass:'good'},
  {tab:'accountManagerTab',icon:'fa-solid fa-users-gear',name:'Tài khoản',desc:'Quản trị người dùng & quyền',metrics:[{v:ac.length,l:'Tài khoản'},{v:ac.filter(x=>x.active!==false&&x.status!=='Khóa').length,l:'Đang hoạt động'},{v:ac.filter(x=>/admin|quản trị/i.test(String(x.role||''))).length,l:'Quản trị'}],status:ac.length?'Đang quản lý':'Chưa có tài khoản',statusClass:ac.length?'good':'warn'},
  {tab:'timekeepingDetailTab',icon:'fa-solid fa-business-time',name:'Chấm công',desc:'Dữ liệu ngày công & giờ',metrics:[{v:tm.n,l:'Nhân sự'},{v:money(tm.days),l:'Ngày công'},{v:tm.avg.toFixed(1),l:'Bình quân/người'}],status:'Theo dõi tháng',statusClass:'good'},
  {tab:'staffMasterTab',icon:'fa-solid fa-users',name:'Nhân sự đầy đủ',desc:'Hồ sơ cán bộ hiện hành',metrics:[{v:st.length,l:'Nhân sự'},{v:new Set(st.map(x=>x.donVi||x.phongBan||x.boPhan).filter(Boolean)).size,l:'Đơn vị/Bộ phận'},{v:new Set(st.map(x=>x.chucVu).filter(Boolean)).size,l:'Chức danh'}],status:'Dữ liệu hiện hành',statusClass:'good'},
- {tab:'salaryCBTab',icon:'fa-solid fa-file-invoice-dollar',name:'Lương cơ bản',desc:'Danh mục và thực lĩnh LCB',metrics:[{v:st.length,l:'Nhân sự'},{v:money(st.reduce((a,x)=>a+(Number(x.tongLCB)||0),0))+' đ',l:'Tổng LCB'},{v:money(st.length?st.reduce((a,x)=>a+(Number(x.tongLCB)||0),0)/st.length:0)+' đ',l:'Bình quân'}],status:'Đã tính toán',statusClass:'good'},
- {tab:'salaryCVTab',icon:'fa-solid fa-briefcase',name:'Lương công việc',desc:'Lương theo hiệu suất',metrics:[{v:st.length,l:'Nhân sự'},{v:money(sal.lcv)+' đ',l:'LCV thực tế'},{v:money(st.reduce((a,x)=>a+(Number(x.luongCVGoc)||0),0))+' đ',l:'LCV gốc'}],status:'Gắn hiệu suất',statusClass:'good'},
+ {tab:'salaryCBTab',icon:'fa-solid fa-file-invoice-dollar',name:'Lương cơ bản',desc:'Danh mục và thực lĩnh LCB',metrics:[{v:st.length,l:'Nhân sự'},{v:money(st.reduce((a,x)=>a+(Number(x.tongLCB)||0),0))+' VNĐ',l:'Tổng LCB'},{v:money(st.length?st.reduce((a,x)=>a+(Number(x.tongLCB)||0),0)/st.length:0)+' VNĐ',l:'Bình quân'}],status:'Đã tính toán',statusClass:'good'},
+ {tab:'salaryCVTab',icon:'fa-solid fa-briefcase',name:'Lương công việc',desc:'Lương theo hiệu suất',metrics:[{v:st.length,l:'Nhân sự'},{v:money(sal.lcv)+' VNĐ',l:'LCV thực tế'},{v:money(st.reduce((a,x)=>a+(Number(x.luongCVGoc)||0),0))+' VNĐ',l:'LCV gốc'}],status:'Gắn hiệu suất',statusClass:'good'},
  {tab:'leaveTab',icon:'fa-solid fa-calendar-days',name:'Phép năm',desc:'Đăng ký, phê duyệt, theo dõi',metrics:[{v:lv.n,l:'Phiếu nghỉ'},{v:lv.pending,l:'Chờ xử lý'},{v:money(lv.days),l:'Ngày nghỉ'}],status:lv.pending?'Có phiếu chờ duyệt':'Không có phiếu chờ',statusClass:lv.pending?'warn':'good'},
- {tab:'officePaymentTab',icon:'fa-solid fa-file-invoice',name:'Thanh toán VP',desc:'Hồ sơ chi phí văn phòng',metrics:[{v:pay.n,l:'Hồ sơ'},{v:money(pay.total)+' đ',l:'Tổng thanh toán'},{v:money(pay.total/pay.n||0)+' đ',l:'Bình quân'}],status:'Theo dõi chi phí',statusClass:'good'},
- {tab:'telecomPaymentTab',icon:'fa-solid fa-wifi',name:'Cước viễn thông',desc:'Cước, hóa đơn & nhà mạng',metrics:[{v:tel.n,l:'Hồ sơ'},{v:money(tel.total)+' đ',l:'Tổng cước'},{v:tel.sup,l:'Nhà cung cấp'}],status:'Đã tổng hợp',statusClass:'good'},
+ {tab:'officePaymentTab',icon:'fa-solid fa-file-invoice',name:'Thanh toán VP',desc:'Hồ sơ chi phí văn phòng',metrics:[{v:pay.n,l:'Hồ sơ'},{v:money(pay.total)+' VNĐ',l:'Tổng thanh toán'},{v:money(pay.total/pay.n||0)+' VNĐ',l:'Bình quân'}],status:'Theo dõi chi phí',statusClass:'good'},
+ {tab:'telecomPaymentTab',icon:'fa-solid fa-wifi',name:'Cước viễn thông',desc:'Cước, hóa đơn & nhà mạng',metrics:[{v:tel.n,l:'Hồ sơ'},{v:money(tel.total)+' VNĐ',l:'Tổng cước'},{v:tel.sup,l:'Nhà cung cấp'}],status:'Đã tổng hợp',statusClass:'good'},
  {tab:'inkInventoryTab',icon:'fa-solid fa-warehouse',name:'Kho mực',desc:'Nhập · xuất · tồn · cấp phát',metrics:[{v:ink.tx.length,l:'Giao dịch'},{v:money(ink.stock)+' hộp',l:'Tồn ước tính'},{v:ink.exports,l:'Phiếu xuất'}],status:ink.stock<0?'Tồn kho bất thường':'Tồn kho theo dõi',statusClass:ink.stock<0?'danger':'good'},
  {tab:'deliverySlipTab',icon:'fa-solid fa-file-contract',name:'Giao nhận',desc:'Phiếu giao nhận & bàn giao',metrics:[{v:del.n,l:'Phiếu'},{v:del.done,l:'Đã hoàn tất'},{v:del.n-del.done,l:'Đang xử lý'}],status:del.n-del.done?'Cần theo dõi':'Đã hoàn tất',statusClass:del.n-del.done?'warn':'good'},
  {tab:'licenseManagerTab',icon:'fa-solid fa-certificate',name:'Bản quyền OS & Office',desc:'Kho · cấp phát · gia hạn',metrics:[{v:lic.ls.length,l:'Bản quyền'},{v:lic.seats,l:'Tổng seat'},{v:lic.allocated,l:'Đã cấp phát'}],status:lic.exp?'Có '+lic.exp+' bản quyền sắp hạn':'Chưa có cảnh báo 90 ngày',statusClass:lic.exp?'warn':'good'},

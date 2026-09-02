@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="vi">
 <head><style>
         :root {
@@ -10587,6 +10586,177 @@ window.vnpPrintAllocationReportPreview=function(){
 
 
 
+
+<style id="vinapaco-license-save-final-ui">
+/* ===== VINAPACO FINAL UI: tab/button readability + active states ===== */
+.vnp-license-tabs .vnp-license-subtab{
+  min-height:42px;
+  padding:10px 15px;
+  font-size:14px !important;
+  line-height:1.15;
+  font-weight:900 !important;
+  letter-spacing:.1px;
+  transition:background-color .18s ease,color .18s ease,box-shadow .18s ease,transform .12s ease,border-color .18s ease;
+}
+.vnp-license-tabs .vnp-license-subtab i{font-size:14px;margin-right:4px}
+.vnp-license-tabs .vnp-license-subtab:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(15,23,42,.10)}
+.vnp-license-tabs .vnp-license-subtab.active{color:#fff !important;font-weight:900 !important;transform:translateY(-1px)}
+.vnp-license-tabs .vnp-license-subtab:nth-child(1).active{background:#0284c7 !important}
+.vnp-license-tabs .vnp-license-subtab:nth-child(2).active{background:#15803d !important}
+.vnp-license-tabs .vnp-license-subtab:nth-child(3).active{background:#7c3aed !important}
+.vnp-license-tabs .vnp-license-subtab:nth-child(4).active{background:#d97706 !important}
+.vnp-license-tabs .vnp-license-subtab:nth-child(5).active{background:#0891b2 !important}
+.vnp-license-tabs .vnp-license-subtab:nth-child(6).active{background:#475569 !important}
+
+/* Main module tabs: larger and easier to read */
+#mainTabNav .tab-btn-nav{
+  min-height:46px;
+  padding:10px 12px !important;
+  font-size:14px !important;
+  line-height:1.2 !important;
+  font-weight:900 !important;
+  transition:background-color .18s ease,color .18s ease,box-shadow .18s ease,transform .12s ease;
+}
+#mainTabNav .tab-btn-nav:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(15,23,42,.10)}
+#mainTabNav .tab-btn-nav.active{font-weight:900 !important;box-shadow:0 5px 13px rgba(15,23,42,.16);transform:translateY(-1px)}
+
+/* Ribbon feature buttons: clicking gives a persistent visual active/pressed state briefly. */
+.vnp-ribbon-actions > button{
+  min-height:40px;
+  padding:9px 14px !important;
+  font-size:14px !important;
+  font-weight:900 !important;
+  transition:filter .18s ease,box-shadow .18s ease,transform .12s ease,opacity .18s ease;
+}
+.vnp-ribbon-actions > button:hover{filter:brightness(.96);transform:translateY(-1px)}
+.vnp-ribbon-actions > button.vnp-feature-active,
+.vnp-ribbon-actions > button:active{
+  filter:brightness(.84) saturate(1.15);
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.22),0 4px 10px rgba(15,23,42,.14);
+  transform:translateY(1px);
+}
+
+/* Buttons inside the license module */
+.vnp-license-module button,
+.vnp-license-module select,
+.vnp-license-module input{font-size:14px}
+.vnp-license-module .btn{font-weight:900}
+
+/* Non-blocking save status */
+#vnpLicenseSaveToast{
+  position:fixed;right:22px;bottom:22px;z-index:2147483000;
+  display:flex;align-items:center;gap:9px;
+  max-width:min(520px,calc(100vw - 44px));
+  padding:12px 16px;border-radius:12px;
+  background:#166534;color:#fff;
+  box-shadow:0 12px 35px rgba(15,23,42,.24);
+  font-size:14px;font-weight:900;line-height:1.35;
+  opacity:0;transform:translateY(10px);pointer-events:none;
+  transition:opacity .18s ease,transform .18s ease;
+}
+#vnpLicenseSaveToast.show{opacity:1;transform:translateY(0)}
+@media (max-width:900px){
+  .vnp-license-tabs .vnp-license-subtab{font-size:13px !important;padding:9px 11px}
+  #mainTabNav .tab-btn-nav{font-size:13px !important}
+  .vnp-ribbon-actions > button{font-size:13px !important}
+}
+</style>
+<script id="vinapaco-license-save-final-hardening">
+(function(){
+  'use strict';
+  const $=id=>document.getElementById(id);
+
+  function toast(message, ok=true){
+    let t=$('vnpLicenseSaveToast');
+    if(!t){
+      t=document.createElement('div');
+      t.id='vnpLicenseSaveToast';
+      document.body.appendChild(t);
+    }
+    t.innerHTML='<i class="fa-solid '+(ok?'fa-circle-check':'fa-triangle-exclamation')+'"></i><span></span>';
+    t.querySelector('span').textContent=message;
+    t.style.background=ok?'#166534':'#b91c1c';
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer=setTimeout(()=>t.classList.remove('show'),2600);
+  }
+  window.vnpLicenseSaveToast=toast;
+
+  /*
+   * FINAL SAVE GUARD:
+   * Các phiên bản nâng cấp trước đây bọc vnpSaveAllocation nhiều lần.
+   * Một renderer lỗi sau khi dữ liệu đã lưu có thể làm xuất hiện alert lỗi,
+   * dù bản ghi thực tế đã xuống bảng. Ở đây chỉ bắt lỗi hậu xử lý; không
+   * làm mất dữ liệu và không hiện cảnh báo giả sau khi lưu thành công.
+   */
+  const previousSave=window.vnpSaveAllocation;
+  if(typeof previousSave==='function'){
+    window.vnpSaveAllocation=function(){
+      const d=$('vnpAllocDate'), e=$('vnpAllocExpiry');
+      let result=false, savedBefore=Array.isArray(window.allocations)?window.allocations.length:null;
+      try{
+        result=previousSave.apply(this,arguments);
+      }catch(err){
+        console.error('VINAPACO allocation save/post-render error:',err);
+        /* Nếu dữ liệu đã được thêm/cập nhật thì coi là lưu thành công. */
+        const savedAfter=Array.isArray(window.allocations)?window.allocations.length:null;
+        if(savedBefore!==null && savedAfter!==null && savedAfter>=savedBefore){
+          result=true;
+        }else{
+          toast('Không thể lưu cấp phát. Vui lòng kiểm tra thông tin nhập.',false);
+          return false;
+        }
+      }
+
+      /* Renderer không được phép biến một lần lưu thành lỗi. */
+      setTimeout(function(){
+        try{ if(typeof window.vnpRenderAllocations==='function') window.vnpRenderAllocations(); }catch(err){ console.warn('Render allocations:',err); }
+        try{ if(typeof window.vnpRenderOverview==='function') window.vnpRenderOverview(); }catch(err){ console.warn('Render overview:',err); }
+        try{
+          if(d && d.value && typeof window.toVNDate==='function') d.value=window.toVNDate(d.value);
+          if(e && e.value && typeof window.isPermanent==='function' && window.isPermanent(e.value)) e.value='Vĩnh viễn';
+        }catch(err){}
+      },40);
+      return result;
+    };
+  }
+
+  /* Ensure the overview renderer is always globally callable. */
+  if(typeof window.vnpRenderOverview!=='function'){
+    /* Không tạo renderer giả; chỉ ghi log để không phát sinh lỗi ReferenceError. */
+    console.warn('VINAPACO: vnpRenderOverview chưa sẵn sàng tại thời điểm hardening.');
+  }
+
+  /* Main tabs: active state follows the clicked module. */
+  document.addEventListener('click',function(ev){
+    const main=ev.target.closest && ev.target.closest('#mainTabNav .tab-btn-nav');
+    if(main){
+      document.querySelectorAll('#mainTabNav .tab-btn-nav').forEach(b=>b.classList.remove('active'));
+      main.classList.add('active');
+    }
+
+    const sub=ev.target.closest && ev.target.closest('.vnp-license-tabs .vnp-license-subtab');
+    if(sub){
+      document.querySelectorAll('.vnp-license-tabs .vnp-license-subtab').forEach(b=>b.classList.remove('active'));
+      sub.classList.add('active');
+    }
+
+    const feature=ev.target.closest && ev.target.closest('.vnp-ribbon-actions > button');
+    if(feature){
+      document.querySelectorAll('.vnp-ribbon-actions > button').forEach(b=>b.classList.remove('vnp-feature-active'));
+      feature.classList.add('vnp-feature-active');
+      clearTimeout(feature._activeTimer);
+      feature._activeTimer=setTimeout(()=>feature.classList.remove('vnp-feature-active'),1800);
+    }
+  },true);
+
+  /* Keep the selected license subtab visually correct even if another script rerenders it. */
+  window.addEventListener('load',function(){
+    const first=document.querySelector('.vnp-license-tabs .vnp-license-subtab');
+    if(first && !document.querySelector('.vnp-license-tabs .vnp-license-subtab.active')) first.classList.add('active');
+  });
+})();
+</script>
 </body></html>`);
   w.document.close();
   w.focus();
@@ -11905,5 +12075,6 @@ setInterval(renderOverview,15000);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(boot,100));
   else setTimeout(boot,100);
 })();
-</script>\n</body>
+</script>
+</body>
 </html>

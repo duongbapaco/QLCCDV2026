@@ -1293,7 +1293,7 @@ body{font-size:14px!important;}
 .location-result-actions{display:flex;gap:6px;margin-top:7px}
 .location-result-actions button{border:0;border-radius:7px;padding:6px 8px;font-size:10.5px;font-weight:900;cursor:pointer}
 .location-result-actions .preview-location-btn{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
-.location-result-actions .pin-location-btn{background:#dcfce7;color:#166534;border:1px solid #86efac}
+.location-result-actions .pin-location-btn{background:#dcfce7;color:#166534;border:1px solid #86efac}.location-result-actions .pin-location-btn:active{transform:scale(.98);background:#bbf7d0}
 @media (max-width: 640px) {
     #inputModalSearchLocation, #inputWidgetSearchLocation {
         min-width:0 !important;
@@ -6838,8 +6838,9 @@ function xuatBaoCaoXNTExcel() {
     // Vị trí thời tiết là một "điểm khóa" độc lập với TAB/nội dung đang mở.
     // Sau khi người dùng chọn GPS hoặc chọn địa điểm thủ công, vị trí được lưu bền vững
     // vào localStorage và KHÔNG bị watchPosition tự động đổi nữa.
-    const WEATHER_LOCATION_STORAGE_KEY = 'vinapaco_weather_location_v2';
-    // Chỉ dùng cơ chế ghim mới v2. Không đọc/ghi các khóa ghim cũ.
+    const WEATHER_LOCATION_STORAGE_KEY = 'vinapaco_weather_location_v3';
+    // V3 là cơ chế ghim DUY NHẤT. Không đọc/ghi bất kỳ khóa ghim thời tiết cũ nào.
+    // Chỉ dùng cơ chế ghim mới v2. Không đọc/ghi các khóa ghim cũ; chỉ dùng V3.
     let weatherLocationMode = 'auto';
     let gpsLastFix = null;
 
@@ -6973,7 +6974,7 @@ function xuatBaoCaoXNTExcel() {
                 </div>
                 <div class="location-result-actions">
                     <button type="button" class="preview-location-btn" onclick="xemTamDiaDiemThoiTiet(${x.lat},${x.lon},${JSON.stringify(x.display).replace(/</g,'\u003c')})"><i class="fa-solid fa-eye"></i> XEM TẠM</button>
-                    <button type="button" class="pin-location-btn" onclick="chonDiaDiemThoiTiet(${x.lat},${x.lon},${JSON.stringify(x.display).replace(/</g,'\u003c')},true)"><i class="fa-solid fa-thumbtack"></i> CHỌN & GHIM</button>
+                    <button type="button" class="pin-location-btn" onclick="window.ghimDiaDiemMoi(${x.lat},${x.lon},${JSON.stringify(x.display).replace(/</g,'\u003c')})"><i class="fa-solid fa-thumbtack"></i> CHỌN & GHIM</button>
                 </div>
             </div>`).join('');
 
@@ -7085,31 +7086,88 @@ function xuatBaoCaoXNTExcel() {
     }
 
     // Bấm trực tiếp một kết quả = chọn đúng địa danh đó và GHIM làm vị trí mặc định.
-    async function chonDiaDiemThoiTiet(lat,lon,name,ghim=true){
-        await apDungDiaDiemThoiTiet(lat,lon,name,{pin:ghim!==false,reverse:true});
+    // ============================================================
+    // GHIM ĐỊA ĐIỂM V3 - CƠ CHẾ DUY NHẤT
+    // - Ghim trực tiếp tọa độ của kết quả người dùng bấm.
+    // - Không phụ thuộc vào cachedWeatherCoords hay cơ chế ghim cũ.
+    // - Xem tạm không bao giờ ghi đè điểm ghim.
+    // ============================================================
+    function ghiViTriGhimMoi(lat, lon, name, mode='manual', accuracy=null) {
+        lat=Number(lat); lon=Number(lon);
+        if(!Number.isFinite(lat)||!Number.isFinite(lon)) throw new Error('Tọa độ không hợp lệ');
+        const item={
+            lat, lon,
+            cityName:String(name||'Địa điểm đã ghim'),
+            mode: mode==='gps' ? 'gps' : 'manual',
+            accuracy:Number.isFinite(Number(accuracy)) ? Number(accuracy) : null,
+            savedAt:new Date().toISOString()
+        };
+        localStorage.setItem(WEATHER_LOCATION_STORAGE_KEY, JSON.stringify(item));
+        return item;
     }
 
-    // Xem một địa điểm khác mà không làm mất vị trí đã ghim.
-    async function xemTamDiaDiemThoiTiet(lat,lon,name){
-        await apDungDiaDiemThoiTiet(lat,lon,name,{pin:false,reverse:true});
+    function docViTriGhimMoi() {
+        try {
+            const x=JSON.parse(localStorage.getItem(WEATHER_LOCATION_STORAGE_KEY)||'null');
+            if(!x) return null;
+            const lat=Number(x.lat),lon=Number(x.lon);
+            if(!Number.isFinite(lat)||!Number.isFinite(lon)) return null;
+            return {...x,lat,lon,cityName:String(x.cityName||'Địa điểm đã ghim')};
+        } catch(e) { return null; }
     }
 
-    async function ghimDiaDiemDangXem(){
-        const c=cachedWeatherCoords||{};
-        if(!Number.isFinite(Number(c.lat))||!Number.isFinite(Number(c.lon))) return;
-        weatherLocationMode='manual';
-        luuViTriThoiTiet(Number(c.lat),Number(c.lon),c.cityName||'Địa điểm đã ghim','manual',null);
-        capNhatThanhDiaDiemDaGhim();
-    }
+    window.ghimDiaDiemMoi = async function(lat,lon,name){
+        try {
+            const item=ghiViTriGhimMoi(lat,lon,name,'manual',null);
+            // Khóa ngay lập tức bằng chính tọa độ vừa bấm, không để code cũ can thiệp.
+            weatherLocationMode='manual';
+            cachedWeatherCoords={lat:item.lat,lon:item.lon,cityName:item.cityName};
+            capNhatThanhDiaDiemDaGhim();
+            const boxes=['weatherLocationResults','weatherWidgetResults'];
+            boxes.forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='none';el.innerHTML='';}});
+            await Promise.allSettled([
+                capNhatThoiTiet(item.lat,item.lon,item.cityName),
+                capNhatThoiTiet10Ngay(item.lat,item.lon,item.cityName)
+            ]);
+            // Reverse chỉ để chuẩn hóa tên hiển thị; tọa độ ghim không thay đổi.
+            try {
+                const rg=await reverseGeocodeVietNam(item.lat,item.lon);
+                const resolved=rg?.areaName||rg?.name;
+                if(resolved && resolved!==item.cityName){
+                    const updated=ghiViTriGhimMoi(item.lat,item.lon,resolved,'manual',null);
+                    cachedWeatherCoords={lat:updated.lat,lon:updated.lon,cityName:updated.cityName};
+                    capNhatThanhDiaDiemDaGhim();
+                    await Promise.allSettled([capNhatThoiTiet(updated.lat,updated.lon,updated.cityName),capNhatThoiTiet10Ngay(updated.lat,updated.lon,updated.cityName)]);
+                }
+            } catch(e) {}
+        } catch(e) {
+            console.error('GHIM V3:',e);
+            alert('Không thể ghim địa điểm. Vui lòng thử lại.');
+        }
+    };
 
-    async function troVeDiaDiemDaGhim(){
-        const pin=taiViTriThoiTietDaLuu();
-        if(!pin){ alert('Chưa có địa điểm nào được ghim. Hãy tìm xã/phường/địa danh rồi bấm vào kết quả đúng.'); return; }
+    window.xemTamDiaDiemThoiTiet = async function(lat,lon,name){
+        lat=Number(lat);lon=Number(lon);
+        if(!Number.isFinite(lat)||!Number.isFinite(lon)) return;
+        weatherLocationMode='preview';
+        cachedWeatherCoords={lat,lon,cityName:name||'Địa điểm đang xem'};
+        ['weatherLocationResults','weatherWidgetResults'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='none';el.innerHTML='';}});
+        await Promise.allSettled([capNhatThoiTiet(lat,lon,cachedWeatherCoords.cityName),capNhatThoiTiet10Ngay(lat,lon,cachedWeatherCoords.cityName)]);
+    };
+
+    // Tương thích với mọi chỗ gọi tên cũ, nhưng luôn chuyển sang GHIM V3.
+    window.chonDiaDiemThoiTiet = window.ghimDiaDiemMoi;
+
+    window.troVeDiaDiemDaGhim = async function(){
+        const pin=docViTriGhimMoi();
+        if(!pin){ alert('Chưa có địa điểm nào được ghim. Hãy chọn CHỌN & GHIM.'); return; }
         weatherLocationMode=pin.mode||'manual';
         cachedWeatherCoords={lat:pin.lat,lon:pin.lon,cityName:pin.cityName};
         await Promise.allSettled([capNhatThoiTiet(pin.lat,pin.lon,pin.cityName),capNhatThoiTiet10Ngay(pin.lat,pin.lon,pin.cityName)]);
         capNhatThanhDiaDiemDaGhim();
-    }
+    };
+
+    window.ghimDiaDiemDangXem = window.ghimDiaDiemMoi;
 
     async function timKiemDiaDiemThoiTiet(query, targetId='weatherLocationResults', silent=false) {
         const cleanQ=String(query || '').trim();

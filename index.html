@@ -8763,8 +8763,9 @@ window.inAnPhieuHandover=function(){
   function toast(msg,ok=true){
     let t=document.getElementById('weatherPinV4Toast');
     if(!t){t=document.createElement('div');t.id='weatherPinV4Toast';t.style.cssText='position:fixed;right:18px;bottom:18px;z-index:99999;max-width:420px;padding:13px 16px;border-radius:12px;font-weight:900;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.18);color:#fff;';document.body.appendChild(t);}
-    t.style.background=ok?'#15803d':'#b91c1c'; t.textContent=msg; t.style.display='block';
-    clearTimeout(t.__timer); t.__timer=setTimeout(()=>t.style.display='none',3200);
+    t.style.background=ok?'#15803d':'#b91c1c'; t.textContent=msg; t.style.display='block'; t.style.opacity='1';
+    clearTimeout(t.__timer); clearTimeout(t.__fadeTimer);
+    t.__timer=setTimeout(()=>{ t.style.transition='opacity .35s ease'; t.style.opacity='0'; t.__fadeTimer=setTimeout(()=>{t.style.display='none';t.style.opacity='1';t.style.transition='';},380); },4000);
   }
 
   window.ghimDiaDiemMoi=async function(lat,lon,name){

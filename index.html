@@ -8940,5 +8940,93 @@ window.inAnPhieuHandover=function(){
   document.addEventListener('click',e=>{if(e.target.closest('[onclick*="moCapPhatBanQuyen"],[onclick*="moThuHoiBanQuyen"]'))setTimeout(bind,30)},true);
 })();
 </script>
+
+<!-- VINAPACO LICENSE ALLOCATION EDITOR V1 -->
+<style id="vinapaco-license-allocation-editor-css">
+#licenseAllocationManagerModal .license-modal-card{width:min(1180px,calc(100vw - 26px))!important;max-height:94vh!important;border-radius:18px!important;overflow:hidden;background:#fff;box-shadow:0 28px 75px rgba(15,23,42,.34)}
+#licenseAllocationManagerModal .lam-head{padding:18px 22px;background:linear-gradient(135deg,#0f3d63,#0369a1,#0ea5e9);color:#fff;display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+#licenseAllocationManagerModal .lam-head h2{font-size:20px;margin:0;font-weight:950}.lam-sub{font-size:12px;opacity:.9;margin-top:4px;font-weight:700}.lam-body{padding:18px 20px;overflow:auto;background:#f8fafc}.lam-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}.lam-stat{background:#fff;border:1px solid #dbe4ee;border-radius:11px;padding:11px 13px}.lam-stat span{display:block;font-size:10px;color:#64748b;font-weight:900;text-transform:uppercase}.lam-stat b{display:block;font-size:18px;margin-top:4px;color:#0f172a}.lam-toolbar{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}.lam-toolbar .note{font-size:12px;color:#475569;font-weight:750}.lam-table-wrap{overflow:auto;border:1px solid #cbd5e1;border-radius:12px;background:#fff}.lam-table{width:100%;min-width:1120px;border-collapse:collapse}.lam-table th{background:#eef6fb;color:#0f3d63;font-size:10.5px;font-weight:950;padding:10px 8px;white-space:nowrap}.lam-table td{padding:9px 8px;border-top:1px solid #e2e8f0;font-size:12px;vertical-align:middle}.lam-table tr:hover td{background:#f8fbff}.lam-person{font-weight:900;color:#0f172a}.lam-dept{font-weight:800;color:#075985}.lam-actions{display:flex;gap:5px;justify-content:center}.lam-actions button{border:0;border-radius:7px;padding:6px 9px;font-weight:900;cursor:pointer;font-size:11px}.lam-edit{background:#dbeafe;color:#1d4ed8}.lam-delete{background:#fee2e2;color:#b91c1c}.lam-master{background:#f1f5f9;color:#334155}.lam-empty{text-align:center;padding:28px!important;color:#64748b;font-weight:800}.lam-foot{padding:12px 20px;background:#fff;border-top:1px solid #e2e8f0;display:flex;justify-content:flex-end;gap:8px}
+#licenseAllocationEditModal .license-modal-card{width:min(820px,calc(100vw - 28px))!important;border-radius:17px!important;overflow:hidden}.lae-head{padding:17px 20px;background:linear-gradient(135deg,#14532d,#15803d,#22c55e);color:#fff;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.lae-head h2{margin:0;font-size:19px}.lae-body{padding:18px 20px;background:#f8fafc}.lae-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.lae-field{background:#fff;border:1px solid #dbe4ee;border-radius:10px;padding:10px}.lae-field.full{grid-column:1/-1}.lae-field label{display:block;font-size:10.5px;font-weight:950;color:#334155;text-transform:uppercase;margin-bottom:6px}.lae-field input,.lae-field textarea,.lae-field select{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:9px 10px;font-size:13px;font-weight:750;outline:none;background:#fff}.lae-field input:focus,.lae-field textarea:focus{border-color:#0284c7;box-shadow:0 0 0 3px rgba(2,132,199,.10)}.lae-actions{padding:12px 20px;border-top:1px solid #e2e8f0;background:#fff;display:flex;justify-content:flex-end;gap:8px}.lae-context{padding:10px 12px;border:1px solid #bae6fd;background:#f0f9ff;color:#075985;border-radius:9px;font-size:12px;font-weight:800;margin-bottom:12px}
+@media(max-width:760px){.lam-summary{grid-template-columns:1fr 1fr}.lae-grid{grid-template-columns:1fr}.lae-field.full{grid-column:auto}#licenseAllocationManagerModal .lam-head{padding:14px}.lam-body{padding:12px}}
+</style>
+<script id="vinapaco-license-allocation-editor-js">
+(function(){
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const get=id=>document.getElementById(id);
+  const value=id=>String(get(id)?.value??'').trim();
+  const set=(id,v)=>{const e=get(id);if(e)e.value=v??''};
+  const today=()=>{const d=new Date(),p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`};
+  let currentLicenseIndex=-1,currentAllocationIndex=-1;
+  const originalSuaBanQuyen=window.suaBanQuyen;
+
+  function ensureModals(){
+    if(!get('licenseAllocationManagerModal')){
+      const w=document.createElement('div');
+      w.innerHTML=`<div id="licenseAllocationManagerModal" class="modal-overlay hidden"><div class="license-modal-card">
+        <div class="lam-head"><div><h2><i class="fa-solid fa-users-gear"></i> QUẢN LÝ CHI TIẾT CẤP PHÁT</h2><div id="lamSubtitle" class="lam-sub"></div></div><button class="btn btn-red" type="button" onclick="dongQuanLyChiTietCapPhat()"><i class="fa-solid fa-xmark"></i></button></div>
+        <div class="lam-body"><div id="lamSummary" class="lam-summary"></div><div class="lam-toolbar"><div class="note"><i class="fa-solid fa-circle-info"></i> Mỗi dòng là một người/phòng ban đang được cấp bản quyền. Bấm <b>Sửa</b> đúng dòng cần thay đổi.</div><button id="lamEditMasterBtn" type="button" class="btn btn-blue"><i class="fa-solid fa-file-pen"></i> SỬA HỒ SƠ BẢN QUYỀN</button></div><div class="lam-table-wrap"><table class="lam-table"><thead><tr><th>STT</th><th>Người sử dụng</th><th>Phòng ban</th><th>Email/TK</th><th>Tên máy</th><th>Mã tài sản</th><th>Ngày cấp</th><th>SL</th><th>Ghi chú</th><th>Thao tác</th></tr></thead><tbody id="lamTableBody"></tbody></table></div></div>
+        <div class="lam-foot"><button class="btn btn-blue" type="button" onclick="dongQuanLyChiTietCapPhat()"><i class="fa-solid fa-check"></i> ĐÓNG</button></div>
+      </div></div>`;document.body.appendChild(w.firstElementChild);
+    }
+    if(!get('licenseAllocationEditModal')){
+      const w=document.createElement('div');
+      w.innerHTML=`<div id="licenseAllocationEditModal" class="modal-overlay hidden"><div class="license-modal-card">
+        <div class="lae-head"><div><h2><i class="fa-solid fa-user-pen"></i> SỬA THÔNG TIN CẤP PHÁT</h2><div class="lam-sub">Chỉnh riêng từng người sử dụng / từng phòng ban, không ảnh hưởng các lượt cấp khác.</div></div><button class="btn btn-red" type="button" onclick="dongSuaChiTietCapPhat()"><i class="fa-solid fa-xmark"></i></button></div>
+        <div class="lae-body"><div id="laeContext" class="lae-context"></div><div class="lae-grid">
+          <div class="lae-field"><label>Người sử dụng *</label><input id="laeUser" type="text"></div>
+          <div class="lae-field"><label>Phòng ban / đơn vị *</label><input id="laeDept" type="text"></div>
+          <div class="lae-field"><label>Email / tài khoản</label><input id="laeEmail" type="text"></div>
+          <div class="lae-field"><label>Tên máy / Hostname</label><input id="laeDevice" type="text"></div>
+          <div class="lae-field"><label>Mã tài sản / Serial</label><input id="laeAsset" type="text"></div>
+          <div class="lae-field"><label>Ngày cấp</label><input id="laeDate" type="date"></div>
+          <div class="lae-field"><label>Số lượng *</label><input id="laeQty" type="number" min="1" step="1"></div>
+          <div class="lae-field full"><label>Ghi chú</label><textarea id="laeNote" rows="3"></textarea></div>
+        </div></div>
+        <div class="lae-actions"><button class="btn btn-red" type="button" onclick="dongSuaChiTietCapPhat()">HỦY</button><button class="btn btn-green" type="button" onclick="luuSuaChiTietCapPhat()"><i class="fa-solid fa-floppy-disk"></i> LƯU THAY ĐỔI</button></div>
+      </div></div>`;document.body.appendChild(w.firstElementChild);
+    }
+  }
+
+  function refreshMasterFromAllocations(x){
+    x.allocations=Array.isArray(x.allocations)?x.allocations:[];
+    x.allocations=x.allocations.filter(a=>Number(a.qty)>0);
+    x.assignedQty=x.allocations.reduce((s,a)=>s+(Number(a.qty)||0),0);
+    const last=x.allocations[x.allocations.length-1];
+    x.assignee=last?.user||''; x.dept=last?.dept||''; x.device=last?.device||''; x.assigneeEmail=last?.email||'';
+    if(last?.asset)x.assetTag=last.asset;
+    x.status=x.assignedQty>0?'Assigned':'Available'; x.updatedAt=new Date().toISOString();
+  }
+  function logEdit(x,a,before){
+    try{
+      lichSuBanQuyen=Array.isArray(lichSuBanQuyen)?lichSuBanQuyen:[];
+      lichSuBanQuyen.unshift({id:'HIS-EDIT-'+Date.now(),time:new Date().toISOString(),action:'Sửa cấp phát',code:x.code,product:x.product,assignee:a.user||'',dept:a.dept||'',device:a.device||'',qty:Number(a.qty)||0,actor:(window.currentUser?.fullName||window.currentUser?.name||'Người quản trị'),note:`Cập nhật từ: ${before.user||'--'} / ${before.dept||'--'} / ${before.device||'--'}`});
+    }catch(e){}
+  }
+  function renderAllocationManager(){
+    const x=dsQuanLyBanQuyen?.[currentLicenseIndex]; if(!x)return;
+    refreshMasterFromAllocations(x);
+    get('lamSubtitle').textContent=`${x.code||''} · ${x.product||''} ${x.edition||''}`;
+    const remain=Math.max(0,(Number(x.qty)||0)-(Number(x.assignedQty)||0));
+    get('lamSummary').innerHTML=`<div class="lam-stat"><span>Tổng giấy phép</span><b>${Number(x.qty)||0}</b></div><div class="lam-stat"><span>Đang cấp</span><b>${Number(x.assignedQty)||0}</b></div><div class="lam-stat"><span>Còn lại</span><b>${remain}</b></div><div class="lam-stat"><span>Số người/phòng ban</span><b>${x.allocations.length}</b></div>`;
+    const tb=get('lamTableBody');
+    tb.innerHTML=x.allocations.length?x.allocations.map((a,i)=>`<tr><td style="text-align:center">${i+1}</td><td class="lam-person">${esc(a.user||'--')}</td><td class="lam-dept">${esc(a.dept||'--')}</td><td>${esc(a.email||'--')}</td><td>${esc(a.device||'--')}</td><td>${esc(a.asset||'--')}</td><td style="text-align:center">${esc(a.date||'--')}</td><td style="text-align:center;font-weight:900">${Number(a.qty)||0}</td><td>${esc(a.note||'')}</td><td><div class="lam-actions"><button class="lam-edit" type="button" onclick="suaChiTietCapPhat(${currentLicenseIndex},${i})"><i class="fa-solid fa-pen"></i> Sửa</button></div></td></tr>`).join(''):`<tr><td colspan="10" class="lam-empty">Chưa có lượt cấp phát nào. Hãy bấm nút Cấp phát để thêm người sử dụng.</td></tr>`;
+    get('lamEditMasterBtn').onclick=()=>{window.dongQuanLyChiTietCapPhat(); if(typeof originalSuaBanQuyen==='function') originalSuaBanQuyen(currentLicenseIndex)};
+  }
+
+  window.moQuanLyChiTietCapPhat=function(idx){ensureModals();currentLicenseIndex=Number(idx);if(!dsQuanLyBanQuyen?.[currentLicenseIndex])return;renderAllocationManager();get('licenseAllocationManagerModal').classList.remove('hidden')};
+  window.dongQuanLyChiTietCapPhat=function(){get('licenseAllocationManagerModal')?.classList.add('hidden')};
+  window.suaChiTietCapPhat=function(licenseIdx,allocIdx){ensureModals();currentLicenseIndex=Number(licenseIdx);currentAllocationIndex=Number(allocIdx);const x=dsQuanLyBanQuyen?.[currentLicenseIndex],a=x?.allocations?.[currentAllocationIndex];if(!a)return;get('laeContext').innerHTML=`<b>${esc(x.code)}</b> · ${esc(x.product)} · Đang sửa lượt cấp phát số <b>${currentAllocationIndex+1}</b>`;set('laeUser',a.user);set('laeDept',a.dept);set('laeEmail',a.email);set('laeDevice',a.device);set('laeAsset',a.asset);set('laeDate',a.date||today());set('laeQty',a.qty||1);set('laeNote',a.note);get('licenseAllocationEditModal').classList.remove('hidden')};
+  window.dongSuaChiTietCapPhat=function(){get('licenseAllocationEditModal')?.classList.add('hidden')};
+  window.luuSuaChiTietCapPhat=function(){const x=dsQuanLyBanQuyen?.[currentLicenseIndex],a=x?.allocations?.[currentAllocationIndex];if(!x||!a)return;const user=value('laeUser'),dept=value('laeDept'),qty=Math.max(1,Number(value('laeQty'))||1);if(!user||!dept)return alert('⚠️ Phải có Người sử dụng và Phòng ban/Đơn vị.');const other=x.allocations.reduce((s,z,i)=>s+(i===currentAllocationIndex?0:(Number(z.qty)||0)),0);if(other+qty>(Number(x.qty)||0))return alert(`⚠️ Tổng số lượng sau khi sửa là ${other+qty}, vượt quá số giấy phép của hồ sơ (${x.qty}).`);const before={...a};Object.assign(a,{user,dept,email:value('laeEmail'),device:value('laeDevice'),asset:value('laeAsset'),date:value('laeDate')||today(),qty,note:value('laeNote')});refreshMasterFromAllocations(x);logEdit(x,a,before);try{saveToLocalStorage()}catch(e){};try{renderLicenseManager()}catch(e){};renderAllocationManager();window.dongSuaChiTietCapPhat();alert('✅ Đã cập nhật riêng thông tin cấp phát của '+user+' / '+dept+'.')};
+
+  // Nút SỬA ở bảng chính ưu tiên mở danh sách từng người/phòng ban.
+  window.suaBanQuyen=function(idx){const x=dsQuanLyBanQuyen?.[Number(idx)];if(x&&Array.isArray(x.allocations)&&x.allocations.some(a=>Number(a.qty)>0))return window.moQuanLyChiTietCapPhat(idx);if(typeof originalSuaBanQuyen==='function')return originalSuaBanQuyen(idx)};
+  // Xem chi tiết cũng mở cùng bảng chuyên nghiệp để có thể sửa từng dòng ngay.
+  window.xemChiTietBanQuyen=function(idx){return window.moQuanLyChiTietCapPhat(idx)};
+  document.addEventListener('DOMContentLoaded',ensureModals);
+  if(document.readyState!=='loading')ensureModals();
+})();
+</script>
+
 </body>
 </html>

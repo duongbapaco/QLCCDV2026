@@ -9023,7 +9023,7 @@ window.inAnPhieuHandover=function(){
     const remain=Math.max(0,(Number(x.qty)||0)-(Number(x.assignedQty)||0));
     get('lamSummary').innerHTML=`<div class="lam-stat"><span>Tổng giấy phép</span><b>${Number(x.qty)||0}</b></div><div class="lam-stat"><span>Đang cấp</span><b>${Number(x.assignedQty)||0}</b></div><div class="lam-stat"><span>Còn lại</span><b>${remain}</b></div><div class="lam-stat"><span>Số người/phòng ban</span><b>${x.allocations.length}</b></div>`;
     const tb=get('lamTableBody');
-    tb.innerHTML=x.allocations.length?x.allocations.map((a,i)=>`<tr><td style="text-align:center">${i+1}</td><td class="lam-person">${esc(a.user||'--')}</td><td class="lam-dept">${esc(a.dept||'--')}</td><td>${esc(a.email||'--')}</td><td>${esc(a.device||'--')}</td><td>${esc(a.asset||'--')}</td><td style="text-align:center">${esc(a.date||'--')}</td><td style="text-align:center;font-weight:900">${Number(a.qty)||0}</td><td>${esc(a.note||'')}</td><td><div class="lam-actions"><button class="lam-edit" type="button" onclick="suaChiTietCapPhat(${currentLicenseIndex},${i})"><i class="fa-solid fa-pen"></i> Sửa</button></div></td></tr>`).join(''):`<tr><td colspan="10" class="lam-empty">Chưa có lượt cấp phát nào. Hãy bấm nút Cấp phát để thêm người sử dụng.</td></tr>`;
+    tb.innerHTML=x.allocations.length?x.allocations.map((a,i)=>`<tr><td style="text-align:center">${i+1}</td><td class="lam-person">${esc(a.user||'--')}</td><td class="lam-dept">${esc(a.dept||'--')}</td><td>${esc(a.email||'--')}</td><td>${esc(a.device||'--')}</td><td>${esc(a.asset||'--')}</td><td style="text-align:center">${esc(a.date||'--')}</td><td style="text-align:center;font-weight:900">${Number(a.qty)||0}</td><td>${esc(a.note||'')}</td><td><div class="lam-actions"><button class="lam-edit" type="button" onclick="suaChiTietCapPhat(${currentLicenseIndex},${i})"><i class="fa-solid fa-pen"></i> Sửa</button><button class="lam-delete" type="button" onclick="xoaChiTietCapPhat(${currentLicenseIndex},${i})"><i class="fa-solid fa-trash"></i> Xóa</button></div></td></tr>`).join(''):`<tr><td colspan="10" class="lam-empty">Chưa có lượt cấp phát nào. Hãy bấm nút Cấp phát để thêm người sử dụng.</td></tr>`;
     get('lamEditMasterBtn').onclick=()=>{window.dongQuanLyChiTietCapPhat(); if(typeof originalSuaBanQuyen==='function') originalSuaBanQuyen(currentLicenseIndex)};
   }
 
@@ -9032,6 +9032,22 @@ window.inAnPhieuHandover=function(){
   window.suaChiTietCapPhat=function(licenseIdx,allocIdx){ensureModals();currentLicenseIndex=Number(licenseIdx);currentAllocationIndex=Number(allocIdx);const x=dsQuanLyBanQuyen?.[currentLicenseIndex],a=x?.allocations?.[currentAllocationIndex];if(!a)return;get('laeContext').innerHTML=`<b>${esc(x.code)}</b> · ${esc(x.product)} · Đang sửa lượt cấp phát số <b>${currentAllocationIndex+1}</b>`;set('laeUser',a.user);set('laeDept',a.dept);set('laeEmail',a.email);set('laeDevice',a.device);set('laeAsset',a.asset);set('laeDate',a.date||today());set('laeQty',a.qty||1);set('laeNote',a.note);get('licenseAllocationEditModal').classList.remove('hidden')};
   window.dongSuaChiTietCapPhat=function(){get('licenseAllocationEditModal')?.classList.add('hidden')};
   window.luuSuaChiTietCapPhat=function(){const x=dsQuanLyBanQuyen?.[currentLicenseIndex],a=x?.allocations?.[currentAllocationIndex];if(!x||!a)return;const user=value('laeUser'),dept=value('laeDept'),qty=Math.max(1,Number(value('laeQty'))||1);if(!user||!dept)return alert('⚠️ Phải có Người sử dụng và Phòng ban/Đơn vị.');const other=x.allocations.reduce((s,z,i)=>s+(i===currentAllocationIndex?0:(Number(z.qty)||0)),0);if(other+qty>(Number(x.qty)||0))return alert(`⚠️ Tổng số lượng sau khi sửa là ${other+qty}, vượt quá số giấy phép của hồ sơ (${x.qty}).`);const before={...a};Object.assign(a,{user,dept,email:value('laeEmail'),device:value('laeDevice'),asset:value('laeAsset'),date:value('laeDate')||today(),qty,note:value('laeNote')});refreshMasterFromAllocations(x);logEdit(x,a,before);try{saveToLocalStorage()}catch(e){};try{renderLicenseManager()}catch(e){};renderAllocationManager();window.dongSuaChiTietCapPhat();alert('✅ Đã cập nhật riêng thông tin cấp phát của '+user+' / '+dept+'.')};
+  window.xoaChiTietCapPhat=function(licenseIdx,allocIdx){
+    const li=Number(licenseIdx), ai=Number(allocIdx);
+    const x=dsQuanLyBanQuyen?.[li], a=x?.allocations?.[ai];
+    if(!x||!a)return;
+    const qty=Number(a.qty)||0, user=a.user||'--', dept=a.dept||'--';
+    if(!confirm(`Xóa lượt cấp phát này?\n\nNgười sử dụng: ${user}\nPhòng ban: ${dept}\nSố lượng: ${qty}\n\nSau khi xóa, số lượng sẽ được trả lại để bạn có thể cấp phát lại từ đầu.`))return;
+    x.allocations.splice(ai,1);
+    refreshMasterFromAllocations(x);
+    try{lichSuBanQuyen=Array.isArray(lichSuBanQuyen)?lichSuBanQuyen:[];lichSuBanQuyen.unshift({id:'HIS-DEL-'+Date.now(),time:new Date().toISOString(),action:'Xóa cấp phát',code:x.code,product:x.product,assignee:user,dept,device:a.device||'',qty,actor:(window.currentUser?.fullName||window.currentUser?.name||'Người quản trị'),note:'Xóa lượt cấp phát để cấp phát lại từ đầu.'});lichSuBanQuyen=lichSuBanQuyen.slice(0,1000)}catch(e){}
+    try{saveToLocalStorage()}catch(e){}
+    try{renderLicenseManager()}catch(e){}
+    if(get('licenseAllocationManagerModal')?.classList.contains('hidden')===false)renderAllocationManager();
+    if(get('licenseAllocationEditModal'))get('licenseAllocationEditModal').classList.add('hidden');
+    try{if(typeof renderDanhSachCapPhatChiTiet==='function')renderDanhSachCapPhatChiTiet()}catch(e){}
+    alert(`✅ Đã xóa lượt cấp phát của ${user} / ${dept}. Số lượng ${qty} đã được trả lại kho bản quyền để cấp phát lại.`);
+  };
 
   // Nút SỬA ở bảng chính ưu tiên mở danh sách từng người/phòng ban.
   window.suaBanQuyen=function(idx){const x=dsQuanLyBanQuyen?.[Number(idx)];if(x&&Array.isArray(x.allocations)&&x.allocations.some(a=>Number(a.qty)>0))return window.moQuanLyChiTietCapPhat(idx);if(typeof originalSuaBanQuyen==='function')return originalSuaBanQuyen(idx)};
@@ -9044,7 +9060,7 @@ window.inAnPhieuHandover=function(){
 
 <!-- VINAPACO DANH SACH CAP PHAT CHI TIET V2 -->
 <style>
-.license-allocation-detail .table-title{font-weight:950}.license-allocation-detail .license-table th{white-space:nowrap}.license-allocation-detail .license-table td{font-size:11.5px}.license-allocation-detail .alloc-person{font-weight:950;color:#0f172a}.license-allocation-detail .alloc-dept{font-weight:850;color:#075985}.license-allocation-detail .alloc-edit{border:0;border-radius:7px;padding:6px 9px;background:#dbeafe;color:#1d4ed8;font-weight:900;cursor:pointer}.license-allocation-detail .alloc-edit:hover{filter:brightness(.96)}
+.license-allocation-detail .table-title{font-weight:950}.license-allocation-detail .license-table th{white-space:nowrap}.license-allocation-detail .license-table td{font-size:11.5px}.license-allocation-detail .alloc-delete{border:0;border-radius:7px;padding:6px 9px;background:#fee2e2;color:#b91c1c;font-weight:900;cursor:pointer}.license-allocation-detail .alloc-delete:hover{filter:brightness(.96)}.license-allocation-detail .alloc-person{font-weight:950;color:#0f172a}.license-allocation-detail .alloc-dept{font-weight:850;color:#075985}.license-allocation-detail .alloc-edit{border:0;border-radius:7px;padding:6px 9px;background:#dbeafe;color:#1d4ed8;font-weight:900;cursor:pointer}.license-allocation-detail .alloc-edit:hover{filter:brightness(.96)}
 </style>
 <script>
 (function(){
@@ -9071,7 +9087,7 @@ window.inAnPhieuHandover=function(){
     body.innerHTML=data.length?data.map((r,i)=>`<tr>
       <td style="text-align:center">${i+1}</td><td><b>${esc(r.x.code||'--')}</b></td><td style="text-align:center">${esc(r.x.type||'--')}</td><td><b>${esc(r.x.product||'--')}</b>${r.x.edition?' · '+esc(r.x.edition):''}</td>
       <td class="alloc-person">${esc(r.a.user||'--')}</td><td class="alloc-dept">${esc(r.a.dept||'--')}</td><td>${esc(r.a.email||'--')}</td><td>${esc(r.a.device||'--')}</td><td>${esc(r.a.asset||'--')}</td><td style="text-align:center;font-weight:800">${dmy(r.a.date)}</td><td style="text-align:center;font-weight:950">${Number(r.a.qty)||0}</td><td>${esc(r.a.note||'')}</td>
-      <td style="text-align:center"><button type="button" class="alloc-edit" onclick="suaChiTietCapPhat(${r.li},${r.ai})"><i class="fa-solid fa-pen"></i> Sửa</button></td>
+      <td style="text-align:center"><div style="display:flex;gap:5px;justify-content:center;flex-wrap:wrap"><button type="button" class="alloc-edit" onclick="suaChiTietCapPhat(${r.li},${r.ai})"><i class="fa-solid fa-pen"></i> Sửa</button><button type="button" class="alloc-delete" onclick="xoaChiTietCapPhat(${r.li},${r.ai})"><i class="fa-solid fa-trash"></i> Xóa</button></div></td>
     </tr>`).join(''):'<tr><td colspan="13" style="text-align:center;padding:28px;color:#64748b;font-weight:850">Chưa có dữ liệu cấp phát chi tiết.</td></tr>';
   }
   window.renderDanhSachCapPhatChiTiet=render;

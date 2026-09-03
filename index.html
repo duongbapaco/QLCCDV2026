@@ -1928,6 +1928,11 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
 @media(max-width:450px){.license-dashboard{grid-template-columns:1fr}.license-detail-grid{grid-template-columns:1fr}}
 
 </style>
+
+<style id="license-required-field-style">
+.license-form-group input.license-required-error,.license-form-group select.license-required-error{border:2px solid #dc2626 !important;box-shadow:0 0 0 2px rgba(220,38,38,.10);background:#fff7f7;}
+.license-form-group input::placeholder{color:#94a3b8;opacity:1;}
+</style>
 </head>
 <body>
 
@@ -2972,8 +2977,8 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
     <input type="hidden" id="licenseEditIndex" value="-1">
     <div style="font-size:14px;font-weight:950;color:#075985;margin-bottom:11px"><i class="fa-solid fa-file-shield"></i> Hồ sơ bản quyền / tài sản cấp phép</div>
     <div class="license-form-grid">
-      <div class="license-form-group"><label>Mã bản quyền *</label><input id="licenseFormCode" placeholder="OS-2026-001 / OFF-2026-001"></div>
-      <div class="license-form-group"><label>Loại *</label><select id="licenseFormType"><option value="OS">Hệ điều hành (OS)</option><option value="Office">Microsoft Office</option></select></div>
+      <div class="license-form-group"><label>Mã bản quyền *</label><input id="licenseFormCode" readonly aria-readonly="true" placeholder="Hệ thống tự sinh khi thêm hồ sơ"></div>
+      <div class="license-form-group"><label>Loại *</label><select id="licenseFormType" onchange="capNhatMaBanQuyenTheoLoai()"><option value="OS">Hệ điều hành (OS)</option><option value="Office">Microsoft Office</option></select></div>
       <div class="license-form-group"><label>Sản phẩm / phiên bản *</label><input id="licenseFormProduct" list="licenseProductList" placeholder="Windows 11 Pro / Microsoft 365 Business Standard"><datalist id="licenseProductList"><option value="Windows 11 Pro"></option><option value="Windows 10 Pro"></option><option value="Microsoft 365 Business Standard"></option><option value="Microsoft 365 Business Premium"></option><option value="Microsoft 365 Apps for business"></option><option value="Office LTSC Professional Plus 2024"></option><option value="Office LTSC Standard 2024"></option><option value="Office 2021 Professional Plus"></option></datalist></div>
       <div class="license-form-group"><label>Loại hình cấp phép</label><select id="licenseFormModel"><option>OEM</option><option>Retail / FPP</option><option>Volume / KMS</option><option>MAK</option><option>Microsoft 365 Subscription</option><option>Enterprise Agreement</option><option>Open / CSP</option><option>Khác</option></select></div>
       <div class="license-form-group"><label>Nhà cung cấp / nguồn</label><input id="licenseFormVendor" placeholder="Nhà cung cấp / Tổng công ty / mua sắm..."></div>
@@ -3547,11 +3552,28 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
     let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('vinapaco_accounts')) || [
         { email: "admin@vinapaco.com.vn", password: "123", fullName: "Trần Bình Dương", role: "Admin", status: "Active" }
     ];
-    let dsQuanLyBanQuyen = JSON.parse(localStorage.getItem('vinapaco_licenses')) || [
-        { id:'LIC-OS-001', code:'OS-2026-001', type:'OS', product:'Windows 11 Pro', model:'OEM', vendor:'Nhà sản xuất / mua sắm', docNo:'', startDate:'2026-01-01', endDate:'', permanent:true, qty:10, assignedQty:1, key:'', assetTag:'', assignee:'Trần Bình Dương', dept:'Văn phòng TCT', device:'Laptop doanh nghiệp', status:'Assigned', note:'Giấy phép OS dùng cho thiết bị doanh nghiệp', createdAt:'2026-01-01T08:00:00+07:00', updatedAt:'2026-01-01T08:00:00+07:00' },
-        { id:'LIC-OFF-001', code:'OFF-2026-001', type:'Office', product:'Microsoft 365 Business Standard', model:'Microsoft 365 Subscription', vendor:'Microsoft / CSP', docNo:'', startDate:'2026-01-01', endDate:'2026-12-31', permanent:false, qty:20, assignedQty:3, key:'', assetTag:'', assignee:'', dept:'', device:'', status:'Available', note:'Theo dõi theo kỳ thuê bao', createdAt:'2026-01-01T08:00:00+07:00', updatedAt:'2026-01-01T08:00:00+07:00' }
-    ];
+    let dsQuanLyBanQuyen = (() => {
+        // CHỈ sử dụng hồ sơ bản quyền thực do người dùng nhập/import hoặc đồng bộ từ nguồn dữ liệu thật.
+        // Không khởi tạo dữ liệu mẫu/demo/fake.
+        try {
+            const raw = localStorage.getItem('vinapaco_licenses');
+            const parsed = raw ? JSON.parse(raw) : [];
+            if (!Array.isArray(parsed)) return [];
+            // Dọn các bản ghi mẫu đã từng được nhúng trong phiên bản cũ.
+            const demoIds = new Set(['LIC-OS-001','LIC-OFF-001']);
+            const demoCodes = new Set(['OS-2026-001','OFF-2026-001']);
+            return parsed.filter(x => {
+                if (!x || typeof x !== 'object') return false;
+                const id=String(x.id||'').trim(), code=String(x.code||'').trim();
+                return !demoIds.has(id) && !demoCodes.has(code);
+            });
+        } catch(e) {
+            return [];
+        }
+    })();
     let lichSuBanQuyen = JSON.parse(localStorage.getItem('vinapaco_license_history')) || [];
+    try { localStorage.setItem('vinapaco_licenses', JSON.stringify(dsQuanLyBanQuyen)); } catch(e) {}
+
 
     function parseVNDMoney(val) {
         if (!val) return 0;
@@ -5993,20 +6015,27 @@ function xuatBaoCaoXNTExcel() {
 
     async function capNhatThoiTiet(lat, lon, cityName) {
         try {
+            lat=Number(lat); lon=Number(lon);
+            if(!Number.isFinite(lat)||!Number.isFinite(lon)||lat<-90||lat>90||lon<-180||lon>180)
+                throw new Error("Tọa độ không hợp lệ");
+
+            // Open-Meteo nhận trực tiếp tọa độ đã xác định; không đổi sang tọa độ trung tâm tỉnh/thành.
             const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&timezone=Asia%2FBangkok`;
             const res = await fetch(url, {cache:"no-store"});
+            if(!res.ok) throw new Error(`Weather HTTP ${res.status}`);
             const data = await res.json();
             if (!data || !data.current) throw new Error("Không có dữ liệu hiện tại");
-            cachedWeatherCoords = { lat:Number(lat), lon:Number(lon), cityName:String(cityName || "Vị trí hiện tại") };
+
+            cachedWeatherCoords = { lat, lon, cityName:String(cityName || "Vị trí hiện tại") };
             const temp = data.current.temperature_2m;
             const humidity = data.current.relative_humidity_2m;
             const wind = data.current.wind_speed_10m;
             const info = getWeatherInfo(data.current.weather_code);
 
             const wText = document.getElementById('weatherWidgetText');
-            if (wText) wText.innerHTML = `<div style="font-size:17px;font-weight:950;color:#0f172a;"><i class="fa-solid ${info.icon}" style="color:${info.color};margin-right:7px;"></i>${escapeLocationHtml(cityName)} · ${temp}°C · ${info.text}</div><div style="font-size:13px;color:#475569;font-weight:800;margin-top:4px;">💧 Độ ẩm ${humidity ?? '--'}% · 💨 Gió ${wind ?? '--'} km/h · 📍 ${Number(lat).toFixed(5)}, ${Number(lon).toFixed(5)}</div>`;
+            if (wText) wText.innerHTML = `<div style="font-size:17px;font-weight:950;color:#0f172a;"><i class="fa-solid ${info.icon}" style="color:${info.color};margin-right:7px;"></i>${escapeLocationHtml(cityName || "Vị trí hiện tại")} · ${temp}°C · ${info.text}</div><div style="font-size:13px;color:#475569;font-weight:800;margin-top:4px;">💧 Độ ẩm ${humidity ?? '--'}% · 💨 Gió ${wind ?? '--'} km/h · 📍 ${lat.toFixed(6)}, ${lon.toFixed(6)} · nguồn tọa độ thực</div>`;
             const wLoc = document.getElementById('wLocationTitle');
-            if (wLoc) wLoc.innerText = `Khu vực: ${cityName}`;
+            if (wLoc) wLoc.innerText = `Khu vực: ${cityName || "Vị trí hiện tại"}`;
             const wTemp = document.getElementById('wCurrentTemp');
             if (wTemp) wTemp.innerText = `${temp}°C`;
             const wCond = document.getElementById('wCurrentCondition');
@@ -6019,6 +6048,7 @@ function xuatBaoCaoXNTExcel() {
         } catch (err) {
             const wText = document.getElementById('weatherWidgetText');
             if (wText) wText.innerText = "Không thể tải thời tiết trực tuyến.";
+            console.warn("capNhatThoiTiet:",err);
         }
     }
 
@@ -6486,7 +6516,7 @@ function xuatBaoCaoXNTExcel() {
     // Lấy vị trí theo watchPosition để trình duyệt có thời gian cải thiện fix.
     // getCurrentPosition() với maximumAge:0 có thể trả lỗi TIMEOUT/POSITION_UNAVAILABLE
     // trên Windows desktop dù Location đã bật; watchPosition ổn định hơn trong trường hợp này.
-    function layGPSOnDinh({maxSamples=12, targetAccuracy=20, timeoutMs=45000}={}){
+    function layGPSOnDinh({maxSamples=15, targetAccuracy=15, timeoutMs=60000}={}){
         return new Promise((resolve,reject)=>{
             if(!navigator.geolocation){
                 reject({code:2,message:'Geolocation is not supported'});
@@ -6494,27 +6524,98 @@ function xuatBaoCaoXNTExcel() {
             }
 
             const samples=[];
-            let best=null;
-            let watchId=null;
-            let timer=null;
-            let finished=false;
+            let watchId=null, timer=null, finished=false, lastError=null;
 
-            const finish=(error)=>{
+            const median=(arr)=>{
+                const a=arr.slice().sort((x,y)=>x-y);
+                if(!a.length) return null;
+                const m=Math.floor(a.length/2);
+                return a.length%2 ? a[m] : (a[m-1]+a[m])/2;
+            };
+
+            const distance=(a,b)=>haversineMeters(a.lat,a.lon,b.lat,b.lon);
+
+            const buildConsensus=()=>{
+                const valid=samples.filter(x =>
+                    Number.isFinite(x.lat) && Number.isFinite(x.lon) &&
+                    Number.isFinite(x.accuracy) && x.accuracy>0 && x.accuracy<10000
+                );
+                if(!valid.length) return null;
+
+                // Bước 1: tâm trung vị chống nhiễu.
+                const medLat=median(valid.map(x=>x.lat));
+                const medLon=median(valid.map(x=>x.lon));
+                const medPoint={lat:medLat,lon:medLon};
+
+                // Bước 2: tạo cụm ổn định quanh trung vị.
+                const bestAccuracy=Math.min(...valid.map(x=>x.accuracy));
+                const clusterRadius=Math.max(25, Math.min(120, bestAccuracy*2.5));
+                let cluster=valid.filter(x=>distance(x,medPoint)<=Math.max(clusterRadius, x.accuracy*1.5));
+
+                // Nếu cụm quá ít, tìm cụm quanh fix tốt nhất.
+                const best=valid.slice().sort((a,b)=>a.accuracy-b.accuracy)[0];
+                if(cluster.length<2){
+                    cluster=valid.filter(x=>distance(x,best)<=Math.max(30,Math.min(120,best.accuracy*2.5)));
+                }
+                if(!cluster.length) cluster=[best];
+
+                // Bước 3: bình quân có trọng số 1/accuracy².
+                let sw=0, lat=0, lon=0;
+                cluster.forEach(x=>{
+                    const a=Math.max(3,Math.min(200,x.accuracy));
+                    const w=1/(a*a);
+                    sw+=w; lat+=x.lat*w; lon+=x.lon*w;
+                });
+                lat/=sw; lon/=sw;
+
+                // Bước 4: loại tiếp điểm lệch xa tâm trọng số rồi tính lại một lần.
+                const center={lat,lon};
+                const refined=cluster.filter(x=>distance(x,center)<=Math.max(30,Math.min(150,x.accuracy*2.2)));
+                const pool=refined.length>=2?refined:cluster;
+                sw=0; lat=0; lon=0;
+                pool.forEach(x=>{
+                    const a=Math.max(3,Math.min(200,x.accuracy));
+                    const w=1/(a*a);
+                    sw+=w; lat+=x.lat*w; lon+=x.lon*w;
+                });
+                lat/=sw; lon/=sw;
+
+                const finalCenter={lat,lon};
+                const distances=pool.map(x=>distance(x,finalCenter));
+                const spread=distances.length?Math.max(...distances):0;
+                const p95=distances.length ? distances.slice().sort((a,b)=>a-b)[Math.min(distances.length-1,Math.floor(distances.length*0.95))] : 0;
+                const reported=Math.min(...pool.map(x=>x.accuracy));
+                // Sai số tổng hợp không được quảng cáo tốt hơn sai số thiết bị báo.
+                const accuracy=Math.max(
+                    reported,
+                    Math.min(250, Math.sqrt(reported*reported + (p95*p95)/Math.max(1,pool.length)))
+                );
+
+                return {
+                    lat, lon, accuracy, spread,
+                    p95, clusterSize:pool.length, samples:valid.length,
+                    bestAccuracy:reported,
+                    stable: pool.length>=2 && p95<=Math.max(35,reported*2.5)
+                };
+            };
+
+            const finish=(force=false)=>{
                 if(finished) return;
-                finished=true;
-                if(watchId!==null) navigator.geolocation.clearWatch(watchId);
-                if(timer) clearTimeout(timer);
-
-                if(best){
-                    const bestFix={...best};
-                    bestFix.spread=Math.max(...samples.map(x=>haversineMeters(x.lat,x.lon,bestFix.lat,bestFix.lon)),0);
-                    bestFix.clusterSize=samples.filter(x=>
-                        haversineMeters(x.lat,x.lon,bestFix.lat,bestFix.lon)<=Math.max(30,Math.min(100,x.accuracy*2))
-                    ).length;
-                    bestFix.samples=samples.length;
-                    resolve(bestFix);
-                }else{
-                    reject(error || {code:2,message:'No position fix'});
+                const fix=buildConsensus();
+                // Không trả về một điểm "tốt" nhưng cô lập nếu có đủ mẫu mà các mẫu mâu thuẫn mạnh.
+                if(fix && (fix.stable || force || fix.samples===1)){
+                    finished=true;
+                    if(watchId!==null) navigator.geolocation.clearWatch(watchId);
+                    if(timer) clearTimeout(timer);
+                    resolve(fix);
+                    return;
+                }
+                if(force){
+                    finished=true;
+                    if(watchId!==null) navigator.geolocation.clearWatch(watchId);
+                    if(timer) clearTimeout(timer);
+                    if(fix) resolve(fix);
+                    else reject(lastError || {code:2,message:'No position fix'});
                 }
             };
 
@@ -6529,36 +6630,37 @@ function xuatBaoCaoXNTExcel() {
                     speed:Number.isFinite(Number(c.speed))?Number(c.speed):null,
                     timestamp:pos.timestamp||Date.now()
                 };
-
                 if(!Number.isFinite(item.lat)||!Number.isFinite(item.lon)) return;
-                if(!Number.isFinite(item.accuracy)||item.accuracy<=0) item.accuracy=99999;
-
+                if(!Number.isFinite(item.accuracy)||item.accuracy<=0) return;
                 samples.push(item);
-                if(!best || item.accuracy < best.accuracy) best=item;
-
-                // Có fix rất tốt thì dùng ngay; nếu chưa thì tiếp tục nghe GPS/Wi-Fi.
-                if(item.accuracy<=targetAccuracy || samples.length>=maxSamples) finish();
+                if(samples.length>=2){
+                    const fix=buildConsensus();
+                    // Chỉ kết thúc sớm khi có cụm ổn định và độ chính xác thực sự tốt.
+                    if(fix && fix.stable && fix.accuracy<=targetAccuracy && fix.clusterSize>=3){
+                        finish(false);
+                        return;
+                    }
+                }
+                if(samples.length>=maxSamples) finish(true);
             };
 
             const onError=(err)=>{
-                // Nếu đã có ít nhất một fix, giữ fix đó thay vì bỏ toàn bộ kết quả.
-                if(best) finish(err);
-                else if(err?.code===1) finish(err);
-                // code 2/3: cho watchPosition tiếp tục thử cho tới hết timeout.
+                lastError=err;
+                if(err?.code===1 && !samples.length) finish(true);
+                // POSITION_UNAVAILABLE/TIMEOUT: tiếp tục watch cho tới hết thời gian.
             };
 
             try{
                 watchId=navigator.geolocation.watchPosition(onSuccess,onError,{
                     enableHighAccuracy:true,
-                    timeout:Math.min(15000,Math.max(8000,timeoutMs)),
-                    maximumAge:5000
+                    timeout:20000,
+                    maximumAge:0
                 });
             }catch(e){
-                finish(e);
-                return;
+                reject(e); return;
             }
 
-            timer=setTimeout(()=>finish({code:3,message:'Position acquisition timeout'}),timeoutMs);
+            timer=setTimeout(()=>finish(true),timeoutMs);
         });
     }
 
@@ -6570,10 +6672,10 @@ function xuatBaoCaoXNTExcel() {
 
         weatherLocationMode='gps';
         const wText = document.getElementById('weatherWidgetText');
-        if (wText) wText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang xác định vị trí chính xác… hãy giữ Location bật và chờ tối đa 45 giây để tín hiệu ổn định...`;
+        if (wText) wText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang xác định vị trí chính xác… hệ thống đang lấy nhiều mẫu GPS/Location, loại điểm nhiễu và tính tọa độ ổn định. Vui lòng giữ Location bật và chờ tối đa 60 giây...`;
 
         try {
-            const fix=await layGPSOnDinh({maxSamples:12,targetAccuracy:20,timeoutMs:45000});
+            const fix=await layGPSOnDinh({maxSamples:15,targetAccuracy:15,timeoutMs:60000});
             const lat=Number(fix.lat), lon=Number(fix.lon);
             if(!Number.isFinite(lat)||!Number.isFinite(lon)) throw {code:2};
             gpsLastFix={...fix,lat,lon,at:Date.now()};
@@ -8059,15 +8161,42 @@ body:not(.vnp-fullscreen-module) #vinapacoMainBanner .vinapaco-banner-home{backg
   }
   window.toggleLicensePermanent=function(){const p=document.getElementById('licenseFormPermanent'),e=document.getElementById('licenseFormEnd');if(p&&e){e.disabled=p.checked;if(p.checked)e.value='';}};
   window.capNhatLicenseFormQty=function(){const q=document.getElementById('licenseFormQty');if(q)q.value=Math.max(1,Number(q.value)||1);};
+  window.capNhatMaBanQuyenTheoLoai=function(){
+    const idx=Number(document.getElementById('licenseEditIndex')?.value||-1);
+    if(idx<0){const e=document.getElementById('licenseFormCode'),t=document.getElementById('licenseFormType');if(e&&t)e.value=taoMaBanQuyenTuDong(t.value);}
+  };
+  function taoMaBanQuyenTuDong(type){
+    const prefix=String(type||'OS').toUpperCase()==='OFFICE'?'OFF':'OS';
+    const d=new Date(), y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
+    const base=prefix+'-'+y+m+day+'-';
+    const used=new Set((Array.isArray(dsQuanLyBanQuyen)?dsQuanLyBanQuyen:[]).map(x=>String(x?.code||'').trim().toUpperCase()));
+    let n=1, code='';
+    do{code=base+String(n).padStart(4,'0');n++;}while(used.has(code));
+    return code;
+  }
   window.moFormBanQuyenMoi=function(){
-    document.getElementById('licenseEditIndex').value='-1'; document.getElementById('licenseFormCode').value=''; document.getElementById('licenseFormType').value='OS'; document.getElementById('licenseFormProduct').value=''; document.getElementById('licenseFormModel').value='OEM'; document.getElementById('licenseFormVendor').value=''; document.getElementById('licenseFormDocNo').value=''; document.getElementById('licenseFormStart').value=licToday(); document.getElementById('licenseFormEnd').value=''; document.getElementById('licenseFormPermanent').checked=false; document.getElementById('licenseFormEnd').disabled=false; document.getElementById('licenseFormQty').value=1; document.getElementById('licenseFormKey').value=''; document.getElementById('licenseFormAsset').value=''; document.getElementById('licenseFormNote').value=''; document.getElementById('licenseFormCard').classList.remove('hidden'); document.getElementById('licenseFormCard').scrollIntoView({behavior:'smooth',block:'center'});
+    document.getElementById('licenseEditIndex').value='-1'; document.getElementById('licenseFormType').value='OS'; document.getElementById('licenseFormCode').value=taoMaBanQuyenTuDong('OS'); document.getElementById('licenseFormType').value='OS'; document.getElementById('licenseFormProduct').value=''; document.getElementById('licenseFormModel').value='OEM'; document.getElementById('licenseFormVendor').value=''; document.getElementById('licenseFormDocNo').value=''; document.getElementById('licenseFormStart').value=licToday(); document.getElementById('licenseFormEnd').value=''; document.getElementById('licenseFormPermanent').checked=false; document.getElementById('licenseFormEnd').disabled=false; document.getElementById('licenseFormQty').value=1; document.getElementById('licenseFormKey').value=''; document.getElementById('licenseFormAsset').value=''; document.getElementById('licenseFormNote').value=''; document.getElementById('licenseFormCard').classList.remove('hidden'); document.getElementById('licenseFormCard').scrollIntoView({behavior:'smooth',block:'center'});
   };
   window.dongFormBanQuyen=function(){document.getElementById('licenseFormCard')?.classList.add('hidden');};
   function clearLicenseForm(){['licenseFormCode','licenseFormProduct','licenseFormVendor','licenseFormDocNo','licenseFormStart','licenseFormEnd','licenseFormKey','licenseFormAsset','licenseFormNote'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});document.getElementById('licenseFormQty').value=1;document.getElementById('licenseFormPermanent').checked=false;document.getElementById('licenseFormEnd').disabled=false;}
   window.luuBanQuyenForm=function(){
     const idx=Number(document.getElementById('licenseEditIndex').value), old=idx>=0?dsQuanLyBanQuyen[idx]:null;
-    const code=document.getElementById('licenseFormCode').value.trim(), type=document.getElementById('licenseFormType').value, product=document.getElementById('licenseFormProduct').value.trim(), start=document.getElementById('licenseFormStart').value, permanent=document.getElementById('licenseFormPermanent').checked, end=document.getElementById('licenseFormEnd').value, qty=Math.max(1,Number(document.getElementById('licenseFormQty').value)||1);
-    if(!code||!product||!start)return alert('⚠️ Vui lòng nhập Mã bản quyền, Sản phẩm/phiên bản và Ngày cấp/kích hoạt.');
+    const codeEl=document.getElementById('licenseFormCode'), productEl=document.getElementById('licenseFormProduct'), startEl=document.getElementById('licenseFormStart'), endEl=document.getElementById('licenseFormEnd');
+    const type=document.getElementById('licenseFormType').value, product=(productEl?.value||'').trim();
+    // Mã bản quyền là mã hồ sơ do hệ thống tự sinh; không phải khóa kích hoạt/sản phẩm.
+    const code=(codeEl?.value||'').trim() || taoMaBanQuyenTuDong(type);
+    // input type=date luôn lưu theo ISO yyyy-mm-dd dù Chrome hiển thị theo dd/mm/yyyy tùy ngôn ngữ máy.
+    const start=(startEl?.value||'').trim(), permanent=document.getElementById('licenseFormPermanent').checked, end=(endEl?.value||'').trim(), qty=Math.max(1,Number(document.getElementById('licenseFormQty').value)||1);
+    document.querySelectorAll('#licenseFormCard .license-required-error').forEach(e=>e.classList.remove('license-required-error'));
+    const missing=[];
+    if(!product){missing.push('Sản phẩm/phiên bản');productEl?.classList.add('license-required-error');}
+    if(codeEl) codeEl.value=code;
+    if(!start){missing.push('Ngày cấp/kích hoạt');startEl?.classList.add('license-required-error');}
+    if(missing.length){
+      alert('⚠️ Chưa đủ thông tin bắt buộc: '+missing.join(', ')+'.\n\nMã bản quyền là mã hồ sơ do hệ thống tự sinh; bạn không cần nhập mã này.');
+      (missing[0]==='Mã bản quyền'?codeEl:missing[0]==='Sản phẩm/phiên bản'?productEl:startEl)?.focus();
+      return;
+    }
     if(!permanent&&!end)return alert('⚠️ Hãy nhập Ngày hết hạn hoặc tích Vĩnh viễn / không thời hạn.');
     if(!permanent&&new Date(end)<new Date(start))return alert('⚠️ Ngày hết hạn không được trước ngày cấp.');
     if(dsQuanLyBanQuyen.some((x,i)=>i!==idx&&String(x.code).trim().toLowerCase()===code.toLowerCase()))return alert('⚠️ Mã bản quyền đã tồn tại.');

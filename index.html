@@ -3804,6 +3804,18 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
     </tr></thead><tbody id="licenseManagerTableBody"></tbody></table>
   </div>
 
+  <div class="license-allocation-detail table-card" style="margin-top:14px;padding:12px">
+    <div class="table-header-bar" style="align-items:flex-start;gap:12px;flex-wrap:wrap">
+      <div><div class="table-title"><i class="fa-solid fa-users-viewfinder"></i> DANH SÁCH CẤP PHÁT CHI TIẾT</div><div style="font-size:11px;color:#64748b;font-weight:750;margin-top:4px">Theo dõi từng người sử dụng, từng phòng ban và từng thiết bị; mỗi lượt cấp phát là một dòng riêng.</div></div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span id="licenseAllocationDetailCount" style="font-size:11px;font-weight:900;color:#0f3d63">0 lượt cấp phát</span><button type="button" class="btn btn-blue" onclick="xuatDanhSachCapPhatChiTiet()"><i class="fa-solid fa-file-excel"></i> XUẤT DANH SÁCH</button></div>
+    </div>
+    <div class="license-table-wrap">
+      <table class="license-table" style="min-width:1700px"><thead><tr>
+        <th>STT</th><th>Mã bản quyền</th><th>Loại</th><th>Sản phẩm / Edition</th><th>Người sử dụng</th><th>Phòng ban / Đơn vị</th><th>Email / Tài khoản</th><th>Tên máy / Hostname</th><th>Mã tài sản / Serial</th><th>Ngày cấp</th><th>SL</th><th>Ghi chú</th><th>Thao tác</th>
+      </tr></thead><tbody id="licenseAllocationDetailBody"></tbody></table>
+    </div>
+  </div>
+
   <div class="license-history table-card" style="margin-top:14px;padding:12px">
     <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-clock-rotate-left"></i> LỊCH SỬ CẤP PHÁT / THU HỒI / CHUYỂN ĐỔI</div><span id="licenseHistoryCount" style="font-size:11px;font-weight:900;color:#64748b">0 giao dịch</span></div>
     <div class="license-table-wrap"><table class="license-table" style="min-width:1300px"><thead><tr><th>Thời gian</th><th>Nghiệp vụ</th><th>Mã BQ</th><th>Sản phẩm</th><th>Người dùng</th><th>Đơn vị</th><th>Thiết bị</th><th>SL</th><th>Người thực hiện</th><th>Ghi chú</th></tr></thead><tbody id="licenseHistoryTableBody"></tbody></table></div>
@@ -6500,7 +6512,9 @@ function taoHTMLBaoCaoTongHopKhoMuc(){
     </div>`;
 }
 function xemBaoCaoTongHopKhoMuc(){const c=document.getElementById('baoCaoTongHopKhoMucContent');if(c)c.innerHTML=taoHTMLBaoCaoTongHopKhoMuc();document.getElementById('modalBaoCaoTongHopKhoMuc')?.classList.remove('hidden');}
-function inBaoCaoTongHopKhoMuc(){const html=taoHTMLBaoCaoTongHopKhoMuc();const w=window.open('about:blank','_blank','width=1100,height=850');if(!w){alert('Hãy cho phép cửa sổ bật lên để in báo cáo.');return;}w.document.write(`<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Phiếu giao nhận tổng hợp kho mực ${currentNamKey}</title><style>@page{size:A4 portrait;margin:0}body{margin:0;background:#fff;font-family:"Times New Roman",serif}.ink-report-paper{width:210mm;min-height:297mm;margin:0 auto;padding:18mm 16mm;box-sizing:border-box;font-size:13pt}.ink-report-paper .qhead{display:grid;grid-template-columns:1fr 1fr;text-align:center}.ink-report-paper .qhead b{font-size:13pt}.ink-report-paper .qhead small{font-size:11pt;font-style:italic}.report-title{text-align:center;font-size:15pt;font-weight:700;margin:14px 0 3px;text-transform:uppercase}.report-sub{text-align:center;font-size:12pt;font-style:italic}.ink-report-paper table{width:100%;border-collapse:collapse;border-spacing:0;margin-top:10px;border:1.2pt solid #222;table-layout:fixed}.ink-report-paper thead{display:table-header-group}.ink-report-paper tr{page-break-inside:avoid}.ink-report-paper th,.ink-report-paper td{border:.7pt solid #333;padding:5px;vertical-align:middle;line-height:1.2}.ink-report-paper th{text-align:center;background:#e9edf2;font-weight:700;border:1pt solid #222}.ink-report-paper tbody tr:nth-child(even) td{background:#fafafa}.ink-report-paper .center{text-align:center}.ink-report-paper .total td{font-weight:700;background:#eef2f5;border-top:1pt solid #222}.ink-report-paper .sign{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center;margin-top:24px;page-break-inside:avoid}.ink-report-paper .sign>div{min-width:0}.ink-report-paper .sign-hint{font-size:11pt;font-style:italic;font-weight:400;margin-top:3px}.ink-report-paper .sign-space{height:36px}.ink-report-paper .sign-name{font-weight:700;font-size:12pt;line-height:1.1}</style></head><body>${html}</body></html>`);w.document.close();setTimeout(()=>{w.focus();w.print();},500);}
+function inBaoCaoTongHopKhoMuc(){const html=taoHTMLBaoCaoTongHopKhoMuc();const w=window.open('about:blank','_blank','width=1100,height=850');if(!w){alert('Hãy cho phép cửa sổ bật lên để in báo cáo.');return;}w.document.write(`<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Phiếu giao nhận tổng hợp kho mực ${currentNamKey}</title><style>@page{size:A4 portrait;margin:0}body{margin:0;background:#fff;font-family:"Times New Roman",serif}.ink-report-paper{width:210mm;min-height:297mm;margin:0 auto;padding:18mm 16mm;box-sizing:border-box;font-size:13pt}.ink-report-paper .qhead{display:grid;grid-template-columns:1fr 1fr;text-align:center}.ink-report-paper .qhead b{font-size:13pt}.ink-report-paper .qhead small{font-size:11pt;font-style:italic}.report-title{text-align:center;font-size:15pt;font-weight:700;margin:14px 0 3px;text-transform:uppercase}.report-sub{text-align:center;font-size:12pt;font-style:italic}.ink-report-paper table{width:100%;border-collapse:collapse;border-spacing:0;margin-top:10px;border:1.2pt solid #222;table-layout:fixed}.ink-report-paper thead{display:table-header-group}.ink-report-paper tr{page-break-inside:avoid}.ink-report-paper th,.ink-report-paper td{border:.7pt solid #333;padding:5px;vertical-align:middle;line-height:1.2}.ink-report-paper th{text-align:center;background:#e9edf2;font-weight:700;border:1pt solid #222}.ink-report-paper tbody tr:nth-child(even) td{background:#fafafa}.ink-report-paper .center{text-align:center}.ink-report-paper .total td{font-weight:700;background:#eef2f5;border-top:1pt solid #222}.ink-report-paper .sign{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center;margin-top:24px;page-break-inside:avoid}.ink-report-paper .sign>div{min-width:0}.ink-report-paper .sign-hint{font-size:11pt;font-style:italic;font-weight:400;margin-top:3px}.ink-report-paper .sign-space{height:36px}.ink-report-paper .sign-name{font-weight:700;font-size:12pt;line-height:1.1}</style></head><body>${html}
+
+</body></html>`);w.document.close();setTimeout(()=>{w.focus();w.print();},500);}
 
 function xuatBaoCaoXNTExcel() {
         if (typeof XLSX === 'undefined') return;
@@ -8648,7 +8662,7 @@ window.inAnPhieuHandover=function(){
     const warn=dsQuanLyBanQuyen.filter(x=>licState(x)==='Warning'),exp=dsQuanLyBanQuyen.filter(x=>licState(x)==='Expired'),panel=document.getElementById('licenseWarningPanel');
     if(panel){if(warn.length||exp.length){panel.classList.remove('hidden');panel.innerHTML=`⚠️ <b>Cảnh báo:</b> ${warn.length} hồ sơ sắp hết hạn · ${exp.length} hồ sơ đã hết hạn.`}else panel.classList.add('hidden')}
     const hb=document.getElementById('licenseHistoryTableBody');
-    if(hb)hb.innerHTML=lichSuBanQuyen.slice(0,100).map(h=>`<tr><td>${new Date(h.time).toLocaleString('vi-VN')}</td><td><b>${licEsc(h.action)}</b></td><td>${licEsc(h.code)}</td><td>${licEsc(h.product)}</td><td>${licEsc(h.assignee||'--')}</td><td>${licEsc(h.dept||'--')}</td><td>${licEsc(h.device||'--')}</td><td style="text-align:center">${h.qty||0}</td><td>${licEsc(h.actor||'--')}</td><td>${licEsc(h.note||'')}</td></tr>`).join('')||'<tr><td colspan="10" style="text-align:center;padding:18px;color:#64748b">Chưa có giao dịch.</td></tr>';
+    if(hb)hb.innerHTML=lichSuBanQuyen.slice(0,100).map(h=>`<tr><td>${new Date(h.time).toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'})}</td><td><b>${licEsc(h.action)}</b></td><td>${licEsc(h.code)}</td><td>${licEsc(h.product)}</td><td>${licEsc(h.assignee||'--')}</td><td>${licEsc(h.dept||'--')}</td><td>${licEsc(h.device||'--')}</td><td style="text-align:center">${h.qty||0}</td><td>${licEsc(h.actor||'--')}</td><td>${licEsc(h.note||'')}</td></tr>`).join('')||'<tr><td colspan="10" style="text-align:center;padding:18px;color:#64748b">Chưa có giao dịch.</td></tr>';
     const hc=document.getElementById('licenseHistoryCount');if(hc)hc.textContent=lichSuBanQuyen.length+' giao dịch';
   };
 
@@ -9028,5 +9042,49 @@ window.inAnPhieuHandover=function(){
 })();
 </script>
 
+<!-- VINAPACO DANH SACH CAP PHAT CHI TIET V2 -->
+<style>
+.license-allocation-detail .table-title{font-weight:950}.license-allocation-detail .license-table th{white-space:nowrap}.license-allocation-detail .license-table td{font-size:11.5px}.license-allocation-detail .alloc-person{font-weight:950;color:#0f172a}.license-allocation-detail .alloc-dept{font-weight:850;color:#075985}.license-allocation-detail .alloc-edit{border:0;border-radius:7px;padding:6px 9px;background:#dbeafe;color:#1d4ed8;font-weight:900;cursor:pointer}.license-allocation-detail .alloc-edit:hover{filter:brightness(.96)}
+</style>
+<script>
+(function(){
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  function dmy(v){if(!v)return'--';const m=String(v).match(/^(\d{4})-(\d{2})-(\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:String(v)}
+  function render(){
+    const body=document.getElementById('licenseAllocationDetailBody'), count=document.getElementById('licenseAllocationDetailCount');
+    if(!body)return;
+    const data=[];
+    (window.dsQuanLyBanQuyen||[]).forEach((x,li)=>{
+      const q=String(document.getElementById('licenseSearch')?.value||'').trim().toLowerCase();
+      const ft=document.getElementById('licenseFilterType')?.value||'ALL';
+      const fd=document.getElementById('licenseFilterDept')?.value||'ALL';
+      if(ft!=='ALL'&&x.type!==ft)return;
+      (x.allocations||[]).forEach((a,ai)=>{
+        if(Number(a.qty)<=0)return;
+        const hay=[x.code,x.type,x.product,x.edition,a.user,a.dept,a.email,a.device,a.asset,a.note].join(' ').toLowerCase();
+        if(q&&!hay.includes(q))return;
+        if(fd!=='ALL'&&String(a.dept||'')!==fd)return;
+        data.push({x,a,li,ai});
+      });
+    });
+    if(count)count.textContent=data.length+' lượt cấp phát';
+    body.innerHTML=data.length?data.map((r,i)=>`<tr>
+      <td style="text-align:center">${i+1}</td><td><b>${esc(r.x.code||'--')}</b></td><td style="text-align:center">${esc(r.x.type||'--')}</td><td><b>${esc(r.x.product||'--')}</b>${r.x.edition?' · '+esc(r.x.edition):''}</td>
+      <td class="alloc-person">${esc(r.a.user||'--')}</td><td class="alloc-dept">${esc(r.a.dept||'--')}</td><td>${esc(r.a.email||'--')}</td><td>${esc(r.a.device||'--')}</td><td>${esc(r.a.asset||'--')}</td><td style="text-align:center;font-weight:800">${dmy(r.a.date)}</td><td style="text-align:center;font-weight:950">${Number(r.a.qty)||0}</td><td>${esc(r.a.note||'')}</td>
+      <td style="text-align:center"><button type="button" class="alloc-edit" onclick="suaChiTietCapPhat(${r.li},${r.ai})"><i class="fa-solid fa-pen"></i> Sửa</button></td>
+    </tr>`).join(''):'<tr><td colspan="13" style="text-align:center;padding:28px;color:#64748b;font-weight:850">Chưa có dữ liệu cấp phát chi tiết.</td></tr>';
+  }
+  window.renderDanhSachCapPhatChiTiet=render;
+  window.xuatDanhSachCapPhatChiTiet=function(){
+    if(typeof XLSX==='undefined')return alert('Chưa tải được thư viện Excel.');
+    const rows=[];(window.dsQuanLyBanQuyen||[]).forEach(x=>(x.allocations||[]).filter(a=>Number(a.qty)>0).forEach(a=>rows.push({'Mã bản quyền':x.code||'','Loại':x.type||'','Sản phẩm':x.product||'','Edition':x.edition||'','Người sử dụng':a.user||'','Phòng ban / Đơn vị':a.dept||'','Email / Tài khoản':a.email||'','Tên máy / Hostname':a.device||'','Mã tài sản / Serial':a.asset||'','Ngày cấp':dmy(a.date),'Số lượng':Number(a.qty)||0,'Ghi chú':a.note||''})));
+    const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),'DanhSachCapPhat');XLSX.writeFile(wb,'VINAPACO_Danh_Sach_Cap_Phat_Chi_Tiet.xlsx');
+  };
+  const old=window.renderLicenseManager;
+  if(old){window.renderLicenseManager=function(){old.apply(this,arguments);setTimeout(render,0)}}
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(render,250));
+  setTimeout(render,500);
+})();
+</script>
 </body>
 </html>

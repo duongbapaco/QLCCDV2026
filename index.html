@@ -2915,6 +2915,164 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
   .salary-preview-paper{width:194mm!important;max-width:none!important;border-radius:0!important;box-shadow:none!important}
 }
 </style>
+
+<style id="vinapaco-mobile-true-layout-final">
+/* ==========================================================
+   VINAPACO MOBILE TRUE APP LAYOUT – FIX LỖI CO CỘT
+   Nguyên nhân: rule body:not(.vnp-fullscreen-module) .app-layout
+   có độ ưu tiên cao hơn rule mobile .app-layout, khiến mobile
+   vẫn giữ grid 245px + nội dung còn lại.
+   ========================================================== */
+@media (max-width:680px){
+  html,body{
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    margin:0!important;
+    padding:0!important;
+    overflow-x:hidden!important;
+  }
+  #appMainContainer,
+  body:not(.vnp-fullscreen-module) #appMainContainer{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    margin:0!important;
+    padding:0!important;
+    box-sizing:border-box!important;
+  }
+  .container,
+  body:not(.vnp-fullscreen-module) .container{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    margin:0!important;
+    padding:6px 7px 18px!important;
+    box-sizing:border-box!important;
+  }
+  /* QUAN TRỌNG: phá grid desktop 245px + nội dung */
+  body:not(.vnp-fullscreen-module) .app-layout,
+  body.vnp-fullscreen-module .app-layout{
+    display:block!important;
+    grid-template-columns:none!important;
+    grid-template-areas:none!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    margin:6px 0 0!important;
+    padding:0!important;
+    box-sizing:border-box!important;
+  }
+  /* Menu mobile = thanh cuộn ngang, không phải cột bên trái */
+  body:not(.vnp-fullscreen-module) .tab-nav-shell,
+  body.vnp-fullscreen-module .tab-nav-shell{
+    display:block!important;
+    position:sticky!important;
+    top:0!important;
+    left:auto!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    height:auto!important;
+    max-height:none!important;
+    margin:0 0 7px!important;
+    padding:5px!important;
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+    border-radius:11px!important;
+    z-index:900!important;
+  }
+  .tab-nav{
+    display:flex!important;
+    flex-direction:row!important;
+    flex-wrap:nowrap!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    gap:5px!important;
+    padding:1px 1px 3px!important;
+    box-sizing:border-box!important;
+    -webkit-overflow-scrolling:touch!important;
+    scrollbar-width:none!important;
+  }
+  .tab-nav::-webkit-scrollbar{display:none!important}
+  .tab-btn-nav{
+    flex:0 0 auto!important;
+    width:auto!important;
+    min-width:max-content!important;
+    max-width:none!important;
+    min-height:42px!important;
+    padding:8px 12px!important;
+    font-size:11px!important;
+    line-height:1.15!important;
+    white-space:nowrap!important;
+    justify-content:center!important;
+    text-align:center!important;
+    border-radius:9px!important;
+    transform:none!important;
+  }
+  .tab-btn-nav i{font-size:13px!important;width:auto!important;min-width:auto!important}
+  .data-check-toolbar{display:none!important}
+  /* Nội dung tuyệt đối không còn cột 170px bên phải */
+  body:not(.vnp-fullscreen-module) .tab-content-area,
+  body.vnp-fullscreen-module .tab-content-area{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    margin:0!important;
+    padding:0!important;
+    box-sizing:border-box!important;
+  }
+  body:not(.vnp-fullscreen-module) .tab-content-area>.tab-pane.active,
+  body.vnp-fullscreen-module .tab-content-area>.tab-pane.active{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    margin:0!important;
+    padding:0 0 24px!important;
+    box-sizing:border-box!important;
+    transform:none!important;
+  }
+  body:not(.vnp-fullscreen-module) .dashboard-landing-header{
+    width:100%!important;
+    max-width:100%!important;
+    box-sizing:border-box!important;
+    margin:0 0 9px!important;
+    padding:12px!important;
+  }
+  .dashboard-landing-header h2{font-size:17px!important}
+  .dashboard-landing-header p{font-size:11px!important;line-height:1.4!important}
+  .charts-multi-grid,
+  .kpi-grid,
+  .vinapaco-top-widgets,
+  .config-bar{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+  }
+  .kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}
+  .vinapaco-top-widgets{grid-template-columns:1fr!important}
+  .config-bar{grid-template-columns:1fr!important}
+  /* Không để các card con tự tạo chiều rộng lớn hơn viewport */
+  .chart-card,.info-widget-card,.kpi-card,.cloud-sync-panel,.table-card,.form-card{
+    max-width:100%!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+  }
+  /* Bảng nghiệp vụ dài vẫn cuộn ngang trong chính bảng */
+  .table-card{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}
+}
+@media(max-width:420px){
+  .container{padding-left:5px!important;padding-right:5px!important}
+  .tab-btn-nav{padding-left:10px!important;padding-right:10px!important;font-size:10.5px!important}
+  .kpi-grid{gap:6px!important}
+}
+</style>
 </head>
 <body>
 

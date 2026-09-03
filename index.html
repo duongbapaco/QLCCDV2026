@@ -2697,6 +2697,224 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
 #licenseAssignModal .license-modal-actions .btn-red{background:#fff!important;color:#b91c1c!important;border:1px solid #fecaca!important;box-shadow:none!important}
 @media(max-width:700px){#licenseAssignModal .license-modal-card{width:calc(100vw - 14px)!important;border-radius:13px!important}#licenseAssignModal .license-modal-body{padding:13px!important}#licenseAssignModal .license-assign-grid{grid-template-columns:1fr!important;padding:10px!important}.license-assign-grid .full{grid-column:auto!important}#licenseAssignModal .license-modal-actions{padding:11px 13px!important}#licenseAssignModal .license-modal-actions .btn{flex:1}}
 </style>
+
+<style id="vinapaco-mobile-menu-weather-final">
+/* =========================================================
+   VINAPACO FINAL – MOBILE:
+   1) Thanh menu ẩn hoàn toàn trên điện thoại
+   2) Nội dung nghiệp vụ dùng toàn bộ chiều rộng
+   3) Bảng dữ liệu tự cuộn ngang, không bóp/ép cột
+   4) Thông báo thời tiết ghim tự ẩn sau khoảng 4 giây
+   ========================================================= */
+
+/* ----- MOBILE: ẨN THANH MENU, KHÔNG CHIẾM CHỖ ----- */
+@media (max-width: 680px){
+  html, body{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    overflow-x:hidden !important;
+  }
+
+  .app-layout,
+  body.vnp-workspace-mode .app-layout{
+    display:block !important;
+    width:100% !important;
+    max-width:none !important;
+    min-width:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+
+  /* MENU TAB ẨN HOÀN TOÀN TRÊN MOBILE */
+  .tab-nav-shell,
+  body.vnp-menu-open .tab-nav-shell,
+  body.vnp-menu-collapsed .tab-nav-shell,
+  body.vnp-workspace-mode .tab-nav-shell,
+  body.vnp-fullscreen-module .tab-nav-shell{
+    display:none !important;
+    visibility:hidden !important;
+    width:0 !important;
+    min-width:0 !important;
+    max-width:0 !important;
+    height:0 !important;
+    max-height:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    overflow:hidden !important;
+  }
+
+  /* Không để các nút menu cũ xuất hiện trên mobile */
+  #vnpRestoreNavBtn,
+  #showTabsBtn{
+    display:none !important;
+    visibility:hidden !important;
+    pointer-events:none !important;
+  }
+
+  /* Nội dung chiếm trọn chiều rộng */
+  .tab-content-area,
+  body.vnp-workspace-mode .tab-content-area,
+  body.vnp-fullscreen-module .tab-content-area{
+    display:block !important;
+    width:100% !important;
+    max-width:none !important;
+    min-width:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    box-sizing:border-box !important;
+  }
+
+  .tab-content-area > .tab-pane.active,
+  body.vnp-workspace-mode .tab-content-area > .tab-pane.active,
+  body.vnp-fullscreen-module .tab-content-area > .tab-pane.active{
+    display:block !important;
+    width:100% !important;
+    max-width:none !important;
+    min-width:0 !important;
+    margin:0 !important;
+    box-sizing:border-box !important;
+  }
+
+  /* Bảng: không co cột; cuộn ngang ngay trong khung bảng */
+  .table-card,
+  body.vnp-fullscreen-module .table-card,
+  body.vnp-workspace-mode .table-card{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    overflow-x:auto !important;
+    overflow-y:visible !important;
+    -webkit-overflow-scrolling:touch !important;
+    box-sizing:border-box !important;
+  }
+
+  .table-card > table,
+  .table-card > .salary-table,
+  .table-card .staff-master-table,
+  .table-card .salary-cv-table,
+  .table-card .salary-table{
+    width:max-content !important;
+    max-width:none !important;
+  }
+
+  /* Giữ kích thước tối thiểu của bảng nghiệp vụ, nhưng không ép viewport */
+  table{
+    max-width:none !important;
+  }
+
+  .salary-table{
+    min-width:1500px !important;
+    width:1500px !important;
+  }
+
+  .staff-master-scroll,
+  .account-table-wrap{
+    width:100% !important;
+    max-width:100% !important;
+    overflow-x:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+
+  .staff-master-table{
+    min-width:2180px !important;
+    width:2180px !important;
+  }
+
+  .account-table{
+    min-width:980px !important;
+    width:980px !important;
+  }
+
+  /* Không để tiêu đề/nút làm co bảng */
+  .table-header-bar{
+    min-width:0 !important;
+    width:100% !important;
+    padding-right:0 !important;
+  }
+
+  .table-header-bar .table-title{
+    max-width:100% !important;
+    min-width:0 !important;
+  }
+
+  /* Không chừa khoảng cho nút menu đã bị ẩn */
+  body.vnp-fullscreen-module .banner h1,
+  body.vnp-fullscreen-module .table-header-bar .table-title,
+  body.vnp-fullscreen-module .chart-card-heading .chart-title,
+  body.vnp-fullscreen-module .widget-heading{
+    padding-left:0 !important;
+  }
+
+  /* Thanh thông báo thời tiết trên mobile gọn, không đè dữ liệu */
+  #vinapacoGlobalWeatherBar{
+    right:8px !important;
+    bottom:8px !important;
+    max-width:calc(100vw - 16px) !important;
+  }
+}
+
+/* ----- THÔNG BÁO THỜI TIẾT GHIM: trạng thái ẩn có animation ----- */
+#vinapacoGlobalWeatherBar.vnp-weather-auto-hide{
+  opacity:0 !important;
+  transform:translateY(14px) scale(.98) !important;
+  pointer-events:none !important;
+  visibility:hidden !important;
+  transition:opacity .35s ease, transform .35s ease, visibility .35s ease !important;
+}
+</style>
+
+
+<style id="vinapaco-mobile-preview-pro-final">
+/* MOBILE APP LAYOUT — nội dung không bị thu hẹp; chỉ bảng dài mới cuộn ngang */
+@media(max-width:680px){
+  html,body{width:100%!important;min-width:0!important;max-width:100%!important;overflow-x:hidden!important}
+  body{padding:5px!important}
+  .container,.app-layout,.tab-content-area,.tab-pane,.table-card,.form-card,.config-bar,.kpi-grid{width:100%!important;min-width:0!important;max-width:100%!important}
+  .app-layout{display:block!important;margin-top:8px!important}
+  .tab-nav-shell{width:100%!important;max-width:100%!important;overflow:hidden!important;margin-bottom:8px!important}
+  .tab-nav{display:flex!important;flex-wrap:nowrap!important;grid-template-columns:none!important;width:100%!important;overflow-x:auto!important;overflow-y:hidden!important;gap:5px!important;padding:2px!important;-webkit-overflow-scrolling:touch}
+  .tab-btn-nav{flex:0 0 auto!important;width:auto!important;min-width:88px!important;max-width:145px!important;min-height:44px!important;padding:7px 9px!important;font-size:11.5px!important;white-space:normal!important}
+  .tab-content-area{display:block!important;overflow:visible!important}
+  .tab-content-area>.tab-pane.active{width:100%!important;max-width:100%!important;padding:8px 0 24px!important;margin:0!important}
+  .table-card{padding:9px!important;border-radius:11px!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}
+  .table-card>table,.table-card .salary-table,.table-card .salary-cv-table,.table-card .staff-master-table,.table-card .account-table,.table-card .leave-request-table,.license-table{width:max-content!important;max-width:none!important}
+  .table-header-bar{gap:8px!important}
+  .table-title{font-size:16px!important;line-height:1.35!important}
+  .form-card{grid-template-columns:1fr!important}
+  .config-bar{grid-template-columns:1fr!important}
+  .modal-overlay{padding:5px!important;align-items:flex-start!important}
+  .modal-card{width:100%!important;max-width:100%!important;margin:0!important}
+
+  /* Xem trước phiếu lương: trình bày theo màn hình điện thoại, không ép toàn bộ A4 vào 430px */
+  .salary-print-preview-toolbar{padding:9px 10px!important;gap:7px!important;align-items:flex-start!important;flex-wrap:wrap!important}
+  .salary-print-preview-toolbar .title{font-size:13px!important;line-height:1.3!important}
+  .salary-print-preview-toolbar .sub{display:none!important}
+  .salary-print-preview-actions{width:100%!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:6px!important}
+  .salary-print-preview-actions button{min-height:42px!important;font-size:12px!important}
+  .salary-preview-shell{width:100%!important;max-width:100%!important;padding:7px!important;overflow-x:hidden!important;background:#eef2f7!important}
+  .salary-preview-paper{width:100%!important;max-width:100%!important;min-height:0!important;margin:0 0 9px!important;padding:11px!important;border-radius:10px!important;box-shadow:0 3px 14px rgba(15,23,42,.10)!important}
+  .salary-preview-paper .salary-meta-grid{grid-template-columns:1fr!important;gap:6px!important}
+  .salary-preview-paper .salary-meta-box{padding:8px!important}
+  .salary-preview-paper .salary-meta-value{font-size:13px!important}
+  .salary-preview-paper .salary-doc-title{font-size:15px!important;line-height:1.25!important;text-align:center!important}
+  .salary-preview-paper .salary-info-table,.salary-preview-paper .salary-money-table{width:100%!important;min-width:0!important;table-layout:auto!important}
+  .salary-preview-paper .salary-info-table th,.salary-preview-paper .salary-info-table td,.salary-preview-paper .salary-money-table th,.salary-preview-paper .salary-money-table td{font-size:10.8px!important;padding:5px 4px!important;line-height:1.25!important;white-space:normal!important;word-break:break-word!important}
+  .salary-preview-paper .salary-net-box{padding:8px!important}
+  .salary-preview-paper .salary-net-box .label{font-size:10px!important}
+  .salary-preview-paper .salary-net-box .value{font-size:15px!important}
+  .salary-preview-paper .salary-signature-grid{grid-template-columns:1fr 1fr 1fr!important;gap:4px!important;margin-top:16px!important;font-size:8px!important}
+  .salary-preview-paper .salary-sign-space{height:35px!important}
+}
+@media(max-width:430px){
+  .tab-btn-nav{min-width:82px!important;font-size:11px!important}
+  .salary-preview-paper{padding:9px!important}
+  .salary-preview-paper .salary-info-table th,.salary-preview-paper .salary-info-table td,.salary-preview-paper .salary-money-table th,.salary-preview-paper .salary-money-table td{font-size:10.2px!important;padding:4px 3px!important}
+}
+@media print{
+  .salary-preview-paper{width:194mm!important;max-width:none!important;border-radius:0!important;box-shadow:none!important}
+}
+</style>
 </head>
 <body>
 
@@ -6514,6 +6732,10 @@ function taoHTMLBaoCaoTongHopKhoMuc(){
 function xemBaoCaoTongHopKhoMuc(){const c=document.getElementById('baoCaoTongHopKhoMucContent');if(c)c.innerHTML=taoHTMLBaoCaoTongHopKhoMuc();document.getElementById('modalBaoCaoTongHopKhoMuc')?.classList.remove('hidden');}
 function inBaoCaoTongHopKhoMuc(){const html=taoHTMLBaoCaoTongHopKhoMuc();const w=window.open('about:blank','_blank','width=1100,height=850');if(!w){alert('Hãy cho phép cửa sổ bật lên để in báo cáo.');return;}w.document.write(`<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Phiếu giao nhận tổng hợp kho mực ${currentNamKey}</title><style>@page{size:A4 portrait;margin:0}body{margin:0;background:#fff;font-family:"Times New Roman",serif}.ink-report-paper{width:210mm;min-height:297mm;margin:0 auto;padding:18mm 16mm;box-sizing:border-box;font-size:13pt}.ink-report-paper .qhead{display:grid;grid-template-columns:1fr 1fr;text-align:center}.ink-report-paper .qhead b{font-size:13pt}.ink-report-paper .qhead small{font-size:11pt;font-style:italic}.report-title{text-align:center;font-size:15pt;font-weight:700;margin:14px 0 3px;text-transform:uppercase}.report-sub{text-align:center;font-size:12pt;font-style:italic}.ink-report-paper table{width:100%;border-collapse:collapse;border-spacing:0;margin-top:10px;border:1.2pt solid #222;table-layout:fixed}.ink-report-paper thead{display:table-header-group}.ink-report-paper tr{page-break-inside:avoid}.ink-report-paper th,.ink-report-paper td{border:.7pt solid #333;padding:5px;vertical-align:middle;line-height:1.2}.ink-report-paper th{text-align:center;background:#e9edf2;font-weight:700;border:1pt solid #222}.ink-report-paper tbody tr:nth-child(even) td{background:#fafafa}.ink-report-paper .center{text-align:center}.ink-report-paper .total td{font-weight:700;background:#eef2f5;border-top:1pt solid #222}.ink-report-paper .sign{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center;margin-top:24px;page-break-inside:avoid}.ink-report-paper .sign>div{min-width:0}.ink-report-paper .sign-hint{font-size:11pt;font-style:italic;font-weight:400;margin-top:3px}.ink-report-paper .sign-space{height:36px}.ink-report-paper .sign-name{font-weight:700;font-size:12pt;line-height:1.1}</style></head><body>${html}
 
+
+
+
+
 </body></html>`);w.document.close();setTimeout(()=>{w.focus();w.print();},500);}
 
 function xuatBaoCaoXNTExcel() {
@@ -6673,17 +6895,20 @@ function xuatBaoCaoXNTExcel() {
         moCuaSoXemTruocPhieuLuong(html,`Tất cả phiếu lương - ${currentThangKey}/${currentNamKey}`);
     }
     function moCuaSoXemTruocPhieuLuong(html,title){
-        const w=window.open('','_blank','width=1200,height=900');
+        const isMobilePreview = window.matchMedia && window.matchMedia('(max-width: 680px)').matches;
+        const previewFeatures = isMobilePreview ? 'width=430,height=900,resizable=yes,scrollbars=yes' : 'width=1200,height=900,resizable=yes,scrollbars=yes';
+        const w=window.open('', '_blank', previewFeatures);
         if(!w)return alert('Trình duyệt đang chặn cửa sổ xem trước. Hãy cho phép pop-up cho hệ thống VINAPACO.');
         w.document.open();
-        w.document.write(`<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>${title}</title><style>
+        w.document.write(`<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>${title}</title><style>
           *{box-sizing:border-box}body{margin:0;background:#e2e8f0;font-family:"Times New Roman",Times,serif;color:#0f172a}.salary-print-preview-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;background:#166534;color:#fff;position:sticky;top:0;z-index:20}.salary-print-preview-toolbar .title{font-weight:900}.salary-print-preview-toolbar .sub{font-size:12px;opacity:.9}.salary-print-preview-actions{display:flex;gap:8px;flex-wrap:wrap}.salary-print-preview-actions button{border:0;border-radius:8px;padding:9px 13px;font-weight:900;cursor:pointer}.salary-preview-shell{padding:20px}.salary-preview-paper{width:194mm;min-height:277mm;margin:0 auto 18px;background:#fff;box-shadow:0 8px 28px rgba(15,23,42,.16);padding:10mm}.salary-logo-img{width:25mm;height:25mm;object-fit:contain}.salary-brand-name{font-size:14pt;font-weight:900;color:#166534}.salary-brand-en{font-size:8.5pt;color:#475569;font-weight:700}.salary-doc-title{font-size:16pt;color:#14532d;font-weight:900}.salary-meta-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:8px;margin:8px 0 10px}.salary-meta-box{border:1px solid #cbd5e1;border-radius:7px;padding:7px 9px;background:#f8fafc}.salary-meta-label{font-size:8pt;color:#64748b;font-weight:800;text-transform:uppercase}.salary-meta-value{font-size:10.5pt;font-weight:900;margin-top:2px;word-break:break-word}.salary-info-table,.salary-money-table{width:100%;border-collapse:collapse}.salary-info-table th,.salary-info-table td,.salary-money-table th,.salary-money-table td{border:1px solid #cbd5e1;padding:5px 7px;font-size:8.7pt;line-height:1.2}.salary-info-table th,.salary-money-table th{background:#f1f5f9;font-weight:900}.salary-money-table td:last-child,.salary-money-table th:last-child{text-align:right}.salary-money-table .total-row td{font-weight:900;background:#ecfdf5;color:#14532d}.salary-money-table .deduct td:last-child{color:#b91c1c}.salary-net-box{margin-top:9px;border:1.5px solid #86efac;background:#f0fdf4;border-radius:8px;padding:9px 12px;display:flex;justify-content:space-between;align-items:center}.salary-net-box .label{font-size:9pt;font-weight:900;color:#166534;text-transform:uppercase}.salary-net-box .value{font-size:15pt;font-weight:900;color:#15803d}.salary-note{font-size:7.8pt;color:#64748b;margin-top:7px}.salary-signature-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin-top:12mm;text-align:center;font-size:8.5pt;font-weight:800}.salary-sign-space{height:16mm}.salary-page-break{page-break-after:always;break-after:page;height:0}.salary-preview-paper{page-break-after:auto;break-inside:avoid}
-          @media(max-width:900px){.salary-preview-paper{width:100%;padding:7mm}.salary-meta-grid{grid-template-columns:1fr 1fr}.salary-preview-shell{padding:8px}}
+          @media(max-width:900px){.salary-preview-paper{width:100%;max-width:100%;min-height:0;padding:12px;margin:0 0 10px;border-radius:10px}.salary-meta-grid{grid-template-columns:1fr}.salary-preview-shell{padding:8px;overflow-x:hidden}.salary-info-table,.salary-money-table{min-width:0!important;width:100%!important;table-layout:auto!important}.salary-info-table th,.salary-info-table td,.salary-money-table th,.salary-money-table td{font-size:11px!important;padding:6px 5px!important;word-break:break-word!important}.salary-print-preview-toolbar{flex-wrap:wrap}.salary-print-preview-actions{width:100%;display:grid;grid-template-columns:1fr 1fr}.salary-print-preview-actions button{min-height:42px}}
           @media print{@page{size:A4 portrait;margin:0}.salary-print-preview-toolbar{display:none!important}body{background:#fff}.salary-preview-shell{padding:0}.salary-preview-paper{width:194mm;min-height:277mm;margin:0 auto;box-shadow:none;padding:8mm}.salary-page-break{display:block;page-break-after:always;break-after:page}}
         </style></head><body>
         <div class="salary-print-preview-toolbar"><div><div class="title">XEM TRƯỚC PHIẾU LƯƠNG</div><div class="sub">${title} · Kiểm tra nội dung trước khi in / lưu PDF</div></div><div class="salary-print-preview-actions"><button onclick="window.print()">🖨️ IN / LƯU PDF</button><button onclick="window.close()">✕ ĐÓNG</button></div></div>
         <main class="salary-preview-shell">${html}</main>
-        </body></html>`);
+        
+</body></html>`);
         w.document.close();
         w.focus();
     }
@@ -9100,6 +9325,18 @@ window.inAnPhieuHandover=function(){
   if(old){window.renderLicenseManager=function(){old.apply(this,arguments);setTimeout(render,0)}}
   document.addEventListener('DOMContentLoaded',()=>setTimeout(render,250));
   setTimeout(render,500);
+})();
+</script>
+<script id="vinapaco-weather-autohide-safe">
+(function(){
+  function initWeatherAutoHide(){
+    var bar=document.getElementById('vinapacoGlobalWeatherBar');
+    if(!bar)return;
+    clearTimeout(window.__vinapacoWeatherAutoHideTimer);
+    window.__vinapacoWeatherAutoHideTimer=setTimeout(function(){bar.classList.add('vnp-weather-auto-hide');},4000);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initWeatherAutoHide,{once:true});
+  else initWeatherAutoHide();
 })();
 </script>
 </body>

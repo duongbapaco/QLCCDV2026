@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hệ Thống Quản Lý VINAPACO - Full Pro Edition 2025-2026</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
@@ -1928,11 +1928,735 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
 @media(max-width:450px){.license-dashboard{grid-template-columns:1fr}.license-detail-grid{grid-template-columns:1fr}}
 
 </style>
+<!-- CSS chuyển về HEAD để HTML hợp lệ -->
+<style>
+/* ===== VINAPACO ENHANCED 2026: LỊCH / LƯƠNG / KHO / HÓA ĐƠN ===== */
+.vannien-pro-section{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:13px;box-shadow:0 3px 12px rgba(15,23,42,.05)}
+.lich-day-tile{min-height:82px!important;padding:7px!important;justify-content:flex-start!important}
+.lich-day-tile .lich-day-greg{font-size:18px!important}
+.lich-day-tile .lich-day-lunar{font-size:12px!important}
+.lich-day-tile .lich-day-meta{font-size:10px!important}
+.lich-day-tile .lich-day-hoang{display:block;font-size:10px;font-weight:1000;letter-spacing:.2px;margin-top:auto;padding:3px 4px;border-radius:5px;text-align:center}
+.lich-day-tile.hoang-day{background:linear-gradient(180deg,#f0fdf4,#fff)!important;border-color:#86efac!important}
+.lich-day-tile.hac-day{background:linear-gradient(180deg,#fff7f7,#fff)!important;border-color:#fecaca!important}
+.lich-day-tile.today{box-shadow:0 0 0 2px #16a34a inset,0 5px 14px rgba(22,163,74,.12)!important}
+.vannien-hero-day{display:grid;grid-template-columns:140px 1fr;gap:12px;padding:14px;border-radius:14px;background:linear-gradient(135deg,#fff7ed,#fff);border:1px solid #fed7aa;margin-bottom:12px}
+.vannien-hero-number{font-size:42px;font-weight:1000;line-height:1;color:#8b0000;text-align:center}.vannien-hero-number small{display:block;font-size:13px;color:#64748b}
+.vannien-hero-main h3{font-size:18px;margin-bottom:5px;color:#0f172a}.vannien-badge-hoang{display:inline-flex;padding:5px 10px;border-radius:999px;font-size:12px;font-weight:1000}.vannien-badge-hoang.hd{background:#dcfce7;color:#166534}.vannien-badge-hoang.hac{background:#fee2e2;color:#991b1b}
+@media(max-width:700px){.vannien-pro-grid{grid-template-columns:1fr!important}.vannien-hero-day{grid-template-columns:1fr}.lich-day-tile{min-height:70px!important}.lich-day-tile .lich-day-meta{display:none}}
 
-<style id="license-required-field-style">
-.license-form-group input.license-required-error,.license-form-group select.license-required-error{border:2px solid #dc2626 !important;box-shadow:0 0 0 2px rgba(220,38,38,.10);background:#fff7f7;}
-.license-form-group input::placeholder{color:#94a3b8;opacity:1;}
+.invoice-kpi-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:0 0 14px}
+.invoice-kpi{background:#fff;border:1px solid #dbe4ee;border-radius:12px;padding:13px 14px;box-shadow:0 3px 12px rgba(15,23,42,.05)}
+.invoice-kpi span,.invoice-kpi small{display:block;color:#64748b;font-size:10px;font-weight:900;text-transform:uppercase}.invoice-kpi b{display:block;font-size:20px;margin:5px 0;color:#0f3d63}.invoice-kpi small{text-transform:none;font-weight:700}
+.invoice-filter-bar{display:grid;grid-template-columns:160px 160px minmax(260px,1fr) auto;gap:10px;align-items:end;background:#f8fafc;border:1px solid #dbe4ee;border-radius:12px;padding:12px;margin-bottom:14px}
+.invoice-import-card,.invoice-form-card{background:#fff;border:1px solid #dbe4ee;border-radius:14px;margin-bottom:14px;overflow:hidden;box-shadow:0 3px 12px rgba(15,23,42,.05)}
+.invoice-import-head{padding:13px 15px;background:linear-gradient(135deg,#075985,#0284c7);color:#fff;display:flex;justify-content:space-between;gap:12px;align-items:center}.invoice-import-head small{display:block;opacity:.88;margin-top:3px}.invoice-status{background:rgba(255,255,255,.15);padding:6px 10px;border-radius:999px;font-weight:900;font-size:11px;white-space:nowrap}
+.invoice-import-grid{display:grid;grid-template-columns:280px 1fr;gap:14px;padding:14px}.invoice-dropzone{min-height:170px;border:2px dashed #93c5fd;border-radius:12px;background:#eff6ff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;cursor:pointer;color:#075985;text-align:center}.invoice-dropzone i{font-size:30px}.invoice-dropzone span{font-size:11px;color:#64748b}
+.invoice-manual-text label{display:block;font-size:12px;font-weight:900;color:#334155;margin-bottom:6px}.invoice-manual-text textarea{width:100%;min-height:170px;border:1px solid #cbd5e1;border-radius:10px;padding:10px;resize:vertical;font-size:13px}
+.invoice-form-title{padding:12px 15px;background:#f8fafc;border-bottom:1px solid #e2e8f0;font-weight:1000;color:#0f3d63}.invoice-form-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:14px}.invoice-items-head{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f8fafc;border-top:1px solid #e2e8f0}.invoice-items-wrap,.invoice-summary-scroll,.invoice-list-scroll{overflow:auto}
+.invoice-items-table,.invoice-summary-table,.invoice-list-table{width:100%;min-width:1050px;border-collapse:collapse}.invoice-items-table th,.invoice-summary-table th,.invoice-list-table th{background:#eef4f8;color:#0f3d63;font-size:11px;font-weight:1000}.invoice-items-table td,.invoice-summary-table td,.invoice-list-table td{font-size:12px;padding:8px;border:1px solid #dbe4ee}.invoice-items-table input{width:100%;border:1px solid #cbd5e1;border-radius:6px;padding:6px;font-size:12px}.invoice-summary-card{margin-top:14px}.invoice-summary-table tfoot td{font-weight:1000;background:#f8fafc}
+.invoice-summary-table td:nth-child(n+5){text-align:right}.invoice-summary-table td:nth-child(1),.invoice-summary-table td:nth-child(9){text-align:center}
+@media(max-width:1000px){.invoice-kpi-grid{grid-template-columns:repeat(2,1fr)}.invoice-filter-bar{grid-template-columns:1fr 1fr}.invoice-import-grid{grid-template-columns:1fr}.invoice-form-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.invoice-kpi-grid{grid-template-columns:1fr}.invoice-filter-bar,.invoice-form-grid{grid-template-columns:1fr}.invoice-form-grid .form-group[style*="span 2"]{grid-column:auto!important}}
+.invoice-report-print{font-family:"Times New Roman",Times,serif;color:#000;background:#fff;padding:10mm;width:210mm;box-sizing:border-box}
+.invoice-report-print table{width:100%;border-collapse:collapse;margin-top:10px}.invoice-report-print th,.invoice-report-print td{border:1px solid #333;padding:5px;font-size:10pt}.invoice-report-print th{background:#eee;text-align:center}
 </style>
+
+<style id="vinapaco-header-unified-final">
+/* ==========================================================
+   VINAPACO – TIÊU ĐỀ TAB ĐỒNG BỘ / KHÔNG CHỒNG NÚT QUAY LẠI
+   ========================================================== */
+body.vnp-fullscreen-module .tab-pane.active > .table-header-bar{
+    min-height:46px !important;
+    width:100% !important;
+    margin:0 0 14px !important;
+    padding:2px 8px 10px 72px !important;
+    box-sizing:border-box !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+    gap:14px !important;
+    flex-wrap:wrap !important;
+    border-bottom:1px solid #dbe4ee !important;
+}
+body.vnp-fullscreen-module .tab-pane.active > .table-header-bar .table-title,
+body.vnp-fullscreen-module .tab-pane.active > .table-header-bar .table-title > div{
+    min-width:0 !important;
+}
+body.vnp-fullscreen-module .tab-pane.active > .table-header-bar .table-title{
+    flex:1 1 auto !important;
+    max-width:none !important;
+    font-size:18px !important;
+    line-height:1.28 !important;
+    font-weight:900 !important;
+    letter-spacing:.05px !important;
+    color:#0f2742 !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:9px !important;
+}
+body.vnp-fullscreen-module .tab-pane.active > .table-header-bar .table-title i{
+    flex:0 0 auto !important;
+    color:#0f4c81 !important;
+    width:20px !important;
+    text-align:center !important;
+}
+body.vnp-fullscreen-module .tab-pane.active > .table-header-bar > .btn,
+body.vnp-fullscreen-module .tab-pane.active > .table-header-bar > div:last-child{
+    flex:0 0 auto !important;
+}
+body.vnp-fullscreen-module .tab-pane.active > .table-header-bar .btn{
+    min-height:36px !important;
+    padding:8px 13px !important;
+    font-size:12px !important;
+}
+body.vnp-fullscreen-module .tab-pane.active > .table-header-bar.staff-master-header{
+    align-items:center !important;
+}
+body.vnp-fullscreen-module .tab-pane.active > .table-header-bar .staff-master-actions{
+    padding-right:0 !important;
+    flex:0 0 auto !important;
+}
+/* Nút quay lại: đúng phong cách nút tròn của mẫu thiết kế */
+body.vnp-fullscreen-module #vnpRestoreNavBtn{
+    width:42px !important;
+    min-width:42px !important;
+    height:42px !important;
+    padding:0 !important;
+    left:18px !important;
+    top:18px !important;
+    border-radius:50% !important;
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:0 !important;
+    background:#0f4c81 !important;
+    box-shadow:0 5px 16px rgba(15,76,129,.25) !important;
+}
+body.vnp-fullscreen-module #vnpRestoreNavBtn i{
+    margin:0 !important;
+    font-size:18px !important;
+}
+body.vnp-fullscreen-module #vnpRestoreNavBtn span{display:none !important;}
+
+/* ===== THANH TIÊU ĐỀ BÊN TRONG CÁC KHỐI: ĐỒNG BỘ NHẸ, KHÔNG LÀM RỘNG BẢNG ===== */
+body.vnp-fullscreen-module .table-card .table-header-bar .table-title{
+    line-height:1.3 !important;
+}
+
+/* ===== THANH TOÁN VĂN PHÒNG: giảm cỡ chữ bảng về mức gọn, dễ đọc ===== */
+body.vnp-fullscreen-module #officePaymentTab > .table-header-bar .table-title,
+body.vnp-fullscreen-module #telecomPaymentTab > .table-header-bar .table-title{
+    font-size:17px !important;
+}
+body.vnp-fullscreen-module #officePaymentTab > table,
+body.vnp-fullscreen-module #telecomPaymentTab > table{
+    font-size:12.5px !important;
+}
+body.vnp-fullscreen-module #officePaymentTab > table th,
+body.vnp-fullscreen-module #telecomPaymentTab > table th{
+    font-size:10.5px !important;
+    line-height:1.18 !important;
+    padding:7px 7px !important;
+}
+body.vnp-fullscreen-module #officePaymentTab > table td,
+body.vnp-fullscreen-module #telecomPaymentTab > table td{
+    font-size:12.5px !important;
+    line-height:1.25 !important;
+    padding:7px 7px !important;
+}
+body.vnp-fullscreen-module #officePaymentTab .form-group label,
+body.vnp-fullscreen-module #telecomPaymentTab .form-group label{
+    font-size:11px !important;
+}
+body.vnp-fullscreen-module #officePaymentTab .form-group input,
+body.vnp-fullscreen-module #officePaymentTab .form-group select,
+body.vnp-fullscreen-module #telecomPaymentTab .form-group input,
+body.vnp-fullscreen-module #telecomPaymentTab .form-group select{
+    font-size:13px !important;
+}
+
+@media(max-width:900px){
+    body.vnp-fullscreen-module .tab-pane.active > .table-header-bar{
+        padding-left:60px !important;
+        padding-right:6px !important;
+        gap:8px !important;
+    }
+    body.vnp-fullscreen-module .tab-pane.active > .table-header-bar .table-title{
+        font-size:16px !important;
+        flex-basis:100% !important;
+    }
+    body.vnp-fullscreen-module #vnpRestoreNavBtn{
+        left:10px !important;
+        top:10px !important;
+        width:38px !important;
+        min-width:38px !important;
+        height:38px !important;
+    }
+    body.vnp-fullscreen-module #vnpRestoreNavBtn i{font-size:16px !important;}
+}
+</style>
+
+<style id="vinapaco-home-arrow-final">
+/* Tab nghiệp vụ: nút mũi tên độc lập, không có chữ, không chèn lên banner. */
+body.vnp-workspace-mode #vnpRestoreNavBtn{display:inline-flex!important}
+body:not(.vnp-workspace-mode) #vnpRestoreNavBtn{display:none!important}
+</style>
+
+<style id="vinapaco-ui-large-calendar-weather-2026">
+/* ===== VINAPACO 2026: LỊCH TRÀN MÀN HÌNH + WIDGET TO, DỄ QUAN SÁT ===== */
+.vinapaco-top-widgets{grid-template-columns:minmax(280px,1fr) minmax(360px,1.18fr) minmax(420px,1.55fr)!important;gap:14px!important;margin-bottom:16px!important}
+.vinapaco-top-widgets .info-widget-card{min-height:156px!important;padding:18px 20px!important;border-radius:16px!important;border:1px solid #cbd5e1!important;box-shadow:0 5px 18px rgba(15,23,42,.08)!important;justify-content:flex-start!important}
+.widget-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px;font-weight:950;letter-spacing:.2px;color:#334155;text-transform:uppercase}
+.widget-heading i{margin-right:6px}
+.live-dot{font-size:11px;background:#dcfce7;color:#15803d;border:1px solid #86efac;border-radius:999px;padding:4px 9px;font-weight:950}
+.widget-badge-red,.widget-badge-blue{font-size:10px;border-radius:999px;padding:5px 9px;font-weight:950;letter-spacing:.3px}
+.widget-badge-red{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}.widget-badge-blue{background:#eff6ff;color:#0369a1;border:1px solid #bfdbfe}
+.vinapaco-widget-clock{background:linear-gradient(145deg,#fff,#f8fbff)!important}.clock-display{font-size:38px!important;line-height:1!important;margin-top:8px;letter-spacing:1px!important}.widget-date{font-size:18px;font-weight:950;color:#0f172a;margin-top:5px}.widget-subline{font-size:13px;color:#64748b;font-weight:800;margin-top:2px}
+.vinapaco-widget-lunar{background:linear-gradient(145deg,#fff,#f7fff9)!important}.lunar-display-large{font-size:18px!important;line-height:1.5!important;margin-top:6px}.lunar-extra-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:8px}.lunar-extra-grid>div{padding:9px 10px;background:#fff;border:1px solid #dbe4ee;border-radius:10px;min-width:0}.lunar-extra-grid span{display:block;font-size:10px;color:#64748b;font-weight:850;text-transform:uppercase}.lunar-extra-grid b{display:block;font-size:13px;color:#166534;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vinapaco-widget-weather{background:linear-gradient(145deg,#fff,#f7fbff)!important}.weather-actions-large{display:flex;gap:8px;margin-top:8px}.weather-big-btn{border:0;border-radius:10px;padding:10px 15px;color:#fff;font-size:13px;font-weight:950;cursor:pointer;box-shadow:0 3px 8px rgba(15,23,42,.12)}.weather-big-btn.purple{background:#7c3aed}.weather-big-btn.blue{background:#0284c7}.weather-search-large{display:flex;gap:7px;margin-top:8px}.weather-search-large input{flex:1;min-width:0;height:42px;padding:0 12px;font-size:14px;font-weight:750;border:1.5px solid #cbd5e1;border-radius:10px;background:#fff}.weather-search-btn{height:42px;padding:0 14px;border:0;border-radius:10px;background:#0284c7;color:#fff;font-weight:950;font-size:13px;cursor:pointer}.weather-live-large{font-size:15px!important;font-weight:850!important;line-height:1.55;margin-top:8px;color:#0f172a!important;min-height:46px}
+.vinapaco-calendar-fullscreen-card{max-width:none!important;width:calc(100vw - 20px)!important;height:calc(100vh - 20px)!important;max-height:none!important;border-radius:18px!important}.vinapaco-calendar-modal-body{height:calc(100vh - 92px)!important;overflow:auto!important}.vinapaco-calendar-stack{display:flex!important;flex-direction:column!important;gap:16px!important}.vinapaco-calendar-grid-card{width:100%!important}.vinapaco-fengshui-card{width:100%!important}.vinapaco-calendar-grid-card #lichGridContainer{grid-template-columns:repeat(7,minmax(0,1fr))!important;gap:8px!important}.vinapaco-calendar-grid-card .lich-grid-header{font-size:14px!important;padding:11px 0!important}.vinapaco-calendar-grid-card .lich-day-tile{min-height:108px!important;padding:10px 8px!important;border-radius:11px!important;font-size:13px!important}.vinapaco-calendar-grid-card .lich-day-tile .lich-day-greg{font-size:22px!important;font-weight:950!important}.vinapaco-calendar-grid-card .lich-day-tile .lich-day-lunar{font-size:13px!important}.vinapaco-calendar-grid-card .lich-day-tile .lich-day-meta{font-size:11px!important}.vinapaco-fengshui-card #chiTietNgayNoiDung{gap:10px!important}.vinapaco-fengshui-card .vannien-pro-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}.vinapaco-fengshui-card .vannien-pro-section{padding:15px!important}.vinapaco-fengshui-card .vannien-pro-title{font-size:14px!important}.vinapaco-fengshui-card .vannien-pro-row{font-size:13px!important}.vinapaco-fengshui-card .vannien-hour{font-size:12px!important;padding:9px!important}.vinapaco-calendar-fullscreen-card .modal-actions{min-height:64px!important}
+@media(max-width:1100px){.vinapaco-top-widgets{grid-template-columns:1fr 1fr!important}.vinapaco-widget-weather{grid-column:1/-1}.lunar-extra-grid{grid-template-columns:repeat(2,1fr)!important}}
+@media(max-width:700px){.vinapaco-top-widgets{grid-template-columns:1fr!important}.vinapaco-widget-weather{grid-column:auto}.vinapaco-top-widgets .info-widget-card{min-height:unset!important}.clock-display{font-size:32px!important}.widget-date{font-size:16px}.lunar-extra-grid{grid-template-columns:repeat(2,1fr)!important}.weather-actions-large{flex-wrap:wrap}.weather-big-btn{flex:1;min-width:140px}.vinapaco-calendar-fullscreen-card{width:100vw!important;height:100vh!important;border-radius:0!important}.vinapaco-calendar-modal-body{height:calc(100vh - 82px)!important;padding:12px!important}.vinapaco-calendar-grid-card #lichGridContainer{gap:4px!important}.vinapaco-calendar-grid-card .lich-day-tile{min-height:78px!important;padding:6px 4px!important}.vinapaco-calendar-grid-card .lich-day-tile .lich-day-greg{font-size:17px!important}.vinapaco-calendar-grid-card .lich-day-tile .lich-day-lunar{font-size:10px!important}.vinapaco-fengshui-card .vannien-pro-grid{grid-template-columns:1fr!important}}
+</style>
+
+<style id="vinapaco-final-title-weather-table-fix">
+/* ==========================================================
+   VINAPACO FINAL UI – TIÊU ĐỀ KHÔNG CHỒNG NÚT MŨI TÊN
+   Đồng bộ theo mẫu Khí tượng & Vị trí
+   ========================================================== */
+body.vnp-fullscreen-module .banner h1,
+body.vnp-fullscreen-module .table-header-bar .table-title,
+body.vnp-fullscreen-module .chart-card-heading .chart-title,
+body.vnp-fullscreen-module .widget-heading{
+    padding-left:58px !important;
+    box-sizing:border-box !important;
+}
+body.vnp-fullscreen-module .table-header-bar .table-title{
+    min-width:0 !important;
+    line-height:1.35 !important;
+    flex:1 1 auto !important;
+}
+body.vnp-fullscreen-module #vnpRestoreNavBtn{
+    width:42px !important;
+    height:42px !important;
+    min-width:42px !important;
+    padding:0 !important;
+    border-radius:50% !important;
+    justify-content:center !important;
+    align-items:center !important;
+}
+body.vnp-fullscreen-module #vnpRestoreNavBtn i{font-size:18px !important;margin:0 !important;}
+/* Hai bảng nghiệp vụ yêu cầu chữ gọn hơn nhưng vẫn rõ */
+body.vnp-fullscreen-module #officePaymentTab > table,
+body.vnp-fullscreen-module #telecomPaymentTab > table{
+    font-size:11.5px !important;
+}
+body.vnp-fullscreen-module #officePaymentTab > table th,
+body.vnp-fullscreen-module #telecomPaymentTab > table th{
+    font-size:9.5px !important;
+    line-height:1.18 !important;
+    padding:6px 6px !important;
+}
+body.vnp-fullscreen-module #officePaymentTab > table td,
+body.vnp-fullscreen-module #telecomPaymentTab > table td{
+    font-size:11.5px !important;
+    line-height:1.22 !important;
+    padding:6px 6px !important;
+}
+body.vnp-fullscreen-module #officePaymentTab > table input,
+body.vnp-fullscreen-module #telecomPaymentTab > table input{
+    font-size:11px !important;
+    height:30px !important;
+    padding:0 5px !important;
+}
+body.vnp-fullscreen-module #officePaymentTab .form-group label,
+body.vnp-fullscreen-module #telecomPaymentTab .form-group label{font-size:11px !important;}
+/* Weather card giống mẫu: gọn, rõ, không có dòng đồng hồ/ngày */
+.vinapaco-widget-weather .widget-heading{padding-left:0 !important;}
+.weather-live-large{min-height:0 !important;}
+.weather-timestamp-line{display:none !important;}
+/* Không để tiêu đề dài đè lên vùng nút bên phải */
+body.vnp-fullscreen-module .table-header-bar{padding-right:2px !important;}
+@media(max-width:700px){
+    body.vnp-fullscreen-module .banner h1,
+    body.vnp-fullscreen-module .table-header-bar .table-title,
+    body.vnp-fullscreen-module .chart-card-heading .chart-title,
+    body.vnp-fullscreen-module .widget-heading{padding-left:50px !important;}
+    body.vnp-fullscreen-module #vnpRestoreNavBtn{width:38px !important;height:38px !important;min-width:38px !important;}
+}
+</style>
+
+<style id="vinapaco-menu-always-visible-final">
+/* ==========================================================
+   VINAPACO – MENU LUÔN HIỂN THỊ / KHÔNG THANH ĐỊA CHỈ / KHÔNG MŨI TÊN
+   Bố cục thật: MENU chiếm cột trái, NỘI DUNG chiếm cột phải.
+   Không dùng position:fixed để tránh mọi tình trạng che tiêu đề.
+   ========================================================== */
+html,body{margin:0!important;min-width:0!important;overflow-x:hidden!important;}
+body{padding-top:0!important;}
+
+/* Ghi đè hoàn toàn chế độ workspace cũ */
+body.vnp-workspace-mode #appMainContainer,
+body.vnp-workspace-mode .app-layout,
+body.vnp-workspace-mode .tab-content-area{width:auto!important;max-width:none!important;margin-left:0!important;margin-right:0!important;padding-left:0!important;padding-right:0!important;}
+body.vnp-workspace-mode .banner,
+body.vnp-workspace-mode #driveUploadStatusBar,
+body.vnp-workspace-mode #systemConfigBar,
+body.vnp-workspace-mode .vinapaco-top-widgets,
+body.vnp-workspace-mode .container > .config-bar,
+body.vnp-workspace-mode .kpi-grid,
+body.vnp-workspace-mode .cloud-sync-panel{display:block!important;}
+
+/* Luôn hiện sidebar trong luồng bố cục */
+.app-layout,
+body.vnp-workspace-mode .app-layout{
+  display:grid!important;
+  grid-template-columns:minmax(220px,245px) minmax(0,1fr)!important;
+  align-items:start!important;
+  gap:18px!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:14px 0 0!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+}
+.tab-nav-shell,
+body.vnp-menu-collapsed .tab-nav-shell,
+body.vnp-menu-open .tab-nav-shell{
+  display:block!important;
+  position:sticky!important;
+  left:auto!important;
+  top:12px!important;
+  width:auto!important;
+  min-width:0!important;
+  max-width:none!important;
+  height:auto!important;
+  max-height:calc(100vh - 24px)!important;
+  margin:0!important;
+  padding:10px!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  box-sizing:border-box!important;
+  background:#fff!important;
+  border:1px solid #dbe3ec!important;
+  border-radius:16px!important;
+  box-shadow:0 8px 26px rgba(15,23,42,.08)!important;
+  z-index:20!important;
+}
+.tab-nav{display:flex!important;flex-direction:column!important;gap:4px!important;width:100%!important;}
+.tab-btn-nav{width:100%!important;min-height:45px!important;box-sizing:border-box!important;white-space:normal!important;}
+.tab-content-area,
+body.vnp-workspace-mode .tab-content-area{
+  display:block!important;
+  min-width:0!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+}
+.tab-content-area>.tab-pane.active,
+body.vnp-workspace-mode .tab-content-area>.tab-pane.active{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  min-height:0!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  padding:14px!important;
+  transform:none!important;
+  top:auto!important;
+}
+
+/* Tuyệt đối không còn lớp phủ */
+body.vnp-menu-open::after{display:none!important;content:none!important;}
+#vnpAppAddressBar,#vnpRestoreNavBtn{display:none!important;}
+
+/* Tiêu đề tab không cần chừa vùng cho nút mũi tên */
+body.vnp-fullscreen-module .table-header-bar,
+body.vnp-fullscreen-module .chart-card-heading,
+body.vnp-fullscreen-module .widget-heading,
+body.vnp-fullscreen-module .table-title{padding-left:0!important;}
+
+@media(max-width:900px){
+  .app-layout,
+  body.vnp-workspace-mode .app-layout{
+    grid-template-columns:1fr!important;
+    gap:10px!important;
+  }
+  .tab-nav-shell,
+  body.vnp-menu-collapsed .tab-nav-shell,
+  body.vnp-menu-open .tab-nav-shell{
+    position:sticky!important;
+    top:0!important;
+    width:100%!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+  .tab-nav{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important;}
+  .tab-btn-nav{min-height:42px!important;font-size:12px!important;}
+}
+@media(max-width:520px){
+  .tab-nav{grid-template-columns:1fr!important;}
+  .tab-content-area>.tab-pane.active{padding:8px!important;}
+}
+</style>
+
+<style id="vinapaco-final-navigation-design">
+/* ==========================================================
+   VINAPACO – ĐIỀU HƯỚNG CUỐI CÙNG
+   Tổng quan: MENU + dashboard
+   Nghiệp vụ: 100% màn hình, KHÔNG MENU
+   ========================================================== */
+#vinapacoMainBanner{
+  position:relative!important;
+  min-height:64px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:14px!important;
+  box-sizing:border-box!important;
+}
+#vinapacoMainBanner .vinapaco-banner-home{
+  flex:0 0 48px!important;
+  width:48px!important;height:48px!important;
+  margin-left:2px!important;
+  border:1px solid rgba(255,255,255,.42)!important;
+  border-radius:12px!important;
+  background:rgba(255,255,255,.16)!important;
+  color:#fff!important;
+  display:inline-flex!important;
+  align-items:center!important;justify-content:center!important;gap:6px!important;
+  cursor:pointer!important;
+  box-shadow:0 4px 12px rgba(15,23,42,.14)!important;
+  font-weight:900!important;
+  z-index:5!important;
+}
+#vinapacoMainBanner .vinapaco-banner-home:hover{filter:brightness(1.08)!important;transform:translateY(-1px)}
+#vinapacoMainBanner .vinapaco-banner-home i{font-size:17px!important;margin:0!important}
+#vinapacoMainBanner .vinapaco-banner-home span{display:none!important}
+#vinapacoMainBanner .vinapaco-banner-title{
+  min-width:0!important;flex:1 1 auto!important;
+  padding-left:12px!important;
+  box-sizing:border-box!important;
+}
+#vinapacoMainBanner .vinapaco-banner-title h1{margin-left:0!important;padding-left:0!important}
+
+/* Bỏ toàn bộ các nút "MỞ DRIVE/DRIVE" nhưng giữ nguyên ô cấu hình và link Drive. */
+button[onclick*="moThuThucDriveChung"],
+a[onclick*="moThuThucDriveChung"]{display:none!important}
+
+/* Khi vào nghiệp vụ: sidebar biến mất, nội dung trải hết chiều ngang. */
+body.vnp-fullscreen-module .tab-nav-shell{display:none!important}
+body.vnp-fullscreen-module .app-layout{display:block!important;width:100vw!important;max-width:none!important;margin:0!important;padding:0!important;box-sizing:border-box!important}
+body.vnp-fullscreen-module .tab-content-area{display:block!important;width:100vw!important;max-width:none!important;margin:0!important;padding:0!important;box-sizing:border-box!important}
+body.vnp-fullscreen-module .tab-pane.active{display:block!important;width:100vw!important;max-width:none!important;min-height:calc(100vh - 64px)!important;margin:0!important;box-sizing:border-box!important}
+body.vnp-fullscreen-module .tab-pane.active>.table-card{width:100%!important;max-width:none!important;margin-left:0!important;margin-right:0!important}
+
+/* Không để các thành phần tổng quan chen vào màn hình nghiệp vụ. */
+body.vnp-fullscreen-module #driveUploadStatusBar,
+body.vnp-fullscreen-module #systemConfigBar,
+body.vnp-fullscreen-module .vinapaco-top-widgets,
+body.vnp-fullscreen-module .container > .config-bar,
+body.vnp-fullscreen-module .kpi-grid,
+body.vnp-fullscreen-module .cloud-sync-panel{display:none!important}
+
+/* Banner vẫn là thanh đầu trang, nhưng gọn; nút Trang chủ luôn ở đúng vị trí. */
+body.vnp-fullscreen-module #vinapacoMainBanner{margin:0!important;border-radius:0!important;min-height:64px!important}
+body.vnp-fullscreen-module #vinapacoMainBanner .btn-group-header{display:none!important}
+
+/* Tổng quan: giữ nguyên banner + menu + nội dung dashboard. */
+body:not(.vnp-fullscreen-module) #vinapacoMainBanner .vinapaco-banner-home{background:rgba(255,255,255,.20)!important}
+
+@media(max-width:700px){
+  #vinapacoMainBanner{min-height:58px!important;gap:8px!important}
+  #vinapacoMainBanner .vinapaco-banner-home{flex-basis:42px!important;width:42px!important;height:42px!important;border-radius:10px!important}
+  #vinapacoMainBanner .vinapaco-banner-title{padding-left:6px!important}
+  #vinapacoMainBanner .vinapaco-banner-title h1{font-size:15px!important}
+  #vinapacoMainBanner .vinapaco-banner-title p{font-size:9px!important;line-height:1.2!important}
+  body.vnp-fullscreen-module .tab-pane.active{min-height:calc(100vh - 58px)!important}
+}
+</style>
+
+<style id="vinapaco-menu-overlay-invoice-final">
+/* ==========================================================
+   VINAPACO FINAL 2026 – MENU ẨN THỰC SỰ + NGHIỆP VỤ FULL WIDTH
+   Đặc biệt tối ưu TAB HÓA ĐƠN & BÁO CÁO
+   ========================================================== */
+html,body{margin:0!important;padding:0!important;min-width:0!important;overflow-x:hidden!important}
+body.vnp-workspace-mode #appMainContainer{width:100vw!important;max-width:none!important;margin:0!important;padding:0!important;box-sizing:border-box!important}
+body.vnp-workspace-mode .banner,
+body.vnp-workspace-mode #driveUploadStatusBar,
+body.vnp-workspace-mode #systemConfigBar,
+body.vnp-workspace-mode .vinapaco-top-widgets,
+body.vnp-workspace-mode .container > .config-bar,
+body.vnp-workspace-mode .kpi-grid,
+body.vnp-workspace-mode .cloud-sync-panel{display:none!important}
+body.vnp-workspace-mode .app-layout{display:block!important;width:100vw!important;max-width:none!important;margin:0!important;padding:0!important;min-height:100vh!important}
+body.vnp-workspace-mode .tab-content-area{display:block!important;width:100vw!important;max-width:none!important;margin:0!important;padding:0!important;min-width:0!important}
+body.vnp-workspace-mode .tab-pane.active{display:block!important;width:100vw!important;max-width:none!important;min-width:0!important;min-height:100vh!important;margin:0!important;padding:14px 14px 30px!important;border:0!important;border-radius:0!important;box-shadow:none!important;box-sizing:border-box!important;transform:none!important;top:0!important}
+body.vnp-workspace-mode .tab-pane.active>.table-card{margin-left:0!important;margin-right:0!important}
+
+/* Menu mặc định ẩn, không chiếm bất kỳ pixel chiều rộng nào */
+body.vnp-menu-collapsed .tab-nav-shell{display:none!important;width:0!important;min-width:0!important;max-width:0!important;margin:0!important;padding:0!important}
+body.vnp-menu-open .tab-nav-shell{
+  display:block!important;position:fixed!important;left:12px!important;top:58px!important;width:245px!important;max-width:calc(100vw - 24px)!important;height:calc(100vh - 70px)!important;max-height:none!important;overflow-y:auto!important;overflow-x:hidden!important;z-index:2147483000!important;margin:0!important;padding:9px!important;background:#fff!important;border:1px solid #d7e0ea!important;border-radius:14px!important;box-shadow:0 14px 40px rgba(15,23,42,.25)!important}
+body.vnp-menu-open .tab-nav{display:flex!important;flex-direction:column!important}
+body.vnp-menu-open .tab-btn-nav{width:100%!important;flex:0 0 auto!important}
+body.vnp-menu-open::after{content:"";position:fixed;inset:0;background:rgba(15,23,42,.18);z-index:2147482990!important;pointer-events:auto!important}
+
+/* NÚT MŨI TÊN: chỉ dùng để quay về trang chủ chọn chức năng.
+   Không có chữ MENU để không đè lên banner; ở tab nghiệp vụ banner đã ẩn. */
+#vnpRestoreNavBtn{display:inline-flex!important;position:fixed!important;left:10px!important;top:10px!important;width:38px!important;min-width:38px!important;height:38px!important;padding:0!important;align-items:center!important;justify-content:center!important;z-index:2147483647!important;border:0!important;border-radius:50%!important;background:#0f4c81!important;color:#fff!important;box-shadow:0 5px 18px rgba(15,23,42,.28)!important;font-size:15px!important;font-weight:900!important;cursor:pointer!important}
+#vnpRestoreNavBtn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+#vnpRestoreNavBtn i{margin:0!important}
+body:not(.vnp-workspace-mode) #vnpRestoreNavBtn{display:none!important}
+
+/* Hóa đơn: đưa toàn bộ nội dung lên sát đỉnh và cân theo viewport */
+body.vnp-workspace-mode #invoiceManagerTab{padding:10px 12px 28px!important;margin:0!important;width:100vw!important;min-height:100vh!important;box-sizing:border-box!important;overflow:visible!important}
+#invoiceManagerTab .table-header-bar{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;margin:0 0 10px!important;padding:0 0 8px!important;border-bottom:1px solid #dbe4ee!important}
+#invoiceManagerTab .table-title{font-size:20px!important;line-height:1.25!important}
+#invoiceManagerTab .table-header-bar>div:last-child{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:7px!important;flex-wrap:wrap!important}
+#invoiceManagerTab .invoice-kpi-grid{grid-template-columns:repeat(5,minmax(150px,1fr))!important;gap:9px!important;margin:0 0 10px!important}
+#invoiceManagerTab .invoice-kpi{min-height:82px!important;padding:11px 13px!important}
+#invoiceManagerTab .invoice-kpi b{font-size:21px!important}
+#invoiceManagerTab .invoice-filter-bar{grid-template-columns:150px 150px minmax(300px,1fr) auto!important;gap:9px!important;padding:9px 10px!important;margin-bottom:10px!important}
+#invoiceManagerTab .invoice-import-card,#invoiceManagerTab .invoice-form-card,#invoiceManagerTab .invoice-summary-card,#invoiceManagerTab>.table-card{margin-bottom:10px!important}
+#invoiceManagerTab .invoice-import-head{padding:10px 13px!important}
+#invoiceManagerTab .invoice-import-grid{grid-template-columns:240px minmax(0,1fr)!important;gap:11px!important;padding:11px!important}
+#invoiceManagerTab .invoice-dropzone{min-height:130px!important}
+#invoiceManagerTab .invoice-manual-text textarea{min-height:130px!important}
+#invoiceManagerTab .invoice-form-grid{gap:9px!important}
+#invoiceManagerTab .invoice-items-wrap,#invoiceManagerTab .invoice-summary-scroll,#invoiceManagerTab .invoice-list-scroll{width:100%!important;max-width:100%!important;overflow-x:auto!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch!important}
+#invoiceManagerTab .invoice-items-table,#invoiceManagerTab .invoice-summary-table,#invoiceManagerTab .invoice-list-table{width:100%!important;min-width:980px!important}
+#invoiceManagerTab th,#invoiceManagerTab td{padding:8px 9px!important}
+
+@media(max-width:1100px){
+  #invoiceManagerTab .invoice-kpi-grid{grid-template-columns:repeat(3,minmax(150px,1fr))!important}
+  #invoiceManagerTab .invoice-filter-bar{grid-template-columns:1fr 1fr!important}
+  #invoiceManagerTab .invoice-filter-bar .form-group:nth-child(3){grid-column:1/-1}
+  #invoiceManagerTab .invoice-import-grid{grid-template-columns:1fr!important}
+}
+@media(max-width:680px){
+  body.vnp-workspace-mode .tab-pane.active{padding:8px 7px 22px!important}
+  body.vnp-menu-open .tab-nav-shell{left:7px!important;top:52px!important;width:calc(100vw - 14px)!important;height:calc(100vh - 59px)!important}
+  #vnpRestoreNavBtn{left:7px!important;top:7px!important;width:36px!important;min-width:36px!important;height:36px!important;font-size:14px!important}
+  #invoiceManagerTab .table-header-bar{align-items:flex-start!important;flex-direction:column!important}
+  #invoiceManagerTab .table-title{font-size:17px!important}
+  #invoiceManagerTab .invoice-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #invoiceManagerTab .invoice-filter-bar{grid-template-columns:1fr!important}
+  #invoiceManagerTab .invoice-filter-bar .form-group:nth-child(3){grid-column:auto}
+}
+
+/* Hóa đơn đa định dạng */
+#invoiceManagerTab .invoice-dropzone{cursor:pointer;min-height:150px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important;gap:5px!important}
+#invoiceManagerTab .invoice-dropzone b{font-size:15px!important;color:#0f172a}
+#invoiceManagerTab .invoice-dropzone span{font-size:12px!important;font-weight:800!important;color:#0369a1}
+#invoiceManagerTab .invoice-dropzone small{font-size:11px!important}
+</style>
+
+<style id="vinapaco-menu-no-overlap-fix">
+/* ===== FIX MENU: mở MENU nhưng tuyệt đối không che nội dung ===== */
+@media (min-width:681px){
+  body.vnp-menu-open .tab-content-area{
+    width:calc(100vw - 269px)!important;
+    max-width:calc(100vw - 269px)!important;
+    margin-left:269px!important;
+    margin-right:0!important;
+    box-sizing:border-box!important;
+  }
+  body.vnp-menu-open .tab-content-area > .tab-pane.active{
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    box-sizing:border-box!important;
+  }
+  /* Bỏ lớp phủ làm tối/khóa vùng nội dung; menu vẫn nằm trên cùng. */
+  body.vnp-menu-open::after{
+    display:none!important;
+  }
+}
+
+/* Mobile: menu chiếm gần toàn màn hình nên không cần ép nội dung sang phải. */
+@media (max-width:680px){
+  body.vnp-menu-open .tab-content-area{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+  }
+}
+</style>
+
+<style id="vinapaco-final-navigation-override-absolute">
+/* ===== QUY TẮC CUỐI: 1 nguồn điều hướng duy nhất ===== */
+#vnpRestoreNavBtn,
+#showTabsBtn{display:none!important;visibility:hidden!important;pointer-events:none!important}
+
+/* Banner: nút Trang chủ nằm ngay trong banner, chữ lùi vào theo nút */
+#vinapacoMainBanner{
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:14px!important;
+  min-height:64px!important;
+  padding:8px 14px!important;
+  box-sizing:border-box!important;
+}
+#vinapacoMainBanner .vinapaco-banner-home{
+  position:relative!important;
+  inset:auto!important;
+  flex:0 0 46px!important;
+  width:46px!important;
+  height:46px!important;
+  margin:0!important;
+  padding:0!important;
+  border:1px solid rgba(255,255,255,.5)!important;
+  border-radius:12px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:rgba(255,255,255,.16)!important;
+  color:#fff!important;
+  box-shadow:0 3px 10px rgba(15,23,42,.14)!important;
+  cursor:pointer!important;
+  z-index:20!important;
+}
+#vinapacoMainBanner .vinapaco-banner-home i{font-size:17px!important;margin:0!important}
+#vinapacoMainBanner .vinapaco-banner-home span{display:none!important}
+#vinapacoMainBanner .vinapaco-banner-title{
+  flex:1 1 auto!important;
+  min-width:0!important;
+  padding:0 0 0 8px!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+}
+#vinapacoMainBanner .vinapaco-banner-title h1,
+#vinapacoMainBanner .vinapaco-banner-title p{margin-left:0!important;padding-left:0!important}
+
+/* Bỏ các nút mở thư mục Drive để giao diện thoáng hơn, không xóa ô đường dẫn. */
+button[onclick*="moThuThucDriveChung"],
+a[onclick*="moThuThucDriveChung"]{display:none!important}
+
+/* ===== TRANG TỔNG QUAN ===== */
+body:not(.vnp-fullscreen-module) .tab-nav-shell{
+  display:block!important;
+  position:relative!important;
+  visibility:visible!important;
+  width:auto!important;
+  max-width:none!important;
+}
+body:not(.vnp-fullscreen-module) .app-layout{
+  display:grid!important;
+  grid-template-columns:minmax(220px,245px) minmax(0,1fr)!important;
+  gap:18px!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:14px 0 0!important;
+  padding:0 14px 20px!important;
+  box-sizing:border-box!important;
+  align-items:start!important;
+}
+
+/* ===== TRANG CHỨC NĂNG: FULL WIDTH, KHÔNG MENU ===== */
+body.vnp-fullscreen-module #appMainContainer{
+  width:100vw!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+}
+body.vnp-fullscreen-module #vinapacoMainBanner{
+  width:100vw!important;
+  margin:0!important;
+  border-radius:0!important;
+}
+body.vnp-fullscreen-module .tab-nav-shell{display:none!important;visibility:hidden!important;width:0!important}
+body.vnp-fullscreen-module .app-layout{
+  display:block!important;
+  width:100vw!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+}
+body.vnp-fullscreen-module .tab-content-area{
+  display:block!important;
+  width:100vw!important;
+  max-width:none!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+}
+body.vnp-fullscreen-module .tab-pane.active{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  min-height:calc(100vh - 64px)!important;
+  margin:0!important;
+  padding:14px 16px 30px!important;
+  box-sizing:border-box!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+
+/* Chức năng không mang theo các khối cấu hình của Tổng quan. */
+body.vnp-fullscreen-module #driveUploadStatusBar,
+body.vnp-fullscreen-module #systemConfigBar,
+body.vnp-fullscreen-module .vinapaco-top-widgets,
+body.vnp-fullscreen-module #appMainContainer > .config-bar,
+body.vnp-fullscreen-module .kpi-grid,
+body.vnp-fullscreen-module .cloud-sync-panel{display:none!important}
+body.vnp-fullscreen-module #vinapacoMainBanner .btn-group-header{display:none!important}
+
+/* Không còn chừa khoảng cho mũi tên cũ. */
+body.vnp-fullscreen-module .table-header-bar,
+body.vnp-fullscreen-module .table-title,
+body.vnp-fullscreen-module .chart-card-heading,
+body.vnp-fullscreen-module .chart-card-heading .chart-title,
+body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
+
+@media(max-width:700px){
+  #vinapacoMainBanner{min-height:58px!important;padding:6px 8px!important;gap:8px!important}
+  #vinapacoMainBanner .vinapaco-banner-home{flex-basis:40px!important;width:40px!important;height:40px!important;border-radius:10px!important}
+  #vinapacoMainBanner .vinapaco-banner-title{padding-left:5px!important}
+  #vinapacoMainBanner .vinapaco-banner-title h1{font-size:15px!important;line-height:1.2!important}
+  #vinapacoMainBanner .vinapaco-banner-title p{font-size:9px!important;line-height:1.15!important}
+  body.vnp-fullscreen-module .tab-pane.active{min-height:calc(100vh - 58px)!important;padding:9px 8px 22px!important}
+}
+
+/* ===== KHO MỰC - BẢNG BIỂU HÀNH CHÍNH, Ô KẺ CHUẨN ===== */
+.ink-report-paper{background:#fff;color:#111;font-family:"Times New Roman",serif;}
+.ink-report-paper table{border-collapse:collapse;border-spacing:0;width:100%;table-layout:fixed;border:1.4px solid #222;background:#fff;}
+.ink-report-paper th,.ink-report-paper td{border:0.8px solid #333;vertical-align:middle;line-height:1.25;}
+.ink-report-paper thead th{background:#e9edf2!important;border:1px solid #222!important;font-weight:700;text-align:center;vertical-align:middle;padding:7px 5px;}
+.ink-report-paper tbody td{padding:6px 5px;}
+.ink-report-paper tbody tr:nth-child(even) td{background:#fafafa;}
+.ink-report-paper tbody tr:hover td{background:#f1f5f9;}
+.ink-report-paper .total td{background:#eef2f5!important;border-top:1.4px solid #222!important;border-bottom:1.4px double #222!important;font-weight:700;}
+.ink-report-paper .center{text-align:center!important;}
+.ink-report-paper .report-title{letter-spacing:.15px;}
+.ink-report-paper .sign>div{min-height:110px;}
+@media (max-width:900px){#inkInventoryTab .table-header-bar{align-items:flex-start;}#inkInventoryTab .table-header-bar>div:last-child{width:100%;justify-content:flex-start;}}
+</style>
+
+    <style id="vnp-validator-accessibility-fix">
+        .vnp-a11y-heading {
+            position: absolute !important;
+            width: 1px !important;
+            height: 1px !important;
+            padding: 0 !important;
+            margin: -1px !important;
+            overflow: hidden !important;
+            clip: rect(0, 0, 0, 0) !important;
+            white-space: nowrap !important;
+            border: 0 !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -2115,12 +2839,12 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
     <form id="leaveRequestForm" onsubmit="event.preventDefault(); luuDangKyPhep();">
       <input type="hidden" id="leaveEditIndex" value="-1">
       <div class="leave-form-grid">
-        <div class="form-group"><label>Người đăng ký <span>*</span></label><select id="leaveEmployee" required></select></div>
-        <div class="form-group"><label>Loại nghỉ <span>*</span></label><select id="leaveType" required><option value="Nghỉ phép năm">Nghỉ phép năm</option><option value="Nghỉ phép nửa ngày">Nghỉ phép nửa ngày</option><option value="Nghỉ không hưởng lương">Nghỉ không hưởng lương</option><option value="Nghỉ việc riêng">Nghỉ việc riêng</option></select></div>
+        <div class="form-group"><label>Người đăng ký <span>*</span></label><select id="leaveEmployee" required><option value="">-- Chọn người đăng ký --</option></select></div>
+        <div class="form-group"><label>Loại nghỉ <span>*</span></label><select id="leaveType" required><option value="">-- Chọn loại nghỉ --</option><option value="Nghỉ phép năm">Nghỉ phép năm</option><option value="Nghỉ phép nửa ngày">Nghỉ phép nửa ngày</option><option value="Nghỉ không hưởng lương">Nghỉ không hưởng lương</option><option value="Nghỉ việc riêng">Nghỉ việc riêng</option></select></div>
         <div class="form-group"><label>Từ ngày <span>*</span></label><input type="date" id="leaveFromDate" required onchange="tinhSoNgayNghiForm()"></div>
         <div class="form-group"><label>Đến ngày <span>*</span></label><input type="date" id="leaveToDate" required onchange="tinhSoNgayNghiForm()"></div>
         <div class="form-group"><label>Số ngày nghỉ</label><input type="number" id="leaveDays" value="1" min="0.5" step="0.5" readonly></div>
-        <div class="form-group"><label>Người nhận bàn giao <span>*</span></label><select id="leaveHandover" required></select></div>
+        <div class="form-group"><label>Người nhận bàn giao <span>*</span></label><select id="leaveHandover" required><option value="">-- Chọn người nhận bàn giao --</option></select></div>
         <div class="form-group full"><label>Lý do nghỉ <span>*</span></label><textarea id="leaveReason" rows="3" required placeholder="Nhập rõ lý do nghỉ phép..."></textarea></div>
         <div class="form-group full"><label>Ghi chú / yêu cầu bổ sung</label><textarea id="leaveNote" rows="2" placeholder="Ví dụ: đã bàn giao công việc, lịch họp cần thay thế..."></textarea></div>
       </div>
@@ -2174,12 +2898,14 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
 
     <div class="top-info-bar vinapaco-top-widgets">
         <section class="info-widget-card vinapaco-widget-clock">
+            <h2 class="vnp-a11y-heading">Đồng hồ số</h2>
             <div class="widget-heading"><span><i class="fa-solid fa-clock"></i> ĐỒNG HỒ SỐ</span><span class="live-dot">LIVE</span></div>
             <div class="clock-display" id="liveClockDisplay">00:00:00</div>
             <div class="widget-date" id="liveDateDisplay">Đang tải ngày...</div>
             <div class="widget-subline" id="liveDateFullDisplay">Đang cập nhật ngày, tháng, năm...</div>
         </section>
         <section class="info-widget-card vinapaco-widget-lunar">
+            <h2 class="vnp-a11y-heading">Âm lịch hôm nay</h2>
             <div class="widget-heading"><span><i class="fa-solid fa-calendar-days"></i> ÂM LỊCH HÔM NAY</span><span class="widget-badge-red">ÂM DƯƠNG</span></div>
             <div class="lunar-display lunar-display-large" id="lunarWidgetText">Đang tải...</div>
             <div class="lunar-extra-grid" id="lunarWidgetExtra">
@@ -2188,6 +2914,7 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
             </div>
         </section>
         <section class="info-widget-card vinapaco-widget-weather">
+            <h2 class="vnp-a11y-heading">Khí tượng và vị trí</h2>
             <div class="widget-heading"><span><i class="fa-solid fa-cloud-sun"></i> KHÍ TƯỢNG & VỊ TRÍ</span></div>
             <div class="weather-actions-large">
                 <button class="weather-big-btn purple" onclick="moModalDuBaoThoiTiet10Ngay()"><i class="fa-solid fa-calendar-days"></i> 10 NGÀY</button>
@@ -2344,6 +3071,7 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
         </div>
 
         <section class="salary-fund-dashboard">
+            <h2 class="vnp-a11y-heading">Tổng quan quỹ lương</h2>
             <div class="salary-fund-chart-card chart-card">
                 <div class="chart-card-heading">
                     <div>
@@ -2559,6 +3287,7 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
         </div>
         <div class="leave-dashboard-grid">
             <section class="chart-card leave-chart-card leave-bar-card">
+                <h2 class="vnp-a11y-heading">Tình hình sử dụng phép theo nhân sự</h2>
                 <div class="chart-card-heading">
                     <div>
                         <div class="chart-title"><i class="fa-solid fa-chart-column"></i> TÌNH HÌNH SỬ DỤNG PHÉP THEO NHÂN SỰ</div>
@@ -2569,6 +3298,7 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
                 <div class="leave-chart-wrap leave-bar-wrap"><canvas id="overviewLeaveBarChart"></canvas></div>
             </section>
             <section class="chart-card leave-chart-card leave-pie-card">
+                <h2 class="vnp-a11y-heading">Tỷ trọng phép đã dùng</h2>
                 <div class="chart-card-heading">
                     <div>
                         <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> TỶ TRỌNG PHÉP ĐÃ DÙNG</div>
@@ -2977,8 +3707,8 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
     <input type="hidden" id="licenseEditIndex" value="-1">
     <div style="font-size:14px;font-weight:950;color:#075985;margin-bottom:11px"><i class="fa-solid fa-file-shield"></i> Hồ sơ bản quyền / tài sản cấp phép</div>
     <div class="license-form-grid">
-      <div class="license-form-group"><label>Mã bản quyền *</label><input id="licenseFormCode" readonly aria-readonly="true" placeholder="Hệ thống tự sinh khi thêm hồ sơ"></div>
-      <div class="license-form-group"><label>Loại *</label><select id="licenseFormType" onchange="capNhatMaBanQuyenTheoLoai()"><option value="OS">Hệ điều hành (OS)</option><option value="Office">Microsoft Office</option></select></div>
+      <div class="license-form-group"><label>Mã bản quyền *</label><input id="licenseFormCode" placeholder="OS-2026-001 / OFF-2026-001"></div>
+      <div class="license-form-group"><label>Loại *</label><select id="licenseFormType"><option value="OS">Hệ điều hành (OS)</option><option value="Office">Microsoft Office</option></select></div>
       <div class="license-form-group"><label>Sản phẩm / phiên bản *</label><input id="licenseFormProduct" list="licenseProductList" placeholder="Windows 11 Pro / Microsoft 365 Business Standard"><datalist id="licenseProductList"><option value="Windows 11 Pro"></option><option value="Windows 10 Pro"></option><option value="Microsoft 365 Business Standard"></option><option value="Microsoft 365 Business Premium"></option><option value="Microsoft 365 Apps for business"></option><option value="Office LTSC Professional Plus 2024"></option><option value="Office LTSC Standard 2024"></option><option value="Office 2021 Professional Plus"></option></datalist></div>
       <div class="license-form-group"><label>Loại hình cấp phép</label><select id="licenseFormModel"><option>OEM</option><option>Retail / FPP</option><option>Volume / KMS</option><option>MAK</option><option>Microsoft 365 Subscription</option><option>Enterprise Agreement</option><option>Open / CSP</option><option>Khác</option></select></div>
       <div class="license-form-group"><label>Nhà cung cấp / nguồn</label><input id="licenseFormVendor" placeholder="Nhà cung cấp / Tổng công ty / mua sắm..."></div>
@@ -6865,7 +7595,7 @@ function xuatBaoCaoXNTExcel() {
         [/\bthiêt\s*bị\b/gi, 'thiết bị'],
         [/\bthiết\s*bi\b/gi, 'thiết bị'],
         [/\bnhân\s*sư\b/gi, 'nhân sự'],
-        [/\bnhân\s*sự\s*đầy\s*đủ\b/gi, 'nhân sự đầy đủ'],
+        [/\bnhân\s*sự\s*đầy\s*đủ\b/gi, 'nhân sự đầy đủ'],
         [/\bphong\s*ban\b/gi, 'phòng ban'],
         [/\bphòng\s*ban\s*\s*\b/gi, 'phòng ban'],
         [/\bthang\s*(\d{1,2})\b/gi, 'Tháng $1'],
@@ -6879,7 +7609,7 @@ function xuatBaoCaoXNTExcel() {
         [/\bso\s*tai\s*khoan\b/gi, 'số tài khoản'],
         [/\bso\s*luong\b/gi, 'số lượng'],
         [/\bdon\s*gia\b/gi, 'đơn giá'],
-        [/\btruo[ć]\s*thue\b/gi, 'trước thuế'],
+        [/\btruo[ć]\s*thue\b/gi, 'trước thuế'],
         [/\bthue\s*vat\b/gi, 'thuế VAT'],
         [/\btong\s*thanh\s*toan\b/gi, 'tổng thanh toán'],
         [/\bbo\s*phan\b/gi, 'bộ phận'],
@@ -7187,38 +7917,8 @@ function xuatBaoCaoXNTExcel() {
 
 
 
-<style>
-/* ===== VINAPACO ENHANCED 2026: LỊCH / LƯƠNG / KHO / HÓA ĐƠN ===== */
-.vannien-pro-section{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:13px;box-shadow:0 3px 12px rgba(15,23,42,.05)}
-.lich-day-tile{min-height:82px!important;padding:7px!important;justify-content:flex-start!important}
-.lich-day-tile .lich-day-greg{font-size:18px!important}
-.lich-day-tile .lich-day-lunar{font-size:12px!important}
-.lich-day-tile .lich-day-meta{font-size:10px!important}
-.lich-day-tile .lich-day-hoang{display:block;font-size:10px;font-weight:1000;letter-spacing:.2px;margin-top:auto;padding:3px 4px;border-radius:5px;text-align:center}
-.lich-day-tile.hoang-day{background:linear-gradient(180deg,#f0fdf4,#fff)!important;border-color:#86efac!important}
-.lich-day-tile.hac-day{background:linear-gradient(180deg,#fff7f7,#fff)!important;border-color:#fecaca!important}
-.lich-day-tile.today{box-shadow:0 0 0 2px #16a34a inset,0 5px 14px rgba(22,163,74,.12)!important}
-.vannien-hero-day{display:grid;grid-template-columns:140px 1fr;gap:12px;padding:14px;border-radius:14px;background:linear-gradient(135deg,#fff7ed,#fff);border:1px solid #fed7aa;margin-bottom:12px}
-.vannien-hero-number{font-size:42px;font-weight:1000;line-height:1;color:#8b0000;text-align:center}.vannien-hero-number small{display:block;font-size:13px;color:#64748b}
-.vannien-hero-main h3{font-size:18px;margin-bottom:5px;color:#0f172a}.vannien-badge-hoang{display:inline-flex;padding:5px 10px;border-radius:999px;font-size:12px;font-weight:1000}.vannien-badge-hoang.hd{background:#dcfce7;color:#166534}.vannien-badge-hoang.hac{background:#fee2e2;color:#991b1b}
-@media(max-width:700px){.vannien-pro-grid{grid-template-columns:1fr!important}.vannien-hero-day{grid-template-columns:1fr}.lich-day-tile{min-height:70px!important}.lich-day-tile .lich-day-meta{display:none}}
-
-.invoice-kpi-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:0 0 14px}
-.invoice-kpi{background:#fff;border:1px solid #dbe4ee;border-radius:12px;padding:13px 14px;box-shadow:0 3px 12px rgba(15,23,42,.05)}
-.invoice-kpi span,.invoice-kpi small{display:block;color:#64748b;font-size:10px;font-weight:900;text-transform:uppercase}.invoice-kpi b{display:block;font-size:20px;margin:5px 0;color:#0f3d63}.invoice-kpi small{text-transform:none;font-weight:700}
-.invoice-filter-bar{display:grid;grid-template-columns:160px 160px minmax(260px,1fr) auto;gap:10px;align-items:end;background:#f8fafc;border:1px solid #dbe4ee;border-radius:12px;padding:12px;margin-bottom:14px}
-.invoice-import-card,.invoice-form-card{background:#fff;border:1px solid #dbe4ee;border-radius:14px;margin-bottom:14px;overflow:hidden;box-shadow:0 3px 12px rgba(15,23,42,.05)}
-.invoice-import-head{padding:13px 15px;background:linear-gradient(135deg,#075985,#0284c7);color:#fff;display:flex;justify-content:space-between;gap:12px;align-items:center}.invoice-import-head small{display:block;opacity:.88;margin-top:3px}.invoice-status{background:rgba(255,255,255,.15);padding:6px 10px;border-radius:999px;font-weight:900;font-size:11px;white-space:nowrap}
-.invoice-import-grid{display:grid;grid-template-columns:280px 1fr;gap:14px;padding:14px}.invoice-dropzone{min-height:170px;border:2px dashed #93c5fd;border-radius:12px;background:#eff6ff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;cursor:pointer;color:#075985;text-align:center}.invoice-dropzone i{font-size:30px}.invoice-dropzone span{font-size:11px;color:#64748b}
-.invoice-manual-text label{display:block;font-size:12px;font-weight:900;color:#334155;margin-bottom:6px}.invoice-manual-text textarea{width:100%;min-height:170px;border:1px solid #cbd5e1;border-radius:10px;padding:10px;resize:vertical;font-size:13px}
-.invoice-form-title{padding:12px 15px;background:#f8fafc;border-bottom:1px solid #e2e8f0;font-weight:1000;color:#0f3d63}.invoice-form-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:14px}.invoice-items-head{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f8fafc;border-top:1px solid #e2e8f0}.invoice-items-wrap,.invoice-summary-scroll,.invoice-list-scroll{overflow:auto}
-.invoice-items-table,.invoice-summary-table,.invoice-list-table{width:100%;min-width:1050px;border-collapse:collapse}.invoice-items-table th,.invoice-summary-table th,.invoice-list-table th{background:#eef4f8;color:#0f3d63;font-size:11px;font-weight:1000}.invoice-items-table td,.invoice-summary-table td,.invoice-list-table td{font-size:12px;padding:8px;border:1px solid #dbe4ee}.invoice-items-table input{width:100%;border:1px solid #cbd5e1;border-radius:6px;padding:6px;font-size:12px}.invoice-summary-card{margin-top:14px}.invoice-summary-table tfoot td{font-weight:1000;background:#f8fafc}
-.invoice-summary-table td:nth-child(n+5){text-align:right}.invoice-summary-table td:nth-child(1),.invoice-summary-table td:nth-child(9){text-align:center}
-@media(max-width:1000px){.invoice-kpi-grid{grid-template-columns:repeat(2,1fr)}.invoice-filter-bar{grid-template-columns:1fr 1fr}.invoice-import-grid{grid-template-columns:1fr}.invoice-form-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.invoice-kpi-grid{grid-template-columns:1fr}.invoice-filter-bar,.invoice-form-grid{grid-template-columns:1fr}.invoice-form-grid .form-group[style*="span 2"]{grid-column:auto!important}}
-.invoice-report-print{font-family:"Times New Roman",Times,serif;color:#000;background:#fff;padding:10mm;width:210mm;box-sizing:border-box}
-.invoice-report-print table{width:100%;border-collapse:collapse;margin-top:10px}.invoice-report-print th,.invoice-report-print td{border:1px solid #333;padding:5px;font-size:10pt}.invoice-report-print th{background:#eee;text-align:center}
-</style>
+</div>
+<!-- Kết thúc vùng giao diện chính -->
 
 <script>
 /* ===== LƯU DỮ LIỆU HÓA ĐƠN ===== */
@@ -7489,146 +8189,7 @@ function taoHTMLBaoCaoHoaDon(list,title='BÁO CÁO TỔNG HỢP HÓA ĐƠN'){
 function moCuaSoIn(html){
   const w=window.open('','_blank','width=1100,height=800');if(!w)return alert('Trình duyệt đang chặn cửa sổ in. Hãy cho phép pop-up.');
   w.document.write(`<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>VINAPACO - Báo cáo</title><style>@page{size:A4 landscape;margin:10mm}body{margin:0;background:#fff}</style></head><body>${html}<script>window.onload=function(){setTimeout(function(){window.print()},300)}<\/script>
-<style id="vinapaco-header-unified-final">
-/* ==========================================================
-   VINAPACO – TIÊU ĐỀ TAB ĐỒNG BỘ / KHÔNG CHỒNG NÚT QUAY LẠI
-   ========================================================== */
-body.vnp-fullscreen-module .tab-pane.active > .table-header-bar{
-    min-height:46px !important;
-    width:100% !important;
-    margin:0 0 14px !important;
-    padding:2px 8px 10px 72px !important;
-    box-sizing:border-box !important;
-    display:flex !important;
-    align-items:center !important;
-    justify-content:space-between !important;
-    gap:14px !important;
-    flex-wrap:wrap !important;
-    border-bottom:1px solid #dbe4ee !important;
-}
-body.vnp-fullscreen-module .tab-pane.active > .table-header-bar .table-title,
-body.vnp-fullscreen-module .tab-pane.active > .table-header-bar .table-title > div{
-    min-width:0 !important;
-}
-body.vnp-fullscreen-module .tab-pane.active > .table-header-bar .table-title{
-    flex:1 1 auto !important;
-    max-width:none !important;
-    font-size:18px !important;
-    line-height:1.28 !important;
-    font-weight:900 !important;
-    letter-spacing:.05px !important;
-    color:#0f2742 !important;
-    display:flex !important;
-    align-items:center !important;
-    gap:9px !important;
-}
-body.vnp-fullscreen-module .tab-pane.active > .table-header-bar .table-title i{
-    flex:0 0 auto !important;
-    color:#0f4c81 !important;
-    width:20px !important;
-    text-align:center !important;
-}
-body.vnp-fullscreen-module .tab-pane.active > .table-header-bar > .btn,
-body.vnp-fullscreen-module .tab-pane.active > .table-header-bar > div:last-child{
-    flex:0 0 auto !important;
-}
-body.vnp-fullscreen-module .tab-pane.active > .table-header-bar .btn{
-    min-height:36px !important;
-    padding:8px 13px !important;
-    font-size:12px !important;
-}
-body.vnp-fullscreen-module .tab-pane.active > .table-header-bar.staff-master-header{
-    align-items:center !important;
-}
-body.vnp-fullscreen-module .tab-pane.active > .table-header-bar .staff-master-actions{
-    padding-right:0 !important;
-    flex:0 0 auto !important;
-}
-/* Nút quay lại: đúng phong cách nút tròn của mẫu thiết kế */
-body.vnp-fullscreen-module #vnpRestoreNavBtn{
-    width:42px !important;
-    min-width:42px !important;
-    height:42px !important;
-    padding:0 !important;
-    left:18px !important;
-    top:18px !important;
-    border-radius:50% !important;
-    display:inline-flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    gap:0 !important;
-    background:#0f4c81 !important;
-    box-shadow:0 5px 16px rgba(15,76,129,.25) !important;
-}
-body.vnp-fullscreen-module #vnpRestoreNavBtn i{
-    margin:0 !important;
-    font-size:18px !important;
-}
-body.vnp-fullscreen-module #vnpRestoreNavBtn span{display:none !important;}
 
-/* ===== THANH TIÊU ĐỀ BÊN TRONG CÁC KHỐI: ĐỒNG BỘ NHẸ, KHÔNG LÀM RỘNG BẢNG ===== */
-body.vnp-fullscreen-module .table-card .table-header-bar .table-title{
-    line-height:1.3 !important;
-}
-
-/* ===== THANH TOÁN VĂN PHÒNG: giảm cỡ chữ bảng về mức gọn, dễ đọc ===== */
-body.vnp-fullscreen-module #officePaymentTab > .table-header-bar .table-title,
-body.vnp-fullscreen-module #telecomPaymentTab > .table-header-bar .table-title{
-    font-size:17px !important;
-}
-body.vnp-fullscreen-module #officePaymentTab > table,
-body.vnp-fullscreen-module #telecomPaymentTab > table{
-    font-size:12.5px !important;
-}
-body.vnp-fullscreen-module #officePaymentTab > table th,
-body.vnp-fullscreen-module #telecomPaymentTab > table th{
-    font-size:10.5px !important;
-    line-height:1.18 !important;
-    padding:7px 7px !important;
-}
-body.vnp-fullscreen-module #officePaymentTab > table td,
-body.vnp-fullscreen-module #telecomPaymentTab > table td{
-    font-size:12.5px !important;
-    line-height:1.25 !important;
-    padding:7px 7px !important;
-}
-body.vnp-fullscreen-module #officePaymentTab .form-group label,
-body.vnp-fullscreen-module #telecomPaymentTab .form-group label{
-    font-size:11px !important;
-}
-body.vnp-fullscreen-module #officePaymentTab .form-group input,
-body.vnp-fullscreen-module #officePaymentTab .form-group select,
-body.vnp-fullscreen-module #telecomPaymentTab .form-group input,
-body.vnp-fullscreen-module #telecomPaymentTab .form-group select{
-    font-size:13px !important;
-}
-
-@media(max-width:900px){
-    body.vnp-fullscreen-module .tab-pane.active > .table-header-bar{
-        padding-left:60px !important;
-        padding-right:6px !important;
-        gap:8px !important;
-    }
-    body.vnp-fullscreen-module .tab-pane.active > .table-header-bar .table-title{
-        font-size:16px !important;
-        flex-basis:100% !important;
-    }
-    body.vnp-fullscreen-module #vnpRestoreNavBtn{
-        left:10px !important;
-        top:10px !important;
-        width:38px !important;
-        min-width:38px !important;
-        height:38px !important;
-    }
-    body.vnp-fullscreen-module #vnpRestoreNavBtn i{font-size:16px !important;}
-}
-</style>
-
-<style id="vinapaco-home-arrow-final">
-/* Tab nghiệp vụ: nút mũi tên độc lập, không có chữ, không chèn lên banner. */
-body.vnp-workspace-mode #vnpRestoreNavBtn{display:inline-flex!important}
-body:not(.vnp-workspace-mode) #vnpRestoreNavBtn{display:none!important}
-</style>
 </html>`);w.document.close();
 }
 function inBaoCaoHoaDon(){const list=getFilteredInvoices();if(!list.length)return alert('Không có hóa đơn trong kỳ đang chọn.');moCuaSoIn(taoHTMLBaoCaoHoaDon(list,'BÁO CÁO TỔNG HỢP HÓA ĐƠN'))}
@@ -7814,286 +8375,14 @@ window.inAnPhieuHandover=function(){
 </script>
 
 
-<style id="vinapaco-ui-large-calendar-weather-2026">
-/* ===== VINAPACO 2026: LỊCH TRÀN MÀN HÌNH + WIDGET TO, DỄ QUAN SÁT ===== */
-.vinapaco-top-widgets{grid-template-columns:minmax(280px,1fr) minmax(360px,1.18fr) minmax(420px,1.55fr)!important;gap:14px!important;margin-bottom:16px!important}
-.vinapaco-top-widgets .info-widget-card{min-height:156px!important;padding:18px 20px!important;border-radius:16px!important;border:1px solid #cbd5e1!important;box-shadow:0 5px 18px rgba(15,23,42,.08)!important;justify-content:flex-start!important}
-.widget-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px;font-weight:950;letter-spacing:.2px;color:#334155;text-transform:uppercase}
-.widget-heading i{margin-right:6px}
-.live-dot{font-size:11px;background:#dcfce7;color:#15803d;border:1px solid #86efac;border-radius:999px;padding:4px 9px;font-weight:950}
-.widget-badge-red,.widget-badge-blue{font-size:10px;border-radius:999px;padding:5px 9px;font-weight:950;letter-spacing:.3px}
-.widget-badge-red{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}.widget-badge-blue{background:#eff6ff;color:#0369a1;border:1px solid #bfdbfe}
-.vinapaco-widget-clock{background:linear-gradient(145deg,#fff,#f8fbff)!important}.clock-display{font-size:38px!important;line-height:1!important;margin-top:8px;letter-spacing:1px!important}.widget-date{font-size:18px;font-weight:950;color:#0f172a;margin-top:5px}.widget-subline{font-size:13px;color:#64748b;font-weight:800;margin-top:2px}
-.vinapaco-widget-lunar{background:linear-gradient(145deg,#fff,#f7fff9)!important}.lunar-display-large{font-size:18px!important;line-height:1.5!important;margin-top:6px}.lunar-extra-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:8px}.lunar-extra-grid>div{padding:9px 10px;background:#fff;border:1px solid #dbe4ee;border-radius:10px;min-width:0}.lunar-extra-grid span{display:block;font-size:10px;color:#64748b;font-weight:850;text-transform:uppercase}.lunar-extra-grid b{display:block;font-size:13px;color:#166534;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.vinapaco-widget-weather{background:linear-gradient(145deg,#fff,#f7fbff)!important}.weather-actions-large{display:flex;gap:8px;margin-top:8px}.weather-big-btn{border:0;border-radius:10px;padding:10px 15px;color:#fff;font-size:13px;font-weight:950;cursor:pointer;box-shadow:0 3px 8px rgba(15,23,42,.12)}.weather-big-btn.purple{background:#7c3aed}.weather-big-btn.blue{background:#0284c7}.weather-search-large{display:flex;gap:7px;margin-top:8px}.weather-search-large input{flex:1;min-width:0;height:42px;padding:0 12px;font-size:14px;font-weight:750;border:1.5px solid #cbd5e1;border-radius:10px;background:#fff}.weather-search-btn{height:42px;padding:0 14px;border:0;border-radius:10px;background:#0284c7;color:#fff;font-weight:950;font-size:13px;cursor:pointer}.weather-live-large{font-size:15px!important;font-weight:850!important;line-height:1.55;margin-top:8px;color:#0f172a!important;min-height:46px}
-.vinapaco-calendar-fullscreen-card{max-width:none!important;width:calc(100vw - 20px)!important;height:calc(100vh - 20px)!important;max-height:none!important;border-radius:18px!important}.vinapaco-calendar-modal-body{height:calc(100vh - 92px)!important;overflow:auto!important}.vinapaco-calendar-stack{display:flex!important;flex-direction:column!important;gap:16px!important}.vinapaco-calendar-grid-card{width:100%!important}.vinapaco-fengshui-card{width:100%!important}.vinapaco-calendar-grid-card #lichGridContainer{grid-template-columns:repeat(7,minmax(0,1fr))!important;gap:8px!important}.vinapaco-calendar-grid-card .lich-grid-header{font-size:14px!important;padding:11px 0!important}.vinapaco-calendar-grid-card .lich-day-tile{min-height:108px!important;padding:10px 8px!important;border-radius:11px!important;font-size:13px!important}.vinapaco-calendar-grid-card .lich-day-tile .lich-day-greg{font-size:22px!important;font-weight:950!important}.vinapaco-calendar-grid-card .lich-day-tile .lich-day-lunar{font-size:13px!important}.vinapaco-calendar-grid-card .lich-day-tile .lich-day-meta{font-size:11px!important}.vinapaco-fengshui-card #chiTietNgayNoiDung{gap:10px!important}.vinapaco-fengshui-card .vannien-pro-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}.vinapaco-fengshui-card .vannien-pro-section{padding:15px!important}.vinapaco-fengshui-card .vannien-pro-title{font-size:14px!important}.vinapaco-fengshui-card .vannien-pro-row{font-size:13px!important}.vinapaco-fengshui-card .vannien-hour{font-size:12px!important;padding:9px!important}.vinapaco-calendar-fullscreen-card .modal-actions{min-height:64px!important}
-@media(max-width:1100px){.vinapaco-top-widgets{grid-template-columns:1fr 1fr!important}.vinapaco-widget-weather{grid-column:1/-1}.lunar-extra-grid{grid-template-columns:repeat(2,1fr)!important}}
-@media(max-width:700px){.vinapaco-top-widgets{grid-template-columns:1fr!important}.vinapaco-widget-weather{grid-column:auto}.vinapaco-top-widgets .info-widget-card{min-height:unset!important}.clock-display{font-size:32px!important}.widget-date{font-size:16px}.lunar-extra-grid{grid-template-columns:repeat(2,1fr)!important}.weather-actions-large{flex-wrap:wrap}.weather-big-btn{flex:1;min-width:140px}.vinapaco-calendar-fullscreen-card{width:100vw!important;height:100vh!important;border-radius:0!important}.vinapaco-calendar-modal-body{height:calc(100vh - 82px)!important;padding:12px!important}.vinapaco-calendar-grid-card #lichGridContainer{gap:4px!important}.vinapaco-calendar-grid-card .lich-day-tile{min-height:78px!important;padding:6px 4px!important}.vinapaco-calendar-grid-card .lich-day-tile .lich-day-greg{font-size:17px!important}.vinapaco-calendar-grid-card .lich-day-tile .lich-day-lunar{font-size:10px!important}.vinapaco-fengshui-card .vannien-pro-grid{grid-template-columns:1fr!important}}
-</style>
 
-<style id="vinapaco-final-title-weather-table-fix">
-/* ==========================================================
-   VINAPACO FINAL UI – TIÊU ĐỀ KHÔNG CHỒNG NÚT MŨI TÊN
-   Đồng bộ theo mẫu Khí tượng & Vị trí
-   ========================================================== */
-body.vnp-fullscreen-module .banner h1,
-body.vnp-fullscreen-module .table-header-bar .table-title,
-body.vnp-fullscreen-module .chart-card-heading .chart-title,
-body.vnp-fullscreen-module .widget-heading{
-    padding-left:58px !important;
-    box-sizing:border-box !important;
-}
-body.vnp-fullscreen-module .table-header-bar .table-title{
-    min-width:0 !important;
-    line-height:1.35 !important;
-    flex:1 1 auto !important;
-}
-body.vnp-fullscreen-module #vnpRestoreNavBtn{
-    width:42px !important;
-    height:42px !important;
-    min-width:42px !important;
-    padding:0 !important;
-    border-radius:50% !important;
-    justify-content:center !important;
-    align-items:center !important;
-}
-body.vnp-fullscreen-module #vnpRestoreNavBtn i{font-size:18px !important;margin:0 !important;}
-/* Hai bảng nghiệp vụ yêu cầu chữ gọn hơn nhưng vẫn rõ */
-body.vnp-fullscreen-module #officePaymentTab > table,
-body.vnp-fullscreen-module #telecomPaymentTab > table{
-    font-size:11.5px !important;
-}
-body.vnp-fullscreen-module #officePaymentTab > table th,
-body.vnp-fullscreen-module #telecomPaymentTab > table th{
-    font-size:9.5px !important;
-    line-height:1.18 !important;
-    padding:6px 6px !important;
-}
-body.vnp-fullscreen-module #officePaymentTab > table td,
-body.vnp-fullscreen-module #telecomPaymentTab > table td{
-    font-size:11.5px !important;
-    line-height:1.22 !important;
-    padding:6px 6px !important;
-}
-body.vnp-fullscreen-module #officePaymentTab > table input,
-body.vnp-fullscreen-module #telecomPaymentTab > table input{
-    font-size:11px !important;
-    height:30px !important;
-    padding:0 5px !important;
-}
-body.vnp-fullscreen-module #officePaymentTab .form-group label,
-body.vnp-fullscreen-module #telecomPaymentTab .form-group label{font-size:11px !important;}
-/* Weather card giống mẫu: gọn, rõ, không có dòng đồng hồ/ngày */
-.vinapaco-widget-weather .widget-heading{padding-left:0 !important;}
-.weather-live-large{min-height:0 !important;}
-.weather-timestamp-line{display:none !important;}
-/* Không để tiêu đề dài đè lên vùng nút bên phải */
-body.vnp-fullscreen-module .table-header-bar{padding-right:2px !important;}
-@media(max-width:700px){
-    body.vnp-fullscreen-module .banner h1,
-    body.vnp-fullscreen-module .table-header-bar .table-title,
-    body.vnp-fullscreen-module .chart-card-heading .chart-title,
-    body.vnp-fullscreen-module .widget-heading{padding-left:50px !important;}
-    body.vnp-fullscreen-module #vnpRestoreNavBtn{width:38px !important;height:38px !important;min-width:38px !important;}
-}
-</style>
 
-<style id="vinapaco-menu-always-visible-final">
-/* ==========================================================
-   VINAPACO – MENU LUÔN HIỂN THỊ / KHÔNG THANH ĐỊA CHỈ / KHÔNG MŨI TÊN
-   Bố cục thật: MENU chiếm cột trái, NỘI DUNG chiếm cột phải.
-   Không dùng position:fixed để tránh mọi tình trạng che tiêu đề.
-   ========================================================== */
-html,body{margin:0!important;min-width:0!important;overflow-x:hidden!important;}
-body{padding-top:0!important;}
-
-/* Ghi đè hoàn toàn chế độ workspace cũ */
-body.vnp-workspace-mode #appMainContainer,
-body.vnp-workspace-mode .app-layout,
-body.vnp-workspace-mode .tab-content-area{width:auto!important;max-width:none!important;margin-left:0!important;margin-right:0!important;padding-left:0!important;padding-right:0!important;}
-body.vnp-workspace-mode .banner,
-body.vnp-workspace-mode #driveUploadStatusBar,
-body.vnp-workspace-mode #systemConfigBar,
-body.vnp-workspace-mode .vinapaco-top-widgets,
-body.vnp-workspace-mode .container > .config-bar,
-body.vnp-workspace-mode .kpi-grid,
-body.vnp-workspace-mode .cloud-sync-panel{display:block!important;}
-
-/* Luôn hiện sidebar trong luồng bố cục */
-.app-layout,
-body.vnp-workspace-mode .app-layout{
-  display:grid!important;
-  grid-template-columns:minmax(220px,245px) minmax(0,1fr)!important;
-  align-items:start!important;
-  gap:18px!important;
-  width:100%!important;
-  max-width:none!important;
-  margin:14px 0 0!important;
-  padding:0!important;
-  box-sizing:border-box!important;
-}
-.tab-nav-shell,
-body.vnp-menu-collapsed .tab-nav-shell,
-body.vnp-menu-open .tab-nav-shell{
-  display:block!important;
-  position:sticky!important;
-  left:auto!important;
-  top:12px!important;
-  width:auto!important;
-  min-width:0!important;
-  max-width:none!important;
-  height:auto!important;
-  max-height:calc(100vh - 24px)!important;
-  margin:0!important;
-  padding:10px!important;
-  overflow-y:auto!important;
-  overflow-x:hidden!important;
-  box-sizing:border-box!important;
-  background:#fff!important;
-  border:1px solid #dbe3ec!important;
-  border-radius:16px!important;
-  box-shadow:0 8px 26px rgba(15,23,42,.08)!important;
-  z-index:20!important;
-}
-.tab-nav{display:flex!important;flex-direction:column!important;gap:4px!important;width:100%!important;}
-.tab-btn-nav{width:100%!important;min-height:45px!important;box-sizing:border-box!important;white-space:normal!important;}
-.tab-content-area,
-body.vnp-workspace-mode .tab-content-area{
-  display:block!important;
-  min-width:0!important;
-  width:100%!important;
-  max-width:none!important;
-  margin:0!important;
-  padding:0!important;
-  box-sizing:border-box!important;
-}
-.tab-content-area>.tab-pane.active,
-body.vnp-workspace-mode .tab-content-area>.tab-pane.active{
-  display:block!important;
-  width:100%!important;
-  max-width:none!important;
-  min-width:0!important;
-  min-height:0!important;
-  margin:0!important;
-  box-sizing:border-box!important;
-  padding:14px!important;
-  transform:none!important;
-  top:auto!important;
-}
-
-/* Tuyệt đối không còn lớp phủ */
-body.vnp-menu-open::after{display:none!important;content:none!important;}
-#vnpAppAddressBar,#vnpRestoreNavBtn{display:none!important;}
-
-/* Tiêu đề tab không cần chừa vùng cho nút mũi tên */
-body.vnp-fullscreen-module .table-header-bar,
-body.vnp-fullscreen-module .chart-card-heading,
-body.vnp-fullscreen-module .widget-heading,
-body.vnp-fullscreen-module .table-title{padding-left:0!important;}
-
-@media(max-width:900px){
-  .app-layout,
-  body.vnp-workspace-mode .app-layout{
-    grid-template-columns:1fr!important;
-    gap:10px!important;
-  }
-  .tab-nav-shell,
-  body.vnp-menu-collapsed .tab-nav-shell,
-  body.vnp-menu-open .tab-nav-shell{
-    position:sticky!important;
-    top:0!important;
-    width:100%!important;
-    max-height:none!important;
-    overflow:visible!important;
-  }
-  .tab-nav{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important;}
-  .tab-btn-nav{min-height:42px!important;font-size:12px!important;}
-}
-@media(max-width:520px){
-  .tab-nav{grid-template-columns:1fr!important;}
-  .tab-content-area>.tab-pane.active{padding:8px!important;}
-}
-</style>
 <script id="vinapaco-menu-always-visible-js">
 (function(){
   // Bộ điều khiển cũ đã được thay bằng cơ chế: Tổng quan = có menu; nghiệp vụ = toàn màn hình.
 })();
 </script>
 
-<style id="vinapaco-final-navigation-design">
-/* ==========================================================
-   VINAPACO – ĐIỀU HƯỚNG CUỐI CÙNG
-   Tổng quan: MENU + dashboard
-   Nghiệp vụ: 100% màn hình, KHÔNG MENU
-   ========================================================== */
-#vinapacoMainBanner{
-  position:relative!important;
-  min-height:64px!important;
-  display:flex!important;
-  align-items:center!important;
-  gap:14px!important;
-  box-sizing:border-box!important;
-}
-#vinapacoMainBanner .vinapaco-banner-home{
-  flex:0 0 48px!important;
-  width:48px!important;height:48px!important;
-  margin-left:2px!important;
-  border:1px solid rgba(255,255,255,.42)!important;
-  border-radius:12px!important;
-  background:rgba(255,255,255,.16)!important;
-  color:#fff!important;
-  display:inline-flex!important;
-  align-items:center!important;justify-content:center!important;gap:6px!important;
-  cursor:pointer!important;
-  box-shadow:0 4px 12px rgba(15,23,42,.14)!important;
-  font-weight:900!important;
-  z-index:5!important;
-}
-#vinapacoMainBanner .vinapaco-banner-home:hover{filter:brightness(1.08)!important;transform:translateY(-1px)}
-#vinapacoMainBanner .vinapaco-banner-home i{font-size:17px!important;margin:0!important}
-#vinapacoMainBanner .vinapaco-banner-home span{display:none!important}
-#vinapacoMainBanner .vinapaco-banner-title{
-  min-width:0!important;flex:1 1 auto!important;
-  padding-left:12px!important;
-  box-sizing:border-box!important;
-}
-#vinapacoMainBanner .vinapaco-banner-title h1{margin-left:0!important;padding-left:0!important}
-
-/* Bỏ toàn bộ các nút "MỞ DRIVE/DRIVE" nhưng giữ nguyên ô cấu hình và link Drive. */
-button[onclick*="moThuThucDriveChung"],
-a[onclick*="moThuThucDriveChung"]{display:none!important}
-
-/* Khi vào nghiệp vụ: sidebar biến mất, nội dung trải hết chiều ngang. */
-body.vnp-fullscreen-module .tab-nav-shell{display:none!important}
-body.vnp-fullscreen-module .app-layout{display:block!important;width:100vw!important;max-width:none!important;margin:0!important;padding:0!important;box-sizing:border-box!important}
-body.vnp-fullscreen-module .tab-content-area{display:block!important;width:100vw!important;max-width:none!important;margin:0!important;padding:0!important;box-sizing:border-box!important}
-body.vnp-fullscreen-module .tab-pane.active{display:block!important;width:100vw!important;max-width:none!important;min-height:calc(100vh - 64px)!important;margin:0!important;box-sizing:border-box!important}
-body.vnp-fullscreen-module .tab-pane.active>.table-card{width:100%!important;max-width:none!important;margin-left:0!important;margin-right:0!important}
-
-/* Không để các thành phần tổng quan chen vào màn hình nghiệp vụ. */
-body.vnp-fullscreen-module #driveUploadStatusBar,
-body.vnp-fullscreen-module #systemConfigBar,
-body.vnp-fullscreen-module .vinapaco-top-widgets,
-body.vnp-fullscreen-module .container > .config-bar,
-body.vnp-fullscreen-module .kpi-grid,
-body.vnp-fullscreen-module .cloud-sync-panel{display:none!important}
-
-/* Banner vẫn là thanh đầu trang, nhưng gọn; nút Trang chủ luôn ở đúng vị trí. */
-body.vnp-fullscreen-module #vinapacoMainBanner{margin:0!important;border-radius:0!important;min-height:64px!important}
-body.vnp-fullscreen-module #vinapacoMainBanner .btn-group-header{display:none!important}
-
-/* Tổng quan: giữ nguyên banner + menu + nội dung dashboard. */
-body:not(.vnp-fullscreen-module) #vinapacoMainBanner .vinapaco-banner-home{background:rgba(255,255,255,.20)!important}
-
-@media(max-width:700px){
-  #vinapacoMainBanner{min-height:58px!important;gap:8px!important}
-  #vinapacoMainBanner .vinapaco-banner-home{flex-basis:42px!important;width:42px!important;height:42px!important;border-radius:10px!important}
-  #vinapacoMainBanner .vinapaco-banner-title{padding-left:6px!important}
-  #vinapacoMainBanner .vinapaco-banner-title h1{font-size:15px!important}
-  #vinapacoMainBanner .vinapaco-banner-title p{font-size:9px!important;line-height:1.2!important}
-  body.vnp-fullscreen-module .tab-pane.active{min-height:calc(100vh - 58px)!important}
-}
-</style>
 <script id="vinapaco-final-navigation-controller">
 (function(){
   'use strict';
@@ -8141,6 +8430,7 @@ body:not(.vnp-fullscreen-module) #vinapacoMainBanner .vinapaco-banner-home{backg
   const LS90=90*86400000;
   function licEsc(v){ return typeof escHtml==='function' ? escHtml(v==null?'':String(v)) : String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
   function licToday(){ return new Date().toISOString().slice(0,10); }
+  function licGenerateCode(type){ const prefix=type==='Office'?'OFF':'OS'; const stamp=new Date().toISOString().slice(0,10).replace(/-/g,''); let n=1, code=''; const used=new Set((Array.isArray(dsQuanLyBanQuyen)?dsQuanLyBanQuyen:[]).map(x=>String(x.code||''))); do{code=prefix+'-'+stamp+'-'+String(n).padStart(4,'0');n++;}while(used.has(code)); return code; }
   function licDays(end){ if(!end)return Infinity; const d=new Date(end+'T23:59:59'); return Math.ceil((d-Date.now())/86400000); }
   function licState(x){
     if(String(x.status||'')==='Revoked') return 'Revoked';
@@ -8161,42 +8451,15 @@ body:not(.vnp-fullscreen-module) #vinapacoMainBanner .vinapaco-banner-home{backg
   }
   window.toggleLicensePermanent=function(){const p=document.getElementById('licenseFormPermanent'),e=document.getElementById('licenseFormEnd');if(p&&e){e.disabled=p.checked;if(p.checked)e.value='';}};
   window.capNhatLicenseFormQty=function(){const q=document.getElementById('licenseFormQty');if(q)q.value=Math.max(1,Number(q.value)||1);};
-  window.capNhatMaBanQuyenTheoLoai=function(){
-    const idx=Number(document.getElementById('licenseEditIndex')?.value||-1);
-    if(idx<0){const e=document.getElementById('licenseFormCode'),t=document.getElementById('licenseFormType');if(e&&t)e.value=taoMaBanQuyenTuDong(t.value);}
-  };
-  function taoMaBanQuyenTuDong(type){
-    const prefix=String(type||'OS').toUpperCase()==='OFFICE'?'OFF':'OS';
-    const d=new Date(), y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
-    const base=prefix+'-'+y+m+day+'-';
-    const used=new Set((Array.isArray(dsQuanLyBanQuyen)?dsQuanLyBanQuyen:[]).map(x=>String(x?.code||'').trim().toUpperCase()));
-    let n=1, code='';
-    do{code=base+String(n).padStart(4,'0');n++;}while(used.has(code));
-    return code;
-  }
   window.moFormBanQuyenMoi=function(){
-    document.getElementById('licenseEditIndex').value='-1'; document.getElementById('licenseFormType').value='OS'; document.getElementById('licenseFormCode').value=taoMaBanQuyenTuDong('OS'); document.getElementById('licenseFormType').value='OS'; document.getElementById('licenseFormProduct').value=''; document.getElementById('licenseFormModel').value='OEM'; document.getElementById('licenseFormVendor').value=''; document.getElementById('licenseFormDocNo').value=''; document.getElementById('licenseFormStart').value=licToday(); document.getElementById('licenseFormEnd').value=''; document.getElementById('licenseFormPermanent').checked=false; document.getElementById('licenseFormEnd').disabled=false; document.getElementById('licenseFormQty').value=1; document.getElementById('licenseFormKey').value=''; document.getElementById('licenseFormAsset').value=''; document.getElementById('licenseFormNote').value=''; document.getElementById('licenseFormCard').classList.remove('hidden'); document.getElementById('licenseFormCard').scrollIntoView({behavior:'smooth',block:'center'});
+    document.getElementById('licenseEditIndex').value='-1'; document.getElementById('licenseFormType').value='OS'; document.getElementById('licenseFormCode').value=licGenerateCode('OS'); document.getElementById('licenseFormProduct').value=''; document.getElementById('licenseFormModel').value='OEM'; document.getElementById('licenseFormVendor').value=''; document.getElementById('licenseFormDocNo').value=''; document.getElementById('licenseFormStart').value=licToday(); document.getElementById('licenseFormEnd').value=''; document.getElementById('licenseFormPermanent').checked=false; document.getElementById('licenseFormEnd').disabled=false; document.getElementById('licenseFormQty').value=1; document.getElementById('licenseFormKey').value=''; document.getElementById('licenseFormAsset').value=''; document.getElementById('licenseFormNote').value=''; document.getElementById('licenseFormCard').classList.remove('hidden'); document.getElementById('licenseFormCard').scrollIntoView({behavior:'smooth',block:'center'});
   };
   window.dongFormBanQuyen=function(){document.getElementById('licenseFormCard')?.classList.add('hidden');};
   function clearLicenseForm(){['licenseFormCode','licenseFormProduct','licenseFormVendor','licenseFormDocNo','licenseFormStart','licenseFormEnd','licenseFormKey','licenseFormAsset','licenseFormNote'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});document.getElementById('licenseFormQty').value=1;document.getElementById('licenseFormPermanent').checked=false;document.getElementById('licenseFormEnd').disabled=false;}
   window.luuBanQuyenForm=function(){
     const idx=Number(document.getElementById('licenseEditIndex').value), old=idx>=0?dsQuanLyBanQuyen[idx]:null;
-    const codeEl=document.getElementById('licenseFormCode'), productEl=document.getElementById('licenseFormProduct'), startEl=document.getElementById('licenseFormStart'), endEl=document.getElementById('licenseFormEnd');
-    const type=document.getElementById('licenseFormType').value, product=(productEl?.value||'').trim();
-    // Mã bản quyền là mã hồ sơ do hệ thống tự sinh; không phải khóa kích hoạt/sản phẩm.
-    const code=(codeEl?.value||'').trim() || taoMaBanQuyenTuDong(type);
-    // input type=date luôn lưu theo ISO yyyy-mm-dd dù Chrome hiển thị theo dd/mm/yyyy tùy ngôn ngữ máy.
-    const start=(startEl?.value||'').trim(), permanent=document.getElementById('licenseFormPermanent').checked, end=(endEl?.value||'').trim(), qty=Math.max(1,Number(document.getElementById('licenseFormQty').value)||1);
-    document.querySelectorAll('#licenseFormCard .license-required-error').forEach(e=>e.classList.remove('license-required-error'));
-    const missing=[];
-    if(!product){missing.push('Sản phẩm/phiên bản');productEl?.classList.add('license-required-error');}
-    if(codeEl) codeEl.value=code;
-    if(!start){missing.push('Ngày cấp/kích hoạt');startEl?.classList.add('license-required-error');}
-    if(missing.length){
-      alert('⚠️ Chưa đủ thông tin bắt buộc: '+missing.join(', ')+'.\n\nMã bản quyền là mã hồ sơ do hệ thống tự sinh; bạn không cần nhập mã này.');
-      (missing[0]==='Mã bản quyền'?codeEl:missing[0]==='Sản phẩm/phiên bản'?productEl:startEl)?.focus();
-      return;
-    }
+    const type=document.getElementById('licenseFormType').value, code=(document.getElementById('licenseFormCode').value.trim()||licGenerateCode(type)), product=document.getElementById('licenseFormProduct').value.trim(), start=document.getElementById('licenseFormStart').value, permanent=document.getElementById('licenseFormPermanent').checked, end=document.getElementById('licenseFormEnd').value, qty=Math.max(1,Number(document.getElementById('licenseFormQty').value)||1);
+    if(!product||!start)return alert('⚠️ Vui lòng nhập Sản phẩm/phiên bản và Ngày cấp/kích hoạt.');
     if(!permanent&&!end)return alert('⚠️ Hãy nhập Ngày hết hạn hoặc tích Vĩnh viễn / không thời hạn.');
     if(!permanent&&new Date(end)<new Date(start))return alert('⚠️ Ngày hết hạn không được trước ngày cấp.');
     if(dsQuanLyBanQuyen.some((x,i)=>i!==idx&&String(x.code).trim().toLowerCase()===code.toLowerCase()))return alert('⚠️ Mã bản quyền đã tồn tại.');
@@ -8228,84 +8491,7 @@ body:not(.vnp-fullscreen-module) #vinapacoMainBanner .vinapaco-banner-home{backg
 })();
 </script>
 
-</body>
-</html>
-<style id="vinapaco-menu-overlay-invoice-final">
-/* ==========================================================
-   VINAPACO FINAL 2026 – MENU ẨN THỰC SỰ + NGHIỆP VỤ FULL WIDTH
-   Đặc biệt tối ưu TAB HÓA ĐƠN & BÁO CÁO
-   ========================================================== */
-html,body{margin:0!important;padding:0!important;min-width:0!important;overflow-x:hidden!important}
-body.vnp-workspace-mode #appMainContainer{width:100vw!important;max-width:none!important;margin:0!important;padding:0!important;box-sizing:border-box!important}
-body.vnp-workspace-mode .banner,
-body.vnp-workspace-mode #driveUploadStatusBar,
-body.vnp-workspace-mode #systemConfigBar,
-body.vnp-workspace-mode .vinapaco-top-widgets,
-body.vnp-workspace-mode .container > .config-bar,
-body.vnp-workspace-mode .kpi-grid,
-body.vnp-workspace-mode .cloud-sync-panel{display:none!important}
-body.vnp-workspace-mode .app-layout{display:block!important;width:100vw!important;max-width:none!important;margin:0!important;padding:0!important;min-height:100vh!important}
-body.vnp-workspace-mode .tab-content-area{display:block!important;width:100vw!important;max-width:none!important;margin:0!important;padding:0!important;min-width:0!important}
-body.vnp-workspace-mode .tab-pane.active{display:block!important;width:100vw!important;max-width:none!important;min-width:0!important;min-height:100vh!important;margin:0!important;padding:14px 14px 30px!important;border:0!important;border-radius:0!important;box-shadow:none!important;box-sizing:border-box!important;transform:none!important;top:0!important}
-body.vnp-workspace-mode .tab-pane.active>.table-card{margin-left:0!important;margin-right:0!important}
 
-/* Menu mặc định ẩn, không chiếm bất kỳ pixel chiều rộng nào */
-body.vnp-menu-collapsed .tab-nav-shell{display:none!important;width:0!important;min-width:0!important;max-width:0!important;margin:0!important;padding:0!important}
-body.vnp-menu-open .tab-nav-shell{
-  display:block!important;position:fixed!important;left:12px!important;top:58px!important;width:245px!important;max-width:calc(100vw - 24px)!important;height:calc(100vh - 70px)!important;max-height:none!important;overflow-y:auto!important;overflow-x:hidden!important;z-index:2147483000!important;margin:0!important;padding:9px!important;background:#fff!important;border:1px solid #d7e0ea!important;border-radius:14px!important;box-shadow:0 14px 40px rgba(15,23,42,.25)!important}
-body.vnp-menu-open .tab-nav{display:flex!important;flex-direction:column!important}
-body.vnp-menu-open .tab-btn-nav{width:100%!important;flex:0 0 auto!important}
-body.vnp-menu-open::after{content:"";position:fixed;inset:0;background:rgba(15,23,42,.18);z-index:2147482990!important;pointer-events:auto!important}
-
-/* NÚT MŨI TÊN: chỉ dùng để quay về trang chủ chọn chức năng.
-   Không có chữ MENU để không đè lên banner; ở tab nghiệp vụ banner đã ẩn. */
-#vnpRestoreNavBtn{display:inline-flex!important;position:fixed!important;left:10px!important;top:10px!important;width:38px!important;min-width:38px!important;height:38px!important;padding:0!important;align-items:center!important;justify-content:center!important;z-index:2147483647!important;border:0!important;border-radius:50%!important;background:#0f4c81!important;color:#fff!important;box-shadow:0 5px 18px rgba(15,23,42,.28)!important;font-size:15px!important;font-weight:900!important;cursor:pointer!important}
-#vnpRestoreNavBtn:hover{filter:brightness(1.08);transform:translateY(-1px)}
-#vnpRestoreNavBtn i{margin:0!important}
-body:not(.vnp-workspace-mode) #vnpRestoreNavBtn{display:none!important}
-
-/* Hóa đơn: đưa toàn bộ nội dung lên sát đỉnh và cân theo viewport */
-body.vnp-workspace-mode #invoiceManagerTab{padding:10px 12px 28px!important;margin:0!important;width:100vw!important;min-height:100vh!important;box-sizing:border-box!important;overflow:visible!important}
-#invoiceManagerTab .table-header-bar{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;margin:0 0 10px!important;padding:0 0 8px!important;border-bottom:1px solid #dbe4ee!important}
-#invoiceManagerTab .table-title{font-size:20px!important;line-height:1.25!important}
-#invoiceManagerTab .table-header-bar>div:last-child{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:7px!important;flex-wrap:wrap!important}
-#invoiceManagerTab .invoice-kpi-grid{grid-template-columns:repeat(5,minmax(150px,1fr))!important;gap:9px!important;margin:0 0 10px!important}
-#invoiceManagerTab .invoice-kpi{min-height:82px!important;padding:11px 13px!important}
-#invoiceManagerTab .invoice-kpi b{font-size:21px!important}
-#invoiceManagerTab .invoice-filter-bar{grid-template-columns:150px 150px minmax(300px,1fr) auto!important;gap:9px!important;padding:9px 10px!important;margin-bottom:10px!important}
-#invoiceManagerTab .invoice-import-card,#invoiceManagerTab .invoice-form-card,#invoiceManagerTab .invoice-summary-card,#invoiceManagerTab>.table-card{margin-bottom:10px!important}
-#invoiceManagerTab .invoice-import-head{padding:10px 13px!important}
-#invoiceManagerTab .invoice-import-grid{grid-template-columns:240px minmax(0,1fr)!important;gap:11px!important;padding:11px!important}
-#invoiceManagerTab .invoice-dropzone{min-height:130px!important}
-#invoiceManagerTab .invoice-manual-text textarea{min-height:130px!important}
-#invoiceManagerTab .invoice-form-grid{gap:9px!important}
-#invoiceManagerTab .invoice-items-wrap,#invoiceManagerTab .invoice-summary-scroll,#invoiceManagerTab .invoice-list-scroll{width:100%!important;max-width:100%!important;overflow-x:auto!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch!important}
-#invoiceManagerTab .invoice-items-table,#invoiceManagerTab .invoice-summary-table,#invoiceManagerTab .invoice-list-table{width:100%!important;min-width:980px!important}
-#invoiceManagerTab th,#invoiceManagerTab td{padding:8px 9px!important}
-
-@media(max-width:1100px){
-  #invoiceManagerTab .invoice-kpi-grid{grid-template-columns:repeat(3,minmax(150px,1fr))!important}
-  #invoiceManagerTab .invoice-filter-bar{grid-template-columns:1fr 1fr!important}
-  #invoiceManagerTab .invoice-filter-bar .form-group:nth-child(3){grid-column:1/-1}
-  #invoiceManagerTab .invoice-import-grid{grid-template-columns:1fr!important}
-}
-@media(max-width:680px){
-  body.vnp-workspace-mode .tab-pane.active{padding:8px 7px 22px!important}
-  body.vnp-menu-open .tab-nav-shell{left:7px!important;top:52px!important;width:calc(100vw - 14px)!important;height:calc(100vh - 59px)!important}
-  #vnpRestoreNavBtn{left:7px!important;top:7px!important;width:36px!important;min-width:36px!important;height:36px!important;font-size:14px!important}
-  #invoiceManagerTab .table-header-bar{align-items:flex-start!important;flex-direction:column!important}
-  #invoiceManagerTab .table-title{font-size:17px!important}
-  #invoiceManagerTab .invoice-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-  #invoiceManagerTab .invoice-filter-bar{grid-template-columns:1fr!important}
-  #invoiceManagerTab .invoice-filter-bar .form-group:nth-child(3){grid-column:auto}
-}
-
-/* Hóa đơn đa định dạng */
-#invoiceManagerTab .invoice-dropzone{cursor:pointer;min-height:150px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important;gap:5px!important}
-#invoiceManagerTab .invoice-dropzone b{font-size:15px!important;color:#0f172a}
-#invoiceManagerTab .invoice-dropzone span{font-size:12px!important;font-weight:800!important;color:#0369a1}
-#invoiceManagerTab .invoice-dropzone small{font-size:11px!important}
-</style>
 
 <script id="vinapaco-menu-overlay-invoice-final-js">
 (function(){
@@ -8313,39 +8499,6 @@ body.vnp-workspace-mode #invoiceManagerTab{padding:10px 12px 28px!important;marg
 })();
 </script>
 
-<style id="vinapaco-menu-no-overlap-fix">
-/* ===== FIX MENU: mở MENU nhưng tuyệt đối không che nội dung ===== */
-@media (min-width:681px){
-  body.vnp-menu-open .tab-content-area{
-    width:calc(100vw - 269px)!important;
-    max-width:calc(100vw - 269px)!important;
-    margin-left:269px!important;
-    margin-right:0!important;
-    box-sizing:border-box!important;
-  }
-  body.vnp-menu-open .tab-content-area > .tab-pane.active{
-    width:100%!important;
-    max-width:none!important;
-    min-width:0!important;
-    margin-left:0!important;
-    margin-right:0!important;
-    box-sizing:border-box!important;
-  }
-  /* Bỏ lớp phủ làm tối/khóa vùng nội dung; menu vẫn nằm trên cùng. */
-  body.vnp-menu-open::after{
-    display:none!important;
-  }
-}
-
-/* Mobile: menu chiếm gần toàn màn hình nên không cần ép nội dung sang phải. */
-@media (max-width:680px){
-  body.vnp-menu-open .tab-content-area{
-    width:100%!important;
-    max-width:none!important;
-    margin-left:0!important;
-  }
-}
-</style>
 
 
 <script id="vnp-no-overlap-final-js">
@@ -8363,159 +8516,6 @@ body.vnp-workspace-mode #invoiceManagerTab{padding:10px 12px 28px!important;marg
 })();
 </script>
 
-<style id="vinapaco-final-navigation-override-absolute">
-/* ===== QUY TẮC CUỐI: 1 nguồn điều hướng duy nhất ===== */
-#vnpRestoreNavBtn,
-#showTabsBtn{display:none!important;visibility:hidden!important;pointer-events:none!important}
-
-/* Banner: nút Trang chủ nằm ngay trong banner, chữ lùi vào theo nút */
-#vinapacoMainBanner{
-  position:relative!important;
-  display:flex!important;
-  align-items:center!important;
-  gap:14px!important;
-  min-height:64px!important;
-  padding:8px 14px!important;
-  box-sizing:border-box!important;
-}
-#vinapacoMainBanner .vinapaco-banner-home{
-  position:relative!important;
-  inset:auto!important;
-  flex:0 0 46px!important;
-  width:46px!important;
-  height:46px!important;
-  margin:0!important;
-  padding:0!important;
-  border:1px solid rgba(255,255,255,.5)!important;
-  border-radius:12px!important;
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  background:rgba(255,255,255,.16)!important;
-  color:#fff!important;
-  box-shadow:0 3px 10px rgba(15,23,42,.14)!important;
-  cursor:pointer!important;
-  z-index:20!important;
-}
-#vinapacoMainBanner .vinapaco-banner-home i{font-size:17px!important;margin:0!important}
-#vinapacoMainBanner .vinapaco-banner-home span{display:none!important}
-#vinapacoMainBanner .vinapaco-banner-title{
-  flex:1 1 auto!important;
-  min-width:0!important;
-  padding:0 0 0 8px!important;
-  margin:0!important;
-  box-sizing:border-box!important;
-}
-#vinapacoMainBanner .vinapaco-banner-title h1,
-#vinapacoMainBanner .vinapaco-banner-title p{margin-left:0!important;padding-left:0!important}
-
-/* Bỏ các nút mở thư mục Drive để giao diện thoáng hơn, không xóa ô đường dẫn. */
-button[onclick*="moThuThucDriveChung"],
-a[onclick*="moThuThucDriveChung"]{display:none!important}
-
-/* ===== TRANG TỔNG QUAN ===== */
-body:not(.vnp-fullscreen-module) .tab-nav-shell{
-  display:block!important;
-  position:relative!important;
-  visibility:visible!important;
-  width:auto!important;
-  max-width:none!important;
-}
-body:not(.vnp-fullscreen-module) .app-layout{
-  display:grid!important;
-  grid-template-columns:minmax(220px,245px) minmax(0,1fr)!important;
-  gap:18px!important;
-  width:100%!important;
-  max-width:none!important;
-  margin:14px 0 0!important;
-  padding:0 14px 20px!important;
-  box-sizing:border-box!important;
-  align-items:start!important;
-}
-
-/* ===== TRANG CHỨC NĂNG: FULL WIDTH, KHÔNG MENU ===== */
-body.vnp-fullscreen-module #appMainContainer{
-  width:100vw!important;
-  max-width:none!important;
-  margin:0!important;
-  padding:0!important;
-  box-sizing:border-box!important;
-}
-body.vnp-fullscreen-module #vinapacoMainBanner{
-  width:100vw!important;
-  margin:0!important;
-  border-radius:0!important;
-}
-body.vnp-fullscreen-module .tab-nav-shell{display:none!important;visibility:hidden!important;width:0!important}
-body.vnp-fullscreen-module .app-layout{
-  display:block!important;
-  width:100vw!important;
-  max-width:none!important;
-  margin:0!important;
-  padding:0!important;
-  box-sizing:border-box!important;
-}
-body.vnp-fullscreen-module .tab-content-area{
-  display:block!important;
-  width:100vw!important;
-  max-width:none!important;
-  min-width:0!important;
-  margin:0!important;
-  padding:0!important;
-  box-sizing:border-box!important;
-}
-body.vnp-fullscreen-module .tab-pane.active{
-  display:block!important;
-  width:100%!important;
-  max-width:none!important;
-  min-width:0!important;
-  min-height:calc(100vh - 64px)!important;
-  margin:0!important;
-  padding:14px 16px 30px!important;
-  box-sizing:border-box!important;
-  border-radius:0!important;
-  box-shadow:none!important;
-}
-
-/* Chức năng không mang theo các khối cấu hình của Tổng quan. */
-body.vnp-fullscreen-module #driveUploadStatusBar,
-body.vnp-fullscreen-module #systemConfigBar,
-body.vnp-fullscreen-module .vinapaco-top-widgets,
-body.vnp-fullscreen-module #appMainContainer > .config-bar,
-body.vnp-fullscreen-module .kpi-grid,
-body.vnp-fullscreen-module .cloud-sync-panel{display:none!important}
-body.vnp-fullscreen-module #vinapacoMainBanner .btn-group-header{display:none!important}
-
-/* Không còn chừa khoảng cho mũi tên cũ. */
-body.vnp-fullscreen-module .table-header-bar,
-body.vnp-fullscreen-module .table-title,
-body.vnp-fullscreen-module .chart-card-heading,
-body.vnp-fullscreen-module .chart-card-heading .chart-title,
-body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
-
-@media(max-width:700px){
-  #vinapacoMainBanner{min-height:58px!important;padding:6px 8px!important;gap:8px!important}
-  #vinapacoMainBanner .vinapaco-banner-home{flex-basis:40px!important;width:40px!important;height:40px!important;border-radius:10px!important}
-  #vinapacoMainBanner .vinapaco-banner-title{padding-left:5px!important}
-  #vinapacoMainBanner .vinapaco-banner-title h1{font-size:15px!important;line-height:1.2!important}
-  #vinapacoMainBanner .vinapaco-banner-title p{font-size:9px!important;line-height:1.15!important}
-  body.vnp-fullscreen-module .tab-pane.active{min-height:calc(100vh - 58px)!important;padding:9px 8px 22px!important}
-}
-
-/* ===== KHO MỰC - BẢNG BIỂU HÀNH CHÍNH, Ô KẺ CHUẨN ===== */
-.ink-report-paper{background:#fff;color:#111;font-family:"Times New Roman",serif;}
-.ink-report-paper table{border-collapse:collapse;border-spacing:0;width:100%;table-layout:fixed;border:1.4px solid #222;background:#fff;}
-.ink-report-paper th,.ink-report-paper td{border:0.8px solid #333;vertical-align:middle;line-height:1.25;}
-.ink-report-paper thead th{background:#e9edf2!important;border:1px solid #222!important;font-weight:700;text-align:center;vertical-align:middle;padding:7px 5px;}
-.ink-report-paper tbody td{padding:6px 5px;}
-.ink-report-paper tbody tr:nth-child(even) td{background:#fafafa;}
-.ink-report-paper tbody tr:hover td{background:#f1f5f9;}
-.ink-report-paper .total td{background:#eef2f5!important;border-top:1.4px solid #222!important;border-bottom:1.4px double #222!important;font-weight:700;}
-.ink-report-paper .center{text-align:center!important;}
-.ink-report-paper .report-title{letter-spacing:.15px;}
-.ink-report-paper .sign>div{min-height:110px;}
-@media (max-width:900px){#inkInventoryTab .table-header-bar{align-items:flex-start;}#inkInventoryTab .table-header-bar>div:last-child{width:100%;justify-content:flex-start;}}
-</style>
 
 <script id="vinapaco-navigation-master-controller">
 (function(){
@@ -8560,3 +8560,5 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
   else setTimeout(init,0);
 })();
 </script>
+</body>
+</html>

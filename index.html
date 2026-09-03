@@ -1290,12 +1290,6 @@ body{font-size:14px!important;}
     outline:none;
 }
 
-.pinned-location-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:8px;padding:8px 10px;border:1px solid #bbf7d0;background:#f0fdf4;border-radius:9px;font-size:11.5px;font-weight:800;color:#166534}
-.pinned-location-bar .pinned-location-text{min-width:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pinned-location-actions{display:flex;gap:6px;flex-wrap:wrap}
-.pinned-location-actions button{border:0;border-radius:7px;padding:6px 9px;font-size:11px;font-weight:900;cursor:pointer}
-.pinned-location-actions .return-pin{background:#166534;color:#fff}
-.pinned-location-actions .pin-current{background:#dcfce7;color:#166534;border:1px solid #86efac}
 .location-result-actions{display:flex;gap:6px;margin-top:7px}
 .location-result-actions button{border:0;border-radius:7px;padding:6px 8px;font-size:10.5px;font-weight:900;cursor:pointer}
 .location-result-actions .preview-location-btn{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
@@ -2685,16 +2679,7 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
                 <button class="btn btn-blue" style="height: 38px;" onclick="timKiemDiaDiemModal()"><i class="fa-solid fa-magnifying-glass"></i> Tìm Kiếm</button>
                 <button class="btn btn-green" style="height: 38px;" onclick="layThoiTietTheoGPS()"><i class="fa-solid fa-location-crosshairs"></i> GPS Chính Xác</button>
             </div>
-            <div id="weatherLocationResults" style="display:none;background:#fff;border:1px solid #bfdbfe;border-radius:10px;padding:8px;gap:6px;flex-direction:column;"></div>
-            <div class="pinned-location-bar">
-                <div class="pinned-location-text"><i class="fa-solid fa-thumbtack"></i> <span id="weatherPinnedLocationTextModal">Chưa ghim địa điểm</span></div>
-                <div class="pinned-location-actions">
-                    <button type="button" class="pin-current" onclick="ghimDiaDiemDangXem()"><i class="fa-solid fa-thumbtack"></i> Ghim điểm đang xem</button>
-                    <button type="button" class="return-pin" onclick="troVeDiaDiemDaGhim()"><i class="fa-solid fa-rotate-left"></i> Trở về điểm ghim</button>
-                </div>
-            </div>
-
-            <div id="weatherCurrentOverviewBox" style="background: white; border: 2px solid var(--border-color); border-radius: 14px; padding: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+            <div id="weatherLocationResults" style="display:none;background:#fff;border:1px solid #bfdbfe;border-radius:10px;padding:8px;gap:6px;flex-direction:column;"></div><div id="weatherCurrentOverviewBox" style="background: white; border: 2px solid var(--border-color); border-radius: 14px; padding: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
                 <div style="display: flex; gap: 14px; align-items: center;">
                     <div id="wMainIcon" style="font-size: 44px; color: #f59e0b;"><i class="fa-solid fa-sun"></i></div>
                     <div>
@@ -2944,13 +2929,6 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
             </div>
             <div id="weatherWidgetText" class="weather-live-large">Đang tải thời tiết...</div>
             <div id="weatherWidgetResults" style="display:none;background:#fff;border:1px solid #bfdbfe;border-radius:10px;padding:8px;margin-top:7px;"></div>
-            <div id="weatherPinnedLocationBar" class="pinned-location-bar">
-                <div class="pinned-location-text"><i class="fa-solid fa-thumbtack"></i> <span id="weatherPinnedLocationText">Chưa ghim địa điểm</span></div>
-                <div class="pinned-location-actions">
-                    <button type="button" class="pin-current" onclick="ghimDiaDiemDangXem()"><i class="fa-solid fa-thumbtack"></i> GHIM ĐIỂM ĐANG XEM</button>
-                    <button type="button" class="return-pin" onclick="troVeDiaDiemDaGhim()"><i class="fa-solid fa-rotate-left"></i> TRỞ VỀ ĐIỂM GHIM</button>
-                </div>
-            </div>
         </section>
     </div>
 
@@ -6861,6 +6839,7 @@ function xuatBaoCaoXNTExcel() {
     // Sau khi người dùng chọn GPS hoặc chọn địa điểm thủ công, vị trí được lưu bền vững
     // vào localStorage và KHÔNG bị watchPosition tự động đổi nữa.
     const WEATHER_LOCATION_STORAGE_KEY = 'vinapaco_weather_location_v2';
+    // Chỉ dùng cơ chế ghim mới v2. Không đọc/ghi các khóa ghim cũ.
     let weatherLocationMode = 'auto';
     let gpsLastFix = null;
 
@@ -6984,16 +6963,13 @@ function xuatBaoCaoXNTExcel() {
         box.innerHTML = items.map((x,i) => `
             <div class="location-result-item" role="option" tabindex="0" data-index="${i}"
                 style="width:100%;text-align:left;border:1px solid #dbeafe;background:#fff;border-radius:10px;padding:10px 12px;font-weight:800;color:#0f172a;box-shadow:0 1px 2px rgba(15,23,42,.04);">
-                <div onclick="chonDiaDiemThoiTiet(${x.lat},${x.lon},${JSON.stringify(x.display).replace(/</g,'\u003c')},true)"
-                     onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();chonDiaDiemThoiTiet(${x.lat},${x.lon},${JSON.stringify(x.display).replace(/</g,'\u003c')},true)}"
-                     style="display:flex;gap:8px;align-items:flex-start;cursor:pointer;" tabindex="0">
+                <div style="display:flex;gap:8px;align-items:flex-start;">
                     <span style="min-width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#eff6ff;color:#2563eb;font-size:12px;">${i+1}</span>
                     <span style="min-width:0;flex:1;">
                         <span style="display:block;font-size:13px;line-height:1.35;">${escapeLocationHtml(x.name)}</span>
                         <small style="display:block;margin-top:3px;color:#475569;font-weight:650;line-height:1.35;">${escapeLocationHtml(x.shortAddress)}</small>
                         <small style="display:block;margin-top:3px;color:#94a3b8;font-weight:650;">Tọa độ: ${x.lat.toFixed(6)}, ${x.lon.toFixed(6)}</small>
                     </span>
-                    <i class="fa-solid fa-thumbtack" style="color:#16a34a;margin-top:5px;"></i>
                 </div>
                 <div class="location-result-actions">
                     <button type="button" class="preview-location-btn" onclick="xemTamDiaDiemThoiTiet(${x.lat},${x.lon},${JSON.stringify(x.display).replace(/</g,'\u003c')})"><i class="fa-solid fa-eye"></i> XEM TẠM</button>
@@ -7079,6 +7055,9 @@ function xuatBaoCaoXNTExcel() {
         return {name:"Vị trí GPS", areaName:"Vị trí GPS", full:"", address:{}, namedetails:{}};
     }
 
+    // ===== GHIM ĐỊA ĐIỂM MỚI =====
+    // Chỉ lưu vị trí khi người dùng bấm "Chọn & ghim" hoặc dùng GPS chính xác.
+    // Xem tạm tuyệt đối không ghi đè vị trí đã ghim.
     function capNhatThanhDiaDiemDaGhim() {
         const pin=taiViTriThoiTietDaLuu();
         const text=pin ? `${pin.cityName} · ${pin.lat.toFixed(5)}, ${pin.lon.toFixed(5)}` : 'Chưa ghim địa điểm';

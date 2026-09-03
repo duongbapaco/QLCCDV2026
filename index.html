@@ -100,7 +100,7 @@
         .kpi-value { font-size:21px; }
         .kpi-sub { font-size:12px; }
         @media (max-width: 1250px) {
-            .tab-nav { grid-template-columns:repeat(7,minmax(0,1fr)); }
+            .tab-nav { grid-template-columns:repeat(8,minmax(0,1fr)); }
         }
         @media (max-width: 900px) {
             .tab-nav-shell { position:sticky; top:0; border-radius:12px; padding:6px; }
@@ -1907,6 +1907,27 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
 .ink-report-paper .sign-space{height:34px}
 .ink-report-paper .sign-name{font-weight:700;font-size:13px;line-height:1.1}
 </style>
+<style>
+
+/* Ưu tiên bố cục menu đủ 15 phân hệ, cân đối trên desktop */
+.tab-nav{grid-template-columns:repeat(15,minmax(0,1fr))!important;}
+@media(max-width:1250px){.tab-nav{grid-template-columns:repeat(8,minmax(0,1fr))!important;}}
+@media(max-width:900px){.tab-nav{grid-template-columns:repeat(4,minmax(0,1fr))!important;}}
+@media(max-width:560px){.tab-nav{grid-template-columns:repeat(2,minmax(0,1fr))!important;}}
+/* ===== QUẢN LÝ CẤP PHÁT BẢN QUYỀN OS & OFFICE - PRO ===== */
+.license-dashboard{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin:0 0 16px}
+.license-kpi{background:#fff;border:1px solid #dbe4ee;border-radius:12px;padding:14px 15px;box-shadow:0 3px 12px rgba(15,23,42,.05);min-width:0}
+.license-kpi .lk-title{font-size:10px;font-weight:900;color:#64748b;text-transform:uppercase}.license-kpi .lk-value{font-size:22px;font-weight:950;margin-top:5px;color:#0f172a}.license-kpi .lk-sub{font-size:11px;color:#64748b;margin-top:3px;font-weight:700}
+.license-toolbar{display:flex;gap:9px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:12px 14px;background:#f8fafc;border:1px solid #dbe4ee;border-radius:10px;margin-bottom:12px}
+.license-toolbar .lt-search{position:relative;flex:1 1 320px;max-width:520px}.license-toolbar .lt-search input{width:100%;padding:10px 12px 10px 36px;border:1px solid #cbd5e1;border-radius:9px;font-size:13px}.license-toolbar .lt-search i{position:absolute;left:12px;top:11px;color:#64748b}.license-toolbar .lt-filters{display:flex;gap:7px;flex-wrap:wrap}.license-toolbar select{padding:9px 10px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font-weight:800}
+.license-table-wrap{overflow:auto;border:1px solid #cbd5e1;border-radius:10px;background:#fff}.license-table{min-width:1680px;width:100%;border-collapse:collapse}.license-table th{background:#eef4f8;color:#0f3d63;font-size:10.5px;font-weight:950;text-transform:uppercase;padding:10px 8px;border:1px solid #cbd5e1;white-space:nowrap;text-align:center}.license-table td{padding:9px 8px;border:1px solid #e2e8f0;font-size:12px;vertical-align:middle}.license-table tbody tr:hover td{background:#f8fbfd}.license-code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-weight:900;color:#075985}.license-type{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:950}.license-type.os{background:#e0f2fe;color:#075985}.license-type.office{background:#ede9fe;color:#6d28d9}.license-state{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:950;white-space:nowrap}.license-state.available{background:#dcfce7;color:#166534}.license-state.assigned{background:#dbeafe;color:#1d4ed8}.license-state.expired{background:#fee2e2;color:#991b1b}.license-state.warning{background:#fef3c7;color:#92400e}.license-state.revoked{background:#f1f5f9;color:#475569}.license-actions{display:flex;justify-content:center;gap:5px;flex-wrap:wrap}.license-actions .btn{min-height:30px;padding:5px 7px;font-size:10px}
+.license-form-card{background:#f8fafc;border:2px dashed #0284c7;padding:15px;border-radius:12px;margin-bottom:14px}.license-form-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;align-items:end}.license-form-grid .full{grid-column:1/-1}.license-form-group{display:flex;flex-direction:column;gap:5px}.license-form-group label{font-size:10.5px;font-weight:900;color:#475569;text-transform:uppercase}.license-form-group input,.license-form-group select,.license-form-group textarea{width:100%;height:40px;padding:0 10px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font-size:13px;font-weight:750}.license-form-group textarea{height:72px;padding-top:9px;resize:vertical}.license-inline{display:flex;gap:7px;align-items:center}.license-inline input[type=checkbox]{width:17px;height:17px}.license-help{font-size:11px;color:#64748b;font-weight:700;margin-top:3px}.license-warning-panel{margin:0 0 12px;padding:10px 12px;border-radius:10px;border:1px solid #fde68a;background:#fffbeb;color:#92400e;font-size:12px;font-weight:800;line-height:1.5}.license-history{margin-top:14px}.license-history table{min-width:1100px}.license-history th{font-size:10px}.license-history td{font-size:11px}
+.license-modal-card{width:min(920px,calc(100vw - 28px));padding:0!important;overflow:hidden}.license-modal-head{padding:17px 20px;background:linear-gradient(135deg,#0f3d63,#0284c7);color:#fff;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.license-modal-head h2{font-size:18px}.license-modal-body{padding:18px}.license-assign-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.license-assign-grid .full{grid-column:1/-1}.license-assign-grid label{display:block;font-size:11px;font-weight:900;color:#334155;margin-bottom:5px}.license-assign-grid input,.license-assign-grid select,.license-assign-grid textarea{width:100%;padding:9px 10px;border:1px solid #cbd5e1;border-radius:8px;font-size:13px;background:#fff}.license-assign-grid textarea{min-height:75px;resize:vertical}.license-modal-actions{display:flex;justify-content:flex-end;gap:8px;padding:12px 20px;background:#f8fafc;border-top:1px solid #e2e8f0}.license-detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:12px}.license-detail-box{padding:10px 11px;border:1px solid #dbe4ee;border-radius:9px;background:#f8fafc}.license-detail-box span{display:block;font-size:9px;color:#64748b;font-weight:900;text-transform:uppercase}.license-detail-box b{display:block;margin-top:3px;font-size:12px;color:#0f172a;word-break:break-word}
+@media(max-width:1200px){.license-dashboard{grid-template-columns:repeat(3,minmax(0,1fr))}.license-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.license-dashboard{grid-template-columns:repeat(2,minmax(0,1fr))}.license-form-grid,.license-assign-grid{grid-template-columns:1fr}.license-form-grid .full,.license-assign-grid .full{grid-column:auto}.license-detail-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:450px){.license-dashboard{grid-template-columns:1fr}.license-detail-grid{grid-template-columns:1fr}}
+
+</style>
 </head>
 <body>
 
@@ -2230,6 +2251,7 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
         <button class="tab-btn-nav" onclick="switchTab('inkInventoryTab', this)"><i class="fa-solid fa-warehouse"></i> Kho mực</button>
         <button class="tab-btn-nav" onclick="switchTab('deliverySlipTab', this)"><i class="fa-solid fa-file-contract"></i> Giao nhận</button>
         <button class="tab-btn-nav" onclick="switchTab('surveyTab', this)"><i class="fa-solid fa-clipboard-check"></i> Khảo sát</button>
+         <button class="tab-btn-nav" onclick="switchTab('licenseManagerTab', this)"><i class="fa-solid fa-key"></i> Bản quyền OS & Office</button>
         <button class="tab-btn-nav" onclick="switchTab('taskTab', this)"><i class="fa-solid fa-list-check"></i> Công việc</button>
       </nav>
       <div class="data-check-toolbar">
@@ -2921,6 +2943,72 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
         </table>
     </div>
 
+
+<!-- TAB QUẢN LÝ CẤP PHÁT BẢN QUYỀN OS & OFFICE PRO -->
+<div id="licenseManagerTab" class="tab-pane table-card">
+  <div class="table-header-bar">
+    <div class="table-title"><i class="fa-solid fa-key"></i> TRUNG TÂM QUẢN LÝ CẤP PHÁT BẢN QUYỀN OS & OFFICE</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <input type="file" id="licenseExcelImport" accept=".xlsx,.xls,.csv" class="hidden" onchange="nhapKhoBanQuyenExcel(this)">
+      <button class="btn btn-green" onclick="moFormBanQuyenMoi()"><i class="fa-solid fa-plus"></i> THÊM BẢN QUYỀN</button>
+      <button class="btn btn-blue" onclick="document.getElementById('licenseExcelImport').click()"><i class="fa-solid fa-file-excel"></i> NHẬP EXCEL</button>
+      <button class="btn btn-purple" onclick="xuatBanQuyenExcelPro()"><i class="fa-solid fa-file-arrow-down"></i> XUẤT EXCEL</button>
+      <button class="btn btn-yellow" onclick="xuatBaoCaoBanQuyenPro()"><i class="fa-solid fa-print"></i> BÁO CÁO</button>
+    </div>
+  </div>
+
+  <div class="license-dashboard">
+    <div class="license-kpi"><div class="lk-title">Tổng giấy phép</div><div class="lk-value" id="licenseKpiTotal">0</div><div class="lk-sub">OS + Office</div></div>
+    <div class="license-kpi"><div class="lk-title">Sẵn sàng cấp</div><div class="lk-value" id="licenseKpiAvailable">0</div><div class="lk-sub">Chưa cấp phát</div></div>
+    <div class="license-kpi"><div class="lk-title">Đang cấp</div><div class="lk-value" id="licenseKpiAssigned">0</div><div class="lk-sub">Đang sử dụng</div></div>
+    <div class="license-kpi"><div class="lk-title">Sắp hết hạn</div><div class="lk-value" id="licenseKpiWarning">0</div><div class="lk-sub">Trong 90 ngày</div></div>
+    <div class="license-kpi"><div class="lk-title">Đã hết hạn</div><div class="lk-value" id="licenseKpiExpired">0</div><div class="lk-sub">Cần xử lý</div></div>
+    <div class="license-kpi"><div class="lk-title">Chưa đủ hồ sơ</div><div class="lk-value" id="licenseKpiMissing">0</div><div class="lk-sub">Thiếu mã / ngày / nguồn</div></div>
+  </div>
+
+  <div id="licenseWarningPanel" class="license-warning-panel hidden"></div>
+
+  <div id="licenseFormCard" class="license-form-card hidden">
+    <input type="hidden" id="licenseEditIndex" value="-1">
+    <div style="font-size:14px;font-weight:950;color:#075985;margin-bottom:11px"><i class="fa-solid fa-file-shield"></i> Hồ sơ bản quyền / tài sản cấp phép</div>
+    <div class="license-form-grid">
+      <div class="license-form-group"><label>Mã bản quyền *</label><input id="licenseFormCode" placeholder="OS-2026-001 / OFF-2026-001"></div>
+      <div class="license-form-group"><label>Loại *</label><select id="licenseFormType"><option value="OS">Hệ điều hành (OS)</option><option value="Office">Microsoft Office</option></select></div>
+      <div class="license-form-group"><label>Sản phẩm / phiên bản *</label><input id="licenseFormProduct" list="licenseProductList" placeholder="Windows 11 Pro / Microsoft 365 Business Standard"><datalist id="licenseProductList"><option value="Windows 11 Pro"></option><option value="Windows 10 Pro"></option><option value="Microsoft 365 Business Standard"></option><option value="Microsoft 365 Business Premium"></option><option value="Microsoft 365 Apps for business"></option><option value="Office LTSC Professional Plus 2024"></option><option value="Office LTSC Standard 2024"></option><option value="Office 2021 Professional Plus"></option></datalist></div>
+      <div class="license-form-group"><label>Loại hình cấp phép</label><select id="licenseFormModel"><option>OEM</option><option>Retail / FPP</option><option>Volume / KMS</option><option>MAK</option><option>Microsoft 365 Subscription</option><option>Enterprise Agreement</option><option>Open / CSP</option><option>Khác</option></select></div>
+      <div class="license-form-group"><label>Nhà cung cấp / nguồn</label><input id="licenseFormVendor" placeholder="Nhà cung cấp / Tổng công ty / mua sắm..."></div>
+      <div class="license-form-group"><label>Số chứng từ / hợp đồng</label><input id="licenseFormDocNo" placeholder="HĐ / PO / hóa đơn / quyết định..."></div>
+      <div class="license-form-group"><label>Ngày cấp / kích hoạt *</label><input id="licenseFormStart" type="date"></div>
+      <div class="license-form-group"><label>Ngày hết hạn</label><input id="licenseFormEnd" type="date"><div class="license-inline"><input type="checkbox" id="licenseFormPermanent" onchange="toggleLicensePermanent()"><span style="font-size:12px;font-weight:800">Vĩnh viễn / không thời hạn</span></div></div>
+      <div class="license-form-group"><label>Số lượng *</label><input id="licenseFormQty" type="number" min="1" value="1" oninput="capNhatLicenseFormQty()"></div>
+      <div class="license-form-group"><label>Khóa / mã bản quyền</label><input id="licenseFormKey" type="password" placeholder="Không bắt buộc; chỉ lưu nếu đơn vị cần quản lý"></div>
+      <div class="license-form-group"><label>Mã tài sản / thiết bị</label><input id="licenseFormAsset" placeholder="Mã máy / serial / asset tag"></div>
+      <div class="license-form-group"><label>Ghi chú</label><input id="licenseFormNote" placeholder="Điều kiện, phiên bản, phạm vi sử dụng..."></div>
+      <div class="full" style="display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap"><button class="btn btn-red" onclick="dongFormBanQuyen()">HỦY</button><button class="btn btn-green" onclick="luuBanQuyenForm()"><i class="fa-solid fa-floppy-disk"></i> LƯU HỒ SƠ</button></div>
+    </div>
+  </div>
+
+  <div class="license-toolbar">
+    <div class="lt-search"><i class="fa-solid fa-magnifying-glass"></i><input id="licenseSearch" placeholder="Tìm mã bản quyền, sản phẩm, người dùng, đơn vị, thiết bị..." oninput="renderLicenseManager()"></div>
+    <div class="lt-filters">
+      <select id="licenseFilterType" onchange="renderLicenseManager()"><option value="ALL">Tất cả loại</option><option value="OS">OS</option><option value="Office">Office</option></select>
+      <select id="licenseFilterState" onchange="renderLicenseManager()"><option value="ALL">Tất cả trạng thái</option><option value="Available">Sẵn sàng</option><option value="Assigned">Đang cấp</option><option value="Warning">Sắp hết hạn</option><option value="Expired">Hết hạn</option><option value="Revoked">Thu hồi</option></select>
+      <select id="licenseFilterDept" onchange="renderLicenseManager()"><option value="ALL">Tất cả đơn vị</option></select>
+    </div>
+  </div>
+
+  <div class="license-table-wrap">
+    <table class="license-table"><thead><tr>
+      <th>STT</th><th>Mã BQ</th><th>Loại</th><th>Sản phẩm / phiên bản</th><th>Hình thức</th><th>SL</th><th>Đã cấp</th><th>Còn lại</th><th>Ngày cấp</th><th>Ngày hết hạn</th><th>Người / đơn vị sử dụng</th><th>Thiết bị</th><th>Trạng thái</th><th class="action-col">Thao tác</th>
+    </tr></thead><tbody id="licenseManagerTableBody"></tbody></table>
+  </div>
+
+  <div class="license-history table-card" style="margin-top:14px;padding:12px">
+    <div class="table-header-bar"><div class="table-title"><i class="fa-solid fa-clock-rotate-left"></i> LỊCH SỬ CẤP PHÁT / THU HỒI / CHUYỂN ĐỔI</div><span id="licenseHistoryCount" style="font-size:11px;font-weight:900;color:#64748b">0 giao dịch</span></div>
+    <div class="license-table-wrap"><table class="license-table" style="min-width:1100px"><thead><tr><th>Thời gian</th><th>Nghiệp vụ</th><th>Mã BQ</th><th>Sản phẩm</th><th>Người dùng</th><th>Đơn vị</th><th>Thiết bị</th><th>SL</th><th>Người thực hiện</th><th>Ghi chú</th></tr></thead><tbody id="licenseHistoryTableBody"></tbody></table></div>
+  </div>
+</div>
+
     </main>
     </div>
 
@@ -3147,6 +3235,8 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
             dataSurvey: dsKhaoSatChuyenSau,
             dataTasks: danhSachCongViec,
             dataAccounts: danhSachTaiKhoanHeThong,
+            dataLicenses: dsQuanLyBanQuyen,
+            dataLicenseHistory: lichSuBanQuyen,
             config: { rootDriveFolderUrl, gasWebhookUrl },
             updatedAt: new Date().toISOString(),
             updatedBy: DEVICE_ID
@@ -3193,6 +3283,8 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
         if (snap.dataSurvey) dsKhaoSatChuyenSau = snap.dataSurvey;
         if (snap.dataTasks) danhSachCongViec = snap.dataTasks;
         if (snap.dataAccounts) danhSachTaiKhoanHeThong = snap.dataAccounts;
+        if (snap.dataLicenses) dsQuanLyBanQuyen = snap.dataLicenses;
+        if (snap.dataLicenseHistory) lichSuBanQuyen = snap.dataLicenseHistory;
         if (snap.config) {
             if (snap.config.rootDriveFolderUrl) rootDriveFolderUrl = snap.config.rootDriveFolderUrl;
             if (snap.config.gasWebhookUrl) gasWebhookUrl = snap.config.gasWebhookUrl;
@@ -3455,6 +3547,11 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
     let danhSachTaiKhoanHeThong = JSON.parse(localStorage.getItem('vinapaco_accounts')) || [
         { email: "admin@vinapaco.com.vn", password: "123", fullName: "Trần Bình Dương", role: "Admin", status: "Active" }
     ];
+    let dsQuanLyBanQuyen = JSON.parse(localStorage.getItem('vinapaco_licenses')) || [
+        { id:'LIC-OS-001', code:'OS-2026-001', type:'OS', product:'Windows 11 Pro', model:'OEM', vendor:'Nhà sản xuất / mua sắm', docNo:'', startDate:'2026-01-01', endDate:'', permanent:true, qty:10, assignedQty:1, key:'', assetTag:'', assignee:'Trần Bình Dương', dept:'Văn phòng TCT', device:'Laptop doanh nghiệp', status:'Assigned', note:'Giấy phép OS dùng cho thiết bị doanh nghiệp', createdAt:'2026-01-01T08:00:00+07:00', updatedAt:'2026-01-01T08:00:00+07:00' },
+        { id:'LIC-OFF-001', code:'OFF-2026-001', type:'Office', product:'Microsoft 365 Business Standard', model:'Microsoft 365 Subscription', vendor:'Microsoft / CSP', docNo:'', startDate:'2026-01-01', endDate:'2026-12-31', permanent:false, qty:20, assignedQty:3, key:'', assetTag:'', assignee:'', dept:'', device:'', status:'Available', note:'Theo dõi theo kỳ thuê bao', createdAt:'2026-01-01T08:00:00+07:00', updatedAt:'2026-01-01T08:00:00+07:00' }
+    ];
+    let lichSuBanQuyen = JSON.parse(localStorage.getItem('vinapaco_license_history')) || [];
 
     function parseVNDMoney(val) {
         if (!val) return 0;
@@ -3480,6 +3577,8 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
         localStorage.setItem('vinapaco_survey', JSON.stringify(dsKhaoSatChuyenSau));
         localStorage.setItem('vinapaco_tasks', JSON.stringify(danhSachCongViec));
         localStorage.setItem('vinapaco_accounts', JSON.stringify(danhSachTaiKhoanHeThong));
+        localStorage.setItem('vinapaco_licenses', JSON.stringify(dsQuanLyBanQuyen));
+        localStorage.setItem('vinapaco_license_history', JSON.stringify(lichSuBanQuyen));
         markPersistentCacheReady();
         localStorage.setItem('vinapaco_drive_root_url', rootDriveFolderUrl);
         localStorage.setItem('vinapaco_gas_webhook_url', gasWebhookUrl);
@@ -4128,6 +4227,7 @@ body{overflow-x:hidden!important;overflow-y:auto!important;background:var(--bg-b
         safeRender(renderDeliveryTable, 'Giao nhận');
         safeRender(renderTelecomPaymentTable, 'Viễn thông');
         safeRender(renderSurveyTable, 'Khảo sát');
+        safeRender(renderLicenseManager, 'Bản quyền');
         safeRender(renderTaskTable, 'Công việc');
         safeRender(renderAccountTable, 'Tài khoản');
         safeRender(renderMonthlySalaryDashboard, 'Quỹ lương');
@@ -7932,6 +8032,73 @@ body:not(.vnp-fullscreen-module) #vinapacoMainBanner .vinapaco-banner-home{backg
   else setTimeout(bind,0);
 })();
 </script>
+
+<script>
+/* ===== MODULE QUẢN LÝ CẤP PHÁT BẢN QUYỀN OS & OFFICE PRO ===== */
+(function(){
+  const LS90=90*86400000;
+  function licEsc(v){ return typeof escHtml==='function' ? escHtml(v==null?'':String(v)) : String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+  function licToday(){ return new Date().toISOString().slice(0,10); }
+  function licDays(end){ if(!end)return Infinity; const d=new Date(end+'T23:59:59'); return Math.ceil((d-Date.now())/86400000); }
+  function licState(x){
+    if(String(x.status||'')==='Revoked') return 'Revoked';
+    const remain=Math.max(0,(Number(x.qty)||0)-(Number(x.assignedQty)||0));
+    const days=licDays(x.endDate);
+    if(days<0)return 'Expired';
+    if(days<=90 && days!==Infinity)return 'Warning';
+    if((Number(x.assignedQty)||0)>0 && remain===0)return 'Assigned';
+    if((Number(x.assignedQty)||0)>0)return 'Assigned';
+    return 'Available';
+  }
+  function licStateText(st){return {Available:'Sẵn sàng',Assigned:'Đang cấp',Warning:'Sắp hết hạn',Expired:'Hết hạn',Revoked:'Thu hồi'}[st]||st;}
+  function licFormatDate(v){return typeof formatVNDate==='function'?formatVNDate(v):(v||'--');}
+  function licActor(){ try{return window.currentUser?.fullName || window.currentUser?.name || localStorage.getItem('vinapaco_current_user') || 'Người quản trị';}catch(e){return 'Người quản trị';} }
+  function normalize(){
+    dsQuanLyBanQuyen=(Array.isArray(dsQuanLyBanQuyen)?dsQuanLyBanQuyen:[]).map(x=>{x.qty=Math.max(1,Number(x.qty)||1);x.assignedQty=Math.max(0,Math.min(x.qty,Number(x.assignedQty)||0));x.permanent=!!x.permanent;return x;});
+    lichSuBanQuyen=Array.isArray(lichSuBanQuyen)?lichSuBanQuyen:[];
+  }
+  window.toggleLicensePermanent=function(){const p=document.getElementById('licenseFormPermanent'),e=document.getElementById('licenseFormEnd');if(p&&e){e.disabled=p.checked;if(p.checked)e.value='';}};
+  window.capNhatLicenseFormQty=function(){const q=document.getElementById('licenseFormQty');if(q)q.value=Math.max(1,Number(q.value)||1);};
+  window.moFormBanQuyenMoi=function(){
+    document.getElementById('licenseEditIndex').value='-1'; document.getElementById('licenseFormCode').value=''; document.getElementById('licenseFormType').value='OS'; document.getElementById('licenseFormProduct').value=''; document.getElementById('licenseFormModel').value='OEM'; document.getElementById('licenseFormVendor').value=''; document.getElementById('licenseFormDocNo').value=''; document.getElementById('licenseFormStart').value=licToday(); document.getElementById('licenseFormEnd').value=''; document.getElementById('licenseFormPermanent').checked=false; document.getElementById('licenseFormEnd').disabled=false; document.getElementById('licenseFormQty').value=1; document.getElementById('licenseFormKey').value=''; document.getElementById('licenseFormAsset').value=''; document.getElementById('licenseFormNote').value=''; document.getElementById('licenseFormCard').classList.remove('hidden'); document.getElementById('licenseFormCard').scrollIntoView({behavior:'smooth',block:'center'});
+  };
+  window.dongFormBanQuyen=function(){document.getElementById('licenseFormCard')?.classList.add('hidden');};
+  function clearLicenseForm(){['licenseFormCode','licenseFormProduct','licenseFormVendor','licenseFormDocNo','licenseFormStart','licenseFormEnd','licenseFormKey','licenseFormAsset','licenseFormNote'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});document.getElementById('licenseFormQty').value=1;document.getElementById('licenseFormPermanent').checked=false;document.getElementById('licenseFormEnd').disabled=false;}
+  window.luuBanQuyenForm=function(){
+    const idx=Number(document.getElementById('licenseEditIndex').value), old=idx>=0?dsQuanLyBanQuyen[idx]:null;
+    const code=document.getElementById('licenseFormCode').value.trim(), type=document.getElementById('licenseFormType').value, product=document.getElementById('licenseFormProduct').value.trim(), start=document.getElementById('licenseFormStart').value, permanent=document.getElementById('licenseFormPermanent').checked, end=document.getElementById('licenseFormEnd').value, qty=Math.max(1,Number(document.getElementById('licenseFormQty').value)||1);
+    if(!code||!product||!start)return alert('⚠️ Vui lòng nhập Mã bản quyền, Sản phẩm/phiên bản và Ngày cấp/kích hoạt.');
+    if(!permanent&&!end)return alert('⚠️ Hãy nhập Ngày hết hạn hoặc tích Vĩnh viễn / không thời hạn.');
+    if(!permanent&&new Date(end)<new Date(start))return alert('⚠️ Ngày hết hạn không được trước ngày cấp.');
+    if(dsQuanLyBanQuyen.some((x,i)=>i!==idx&&String(x.code).trim().toLowerCase()===code.toLowerCase()))return alert('⚠️ Mã bản quyền đã tồn tại.');
+    const assigned=Math.min(qty,old?Number(old.assignedQty)||0:0);
+    const rec={id:old?.id||('LIC-'+type+'-'+Date.now()),code,type,product,model:document.getElementById('licenseFormModel').value,vendor:document.getElementById('licenseFormVendor').value.trim(),docNo:document.getElementById('licenseFormDocNo').value.trim(),startDate:start,endDate:permanent?'':end,permanent,qty,assignedQty:assigned,key:document.getElementById('licenseFormKey').value,assetTag:document.getElementById('licenseFormAsset').value.trim(),assignee:old?.assignee||'',dept:old?.dept||'',device:old?.device||'',status:old?.status||'Available',note:document.getElementById('licenseFormNote').value.trim(),createdAt:old?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString()};
+    dsQuanLyBanQuyen[idx>=0?idx:dsQuanLyBanQuyen.length]=rec; saveToLocalStorage(); renderLicenseManager(); dongFormBanQuyen(); clearLicenseForm(); alert(idx>=0?'✅ Đã cập nhật hồ sơ bản quyền.':'✅ Đã thêm hồ sơ bản quyền vào kho quản lý.');
+  };
+  window.suaBanQuyen=function(idx){const x=dsQuanLyBanQuyen[idx];if(!x)return;document.getElementById('licenseEditIndex').value=idx;[['licenseFormCode',x.code],['licenseFormType',x.type],['licenseFormProduct',x.product],['licenseFormModel',x.model],['licenseFormVendor',x.vendor],['licenseFormDocNo',x.docNo],['licenseFormStart',x.startDate],['licenseFormEnd',x.endDate],['licenseFormQty',x.qty],['licenseFormKey',x.key],['licenseFormAsset',x.assetTag],['licenseFormNote',x.note]].forEach(([id,v])=>{const e=document.getElementById(id);if(e)e.value=v??'';});document.getElementById('licenseFormPermanent').checked=!!x.permanent;toggleLicensePermanent();document.getElementById('licenseFormCard').classList.remove('hidden');document.getElementById('licenseFormCard').scrollIntoView({behavior:'smooth',block:'center'});};
+  window.xoaBanQuyen=function(idx){const x=dsQuanLyBanQuyen[idx];if(!x)return;if((Number(x.assignedQty)||0)>0)return alert('⚠️ Không thể xóa hồ sơ đang có giấy phép đã cấp. Hãy thu hồi trước.');if(!confirm('Xóa hồ sơ '+x.code+'?'))return;dsQuanLyBanQuyen.splice(idx,1);saveToLocalStorage();renderLicenseManager();};
+  function logLic(action,x,data){lichSuBanQuyen.unshift({time:new Date().toISOString(),action,code:x.code,product:x.product,assignee:data?.assignee||x.assignee||'',dept:data?.dept||x.dept||'',device:data?.device||x.device||'',qty:Number(data?.qty)||0,actor:licActor(),note:data?.note||''});lichSuBanQuyen=lichSuBanQuyen.slice(0,1000);}
+  function openAssign(idx,mode){const x=dsQuanLyBanQuyen[idx];if(!x)return;const available=Math.max(0,(Number(x.qty)||0)-(Number(x.assignedQty)||0));if(mode==='assign'&&available<=0)return alert('⚠️ Hồ sơ này không còn số lượng sẵn sàng để cấp.');document.getElementById('licenseAssignIndex').value=idx;document.getElementById('licenseAssignMode').value=mode;document.getElementById('licenseAssignTitle').innerText=mode==='assign'?'CẤP PHÁT BẢN QUYỀN':'THU HỒI / HỦY CẤP PHÁT';document.getElementById('licenseAssignSummary').innerHTML='<b>'+licEsc(x.code)+'</b> · '+licEsc(x.product)+' · Tổng '+x.qty+' · Đã cấp '+(x.assignedQty||0)+' · Còn '+available;document.getElementById('licenseAssignQty').value=1;document.getElementById('licenseAssignUser').value=mode==='assign'?'':(x.assignee||'');document.getElementById('licenseAssignDept').value=mode==='assign'?'':(x.dept||'');document.getElementById('licenseAssignDevice').value=mode==='assign'?'':(x.device||'');document.getElementById('licenseAssignNote').value='';document.getElementById('licenseAssignModal').classList.remove('hidden');}
+  window.moCapPhatBanQuyen=function(idx){openAssign(idx,'assign');}; window.moThuHoiBanQuyen=function(idx){openAssign(idx,'revoke');}; window.dongModalCapPhatBanQuyen=function(){document.getElementById('licenseAssignModal')?.classList.add('hidden');};
+  window.xacNhanCapPhatBanQuyen=function(){const idx=Number(document.getElementById('licenseAssignIndex').value),mode=document.getElementById('licenseAssignMode').value,x=dsQuanLyBanQuyen[idx];if(!x)return;const qty=Math.max(1,Number(document.getElementById('licenseAssignQty').value)||1),user=document.getElementById('licenseAssignUser').value.trim(),dept=document.getElementById('licenseAssignDept').value.trim(),device=document.getElementById('licenseAssignDevice').value.trim(),note=document.getElementById('licenseAssignNote').value.trim();if(mode==='assign'){const avail=x.qty-(x.assignedQty||0);if(qty>avail)return alert('⚠️ Số lượng cấp vượt số lượng còn lại: '+avail);if(!user||!dept)return alert('⚠️ Cấp phát phải có Người sử dụng và Đơn vị/Bộ phận.');x.assignedQty=(x.assignedQty||0)+qty;x.assignee=user;x.dept=dept;x.device=device;x.status='Assigned';logLic('Cấp phát',x,{qty,assignee:user,dept,device,note});}else{if(qty>(x.assignedQty||0))return alert('⚠️ Số lượng thu hồi vượt số lượng đang cấp: '+(x.assignedQty||0));x.assignedQty=Math.max(0,(x.assignedQty||0)-qty);if(x.assignedQty===0){x.assignee='';x.dept='';x.device='';x.status='Available';}logLic('Thu hồi',x,{qty,assignee:user,dept,device,note});}saveToLocalStorage();renderLicenseManager();dongModalCapPhatBanQuyen();alert(mode==='assign'?'✅ Đã cấp phát và ghi lịch sử.':'✅ Đã thu hồi và ghi lịch sử.');};
+  window.chuyenBanQuyen=function(idx){const x=dsQuanLyBanQuyen[idx];if(!x||!(x.assignedQty>0))return alert('⚠️ Hồ sơ chưa có giấy phép đang cấp để chuyển.');const user=prompt('Người sử dụng mới:',x.assignee||'');if(!user)return;const dept=prompt('Đơn vị/Bộ phận mới:',x.dept||'');if(!dept)return;const device=prompt('Thiết bị mới (có thể bỏ trống):',x.device||'');const oldUser=x.assignee,oldDept=x.dept;x.assignee=user;x.dept=dept;x.device=device||'';x.status='Assigned';logLic('Chuyển đổi',x,{qty:x.assignedQty,assignee:user,dept,device,note:'Từ '+oldUser+' / '+oldDept});saveToLocalStorage();renderLicenseManager();alert('✅ Đã chuyển đổi người/đơn vị sử dụng và ghi lịch sử.');};
+  window.xemChiTietBanQuyen=function(idx){const x=dsQuanLyBanQuyen[idx];if(!x)return;const days=licDays(x.endDate);alert('HỒ SƠ BẢN QUYỀN\n\nMã: '+x.code+'\nLoại: '+x.type+'\nSản phẩm: '+x.product+'\nHình thức: '+x.model+'\nNguồn: '+(x.vendor||'--')+'\nChứng từ: '+(x.docNo||'--')+'\nNgày cấp: '+licFormatDate(x.startDate)+'\nHết hạn: '+(x.permanent?'Vĩnh viễn':licFormatDate(x.endDate)+' ('+days+' ngày)')+'\nSố lượng: '+x.qty+'\nĐã cấp: '+(x.assignedQty||0)+'\nCòn lại: '+(x.qty-(x.assignedQty||0))+'\nNgười dùng: '+(x.assignee||'--')+'\nĐơn vị: '+(x.dept||'--')+'\nThiết bị: '+(x.device||'--')+'\nMã tài sản: '+(x.assetTag||'--')+'\nGhi chú: '+(x.note||'--'));};
+  window.renderLicenseManager=function(){normalize();const q=(document.getElementById('licenseSearch')?.value||'').trim().toLowerCase(),ft=document.getElementById('licenseFilterType')?.value||'ALL',fs=document.getElementById('licenseFilterState')?.value||'ALL',fd=document.getElementById('licenseFilterDept')?.value||'ALL';const depts=[...new Set(dsQuanLyBanQuyen.map(x=>x.dept).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'vi'));const sel=document.getElementById('licenseFilterDept');if(sel){const cur=sel.value;sel.innerHTML='<option value="ALL">Tất cả đơn vị</option>'+depts.map(d=>'<option value="'+licEsc(d)+'">'+licEsc(d)+'</option>').join('');if(depts.includes(cur))sel.value=cur;}
+    const rows=dsQuanLyBanQuyen.map((x,idx)=>({x,idx,state:licState(x)})).filter(o=>{const x=o.x,hay=[x.code,x.product,x.model,x.vendor,x.docNo,x.assignee,x.dept,x.device,x.assetTag,x.note].join(' ').toLowerCase();return (!q||hay.includes(q))&&(ft==='ALL'||x.type===ft)&&(fs==='ALL'||o.state===fs)&&(fd==='ALL'||x.dept===fd);});
+    const body=document.getElementById('licenseManagerTableBody');if(body)body.innerHTML=rows.length?rows.map((o,i)=>{const x=o.x,remain=Math.max(0,(x.qty||0)-(x.assignedQty||0)),st=o.state,end=x.permanent?'Vĩnh viễn':licFormatDate(x.endDate);return '<tr><td style="text-align:center">'+(i+1)+'</td><td><span class="license-code">'+licEsc(x.code)+'</span></td><td style="text-align:center"><span class="license-type '+(x.type==='OS'?'os':'office')+'">'+x.type+'</span></td><td><b>'+licEsc(x.product)+'</b><small style="display:block;color:#64748b">'+licEsc(x.vendor||'')+'</small></td><td>'+licEsc(x.model)+'</td><td style="text-align:center;font-weight:900">'+x.qty+'</td><td style="text-align:center;font-weight:900">'+(x.assignedQty||0)+'</td><td style="text-align:center;font-weight:950;color:'+(remain?'#166534':'#991b1b')+'">'+remain+'</td><td>'+licFormatDate(x.startDate)+'</td><td>'+end+'</td><td><b>'+licEsc(x.assignee||'--')+'</b><small style="display:block;color:#64748b">'+licEsc(x.dept||'--')+'</small></td><td>'+licEsc(x.device||'--')+'</td><td><span class="license-state '+st.toLowerCase()+'">'+licStateText(st)+'</span></td><td><div class="license-actions"><button class="btn btn-blue" title="Cấp phát" onclick="moCapPhatBanQuyen('+o.idx+')"><i class="fa-solid fa-share"></i></button><button class="btn btn-yellow" title="Chuyển đổi" onclick="chuyenBanQuyen('+o.idx+')"><i class="fa-solid fa-right-left"></i></button><button class="btn btn-purple" title="Sửa" onclick="suaBanQuyen('+o.idx+')"><i class="fa-solid fa-pen"></i></button><button class="btn btn-red" title="Xóa" onclick="xoaBanQuyen('+o.idx+')"><i class="fa-solid fa-trash"></i></button></div></td></tr>';}).join(''):'<tr><td colspan="14" style="text-align:center;padding:25px;color:#64748b;font-weight:800">Không có hồ sơ phù hợp.</td></tr>';
+    const total=dsQuanLyBanQuyen.reduce((a,x)=>a+(Number(x.qty)||0),0),available=dsQuanLyBanQuyen.reduce((a,x)=>a+Math.max(0,(Number(x.qty)||0)-(Number(x.assignedQty)||0)),0),assigned=dsQuanLyBanQuyen.reduce((a,x)=>a+(Number(x.assignedQty)||0),0),warning=dsQuanLyBanQuyen.filter(x=>licState(x)==='Warning').reduce((a,x)=>a+Math.max(1,Number(x.qty)||0),0),expired=dsQuanLyBanQuyen.filter(x=>licState(x)==='Expired').reduce((a,x)=>a+(Number(x.qty)||0),0),missing=dsQuanLyBanQuyen.filter(x=>!x.code||!x.product||!x.startDate||(!x.permanent&&!x.endDate)).length;[['licenseKpiTotal',total],['licenseKpiAvailable',available],['licenseKpiAssigned',assigned],['licenseKpiWarning',warning],['licenseKpiExpired',expired],['licenseKpiMissing',missing]].forEach(([id,v])=>{const e=document.getElementById(id);if(e)e.textContent=v;});
+    const warn=dsQuanLyBanQuyen.filter(x=>licState(x)==='Warning'), exp=dsQuanLyBanQuyen.filter(x=>licState(x)==='Expired'),panel=document.getElementById('licenseWarningPanel');if(panel){if(warn.length||exp.length){panel.classList.remove('hidden');panel.innerHTML='⚠️ <b>Cảnh báo bản quyền:</b> '+warn.length+' hồ sơ sắp hết hạn và '+exp.length+' hồ sơ đã hết hạn. '+(warn.length?'Hồ sơ gần hạn: '+warn.slice(0,5).map(x=>licEsc(x.code)+' ('+licDays(x.endDate)+' ngày)').join(' · '):'');}else panel.classList.add('hidden');}
+    const hb=document.getElementById('licenseHistoryTableBody');if(hb)hb.innerHTML=lichSuBanQuyen.slice(0,100).map(h=>'<tr><td>'+new Date(h.time).toLocaleString('vi-VN')+'</td><td><b>'+licEsc(h.action)+'</b></td><td>'+licEsc(h.code)+'</td><td>'+licEsc(h.product)+'</td><td>'+licEsc(h.assignee||'--')+'</td><td>'+licEsc(h.dept||'--')+'</td><td>'+licEsc(h.device||'--')+'</td><td style="text-align:center">'+(h.qty||0)+'</td><td>'+licEsc(h.actor||'--')+'</td><td>'+licEsc(h.note||'')+'</td></tr>').join('')||'<tr><td colspan="10" style="text-align:center;padding:18px;color:#64748b">Chưa có giao dịch.</td></tr>';const hc=document.getElementById('licenseHistoryCount');if(hc)hc.textContent=lichSuBanQuyen.length+' giao dịch';
+  };
+  window.xuatBanQuyenExcelPro=function(){if(typeof XLSX==='undefined')return alert('Chưa tải được thư viện Excel.');const rows=dsQuanLyBanQuyen.map((x,i)=>({STT:i+1,'Mã bản quyền':x.code,'Loại':x.type,'Sản phẩm':x.product,'Hình thức':x.model,'Nhà cung cấp':x.vendor,'Chứng từ':x.docNo,'Ngày cấp':x.startDate,'Ngày hết hạn':x.permanent?'Vĩnh viễn':x.endDate,'Số lượng':x.qty,'Đã cấp':x.assignedQty||0,'Còn lại':x.qty-(x.assignedQty||0),'Người sử dụng':x.assignee,'Đơn vị':x.dept,'Thiết bị':x.device,'Mã tài sản':x.assetTag,'Trạng thái':licStateText(licState(x)),'Ghi chú':x.note}));const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),'QuanLyBanQuyen');XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(lichSuBanQuyen.map(h=>({'Thời gian':h.time,'Nghiệp vụ':h.action,'Mã BQ':h.code,'Sản phẩm':h.product,'Người dùng':h.assignee,'Đơn vị':h.dept,'Thiết bị':h.device,'Số lượng':h.qty,'Người thực hiện':h.actor,'Ghi chú':h.note}))),'LichSuCapPhat');XLSX.writeFile(wb,'VINAPACO_Quan_Ly_Cap_Phat_Ban_Quyen_'+new Date().toISOString().slice(0,10)+'.xlsx');};
+  window.nhapKhoBanQuyenExcel=function(input){const file=input.files?.[0];if(!file||typeof XLSX==='undefined')return;const r=new FileReader();r.onload=e=>{try{const wb=XLSX.read(e.target.result,{type:'array'}),rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''}),now=new Date().toISOString();let added=0;rows.forEach(row=>{const code=String(row['Mã bản quyền']||row['Mã BQ']||row.code||'').trim(),product=String(row['Sản phẩm']||row['Sản phẩm / phiên bản']||row.product||'').trim();if(!code||!product)return;if(dsQuanLyBanQuyen.some(x=>x.code===code))return;const perm=String(row['Ngày hết hạn']||'').toLowerCase().includes('vĩnh viễn');dsQuanLyBanQuyen.push({id:'LIC-IMP-'+Date.now()+'-'+added,code,type:String(row['Loại']||'OS')==='Office'?'Office':'OS',product,model:String(row['Hình thức']||'Khác'),vendor:String(row['Nhà cung cấp']||''),docNo:String(row['Chứng từ']||''),startDate:String(row['Ngày cấp']||licToday()),endDate:perm?'':String(row['Ngày hết hạn']||''),permanent:perm,qty:Math.max(1,Number(row['Số lượng'])||1),assignedQty:0,key:'',assetTag:String(row['Mã tài sản']||''),assignee:'',dept:'',device:'',status:'Available',note:String(row['Ghi chú']||''),createdAt:now,updatedAt:now});added++;});saveToLocalStorage();renderLicenseManager();alert('✅ Đã nhập '+added+' hồ sơ bản quyền.');}catch(err){alert('❌ Lỗi nhập Excel: '+err.message);}input.value='';};r.readAsArrayBuffer(file);};
+  window.xuatBaoCaoBanQuyenPro=function(){const rows=dsQuanLyBanQuyen.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>'+licEsc(x.code)+'</td><td>'+x.type+'</td><td>'+licEsc(x.product)+'</td><td>'+x.qty+'</td><td>'+(x.assignedQty||0)+'</td><td>'+(x.qty-(x.assignedQty||0))+'</td><td>'+licFormatDate(x.startDate)+'</td><td>'+(x.permanent?'Vĩnh viễn':licFormatDate(x.endDate))+'</td><td>'+licEsc(x.assignee||'--')+'</td><td>'+licEsc(x.dept||'--')+'</td><td>'+licStateText(licState(x))+'</td></tr>').join('');const html='<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Báo cáo quản lý bản quyền</title><style>@page{size:A4 landscape;margin:10mm}body{font-family:"Times New Roman",serif;color:#111}h1{text-align:center;font-size:18px}p{text-align:center}table{width:100%;border-collapse:collapse;font-size:10px}th,td{border:1px solid #555;padding:5px;text-align:center}th{background:#eee}</style></head><body><div style="text-align:center;font-weight:bold">TỔNG CÔNG TY GIẤY VIỆT NAM</div><div style="text-align:center">VĂN PHÒNG TỔNG CÔNG TY</div><h1>BÁO CÁO QUẢN LÝ, CẤP PHÁT BẢN QUYỀN OS & OFFICE</h1><p>Ngày lập báo cáo: '+new Date().toLocaleDateString('vi-VN')+'</p><table><thead><tr><th>STT</th><th>Mã BQ</th><th>Loại</th><th>Sản phẩm</th><th>Tổng SL</th><th>Đã cấp</th><th>Còn lại</th><th>Ngày cấp</th><th>Hết hạn</th><th>Người dùng</th><th>Đơn vị</th><th>Trạng thái</th></tr></thead><tbody>'+rows+'</tbody></table><div style="margin-top:30px;display:flex;justify-content:space-between;text-align:center"><div>NGƯỜI LẬP BÁO CÁO<br><br><br>________________</div><div>THỦ TRƯỞNG ĐƠN VỊ<br><br><br>________________</div></div><script>window.onload=function(){setTimeout(function(){window.print()},300)}<\/script></body></html>';const w=window.open('','_blank','width=1200,height=800');if(!w)return alert('Hãy cho phép cửa sổ in.');w.document.write(html);w.document.close();};
+  // Modal markup is appended once to avoid changing existing print modals.
+  function mountModal(){if(document.getElementById('licenseAssignModal'))return;const d=document.createElement('div');d.innerHTML='<div class="modal-overlay hidden" id="licenseAssignModal"><div class="license-modal-card"><div class="license-modal-head"><div><h2 id="licenseAssignTitle">CẤP PHÁT BẢN QUYỀN</h2><p style="margin-top:4px;font-size:11px;opacity:.9">Ghi nhận người dùng, đơn vị, thiết bị và lịch sử nghiệp vụ.</p></div><button class="btn btn-red" onclick="dongModalCapPhatBanQuyen()"><i class="fa-solid fa-xmark"></i></button></div><div class="license-modal-body"><input type="hidden" id="licenseAssignIndex"><input type="hidden" id="licenseAssignMode"><div id="licenseAssignSummary" class="license-warning-panel"></div><div class="license-assign-grid"><div><label>Số lượng</label><input id="licenseAssignQty" type="number" min="1" value="1"></div><div><label>Người sử dụng *</label><input id="licenseAssignUser" placeholder="Họ và tên"></div><div><label>Đơn vị / bộ phận *</label><input id="licenseAssignDept" placeholder="Phòng / ban / đơn vị"></div><div><label>Thiết bị / máy</label><input id="licenseAssignDevice" placeholder="Mã tài sản / hostname / máy"></div><div class="full"><label>Ghi chú nghiệp vụ</label><textarea id="licenseAssignNote" placeholder="Lý do cấp phát, thu hồi, chuyển đổi..."></textarea></div></div></div><div class="license-modal-actions"><button class="btn btn-red" onclick="dongModalCapPhatBanQuyen()">HỦY</button><button class="btn btn-green" onclick="xacNhanCapPhatBanQuyen()"><i class="fa-solid fa-check"></i> XÁC NHẬN</button></div></div></div>';document.body.appendChild(d);}
+  document.addEventListener('DOMContentLoaded',()=>{mountModal();normalize();renderLicenseManager();});
+})();
+</script>
+
 </body>
 </html>
 <style id="vinapaco-menu-overlay-invoice-final">

@@ -4335,6 +4335,11 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
 
     // ===== CLOUD SYNC ENGINE: Google Sheets = dữ liệu chuẩn, Google Drive = tệp đính kèm/backup =====
     const SYNC_SCHEMA = 4;
+    const SYNC_READ_TIMEOUT = 30000;
+    const SYNC_READ_RETRIES = 3;
+    const SYNC_CONFIRM_RETRIES = 6;
+    const SYNC_CONFIRM_DELAY = 1200;
+    const SYNC_CHUNK_SIZE = 28000;
     const DEVICE_ID = localStorage.getItem('vinapaco_device_id') || ('DEV-' + cryptoRandomId());
     localStorage.setItem('vinapaco_device_id', DEVICE_ID);
     let syncTimer = null, syncDebounceTimer = null, syncInProgress = false, suppressCloudSync = true;
@@ -4342,19 +4347,21 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
     let lastSyncAt = localStorage.getItem('vinapaco_last_sync_at') || '';
     let lastSyncedSnapshot = safeJsonParse(localStorage.getItem('vinapaco_sync_base'), null);
     let pendingSync = Number(localStorage.getItem('vinapaco_pending_sync') || 0);
-    let syncConflicts = JSON.parse(localStorage.getItem('vinapaco_sync_conflicts') || '[]');
+    let syncConflicts = safeJsonParse(localStorage.getItem('vinapaco_sync_conflicts'), []);
     const VINAPACO_DATA_KEYS = [
         'vinapaco_data_namthang','vinapaco_vpp','vinapaco_telecom','vinapaco_ink',
-        'vinapaco_delivery','vinapaco_survey','vinapaco_tasks','vinapaco_accounts'
+        'vinapaco_delivery','vinapaco_survey','vinapaco_tasks','vinapaco_accounts',
+        'vinapaco_licenses','vinapaco_license_history'
     ];
     const VINAPACO_HAS_LOCAL_CACHE = VINAPACO_DATA_KEYS.some(k => !!localStorage.getItem(k));
+
     function markPersistentCacheReady() {
         try { localStorage.setItem('vinapaco_persistent_cache_ready','1'); } catch(e) {}
     }
     function saveEmergencyLocalSnapshot(reason='before-cloud-change') {
         try {
             const emergency = {
-                version: 1, reason, at: new Date().toISOString(),
+                version: 2, reason, at: new Date().toISOString(),
                 schema: SYNC_SCHEMA, snapshot: cloudSnapshot()
             };
             localStorage.setItem('vinapaco_emergency_snapshot', JSON.stringify(emergency));
@@ -4395,8 +4402,6 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
         return out;
     }
 
-
-
     // ===== GOOGLE DRIVE: tự động chuẩn hóa thư mục Năm/Tháng =====
     function getDriveRootIdFromUrl(url) {
         const m = String(url || '').match(/\/folders\/([a-zA-Z0-9_-]+)/);
@@ -4413,8 +4418,6 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
         const monthMatch = String(currentThangKey).match(/(\d{1,2})/);
         const month = (monthMatch ? Number(monthMatch[1]) : new Date().getMonth()+1);
         try {
-            // GAS cần hỗ trợ action=ensureFolders để tạo/đảm bảo cấu trúc:
-            // VINAPACO_Drive / Năm / Tháng XX
             const data = await jsonpGet(
                 gasWebhookUrl +
                 (gasWebhookUrl.includes('?') ? '&' : '?') +
@@ -4429,7 +4432,7 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
                 if (showAlert) alert(`✅ Đã kiểm tra/tạo thư mục Drive:\n${path}`);
                 return true;
             }
-            if (showAlert) alert('⚠️ GAS chưa hỗ trợ action ensureFolders. Hãy cập nhật phần Apps Script đi kèm.');
+            if (showAlert) alert('⚠️ GAS chưa hỗ trợ action ensureFolders. Hãy cập nhật Apps Script đi kèm.');
         } catch (e) {
             if (showAlert) alert('⚠️ Không thể tự tạo thư mục Drive: ' + e.message);
         }
@@ -4492,7 +4495,6 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
         try { saveEmergencyLocalSnapshot('before-cloud-apply'); } catch(e) {}
         suppressCloudSync = true;
         coSoDuLieuNamThang = snap.dataNamThang;
-        // Cloud cũ có thể thiếu nhân sự mới; bổ sung theo mẫu mà không ghi đè dữ liệu đã có.
         Object.keys(coSoDuLieuNamThang || {}).forEach(y => {
             Object.keys(coSoDuLieuNamThang[y] || {}).forEach(m => {
                 const md = coSoDuLieuNamThang[y][m];
@@ -4534,46 +4536,75 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
             return out;
         }
         conflicts.push(path || 'root');
-        return local; // dữ liệu thay đổi đồng thời: ưu tiên thiết bị hiện tại, nhưng ghi nhận xung đột
+        return local;
     }
-    async function jsonpGet(url) {
-        if (cloudEndpointDisabled || !String(url || '').trim()) {
-            throw new Error('Cloud chưa được cấu hình hoặc endpoint không khả dụng.');
-        }
-        return await new Promise((resolve, reject) => {
-            const cb = '__vinapaco_cb_' + Date.now() + '_' + Math.random().toString(36).slice(2);
-            const script = document.createElement('script');
-            const timer = setTimeout(() => { cleanup(); reject(new Error('Cloud timeout')); }, 20000);
-            function cleanup(){ clearTimeout(timer); try{delete window[cb];}catch(e){} script.remove(); }
-            window[cb] = data => { cleanup(); resolve(data); };
-            script.onerror = () => {
-                cleanup();
+
+    // JSONP được dùng để đọc GAS vì GitHub Pages không đọc được fetch CORS trực tiếp.
+    // Quan trọng: không tự chèn action=getSync nếu URL đã có action khác (ví dụ ensureFolders).
+    async function jsonpGet(url, options={}) {
+        const baseUrl = String(url || '').trim();
+        if (!baseUrl) throw new Error('Cloud chưa được cấu hình URL GAS.');
+        const timeout = Number(options.timeout || SYNC_READ_TIMEOUT);
+        const retries = Math.max(1, Number(options.retries || SYNC_READ_RETRIES));
+        let lastError = null;
+        for (let attempt=1; attempt<=retries; attempt++) {
+            try {
+                const result = await new Promise((resolve, reject) => {
+                    const cb = '__vinapaco_cb_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+                    const script = document.createElement('script');
+                    let finished = false;
+                    const cleanup = () => {
+                        if (finished) return;
+                        finished = true;
+                        clearTimeout(timer);
+                        try { delete window[cb]; } catch(e) {}
+                        script.remove();
+                    };
+                    const timer = setTimeout(() => { cleanup(); reject(new Error(`Cloud không phản hồi sau ${Math.round(timeout/1000)} giây`)); }, timeout);
+                    window[cb] = data => { cleanup(); resolve(data); };
+                    script.onerror = () => { cleanup(); reject(new Error('Không đọc được Google Apps Script (endpoint có thể chưa triển khai đúng doGet).')); };
+                    const hasAction = /(?:^|[?&])action=/i.test(baseUrl);
+                    const sep = baseUrl.includes('?') ? '&' : '?';
+                    script.src = baseUrl + (hasAction ? sep : sep + 'action=getSync&') +
+                        `callback=${encodeURIComponent(cb)}&schema=${SYNC_SCHEMA}&_=${Date.now()}_${attempt}`;
+                    document.head.appendChild(script);
+                });
+                cloudEndpointDisabled = false;
+                cloudEndpointErrorCount = 0;
+                return result;
+            } catch(e) {
+                lastError = e;
                 cloudEndpointErrorCount++;
-                if (cloudEndpointErrorCount >= 2) {
-                    cloudEndpointDisabled = true;
-                    setSyncState('error', 'Không kết nối được Cloud', 'Kiểm tra lại GAS Webhook URL trong phần thiết lập');
+                if (attempt < retries) {
+                    setSyncState('syncing','Đang thử lại kết nối Cloud',`Lần ${attempt+1}/${retries}`);
+                    await new Promise(r=>setTimeout(r,700*attempt));
                 }
-                reject(new Error('Không đọc được Google Apps Script (có thể endpoint trả 404 hoặc chưa được triển khai)'));
-            };
-            script.src = url + (url.includes('?')?'&':'?') + 'action=getSync&callback=' + encodeURIComponent(cb) + '&schema=' + SYNC_SCHEMA;
-            document.head.appendChild(script);
-        });
+            }
+        }
+        // Không khóa endpoint vĩnh viễn: mạng/GAS có thể hoạt động lại ngay sau đó.
+        cloudEndpointDisabled = false;
+        throw lastError || new Error('Cloud không phản hồi.');
     }
+
     async function postNoCors(payload) {
         let lastErr;
         for (let attempt=1; attempt<=3; attempt++) {
             try {
-                await fetch(gasWebhookUrl, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload), keepalive:false });
+                await fetch(gasWebhookUrl, {
+                    method:'POST', mode:'no-cors', cache:'no-store',
+                    headers:{'Content-Type':'text/plain;charset=utf-8'},
+                    body:JSON.stringify(payload), keepalive:false
+                });
                 return true;
             } catch(e) {
                 lastErr=e;
-                await new Promise(r=>setTimeout(r,500*attempt));
+                if (attempt < 3) await new Promise(r=>setTimeout(r,700*attempt));
             }
         }
         throw lastErr || new Error('Không gửi được dữ liệu lên Google Apps Script');
     }
-    async function readCloudState() {
-        const data = await jsonpGet(gasWebhookUrl);
+    async function readCloudState(options={}) {
+        const data = await jsonpGet(gasWebhookUrl, options);
         if (!data || data.ok === false) throw new Error(data && data.message ? data.message : 'Cloud không trả dữ liệu');
         return data;
     }
@@ -4581,16 +4612,22 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
         setSyncState('syncing','Đang đọc phiên bản mới nhất từ Google Sheets','');
         const cloud = await readCloudState();
         const remoteRev = Number(cloud.revision || 0);
-        if (!cloud.snapshot) { setSyncState('online','Cloud đã kết nối nhưng chưa có dữ liệu','hãy đồng bộ lần đầu'); return false; }
+        if (!cloud.snapshot) {
+            setSyncState('online','Cloud đã kết nối nhưng chưa có dữ liệu','hãy đồng bộ lần đầu');
+            return false;
+        }
         const local = cloudSnapshot();
-        if (remoteRev === cloudRevision && lastSyncedSnapshot) { setSyncState('online','Dữ liệu đã đồng bộ','không có thay đổi'); return true; }
+        if (remoteRev === cloudRevision && lastSyncedSnapshot) {
+            setSyncState('online','Dữ liệu đã đồng bộ','không có thay đổi');
+            pendingSync = 0;
+            localStorage.setItem('vinapaco_pending_sync','0');
+            return true;
+        }
         let merged = cloud.snapshot;
-        let conflicts = [];
+        const conflicts = [];
         if (lastSyncedSnapshot && pendingSync) {
             merged = mergeThreeWay(lastSyncedSnapshot, local, cloud.snapshot, '', conflicts);
         } else if (!lastSyncedSnapshot && pendingSync && VINAPACO_HAS_LOCAL_CACHE) {
-            // Thiết bị có thay đổi chưa xác nhận nhưng chưa có sync-base (ví dụ sau khi đổi code/xóa cache phụ).
-            // Hợp nhất hai phía thay vì ghi đè dữ liệu cục bộ.
             merged = mergeBootstrapSnapshots(cloud.snapshot, local);
             conflicts.push('bootstrap-merge');
         }
@@ -4603,7 +4640,11 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
         localStorage.setItem('vinapaco_sync_base', JSON.stringify(lastSyncedSnapshot));
         localStorage.setItem('vinapaco_last_sync_at', lastSyncAt);
         localStorage.setItem('vinapaco_pending_sync', String(pendingSync));
-        if (conflicts.length) { syncConflicts.push({at:lastSyncAt, paths:conflicts.slice(0,50), device:DEVICE_ID}); syncConflicts=syncConflicts.slice(-20); localStorage.setItem('vinapaco_sync_conflicts',JSON.stringify(syncConflicts)); }
+        if (conflicts.length) {
+            syncConflicts.push({at:lastSyncAt, paths:conflicts.slice(0,50), device:DEVICE_ID});
+            syncConflicts=syncConflicts.slice(-20);
+            localStorage.setItem('vinapaco_sync_conflicts',JSON.stringify(syncConflicts));
+        }
         setSyncState(conflicts.length ? 'error':'online', conflicts.length ? 'Đã hợp nhất, có xung đột cần kiểm tra':'Đồng bộ từ Cloud thành công', `lúc ${new Date(lastSyncAt).toLocaleTimeString('vi-VN')}`);
         if (!conflicts.length) showSyncSuccessToast('Đồng bộ từ Cloud thành công — dữ liệu mới nhất đã được xác nhận.');
         if (showAlert) alert(conflicts.length ? `⚠️ Đã lấy dữ liệu mới nhất và tự hợp nhất. Có ${conflicts.length} điểm xung đột; dữ liệu trên thiết bị hiện tại được ưu tiên.` : '✅ Đã lấy đúng phiên bản dữ liệu mới nhất từ Google Sheets.');
@@ -4621,80 +4662,96 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
     async function pushCloudSnapshot(force=false) {
         if (!force && !pendingSync) return true;
         for (let round=0; round<2; round++) {
+            // Luôn đọc revision mới nhất trước khi commit để tránh ghi đè dữ liệu của thiết bị khác.
             const before = await readCloudState();
             const remoteRev = Number(before.revision || 0);
-            if (!force && remoteRev !== cloudRevision && lastSyncedSnapshot) {
-                await pullCloudSnapshot(false);
-                if (!pendingSync) return true;
-            } else if (!force && remoteRev !== cloudRevision && !lastSyncedSnapshot && remoteRev > 0) {
-                await pullCloudSnapshot(false);
-                if (!pendingSync) return true;
+            if (remoteRev !== cloudRevision) {
+                if (lastSyncedSnapshot || pendingSync) {
+                    await pullCloudSnapshot(false);
+                    if (!pendingSync) return true;
+                }
             }
 
             const snap = cloudSnapshot();
+            saveEmergencyLocalSnapshot('before-cloud-push');
             const localFingerprint = syncComparableSnapshot(snap);
             const text = JSON.stringify(snap);
-            const chunkSize = 30000;
             const syncId = cryptoRandomId();
-            const total = Math.ceil(text.length / chunkSize) || 1;
-            setSyncState('syncing','Đang ghi dữ liệu lên Google Sheets',`${total} gói dữ liệu · đang chờ Cloud xác nhận`);
+            const total = Math.ceil(text.length / SYNC_CHUNK_SIZE) || 1;
+            setSyncState('syncing','Đang ghi dữ liệu lên Google Sheets',`${total} gói dữ liệu · đang gửi`);
 
             for (let i=0;i<total;i++) {
-                setSyncState('syncing','Đang ghi dữ liệu lên Google Sheets',`Gói ${i+1}/${total} · đang chờ Cloud xác nhận`);
-                await postNoCors({action:'syncChunk', syncId, index:i, total, chunk:text.slice(i*chunkSize,(i+1)*chunkSize), deviceId:DEVICE_ID});
+                setSyncState('syncing','Đang ghi dữ liệu lên Google Sheets',`Gói ${i+1}/${total} · đang gửi`);
+                await postNoCors({action:'syncChunk', syncId, index:i, total, chunk:text.slice(i*SYNC_CHUNK_SIZE,(i+1)*SYNC_CHUNK_SIZE), deviceId:DEVICE_ID});
             }
             await postNoCors({action:'commitSync', syncId, total, expectedRevision:cloudRevision, deviceId:DEVICE_ID, updatedAt:snap.updatedAt});
 
-            // no-cors không cho đọc phản hồi POST, vì vậy bắt buộc đọc lại Cloud để xác nhận dữ liệu thật sự đã được ghi.
-            let confirmed = null;
-            let confirmedOk = false;
-            for (let attempt=0; attempt<8; attempt++) {
-                setSyncState('syncing','Đang xác nhận đồng bộ với Cloud',`Lần kiểm tra ${attempt+1}/8`);
-                await new Promise(r=>setTimeout(r,900));
+            // POST no-cors không đọc được phản hồi. Chỉ xóa pending sau khi GET xác nhận snapshot thật sự đã lên Cloud.
+            for (let attempt=0; attempt<SYNC_CONFIRM_RETRIES; attempt++) {
+                setSyncState('syncing','Đang xác nhận dữ liệu trên Cloud',`Lần ${attempt+1}/${SYNC_CONFIRM_RETRIES}`);
+                await new Promise(r=>setTimeout(r,SYNC_CONFIRM_DELAY));
                 try {
-                    confirmed = await readCloudState();
-                    const confirmedRev = Number(confirmed.revision||0);
+                    const confirmed = await readCloudState({timeout:12000,retries:2});
                     const remoteFingerprint = syncComparableSnapshot(confirmed.snapshot);
-                    if (confirmedRev > cloudRevision || (confirmed.snapshot && remoteFingerprint === localFingerprint)) {
-                        confirmedOk = true;
-                        break;
+                    const confirmedRev = Number(confirmed.revision || 0);
+                    if (confirmed.snapshot && remoteFingerprint === localFingerprint) {
+                        cloudRevision = Math.max(cloudRevision, confirmedRev);
+                        lastSyncedSnapshot = JSON.parse(JSON.stringify(confirmed.snapshot));
+                        pendingSync = 0;
+                        lastSyncAt = new Date().toISOString();
+                        localStorage.setItem('vinapaco_cloud_revision',cloudRevision);
+                        localStorage.setItem('vinapaco_sync_base',JSON.stringify(lastSyncedSnapshot));
+                        localStorage.setItem('vinapaco_last_sync_at',lastSyncAt);
+                        localStorage.setItem('vinapaco_pending_sync','0');
+                        setSyncState('online','ĐỒNG BỘ THÀNH CÔNG','Cloud đã ghi và xác nhận dữ liệu · ' + new Date(lastSyncAt).toLocaleTimeString('vi-VN'));
+                        showSyncSuccessToast('Đồng bộ thành công — dữ liệu đã được Cloud xác nhận.');
+                        return true;
                     }
-                } catch(e) {}
+                    if (confirmedRev !== cloudRevision) cloudRevision = confirmedRev;
+                } catch(e) {
+                    // Chỉ retry xác nhận; tuyệt đối không xóa pending khi chưa xác nhận.
+                }
             }
 
-            if (confirmedOk && confirmed) {
-                cloudRevision = Math.max(cloudRevision, Number(confirmed.revision||0));
-                lastSyncedSnapshot = JSON.parse(JSON.stringify(confirmed.snapshot || snap));
-                pendingSync = 0;
-                lastSyncAt = new Date().toISOString();
-                localStorage.setItem('vinapaco_cloud_revision',cloudRevision);
-                localStorage.setItem('vinapaco_sync_base',JSON.stringify(lastSyncedSnapshot));
-                localStorage.setItem('vinapaco_last_sync_at',lastSyncAt);
-                localStorage.setItem('vinapaco_pending_sync','0');
-                setSyncState('online','ĐỒNG BỘ THÀNH CÔNG','Cloud đã ghi và xác nhận dữ liệu · ' + new Date(lastSyncAt).toLocaleTimeString('vi-VN'));
-                showSyncSuccessToast('Đồng bộ thành công — dữ liệu đã được Cloud xác nhận.');
-                return true;
-            }
+            // Có thể commit đã thành công nhưng phản hồi GET chậm. Đọc thêm một lần với timeout dài hơn.
+            try {
+                const latest = await readCloudState({timeout:25000,retries:2});
+                const latestFingerprint = syncComparableSnapshot(latest.snapshot);
+                if (latest.snapshot && latestFingerprint === localFingerprint) {
+                    cloudRevision = Math.max(cloudRevision, Number(latest.revision||0));
+                    lastSyncedSnapshot = JSON.parse(JSON.stringify(latest.snapshot));
+                    pendingSync = 0;
+                    lastSyncAt = new Date().toISOString();
+                    localStorage.setItem('vinapaco_cloud_revision',cloudRevision);
+                    localStorage.setItem('vinapaco_sync_base',JSON.stringify(lastSyncedSnapshot));
+                    localStorage.setItem('vinapaco_last_sync_at',lastSyncAt);
+                    localStorage.setItem('vinapaco_pending_sync','0');
+                    setSyncState('online','ĐỒNG BỘ THÀNH CÔNG','Cloud đã ghi và xác nhận dữ liệu');
+                    showSyncSuccessToast('Đồng bộ thành công — dữ liệu đã được Cloud xác nhận.');
+                    return true;
+                }
+            } catch(e) {}
 
-            const latest = await readCloudState();
-            if (Number(latest.revision||0) !== cloudRevision) {
-                cloudRevision = Number(latest.revision||0);
-                await pullCloudSnapshot(false);
-                if (!pendingSync) return true;
+            // Nếu Cloud đã đổi revision trong lúc xác nhận, quay lại vòng hợp nhất thay vì ghi đè.
+            const latestRevision = Number(cloudRevision || 0);
+            if (latestRevision !== Number(localStorage.getItem('vinapaco_cloud_revision') || 0)) {
+                cloudRevision = latestRevision;
             }
         }
-        throw new Error('Cloud chưa xác nhận được dữ liệu sau khi ghi. Dữ liệu vẫn được giữ trên thiết bị và hệ thống sẽ tự thử lại.');
+        throw new Error('Cloud chưa xác nhận được dữ liệu. Dữ liệu vẫn được giữ an toàn trên thiết bị và sẽ tự thử lại.');
     }
     async function dongBoThongMinh(showAlert=false) {
-        if (syncInProgress) return;
+        if (syncInProgress) return false;
         syncInProgress = true;
         try {
-            if (pendingSync) await pushCloudSnapshot(false);
-            else await pullCloudSnapshot(false);
-            if (showAlert) alert('✅ Đồng bộ 2 chiều hoàn tất. Dữ liệu đã được xác nhận lại từ Cloud.');
+            const ok = pendingSync ? await pushCloudSnapshot(false) : await pullCloudSnapshot(false);
+            if (showAlert && ok) alert('✅ Đồng bộ 2 chiều hoàn tất. Dữ liệu đã được xác nhận lại từ Cloud.');
+            return !!ok;
         } catch(e) {
-            setSyncState('error','Không đồng bộ được Cloud',e.message);
-            if (showAlert) alert('❌ Đồng bộ thất bại: ' + e.message + '\nDữ liệu vẫn được giữ an toàn trên thiết bị và sẽ tự thử lại.');
+            const msg = String(e?.message || e || 'Lỗi không xác định');
+            setSyncState('error','Cloud chưa xác nhận đồng bộ',msg);
+            if (showAlert) alert('⚠️ ' + msg + '\n\nDữ liệu vẫn được giữ nguyên trên thiết bị. Hệ thống sẽ tự thử lại khi Cloud hoạt động.');
+            return false;
         } finally { syncInProgress = false; }
     }
     async function taiDuLieuTuDongTuGas(showAlert=false) { return pullCloudSnapshot(showAlert); }
@@ -4705,13 +4762,15 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
     }
     function startAutoCloudSync() {
         clearInterval(syncTimer);
-        syncTimer = setInterval(() => { if (!document.hidden) dongBoThongMinh(false); }, 10000);
-        setTimeout(() => dongBoThongMinh(false), 1200);
+        syncTimer = setInterval(() => {
+            if (!document.hidden && navigator.onLine !== false) dongBoThongMinh(false);
+        }, 15000);
+        setTimeout(() => { if (navigator.onLine !== false) dongBoThongMinh(false); }, 1800);
         setTimeout(() => {
             tuDongTaoThuMucDriveNamThang(false);
             window.__refreshWeatherNow?.();
             window.__refreshForecast10Days?.();
-        }, 1800);
+        }, 2500);
     }
 
     const defaultNhansuTemplate = [

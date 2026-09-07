@@ -4309,7 +4309,7 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
   <div class="lic-table-caption"><div><b><i class="fa-solid fa-database"></i> DANH MỤC BẢN QUYỀN</b><span id="licenseRecordCount">0 hồ sơ</span></div><div class="lic-table-hint"><i class="fa-solid fa-circle-info"></i> Cấp phát và thu hồi đều được ghi vào lịch sử</div></div>
   <div class="license-table-wrap">
     <table class="license-table"><thead><tr>
-      <th>STT</th><th>Mã BQ</th><th>Loại</th><th>Sản phẩm / Edition</th><th>Hình thức</th><th>SL</th><th>Đã cấp</th><th>Còn</th><th>Ngày cấp</th><th>Hết hạn</th><th>Người sử dụng / Đơn vị</th><th>Thiết bị / tài sản</th><th>Trạng thái</th><th>Thao tác</th>
+      <th>STT</th><th>Mã BQ</th><th>Loại</th><th>Sản phẩm / Edition</th><th>Hình thức</th><th>SL</th><th>Đã cấp</th><th>Còn</th><th>Chi phí / đơn vị</th><th>Tổng tiền</th><th>Ngày cấp</th><th>Hết hạn</th><th>Người sử dụng / Đơn vị</th><th>Thiết bị / tài sản</th><th>Trạng thái</th><th>Thao tác</th>
     </tr></thead><tbody id="licenseManagerTableBody"></tbody></table>
   </div>
 
@@ -9289,7 +9289,7 @@ window.inAnPhieuHandover=function(){
   window.moCapPhatBanQuyen=function(idx){openAssign(idx,'assign')};window.moThuHoiBanQuyen=function(idx){openAssign(idx,'revoke')};window.dongModalCapPhatBanQuyen=function(){document.getElementById('licenseAssignModal')?.classList.add('hidden')};
   window.xacNhanCapPhatBanQuyen=function(){normalize();const idx=Number(val('licenseAssignIndex')),mode=val('licenseAssignMode'),x=dsQuanLyBanQuyen[idx];if(!x)return;const qty=Math.max(1,Number(val('licenseAssignQty'))||1),user=val('licenseAssignUser'),dept=val('licenseAssignDept'),device=val('licenseAssignDevice'),asset=val('licenseAssignAsset'),date=val('licenseAssignDate')||licToday(),email=val('licenseAssignEmail'),note=val('licenseAssignNote');if(mode==='assign'){const avail=x.qty-(x.assignedQty||0);if(qty>avail)return alert('⚠️ Số lượng cấp vượt số lượng còn lại: '+avail);if(!user||!dept)return alert('⚠️ Cấp phát phải có Người sử dụng và Đơn vị/Bộ phận.');const a={id:'AL-'+Date.now(),date,qty,user,dept,device,asset,email,note};x.allocations.push(a);x.assignedQty=(x.assignedQty||0)+qty;x.assignee=user;x.dept=dept;x.device=device;x.assetTag=asset||x.assetTag;x.assigneeEmail=email;x.status='Assigned';logLic('Cấp phát',x,{qty,assignee:user,dept,device,note:'Ngày cấp: '+date+(note?' · '+note:'')})}else{if(qty>(x.assignedQty||0))return alert('⚠️ Số lượng thu hồi vượt số lượng đang cấp: '+(x.assignedQty||0));let left=qty;for(let i=x.allocations.length-1;i>=0&&left>0;i--){const a=x.allocations[i];const take=Math.min(Number(a.qty)||0,left);a.qty=(Number(a.qty)||0)-take;left-=take;if(a.qty<=0)x.allocations.splice(i,1)}x.assignedQty=Math.max(0,(x.assignedQty||0)-qty);const last=x.allocations[x.allocations.length-1];x.assignee=last?.user||'';x.dept=last?.dept||'';x.device=last?.device||'';x.status=x.assignedQty?'Assigned':'Available';logLic('Thu hồi',x,{qty,assignee:user,dept,device,note:'Ngày thu hồi: '+date+(note?' · '+note:'')})}x.updatedAt=new Date().toISOString();saveToLocalStorage();renderLicenseManager();try{if(typeof window.__vinapacoRefreshAllocationDetail==='function')window.__vinapacoRefreshAllocationDetail();else if(typeof window.renderDanhSachCapPhatChiTiet==='function')window.renderDanhSachCapPhatChiTiet()}catch(e){console.error('Render danh sách cấp phát chi tiết:',e)};dongModalCapPhatBanQuyen();alert(mode==='assign'?'✅ Đã cấp phát, lưu người dùng và ghi lịch sử.':'✅ Đã thu hồi, cập nhật số lượng và ghi lịch sử.')};
   window.chuyenBanQuyen=function(idx){normalize();const x=dsQuanLyBanQuyen[idx];if(!x||!(x.assignedQty>0))return alert('⚠️ Hồ sơ chưa có giấy phép đang cấp để chuyển.');const user=prompt('Người sử dụng mới:',x.assignee||'');if(!user)return;const dept=prompt('Đơn vị/Bộ phận mới:',x.dept||'');if(!dept)return;const device=prompt('Thiết bị mới:',x.device||'');const oldUser=x.assignee,oldDept=x.dept;x.assignee=user;x.dept=dept;x.device=device||'';if(x.allocations.length){const a=x.allocations[x.allocations.length-1];a.user=user;a.dept=dept;a.device=device||'';a.date=licToday()}x.status='Assigned';logLic('Chuyển đổi',x,{qty:x.assignedQty,assignee:user,dept,device,note:'Từ '+oldUser+' / '+oldDept});saveToLocalStorage();renderLicenseManager();alert('✅ Đã chuyển đổi người/đơn vị sử dụng và ghi lịch sử.')};
-  window.xemChiTietBanQuyen=function(idx){normalize();const x=dsQuanLyBanQuyen[idx];if(!x)return;const allocations=(x.allocations||[]).filter(a=>Number(a.qty)>0);const detail=allocations.length?'\n\nCHI TIẾT CẤP PHÁT:\n'+allocations.map((a,i)=>`${i+1}. ${a.user||'--'} · ${a.dept||'--'} · ${a.device||'--'} · SL ${a.qty} · ${licFormatDate(a.date)}`).join('\n'):'';alert('HỒ SƠ BẢN QUYỀN\n\nMã: '+x.code+'\nLoại: '+x.type+'\nSản phẩm: '+x.product+' '+(x.edition||'')+'\nHình thức: '+x.model+'\nNguồn: '+(x.vendor||'--')+'\nHợp đồng: '+(x.docNo||'--')+'\nHóa đơn: '+(x.invoiceNo||'--')+'\nNgày mua: '+licFormatDate(x.purchaseDate)+'\nNgày cấp: '+licFormatDate(x.startDate)+'\nHết hạn: '+(x.permanent?'Vĩnh viễn':licFormatDate(x.endDate))+'\nSố lượng: '+x.qty+' '+x.unit+'\nĐã cấp: '+(x.assignedQty||0)+'\nCòn lại: '+(x.qty-(x.assignedQty||0))+'\nĐơn vị quản lý: '+(x.ownerDept||'--')+'\nNgười quản lý: '+(x.manager||'--')+'\nTài khoản: '+(x.account||'--')+'\nMã tài sản: '+(x.assetTag||'--')+'\nTrạng thái: '+licStateText(licState(x))+'\nGhi chú: '+(x.note||'--')+detail)};
+  window.xemChiTietBanQuyen=function(idx){normalize();const x=dsQuanLyBanQuyen[idx];if(!x)return;const allocations=(x.allocations||[]).filter(a=>Number(a.qty)>0);const detail=allocations.length?'\n\nCHI TIẾT CẤP PHÁT:\n'+allocations.map((a,i)=>`${i+1}. ${a.user||'--'} · ${a.dept||'--'} · ${a.device||'--'} · SL ${a.qty} · ${licFormatDate(a.date)}`).join('\n'):'';alert('HỒ SƠ BẢN QUYỀN\n\nMã: '+x.code+'\nLoại: '+x.type+'\nSản phẩm: '+x.product+' '+(x.edition||'')+'\nHình thức: '+x.model+'\nNguồn: '+(x.vendor||'--')+'\nHợp đồng: '+(x.docNo||'--')+'\nHóa đơn: '+(x.invoiceNo||'--')+'\nNgày mua: '+licFormatDate(x.purchaseDate)+'\nNgày cấp: '+licFormatDate(x.startDate)+'\nHết hạn: '+(x.permanent?'Vĩnh viễn':licFormatDate(x.endDate))+'\nSố lượng: '+x.qty+' '+x.unit+'\nChi phí / đơn vị: '+formatLicenseMoney(x.cost,x.currency)+' '+(x.currency||'VND')+'\nTổng tiền: '+formatLicenseMoney((Number(x.cost)||0)*(Number(x.qty)||0),x.currency)+' '+(x.currency||'VND')+'\nĐã cấp: '+(x.assignedQty||0)+'\nCòn lại: '+(x.qty-(x.assignedQty||0))+'\nĐơn vị quản lý: '+(x.ownerDept||'--')+'\nNgười quản lý: '+(x.manager||'--')+'\nTài khoản: '+(x.account||'--')+'\nMã tài sản: '+(x.assetTag||'--')+'\nTrạng thái: '+licStateText(licState(x))+'\nGhi chú: '+(x.note||'--')+detail)};
   window.renderLicenseManager=function(){
     normalize();
     const q=val('licenseSearch').toLowerCase();
@@ -9308,6 +9308,9 @@ window.inAnPhieuHandover=function(){
     if(body){
       body.innerHTML=rows.length?rows.map((o,i)=>{
         const x=o.x,remain=Math.max(0,(x.qty||0)-(x.assignedQty||0)),st=o.state;
+        const cost=Number(x.cost)||0,totalCost=cost*(Number(x.qty)||0);
+        const costText=formatLicenseMoney(cost,x.currency)+' '+(x.currency||'VND');
+        const totalCostText=formatLicenseMoney(totalCost,x.currency)+' '+(x.currency||'VND');
         const end=x.permanent?'Vĩnh viễn':licFormatDate(x.endDate);
         const users=(x.allocations||[]).filter(a=>Number(a.qty)>0);
         const userHtml=users.length?users.slice(0,2).map(a=>`<b>${licEsc(a.user)}</b><small style="display:block;color:#64748b">${licEsc(a.dept)} · ${a.qty} ${licEsc(x.unit)}</small>`).join(''):'<span style="color:#94a3b8">Chưa cấp</span>';
@@ -9319,6 +9322,8 @@ window.inAnPhieuHandover=function(){
           <td>${licEsc(x.model)}</td><td style="text-align:center;font-weight:900">${x.qty}</td>
           <td style="text-align:center;font-weight:900">${x.assignedQty||0}</td>
           <td style="text-align:center;font-weight:950;color:${remain?'#166534':'#991b1b'}">${remain}</td>
+          <td style="text-align:right;font-weight:850;white-space:nowrap">${licEsc(costText)}</td>
+          <td style="text-align:right;font-weight:950;white-space:nowrap">${licEsc(totalCostText)}</td>
           <td>${licFormatDate(x.startDate)}</td><td>${end}</td><td>${userHtml}</td>
           <td>${licEsc(x.device||x.assetTag||'--')}</td>
           <td><span class="license-state ${st.toLowerCase()}">${licStateText(st)}</span></td>
@@ -9330,7 +9335,7 @@ window.inAnPhieuHandover=function(){
             <button class="btn" title="Xóa" onclick="xoaBanQuyen(${o.idx})"><i class="fa-solid fa-trash"></i></button>
           </div></td>
         </tr>`;
-      }).join(''):'<tr><td colspan="14" style="text-align:center;padding:28px;color:#64748b;font-weight:800">Không có hồ sơ phù hợp.</td></tr>';
+      }).join(''):'<tr><td colspan="16" style="text-align:center;padding:28px;color:#64748b;font-weight:800">Không có hồ sơ phù hợp.</td></tr>';
     }
     const count=document.getElementById('licenseRecordCount');if(count)count.textContent=`${rows.length} / ${dsQuanLyBanQuyen.length} hồ sơ`;
     const total=dsQuanLyBanQuyen.reduce((a,x)=>a+(Number(x.qty)||0),0);
@@ -9343,7 +9348,7 @@ window.inAnPhieuHandover=function(){
     const warn=dsQuanLyBanQuyen.filter(x=>licState(x)==='Warning'),exp=dsQuanLyBanQuyen.filter(x=>licState(x)==='Expired'),panel=document.getElementById('licenseWarningPanel');
     if(panel){if(warn.length||exp.length){panel.classList.remove('hidden');panel.innerHTML=`⚠️ <b>Cảnh báo:</b> ${warn.length} hồ sơ sắp hết hạn · ${exp.length} hồ sơ đã hết hạn.`}else panel.classList.add('hidden')}
     const hb=document.getElementById('licenseHistoryTableBody');
-    if(hb)hb.innerHTML=lichSuBanQuyen.slice(0,100).map(h=>`<tr><td>${new Date(h.time).toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'})}</td><td><b>${licEsc(h.action)}</b></td><td>${licEsc(h.code)}</td><td>${licEsc(h.product)}</td><td>${licEsc(h.assignee||'--')}</td><td>${licEsc(h.dept||'--')}</td><td>${licEsc(h.device||'--')}</td><td style="text-align:center">${h.qty||0}</td><td>${licEsc(h.actor||'--')}</td><td>${licEsc(h.note||'')}</td></tr>`).join('')||'<tr><td colspan="10" style="text-align:center;padding:18px;color:#64748b">Chưa có giao dịch.</td></tr>';
+    if(hb)hb.innerHTML=lichSuBanQuyen.slice(0,100).map(h=>`<tr><td>${licFormatDate(String(h.time||'').slice(0,10))}</td><td><b>${licEsc(h.action)}</b></td><td>${licEsc(h.code)}</td><td>${licEsc(h.product)}</td><td>${licEsc(h.assignee||'--')}</td><td>${licEsc(h.dept||'--')}</td><td>${licEsc(h.device||'--')}</td><td style="text-align:center">${h.qty||0}</td><td>${licEsc(h.actor||'--')}</td><td>${licEsc(h.note||'')}</td></tr>`).join('')||'<tr><td colspan="10" style="text-align:center;padding:18px;color:#64748b">Chưa có giao dịch.</td></tr>';
     const hc=document.getElementById('licenseHistoryCount');if(hc)hc.textContent=lichSuBanQuyen.length+' giao dịch';
   };
 

@@ -3641,7 +3641,7 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
       <div class="vnp-section-head"><div><b><i class="fa-solid fa-pen-to-square"></i> CẬP NHẬT NHIỆM VỤ</b><span>Thông tin điều hành được lưu cùng dữ liệu năm/tháng hiện tại</span></div><button type="button" class="btn btn-red hidden" id="btnCancelTask" onclick="huyBoCapNhatCongViec()">HỦY SỬA</button></div>
       <input type="hidden" id="editTaskIndex" value="-1">
       <div class="vnp-task-form-grid">
-        <div class="form-group"><label>Mã công việc</label><input id="inputTaskCode" placeholder="CV-2026-001"></div>
+        <div class="form-group"><label>Mã công việc <small style="color:#64748b;font-weight:700;">(tự sinh)</small></label><input id="inputTaskCode" placeholder="CV-2026-001" readonly style="background:#f1f5f9;font-weight:900;"></div>
         <div class="form-group vnp-span-2"><label>Nội dung công việc <em>*</em></label><input type="text" id="inputTaskName" placeholder="Nêu rõ nhiệm vụ, yêu cầu hoặc đầu việc cần thực hiện"></div>
         <div class="form-group"><label>Đơn vị / bộ phận</label><input id="inputTaskDept" placeholder="Văn phòng / Phòng Kế toán"></div>
         <div class="form-group"><label>Người thực hiện</label><input type="text" id="inputTaskAssignee" placeholder="Họ và tên"></div>
@@ -4115,6 +4115,11 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
             </div>
             
             <div class="form-group">
+                <label>Số lượng thiết bị</label>
+                <input type="number" id="inputSurveyQty" min="1" step="1" value="1" placeholder="1">
+            </div>
+
+            <div class="form-group">
                 <label>Hệ Điều Hành (OS)</label>
                 <select id="inputSurveyOS">
                     <optgroup label="Windows (Cũ đến Mới nhất)">
@@ -4219,7 +4224,7 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
         </div>
         <table>
             <thead>
-                <tr><th>Mã KS</th><th>Người Dùng</th><th>Bộ Phận</th><th>Thiết Bị</th><th>HĐH</th><th>BQ OS</th><th>Office</th><th>BQ Office</th><th>Phần Mềm NV</th><th>BQ NV</th><th>Cấu Hình</th><th class="action-col">Thao Tác</th></tr>
+                <tr><th>Mã KS</th><th>Người Dùng</th><th>Bộ Phận</th><th>Số lượng</th><th>Thiết Bị</th><th>HĐH</th><th>BQ OS</th><th>Office</th><th>BQ Office</th><th>Phần Mềm NV</th><th>BQ NV</th><th>Cấu Hình</th><th class="action-col">Thao Tác</th></tr>
             </thead>
             <tbody id="surveyTableBody"></tbody>
         </table>
@@ -4929,7 +4934,7 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
         { slipNo: "PGN-2026/08-01", from: "Trần Bình Dương", to: "Nguyễn Minh Ngọc", dept: "Kế toán", item: "Laptop Dell Latitude", status: "Mới 100%", date: "2026-08-26" }
     ];
     let dsKhaoSatChuyenSau = JSON.parse(localStorage.getItem('vinapaco_survey')) || [
-        { code: "KS-01", user: "Trần Bình Dương", dept: "Văn phòng TCT", device: "Laptop doanh nghiệp", os: "Windows 11 Pro", osLicense: "✅ Có bản quyền chính hãng", office: "Microsoft 365 (Cloud)", officeLicense: "✅ Bản quyền Tổng công ty", bizSoft: "Cloudoffice (Văn thư)", bizLicense: "✅ Có bản quyền chính hãng", specs: "Core i7, RAM 16GB, SSD 512GB" }
+        { code: "KS-01", user: "Trần Bình Dương", dept: "Văn phòng TCT", qty: 1, device: "Laptop doanh nghiệp", os: "Windows 11 Pro", osLicense: "✅ Có bản quyền chính hãng", office: "Microsoft 365 (Cloud)", officeLicense: "✅ Bản quyền Tổng công ty", bizSoft: "Cloudoffice (Văn thư)", bizLicense: "✅ Có bản quyền chính hãng", specs: "Core i7, RAM 16GB, SSD 512GB" }
     ];
     let danhSachCongViec = JSON.parse(localStorage.getItem('vinapaco_tasks')) || [
         { id: 1, name: "Hoàn thiện báo cáo điều hành Tháng 08", assignee: "Trần Bình Dương", dueDate: "2026-08-31", status: "Đang làm" }
@@ -6579,13 +6584,16 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
         let tbody = document.getElementById('surveyTableBody');
         if(!tbody) return; tbody.innerHTML = '';
         let countUnlicensed = 0;
+        let totalDevices = 0;
         dsKhaoSatChuyenSau.forEach((item, idx) => {
+            item.qty = Math.max(1, parseInt(item.qty, 10) || 1);
+            totalDevices += item.qty;
             let isOsWarn = (item.osLicense || '').includes('Chưa');
             let isOfficeWarn = (item.officeLicense || '').includes('Chưa');
             let isBizWarn = (item.bizLicense || '').includes('Chưa');
-            if (isOsWarn || isOfficeWarn || isBizWarn) countUnlicensed++;
+            if (isOsWarn || isOfficeWarn || isBizWarn) countUnlicensed += item.qty;
             tbody.innerHTML += `<tr>
-                <td style="text-align:center;"><b>${item.code}</b></td><td><b>${item.user}</b></td><td>${item.dept}</td><td>${item.device}</td>
+                <td style="text-align:center;"><b>${item.code}</b></td><td><b>${item.user}</b></td><td>${item.dept}</td><td style="text-align:center;font-weight:900;">${item.qty.toLocaleString('vi-VN')}</td><td>${item.device}</td>
                 <td>${item.os}</td><td style="text-align:center;"><span class="${isOsWarn?'badge-danger':'badge-net'}">${item.osLicense}</span></td>
                 <td>${item.office}</td><td style="text-align:center;"><span class="${isOfficeWarn?'badge-danger':'badge-net'}">${item.officeLicense}</span></td>
                 <td><b>${item.bizSoft}</b></td><td style="text-align:center;"><span class="${isBizWarn?'badge-danger':'badge-net'}">${item.bizLicense}</span></td>
@@ -6598,8 +6606,8 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
                 </td>
             </tr>`;
         });
-        if(document.getElementById('statSurveyTotal')) document.getElementById('statSurveyTotal').innerText = dsKhaoSatChuyenSau.length + " TB";
-        if(document.getElementById('statSurveyUnlicensed')) document.getElementById('statSurveyUnlicensed').innerText = countUnlicensed + " TB";
+        if(document.getElementById('statSurveyTotal')) document.getElementById('statSurveyTotal').innerText = totalDevices.toLocaleString('vi-VN') + " TB";
+        if(document.getElementById('statSurveyUnlicensed')) document.getElementById('statSurveyUnlicensed').innerText = countUnlicensed.toLocaleString('vi-VN') + " TB";
     }
 
     function suaKhaoSat(idx) {
@@ -6609,6 +6617,7 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
         document.getElementById('autoSurveyCode').value = item.code;
         document.getElementById('inputSurveyUser').value = item.user;
         document.getElementById('inputSurveyDept').value = item.dept;
+        document.getElementById('inputSurveyQty').value = Math.max(1, parseInt(item.qty, 10) || 1);
         document.getElementById('inputSurveyDeviceName').value = item.device;
         document.getElementById('inputSurveyOS').value = item.os;
         document.getElementById('inputSurveyOSLicense').value = item.osLicense;
@@ -6626,9 +6635,15 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
         document.getElementById('editSurveyIndex').value = -1;
         document.getElementById('inputSurveyUser').value = '';
         document.getElementById('inputSurveyDept').value = '';
+        document.getElementById('inputSurveyQty').value = '1';
         document.getElementById('inputSurveySpecs').value = '';
         document.getElementById('btnSurveyText').innerText = "LƯU";
         document.getElementById('btnCancelSurvey').classList.add('hidden');
+    }
+
+    function nextSurveyCode() {
+        const nums = dsKhaoSatChuyenSau.map(x => { const m = String(x?.code || '').match(/KS-(?:\d{4}-)?(\d+)$/i); return m ? Number(m[1]) : 0; }).filter(Number.isFinite);
+        return 'KS-' + String((Math.max(0, ...nums) + 1)).padStart(2, '0');
     }
 
     function luuHoacCapNhatKhaoSat() {
@@ -6638,8 +6653,9 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
         let editIdx = parseInt(document.getElementById('editSurveyIndex').value);
 
         let surveyData = {
-            code: editIdx >= 0 && dsKhaoSatChuyenSau[editIdx] ? dsKhaoSatChuyenSau[editIdx].code : "KS-0" + (dsKhaoSatChuyenSau.length + 1),
-            user: user, 
+            code: editIdx >= 0 && dsKhaoSatChuyenSau[editIdx] ? dsKhaoSatChuyenSau[editIdx].code : nextSurveyCode(),
+            user: user,
+            qty: Math.max(1, parseInt(document.getElementById('inputSurveyQty')?.value, 10) || 1), 
             dept: document.getElementById('inputSurveyDept').value || "Văn phòng TCT",
             device: document.getElementById('inputSurveyDeviceName').value,
             os: document.getElementById('inputSurveyOS').value, osLicense: document.getElementById('inputSurveyOSLicense').value,
@@ -6674,9 +6690,10 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
                 if (json && json.length > 0) {
                     json.forEach((row, idx) => {
                         dsKhaoSatChuyenSau.push({
-                            code: row['Mã KS'] || row['code'] || ("KS-0" + (dsKhaoSatChuyenSau.length + 1)),
+                            code: row['Mã KS'] || row['code'] || nextSurveyCode(),
                             user: row['Người Sử Dụng'] || row['user'] || "Chưa rõ",
                             dept: row['Bộ Phận'] || row['dept'] || "Văn phòng TCT",
+                            qty: Math.max(1, parseInt(row['Số lượng'] || row['Số lượng thiết bị'] || row['qty'], 10) || 1),
                             device: row['Loại Thiết Bị'] || row['device'] || "Laptop doanh nghiệp",
                             os: row['Hệ Điều Hành (OS)'] || row['os'] || "Windows 11 Pro",
                             osLicense: row['Bản Quyền OS'] || row['osLicense'] || "✅ Có bản quyền chính hãng",
@@ -6708,6 +6725,7 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
             "Mã KS": item.code,
             "Người Sử Dụng": item.user,
             "Bộ Phận": item.dept,
+            "Số lượng thiết bị": Math.max(1, parseInt(item.qty, 10) || 1),
             "Loại Thiết Bị": item.device,
             "Hệ Điều Hành (OS)": item.os,
             "Bản Quyền OS": item.osLicense,
@@ -7113,10 +7131,34 @@ function inBaoCaoTongHopKhoMuc(){const html=taoHTMLBaoCaoTongHopKhoMuc();const w
   const vnDate=v=>{if(!v)return'';const d=new Date(v+'T00:00:00');return isNaN(d)?v:d.toLocaleDateString('vi-VN')};
   const allTasks=()=>Array.isArray(window.danhSachCongViec)?window.danhSachCongViec:(typeof danhSachCongViec!=='undefined'?danhSachCongViec:[]);
   const saveAll=()=>{try{localStorage.setItem(PAPER_KEY,JSON.stringify(dsGiayInPhoto));}catch(e){} try{if(typeof saveToLocalStorage==='function')saveToLocalStorage();}catch(e){} try{if(typeof markCloudDirty==='function')markCloudDirty();}catch(e){}};
-  function normalizeTasks(){
-    const a=allTasks();
-    a.forEach((t,i)=>{t.id=t.id||('CV-'+Date.now()+'-'+i);t.code=t.code||('CV-'+new Date().getFullYear()+'-'+pad(i+1));t.dept=t.dept||'';t.manager=t.manager||'';t.startDate=t.startDate||'';t.priority=t.priority||'Bình thường';t.progress=Number.isFinite(Number(t.progress))?Math.max(0,Math.min(100,Number(t.progress))):(t.status==='Hoàn thành'?100:t.status==='Đang làm'?50:0);t.result=t.result||'';t.note=t.note||'';});
+  function nextTaskCode(){
+    const year=new Date().getFullYear();
+    const re=new RegExp('^CV-'+year+'-(\\d+)$','i');
+    let max=0;
+    allTasks().forEach(t=>{const m=String(t?.code||'').trim().match(re);if(m)max=Math.max(max,Number(m[1])||0);});
+    return 'CV-'+year+'-'+String(max+1).padStart(3,'0');
   }
+  function normalizeTasks(){
+    const a=allTasks(); let changed=false;
+    // Tự bổ sung mã cho toàn bộ công việc cũ chưa có mã; không thay đổi mã đã tồn tại.
+    a.forEach((t,i)=>{
+      if(!t || typeof t!=='object') return;
+      if(!t.id){t.id='CV-'+Date.now()+'-'+i;changed=true;}
+      if(!String(t.code||'').trim()){t.code=nextTaskCode();changed=true;}
+      if(t.dept==null){t.dept='';changed=true;}
+      if(t.manager==null){t.manager='';changed=true;}
+      if(t.startDate==null){t.startDate='';changed=true;}
+      if(!t.priority){t.priority='Bình thường';changed=true;}
+      const np=Number.isFinite(Number(t.progress))?Math.max(0,Math.min(100,Number(t.progress))):(t.status==='Hoàn thành'?100:t.status==='Đang làm'?50:0);
+      if(Number(t.progress)!==np){t.progress=np;changed=true;}
+      if(t.result==null){t.result='';changed=true;}
+      if(t.note==null){t.note='';changed=true;}
+    });
+    if(changed){try{localStorage.setItem('vinapaco_tasks',JSON.stringify(a));}catch(e){} try{if(typeof markCloudDirty==='function')markCloudDirty();}catch(e){}}
+    return changed;
+  }
+  function setNextTaskCode(){const e=document.getElementById('inputTaskCode');if(e&&Number(document.getElementById('editTaskIndex')?.value||-1)<0){normalizeTasks();e.value=nextTaskCode();}}
+
   function fillDeptSelects(){
     const depts=[...new Set(allTasks().map(x=>String(x.dept||'').trim()).filter(Boolean))].sort();
     ['vnpTaskDeptFilter','vnpRptDept'].forEach(id=>{const e=document.getElementById(id);if(!e)return;const val=e.value;e.innerHTML='<option value="">Tất cả đơn vị</option>'+depts.map(x=>`<option>${esc(x)}</option>`).join('');e.value=depts.includes(val)?val:'';});
@@ -7134,13 +7176,15 @@ function inBaoCaoTongHopKhoMuc(){const html=taoHTMLBaoCaoTongHopKhoMuc();const w
   window.luuHoacCapNhatCongViec=function(){
     normalizeTasks();const name=document.getElementById('inputTaskName')?.value.trim();if(!name){alert('Vui lòng nhập nội dung công việc');return}
     const idx=Number(document.getElementById('editTaskIndex')?.value??-1), status=document.getElementById('inputTaskStatus').value, progress=Math.max(0,Math.min(100,Number(document.getElementById('inputTaskProgress').value)||0));
-    const obj={code:document.getElementById('inputTaskCode').value.trim(),name,dept:document.getElementById('inputTaskDept').value.trim(),assignee:document.getElementById('inputTaskAssignee').value.trim(),manager:document.getElementById('inputTaskManager').value.trim(),startDate:document.getElementById('inputTaskStartDate').value,dueDate:document.getElementById('inputTaskDueDate').value,priority:document.getElementById('inputTaskPriority').value,status,progress:status==='Hoàn thành'?100:progress,result:document.getElementById('inputTaskResult').value.trim(),note:document.getElementById('inputTaskNote').value.trim(),updatedAt:new Date().toISOString()};
+    let code=document.getElementById('inputTaskCode').value.trim();
+    if(!code) code=nextTaskCode();
+    const obj={code,name,dept:document.getElementById('inputTaskDept').value.trim(),assignee:document.getElementById('inputTaskAssignee').value.trim(),manager:document.getElementById('inputTaskManager').value.trim(),startDate:document.getElementById('inputTaskStartDate').value,dueDate:document.getElementById('inputTaskDueDate').value,priority:document.getElementById('inputTaskPriority').value,status,progress:status==='Hoàn thành'?100:progress,result:document.getElementById('inputTaskResult').value.trim(),note:document.getElementById('inputTaskNote').value.trim(),updatedAt:new Date().toISOString()};
     if(idx>=0&&allTasks()[idx]){obj.id=allTasks()[idx].id;allTasks()[idx]=obj}else{obj.id='CV-'+Date.now();allTasks().push(obj)}
     try{saveToLocalStorage()}catch(e){} try{markCloudDirty()}catch(e){}
     window.huyBoCapNhatCongViec();vnpRenderTasks();if(typeof capNhat==='function')try{capNhat()}catch(e){}
   };
   window.suaCongViec=function(idx){normalizeTasks();const t=allTasks()[idx];if(!t)return;const set=(id,v)=>{const e=document.getElementById(id);if(e)e.value=v??''};set('editTaskIndex',idx);set('inputTaskCode',t.code);set('inputTaskName',t.name);set('inputTaskDept',t.dept);set('inputTaskAssignee',t.assignee);set('inputTaskManager',t.manager);set('inputTaskStartDate',t.startDate);set('inputTaskDueDate',t.dueDate);set('inputTaskPriority',t.priority||'Bình thường');set('inputTaskStatus',t.status||'Chưa làm');set('inputTaskProgress',t.progress??0);set('inputTaskResult',t.result);set('inputTaskNote',t.note);document.getElementById('btnTaskText').textContent='CẬP NHẬT CÔNG VIỆC';document.getElementById('btnCancelTask').classList.remove('hidden');document.getElementById('formCardTask').scrollIntoView({behavior:'smooth',block:'center'})};
-  window.huyBoCapNhatCongViec=function(){['editTaskIndex','inputTaskCode','inputTaskName','inputTaskDept','inputTaskManager','inputTaskStartDate','inputTaskDueDate','inputTaskResult','inputTaskNote'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});document.getElementById('inputTaskAssignee').value='';document.getElementById('inputTaskPriority').value='Bình thường';document.getElementById('inputTaskStatus').value='Chưa làm';document.getElementById('inputTaskProgress').value='0';document.getElementById('editTaskIndex').value='-1';document.getElementById('btnTaskText').textContent='LƯU CÔNG VIỆC';document.getElementById('btnCancelTask').classList.add('hidden')};
+  window.huyBoCapNhatCongViec=function(){['editTaskIndex','inputTaskCode','inputTaskName','inputTaskDept','inputTaskManager','inputTaskStartDate','inputTaskDueDate','inputTaskResult','inputTaskNote'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});document.getElementById('inputTaskAssignee').value='';document.getElementById('inputTaskPriority').value='Bình thường';document.getElementById('inputTaskStatus').value='Chưa làm';document.getElementById('inputTaskProgress').value='0';document.getElementById('editTaskIndex').value='-1';document.getElementById('btnTaskText').textContent='LƯU CÔNG VIỆC';document.getElementById('btnCancelTask').classList.add('hidden');setNextTaskCode()};
   window.doiTrangThaiNhanhCongViec=function(idx){const t=allTasks()[idx];if(!t)return;const seq={'Chưa làm':'Đang làm','Đang làm':'Hoàn thành','Hoàn thành':'Chưa làm','Tạm dừng':'Đang làm'};t.status=seq[t.status]||'Đang làm';t.progress=t.status==='Hoàn thành'?100:t.status==='Đang làm'?Math.max(Number(t.progress)||0,10):0;try{saveToLocalStorage();markCloudDirty()}catch(e){}vnpRenderTasks()};
   window.xoaCongViec=function(idx){const t=allTasks()[idx];if(!t)return;if(!confirm('Xóa công việc này khỏi danh sách quản lý?'))return;allTasks().splice(idx,1);try{saveToLocalStorage();markCloudDirty()}catch(e){}vnpRenderTasks()};
   window.vnpTaskToday=function(){const d=today();document.getElementById('vnpRptFrom').value=d;document.getElementById('vnpRptTo').value=d;vnpTaskSwitchView('reports',document.querySelector('.vnp-task-tabs button:nth-child(2)'));vnpRenderReport()};
@@ -7204,7 +7248,7 @@ function inBaoCaoTongHopKhoMuc(){const html=taoHTMLBaoCaoTongHopKhoMuc();const w
     if(u) u.addEventListener('change',window.vnpUpdatePaperConversion);
     window.vnpUpdatePaperConversion();
   });
-  document.addEventListener('DOMContentLoaded',function(){normalizeTasks();const d=today();document.getElementById('vnpPaperDate')&&(document.getElementById('vnpPaperDate').value=d);document.getElementById('vnpRptFrom')&&(document.getElementById('vnpRptFrom').value=d);document.getElementById('vnpRptTo')&&(document.getElementById('vnpRptTo').value=d);vnpRenderTasks();vnpRenderPaper()});
+  document.addEventListener('DOMContentLoaded',function(){normalizeTasks();setNextTaskCode();const d=today();document.getElementById('vnpPaperDate')&&(document.getElementById('vnpPaperDate').value=d);document.getElementById('vnpRptFrom')&&(document.getElementById('vnpRptFrom').value=d);document.getElementById('vnpRptTo')&&(document.getElementById('vnpRptTo').value=d);vnpRenderTasks();vnpRenderPaper()});
 })();
 
 function xuatBaoCaoXNTExcel() {

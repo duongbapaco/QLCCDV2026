@@ -380,6 +380,10 @@
         .salary-table th { white-space:normal !important; word-break:normal; padding:9px 7px !important; font-size:11.5px !important; }
         .salary-table td { padding:8px 7px !important; font-size:13px !important; }
         .salary-table td input.cell-input { width:100% !important; min-width:0 !important; height:34px !important; padding:0 7px !important; font-size:12px !important; }
+        .salary-table td.salary-factor-edit { padding:4px 5px !important; background:#f0f9ff; }
+        .salary-table .salary-factor-input { text-align:center !important; font-weight:900 !important; color:#075985 !important; background:#fff !important; border:1px solid #93c5fd !important; }
+        .salary-table .salary-factor-input:focus { border-color:#0284c7 !important; box-shadow:0 0 0 2px rgba(2,132,199,.15) !important; }
+
         .salary-table .c-stt { width:45px; }
         .salary-table .c-name { width:145px; }
         .salary-table .c-phone { width:105px; }
@@ -5498,8 +5502,20 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
                 <td style="text-align:center">${idx+1}</td>
                 <td style="font-weight:800">${i.hoTen || ''}</td>
                 <td>${i.sdt || ''}</td><td>${i.nganHang || ''}</td><td>${i.stk || ''}</td>
-                <td style="text-align:right">${i.hsl_cb ?? ''}</td><td style="text-align:right">${i.pc_cb ?? ''}</td>
-                <td style="text-align:right">${i.hsl_cv ?? ''}</td><td style="text-align:right">${i.pc_cv ?? ''}</td>
+                <td class="salary-factor-edit">
+                    <input class="cell-input num-center salary-factor-input" type="number" step="0.01" min="0"
+                        value="${Number(i.hsl_cb ?? 0)}"
+                        onchange="updateStaffField(${idx}, 'hsl_cb', this.value)"
+                        title="Sửa HSL.CB – thay đổi sẽ áp dụng cho nhân sự này ở tất cả tháng/năm">
+                </td>
+                <td style="text-align:right">${i.pc_cb ?? ''}</td>
+                <td class="salary-factor-edit">
+                    <input class="cell-input num-center salary-factor-input" type="number" step="0.01" min="0"
+                        value="${Number(i.hsl_cv ?? 0)}"
+                        onchange="updateStaffField(${idx}, 'hsl_cv', this.value)"
+                        title="Sửa HSL.CV – thay đổi sẽ áp dụng cho nhân sự này ở tất cả tháng/năm">
+                </td>
+                <td style="text-align:right">${i.pc_cv ?? ''}</td>
                 <td style="text-align:center">${i.nc_tg ?? 0}</td><td style="text-align:center">${i.nc_p ?? 0}</td><td style="text-align:center">${i.nc_l ?? 0}</td>
                 <td style="text-align:center">${i.k_ht ?? 1}</td><td style="text-align:right">${money(i.tam_ung)}</td>
                 <td style="text-align:right">${money(i.thucLinhLCB)}</td><td style="text-align:right">${money(i.thucLinhCV)}</td>
@@ -5580,30 +5596,87 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
     }
 
     function updateStaffField(idx, field, value) {
-        let ds = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey]) ? coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu : [];
-        if (ds && ds[idx]) {
-            let targetName = ds[idx].hoTen;
-            let cleanedVal = String(value).trim();
+        const current = (coSoDuLieuNamThang[currentNamKey] && coSoDuLieuNamThang[currentNamKey][currentThangKey])
+            ? coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu : [];
+        if (!current || !current[idx]) return;
 
-            if (field === 'sdt' || field === 'stk' || field === 'nganHang') {
-                for (let yKey in coSoDuLieuNamThang) {
-                    for (let mKey in coSoDuLieuNamThang[yKey]) {
-                        let monthNhansu = coSoDuLieuNamThang[yKey][mKey].nhansu;
-                        if (monthNhansu) {
-                            let foundStaff = monthNhansu.find(i => i.hoTen === targetName);
-                            if (foundStaff) {
-                                foundStaff[field] = cleanedVal;
-                            }
-                        }
-                    }
+        const targetName = String(current[idx].hoTen || '').trim();
+        const cleanedVal = String(value ?? '').trim();
+
+        // Thông tin định danh và HỆ SỐ LƯƠNG là thông tin dùng chung theo nhân sự:
+        // khi sửa ở bất kỳ tháng/năm nào, cập nhật đồng nhất cho toàn bộ lịch sử dữ liệu.
+        if (field === 'sdt' || field === 'stk' || field === 'nganHang' || field === 'hsl_cb' || field === 'hsl_cv') {
+            let numericVal = parseFloat(cleanedVal);
+            if (field === 'hsl_cb' || field === 'hsl_cv') {
+                if (!Number.isFinite(numericVal) || numericVal < 0) {
+                    alert('Hệ số lương phải là số từ 0 trở lên.');
+                    renderStaffMasterTable();
+                    return;
                 }
-            } else {
-                if (field === 'k_ht') ds[idx][field] = parseFloat(value) || 1.0;
-                else if (field === 'tam_ung') ds[idx][field] = parseVNDMoney(value);
-                else ds[idx][field] = parseFloat(value) || 0;
+                numericVal = Math.round(numericVal * 100) / 100;
             }
-            capNhat();
+
+            Object.keys(coSoDuLieuNamThang || {}).forEach(yKey => {
+                const yearData = coSoDuLieuNamThang[yKey];
+                if (!yearData || typeof yearData !== 'object') return;
+                Object.keys(yearData).forEach(mKey => {
+                    const monthNhansu = yearData[mKey] && yearData[mKey].nhansu;
+                    if (!Array.isArray(monthNhansu)) return;
+                    const foundStaff = monthNhansu.find(i =>
+                        String(i.hoTen || '').trim().toLowerCase() === targetName.toLowerCase()
+                    );
+                    if (!foundStaff) return;
+
+                    if (field === 'sdt' || field === 'stk' || field === 'nganHang') {
+                        foundStaff[field] = cleanedVal;
+                    } else {
+                        foundStaff[field] = numericVal;
+                    }
+                });
+            });
+
+            // Hệ số lương thay đổi phải làm lại tiền lương ở TẤT CẢ tháng/năm,
+            // nhưng vẫn giữ nguyên hệ số K (k_ht) riêng của từng tháng.
+            if (field === 'hsl_cb' || field === 'hsl_cv') {
+                Object.keys(coSoDuLieuNamThang || {}).forEach(yKey => {
+                    const yearData = coSoDuLieuNamThang[yKey];
+                    if (!yearData || typeof yearData !== 'object') return;
+                    Object.keys(yearData).forEach(mKey => {
+                        const md = yearData[mKey];
+                        if (!md || !md.config || !Array.isArray(md.nhansu)) return;
+                        const cfg = md.config;
+                        md.nhansu.forEach(i => {
+                            const pcCbActual = (i.hoTen === "Nguyễn Minh Ngọc") ? (i.pc_cb || 0) : 0;
+                            const pcCvActual = (i.hoTen === "Nguyễn Minh Ngọc") ? (i.pc_cv || 0) : 0;
+                            i.luongHDLD = Math.round(((i.hsl_cb || 0) + pcCbActual) * (cfg.mucTTV || 0));
+                            i.luongCBThang = Math.round(((i.hsl_cb || 0) + pcCbActual) * (cfg.mucLCB || 0));
+                            i.luongCBTG = Math.round(i.luongCBThang / (cfg.ncd || 22) * (i.nc_tg || 0));
+                            i.luongCBLP = Math.round(i.luongHDLD / (cfg.ncd || 22) * ((i.nc_p || 0) + (i.nc_l || 0)));
+                            i.tongLCB = Math.round(i.luongCBTG * (i.k_ht || 1.0)) + i.luongCBLP;
+                            i.bhtn = Math.round(i.luongHDLD * 0.01);
+                            i.bhxh = Math.round(i.luongHDLD * 0.095);
+                            i.thucLinhLCB = i.tongLCB - i.bhtn - i.bhxh;
+                            i.luongCVGoc = Math.round(((i.hsl_cv || 0) + pcCvActual) * (cfg.mucLCV || 0));
+                            i.luongCVTT = Math.round(i.luongCVGoc / (cfg.ncd || 22) * (i.nc_tg || 0) * (i.k_ht || 1.0));
+                            i.thucLinhCV = i.luongCVTT - (i.tam_ung || 0);
+                            i.thucLinhCuoiCung = i.thucLinhLCB + i.thucLinhCV;
+                            i.tongCbCv = i.tongLCB + i.luongCVTT;
+                        });
+                    });
+                });
+            }
+
+            scheduleSafeLocalSave(250);
+            capNhatNhanDienNamLuuTru();
+            renderStaffMasterTable();
+            return;
         }
+
+        if (field === 'k_ht') current[idx][field] = parseFloat(value) || 1.0;
+        else if (field === 'tam_ung') current[idx][field] = parseVNDMoney(value);
+        else current[idx][field] = parseFloat(value) || 0;
+
+        capNhat();
     }
 
     function capNhatNhanDienNamLuuTru() {

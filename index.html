@@ -4606,6 +4606,7 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
         try { saveEmergencyLocalSnapshot('before-cloud-apply'); } catch(e) {}
         suppressCloudSync = true;
         coSoDuLieuNamThang = snap.dataNamThang;
+        removePhamTienLongSeedRecord(coSoDuLieuNamThang);
         // Cloud cũ có thể thiếu nhân sự mới; bổ sung theo mẫu mà không ghi đè dữ liệu đã có.
         Object.keys(coSoDuLieuNamThang || {}).forEach(y => {
             Object.keys(coSoDuLieuNamThang[y] || {}).forEach(m => {
@@ -4862,7 +4863,6 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
         {"stt": 6, "hoTen": "Võ Thị Thanh Tuyền", "sdt": "0988678901", "nganHang": "Vietcombank", "stk": "106.868.653.975", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.00, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
         {"stt": 7, "hoTen": "Trần Thị Thanh", "sdt": "0988789012", "nganHang": "Vietcombank", "stk": "105.004.294.439", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.10, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
         {"stt": 8, "hoTen": "Trần Đức Chiến", "sdt": "0988890123", "nganHang": "BIDV", "stk": "102.004.797.815", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.85, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-        {"stt": 9, "hoTen": "Phạm Tiến Long", "sdt": "0988901234", "nganHang": "Techcombank", "stk": "104.004.583.045", "hsl_cb": 1.94, "pc_cb": 0, "hsl_cv": 2.30, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12},
         {"stt": 10, "hoTen": "Đinh Hữu Vinh", "sdt": "0989012345", "nganHang": "Agribank", "stk": "100.004.797.831", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.80, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
         {"stt": 11, "hoTen": "Bùi Đình Điệp", "sdt": "0989123456", "nganHang": "VietinBank", "stk": "101.004.882.063", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.80, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
         {"stt": 12, "hoTen": "Hoàng Mạnh Hùng", "sdt": "0989234567", "nganHang": "Vietcombank", "stk": "100.006.166.724", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.90, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
@@ -4875,7 +4875,32 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
     function generateYearMonthsData(config) {
         const dsThang = ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"];
         let result = {};
-        dsThang.forEach(thang => {
+        dsThang.fo
+    // Migration an toàn: chỉ loại bỏ đúng bản ghi mẫu Phạm Tiến Long được nhúng sẵn.
+    // Không đụng tới các bản ghi khác và không xóa dữ liệu người dùng đã chỉnh sửa.
+    function removePhamTienLongSeedRecord(data) {
+        if (!data || typeof data !== 'object') return false;
+        let changed = false;
+        Object.keys(data).forEach(y => {
+            const months = data[y];
+            if (!months || typeof months !== 'object') return;
+            Object.keys(months).forEach(m => {
+                const md = months[m];
+                if (!md || !Array.isArray(md.nhansu)) return;
+                const before = md.nhansu.length;
+                md.nhansu = md.nhansu.filter(ns => !(
+                    String(ns?.hoTen || '').trim() === 'Phạm Tiến Long' &&
+                    String(ns?.sdt || '').trim() === '0988901234' &&
+                    String(ns?.nganHang || '').trim() === 'Techcombank' &&
+                    String(ns?.stk || '').trim() === '104.004.583.045'
+                ));
+                if (md.nhansu.length !== before) changed = true;
+            });
+        });
+        return changed;
+    }
+
+rEach(thang => {
             result[thang] = {
                 config: { ...config },
                 nhansu: JSON.parse(JSON.stringify(defaultNhansuTemplate))
@@ -4901,7 +4926,7 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
             Object.keys(yData).forEach(mKey => {
                 if (yData[mKey] && yData[mKey].nhansu) {
                     yData[mKey].nhansu.forEach((ns, index) => {
-                        let templateDefault = defaultNhansuTemplate[index] || defaultNhansuTemplate[0];
+                        let templateDefault = defaultNhansuTemplate.find(t => String(t.hoTen||'').trim().toLowerCase() === String(ns.hoTen||'').trim().toLowerCase()) || defaultNhansuTemplate[0];
                         if (!ns.sdt) ns.sdt = templateDefault.sdt;
                         if (!ns.nganHang) ns.nganHang = templateDefault.nganHang;
                         if (!ns.stk) ns.stk = templateDefault.stk;
@@ -5510,7 +5535,7 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
         } else {
             boSungDayDuNhanSuTheoMau(false);
             coSoDuLieuNamThang[currentNamKey][currentThangKey].nhansu.forEach((ns, index) => {
-                let templateDefault = defaultNhansuTemplate[index] || defaultNhansuTemplate[0];
+                let templateDefault = defaultNhansuTemplate.find(t => String(t.hoTen||'').trim().toLowerCase() === String(ns.hoTen||'').trim().toLowerCase()) || defaultNhansuTemplate[0];
                 if (!ns.sdt) ns.sdt = templateDefault.sdt;
                 if (!ns.nganHang) ns.nganHang = templateDefault.nganHang;
                 if (!ns.stk) ns.stk = templateDefault.stk;

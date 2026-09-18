@@ -4876,7 +4876,7 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
         const dsThang = ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"];
         let result = {};
         dsThang.fo
-    // Migration an toàn: chỉ loại bỏ đúng bản ghi mẫu Phạm Tiến Long được nhúng sẵn.
+    // Migration an toàn: loại bỏ toàn bộ bản ghi có tên cần loại bỏ.
     // Không đụng tới các bản ghi khác và không xóa dữ liệu người dùng đã chỉnh sửa.
     function removePhamTienLongSeedRecord(data) {
         if (!data || typeof data !== 'object') return false;
@@ -4889,7 +4889,7 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
                 if (!md || !Array.isArray(md.nhansu)) return;
                 const before = md.nhansu.length;
                 md.nhansu = md.nhansu.filter(ns => !(
-                    String(ns?.hoTen || '').trim() === 'Phạm Tiến Long' &&
+                    String(ns?.hoTen || '').trim() === '\u0050h\u1ea1m Ti\u1ebfn Long'
                     String(ns?.sdt || '').trim() === '0988901234' &&
                     String(ns?.nganHang || '').trim() === 'Techcombank' &&
                     String(ns?.stk || '').trim() === '104.004.583.045'

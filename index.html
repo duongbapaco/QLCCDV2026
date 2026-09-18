@@ -4606,7 +4606,7 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
         try { saveEmergencyLocalSnapshot('before-cloud-apply'); } catch(e) {}
         suppressCloudSync = true;
         coSoDuLieuNamThang = snap.dataNamThang;
-        removePhamTienLongSeedRecord(coSoDuLieuNamThang);
+        try { removeRemovedPersonSeed(coSoDuLieuNamThang); } catch(e) {}
         // Cloud cũ có thể thiếu nhân sự mới; bổ sung theo mẫu mà không ghi đè dữ liệu đã có.
         Object.keys(coSoDuLieuNamThang || {}).forEach(y => {
             Object.keys(coSoDuLieuNamThang[y] || {}).forEach(m => {
@@ -4842,16 +4842,16 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
     }
     document.addEventListener('visibilitychange',()=>{ if(!document.hidden && !syncInProgress) dongBoThongMinh(false); });
     window.addEventListener('online',()=>{ if(!syncInProgress) dongBoThongMinh(false); });
-    document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>dongBoThongMinh(false),50)});
+    // Đồng bộ ban đầu chỉ chạy một lần trong startAutoCloudSync để tránh request trùng.
     function startAutoCloudSync() {
         clearInterval(syncTimer);
-        syncTimer = setInterval(() => { if (!document.hidden) dongBoThongMinh(false); }, 5000);
-        setTimeout(() => dongBoThongMinh(false), 350);
+        syncTimer = setInterval(() => { if (!document.hidden && !syncInProgress) dongBoThongMinh(false); }, 30000);
+        setTimeout(() => { if (!document.hidden) dongBoThongMinh(false); }, 2200);
         setTimeout(() => {
             tuDongTaoThuMucDriveNamThang(false);
             window.__refreshWeatherNow?.();
             window.__refreshForecast10Days?.();
-        }, 1800);
+        }, 7000);
     }
 
     const defaultNhansuTemplate = [
@@ -4875,32 +4875,7 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
     function generateYearMonthsData(config) {
         const dsThang = ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"];
         let result = {};
-        dsThang.fo
-    // Migration an toàn: loại bỏ toàn bộ bản ghi có tên cần loại bỏ.
-    // Không đụng tới các bản ghi khác và không xóa dữ liệu người dùng đã chỉnh sửa.
-    function removePhamTienLongSeedRecord(data) {
-        if (!data || typeof data !== 'object') return false;
-        let changed = false;
-        Object.keys(data).forEach(y => {
-            const months = data[y];
-            if (!months || typeof months !== 'object') return;
-            Object.keys(months).forEach(m => {
-                const md = months[m];
-                if (!md || !Array.isArray(md.nhansu)) return;
-                const before = md.nhansu.length;
-                md.nhansu = md.nhansu.filter(ns => !(
-                    String(ns?.hoTen || '').trim() === '\u0050h\u1ea1m Ti\u1ebfn Long'
-                    String(ns?.sdt || '').trim() === '0988901234' &&
-                    String(ns?.nganHang || '').trim() === 'Techcombank' &&
-                    String(ns?.stk || '').trim() === '104.004.583.045'
-                ));
-                if (md.nhansu.length !== before) changed = true;
-            });
-        });
-        return changed;
-    }
-
-rEach(thang => {
+        dsThang.forEach(thang => {
             result[thang] = {
                 config: { ...config },
                 nhansu: JSON.parse(JSON.stringify(defaultNhansuTemplate))
@@ -4918,7 +4893,43 @@ rEach(thang => {
         "2030": generateYearMonthsData({ ncd: 22, mucLCB: 2530000, mucTTV: 4140000, mucLCV: 2087970 })
     };
 
-    let coSoDuLieuNamThang = JSON.parse(localStorage.getItem('vinapaco_data_namthang')) || defaultCoSoDuLieuNamThang;
+    let coSoDuLieuNamThang;
+    let __vinapacoDataLoadError = false;
+    try {
+        const __rawData = localStorage.getItem('vinapaco_data_namthang');
+        coSoDuLieuNamThang = __rawData ? JSON.parse(__rawData) : defaultCoSoDuLieuNamThang;
+    } catch(e) {
+        // Không ghi đè dữ liệu hỏng. Giữ lại bản raw để có thể khôi phục thủ công.
+        __vinapacoDataLoadError = true;
+        try { localStorage.setItem('vinapaco_data_namthang_corrupt_backup', localStorage.getItem('vinapaco_data_namthang') || ''); } catch(_) {}
+        coSoDuLieuNamThang = defaultCoSoDuLieuNamThang;
+    }
+
+    // Migration an toàn: chỉ loại bỏ đúng nhân sự mẫu đã yêu cầu xóa, không đụng dữ liệu khác.
+    const __removedPersonName = '\u0050h\u1ea1m \u0054i\u1ebfn \u004cong';
+    function removeRemovedPersonSeed(data) {
+        if (!data || typeof data !== 'object') return false;
+        let changed = false;
+        Object.keys(data).forEach(y => {
+            const months = data[y];
+            if (!months || typeof months !== 'object') return;
+            Object.keys(months).forEach(m => {
+                const md = months[m];
+                if (!md || !Array.isArray(md.nhansu)) return;
+                const before = md.nhansu.length;
+                md.nhansu = md.nhansu.filter(ns => String(ns?.hoTen || '').trim() !== __removedPersonName);
+                if (md.nhansu.length !== before) changed = true;
+            });
+        });
+        return changed;
+    }
+    let __removedPersonChanged = false;
+    try { __removedPersonChanged = removeRemovedPersonSeed(coSoDuLieuNamThang); } catch(e) { console.warn('Data migration:', e); }
+    if (__removedPersonChanged) {
+        try { localStorage.setItem('vinapaco_data_namthang_before_remove_person', JSON.stringify(coSoDuLieuNamThang)); } catch(e) {}
+        try { localStorage.setItem('vinapaco_data_namthang', JSON.stringify(coSoDuLieuNamThang)); } catch(e) {}
+    }
+
     
     Object.keys(coSoDuLieuNamThang).forEach(yKey => {
         let yData = coSoDuLieuNamThang[yKey];
@@ -5628,6 +5639,17 @@ rEach(thang => {
         });
     }
 
+    let __localSaveTimer = null;
+    function scheduleSafeLocalSave(delay=450) {
+        clearTimeout(__localSaveTimer);
+        __localSaveTimer = setTimeout(() => {
+            try { saveToLocalStorage(); } catch(e) { console.error('Lưu dữ liệu cục bộ:', e); }
+        }, delay);
+    }
+    window.addEventListener('beforeunload', () => {
+        try { clearTimeout(__localSaveTimer); saveToLocalStorage(); } catch(e) {}
+    });
+
     function capNhat() {
         capNhatNhanDienNamLuuTru();
         let monthData = coSoDuLieuNamThang[currentNamKey] ? coSoDuLieuNamThang[currentNamKey][currentThangKey] : null;
@@ -5656,24 +5678,29 @@ rEach(thang => {
         });
 
         const safeRender = (fn, name) => { try { fn(); } catch(e) { console.error(name + ':', e); } };
-        safeRender(renderTimekeepingDetailTable, 'Chấm công');
-        safeRender(renderStaffMasterTable, 'Nhân sự');
-        safeRender(renderTableCB, 'Lương CB');
-        safeRender(renderTableCV, 'Lương CV');
-        safeRender(renderLeaveTable, 'Phép năm');
-        safeRender(renderOfficePaymentTable, 'Thanh toán VP');
-        safeRender(renderInkInventoryTable, 'Kho mực');
-        safeRender(renderDeliveryTable, 'Giao nhận');
-        safeRender(renderTelecomPaymentTable, 'Viễn thông');
-        safeRender(renderSurveyTable, 'Khảo sát');
-        safeRender(renderLicenseManager, 'Bản quyền');
-        safeRender(renderTaskTable, 'Công việc');
-        safeRender(renderAccountTable, 'Tài khoản');
-        safeRender(renderMonthlySalaryDashboard, 'Quỹ lương');
+        // Chỉ dựng lại module đang hiển thị. Các bảng khác sẽ được dựng khi người dùng mở tab.
+        const active = document.querySelector('.tab-pane.active')?.id || 'dashboardTab';
+        const renderers = {
+            dashboardTab: [capNhatKPI, veTatCaBieuDoDashboard],
+            monthlySalaryDashboardTab: [renderMonthlySalaryDashboard],
+            accountManagerTab: [renderAccountTable],
+            taskTab: [renderTaskTable],
+            timekeepingDetailTab: [renderTimekeepingDetailTable],
+            staffMasterTab: [renderStaffMasterTable],
+            salaryCBTab: [renderTableCB],
+            salaryCVTab: [renderTableCV],
+            leaveTab: [renderLeaveTable],
+            officePaymentTab: [renderOfficePaymentTable],
+            inkInventoryTab: [renderInkInventoryTable],
+            deliverySlipTab: [renderDeliveryTable],
+            telecomPaymentTab: [renderTelecomPaymentTable],
+            surveyTab: [renderSurveyTable],
+            licenseManagerTab: [renderLicenseManager]
+        };
+        (renderers[active] || []).forEach((fn,i) => safeRender(fn, 'Render '+active+' '+i));
+        if (active !== 'dashboardTab') safeRender(capNhatKPI, 'KPI');
         safeRender(khoiTaoDanhSachNhanSuModalSelect, 'Chọn nhân sự');
-        safeRender(capNhatKPI, 'KPI');
-        safeRender(veTatCaBieuDoDashboard, 'Biểu đồ');
-        safeRender(saveToLocalStorage, 'Lưu cục bộ');
+        scheduleSafeLocalSave();
     }
 
     function layTatCaDanhSachVPPTheoNam() {
@@ -7496,6 +7523,18 @@ function xuatBaoCaoXNTExcel() {
 
         if (tabId === 'accountManagerTab') renderAccountTable();
         else if (tabId === 'staffMasterTab') renderStaffMasterTable();
+        else if (tabId === 'timekeepingDetailTab') renderTimekeepingDetailTable();
+        else if (tabId === 'salaryCBTab') renderTableCB();
+        else if (tabId === 'salaryCVTab') renderTableCV();
+        else if (tabId === 'leaveTab') renderLeaveTable();
+        else if (tabId === 'officePaymentTab') renderOfficePaymentTable();
+        else if (tabId === 'inkInventoryTab') renderInkInventoryTable();
+        else if (tabId === 'deliverySlipTab') renderDeliveryTable();
+        else if (tabId === 'telecomPaymentTab') renderTelecomPaymentTable();
+        else if (tabId === 'surveyTab') renderSurveyTable();
+        else if (tabId === 'licenseManagerTab') renderLicenseManager();
+        else if (tabId === 'taskTab') renderTaskTable();
+        else if (tabId === 'monthlySalaryDashboardTab') renderMonthlySalaryDashboard();
         else if (tabId === 'dashboardTab') {
             try { veTatCaBieuDoDashboard(); } catch(e) { console.warn('Dashboard render:', e); }
             setTimeout(() => { try { veTatCaBieuDoDashboard(); } catch(e) {} }, 250);
@@ -8420,7 +8459,7 @@ function xuatBaoCaoXNTExcel() {
 
         try { khoiTaoDanhSachNamTuSinh(); } catch(e) { console.error('Year init:', e); }
         try { doiThangHoSoLuong(); } catch(e) { console.error('Month init:', e); }
-        try { setTimeout(() => { kiemTraDuLieuTatCaTabs(false); danhDauTruongNhapSai(); }, 700); } catch(e) { console.error('Data checker init:', e); }
+        try { setTimeout(() => { try { danhDauTruongNhapSai(); } catch(e) {} }, 2500); } catch(e) { console.error('Data checker init:', e); }
 
         // Thời tiết luôn khởi động độc lập với đồng bộ Cloud.
         setTimeout(() => {
@@ -8445,7 +8484,7 @@ function xuatBaoCaoXNTExcel() {
             setInterval(() => { if(!document.hidden) window.__refreshWeatherNow?.(); }, 60000);
             // Dự báo 10 ngày làm mới định kỳ để phản ánh các lần cập nhật mô hình thời tiết.
             setInterval(() => { if(!document.hidden) window.__refreshForecast10Days?.(); }, 10*60*1000);
-        }, 200);
+        }, 2500);
         // Theo dõi vị trí nền nhưng KHÔNG ghi đè địa điểm người dùng đã chọn thủ công.
         // Chỉ nhận fix có độ chính xác hợp lý và thay đổi đủ lớn để tránh gọi API liên tục.
         try {
@@ -8477,7 +8516,7 @@ function xuatBaoCaoXNTExcel() {
         try { setSyncState(pendingSync ? 'syncing' : 'online', pendingSync ? 'Có dữ liệu chờ đồng bộ' : 'Đang kiểm tra Cloud', lastSyncAt ? `lần cuối ${new Date(lastSyncAt).toLocaleString('vi-VN')}` : 'chờ xác nhận kết nối'); } catch(e) {}
 
         // Tự kiểm tra kết nối Drive/GAS ở nền; không chặn giao diện.
-        setTimeout(() => { try { tuDongTaoThuMucDriveNamThang(false); } catch(e) {} }, 1500);
+        setTimeout(() => { try { tuDongTaoThuMucDriveNamThang(false); } catch(e) {} }, 8000);
 
         try {
             const savedTab = localStorage.getItem('vinapaco_active_tab');

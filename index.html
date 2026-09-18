@@ -4606,7 +4606,7 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
         try { saveEmergencyLocalSnapshot('before-cloud-apply'); } catch(e) {}
         suppressCloudSync = true;
         coSoDuLieuNamThang = snap.dataNamThang;
-        try { removeRemovedPersonSeed(coSoDuLieuNamThang); } catch(e) {}
+        try { restorePhamTienLongAsPersonnel16(coSoDuLieuNamThang); } catch(e) {}
         // Cloud cũ có thể thiếu nhân sự mới; bổ sung theo mẫu mà không ghi đè dữ liệu đã có.
         Object.keys(coSoDuLieuNamThang || {}).forEach(y => {
             Object.keys(coSoDuLieuNamThang[y] || {}).forEach(m => {
@@ -4869,7 +4869,7 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
         {"stt": 13, "hoTen": "Ma Trọng Luận", "sdt": "0989345678", "nganHang": "Vietcombank", "stk": "106.869.104.133", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.85, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
         {"stt": 14, "hoTen": "Trần Bình Dương", "sdt": "0987456789", "nganHang": "Vietcombank", "stk": "106.873.586.343", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 2.40, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
         {"stt": 15, "hoTen": "Đặng Trần Trung", "sdt": "0989567890", "nganHang": "BIDV", "stk": "107.002.654.931", "hsl_cb": 1.79, "pc_cb": 0, "hsl_cv": 1.85, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 3000000, "phep_cap": 12},
-        {"stt": 16, "hoTen": "Phạm Huy Chiến", "sdt": "0989678901", "nganHang": "Techcombank", "stk": "102.004.830.132", "hsl_cb": 1.94, "pc_cb": 0, "hsl_cv": 2.20, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12}
+        {"stt": 16, "hoTen": "Phạm Tiến Long", "sdt": "0989678901", "nganHang": "Techcombank", "stk": "102.004.830.132", "hsl_cb": 1.94, "pc_cb": 0, "hsl_cv": 2.20, "pc_cv": 0, "nc_tg": 22, "nc_p": 0, "nc_l": 0, "k_ht": 1.0, "tam_ung": 4000000, "phep_cap": 12}
     ];
 
     function generateYearMonthsData(config) {
@@ -4905,9 +4905,9 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
         coSoDuLieuNamThang = defaultCoSoDuLieuNamThang;
     }
 
-    // Migration an toàn: chỉ loại bỏ đúng nhân sự mẫu đã yêu cầu xóa, không đụng dữ liệu khác.
-    const __removedPersonName = '\u0050h\u1ea1m \u0054i\u1ebfn \u004cong';
-    function removeRemovedPersonSeed(data) {
+    // Migration an toàn: khôi phục Phạm Tiến Long ở STT 16.
+    // Chỉ đổi bản ghi cũ STT 16 nếu còn tồn tại; không xóa hay thay đổi dữ liệu nhân sự khác.
+    function restorePhamTienLongAsPersonnel16(data) {
         if (!data || typeof data !== 'object') return false;
         let changed = false;
         Object.keys(data).forEach(y => {
@@ -4916,17 +4916,21 @@ body.vnp-fullscreen-module .widget-heading{padding-left:0!important}
             Object.keys(months).forEach(m => {
                 const md = months[m];
                 if (!md || !Array.isArray(md.nhansu)) return;
-                const before = md.nhansu.length;
-                md.nhansu = md.nhansu.filter(ns => String(ns?.hoTen || '').trim() !== __removedPersonName);
-                if (md.nhansu.length !== before) changed = true;
+                const hasLong = md.nhansu.some(ns => String(ns?.hoTen || '').trim() === 'Phạm Tiến Long');
+                if (hasLong) return;
+                const old = md.nhansu.find(ns => String(ns?.hoTen || '').trim() === 'Phạm Huy Chiến' && Number(ns?.stt) === 16);
+                if (old) {
+                    old.hoTen = 'Phạm Tiến Long';
+                    old.stt = 16;
+                    changed = true;
+                }
             });
         });
         return changed;
     }
-    let __removedPersonChanged = false;
-    try { __removedPersonChanged = removeRemovedPersonSeed(coSoDuLieuNamThang); } catch(e) { console.warn('Data migration:', e); }
-    if (__removedPersonChanged) {
-        try { localStorage.setItem('vinapaco_data_namthang_before_remove_person', JSON.stringify(coSoDuLieuNamThang)); } catch(e) {}
+    let __restoredPhamTienLong = false;
+    try { __restoredPhamTienLong = restorePhamTienLongAsPersonnel16(coSoDuLieuNamThang); } catch(e) { console.warn('Data migration:', e); }
+    if (__restoredPhamTienLong) {
         try { localStorage.setItem('vinapaco_data_namthang', JSON.stringify(coSoDuLieuNamThang)); } catch(e) {}
     }
 
